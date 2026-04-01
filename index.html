@@ -5,905 +5,721 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portofoliu CodePen</title>
   <style>
-    :root {
-      --bg: #081122;
-      --bg-soft: rgba(255,255,255,0.06);
-      --panel: rgba(10, 18, 36, 0.72);
-      --panel-strong: rgba(255,255,255,0.08);
-      --text: #eef4ff;
-      --muted: #a7b4d3;
-      --line: rgba(255,255,255,0.1);
-      --accent: #6ea8fe;
-      --accent-2: #8b5cf6;
-      --shadow: 0 24px 60px rgba(0,0,0,0.35);
-      --radius: 24px;
-      --container: 1240px;
-      --hero-glow: radial-gradient(circle at top left, rgba(110,168,254,0.28), transparent 32%), radial-gradient(circle at top right, rgba(139,92,246,0.22), transparent 28%), linear-gradient(180deg, #101a33 0%, #081122 100%);
+    :root{
+      --bg:#071226;
+      --bg-2:#0b1730;
+      --panel:rgba(13,24,46,.78);
+      --panel-2:rgba(255,255,255,.06);
+      --text:#eef4ff;
+      --muted:#9db0d4;
+      --line:rgba(255,255,255,.1);
+      --accent:#4f8cff;
+      --accent-2:#8b5cf6;
+      --shadow:0 20px 50px rgba(0,0,0,.35);
+      --radius:24px;
+      --container:1280px;
     }
 
-    body.light {
-      --bg: #f4f7fb;
-      --bg-soft: rgba(12,18,38,0.05);
-      --panel: rgba(255,255,255,0.84);
-      --panel-strong: rgba(255,255,255,0.96);
-      --text: #15213d;
-      --muted: #5d6a89;
-      --line: rgba(16,24,40,0.08);
-      --accent: #2563eb;
-      --accent-2: #7c3aed;
-      --shadow: 0 18px 44px rgba(31,41,55,0.12);
-      --hero-glow: radial-gradient(circle at top left, rgba(37,99,235,0.14), transparent 32%), radial-gradient(circle at top right, rgba(124,58,237,0.12), transparent 28%), linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+    body.light{
+      --bg:#f5f8fd;
+      --bg-2:#edf3fb;
+      --panel:rgba(255,255,255,.86);
+      --panel-2:rgba(16,24,40,.05);
+      --text:#13203d;
+      --muted:#5e6f8e;
+      --line:rgba(16,24,40,.08);
+      --accent:#2563eb;
+      --accent-2:#7c3aed;
+      --shadow:0 16px 36px rgba(15,23,42,.12);
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      transition: background .35s ease, color .35s ease;
-      overflow-x: hidden;
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(79,140,255,.18), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(139,92,246,.16), transparent 24%),
+        linear-gradient(180deg,var(--bg-2),var(--bg));
+      color:var(--text);
+      overflow-x:hidden;
     }
 
-    body::before,
-    body::after {
-      content: "";
-      position: fixed;
-      width: 36rem;
-      height: 36rem;
-      border-radius: 50%;
-      filter: blur(90px);
-      opacity: .25;
-      pointer-events: none;
-      z-index: 0;
+    a{text-decoration:none;color:inherit}
+    button{font:inherit}
+    .container{
+      width:min(var(--container), calc(100% - 32px));
+      margin:0 auto;
     }
 
-    body::before {
-      top: -10rem;
-      left: -10rem;
-      background: rgba(110,168,254,0.3);
-      animation: floatBlob 16s ease-in-out infinite;
+    .glass{
+      background:var(--panel);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
     }
 
-    body::after {
-      bottom: -12rem;
-      right: -8rem;
-      background: rgba(139,92,246,0.24);
-      animation: floatBlob 18s ease-in-out infinite reverse;
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      padding:14px 0;
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      background:linear-gradient(to bottom, rgba(0,0,0,.24), transparent);
     }
 
-    @keyframes floatBlob {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(20px, -30px) scale(1.08); }
+    .nav{
+      padding:14px 18px;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
     }
 
-    a { color: inherit; text-decoration: none; }
-    .container {
-      width: min(var(--container), calc(100% - 32px));
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
+      letter-spacing:.02em;
     }
 
-    .glass {
-      background: var(--panel);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
+    .brand-badge{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#fff;
+      font-weight:800;
     }
 
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .7s ease, transform .7s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      padding: 14px 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.18), transparent);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+    .pill,
+    .nav-links a{
+      border:1px solid var(--line);
+      background:var(--panel-2);
+      color:var(--text);
+      border-radius:999px;
+      padding:10px 14px;
+      cursor:pointer;
+      transition:.2s ease;
     }
 
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 14px 18px;
-      border-radius: 999px;
+    .pill:hover,
+    .nav-links a:hover{
+      transform:translateY(-1px);
+      border-color:rgba(79,140,255,.34);
+      background:linear-gradient(135deg, rgba(79,140,255,.14), rgba(139,92,246,.12));
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      letter-spacing: .02em;
+    .hero{
+      padding:34px 0 18px;
     }
 
-    .brand-badge {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: white;
-      box-shadow: 0 12px 30px rgba(37,99,235,0.24);
-      font-size: 1rem;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .nav-links a,
-    .toggle-btn,
-    .lang-btn,
-    .chip {
-      border: 1px solid var(--line);
-      background: var(--bg-soft);
-      color: var(--text);
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-size: .95rem;
-      cursor: pointer;
-      transition: .25s ease;
-    }
-
-    .nav-links a:hover,
-    .toggle-btn:hover,
-    .lang-btn:hover,
-    .chip:hover,
-    .chip.active,
-    .lang-btn.active {
-      transform: translateY(-2px);
-      background: linear-gradient(135deg, rgba(110,168,254,0.16), rgba(139,92,246,0.14));
-      border-color: rgba(110,168,254,0.28);
-    }
-
-    .hero { padding: 44px 0 20px; }
-    .hero-wrap {
-      display: grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 24px;
-      align-items: stretch;
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:22px;
+      align-items:stretch;
     }
 
     .hero-card,
+    .stat-card,
     .about-card,
-    .preview-panel,
+    .preview-card,
     .controls,
     .project-card,
-    .stats-card,
-    .contact-card { border-radius: 24px; }
-
-    .hero-card {
-      padding: 34px;
-      background: var(--hero-glow);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
+    .contact-card{
+      border-radius:24px;
     }
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: .85rem;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 14px;
+    .hero-card{
+      padding:32px;
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at top left, rgba(79,140,255,.2), transparent 30%),
+        radial-gradient(circle at top right, rgba(139,92,246,.16), transparent 26%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
     }
 
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(2.3rem, 5vw, 4.8rem);
-      line-height: .95;
-      letter-spacing: -.04em;
-      max-width: 11ch;
+    .eyebrow{
+      display:inline-flex;
+      font-size:.84rem;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--accent);
+      margin-bottom:14px;
     }
 
-    .hero p {
-      margin: 20px 0 0;
-      color: var(--muted);
-      font-size: 1.06rem;
-      line-height: 1.75;
-      max-width: 62ch;
+    h1,h2,h3,p{margin:0}
+    h1{
+      font-size:clamp(2.2rem,5vw,4.6rem);
+      line-height:.95;
+      letter-spacing:-.04em;
+      max-width:11ch;
     }
 
-    .hero-actions {
-      margin-top: 28px;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
+    .hero-text{
+      margin-top:18px;
+      color:var(--muted);
+      line-height:1.8;
+      max-width:62ch;
+      font-size:1.04rem;
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      min-height: 48px;
-      padding: 0 18px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      font-weight: 700;
-      transition: .28s ease;
+    .hero-actions{
+      margin-top:26px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: white;
-      box-shadow: 0 16px 32px rgba(37,99,235,0.28);
+    .btn{
+      min-height:48px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:0 18px;
+      border-radius:999px;
+      font-weight:700;
+      transition:.22s ease;
+      border:1px solid transparent;
     }
 
-    .btn-secondary {
-      background: var(--bg-soft);
-      color: var(--text);
-      border-color: var(--line);
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow:0 16px 28px rgba(37,99,235,.25);
+    }
+    .btn-secondary{
+      background:var(--panel-2);
+      color:var(--text);
+      border-color:var(--line);
     }
 
-    .btn:hover { transform: translateY(-2px) scale(1.01); }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      height: 100%;
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:16px;
     }
 
-    .stats-card,
+    .stat-card{
+      padding:22px;
+    }
+
+    .stat-card h3{
+      font-size:1rem;
+      letter-spacing:-.02em;
+    }
+
+    .stat-value{
+      margin-top:22px;
+      font-weight:800;
+      font-size:clamp(2rem,4vw,2.8rem);
+    }
+
+    .muted{
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    section{
+      padding:22px 0;
+    }
+
+    .two-col{
+      display:grid;
+      grid-template-columns:.9fr 1.1fr;
+      gap:22px;
+      align-items:start;
+    }
+
     .about-card,
-    .preview-panel,
+    .preview-card,
     .controls,
     .project-card,
-    .contact-card { padding: 22px; }
-
-    .stats-card h3,
-    .about-card h2,
-    .preview-panel h2,
-    .projects-header h2,
-    .contact-card h2 {
-      margin: 0;
-      letter-spacing: -.03em;
+    .contact-card{
+      padding:22px;
+    }
+
+    .about-card p{
+      color:var(--muted);
+      line-height:1.8;
+      margin-top:14px;
+    }
+
+    .skills{
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .skills span{
+      padding:9px 12px;
+      border-radius:999px;
+      background:var(--panel-2);
+      border:1px solid var(--line);
+      font-size:.94rem;
+    }
+
+    .preview-card{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      min-height:560px;
+    }
+
+    .preview-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+    }
+
+    .preview-meta{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:8px 10px;
+      border-radius:999px;
+      background:var(--panel-2);
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-size:.82rem;
+      text-transform:capitalize;
+      white-space:nowrap;
+    }
+
+    .tag.game{color:#ffd7c0;background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.24)}
+    .tag.utility{color:#c5ffe5;background:rgba(16,185,129,.14);border-color:rgba(16,185,129,.24)}
+    .tag.challenge{color:#edd6ff;background:rgba(168,85,247,.14);border-color:rgba(168,85,247,.24)}
+    .tag.ui{color:#cfe2ff;background:rgba(96,165,250,.14);border-color:rgba(96,165,250,.24)}
+
+    body.light .tag.game{color:#b45309}
+    body.light .tag.utility{color:#047857}
+    body.light .tag.challenge{color:#7c3aed}
+    body.light .tag.ui{color:#1d4ed8}
+
+    .mini-btn{
+      min-height:44px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:0 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:var(--panel-2);
+      color:var(--text);
+      font-weight:700;
+      transition:.2s ease;
+      cursor:pointer;
+    }
+
+    .mini-btn:hover{transform:translateY(-2px)}
+    .mini-btn.primary{
+      color:#fff;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      border-color:transparent;
+    }
+
+    .browser-bar{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      background:var(--panel-2);
+      border:1px solid var(--line);
+      color:var(--muted);
+      min-width:0;
     }
 
-    .stat-value {
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800;
-      margin: 24px 0 8px;
+    .dots{display:flex;gap:6px}
+    .dots span{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:rgba(255,255,255,.3);
     }
 
-    .muted { color: var(--muted); }
-    section { padding: 26px 0; }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: .9fr 1.1fr;
-      gap: 24px;
-      align-items: start;
+    body.light .dots span{
+      background:rgba(16,24,40,.18);
     }
 
-    .about-card p,
-    .contact-card p {
-      color: var(--muted);
-      line-height: 1.8;
-      margin: 14px 0 0;
+    .browser-url{
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      font-size:.9rem;
     }
 
-    .skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
+    iframe{
+      width:100%;
+      min-height:430px;
+      border:0;
+      border-radius:18px;
+      background:#fff;
     }
 
-    .skills span {
-      border: 1px solid var(--line);
-      background: var(--bg-soft);
-      padding: 10px 12px;
-      border-radius: 999px;
-      font-size: .95rem;
-      color: var(--text);
-    }
-
-    .preview-panel {
-      min-height: 560px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
     }
 
-    .preview-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
+    .controls{
+      display:grid;
+      gap:16px;
+      margin-bottom:18px;
     }
 
-    .preview-meta {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-size: .95rem;
+    .search-wrap{
+      position:relative;
     }
 
-    .browser-bar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: var(--bg-soft);
-      border: 1px solid var(--line);
-      color: var(--muted);
-      min-width: 0;
+    .search-wrap input{
+      width:100%;
+      min-height:56px;
+      border-radius:20px;
+      border:1px solid var(--line);
+      background:var(--panel-2);
+      color:var(--text);
+      padding:0 18px 0 48px;
+      outline:none;
+      font-size:1rem;
     }
 
-    .dots {
-      display: flex;
-      gap: 6px;
-      flex-shrink: 0;
+    .search-wrap input:focus{
+      border-color:rgba(79,140,255,.38);
+      box-shadow:0 0 0 5px rgba(79,140,255,.12);
     }
 
-    .dots span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.3);
-    }
-
-    body.light .dots span { background: rgba(16,24,40,.18); }
-
-    .browser-url {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-size: .9rem;
-    }
-
-    iframe {
-      width: 100%;
-      min-height: 430px;
-      border: 0;
-      border-radius: 18px;
-      background: white;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
-    }
-
-    .projects-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 16px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-    }
-
-    .controls {
-      display: grid;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .field {
-      position: relative;
-      min-width: min(100%, 420px);
-      flex: 1;
-    }
-
-    .field input {
-      width: 100%;
-      min-height: 54px;
-      border-radius: 18px;
-      border: 1px solid var(--line);
-      background: var(--bg-soft);
-      color: var(--text);
-      padding: 0 16px 0 48px;
-      outline: none;
-      font-size: 1rem;
-      transition: .25s ease;
-    }
-
-    .field input:focus {
-      border-color: rgba(110,168,254,.38);
-      box-shadow: 0 0 0 5px rgba(110,168,254,.12);
-    }
-
-    .field svg {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 18px;
-      height: 18px;
-      fill: var(--muted);
-      opacity: .8;
-    }
-
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .project-card {
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      min-height: 430px;
-      transition: transform .28s ease;
-    }
-
-    .project-card::before {
-      content: "";
-      position: absolute;
-      inset: -1px;
-      border-radius: inherit;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(110,168,254,.2), rgba(139,92,246,.18), transparent 62%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-    }
-
-    .project-card:hover { transform: translateY(-6px); }
-
-    .project-thumb {
-      position: relative;
-      min-height: 185px;
-      border-radius: 18px;
-      border: 1px solid var(--line);
-      overflow: hidden;
-      padding: 12px;
-      background: #09101f;
-      isolation: isolate;
-    }
-
-    .project-thumb::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: var(--thumb-bg, linear-gradient(135deg, rgba(255,111,43,.18), rgba(255,140,66,.08)));
-      z-index: 0;
-    }
-
-    .thumb-browser {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      gap: 6px;
-      padding-bottom: 10px;
-    }
-
-    .thumb-browser span {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.35);
-    }
-
-    .thumb-screen {
-      position: relative;
-      z-index: 1;
-      height: 145px;
-      border-radius: 16px;
-      background: linear-gradient(180deg, rgba(4,8,20,.22), rgba(4,8,20,.05)), rgba(4,8,20,.72);
-      border: 1px solid rgba(255,255,255,.08);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 16px 14px;
-    }
-
-    .thumb-lang {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.08);
-      font-size: .72rem;
-      color: rgba(255,255,255,.8);
-      font-weight: 700;
-      letter-spacing: .05em;
-    }
-
-    .thumb-title {
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      line-height: 1;
-      font-weight: 300;
-      letter-spacing: .08em;
-      color: var(--thumb-title, #ff6f2b);
-      margin-top: 6px;
-      text-transform: uppercase;
-      text-align: center;
-    }
-
-    .thumb-subtitle {
-      margin-top: 8px;
-      font-size: .68rem;
-      color: rgba(255,255,255,.65);
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      text-align: center;
-    }
-
-    .thumb-widget {
-      margin-top: 18px;
-      width: 72%;
-      max-width: 240px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.08);
-      padding: 10px;
-      display: grid;
-      grid-template-columns: 40px 1fr;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .thumb-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: var(--thumb-title, #ff6f2b);
-      color: #121212;
-      font-weight: 900;
-      font-size: .9rem;
-    }
-
-    .thumb-lines {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .thumb-line {
-      height: 6px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.16);
-    }
-
-    .thumb-line.small { width: 48%; }
-    .thumb-line.mid { width: 70%; }
-    .thumb-line.full { width: 100%; }
-
-    .thumb-button {
-      margin-top: 16px;
-      width: 72%;
-      max-width: 240px;
-      height: 34px;
-      border-radius: 12px;
-      background: var(--thumb-title, #ff6f2b);
-      opacity: .98;
-    }
-
-    .project-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: start;
-      gap: 12px;
-    }
-
-    .project-card h3 {
-      margin: 0;
-      font-size: 1.16rem;
-      letter-spacing: -.03em;
-    }
-
-    .project-desc {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: .96rem;
-      flex: 1;
-    }
-
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 8px 10px;
-      border: 1px solid var(--line);
-      background: var(--bg-soft);
-      font-size: .82rem;
-      color: var(--muted);
-      white-space: nowrap;
-      text-transform: capitalize;
-    }
-
-    .tag-game {
-      color: #ffd8b8;
-      background: rgba(255,111,43,.16);
-      border-color: rgba(255,111,43,.28);
-    }
-
-    .tag-utility {
-      color: #c9ffe7;
-      background: rgba(52,211,153,.16);
-      border-color: rgba(52,211,153,.28);
-    }
-
-    .tag-ui {
-      color: #d9e7ff;
-      background: rgba(96,165,250,.16);
-      border-color: rgba(96,165,250,.28);
-    }
-
-    .tag-challenge {
-      color: #f5dbff;
-      background: rgba(192,132,252,.16);
-      border-color: rgba(192,132,252,.28);
-    }
-
-    body.light .tag-game {
-      color: #b45309;
-      background: rgba(255,111,43,.12);
-    }
-
-    body.light .tag-utility {
-      color: #047857;
-      background: rgba(52,211,153,.12);
-    }
-
-    body.light .tag-ui {
-      color: #1d4ed8;
-      background: rgba(96,165,250,.12);
+    .search-wrap svg{
+      position:absolute;
+      left:16px;
+      top:50%;
+      transform:translateY(-50%);
+      width:18px;
+      height:18px;
+      fill:var(--muted);
+      opacity:.85;
+    }
+
+    .chip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
     }
 
-    body.light .tag-challenge {
-      color: #7c3aed;
-      background: rgba(192,132,252,.12);
+    .chip{
+      padding:10px 16px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:var(--panel-2);
+      color:var(--text);
+      cursor:pointer;
+      transition:.2s ease;
+      font-weight:600;
+    }
+
+    .chip:hover,
+    .chip.active{
+      background:linear-gradient(135deg, rgba(79,140,255,.16), rgba(139,92,246,.14));
+      border-color:rgba(79,140,255,.28);
     }
+
+    .projects-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:18px;
+    }
 
-    .learn-box {
-      margin-top: 2px;
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)), var(--bg-soft);
-      border-radius: 18px;
-      overflow: hidden;
-      transition: .25s ease;
+    .project-card{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      min-height:420px;
+      position:relative;
+      overflow:hidden;
+      transition:.22s ease;
     }
-
-    .learn-box.open {
-      border-color: rgba(110,168,254,.32);
-      box-shadow: 0 10px 24px rgba(0,0,0,.12);
+
+    .project-card:hover{
+      transform:translateY(-5px);
     }
 
-    .learn-toggle {
-      width: 100%;
-      min-height: 48px;
-      border: 0;
-      background: transparent;
-      color: var(--text);
-      padding: 13px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      font: inherit;
-      font-weight: 700;
-      cursor: pointer;
-      transition: .25s ease;
-    }
-
-    .learn-toggle:hover {
-      background: rgba(255,255,255,0.04);
+    .project-thumb{
+      position:relative;
+      min-height:180px;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:var(--thumb-bg, linear-gradient(135deg, rgba(79,140,255,.18), rgba(139,92,246,.12)));
+      padding:12px;
     }
 
-    body.light .learn-toggle:hover {
-      background: rgba(16,24,40,0.04);
+    .thumb-browser{
+      display:flex;
+      gap:6px;
+      margin-bottom:10px;
+    }
+
+    .thumb-browser span{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,.34);
+    }
+
+    .thumb-screen{
+      height:142px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(5,10,22,.45);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
     }
 
-    .learn-toggle-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .thumb-lang{
+      position:absolute;
+      top:10px;
+      right:10px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.72rem;
+      letter-spacing:.05em;
+      font-weight:700;
+      color:rgba(255,255,255,.85);
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
     }
 
-    .learn-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: 0 0 0 4px rgba(110,168,254,.12);
-      flex-shrink: 0;
+    .thumb-title{
+      font-size:1.6rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--thumb-color,#fff);
+      line-height:1;
     }
 
-    .learn-toggle-icon {
-      width: 28px;
-      height: 28px;
-      display: grid;
-      place-items: center;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      transition: transform .25s ease, background .25s ease, border-color .25s ease;
-      flex-shrink: 0;
+    .thumb-subtitle{
+      margin-top:8px;
+      font-size:.74rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.7);
     }
 
-    body.light .learn-toggle-icon {
-      background: rgba(16,24,40,.03);
+    .thumb-bar{
+      margin-top:16px;
+      width:76%;
+      height:34px;
+      border-radius:12px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
     }
 
-    .learn-box.open .learn-toggle-icon {
-      transform: rotate(45deg);
-      background: linear-gradient(135deg, rgba(110,168,254,.14), rgba(139,92,246,.14));
-      border-color: rgba(110,168,254,.22);
+    .project-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
     }
 
-    .learn-content {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows .28s ease;
+    .project-card h3{
+      font-size:1.14rem;
+      letter-spacing:-.03em;
     }
 
-    .learn-box.open .learn-content {
-      grid-template-rows: 1fr;
+    .project-desc{
+      color:var(--muted);
+      line-height:1.72;
+      font-size:.96rem;
+      flex:1;
     }
 
-    .learn-content-inner {
-      overflow: hidden;
+    .learn-box{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:var(--panel-2);
+      overflow:hidden;
     }
 
-    .learn-content-pad {
-      padding: 0 14px 14px;
-      color: var(--muted);
-      line-height: 1.72;
-      font-size: .94rem;
+    .learn-toggle{
+      width:100%;
+      border:0;
+      background:transparent;
+      color:var(--text);
+      text-align:left;
+      padding:13px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-weight:700;
+      cursor:pointer;
     }
 
-    .learn-list {
-      margin: 8px 0 0;
-      padding-left: 18px;
+    .learn-content{
+      display:none;
+      padding:0 14px 14px;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:.94rem;
     }
 
-    .learn-list li {
-      margin-bottom: 8px;
+    .learn-box.open .learn-content{
+      display:block;
     }
 
-    .project-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: auto;
+    .learn-content ul{
+      margin:8px 0 0;
+      padding-left:18px;
     }
 
-    .mini-btn {
-      flex: 1;
-      min-width: 120px;
-      min-height: 44px;
-      border-radius: 14px;
-      padding: 0 14px;
-      border: 1px solid var(--line);
-      background: var(--bg-soft);
-      color: var(--text);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: 700;
-      transition: .25s ease;
-      cursor: pointer;
+    .learn-content li{
+      margin-bottom:8px;
     }
 
-    .mini-btn.primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      border-color: transparent;
-      color: white;
+    .project-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:auto;
     }
 
-    .mini-btn:hover { transform: translateY(-2px); }
+    .project-actions .mini-btn{
+      flex:1;
+      min-width:120px;
+    }
 
-    .empty-state {
-      display: none;
-      padding: 32px;
-      text-align: center;
-      color: var(--muted);
-      border-radius: 24px;
+    .empty-state{
+      display:none;
+      padding:28px;
+      text-align:center;
+      color:var(--muted);
+      border-radius:24px;
+      margin-top:12px;
     }
 
-    .contact-card {
-      text-align: center;
-      padding: 34px 22px;
-      margin-top: 10px;
+    .contact-card{
+      text-align:center;
+      padding:34px 22px;
     }
 
-    .contact-actions {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 20px;
+    .contact-actions{
+      margin-top:20px;
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
     }
 
-    .footer {
-      padding: 12px 0 40px;
-      color: var(--muted);
-      text-align: center;
-      font-size: .95rem;
+    .footer{
+      padding:10px 0 40px;
+      text-align:center;
+      color:var(--muted);
+      font-size:.95rem;
     }
 
-    @media (max-width: 1080px) {
-      .hero-wrap,
-      .projects-grid { grid-template-columns: 1fr 1fr; }
-      .two-col { grid-template-columns: 1fr; }
+    @media (max-width:1080px){
+      .hero-grid,
+      .two-col,
+      .projects-grid{
+        grid-template-columns:1fr 1fr;
+      }
+      .two-col{
+        grid-template-columns:1fr;
+      }
     }
 
-    @media (max-width: 760px) {
-      .container { width: min(var(--container), calc(100% - 20px)); }
-      .nav { border-radius: 24px; }
-      .nav-links { justify-content: center; }
-      .hero-wrap,
+    @media (max-width:760px){
+      .container{
+        width:min(var(--container), calc(100% - 20px));
+      }
+      .hero-grid,
       .stats-grid,
-      .projects-grid { grid-template-columns: 1fr; }
+      .projects-grid{
+        grid-template-columns:1fr;
+      }
+      .nav{
+        border-radius:24px;
+      }
       .hero-card,
-      .stats-card,
+      .stat-card,
       .about-card,
-      .preview-panel,
+      .preview-card,
       .controls,
       .project-card,
-      .contact-card { padding: 18px; }
-      .hero h1 { max-width: 100%; font-size: clamp(2rem, 9vw, 3rem); }
-      .field { min-width: 100%; }
-      iframe { min-height: 280px; }
-      .project-card { min-height: unset; }
-      .thumb-screen { height: 150px; }
-      .project-actions { flex-direction: column; }
-      .mini-btn { width: 100%; }
+      .contact-card{
+        padding:18px;
+      }
+      h1{
+        max-width:100%;
+        font-size:clamp(2rem,9vw,3rem);
+      }
+      iframe{
+        min-height:280px;
+      }
+      .project-actions{
+        flex-direction:column;
+      }
     }
   </style>
 </head>
 <body>
   <div class="topbar">
     <div class="container">
-      <nav class="nav glass reveal">
+      <nav class="nav glass">
         <a class="brand" href="#home">
           <span class="brand-badge">CP</span>
           <span data-i18n="brand">Portofoliu CodePen</span>
         </a>
+
         <div class="nav-links">
           <a href="#about" data-i18n="nav_about">Despre</a>
           <a href="#preview" data-i18n="nav_preview">Preview</a>
           <a href="#projects" data-i18n="nav_projects">Proiecte</a>
           <a href="#contact" data-i18n="nav_contact">Contact</a>
-          <button class="lang-btn active" id="langToggle">RO | EN</button>
-          <button class="toggle-btn" id="themeToggle">🌙 Dark</button>
+          <button class="pill" id="langToggle">RO | EN</button>
+          <button class="pill" id="themeToggle">🌙 Dark</button>
         </div>
       </nav>
     </div>
@@ -911,34 +727,39 @@
 
   <header class="hero" id="home">
     <div class="container">
-      <div class="hero-wrap">
-        <article class="hero-card reveal">
+      <div class="hero-grid">
+        <article class="hero-card glass">
           <span class="eyebrow" data-i18n="hero_eyebrow">Front-end Developer • Proiecte CodePen</span>
           <h1 data-i18n="hero_title">Portofoliu interactiv cu preview live</h1>
-          <p data-i18n="hero_text">O pagină de prezentare modernă pentru proiectele CodePen, cu live preview în pagină, căutare instant, filtre, dark/light mode, animații fluide.</p>
+          <p class="hero-text" data-i18n="hero_text">
+            O pagină de prezentare modernă pentru proiectele CodePen, cu live preview în pagină, căutare instant, filtre, dark/light mode și animații fluide.
+          </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#projects" data-i18n="hero_cta_1">Vezi proiectele</a>
             <a class="btn btn-secondary" href="#about" data-i18n="hero_cta_2">Despre mine</a>
           </div>
         </article>
 
-        <div class="stats-grid reveal">
-          <article class="stats-card glass">
+        <div class="stats-grid">
+          <article class="stat-card glass">
             <h3 data-i18n="stat_projects">Proiecte live</h3>
-            <div class="stat-value" id="projectCount">12</div>
+            <div class="stat-value" id="projectCount">30</div>
             <div class="muted" data-i18n="stat_projects_text">Experimente și demo-uri publicate pe CodePen</div>
           </article>
-          <article class="stats-card glass">
+
+          <article class="stat-card glass">
             <h3 data-i18n="stat_preview">Preview activ</h3>
             <div class="stat-value" id="currentPreviewIndex">01</div>
             <div class="muted" data-i18n="stat_preview_text">Poți schimba proiectul afișat direct din carduri</div>
           </article>
-          <article class="stats-card glass">
+
+          <article class="stat-card glass">
             <h3 data-i18n="stat_experience">Experiență</h3>
             <div class="stat-value">UI</div>
             <div class="muted" data-i18n="stat_experience_text">Layout responsive, microinteracțiuni, explorări vizuale</div>
           </article>
-          <article class="stats-card glass">
+
+          <article class="stat-card glass">
             <h3 data-i18n="stat_focus">Focus</h3>
             <div class="stat-value">JS</div>
             <div class="muted" data-i18n="stat_focus_text">Interfețe interactive și prototipuri front-end</div>
@@ -951,64 +772,81 @@
   <main>
     <section id="featured">
       <div class="container">
-        <div class="projects-header reveal" style="margin-bottom:18px;">
+        <div class="section-head">
           <div>
             <span class="eyebrow" data-i18n="featured_eyebrow">Featured</span>
             <h2 data-i18n="featured_title">Proiecte evidențiate</h2>
           </div>
         </div>
-
-        <div class="projects-grid reveal" id="featuredGrid" style="grid-template-columns: repeat(3, minmax(0, 1fr));"></div>
+        <div class="projects-grid" id="featuredGrid"></div>
       </div>
     </section>
 
     <section id="about">
       <div class="container two-col">
-        <article class="about-card glass reveal">
+        <article class="about-card glass">
           <span class="eyebrow" data-i18n="about_eyebrow">Despre mine</span>
           <h2 data-i18n="about_title">Construiesc experiențe front-end clare, interactive și moderne</h2>
-          <p data-i18n="about_text_1">Folosesc CodePen pentru prototipuri, experimente vizuale, mini jocuri și interfețe utile. Îmi place să combin claritatea vizuală cu interacțiuni rapide și un stil modern.</p>
-          <p data-i18n="about_text_2">Acest portofoliu este gândit ca un hub central: poți explora rapid proiectele, le poți căuta, filtra și previzualiza direct în pagină fără să părăsești site-ul.</p>
+          <p data-i18n="about_text_1">
+            Folosesc CodePen pentru prototipuri, experimente vizuale, mini jocuri și interfețe utile. Îmi place să combin claritatea vizuală cu interacțiuni rapide și un stil modern.
+          </p>
+          <p data-i18n="about_text_2">
+            Acest portofoliu este gândit ca un hub central: poți explora rapid proiectele, le poți căuta, filtra și previzualiza direct în pagină fără să părăsești site-ul.
+          </p>
+
           <div class="skills">
-            <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Responsive Design</span><span>Games</span><span>UI Experiments</span>
+            <span>HTML5</span>
+            <span>CSS3</span>
+            <span>JavaScript</span>
+            <span>Responsive Design</span>
+            <span>Games</span>
+            <span>UI Experiments</span>
           </div>
         </article>
 
-        <article class="preview-panel glass reveal" id="preview">
+        <article class="preview-card glass" id="preview">
           <div class="preview-head">
             <div>
               <span class="eyebrow" data-i18n="preview_eyebrow">Preview live</span>
               <h2 id="previewTitle">BASKET VS AI</h2>
             </div>
+
             <div class="preview-meta">
-              <span class="tag" id="previewTag">game</span>
+              <span class="tag game" id="previewTag">game</span>
               <a class="mini-btn primary" id="previewOpen" href="#" target="_blank" rel="noopener noreferrer" data-i18n="preview_open">Deschide proiectul</a>
             </div>
           </div>
+
           <div class="browser-bar">
             <div class="dots"><span></span><span></span><span></span></div>
             <div class="browser-url" id="previewUrl"></div>
           </div>
-          <iframe id="projectFrame" title="CodePen project preview" loading="lazy"></iframe>
+
+          <iframe id="projectFrame" title="Project live preview" loading="lazy"></iframe>
         </article>
       </div>
     </section>
 
     <section id="projects">
       <div class="container">
-        <div class="projects-header reveal">
+        <div class="section-head">
           <div>
             <span class="eyebrow" data-i18n="projects_eyebrow">Proiecte</span>
             <h2 data-i18n="projects_title">Explorează colecția de proiecte</h2>
           </div>
-          <div class="muted"><span id="resultsCount">12</span> <span data-i18n="projects_results">rezultate afișate</span></div>
+          <div class="muted">
+            <span id="resultsCount">30</span> <span data-i18n="projects_results">rezultate afișate</span>
+          </div>
         </div>
 
-        <div class="controls glass reveal">
-          <div class="field">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4a6 6 0 1 0 3.874 10.582l4.272 4.272 1.414-1.414-4.272-4.272A6 6 0 0 0 10 4Zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/></svg>
+        <div class="controls glass">
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M10 4a6 6 0 1 0 3.874 10.582l4.272 4.272 1.414-1.414-4.272-4.272A6 6 0 0 0 10 4Zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/>
+            </svg>
             <input type="text" id="searchInput" placeholder="Caută după nume, tag sau descriere..." />
           </div>
+
           <div class="chip-row" id="filterChips">
             <button class="chip active" data-filter="all" data-i18n="filter_all">Toate</button>
             <button class="chip" data-filter="game">Game</button>
@@ -1018,35 +856,34 @@
           </div>
         </div>
 
-        <section class="reveal" id="mainProjectsSection">
-          <div class="projects-header" style="margin-top:8px; margin-bottom:14px;">
-            <div>
-              <span class="eyebrow" data-i18n="main_projects_eyebrow">Proiecte principale</span>
-              <h2 data-i18n="main_projects_title">Jocuri, utilitare și interfețe</h2>
-            </div>
+        <div class="section-head" style="margin-top:10px; margin-bottom:12px;">
+          <div>
+            <span class="eyebrow" data-i18n="main_projects_eyebrow">Proiecte principale</span>
+            <h2 data-i18n="main_projects_title">Jocuri, utilitare și interfețe</h2>
           </div>
-          <div class="projects-grid" id="projectsGrid"></div>
-        </section>
+        </div>
+        <div class="projects-grid" id="projectsGrid"></div>
 
-        <section class="reveal" id="challengesSection" style="margin-top:18px;">
-          <div class="projects-header" style="margin-bottom:14px;">
-            <div>
-              <span class="eyebrow" data-i18n="challenges_eyebrow">Challenges</span>
-              <h2 data-i18n="challenges_title">Provocări și exerciții logice</h2>
-            </div>
+        <div class="section-head" style="margin-top:22px; margin-bottom:12px;">
+          <div>
+            <span class="eyebrow" data-i18n="challenges_eyebrow">Challenges</span>
+            <h2 data-i18n="challenges_title">Provocări și exerciții logice</h2>
           </div>
-          <div class="projects-grid" id="challengesGrid"></div>
-        </section>
-        <div class="empty-state glass" id="emptyState" data-i18n="empty_state">Nu am găsit proiecte pentru filtrul sau căutarea curentă.</div>
+        </div>
+        <div class="projects-grid" id="challengesGrid"></div>
+
+        <div class="empty-state glass" id="emptyState" data-i18n="empty_state">
+          Nu am găsit proiecte pentru filtrul sau căutarea curentă.
+        </div>
       </div>
     </section>
 
     <section id="contact">
       <div class="container">
-        <article class="contact-card glass reveal">
+        <article class="contact-card glass">
           <span class="eyebrow" data-i18n="contact_eyebrow">Contact</span>
           <h2 data-i18n="contact_title">Lasă-mi o sugestie</h2>
-          <p data-i18n="contact_text">Lasă-mi o sugestie despre ce ai vrea să mai adaug în portofoliu</p>
+          <p class="muted" data-i18n="contact_text">Lasă-mi o sugestie despre ce ai vrea să mai adaug în portofoliu</p>
           <div class="contact-actions">
             <a class="btn btn-primary" href="#home" data-i18n="contact_back">Sus</a>
             <a class="btn btn-secondary" href="#projects" data-i18n="contact_all">Toate proiectele</a>
@@ -1057,967 +894,731 @@
   </main>
 
   <footer class="footer">
-    <div class="container" data-i18n="footer_text">Creat pentru prezentarea proiectelor tale CodePen • Responsive • Dark/Light • Live Preview</div>
+    <div class="container" data-i18n="footer_text">
+      Creat pentru prezentarea proiectelor tale CodePen • Responsive • Dark/Light • Live Preview
+    </div>
   </footer>
 
   <script>
-    const translations = {
-      ro: {
-        brand: 'Portofoliu CodePen',
-        nav_about: 'Despre', nav_preview: 'Preview', nav_projects: 'Proiecte', nav_contact: 'Contact',
-        hero_eyebrow: 'Front-end Developer • Proiecte CodePen',
-        hero_title: 'Portofoliu interactiv cu preview live',
-        hero_text: 'O pagină de prezentare modernă pentru proiectele CodePen, cu live preview în pagină, căutare instant, filtre, dark/light mode, animații fluide.',
-        hero_cta_1: 'Vezi proiectele', hero_cta_2: 'Despre mine',
-        stat_projects: 'Proiecte live', stat_projects_text: 'Experimente și demo-uri publicate pe CodePen',
-        stat_preview: 'Preview activ', stat_preview_text: 'Poți schimba proiectul afișat direct din carduri',
-        stat_experience: 'Experiență', stat_experience_text: 'Layout responsive, microinteracțiuni, explorări vizuale',
-        stat_focus: 'Focus', stat_focus_text: 'Interfețe interactive și prototipuri front-end',
-        about_eyebrow: 'Despre mine',
-        about_title: 'Construiesc experiențe front-end clare, interactive și moderne',
-        about_text_1: 'Folosesc CodePen pentru prototipuri, experimente vizuale, mini jocuri și interfețe utile. Îmi place să combin claritatea vizuală cu interacțiuni rapide și un stil modern.',
-        about_text_2: 'Acest portofoliu este gândit ca un hub central: poți explora rapid proiectele, le poți căuta, filtra și previzualiza direct în pagină fără să părăsești site-ul.',
-        preview_eyebrow: 'Preview live', preview_open: 'Deschide proiectul',
-        projects_eyebrow: 'Proiecte', projects_title: 'Explorează colecția de proiecte', projects_results: 'rezultate afișate',
-        filter_all: 'Toate', empty_state: 'Nu am găsit proiecte pentru filtrul sau căutarea curentă.',
-        contact_eyebrow: 'Contact', contact_title: 'Lasă-mi o sugestie',
-        contact_text: 'Lasă-mi o sugestie despre ce ai vrea să mai adaug în portofoliu',
-        contact_back: 'Sus', contact_all: 'Toate proiectele',
-        featured_eyebrow: 'Featured',
-        featured_title: 'Proiecte evidențiate',
-        main_projects_eyebrow: 'Proiecte principale',
-        main_projects_title: 'Jocuri, utilitare și interfețe',
-        challenges_eyebrow: 'Challenges',
-        challenges_title: 'Provocări și exerciții logice',
-        footer_text: 'Creat pentru prezentarea proiectelor tale CodePen • Responsive • Dark/Light • Live Preview',
-        search_placeholder: 'Caută după nume, tag sau descriere...',
-        preview_live: 'Preview live',
-        open_new_tab: 'Open tab nou',
-        theme_dark: '🌙 Dark',
-        theme_light: '☀️ Light',
-        learn_title: 'Case study scurt',
-        learn_fallback: 'Detalii în curs de completare.'
-      },
-      en: {
-        brand: 'CodePen Portfolio',
-        nav_about: 'About', nav_preview: 'Preview', nav_projects: 'Projects', nav_contact: 'Contact',
-        hero_eyebrow: 'Front-end Developer • CodePen Projects',
-        hero_title: 'Interactive portfolio with live preview',
-        hero_text: 'A modern showcase page for CodePen projects, with live preview inside the page, instant search, filters, dark/light mode, and fluid animations.',
-        hero_cta_1: 'View projects', hero_cta_2: 'About me',
-        stat_projects: 'Live projects', stat_projects_text: 'Experiments and demos published on CodePen',
-        stat_preview: 'Active preview', stat_preview_text: 'You can switch the shown project directly from the cards',
-        stat_experience: 'Experience', stat_experience_text: 'Responsive layouts, microinteractions, visual explorations',
-        stat_focus: 'Focus', stat_focus_text: 'Interactive interfaces and front-end prototypes',
-        about_eyebrow: 'About me',
-        about_title: 'I build clean, interactive and modern front-end experiences',
-        about_text_1: 'I use CodePen for prototypes, visual experiments, mini games and useful interfaces. I like combining visual clarity with fast interaction and a modern style.',
-        about_text_2: 'This portfolio is designed as a central hub: you can quickly explore the projects, search them, filter them and preview them directly inside the page without leaving the site.',
-        preview_eyebrow: 'Live preview', preview_open: 'Open project',
-        projects_eyebrow: 'Projects', projects_title: 'Explore the project collection', projects_results: 'results shown',
-        filter_all: 'All', empty_state: 'No projects found for the current search or filter.',
-        contact_eyebrow: 'Contact', contact_title: 'Leave me a suggestion',
-        contact_text: 'Leave me a suggestion about what you’d like me to add next to the portfolio',
-        contact_back: 'Back to top', contact_all: 'All projects',
-        featured_eyebrow: 'Featured',
-        featured_title: 'Featured projects',
-        main_projects_eyebrow: 'Main projects',
-        main_projects_title: 'Games, utilities and interfaces',
-        challenges_eyebrow: 'Challenges',
-        challenges_title: 'Logic challenges and coding exercises',
-        footer_text: 'Built to showcase your CodePen projects • Responsive • Dark/Light • Live Preview',
-        search_placeholder: 'Search by name, tag or description...',
-        preview_live: 'Live preview',
-        open_new_tab: 'Open new tab',
-        theme_dark: '🌙 Dark',
-        theme_light: '☀️ Light',
-        learn_title: 'Short case study',
-        learn_fallback: 'Details coming soon.'
-      }
-    };
-
-    const defaultLearned = {
-      ro: [
-        'Problemă: am urmărit să construiesc o interfață clară și ușor de explorat.',
-        'Soluție: am organizat conținutul astfel încât acțiunile și informațiile principale să fie rapid de înțeles.',
-        'Provocare: să păstrez un echilibru bun între prezentare vizuală, claritate și experiență responsive.'
-      ],
-      en: [
-        'Problem: I wanted to build an interface that feels clear and easy to explore.',
-        'Solution: I organized the content so the main actions and information are easy to understand.',
-        'Challenge: keeping a good balance between visual presentation, clarity and responsive experience.'
-      ]
-    };
-
-    const projects = [
-      {
-        id: 1,
-        category: 'game', tags: ['Game', 'AI', 'Basketball'],
-        url: 'https://es-d-5697283320260328-019d2b27-6fb7-7f3c-ae84-cf130aae5231.codepen.dev/',
-        title: { ro: 'BASKET VS AI', en: 'BASKET VS AI' },
-        featured: true,
-        description: { ro: 'Joc de baschet contra AI, cu atmosferă arcade și progres vizual.', en: 'Basketball game against AI with an arcade feel and visual progression.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să construiesc un mini-joc arcade ușor de înțeles și rapid de jucat.',
-            'Soluție: am folosit o prezentare clară și feedback vizual pentru acțiunile jucătorului și ale AI-ului.',
-            'Provocare: să păstrez jocul fluid și intuitiv, fără să încarc prea mult interfața.'
-          ],
-          en: [
-            'Problem: I wanted to build an arcade mini-game that feels easy to understand and quick to play.',
-            'Solution: I used a clear presentation and visual feedback for both player and AI actions.',
-            'Challenge: keeping the game fluid and intuitive without overloading the interface.'
-          ]
+    document.addEventListener('DOMContentLoaded', () => {
+      const translations = {
+        ro: {
+          brand: 'Portofoliu CodePen',
+          nav_about: 'Despre',
+          nav_preview: 'Preview',
+          nav_projects: 'Proiecte',
+          nav_contact: 'Contact',
+          hero_eyebrow: 'Front-end Developer • Proiecte CodePen',
+          hero_title: 'Portofoliu interactiv cu preview live',
+          hero_text: 'O pagină de prezentare modernă pentru proiectele CodePen, cu live preview în pagină, căutare instant, filtre, dark/light mode și animații fluide.',
+          hero_cta_1: 'Vezi proiectele',
+          hero_cta_2: 'Despre mine',
+          stat_projects: 'Proiecte live',
+          stat_projects_text: 'Experimente și demo-uri publicate pe CodePen',
+          stat_preview: 'Preview activ',
+          stat_preview_text: 'Poți schimba proiectul afișat direct din carduri',
+          stat_experience: 'Experiență',
+          stat_experience_text: 'Layout responsive, microinteracțiuni, explorări vizuale',
+          stat_focus: 'Focus',
+          stat_focus_text: 'Interfețe interactive și prototipuri front-end',
+          about_eyebrow: 'Despre mine',
+          about_title: 'Construiesc experiențe front-end clare, interactive și moderne',
+          about_text_1: 'Folosesc CodePen pentru prototipuri, experimente vizuale, mini jocuri și interfețe utile. Îmi place să combin claritatea vizuală cu interacțiuni rapide și un stil modern.',
+          about_text_2: 'Acest portofoliu este gândit ca un hub central: poți explora rapid proiectele, le poți căuta, filtra și previzualiza direct în pagină fără să părăsești site-ul.',
+          preview_eyebrow: 'Preview live',
+          preview_open: 'Deschide proiectul',
+          projects_eyebrow: 'Proiecte',
+          projects_title: 'Explorează colecția de proiecte',
+          projects_results: 'rezultate afișate',
+          filter_all: 'Toate',
+          empty_state: 'Nu am găsit proiecte pentru filtrul sau căutarea curentă.',
+          contact_eyebrow: 'Contact',
+          contact_title: 'Lasă-mi o sugestie',
+          contact_text: 'Lasă-mi o sugestie despre ce ai vrea să mai adaug în portofoliu',
+          contact_back: 'Sus',
+          contact_all: 'Toate proiectele',
+          featured_eyebrow: 'Featured',
+          featured_title: 'Proiecte evidențiate',
+          main_projects_eyebrow: 'Proiecte principale',
+          main_projects_title: 'Jocuri, utilitare și interfețe',
+          challenges_eyebrow: 'Challenges',
+          challenges_title: 'Provocări și exerciții logice',
+          footer_text: 'Creat pentru prezentarea proiectelor tale CodePen • Responsive • Dark/Light • Live Preview',
+          search_placeholder: 'Caută după nume, tag sau descriere...',
+          preview_live: 'Preview live',
+          open_new_tab: 'Open tab nou',
+          theme_dark: '🌙 Dark',
+          theme_light: '☀️ Light',
+          learn_title: 'Case study scurt',
+          learn_fallback: 'Detalii în curs de completare.'
         },
-        thumbTitle: 'BASKET', thumbSubtitle: 'VS AI', thumbLang: 'RO', thumbColor: '#ff6f2b', thumbBg: 'linear-gradient(135deg, rgba(255,111,43,.22), rgba(255,140,66,.08))', thumbIcon: '🏀', thumbType: 'game'
-      },
-      {
-        id: 2,
-        category: 'game', tags: ['Game', 'AI', 'Pro'],
-        url: 'https://es-d-5697283320260328-019d267b-0535-7927-99da-f35c852ebaf1.codepen.dev/',
-        title: { ro: 'BASKET VS AI PRO', en: 'BASKET VS AI PRO' },
-        description: { ro: 'Versiune extinsă a jocului, cu ritm mai rapid și prezentare premium.', en: 'Expanded version of the game with faster pace and premium presentation.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să duc conceptul inițial spre o versiune mai intensă și mai bine finisată.',
-            'Soluție: am accelerat ritmul jocului și am lucrat la o prezentare mai premium a interfeței.',
-            'Provocare: să cresc dinamica fără să pierd claritatea și controlul experienței.'
-          ],
-          en: [
-            'Problem: I wanted to push the initial concept into a more polished and intense version.',
-            'Solution: I increased the pace and refined the interface for a more premium presentation.',
-            'Challenge: making the experience faster without losing clarity and control.'
-          ]
-        },
-        thumbTitle: 'BASKET PRO', thumbSubtitle: 'VS AI • PRO', thumbLang: 'EN', thumbColor: '#5da8ff', thumbBg: 'linear-gradient(135deg, rgba(93,168,255,.22), rgba(102,89,255,.08))', thumbIcon: '🏀', thumbType: 'workspace'
-      },
-      {
-        id: 3,
-        category: 'utility', tags: ['SaaS', 'Portal', 'Editable'],
-        url: 'https://es-d-5697283320260328-019d248d-5848-7531-8d9d-23699aa47d61.codepen.dev/',
-        title: { ro: 'ClientFlow', en: 'ClientFlow' },
-        description: { ro: 'Mini SaaS • portal guest editabil, fără cont, dar gata de export.', en: 'Mini SaaS • editable guest portal, no account needed, ready to export.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să fac un portal util și ușor de folosit pentru utilizatori fără cont.',
-            'Soluție: am simplificat flow-ul și am pus accent pe editare rapidă și export.',
-            'Provocare: să păstrez interfața practică și clară chiar și pentru un scenariu de tip mini SaaS.'
-          ],
-          en: [
-            'Problem: I wanted to create a useful portal that feels simple for users without an account.',
-            'Solution: I simplified the flow and focused on quick editing and export.',
-            'Challenge: keeping the interface practical and clear in a mini SaaS scenario.'
-          ]
-        },
-        thumbTitle: 'CLIENTFLOW', thumbSubtitle: 'PORTAL • EXPORT', thumbLang: 'RO', thumbColor: '#34d399', thumbBg: 'linear-gradient(135deg, rgba(52,211,153,.22), rgba(59,130,246,.08))', thumbIcon: '▦', thumbType: 'workspace'
-      },
-      {
-        id: 4,
-        category: 'game', tags: ['Game', 'Board', 'Classic'],
-        url: 'https://es-d-5697283320260328-019d202f-93fa-7c03-8496-9a9f55afbf17.codepen.dev/',
-        title: { ro: 'Tic Tac Toe', en: 'Tic Tac Toe' },
-        description: { ro: 'Varianta ta pentru jocul clasic, într-o interfață simplă și clară.', en: 'Your take on the classic game in a simple and clear interface.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să refac un joc clasic într-o formă curată și rapid de folosit.',
-            'Soluție: am mers pe un layout simplu și pe interacțiuni ușor de urmărit.',
-            'Provocare: să fac proiectul să pară modern fără să stric simplitatea jocului original.'
-          ],
-          en: [
-            'Problem: I wanted to rebuild a classic game in a clean and quick-to-use format.',
-            'Solution: I chose a simple layout and easy-to-follow interactions.',
-            'Challenge: making the project feel modern without losing the simplicity of the original game.'
-          ]
-        },
-        thumbTitle: 'TIC TAC TOE', thumbSubtitle: 'CLASSIC • GRID', thumbLang: 'EN', thumbColor: '#fb7185', thumbBg: 'linear-gradient(135deg, rgba(251,113,133,.22), rgba(168,85,247,.08))', thumbIcon: '✕', thumbType: 'grid'
-      },
-      {
-        id: 5,
-        category: 'game', tags: ['Game', 'Shooter', 'Space'],
-        url: 'https://es-d-5697283320260328-019d1ef0-2fb8-7dea-9187-a0ec413b8b23.codepen.dev/',
-        title: { ro: 'VOID HUNTER — Space Shooter', en: 'VOID HUNTER — Space Shooter' },
-        description: { ro: 'Space shooter cu energie arcade și look sci-fi.', en: 'Space shooter with arcade energy and a sci-fi look.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să creez un shooter cu energie arcade și identitate sci-fi clară.',
-            'Soluție: am combinat ritmul rapid al jocului cu o prezentare vizuală mai intensă.',
-            'Provocare: să susțin atmosfera fără să aglomerez ecranul cu prea multe elemente.'
-          ],
-          en: [
-            'Problem: I wanted to create a shooter with arcade energy and a clear sci-fi identity.',
-            'Solution: I combined fast gameplay with a stronger visual presentation.',
-            'Challenge: supporting the atmosphere without overcrowding the screen.'
-          ]
-        },
-        thumbTitle: 'VOID HUNTER', thumbSubtitle: 'SPACE SHOOTER', thumbLang: 'EN', thumbColor: '#f59e0b', thumbBg: 'linear-gradient(135deg, rgba(245,158,11,.22), rgba(249,115,22,.08))', thumbIcon: '✦', thumbType: 'motion'
-      },
-      {
-        id: 6,
-        category: 'game', tags: ['Game', 'AI', 'PvAI'],
-        url: 'https://es-d-5697283320260328-019d19ba-35cc-7dc8-93fb-0f7b3071579c.codepen.dev/',
-        title: { ro: 'PvAI - New Game+ v5', en: 'PvAI - New Game+ v5' },
-        description: { ro: 'Concept de joc PvAI cu feel de progres și iterare avansată.', en: 'PvAI game concept with a sense of progression and advanced iteration.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să testez o versiune mai matură a unui concept PvAI.',
-            'Soluție: am construit o iterație care transmite mai bine progresul și ritmul de joc.',
-            'Provocare: să păstrez proiectul coerent pe măsură ce am adăugat mai multe idei.'
-          ],
-          en: [
-            'Problem: I wanted to test a more mature version of a PvAI concept.',
-            'Solution: I built an iteration that communicates progression and pacing more clearly.',
-            'Challenge: keeping the project coherent while adding more ideas.'
-          ]
-        },
-        thumbTitle: 'PVAI', thumbSubtitle: 'NEW GAME+ V5', thumbLang: 'EN', thumbColor: '#818cf8', thumbBg: 'linear-gradient(135deg, rgba(129,140,248,.22), rgba(14,165,233,.08))', thumbIcon: '⌘', thumbType: 'workspace'
-      },
-      {
-        id: 7,
-        category: 'utility', tags: ['Photo', 'Studio', 'Premium'],
-        url: 'https://es-d-5697283320260328-019d0c67-c913-7756-bbca-4e6b932229a1.codepen.dev/',
-        title: { ro: 'PhotoAuto Studio Premium', en: 'PhotoAuto Studio Premium' },
-        description: { ro: 'Interfață premium pentru fluxuri foto și automatizare de studio.', en: 'Premium interface for photo workflows and studio automation.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut o interfață care să pară premium, dar să rămână practică pentru workflow-uri foto.',
-            'Soluție: am structurat ecranele astfel încât acțiunile principale să fie rapide și ușor de găsit.',
-            'Provocare: să combin imaginea de produs premium cu o utilizare clară și utilitară.'
-          ],
-          en: [
-            'Problem: I wanted an interface that feels premium but still practical for photo workflows.',
-            'Solution: I structured the screens so the main actions are quick and easy to find.',
-            'Challenge: combining a premium product feel with clear utility.'
-          ]
-        },
-        thumbTitle: 'PHOTOAUTO', thumbSubtitle: 'STUDIO PREMIUM', thumbLang: 'RO', thumbColor: '#22c55e', thumbBg: 'linear-gradient(135deg, rgba(34,197,94,.22), rgba(20,184,166,.08))', thumbIcon: '📸', thumbType: 'poster'
-      },
-      {
-        id: 8,
-        category: 'game', tags: ['Game', 'Arcade', 'Hockey'],
-        url: 'https://es-d-5697283320260328-019cceb2-062d-7969-8c7f-407fbcfeac92.codepen.dev/',
-        title: { ro: 'Home Air Hockey', en: 'Home Air Hockey' },
-        description: { ro: 'Joc rapid, arcade, cu energie casual și feedback instant.', en: 'Fast arcade game with casual energy and instant feedback.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să creez un joc casual care să fie imediat ușor de înțeles.',
-            'Soluție: am pus accent pe viteză, feedback instant și o interfață simplă.',
-            'Provocare: să mențin senzația de joc rapid fără să pară haotic.'
-          ],
-          en: [
-            'Problem: I wanted to create a casual game that feels instantly easy to understand.',
-            'Solution: I focused on speed, instant feedback and a simple interface.',
-            'Challenge: maintaining a fast-game feeling without making it feel chaotic.'
-          ]
-        },
-        thumbTitle: 'AIR HOCKEY', thumbSubtitle: 'HOME • ARCADE', thumbLang: 'EN', thumbColor: '#e879f9', thumbBg: 'linear-gradient(135deg, rgba(232,121,249,.22), rgba(168,85,247,.08))', thumbIcon: '◫', thumbType: 'rings'
-      },
-      {
-        id: 9,
-        category: 'game', tags: ['Game', 'Arcade', 'Action'],
-        url: 'https://es-d-5697283320260328-019ccc82-9700-75d0-8200-29b1d0b01b21.codepen.dev/',
-        title: { ro: 'Bomberman Neo', en: 'Bomberman Neo' },
-        description: { ro: 'Interpretare modernă pentru un concept arcade clasic.', en: 'Modern take on a classic arcade concept.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să reinterpretrez un concept arcade clasic într-o estetică mai actuală.',
-            'Soluție: am păstrat energia jocului, dar am actualizat prezentarea vizuală.',
-            'Provocare: să aduc ceva nou fără să pierd referința clară la jocul clasic.'
-          ],
-          en: [
-            'Problem: I wanted to reinterpret a classic arcade concept with a more current aesthetic.',
-            'Solution: I kept the game’s energy while updating the visual presentation.',
-            'Challenge: adding something fresh without losing the clear reference to the classic game.'
-          ]
-        },
-        thumbTitle: 'BOMBERMAN', thumbSubtitle: 'NEO', thumbLang: 'RO', thumbColor: '#38bdf8', thumbBg: 'linear-gradient(135deg, rgba(56,189,248,.22), rgba(37,99,235,.08))', thumbIcon: '💣', thumbType: 'showcase'
-      },
-      {
-        id: 10,
-        category: 'challenge', tags: ['Challenge', 'Logic', 'CodePen'],
-        url: 'https://codepen.io/Laura-Andreea-the-typescripter/pen/EagbjvB',
-        title: { ro: 'Opposite Directions', en: 'Opposite Directions' },
-        description: { ro: 'Challenge de logică și direcție, cu focus pe claritate și comportament.', en: 'Logic and direction challenge focused on clarity and behavior.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să explic o logică de direcție într-un mod cât mai clar.',
-            'Soluție: am simplificat prezentarea și am pus accent pe înțelegerea comportamentului.',
-            'Provocare: să fac un exercițiu abstract să pară ușor de urmărit vizual.'
-          ],
-          en: [
-            'Problem: I wanted to explain direction logic in the clearest possible way.',
-            'Solution: I simplified the presentation and focused on making the behavior easy to understand.',
-            'Challenge: turning an abstract exercise into something visually easy to follow.'
-          ]
-        },
-        thumbTitle: 'OPPOSITE', thumbSubtitle: 'DIRECTIONS', thumbLang: 'EN', thumbColor: '#60a5fa', thumbBg: 'linear-gradient(135deg, rgba(96,165,250,.22), rgba(59,130,246,.08))', thumbIcon: '↔', thumbType: 'steps'
-      },
-      {
-        id: 11,
-        category: 'challenge', tags: ['Challenge', 'Boolean', 'Logic'],
-        url: 'https://codepen.io/Laura-Andreea-the-typescripter/pen/zxKzdyg',
-        title: { ro: 'BOOLEAN ORACLE', en: 'BOOLEAN ORACLE' },
-        description: { ro: 'Challenge logic inspirat de condiții și decizii booleene.', en: 'Logic challenge inspired by conditions and boolean decisions.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să transform logica booleană într-un exercițiu mai ușor de parcurs.',
-            'Soluție: am pus accent pe structură și pe prezentarea clară a condițiilor.',
-            'Provocare: să fac un subiect tehnic să rămână accesibil și vizual interesant.'
-          ],
-          en: [
-            'Problem: I wanted to turn boolean logic into an exercise that feels easier to follow.',
-            'Solution: I focused on structure and clear presentation of the conditions.',
-            'Challenge: keeping a technical topic accessible and visually engaging.'
-          ]
-        },
-        thumbTitle: 'BOOLEAN', thumbSubtitle: 'ORACLE', thumbLang: 'EN', thumbColor: '#facc15', thumbBg: 'linear-gradient(135deg, rgba(250,204,21,.22), rgba(234,88,12,.08))', thumbIcon: '⟡', thumbType: 'glass'
-      },
-      {
-        id: 12,
-        category: 'challenge', tags: ['Challenge', 'Constraints', 'Logic'],
-        url: 'https://codepen.io/Laura-Andreea-the-typescripter/pen/bNwwQzQ',
-        title: { ro: 'Min. Preferred. Max.', en: 'Min. Preferred. Max.' },
-        description: { ro: 'Challenge bazat pe limite, preferințe și reguli de evaluare.', en: 'Challenge based on limits, preferences and evaluation rules.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să ilustrez clar relația dintre limite, preferințe și reguli.',
-            'Soluție: am organizat logica astfel încât pașii de evaluare să fie ușor de urmărit.',
-            'Provocare: să fac regulile să pară simple chiar dacă au mai multe condiții.'
-          ],
-          en: [
-            'Problem: I wanted to clearly illustrate the relationship between limits, preferences and rules.',
-            'Solution: I organized the logic so the evaluation steps are easy to follow.',
-            'Challenge: making the rules feel simple even when they include multiple conditions.'
-          ]
-        },
-        thumbTitle: 'MIN PREF MAX', thumbSubtitle: 'RULES • LOGIC', thumbLang: 'EN', thumbColor: '#c084fc', thumbBg: 'linear-gradient(135deg, rgba(192,132,252,.22), rgba(236,72,153,.08))', thumbIcon: '◆', thumbType: 'glass'
-      },
-      {
-        id: 13,
-        category: 'utility', tags: ['App', 'Finance'],
-        url: 'https://es-d-9192350520260329-019cf25e-1ee9-7655-ae8c-9d6b150b25e0.codepen.dev/',
-        title: { ro: 'BudgetFlow Pro X', en: 'BudgetFlow Pro X' },
-        description: { ro: 'Aplicație financiară modernă pentru gestionarea bugetului.', en: 'Modern financial app for managing budgets.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut o aplicație financiară care să pară modernă, nu rigidă.',
-            'Soluție: am organizat informația pe priorități și am clarificat zonele de acțiune.',
-            'Provocare: să prezint date financiare într-un mod prietenos și ușor de parcurs.'
-          ],
-          en: [
-            'Problem: I wanted a finance app that feels modern instead of rigid.',
-            'Solution: I organized the information by priority and clarified the action areas.',
-            'Challenge: presenting financial data in a way that feels friendly and easy to scan.'
-          ]
-        },
-        thumbTitle: 'BUDGETFLOW', thumbSubtitle: 'PRO X', thumbLang: 'EN', thumbColor: '#22c55e', thumbBg: 'linear-gradient(135deg, rgba(34,197,94,.22), rgba(16,185,129,.08))', thumbIcon: '$', thumbType: 'workspace'
-      },
-      {
-        id: 14,
-        category: 'game', tags: ['Game', 'Arcade', 'Breakout'],
-        url: 'https://es-d-1768016420260328-019cf0ef-e43a-76c2-8a55-17856c11fe89.codepen.dev/',
-        title: { ro: 'Breakout', en: 'Breakout' },
-        description: { ro: 'Joc arcade clasic tip Breakout, cu mecanici simple și rapide.', en: 'Classic Breakout-style arcade game with simple and fast mechanics.' },
-        featured: true,
-        learned: {
-          ro: [
-            'Problemă: am vrut să reconstruiesc un joc arcade clasic într-o formă modernă și clară.',
-            'Soluție: am păstrat mecanica simplă și am lucrat la ritm și lizibilitate vizuală.',
-            'Provocare: să mențin jocul familiar, dar suficient de proaspăt ca prezentare.'
-          ],
-          en: [
-            'Problem: I wanted to rebuild a classic arcade game in a modern and clear format.',
-            'Solution: I kept the mechanics simple while improving pacing and visual readability.',
-            'Challenge: keeping the game familiar while making the presentation feel fresh.'
-          ]
-        },
-        thumbTitle: 'BREAKOUT', thumbSubtitle: 'ARCADE GAME', thumbLang: 'EN', thumbColor: '#f97316', thumbBg: 'linear-gradient(135deg, rgba(249,115,22,.22), rgba(251,146,60,.08))', thumbIcon: '▤', thumbType: 'grid'
-      },
-      {
-        id: 15,
-        category: 'challenge', tags: ['Challenge', 'UI'],
-        url: 'https://codepen.io/Laura-Andreea-the-typescripter/pen/GgjpBJP',
-        title: { ro: 'Front-End Opposites', en: 'Front-End Opposites' },
-        description: { ro: 'Challenge de UI bazat pe contraste și opoziții vizuale.', en: 'UI challenge based on contrasts and visual opposites.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să explorez ideea de opoziție vizuală într-un exercițiu de UI.',
-            'Soluție: am construit un concept care pune contrastele în centru.',
-            'Provocare: să păstrez compoziția coerentă chiar și când lucrez cu extreme vizuale.'
-          ],
-          en: [
-            'Problem: I wanted to explore the idea of visual opposites in a UI exercise.',
-            'Solution: I built a concept that puts contrast at the center.',
-            'Challenge: keeping the composition coherent while working with visual extremes.'
-          ]
-        },
-        thumbTitle: 'OPPOSITES', thumbSubtitle: 'FRONT-END', thumbLang: 'EN', thumbColor: '#f43f5e', thumbBg: 'linear-gradient(135deg, rgba(244,63,94,.22), rgba(236,72,153,.08))', thumbIcon: '⇆', thumbType: 'steps'
-      },
-      {
-        id: 16,
-        category: 'challenge', tags: ['Challenge', 'UI'],
-        url: 'https://codepen.io/Laura-Andreea-the-typescripter/pen/yyaYEdY',
-        title: { ro: 'Front-End Opposites', en: 'Front-End Opposites' },
-        description: { ro: 'Explorare vizuală a conceptului de opoziție în UI.', en: 'Visual exploration of opposites in UI design.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să continui explorarea contrastelor într-o variantă mai vizuală.',
-            'Soluție: am schimbat accentul spre compoziție și atmosferă, nu doar spre logică.',
-            'Provocare: să diferențiez iterația fără să pierd tema principală.'
-          ],
-          en: [
-            'Problem: I wanted to continue exploring contrast in a more visual variation.',
-            'Solution: I shifted the focus toward composition and atmosphere, not just logic.',
-            'Challenge: differentiating the iteration without losing the core theme.'
-          ]
-        },
-        thumbTitle: 'OPPOSITES', thumbSubtitle: 'UI DESIGN', thumbLang: 'EN', thumbColor: '#fb7185', thumbBg: 'linear-gradient(135deg, rgba(251,113,133,.22), rgba(190,24,93,.08))', thumbIcon: '⇄', thumbType: 'steps'
-      },
-      {
-        id: 17,
-        category: 'challenge', tags: ['Challenge', 'CSS', 'Colors'],
-        url: 'https://codepen.io/Laura-Andreea-the-typescripter/pen/zxKObPV',
-        title: { ro: 'Color Lab', en: 'Color Lab' },
-        featured: true,
-        description: { ro: 'Modern CSS colors: light-dark(), culori relative, hwb() și altele.', en: 'Modern CSS colors: light-dark(), relative colors, hwb(), and more.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să fac funcțiile moderne de culoare din CSS mai ușor de înțeles.',
-            'Soluție: am transformat conceptele tehnice într-o prezentare vizuală clară și accesibilă.',
-            'Provocare: să păstrez echilibrul dintre explicație tehnică și experiență vizuală plăcută.'
-          ],
-          en: [
-            'Problem: I wanted to make modern CSS color functions easier to understand.',
-            'Solution: I turned technical concepts into a clearer and more accessible visual presentation.',
-            'Challenge: balancing technical explanation with a pleasant visual experience.'
-          ]
-        },
-        thumbTitle: 'COLOR LAB', thumbSubtitle: 'CSS COLORS', thumbLang: 'EN', thumbColor: '#facc15', thumbBg: 'linear-gradient(135deg, rgba(250,204,21,.22), rgba(234,88,12,.08))', thumbIcon: '🎨', thumbType: 'glass'
-      },
-      {
-        id: 18,
-        category: 'utility', tags: ['SaaS', 'Impact', 'Platform'],
-        url: 'https://es-d-9192350520260329-019d2e42-65ac-7734-91ba-16cfe41a0086.codepen.dev/#missions',
-        title: { ro: 'ALPIS ImpactPath', en: 'ALPIS ImpactPath' },
-        description: { ro: 'Platformă orientată pe impact, cu structură de misiuni și progres.', en: 'Impact-oriented platform with missions and progression structure.' },
-        featured: true,
-        learned: {
-          ro: [
-            'Problemă: am vrut să construiesc o platformă care comunică progres și direcție, nu doar conținut.',
-            'Soluție: am organizat experiența în jurul misiunilor și al unui parcurs clar.',
-            'Provocare: să transmit ideea de impact într-un mod vizual coerent și ușor de parcurs.'
-          ],
-          en: [
-            'Problem: I wanted to build a platform that communicates progress and direction, not just content.',
-            'Solution: I structured the experience around missions and a clear journey.',
-            'Challenge: expressing the idea of impact in a coherent and easy-to-follow visual way.'
-          ]
-        },
-        thumbTitle: 'IMPACTPATH', thumbSubtitle: 'ALPIS PLATFORM', thumbLang: 'EN', thumbColor: '#10b981', thumbBg: 'linear-gradient(135deg, rgba(16,185,129,.22), rgba(34,197,94,.08))', thumbIcon: '◎', thumbType: 'workspace'
-      },
-      {
-        id: 19,
-        category: 'utility', tags: ['Planner', 'Events', 'UI'],
-        url: 'https://es-d-9192350520260329-019d2ebf-cf4f-7615-b85e-da92ef38af41.codepen.dev/',
-        title: { ro: 'Event Planner', en: 'Event Planner' },
-        description: { ro: 'Aplicație pentru planificarea evenimentelor, cu interfață clară și structură organizată.', en: 'Event planning app with a clear interface and organized structure.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut o aplicație de planificare care să reducă senzația de aglomerare.',
-            'Soluție: am structurat pașii și informațiile într-un mod mai ordonat și ușor de parcurs.',
-            'Provocare: să fac planificarea să pară simplă chiar și când implică multe detalii.'
-          ],
-          en: [
-            'Problem: I wanted an event planning app that reduces the feeling of clutter.',
-            'Solution: I structured the steps and information in a more organized and easy-to-follow way.',
-            'Challenge: making planning feel simple even when it involves many details.'
-          ]
-        },
-        thumbTitle: 'EVENT PLANNER', thumbSubtitle: 'PLAN • ORGANIZE', thumbLang: 'EN', thumbColor: '#14b8a6', thumbBg: 'linear-gradient(135deg, rgba(20,184,166,.22), rgba(59,130,246,.08))', thumbIcon: '📅', thumbType: 'workspace'
-      },
-      {
-        id: 20,
-        category: 'game', tags: ['Game', 'Arcade', 'Flappy'],
-        url: 'https://es-d-9192350520260329-019d2f0c-26b1-74c4-a2c0-04310269a74f.codepen.dev/',
-        title: { ro: 'Flappy Ball', en: 'Flappy Ball' },
-        description: { ro: 'Joc arcade inspirat de mecanica Flappy, cu mișcare continuă și reflexe rapide.', en: 'Arcade game inspired by Flappy mechanics with continuous motion and fast reflexes.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut un joc bazat pe reflexe, simplu de înțeles și rapid de reluat.',
-            'Soluție: am mizat pe mișcare continuă și pe o buclă de joc foarte directă.',
-            'Provocare: să mențin dificultatea interesantă fără să frustrez prea repede jucătorul.'
-          ],
-          en: [
-            'Problem: I wanted a reflex-based game that feels simple to understand and quick to replay.',
-            'Solution: I focused on continuous motion and a very direct gameplay loop.',
-            'Challenge: keeping the difficulty engaging without frustrating the player too quickly.'
-          ]
-        },
-        thumbTitle: 'FLAPPY BALL', thumbSubtitle: 'ARCADE', thumbLang: 'EN', thumbColor: '#facc15', thumbBg: 'linear-gradient(135deg, rgba(250,204,21,.22), rgba(234,88,12,.08))', thumbIcon: '◉', thumbType: 'motion'
-      },
-      {
-        id: 21,
-        category: 'game', tags: ['Game', 'Physics', 'Bounce'],
-        url: 'https://es-d-9192350520260329-019d2f46-380a-7240-86d0-2a6138bfc072.codepen.dev/',
-        title: { ro: 'Bounce Ball', en: 'Bounce Ball' },
-        description: { ro: 'Joc bazat pe fizică și ricoșeu, cu interacțiuni dinamice.', en: 'Physics-based bouncing game with dynamic interactions.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să testez un gameplay bazat pe ricoșeu și reacție rapidă.',
-            'Soluție: am construit interacțiunile în jurul mișcării și al răspunsului imediat.',
-            'Provocare: să fac dinamica fizică să pară satisfăcătoare și previzibilă în același timp.'
-          ],
-          en: [
-            'Problem: I wanted to test gameplay built around bouncing and quick reaction.',
-            'Solution: I designed the interactions around motion and immediate response.',
-            'Challenge: making the physics feel satisfying while still predictable.'
-          ]
-        },
-        thumbTitle: 'BOUNCE', thumbSubtitle: 'BALL PHYSICS', thumbLang: 'EN', thumbColor: '#38bdf8', thumbBg: 'linear-gradient(135deg, rgba(56,189,248,.22), rgba(59,130,246,.08))', thumbIcon: '⬤', thumbType: 'rings'
-      },
-      {
-        id: 22,
-        category: 'game', tags: ['Game', 'Maze', 'Logic'],
-        url: 'https://es-d-9192350520260329-019d2f38-a9f8-7ecb-9ef2-986872686b7a.codepen.dev/',
-        title: { ro: 'Labirint', en: 'Maze' },
-        description: { ro: 'Joc tip labirint cu navigare și rezolvare de trasee.', en: 'Maze game focused on navigation and path solving.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut un joc simplu de explorare și orientare în spațiu.',
-            'Soluție: am construit experiența în jurul navigării și al clarității traseului.',
-            'Provocare: să păstrez interesul jucătorului într-un concept foarte minimalist.'
-          ],
-          en: [
-            'Problem: I wanted a simple game focused on exploration and spatial orientation.',
-            'Solution: I built the experience around navigation and path clarity.',
-            'Challenge: keeping the player engaged in a very minimalist concept.'
-          ]
-        },
-        thumbTitle: 'MAZE', thumbSubtitle: 'LABYRINTH', thumbLang: 'EN', thumbColor: '#a78bfa', thumbBg: 'linear-gradient(135deg, rgba(167,139,250,.22), rgba(139,92,246,.08))', thumbIcon: '⬚', thumbType: 'grid'
-      },
-      {
-        id: 23,
-        category: 'utility', tags: ['Learning', 'Excel', 'Education'],
-        url: 'https://es-d-9192350520260329-019d3034-1834-761b-8817-917926dc413b.codepen.dev/',
-        title: { ro: 'Învață Excel', en: 'Learn Excel' },
-        description: { ro: 'Interfață educațională pentru învățarea funcțiilor și conceptelor Excel.', en: 'Educational interface for learning Excel functions and concepts.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să fac învățarea Excel mai accesibilă și mai puțin intimidantă.',
-            'Soluție: am structurat conținutul într-o formă mai vizuală și mai ușor de parcurs.',
-            'Provocare: să prezint informația educațională clar, fără să pară rigidă.'
-          ],
-          en: [
-            'Problem: I wanted to make learning Excel feel more accessible and less intimidating.',
-            'Solution: I structured the content in a more visual and easy-to-follow format.',
-            'Challenge: presenting educational information clearly without making it feel rigid.'
-          ]
-        },
-        thumbTitle: 'EXCEL', thumbSubtitle: 'LEARN • PRACTICE', thumbLang: 'RO', thumbColor: '#22c55e', thumbBg: 'linear-gradient(135deg, rgba(34,197,94,.22), rgba(16,185,129,.08))', thumbIcon: '📊', thumbType: 'workspace'
-      },
-      {
-        id: 24,
-        category: 'utility', tags: ['Learning', 'Space', 'Education'],
-        url: 'https://es-d-9192350520260329-019d3097-692c-722d-b484-4bb3b55a345a.codepen.dev/',
-        title: { ro: 'Spațiu de învățare', en: 'Learning Space' },
-        description: { ro: 'Spațiu organizat pentru studiu și explorare interactivă.', en: 'Organized space for study and interactive exploration.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să construiesc un spațiu de studiu care să pară ordonat și prietenos.',
-            'Soluție: am pus accent pe structură, claritate și explorare fără fricțiune.',
-            'Provocare: să păstrez senzația de calm fără să fac interfața prea statică.'
-          ],
-          en: [
-            'Problem: I wanted to build a learning space that feels organized and friendly.',
-            'Solution: I focused on structure, clarity and low-friction exploration.',
-            'Challenge: keeping a calm feeling without making the interface too static.'
-          ]
-        },
-        thumbTitle: 'LEARNING', thumbSubtitle: 'SPACE', thumbLang: 'RO', thumbColor: '#60a5fa', thumbBg: 'linear-gradient(135deg, rgba(96,165,250,.22), rgba(59,130,246,.08))', thumbIcon: '🧠', thumbType: 'workspace'
-      },
-      {
-        id: 25,
-        category: 'utility', tags: ['Learning', 'UI', 'Education'],
-        url: 'https://es-d-9192350520260329-019d304f-7a11-7513-b501-5abb02444af7.codepen.dev/',
-        title: { ro: 'Learning UI', en: 'Learning UI' },
-        description: { ro: 'Interfață alternativă pentru explorare și organizare învățare.', en: 'Alternative interface for exploring and organizing learning content.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să testez o variantă alternativă de UI pentru conținut educațional.',
-            'Soluție: am explorat o organizare diferită a informației și a zonelor de navigare.',
-            'Provocare: să ofer noutate vizuală fără să sacrific ușurința de utilizare.'
-          ],
-          en: [
-            'Problem: I wanted to test an alternative UI approach for learning content.',
-            'Solution: I explored a different way of organizing information and navigation areas.',
-            'Challenge: offering visual novelty without sacrificing usability.'
-          ]
-        },
-        thumbTitle: 'LEARNING UI', thumbSubtitle: 'ALT VIEW', thumbLang: 'EN', thumbColor: '#3b82f6', thumbBg: 'linear-gradient(135deg, rgba(59,130,246,.22), rgba(96,165,250,.08))', thumbIcon: '📘', thumbType: 'workspace'
-      },
-      {
-        id: 26,
-        category: 'game', tags: ['Game', 'Arcade', 'Mobile'],
-        url: 'https://es-d-5927833420260331-019d35b9-3b6b-728e-99f9-1e9a2bc673fa.codepen.dev/',
-        title: { ro: 'Arcade Fusion Mobile Game', en: 'Arcade Fusion Mobile Game' },
-        description: { ro: 'Versiune mobile a conceptului Arcade Fusion, optimizată pentru joc rapid și interacțiune tactilă.', en: 'Mobile version of the Arcade Fusion concept, optimized for fast gameplay and touch interaction.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să adaptez un concept arcade pentru o experiență mobile mai naturală.',
-            'Soluție: am gândit interacțiunea în jurul ritmului rapid și al inputului tactil.',
-            'Provocare: să păstrez energia jocului și pe un ecran mai mic.'
-          ],
-          en: [
-            'Problem: I wanted to adapt an arcade concept for a more natural mobile experience.',
-            'Solution: I designed the interaction around fast pacing and touch input.',
-            'Challenge: preserving the game’s energy on a smaller screen.'
-          ]
-        },
-        thumbTitle: 'ARCADE', thumbSubtitle: 'FUSION MOBILE', thumbLang: 'EN', thumbColor: '#fb7185', thumbBg: 'linear-gradient(135deg, rgba(251,113,133,.22), rgba(244,63,94,.08))', thumbIcon: '📱', thumbType: 'motion'
-      },
-      {
-        id: 27,
-        category: 'game', tags: ['Game', 'Arcade', 'Fusion'],
-        url: 'https://es-d-5927833420260331-019d35b6-42da-71e8-a23f-17e06e63e336.codepen.dev/',
-        title: { ro: 'Arcade Fusion', en: 'Arcade Fusion' },
-        description: { ro: 'Joc arcade cu energie vizuală modernă și ritm dinamic.', en: 'Arcade game with modern visual energy and dynamic pacing.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să creez un joc arcade cu o identitate vizuală mai actuală.',
-            'Soluție: am combinat ritmul alert cu o prezentare mai stilizată.',
-            'Provocare: să nu las stilul vizual să acopere claritatea gameplay-ului.'
-          ],
-          en: [
-            'Problem: I wanted to create an arcade game with a more current visual identity.',
-            'Solution: I combined energetic pacing with a more stylized presentation.',
-            'Challenge: not letting the visual style overpower gameplay clarity.'
-          ]
-        },
-        thumbTitle: 'ARCADE', thumbSubtitle: 'FUSION', thumbLang: 'EN', thumbColor: '#60a5fa', thumbBg: 'linear-gradient(135deg, rgba(96,165,250,.22), rgba(59,130,246,.08))', thumbIcon: '⚡', thumbType: 'game'
-      },
-      {
-        id: 28,
-        category: 'game', tags: ['Game', 'Arcade', 'Fusion 3'],
-        url: 'https://es-d-5927833420260331-019d35c8-6e69-7bba-9adc-38275de6f7ca.codepen.dev/',
-        title: { ro: 'Arcade Fusion 3', en: 'Arcade Fusion 3' },
-        description: { ro: 'A treia iterație Arcade Fusion, cu stil intens și prezentare extinsă.', en: 'Third Arcade Fusion iteration with a bolder style and expanded presentation.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să duc seria Arcade Fusion într-o zonă mai matură vizual.',
-            'Soluție: am extins prezentarea și am accentuat stilul general al proiectului.',
-            'Provocare: să fac iterația să pară un pas înainte real, nu doar o variație cosmetică.'
-          ],
-          en: [
-            'Problem: I wanted to push the Arcade Fusion series into a more visually mature direction.',
-            'Solution: I expanded the presentation and strengthened the project’s overall style.',
-            'Challenge: making the iteration feel like a real step forward, not just a cosmetic variation.'
-          ]
-        },
-        thumbTitle: 'FUSION 3', thumbSubtitle: 'ARCADE EVOLVE', thumbLang: 'EN', thumbColor: '#a78bfa', thumbBg: 'linear-gradient(135deg, rgba(167,139,250,.22), rgba(139,92,246,.08))', thumbIcon: '🎮', thumbType: 'workspace'
-      },
-      {
-        id: 29,
-        category: 'utility', tags: ['AI', 'Coaching', 'App'],
-        url: 'https://es-d-5927833420260331-019d34e3-9f79-783e-a678-fdb79af31291.codepen.dev/',
-        title: { ro: 'CoachingAI', en: 'CoachingAI' },
-        description: { ro: 'Aplicație de coaching asistată de AI, orientată spre ghidare, progres și interacțiune modernă.', en: 'AI-assisted coaching app focused on guidance, progress and modern interaction.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să construiesc o aplicație care inspiră ghidare și progres, nu doar automatizare.',
-            'Soluție: am pus accent pe claritatea parcursului și pe o interacțiune prietenoasă.',
-            'Provocare: să echilibrez ideea de AI cu o experiență umană și accesibilă.'
-          ],
-          en: [
-            'Problem: I wanted to build an app that communicates guidance and progress, not just automation.',
-            'Solution: I focused on journey clarity and a friendly interaction model.',
-            'Challenge: balancing the AI concept with a more human and accessible experience.'
-          ]
-        },
-        thumbTitle: 'COACHING', thumbSubtitle: 'AI APP', thumbLang: 'EN', thumbColor: '#14b8a6', thumbBg: 'linear-gradient(135deg, rgba(20,184,166,.22), rgba(59,130,246,.08))', thumbIcon: '🧠', thumbType: 'workspace'
-      },
-      {
-        id: 30,
-        category: 'utility', tags: ['Content', 'Studio', 'Brand'],
-        url: 'https://es-d-4875001020260401-019d38a5-0907-75f2-b1ab-22d6a511a9b2.codepen.dev/',
-        title: { ro: 'ALPis CONTENT STUDIO', en: 'ALPis CONTENT STUDIO' },
-        description: { ro: 'Studio de conținut ALPis, cu prezentare modernă și structură orientată spre branding și publishing.', en: 'ALPis content studio with a modern presentation and a structure focused on branding and publishing.' },
-        learned: {
-          ro: [
-            'Problemă: am vrut să construiesc o identitate clară pentru un studio digital orientat pe conținut.',
-            'Soluție: am organizat conținutul astfel încât brandul și direcția editorială să fie imediat recognoscibile.',
-            'Provocare: să echilibrez estetica de studio cu o interfață clară și ușor de parcurs.'
-          ],
-          en: [
-            'Problem: I wanted to build a clear identity for a digital content-focused studio.',
-            'Solution: I structured the content so the brand and editorial direction feel instantly recognizable.',
-            'Challenge: balancing a studio-like aesthetic with a clear and easy-to-follow interface.'
-          ]
-        },
-        thumbTitle: 'ALPIS', thumbSubtitle: 'CONTENT STUDIO', thumbLang: 'EN', thumbColor: '#f472b6', thumbBg: 'linear-gradient(135deg, rgba(244,114,182,.22), rgba(139,92,246,.08))', thumbIcon: '✦', thumbType: 'poster'
-      }
-    ];
-
-    const projectsGrid = document.getElementById('projectsGrid');
-    const featuredGrid = document.getElementById('featuredGrid');
-    const challengesGrid = document.getElementById('challengesGrid');
-    const mainProjectsSection = document.getElementById('mainProjectsSection');
-    const challengesSection = document.getElementById('challengesSection');
-    const searchInput = document.getElementById('searchInput');
-    const filterChips = document.getElementById('filterChips');
-    const resultsCount = document.getElementById('resultsCount');
-    const emptyState = document.getElementById('emptyState');
-    const projectFrame = document.getElementById('projectFrame');
-    const previewTitle = document.getElementById('previewTitle');
-    const previewTag = document.getElementById('previewTag');
-    const previewUrl = document.getElementById('previewUrl');
-    const previewOpen = document.getElementById('previewOpen');
-    const projectCount = document.getElementById('projectCount');
-    const currentPreviewIndex = document.getElementById('currentPreviewIndex');
-    const themeToggle = document.getElementById('themeToggle');
-    const langToggle = document.getElementById('langToggle');
-
-    let activeFilter = 'all';
-    let activePreview = projects[0];
-    let currentLang = 'ro';
-
-    projectCount.textContent = projects.length;
-
-    function t(key) {
-      return translations[currentLang][key] || key;
-    }
-
-    function setPreview(project) {
-      activePreview = project;
-      projectFrame.src = project.url;
-      previewTitle.textContent = project.title[currentLang];
-      previewTag.textContent = project.category;
-      previewUrl.textContent = project.url;
-      previewOpen.href = project.url;
-      previewOpen.textContent = t('preview_open');
-      currentPreviewIndex.textContent = String(project.id).padStart(2, '0');
-    }
-
-    function getFilteredProjects() {
-      const query = searchInput.value.trim().toLowerCase();
-      return projects.filter(project => {
-        const matchesFilter = activeFilter === 'all' || project.category === activeFilter || project.tags.some(tag => tag.toLowerCase() === activeFilter);
-        const haystack = [project.title.ro, project.title.en, project.description.ro, project.description.en, project.category, project.thumbTitle, project.thumbSubtitle, ...project.tags].join(' ').toLowerCase();
-        return matchesFilter && haystack.includes(query);
-      });
-    }
-
-    function createThumbnail(project) {
-      const variantMap = {
-        game: `
-          <div class="thumb-widget" style="margin-top:16px; width:78%;">
-            <div class="thumb-icon">${project.thumbIcon}</div>
-            <div class="thumb-lines"><div class="thumb-line mid"></div><div class="thumb-line small"></div><div class="thumb-line full"></div></div>
-          </div>
-          <div class="thumb-button"></div>
-        `,
-        grid: `
-          <div style="margin-top:18px; width:84%; display:grid; grid-template-columns:repeat(3,1fr); gap:8px;">${Array.from({ length: 6 }).map((_, i) => `<div style="height:${i < 3 ? 28 : 34}px; border-radius:10px; background:rgba(255,255,255,${i === 1 ? .16 : .09}); border:1px solid rgba(255,255,255,.06);"></div>`).join('')}</div>
-        `,
-        motion: `
-          <div style="margin-top:16px; width:84%; position:relative; height:56px;"><div style="position:absolute; left:0; top:8px; width:40px; height:40px; border-radius:50%; background:${project.thumbColor};"></div><div style="position:absolute; left:38px; top:14px; width:56px; height:28px; border-radius:999px; background:rgba(255,255,255,.1);"></div><div style="position:absolute; right:0; top:10px; width:72px; height:36px; border-radius:14px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06);"></div></div><div class="thumb-button" style="width:62%;"></div>
-        `,
-        poster: `
-          <div style="margin-top:16px; width:84%; height:68px; border-radius:16px; background:linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.04)); border:1px solid rgba(255,255,255,.08);"></div><div style="margin-top:10px; width:54%; height:12px; border-radius:999px; background:${project.thumbColor};"></div><div style="margin-top:10px; width:74%; height:8px; border-radius:999px; background:rgba(255,255,255,.14);"></div>
-        `,
-        workspace: `
-          <div style="margin-top:14px; width:86%; display:grid; grid-template-columns:52px 1fr; gap:10px;"><div style="height:72px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.08);"></div><div style="display:grid; gap:8px;"><div style="height:18px; border-radius:10px; background:rgba(255,255,255,.12);"></div><div style="height:18px; border-radius:10px; background:rgba(255,255,255,.08);"></div><div style="height:20px; border-radius:10px; background:${project.thumbColor};"></div></div></div>
-        `,
-        rings: `
-          <div style="margin-top:18px; width:86%; display:flex; justify-content:center; align-items:center; gap:16px;"><div style="width:52px; height:52px; border-radius:50%; border:6px solid rgba(255,255,255,.12); border-top-color:${project.thumbColor};"></div><div style="width:28px; height:28px; border-radius:50%; background:${project.thumbColor}; box-shadow:0 0 24px ${project.thumbColor};"></div></div>
-        `,
-        showcase: `
-          <div style="margin-top:18px; width:84%; display:grid; grid-template-columns:repeat(3,1fr); gap:8px;"><div style="height:52px; border-radius:12px; background:${project.thumbColor};"></div><div style="height:52px; border-radius:12px; background:rgba(255,255,255,.1);"></div><div style="height:52px; border-radius:12px; background:rgba(255,255,255,.08);"></div></div><div class="thumb-button" style="width:58%;"></div>
-        `,
-        steps: `
-          <div style="margin-top:18px; width:82%; display:grid; gap:10px;">${[1,2,3].map((_, i) => `<div style="height:18px; border-radius:999px; background:${i === 1 ? project.thumbColor : 'rgba(255,255,255,.1)'}; width:${78 - i * 12}%;"></div>`).join('')}</div>
-        `,
-        glass: `
-          <div style="margin-top:18px; width:82%; height:72px; border-radius:18px; background:linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.04)); border:1px solid rgba(255,255,255,.12);"></div><div style="margin-top:10px; width:60%; height:10px; border-radius:999px; background:${project.thumbColor};"></div>
-        `
+        en: {
+          brand: 'CodePen Portfolio',
+          nav_about: 'About',
+          nav_preview: 'Preview',
+          nav_projects: 'Projects',
+          nav_contact: 'Contact',
+          hero_eyebrow: 'Front-end Developer • CodePen Projects',
+          hero_title: 'Interactive portfolio with live preview',
+          hero_text: 'A modern showcase page for CodePen projects, with live preview inside the page, instant search, filters, dark/light mode and fluid transitions.',
+          hero_cta_1: 'View projects',
+          hero_cta_2: 'About me',
+          stat_projects: 'Live projects',
+          stat_projects_text: 'Experiments and demos published on CodePen',
+          stat_preview: 'Active preview',
+          stat_preview_text: 'You can switch the shown project directly from the cards',
+          stat_experience: 'Experience',
+          stat_experience_text: 'Responsive layouts, microinteractions, visual explorations',
+          stat_focus: 'Focus',
+          stat_focus_text: 'Interactive interfaces and front-end prototypes',
+          about_eyebrow: 'About me',
+          about_title: 'I build clean, interactive and modern front-end experiences',
+          about_text_1: 'I use CodePen for prototypes, visual experiments, mini games and useful interfaces. I like combining visual clarity with fast interaction and a modern style.',
+          about_text_2: 'This portfolio is designed as a central hub: you can quickly explore the projects, search them, filter them and preview them directly inside the page without leaving the site.',
+          preview_eyebrow: 'Live preview',
+          preview_open: 'Open project',
+          projects_eyebrow: 'Projects',
+          projects_title: 'Explore the project collection',
+          projects_results: 'results shown',
+          filter_all: 'All',
+          empty_state: 'No projects found for the current search or filter.',
+          contact_eyebrow: 'Contact',
+          contact_title: 'Leave me a suggestion',
+          contact_text: 'Leave me a suggestion about what you’d like me to add next to the portfolio',
+          contact_back: 'Back to top',
+          contact_all: 'All projects',
+          featured_eyebrow: 'Featured',
+          featured_title: 'Featured projects',
+          main_projects_eyebrow: 'Main projects',
+          main_projects_title: 'Games, utilities and interfaces',
+          challenges_eyebrow: 'Challenges',
+          challenges_title: 'Logic challenges and coding exercises',
+          footer_text: 'Built to showcase your CodePen projects • Responsive • Dark/Light • Live Preview',
+          search_placeholder: 'Search by name, tag or description...',
+          preview_live: 'Live preview',
+          open_new_tab: 'Open in new tab',
+          theme_dark: '🌙 Dark',
+          theme_light: '☀️ Light',
+          learn_title: 'Short case study',
+          learn_fallback: 'Details coming soon.'
+        }
       };
 
-      return `
-        <div class="project-thumb" style="--thumb-bg:${project.thumbBg}; --thumb-title:${project.thumbColor}">
-          <div class="thumb-browser"><span></span><span></span><span></span></div>
-          <div class="thumb-screen">
-            <div class="thumb-lang">${project.thumbLang}</div>
-            <div class="thumb-title">${project.thumbTitle}</div>
-            <div class="thumb-subtitle">${project.thumbSubtitle}</div>
-            ${variantMap[project.thumbType] || variantMap.workspace}
-          </div>
-        </div>
-      `;
-    }
+      const projects = [
+        {
+          id: 1,
+          category: 'game',
+          tags: ['Game', 'AI', 'Basketball'],
+          url: 'https://es-d-5697283320260328-019d2b27-6fb7-7f3c-ae84-cf130aae5231.codepen.dev/',
+          title: { ro: 'BASKET VS AI', en: 'BASKET VS AI' },
+          description: { ro: 'Joc de baschet contra AI, cu atmosferă arcade și progres vizual.', en: 'Basketball game against AI with an arcade feel and visual progression.' },
+          featured: true,
+          thumbTitle: 'BASKET',
+          thumbSubtitle: 'VS AI',
+          thumbLang: 'RO',
+          thumbColor: '#ff7a30',
+          thumbBg: 'linear-gradient(135deg, rgba(255,122,48,.28), rgba(255,160,64,.10))'
+        },
+        {
+          id: 2,
+          category: 'game',
+          tags: ['Game', 'AI', 'Pro'],
+          url: 'https://es-d-5697283320260328-019d267b-0535-7927-99da-f35c852ebaf1.codepen.dev/',
+          title: { ro: 'BASKET VS AI PRO', en: 'BASKET VS AI PRO' },
+          description: { ro: 'Versiune extinsă a jocului, cu ritm mai rapid și prezentare premium.', en: 'Expanded version with faster pace and a premium feel.' },
+          thumbTitle: 'BASKET PRO',
+          thumbSubtitle: 'VS AI',
+          thumbLang: 'EN',
+          thumbColor: '#60a5fa',
+          thumbBg: 'linear-gradient(135deg, rgba(96,165,250,.26), rgba(99,102,241,.10))'
+        },
+        {
+          id: 3,
+          category: 'utility',
+          tags: ['SaaS', 'Portal', 'Editable'],
+          url: 'https://es-d-5697283320260328-019d248d-5848-7531-8d9d-23699aa47d61.codepen.dev/',
+          title: { ro: 'ClientFlow', en: 'ClientFlow' },
+          description: { ro: 'Mini SaaS • portal guest editabil, fără cont, dar gata de export.', en: 'Mini SaaS editable portal ready for export.' },
+          thumbTitle: 'CLIENTFLOW',
+          thumbSubtitle: 'PORTAL',
+          thumbLang: 'RO',
+          thumbColor: '#34d399',
+          thumbBg: 'linear-gradient(135deg, rgba(52,211,153,.28), rgba(59,130,246,.10))'
+        },
+        {
+          id: 4,
+          category: 'game',
+          tags: ['Game', 'Board', 'Classic'],
+          url: 'https://es-d-5697283320260328-019d202f-93fa-7c03-8496-9a9f55afbf17.codepen.dev/',
+          title: { ro: 'Tic Tac Toe', en: 'Tic Tac Toe' },
+          description: { ro: 'Varianta ta pentru jocul clasic, într-o interfață simplă și clară.', en: 'Classic game rebuilt in a simple and clear UI.' },
+          thumbTitle: 'TIC TAC TOE',
+          thumbSubtitle: 'CLASSIC',
+          thumbLang: 'EN',
+          thumbColor: '#fb7185',
+          thumbBg: 'linear-gradient(135deg, rgba(251,113,133,.28), rgba(168,85,247,.10))'
+        },
+        {
+          id: 5,
+          category: 'game',
+          tags: ['Game', 'Shooter', 'Space'],
+          url: 'https://es-d-5697283320260328-019d1ef0-2fb8-7dea-9187-a0ec413b8b23.codepen.dev/',
+          title: { ro: 'VOID HUNTER — Space Shooter', en: 'VOID HUNTER — Space Shooter' },
+          description: { ro: 'Space shooter cu energie arcade și look sci-fi.', en: 'Arcade sci-fi shooter with a bold feel.' },
+          thumbTitle: 'VOID HUNTER',
+          thumbSubtitle: 'SPACE SHOOTER',
+          thumbLang: 'EN',
+          thumbColor: '#f59e0b',
+          thumbBg: 'linear-gradient(135deg, rgba(245,158,11,.28), rgba(249,115,22,.10))'
+        },
+        {
+          id: 6,
+          category: 'game',
+          tags: ['Game', 'AI', 'PvAI'],
+          url: 'https://es-d-5697283320260328-019d19ba-35cc-7dc8-93fb-0f7b3071579c.codepen.dev/',
+          title: { ro: 'PvAI - New Game+ v5', en: 'PvAI - New Game+ v5' },
+          description: { ro: 'Concept de joc PvAI cu feel de progres și iterare avansată.', en: 'PvAI concept focused on progression and iteration.' },
+          thumbTitle: 'PVAI',
+          thumbSubtitle: 'NEW GAME+',
+          thumbLang: 'EN',
+          thumbColor: '#818cf8',
+          thumbBg: 'linear-gradient(135deg, rgba(129,140,248,.28), rgba(14,165,233,.10))'
+        },
+        {
+          id: 7,
+          category: 'utility',
+          tags: ['Photo', 'Studio', 'Premium'],
+          url: 'https://es-d-5697283320260328-019d0c67-c913-7756-bbca-4e6b932229a1.codepen.dev/',
+          title: { ro: 'PhotoAuto Studio Premium', en: 'PhotoAuto Studio Premium' },
+          description: { ro: 'Interfață premium pentru fluxuri foto și automatizare de studio.', en: 'Premium interface for studio photo workflows.' },
+          thumbTitle: 'PHOTOAUTO',
+          thumbSubtitle: 'STUDIO',
+          thumbLang: 'RO',
+          thumbColor: '#22c55e',
+          thumbBg: 'linear-gradient(135deg, rgba(34,197,94,.28), rgba(20,184,166,.10))'
+        },
+        {
+          id: 8,
+          category: 'game',
+          tags: ['Game', 'Arcade', 'Hockey'],
+          url: 'https://es-d-5697283320260328-019cceb2-062d-7969-8c7f-407fbcfeac92.codepen.dev/',
+          title: { ro: 'Home Air Hockey', en: 'Home Air Hockey' },
+          description: { ro: 'Joc rapid, arcade, cu energie casual și feedback instant.', en: 'Fast arcade game with instant feedback.' },
+          thumbTitle: 'AIR HOCKEY',
+          thumbSubtitle: 'HOME',
+          thumbLang: 'EN',
+          thumbColor: '#e879f9',
+          thumbBg: 'linear-gradient(135deg, rgba(232,121,249,.28), rgba(168,85,247,.10))'
+        },
+        {
+          id: 9,
+          category: 'game',
+          tags: ['Game', 'Arcade', 'Action'],
+          url: 'https://es-d-5697283320260328-019ccc82-9700-75d0-8200-29b1d0b01b21.codepen.dev/',
+          title: { ro: 'Bomberman Neo', en: 'Bomberman Neo' },
+          description: { ro: 'Interpretare modernă pentru un concept arcade clasic.', en: 'Modern take on a classic arcade concept.' },
+          thumbTitle: 'BOMBERMAN',
+          thumbSubtitle: 'NEO',
+          thumbLang: 'RO',
+          thumbColor: '#38bdf8',
+          thumbBg: 'linear-gradient(135deg, rgba(56,189,248,.28), rgba(37,99,235,.10))'
+        },
+        {
+          id: 10,
+          category: 'challenge',
+          tags: ['Challenge', 'Logic', 'CodePen'],
+          url: 'https://codepen.io/Laura-Andreea-the-typescripter/pen/EagbjvB',
+          title: { ro: 'Opposite Directions', en: 'Opposite Directions' },
+          description: { ro: 'Challenge de logică și direcție, cu focus pe claritate și comportament.', en: 'Logic challenge focused on directions and behavior.' },
+          thumbTitle: 'OPPOSITE',
+          thumbSubtitle: 'DIRECTIONS',
+          thumbLang: 'EN',
+          thumbColor: '#60a5fa',
+          thumbBg: 'linear-gradient(135deg, rgba(96,165,250,.28), rgba(59,130,246,.10))'
+        },
+        {
+          id: 11,
+          category: 'challenge',
+          tags: ['Challenge', 'Boolean', 'Logic'],
+          url: 'https://codepen.io/Laura-Andreea-the-typescripter/pen/zxKzdyg',
+          title: { ro: 'BOOLEAN ORACLE', en: 'BOOLEAN ORACLE' },
+          description: { ro: 'Challenge logic inspirat de condiții și decizii booleene.', en: 'Boolean logic challenge about conditions and decisions.' },
+          thumbTitle: 'BOOLEAN',
+          thumbSubtitle: 'ORACLE',
+          thumbLang: 'EN',
+          thumbColor: '#facc15',
+          thumbBg: 'linear-gradient(135deg, rgba(250,204,21,.28), rgba(234,88,12,.10))'
+        },
+        {
+          id: 12,
+          category: 'challenge',
+          tags: ['Challenge', 'Constraints', 'Logic'],
+          url: 'https://codepen.io/Laura-Andreea-the-typescripter/pen/bNwwQzQ',
+          title: { ro: 'Min. Preferred. Max.', en: 'Min. Preferred. Max.' },
+          description: { ro: 'Challenge bazat pe limite, preferințe și reguli de evaluare.', en: 'Challenge about constraints and evaluation rules.' },
+          thumbTitle: 'MIN PREF MAX',
+          thumbSubtitle: 'RULES',
+          thumbLang: 'EN',
+          thumbColor: '#c084fc',
+          thumbBg: 'linear-gradient(135deg, rgba(192,132,252,.28), rgba(236,72,153,.10))'
+        },
+        {
+          id: 13,
+          category: 'utility',
+          tags: ['App', 'Finance'],
+          url: 'https://es-d-9192350520260329-019cf25e-1ee9-7655-ae8c-9d6b150b25e0.codepen.dev/',
+          title: { ro: 'BudgetFlow Pro X', en: 'BudgetFlow Pro X' },
+          description: { ro: 'Aplicație financiară modernă pentru gestionarea bugetului.', en: 'Modern financial app for managing budgets.' },
+          thumbTitle: 'BUDGETFLOW',
+          thumbSubtitle: 'PRO X',
+          thumbLang: 'EN',
+          thumbColor: '#22c55e',
+          thumbBg: 'linear-gradient(135deg, rgba(34,197,94,.28), rgba(16,185,129,.10))'
+        },
+        {
+          id: 14,
+          category: 'game',
+          tags: ['Game', 'Arcade', 'Breakout'],
+          url: 'https://es-d-1768016420260328-019cf0ef-e43a-76c2-8a55-17856c11fe89.codepen.dev/',
+          title: { ro: 'Breakout', en: 'Breakout' },
+          description: { ro: 'Joc arcade clasic tip Breakout, cu mecanici simple și rapide.', en: 'Classic Breakout-style arcade game.' },
+          featured: true,
+          thumbTitle: 'BREAKOUT',
+          thumbSubtitle: 'ARCADE',
+          thumbLang: 'EN',
+          thumbColor: '#f97316',
+          thumbBg: 'linear-gradient(135deg, rgba(249,115,22,.28), rgba(251,146,60,.10))'
+        },
+        {
+          id: 15,
+          category: 'challenge',
+          tags: ['Challenge', 'UI'],
+          url: 'https://codepen.io/Laura-Andreea-the-typescripter/pen/GgjpBJP',
+          title: { ro: 'Front-End Opposites', en: 'Front-End Opposites' },
+          description: { ro: 'Challenge de UI bazat pe contraste și opoziții vizuale.', en: 'UI challenge about contrast and visual opposites.' },
+          thumbTitle: 'OPPOSITES',
+          thumbSubtitle: 'FRONT-END',
+          thumbLang: 'EN',
+          thumbColor: '#f43f5e',
+          thumbBg: 'linear-gradient(135deg, rgba(244,63,94,.28), rgba(236,72,153,.10))'
+        },
+        {
+          id: 16,
+          category: 'challenge',
+          tags: ['Challenge', 'UI'],
+          url: 'https://codepen.io/Laura-Andreea-the-typescripter/pen/yyaYEdY',
+          title: { ro: 'Front-End Opposites', en: 'Front-End Opposites' },
+          description: { ro: 'Explorare vizuală a conceptului de opoziție în UI.', en: 'Visual exploration of opposites in UI design.' },
+          thumbTitle: 'OPPOSITES',
+          thumbSubtitle: 'UI DESIGN',
+          thumbLang: 'EN',
+          thumbColor: '#fb7185',
+          thumbBg: 'linear-gradient(135deg, rgba(251,113,133,.28), rgba(190,24,93,.10))'
+        },
+        {
+          id: 17,
+          category: 'challenge',
+          tags: ['Challenge', 'CSS', 'Colors'],
+          url: 'https://codepen.io/Laura-Andreea-the-typescripter/pen/zxKObPV',
+          title: { ro: 'Color Lab', en: 'Color Lab' },
+          description: { ro: 'Modern CSS colors: light-dark(), culori relative, hwb() și altele.', en: 'Modern CSS colors and visual exploration.' },
+          featured: true,
+          thumbTitle: 'COLOR LAB',
+          thumbSubtitle: 'CSS COLORS',
+          thumbLang: 'EN',
+          thumbColor: '#facc15',
+          thumbBg: 'linear-gradient(135deg, rgba(250,204,21,.28), rgba(234,88,12,.10))'
+        },
+        {
+          id: 18,
+          category: 'utility',
+          tags: ['SaaS', 'Impact', 'Platform'],
+          url: 'https://es-d-9192350520260329-019d2e42-65ac-7734-91ba-16cfe41a0086.codepen.dev/#missions',
+          title: { ro: 'ALPIS ImpactPath', en: 'ALPIS ImpactPath' },
+          description: { ro: 'Platformă orientată pe impact, cu structură de misiuni și progres.', en: 'Impact-oriented platform built around missions and progress.' },
+          featured: true,
+          thumbTitle: 'IMPACTPATH',
+          thumbSubtitle: 'ALPIS',
+          thumbLang: 'EN',
+          thumbColor: '#10b981',
+          thumbBg: 'linear-gradient(135deg, rgba(16,185,129,.28), rgba(34,197,94,.10))'
+        },
+        {
+          id: 19,
+          category: 'utility',
+          tags: ['Planner', 'Events', 'UI'],
+          url: 'https://es-d-9192350520260329-019d2ebf-cf4f-7615-b85e-da92ef38af41.codepen.dev/',
+          title: { ro: 'Event Planner', en: 'Event Planner' },
+          description: { ro: 'Aplicație pentru planificarea evenimentelor, cu interfață clară și structură organizată.', en: 'Event planning app with a clear and organized interface.' },
+          thumbTitle: 'EVENT',
+          thumbSubtitle: 'PLANNER',
+          thumbLang: 'EN',
+          thumbColor: '#14b8a6',
+          thumbBg: 'linear-gradient(135deg, rgba(20,184,166,.28), rgba(59,130,246,.10))'
+        },
+        {
+          id: 20,
+          category: 'game',
+          tags: ['Game', 'Arcade', 'Flappy'],
+          url: 'https://es-d-9192350520260329-019d2f0c-26b1-74c4-a2c0-04310269a74f.codepen.dev/',
+          title: { ro: 'Flappy Ball', en: 'Flappy Ball' },
+          description: { ro: 'Joc arcade inspirat de mecanica Flappy, cu mișcare continuă și reflexe rapide.', en: 'Arcade game inspired by Flappy mechanics.' },
+          thumbTitle: 'FLAPPY BALL',
+          thumbSubtitle: 'ARCADE',
+          thumbLang: 'EN',
+          thumbColor: '#facc15',
+          thumbBg: 'linear-gradient(135deg, rgba(250,204,21,.28), rgba(234,88,12,.10))'
+        },
+        {
+          id: 21,
+          category: 'game',
+          tags: ['Game', 'Physics', 'Bounce'],
+          url: 'https://es-d-9192350520260329-019d2f46-380a-7240-86d0-2a6138bfc072.codepen.dev/',
+          title: { ro: 'Bounce Ball', en: 'Bounce Ball' },
+          description: { ro: 'Joc bazat pe fizică și ricoșeu, cu interacțiuni dinamice.', en: 'Physics-based bouncing game with dynamic interaction.' },
+          thumbTitle: 'BOUNCE BALL',
+          thumbSubtitle: 'PHYSICS',
+          thumbLang: 'EN',
+          thumbColor: '#38bdf8',
+          thumbBg: 'linear-gradient(135deg, rgba(56,189,248,.28), rgba(59,130,246,.10))'
+        },
+        {
+          id: 22,
+          category: 'game',
+          tags: ['Game', 'Maze', 'Logic'],
+          url: 'https://es-d-9192350520260329-019d2f38-a9f8-7ecb-9ef2-986872686b7a.codepen.dev/',
+          title: { ro: 'Labirint', en: 'Maze' },
+          description: { ro: 'Joc tip labirint cu navigare și rezolvare de trasee.', en: 'Maze game focused on navigation and path solving.' },
+          thumbTitle: 'MAZE',
+          thumbSubtitle: 'LABYRINTH',
+          thumbLang: 'EN',
+          thumbColor: '#a78bfa',
+          thumbBg: 'linear-gradient(135deg, rgba(167,139,250,.28), rgba(139,92,246,.10))'
+        },
+        {
+          id: 23,
+          category: 'utility',
+          tags: ['Learning', 'Excel', 'Education'],
+          url: 'https://es-d-9192350520260329-019d3034-1834-761b-8817-917926dc413b.codepen.dev/',
+          title: { ro: 'Învață Excel', en: 'Learn Excel' },
+          description: { ro: 'Interfață educațională pentru învățarea funcțiilor și conceptelor Excel.', en: 'Educational interface for learning Excel concepts.' },
+          thumbTitle: 'EXCEL',
+          thumbSubtitle: 'LEARN',
+          thumbLang: 'RO',
+          thumbColor: '#22c55e',
+          thumbBg: 'linear-gradient(135deg, rgba(34,197,94,.28), rgba(16,185,129,.10))'
+        },
+        {
+          id: 24,
+          category: 'utility',
+          tags: ['Learning', 'Space', 'Education'],
+          url: 'https://es-d-9192350520260329-019d3097-692c-722d-b484-4bb3b55a345a.codepen.dev/',
+          title: { ro: 'Spațiu de învățare', en: 'Learning Space' },
+          description: { ro: 'Spațiu organizat pentru studiu și explorare interactivă.', en: 'Organized space for study and interactive exploration.' },
+          thumbTitle: 'LEARNING',
+          thumbSubtitle: 'SPACE',
+          thumbLang: 'RO',
+          thumbColor: '#60a5fa',
+          thumbBg: 'linear-gradient(135deg, rgba(96,165,250,.28), rgba(59,130,246,.10))'
+        },
+        {
+          id: 25,
+          category: 'utility',
+          tags: ['Learning', 'UI', 'Education'],
+          url: 'https://es-d-9192350520260329-019d304f-7a11-7513-b501-5abb02444af7.codepen.dev/',
+          title: { ro: 'Learning UI', en: 'Learning UI' },
+          description: { ro: 'Interfață alternativă pentru explorare și organizare învățare.', en: 'Alternative interface for learning content exploration.' },
+          thumbTitle: 'LEARNING UI',
+          thumbSubtitle: 'ALT VIEW',
+          thumbLang: 'EN',
+          thumbColor: '#3b82f6',
+          thumbBg: 'linear-gradient(135deg, rgba(59,130,246,.28), rgba(96,165,250,.10))'
+        },
+        {
+          id: 26,
+          category: 'game',
+          tags: ['Game', 'Arcade', 'Mobile'],
+          url: 'https://es-d-5927833420260331-019d35b9-3b6b-728e-99f9-1e9a2bc673fa.codepen.dev/',
+          title: { ro: 'Arcade Fusion Mobile Game', en: 'Arcade Fusion Mobile Game' },
+          description: { ro: 'Versiune mobile a conceptului Arcade Fusion, optimizată pentru joc rapid.', en: 'Mobile version of Arcade Fusion optimized for quick gameplay.' },
+          thumbTitle: 'ARCADE',
+          thumbSubtitle: 'MOBILE',
+          thumbLang: 'EN',
+          thumbColor: '#fb7185',
+          thumbBg: 'linear-gradient(135deg, rgba(251,113,133,.28), rgba(244,63,94,.10))'
+        },
+        {
+          id: 27,
+          category: 'game',
+          tags: ['Game', 'Arcade', 'Fusion'],
+          url: 'https://es-d-5927833420260331-019d35b6-42da-71e8-a23f-17e06e63e336.codepen.dev/',
+          title: { ro: 'Arcade Fusion', en: 'Arcade Fusion' },
+          description: { ro: 'Joc arcade cu energie vizuală modernă și ritm dinamic.', en: 'Arcade game with dynamic pacing and modern style.' },
+          thumbTitle: 'ARCADE',
+          thumbSubtitle: 'FUSION',
+          thumbLang: 'EN',
+          thumbColor: '#60a5fa',
+          thumbBg: 'linear-gradient(135deg, rgba(96,165,250,.28), rgba(59,130,246,.10))'
+        },
+        {
+          id: 28,
+          category: 'game',
+          tags: ['Game', 'Arcade', 'Fusion 3'],
+          url: 'https://es-d-5927833420260331-019d35c8-6e69-7bba-9adc-38275de6f7ca.codepen.dev/',
+          title: { ro: 'Arcade Fusion 3', en: 'Arcade Fusion 3' },
+          description: { ro: 'A treia iterație Arcade Fusion, cu stil intens și prezentare extinsă.', en: 'Third Arcade Fusion iteration with stronger style.' },
+          thumbTitle: 'FUSION 3',
+          thumbSubtitle: 'EVOLVE',
+          thumbLang: 'EN',
+          thumbColor: '#a78bfa',
+          thumbBg: 'linear-gradient(135deg, rgba(167,139,250,.28), rgba(139,92,246,.10))'
+        },
+        {
+          id: 29,
+          category: 'utility',
+          tags: ['AI', 'Coaching', 'App'],
+          url: 'https://es-d-5927833420260331-019d34e3-9f79-783e-a678-fdb79af31291.codepen.dev/',
+          title: { ro: 'CoachingAI', en: 'CoachingAI' },
+          description: { ro: 'Aplicație de coaching asistată de AI, orientată spre ghidare și progres.', en: 'AI-assisted coaching app focused on guidance and progress.' },
+          thumbTitle: 'COACHING',
+          thumbSubtitle: 'AI APP',
+          thumbLang: 'EN',
+          thumbColor: '#14b8a6',
+          thumbBg: 'linear-gradient(135deg, rgba(20,184,166,.28), rgba(59,130,246,.10))'
+        },
+        {
+          id: 30,
+          category: 'utility',
+          tags: ['Content', 'Studio', 'Brand'],
+          url: 'https://es-d-4875001020260401-019d38a5-0907-75f2-b1ab-22d6a511a9b2.codepen.dev/',
+          title: { ro: 'ALPis CONTENT STUDIO', en: 'ALPis CONTENT STUDIO' },
+          description: { ro: 'Studio de conținut ALPis, cu prezentare modernă și structură orientată spre branding.', en: 'Content studio with branding-focused modern presentation.' },
+          thumbTitle: 'ALPIS',
+          thumbSubtitle: 'CONTENT STUDIO',
+          thumbLang: 'EN',
+          thumbColor: '#f472b6',
+          thumbBg: 'linear-gradient(135deg, rgba(244,114,182,.28), rgba(139,92,246,.10))'
+        }
+      ];
 
-    function createProjectCard(project) {
-      const learnedItems = (project.learned?.[currentLang] || []).map(item => `<li>${item}</li>`).join('');
+      const defaultLearned = {
+        ro: [
+          'Problemă: am urmărit să construiesc o interfață clară și ușor de explorat.',
+          'Soluție: am organizat conținutul astfel încât acțiunile și informațiile principale să fie rapid de înțeles.',
+          'Provocare: să păstrez un echilibru bun între prezentare vizuală, claritate și experiență responsive.'
+        ],
+        en: [
+          'Problem: I wanted to build an interface that feels clear and easy to explore.',
+          'Solution: I organized the content so the main actions and information are easy to understand.',
+          'Challenge: keeping a good balance between visual presentation, clarity and responsive experience.'
+        ]
+      };
 
-      const article = document.createElement('article');
-      article.className = 'project-card glass reveal visible';
-      article.innerHTML = `
-        ${createThumbnail(project)}
-        <div class="project-top">
-          <div><h3>${project.title[currentLang]}</h3></div>
-          <span class="tag tag-${project.category}">${project.category}</span>
-        </div>
-        <p class="project-desc">${project.description[currentLang]}</p>
-        <div class="skills">${project.tags.map(tag => `<span>${tag}</span>`).join('')}</div>
+      const featuredGrid = document.getElementById('featuredGrid');
+      const projectsGrid = document.getElementById('projectsGrid');
+      const challengesGrid = document.getElementById('challengesGrid');
+      const resultsCount = document.getElementById('resultsCount');
+      const projectCount = document.getElementById('projectCount');
+      const currentPreviewIndex = document.getElementById('currentPreviewIndex');
+      const projectFrame = document.getElementById('projectFrame');
+      const previewTitle = document.getElementById('previewTitle');
+      const previewTag = document.getElementById('previewTag');
+      const previewUrl = document.getElementById('previewUrl');
+      const previewOpen = document.getElementById('previewOpen');
+      const emptyState = document.getElementById('emptyState');
+      const searchInput = document.getElementById('searchInput');
+      const filterChips = document.getElementById('filterChips');
+      const themeToggle = document.getElementById('themeToggle');
+      const langToggle = document.getElementById('langToggle');
 
-        <div class="learn-box">
-          <button class="learn-toggle" type="button" aria-expanded="false">
-            <span class="learn-toggle-left">
-              <span class="learn-dot"></span>
-              <span>${t('learn_title')}</span>
-            </span>
-            <span class="learn-toggle-icon">+</span>
-          </button>
-          <div class="learn-content">
-            <div class="learn-content-inner">
-              <div class="learn-content-pad">
-                <ul class="learn-list">
-                  ${learnedItems || `<li>${t('learn_fallback')}</li>`}
-                </ul>
-              </div>
+      let currentLang = 'ro';
+      let activeFilter = 'all';
+      let activePreview = projects[0];
+
+      function t(key){
+        return translations[currentLang][key] || key;
+      }
+
+      function setPreview(project){
+        activePreview = project;
+        previewTitle.textContent = project.title[currentLang];
+        previewTag.textContent = project.category;
+        previewTag.className = 'tag ' + project.category;
+        previewUrl.textContent = project.url;
+        previewOpen.href = project.url;
+        previewOpen.textContent = t('preview_open');
+        currentPreviewIndex.textContent = String(project.id).padStart(2, '0');
+        projectFrame.src = project.url;
+      }
+
+      function makeThumb(project){
+        return `
+          <div class="project-thumb" style="--thumb-bg:${project.thumbBg}; --thumb-color:${project.thumbColor}">
+            <div class="thumb-browser"><span></span><span></span><span></span></div>
+            <div class="thumb-screen">
+              <div class="thumb-lang">${project.thumbLang}</div>
+              <div class="thumb-title">${project.thumbTitle}</div>
+              <div class="thumb-subtitle">${project.thumbSubtitle}</div>
+              <div class="thumb-bar"></div>
             </div>
           </div>
-        </div>
+        `;
+      }
 
-        <div class="project-actions">
-          <button class="mini-btn primary" data-preview="${project.id}">${t('preview_live')}</button>
-          <a class="mini-btn" href="${project.url}" target="_blank" rel="noopener noreferrer">${t('open_new_tab')}</a>
-        </div>
-      `;
-      return article;
-    }
+      function createProjectCard(project){
+        const learned = (project.learned && project.learned[currentLang]) || defaultLearned[currentLang];
 
-    function bindCardEvents(scope = document) {
-      scope.querySelectorAll('[data-preview]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = Number(btn.dataset.preview);
-          const project = projects.find(item => item.id === id);
-          if (!project) return;
-          setPreview(project);
-          document.getElementById('preview').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const article = document.createElement('article');
+        article.className = 'project-card glass';
+        article.innerHTML = `
+          ${makeThumb(project)}
+          <div class="project-top">
+            <div><h3>${project.title[currentLang]}</h3></div>
+            <span class="tag ${project.category}">${project.category}</span>
+          </div>
+
+          <p class="project-desc">${project.description[currentLang]}</p>
+
+          <div class="skills">
+            ${project.tags.map(tag => `<span>${tag}</span>`).join('')}
+          </div>
+
+          <div class="learn-box">
+            <button class="learn-toggle" type="button">${t('learn_title')} <span>+</span></button>
+            <div class="learn-content">
+              <ul>
+                ${learned.map(item => `<li>${item}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+
+          <div class="project-actions">
+            <button class="mini-btn primary" data-preview="${project.id}">${t('preview_live')}</button>
+            <a class="mini-btn" href="${project.url}" target="_blank" rel="noopener noreferrer">${t('open_new_tab')}</a>
+          </div>
+        `;
+        return article;
+      }
+
+      function getFilteredProjects(){
+        const query = searchInput.value.trim().toLowerCase();
+
+        return projects.filter(project => {
+          const matchesFilter =
+            activeFilter === 'all' ||
+            project.category === activeFilter ||
+            project.tags.some(tag => tag.toLowerCase() === activeFilter);
+
+          const haystack = [
+            project.title.ro,
+            project.title.en,
+            project.description.ro,
+            project.description.en,
+            project.category,
+            ...project.tags
+          ].join(' ').toLowerCase();
+
+          return matchesFilter && haystack.includes(query);
         });
-      });
+      }
 
-      scope.querySelectorAll('.learn-toggle').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const currentBox = btn.closest('.learn-box');
-          const isOpen = currentBox.classList.contains('open');
-
-          scope.querySelectorAll('.learn-box.open').forEach(box => {
-            box.classList.remove('open');
-            const toggle = box.querySelector('.learn-toggle');
-            if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      function bindCardEvents(scope){
+        scope.querySelectorAll('[data-preview]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = Number(btn.dataset.preview);
+            const project = projects.find(p => p.id === id);
+            if(!project) return;
+            setPreview(project);
+            document.getElementById('preview').scrollIntoView({ behavior:'smooth', block:'start' });
           });
-
-          if (!isOpen) {
-            currentBox.classList.add('open');
-            btn.setAttribute('aria-expanded', 'true');
-          }
         });
+
+        scope.querySelectorAll('.learn-toggle').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const box = btn.closest('.learn-box');
+            box.classList.toggle('open');
+          });
+        });
+      }
+
+      function renderFeatured(){
+        featuredGrid.innerHTML = '';
+        const featured = projects.filter(p => p.featured);
+        featured.forEach(project => featuredGrid.appendChild(createProjectCard(project)));
+        bindCardEvents(featuredGrid);
+      }
+
+      function renderProjects(){
+        const filtered = getFilteredProjects();
+        const main = filtered.filter(p => p.category !== 'challenge');
+        const challenges = filtered.filter(p => p.category === 'challenge');
+
+        projectsGrid.innerHTML = '';
+        challengesGrid.innerHTML = '';
+
+        main.forEach(project => projectsGrid.appendChild(createProjectCard(project)));
+        challenges.forEach(project => challengesGrid.appendChild(createProjectCard(project)));
+
+        bindCardEvents(projectsGrid);
+        bindCardEvents(challengesGrid);
+
+        resultsCount.textContent = String(filtered.length);
+        emptyState.style.display = filtered.length ? 'none' : 'block';
+      }
+
+      function applyTranslations(){
+        document.documentElement.lang = currentLang;
+
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          el.textContent = t(el.dataset.i18n);
+        });
+
+        searchInput.placeholder = t('search_placeholder');
+        langToggle.textContent = currentLang === 'ro' ? 'RO | EN' : 'EN | RO';
+        themeToggle.textContent = document.body.classList.contains('light') ? t('theme_light') : t('theme_dark');
+        projectCount.textContent = String(projects.length);
+
+        renderFeatured();
+        renderProjects();
+        setPreview(activePreview);
+      }
+
+      function applySavedTheme(){
+        const saved = localStorage.getItem('portfolio-theme');
+        if(saved === 'light'){
+          document.body.classList.add('light');
+        }
+        themeToggle.textContent = document.body.classList.contains('light') ? t('theme_light') : t('theme_dark');
+      }
+
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('light');
+        localStorage.setItem('portfolio-theme', document.body.classList.contains('light') ? 'light' : 'dark');
+        themeToggle.textContent = document.body.classList.contains('light') ? t('theme_light') : t('theme_dark');
       });
-    }
 
-    function renderFeatured() {
-      const featuredProjects = projects.filter(project => project.featured);
-      featuredGrid.innerHTML = '';
-      featuredProjects.forEach(project => featuredGrid.appendChild(createProjectCard(project)));
-      bindCardEvents(featuredGrid);
-    }
-
-    function renderProjects() {
-      const filtered = getFilteredProjects();
-      const order = { utility: 1, game: 2, ui: 3, challenge: 4 };
-
-      const sorted = [...filtered].sort((a, b) => {
-        const oa = order[a.category] || 99;
-        const ob = order[b.category] || 99;
-        if (oa !== ob) return oa - ob;
-        return a.id - b.id;
+      langToggle.addEventListener('click', () => {
+        currentLang = currentLang === 'ro' ? 'en' : 'ro';
+        applyTranslations();
       });
 
-      const mainProjects = sorted.filter(project => project.category !== 'challenge');
-      const challenges = sorted.filter(project => project.category === 'challenge');
+      filterChips.addEventListener('click', (event) => {
+        const chip = event.target.closest('.chip');
+        if(!chip) return;
 
-      projectsGrid.innerHTML = '';
-      challengesGrid.innerHTML = '';
-      resultsCount.textContent = filtered.length;
-      emptyState.style.display = filtered.length ? 'none' : 'block';
+        filterChips.querySelectorAll('.chip').forEach(btn => btn.classList.remove('active'));
+        chip.classList.add('active');
+        activeFilter = chip.dataset.filter;
+        renderProjects();
+      });
 
-      mainProjectsSection.style.display = mainProjects.length ? '' : 'none';
-      challengesSection.style.display = challenges.length ? '' : 'none';
+      searchInput.addEventListener('input', renderProjects);
 
-      mainProjects.forEach(project => projectsGrid.appendChild(createProjectCard(project)));
-      challenges.forEach(project => challengesGrid.appendChild(createProjectCard(project)));
-
-      bindCardEvents(projectsGrid);
-      bindCardEvents(challengesGrid);
-    }
-
-    function applySavedTheme() {
-      const savedTheme = localStorage.getItem('portfolio-theme');
-      if (savedTheme === 'light') document.body.classList.add('light');
-      themeToggle.textContent = document.body.classList.contains('light') ? t('theme_light') : t('theme_dark');
-    }
-
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('light');
-      const isLight = document.body.classList.contains('light');
-      localStorage.setItem('portfolio-theme', isLight ? 'light' : 'dark');
-      themeToggle.textContent = isLight ? t('theme_light') : t('theme_dark');
-    });
-
-    langToggle.addEventListener('click', () => {
-      currentLang = currentLang === 'ro' ? 'en' : 'ro';
+      projectCount.textContent = String(projects.length);
+      applySavedTheme();
       applyTranslations();
-    });
-
-    filterChips.addEventListener('click', (event) => {
-      const chip = event.target.closest('.chip');
-      if (!chip) return;
-      document.querySelectorAll('.chip').forEach(item => item.classList.remove('active'));
-      chip.classList.add('active');
-      activeFilter = chip.dataset.filter;
-      renderProjects();
-    });
-
-    searchInput.addEventListener('input', renderProjects);
-
-    function applyTranslations() {
-      document.documentElement.lang = currentLang;
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        el.textContent = t(el.dataset.i18n);
-      });
-      searchInput.placeholder = t('search_placeholder');
-      langToggle.textContent = currentLang === 'ro' ? 'RO | EN' : 'EN | RO';
-      themeToggle.textContent = document.body.classList.contains('light') ? t('theme_light') : t('theme_dark');
-      projectCount.textContent = projects.length;
       setPreview(activePreview);
-      renderFeatured();
-      renderProjects();
-    }
-
-    function revealOnScroll() {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-      }, { threshold: .14 });
-      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    }
-
-    applySavedTheme();
-    applyTranslations();
-    setPreview(activePreview);
-    renderFeatured();
-    renderProjects();
-    revealOnScroll();
+    });
   </script>
 </body>
 </html>
