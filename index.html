@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Portofoliu CodePen</title>
+  <title>Laura Andreea | Portofoliu CodePen și proiecte front-end</title>
   <meta
     name="description"
     content="Portofoliu interactiv pentru proiecte CodePen: preview live, căutare instant, filtre, dark/light mode și experimente front-end moderne."
@@ -13,25 +13,39 @@
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#071226" />
   <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Portofoliu CodePen" />
+  <meta property="og:title" content="Laura Andreea | Portofoliu CodePen și proiecte front-end" />
   <meta
     property="og:description"
     content="Portofoliu interactiv pentru proiecte CodePen: preview live, filtre, search și dark/light mode."
   />
   <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/" />
-  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg" />
+  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.svg" />
   <meta property="og:locale" content="ro_RO" />
   <meta property="og:site_name" content="Portofoliu CodePen" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Portofoliu CodePen" />
+  <meta name="twitter:title" content="Laura Andreea | CodePen Portfolio & Front-End Projects" />
   <meta
     name="twitter:description"
     content="Explorează proiecte front-end interactive cu preview live, filtre, căutare instant și dark/light mode."
   />
-  <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg" />
+  <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.svg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Laura Andreea",
+    "url": "https://laurandreea10.github.io/codepen-portfolio/",
+    "sameAs": [
+      "https://github.com/LaurAndreea10"
+    ],
+    "jobTitle": "Front-End Developer"
+  }
+  </script>
 
   <style>
     :root{
@@ -54,7 +68,7 @@
       --panel:rgba(255,255,255,.86);
       --panel-2:rgba(16,24,40,.05);
       --text:#13203d;
-      --muted:#5e6f8e;
+      --muted:#4f6283;
       --line:rgba(16,24,40,.08);
       --accent:#2563eb;
       --accent-2:#7c3aed;
@@ -391,9 +405,9 @@
     .tag.challenge{color:#edd6ff;background:rgba(168,85,247,.14);border-color:rgba(168,85,247,.24)}
     .tag.ui{color:#cfe2ff;background:rgba(96,165,250,.14);border-color:rgba(96,165,250,.24)}
 
-    body.light .tag.game{color:#b45309}
+    body.light .tag.game{color:#9a3412}
     body.light .tag.utility{color:#047857}
-    body.light .tag.challenge{color:#7c3aed}
+    body.light .tag.challenge{color:#6d28d9}
     body.light .tag.ui{color:#1d4ed8}
 
     .mini-btn{
@@ -558,6 +572,23 @@
       transform:translateY(-5px);
     }
 
+    .project-card.active-preview{
+      border-color:rgba(79,140,255,.5);
+      box-shadow:
+        0 0 0 1px rgba(79,140,255,.28),
+        0 20px 50px rgba(0,0,0,.35),
+        0 0 32px rgba(79,140,255,.18);
+    }
+
+    .project-card.active-preview::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      border-radius:24px;
+      box-shadow:inset 0 0 0 1px rgba(79,140,255,.2);
+    }
+
     .project-thumb{
       position:relative;
       min-height:180px;
@@ -605,7 +636,7 @@
       font-size:.72rem;
       letter-spacing:.05em;
       font-weight:700;
-      color:rgba(255,255,255,.85);
+      color:rgba(255,255,255,.9);
       background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.08);
     }
@@ -624,7 +655,7 @@
       font-size:.74rem;
       letter-spacing:.18em;
       text-transform:uppercase;
-      color:rgba(255,255,255,.7);
+      color:rgba(255,255,255,.82);
     }
 
     .thumb-bar{
@@ -736,6 +767,19 @@
       text-align:center;
       color:var(--muted);
       font-size:.95rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
     }
 
     @media (max-width:1080px){
@@ -867,7 +911,7 @@
   </header>
 
   <main id="main-content">
-    <section id="featured">
+    <section id="featured" aria-label="Proiecte evidențiate">
       <div class="container">
         <div class="section-head">
           <div>
@@ -875,7 +919,7 @@
             <h2 data-i18n="featured_title">Proiecte evidențiate</h2>
           </div>
         </div>
-        <div class="projects-grid" id="featuredGrid"></div>
+        <div class="projects-grid" id="featuredGrid" aria-label="Proiecte evidențiate"></div>
       </div>
     </section>
 
@@ -942,7 +986,7 @@
       </div>
     </section>
 
-    <section id="projects">
+    <section id="projects" aria-label="Colecție de proiecte">
       <div class="container">
         <div class="section-head">
           <div>
@@ -988,7 +1032,7 @@
             <h2 data-i18n="main_projects_title">Jocuri, utilitare și interfețe</h2>
           </div>
         </div>
-        <div class="projects-grid" id="projectsGrid"></div>
+        <div class="projects-grid" id="projectsGrid" aria-label="Proiecte principale"></div>
 
         <div class="section-head" style="margin-top:22px; margin-bottom:12px;">
           <div>
@@ -996,7 +1040,7 @@
             <h2 data-i18n="challenges_title">Provocări și exerciții logice</h2>
           </div>
         </div>
-        <div class="projects-grid" id="challengesGrid"></div>
+        <div class="projects-grid" id="challengesGrid" aria-label="Challenges"></div>
 
         <div class="empty-state glass" id="emptyState" data-i18n="empty_state">
           Nu am găsit proiecte pentru filtrul sau căutarea curentă.
@@ -1011,7 +1055,8 @@
           <h2 data-i18n="contact_title">Lasă-mi o sugestie</h2>
           <p class="muted" data-i18n="contact_text">Lasă-mi o sugestie despre ce ai vrea să mai adaug în portofoliu</p>
           <div class="contact-actions">
-            <a class="btn btn-primary" href="#home" data-i18n="contact_back">Sus</a>
+            <a class="btn btn-primary" href="mailto:you@example.com" data-i18n="contact_email">Email</a>
+            <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a class="btn btn-secondary" href="#projects" data-i18n="contact_all">Toate proiectele</a>
           </div>
         </article>
@@ -1065,6 +1110,7 @@
           contact_text: 'Lasă-mi o sugestie despre ce ai vrea să mai adaug în portofoliu',
           contact_back: 'Sus',
           contact_all: 'Toate proiectele',
+          contact_email: 'Email',
           featured_eyebrow: 'Featured',
           featured_title: 'Proiecte evidențiate',
           main_projects_eyebrow: 'Proiecte principale',
@@ -1118,6 +1164,7 @@
           contact_text: 'Leave me a suggestion about what you’d like me to add next to the portfolio',
           contact_back: 'Back to top',
           contact_all: 'All projects',
+          contact_email: 'Email',
           featured_eyebrow: 'Featured',
           featured_title: 'Featured projects',
           main_projects_eyebrow: 'Main projects',
@@ -1664,6 +1711,11 @@
       const langToggle = document.getElementById('langToggle');
 
       let currentLang = 'ro';
+      const savedLang = localStorage.getItem('portfolio-lang');
+      if (savedLang && translations[savedLang]) {
+        currentLang = savedLang;
+      }
+
       let activeFilter = 'all';
       let activePreview = projects[0];
 
@@ -1678,6 +1730,41 @@
           .replace(/>/g, '&gt;')
           .replace(/"/g, '&quot;')
           .replace(/'/g, '&#39;');
+      }
+
+      function updateMetaForLanguage() {
+        document.documentElement.lang = currentLang;
+
+        const titleMap = {
+          ro: 'Laura Andreea | Portofoliu CodePen și proiecte front-end',
+          en: 'Laura Andreea | CodePen Portfolio & Front-End Projects'
+        };
+
+        const descMap = {
+          ro: 'Portofoliu interactiv pentru proiecte CodePen: preview live, căutare instant, filtre, dark/light mode și experimente front-end moderne.',
+          en: 'Interactive portfolio for CodePen projects: live preview, instant search, filters, dark/light mode and modern front-end experiments.'
+        };
+
+        const ogLocaleMap = {
+          ro: 'ro_RO',
+          en: 'en_US'
+        };
+
+        document.title = titleMap[currentLang];
+
+        const metaDescription = document.querySelector('meta[name="description"]');
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        const ogDescription = document.querySelector('meta[property="og:description"]');
+        const ogLocale = document.querySelector('meta[property="og:locale"]');
+        const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+        const twitterDescription = document.querySelector('meta[name="twitter:description"]');
+
+        if (metaDescription) metaDescription.setAttribute('content', descMap[currentLang]);
+        if (ogTitle) ogTitle.setAttribute('content', titleMap[currentLang]);
+        if (ogDescription) ogDescription.setAttribute('content', descMap[currentLang]);
+        if (ogLocale) ogLocale.setAttribute('content', ogLocaleMap[currentLang]);
+        if (twitterTitle) twitterTitle.setAttribute('content', titleMap[currentLang]);
+        if (twitterDescription) twitterDescription.setAttribute('content', descMap[currentLang]);
       }
 
       function buildPreviewCard(project){
@@ -1933,6 +2020,13 @@
         `;
       }
 
+      function updateActivePreviewCards() {
+        document.querySelectorAll('.project-card').forEach(card => {
+          const isActive = Number(card.dataset.projectId) === activePreview.id;
+          card.classList.toggle('active-preview', isActive);
+        });
+      }
+
       function setPreview(project){
         activePreview = project;
         previewTitle.textContent = project.title[currentLang];
@@ -1945,6 +2039,8 @@
 
         projectFrame.removeAttribute('src');
         projectFrame.srcdoc = buildPreviewCard(project);
+
+        updateActivePreviewCards();
       }
 
       function makeThumb(project){
@@ -1976,6 +2072,7 @@
 
         const article = document.createElement('article');
         article.className = 'project-card glass';
+        article.dataset.projectId = project.id;
 
         const learnId = `learn-content-${project.id}`;
         const toggleId = `learn-toggle-${project.id}`;
@@ -2090,6 +2187,8 @@
 
         resultsCount.textContent = String(filtered.length);
         emptyState.style.display = filtered.length ? 'none' : 'block';
+
+        updateActivePreviewCards();
       }
 
       function updateFilterAria(){
@@ -2106,7 +2205,7 @@
       }
 
       function applyTranslations(){
-        document.documentElement.lang = currentLang;
+        updateMetaForLanguage();
 
         document.querySelectorAll('[data-i18n]').forEach(el => {
           el.textContent = t(el.dataset.i18n);
@@ -2116,6 +2215,8 @@
         langToggle.textContent = currentLang === 'ro' ? 'RO | EN' : 'EN | RO';
         themeToggle.textContent = document.body.classList.contains('light') ? t('theme_light') : t('theme_dark');
         projectCount.textContent = String(projects.length);
+
+        localStorage.setItem('portfolio-lang', currentLang);
 
         updateToggleAria();
         updateFilterAria();
@@ -2143,6 +2244,7 @@
 
       langToggle.addEventListener('click', () => {
         currentLang = currentLang === 'ro' ? 'en' : 'ro';
+        localStorage.setItem('portfolio-lang', currentLang);
         applyTranslations();
       });
 
