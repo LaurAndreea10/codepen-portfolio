@@ -16,7 +16,6 @@
       --accent:#4f8cff;
       --accent-2:#8b5cf6;
       --shadow:0 20px 50px rgba(0,0,0,.35);
-      --radius:24px;
       --container:1280px;
     }
 
@@ -836,12 +835,11 @@
             id="projectFrame"
             title="Project live preview"
             loading="lazy"
-            referrerpolicy="no-referrer"
-            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+            sandbox="allow-same-origin"
           ></iframe>
 
           <div class="preview-note" data-i18n="preview_note">
-            Dacă un proiect nu se încarcă în preview, pagina respectivă probabil blochează afișarea în iframe. Folosește butonul „Deschide proiectul”.
+            Preview-ul este generat local în portofoliu ca să fie afișat mereu, inclusiv pentru proiectele care blochează iframe extern.
           </div>
         </article>
       </div>
@@ -947,7 +945,8 @@
           about_text_2: 'Acest portofoliu este gândit ca un hub central: poți explora rapid proiectele, le poți căuta, filtra și previzualiza direct în pagină fără să părăsești site-ul.',
           preview_eyebrow: 'Preview live',
           preview_open: 'Deschide proiectul',
-          preview_note: 'Dacă un proiect nu se încarcă în preview, pagina respectivă probabil blochează afișarea în iframe. Folosește butonul „Deschide proiectul”.',
+          preview_note: 'Preview-ul este generat local în portofoliu ca să fie afișat mereu, inclusiv pentru proiectele care blochează iframe extern.',
+          preview_fallback_label: 'Preview local',
           projects_eyebrow: 'Proiecte',
           projects_title: 'Explorează colecția de proiecte',
           projects_results: 'rezultate afișate',
@@ -997,7 +996,8 @@
           about_text_2: 'This portfolio is designed as a central hub: you can quickly explore the projects, search them, filter them and preview them directly inside the page without leaving the site.',
           preview_eyebrow: 'Live preview',
           preview_open: 'Open project',
-          preview_note: 'If a project does not load in the preview, that page is probably blocking iframe embedding. Use the “Open project” button.',
+          preview_note: 'The preview is generated locally inside the portfolio so it always shows, including projects that block external iframe embedding.',
+          preview_fallback_label: 'Local preview',
           projects_eyebrow: 'Projects',
           projects_title: 'Explore the project collection',
           projects_results: 'results shown',
@@ -1423,12 +1423,13 @@
           id: 31,
           category: 'ui',
           tags: ['UI', 'Glassmorphism', 'Mood'],
-          url: 'https://es-d-1647531020260404-019d4d33-33a9-7efa-bf07-66c38bc4ab53.codepen.dev/?config=eyJsYW5nIjoicm8iLCJhcHBUaGVtZSI6ImRhcmsiLCJtb29kIjoic2FkIiwiYmdJbWFnZSI6IiIsIm1hbnVhbENzcyI6IiIsInByZXZpZXdYIjowLCJwcmV2aWV3WSI6MCwic3R5bGVNb2RlIjoiZ3JhZGllbnQiLCJncmFkaWVudFR5cGUiOiJsaW5lYXIiLCJjb2xvcjEiOiIjMWYyYTQ0IiwiY29sb3IyIjoiIzM2NDk2OCIsImNvbG9yMyI6IiM2YjdlYTUiLCJjb2xvcjQiOiIjMTAxODI4Iiwic3RvcDEiOjAsInN0b3AyIjo0Miwic3RvcDMiOjc2LCJzdG9wNCI6MTAwLCJncmFkaWVudEFuZ2xlIjoxNDUsInJhZGlhbFgiOjUwLCJyYWRpYWxZIjoyMCwib3BhY2l0eSI6MC45MiwiYmFja2Ryb3BCbHVyIjoxOCwiZ2xhc3NJbnRlbnNpdHkiOjAuMjgsIm5vaXNlT3BhY2l0eSI6MC4wOCwidGV4dENvbG9yIjoiI2VlZjJmZiIsImZvbnRGYW1pbHkiOiJQbGF5ZmFpciBEaXNwbGF5IiwiZm9udFNpemUiOjI1LCJmb250V2VpZ2h0Ijo2MDAsImxpbmVIZWlnaHQiOjEuMzUsImxldHRlclNwYWNpbmciOjAuMiwidGV4dFRyYW5zZm9ybSI6Im5vbmUiLCJ0ZXh0QWxpZ24iOiJsZWZ0IiwidGl0bGVUZXh0IjoiVHJpc3RlyJtlYSBwb2F0ZSBmaSBlbGVnYW50xIMuIiwiYm9keVRleHQiOiJVbiBVSSBtZWxhbmNvbGljLCBjYWxtIMiZaSBjaW5lbWF0b2dyYWZpYywgY3UgYmx1ciBtb2FsZSwgY29udHJhc3QgYnVuIMiZaSByaXRtIGxlbnQuIiwiYm94V2lkdGgiOjI5MCwiYm94SGVpZ2h0IjozMjAsInBhZGRpbmciOjIyLCJyb3RhdGUiOi0yLCJzY2FsZSI6MSwiYmx1ciI6MCwicmFkaXVzVEwiOjI4LCJyYWRpdXNUUiI6MjgsInJhZGl1c0JSIjozNCwicmFkaXVzQkwiOjE4LCJib3JkZXJUb3BXaWR0aCI6MSwiYm9yZGVyUmlnaHRXaWR0aCI6MSwiYm9yZGVyQm90dG9tV2lkdGgiOjEsImJvcmRlckxlZnRXaWR0aCI6MSwiYm9yZGVyU3R5bGUiOiJzb2xpZCIsImJvcmRlckNvbG9yIjoiI2E1YjRmYyIsImlubmVyU2hhZG93IjoxOCwic2hhZG93WCI6MCwic2hhZG93WSI6MjIsInNoYWRvd0JsdXIiOjQ4LCJzaGFkb3dTcHJlYWQiOi0xMCwic2hhZG93T3BhY2l0eSI6MC4yOCwic2hhZG93TGF5ZXJzIjoiMCAyNHB4IDYwcHggcmdiYSg0LDEwLDI0LC4zNSksIDAgMnB4IDEycHggcmdiYSgyNTUsMjU1LDI1NSwuMDYpIGluc2V0IiwidGV4dFNoYWRvd1giOjAsInRleHRTaGFkb3dZIjoxLCJ0ZXh0U2hhZG93Qmx1ciI6OCwidGV4dFNoYWRvd09wYWNpdHkiOjAuMiwiYW5pbWF0aW9uUHJlc2V0IjoiZmFkZSIsImhvdmVyRWZmZWN0IjoibGlmdCIsInRyYW5zaXRpb25Qcm9wIjoiYWxsIiwidHJhbnNpdGlvbkR1cmF0aW9uIjowLjQ1LCJ0cmFuc2l0aW9uRWFzaW5nIjoiZWFzZS1vdXQiLCJ0cmFuc2l0aW9uRGVsYXkiOjAsInRlbXBsYXRlIjoiY2FyZCIsImxheW91dE1vZGUiOiJzdGFjayIsImp1c3RpZnlDb250ZW50IjoiZmxleC1zdGFydCIsImFsaWduSXRlbXMiOiJzdHJldGNoIn0%3D',
+          url: 'https://es-d-1647531020260404-019d4d33-33a9-7efa-bf07-66c38bc4ab53.codepen.dev/?config=eyJsYW5nIjoicm8iLCJhcHBUaGVtZSI6ImRhcmsiLCJtb29kIjoic2FkIiwiYmdJbWFnZSI6IiIsIm1hbnVhbENzcyI6IiIsInByZXZpZXdYIjowLCJwcmV2aWV3WSI6MCwic3R5bGVNb2RlIjoiZ3JhZGllbnQiLCJncmFkaWVudFR5cGUiOiJsaW5lYXIiLCJjb2xvcjEiOiIjMWYyYTQ0IiwiY29sb3IyIjoiIzM2NDk2OCIsImNvbG9yMyI6IiM2YjdlYTUiLCJjb2xvcjQiOiIjMTAxODI4Iiwic3RvcDEiOjAsInN0b3AyIjo0Miwic3RvcDMiOjc2LCJzdG9wNCI6MTAwLCJncmFkaWVudEFuZ2xlIjoxNDUsInJhZGlhbFgiOjUwLCJyYWRpYWxZIjoyMCwib3BhY2l0eSI6MC45MiwiYmFja2Ryb3BCbHVyIjoxOCwiZ2xhc3NJbnRlbnNpdHkiOjAuMjgsIm5vaXNlT3BhY2l0eSI6MC4wOCwidGV4dENvbG9yIjoiI2VlZjJmZiIsImZvbnRGYW1pbHkiOiJQbGF5ZmFpciBEaXNwbGF5IiwiZm9udFNpemUiOjI1LCJmb250V2VpZ2h0Ijo2MDAsImxpbmVIZWlnaHQiOjEuMzUsImxldHRlclNwYWNpbmciOjAuMiwidGV4dFRyYW5zZm9ybSI6Im5vbmUiLCJ0ZXh0QWxpZ24iOiJsZWZ0IiwidGl0bGVUZXh0IjoiVHJpc3RlyJtlYSBwb2F0ZSBmaSBlbGVnYW50xIMuIiwiYm9keVRleHQiOiJVbiBVSSBtZWxhbmNvbGljLCBjYWxtIMiZaSBjaW5lbWF0b2dyYWZpYywgY3UgYmx1ciBtb2FsZSwgY29udHJhc3QgYnVuIMiZaSByaXRtIGxlbnQuIiwiYm94V2lkdGgiOjI5MCwiYm94SGVpZ2h0IjozMjAsInBhZGRpbmciOjIyLCJyb3RhdGUiOi0yLCJzY2FsZSI6MSwiYmx1ciI6MCwicmFkaXVzVEwiOjI4LCJyYWRpdXNUUiI6MjgsInJhZGl1c0JSIjozNCwicmFkaXVzQkwiOjE4LCJib3JkZXJUb3BXaWR0aCI6MSwiYm9yZGVyUmlnaHRXaWR0aCI6MSwiYm9yZGVyQm90dG9tV2lkdGgiOjEsImJvcmRlckxlZnRXaWR0aCI6MSwiYm9yZGVyU3R5bGUiOiJzb2xpZCIsImJvcmRlckNvbG9yIjoiI2E1YjRmYyIsImlubmVyU2hhZG93IjoxOCwic2hhZG93WCI6MCwic2hhZG93WSI6MjIsInNoYWRvd0JsdXIiOjQ4LCJzaGFkb3dTcHJlYWQiOi0xMCwic2hhZG93T3BhY2l0eSI6MC4yOCwic2hhZG93TGF5ZXJzIjoiMCAyNHB4IDYwcHggcmdiYSg0LDEwLDI0LC4zNSksIDAgMnB4IDEycHggcmdiYSgyNTUsMjU1LDI1NSwuMDYpIGluc2V0IiwidGV4dFNoYWRvd1giOjAsInRleHRTaGFkb3dZIjoxLCJ0ZXh0QWRTaGFkb3dCbHVyIjo4LCJ0ZXh0U2hhZG93T3BhY2l0eSI6MC4yLCJhbmltYXRpb25QcmVzZXQiOiJmYWRlIiwiaG92ZXJFZmZlY3QiOiJsaWZ0IiwidHJhbnNpdGlvblByb3AiOiJhbGwiLCJ0cmFuc2l0aW9uRHVyYXRpb24iOjAuNDUsInRyYW5zaXRpb25FYXNpbmciOiJlYXNlLW91dCIsInRyYW5zaXRpb25EZWxheSI6MCwidGVtcGxhdGUiOiJjYXJkIiwibGF5b3V0TW9kZSI6InN0YWNrIiwianVzdGlmeUNvbnRlbnQiOiJmbGV4LXN0YXJ0IiwiYWxpZ25JdGVtcyI6InN0cmV0Y2gifQ%3D%3D',
           title: { ro: 'Tristețea poate fi elegantă', en: 'Sadness Can Be Elegant' },
           description: {
             ro: 'Un UI melancolic, calm și cinematografic, cu blur moale, contrast bun și ritm lent.',
             en: 'A melancholic, calm and cinematic UI with soft blur, strong contrast and a slow rhythm.'
           },
+          featured: true,
           thumbTitle: 'ELEGANT',
           thumbSubtitle: 'SAD UI',
           thumbLang: 'RO',
@@ -1558,6 +1559,268 @@
         return translations[currentLang][key] || key;
       }
 
+      function escapeHtml(str = ''){
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function buildPreviewCard(project){
+        const thumbBg = project.thumbBg || 'linear-gradient(135deg, rgba(79,140,255,.18), rgba(139,92,246,.12))';
+        const thumbColor = project.thumbColor || '#ffffff';
+        const thumbLang = project.thumbLang || 'EN';
+        const thumbTitle = project.thumbTitle || project.title[currentLang];
+        const thumbSubtitle = project.thumbSubtitle || project.category;
+        const learned = (project.learned && project.learned[currentLang]) || [
+          currentLang === 'ro'
+            ? 'Preview-ul este randat local pentru compatibilitate maximă.'
+            : 'The preview is rendered locally for maximum compatibility.',
+          currentLang === 'ro'
+            ? 'Poți deschide proiectul real în tab nou din butonul de mai jos.'
+            : 'You can open the real project in a new tab using the button below.'
+        ];
+
+        return `
+<!DOCTYPE html>
+<html lang="${currentLang}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:24px;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(79,140,255,.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(139,92,246,.16), transparent 24%),
+        linear-gradient(180deg,#0b1730,#071226);
+      color:#eef4ff;
+    }
+    .box{
+      width:min(100%, 820px);
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      border-radius:24px;
+      padding:24px;
+      box-shadow:0 20px 50px rgba(0,0,0,.35);
+    }
+    .top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+    .label{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#8fb6ff;
+      background:rgba(79,140,255,.12);
+      border:1px solid rgba(79,140,255,.24);
+    }
+    .cat{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:700;
+      text-transform:capitalize;
+      color:#dbe8ff;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.1);
+    }
+    .thumb{
+      position:relative;
+      min-height:260px;
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.1);
+      background:${thumbBg};
+      padding:14px;
+      margin-bottom:20px;
+    }
+    .thumb-browser{
+      display:flex;
+      gap:6px;
+      margin-bottom:12px;
+    }
+    .thumb-browser span{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,.34);
+    }
+    .thumb-screen{
+      min-height:200px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(5,10,22,.42);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .thumb-lang{
+      position:absolute;
+      top:10px;
+      right:10px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.72rem;
+      letter-spacing:.05em;
+      font-weight:700;
+      color:rgba(255,255,255,.85);
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .thumb-title{
+      font-size:clamp(1.7rem, 4vw, 2.4rem);
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:${thumbColor};
+      line-height:1;
+    }
+    .thumb-subtitle{
+      margin-top:10px;
+      font-size:.82rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.72);
+    }
+    .thumb-bar{
+      margin-top:18px;
+      width:72%;
+      height:38px;
+      border-radius:12px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    h2{
+      margin:0 0 10px;
+      font-size:1.45rem;
+      line-height:1.2;
+    }
+    p{
+      margin:0;
+      color:#9db0d4;
+      line-height:1.75;
+    }
+    .tags{
+      margin-top:16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .tags span{
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.08);
+      color:#eef4ff;
+      font-size:.9rem;
+    }
+    .learn{
+      margin-top:18px;
+      padding:16px;
+      border-radius:18px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .learn ul{
+      margin:0;
+      padding-left:18px;
+      color:#b6c7e6;
+      line-height:1.7;
+    }
+    .actions{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:46px;
+      padding:0 18px;
+      border-radius:999px;
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+      background:linear-gradient(135deg,#4f8cff,#8b5cf6);
+    }
+    .ghost{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+      color:#eef4ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="top">
+      <div class="label">${escapeHtml(t('preview_fallback_label'))}</div>
+      <div class="cat">${escapeHtml(project.category)}</div>
+    </div>
+
+    <div class="thumb">
+      <div class="thumb-browser"><span></span><span></span><span></span></div>
+      <div class="thumb-screen">
+        <div class="thumb-lang">${escapeHtml(thumbLang)}</div>
+        <div class="thumb-title">${escapeHtml(thumbTitle)}</div>
+        <div class="thumb-subtitle">${escapeHtml(thumbSubtitle)}</div>
+        <div class="thumb-bar"></div>
+      </div>
+    </div>
+
+    <h2>${escapeHtml(project.title[currentLang])}</h2>
+    <p>${escapeHtml(project.description[currentLang])}</p>
+
+    <div class="tags">
+      ${project.tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join('')}
+    </div>
+
+    <div class="learn">
+      <ul>
+        ${learned.map(item => `<li>${escapeHtml(item)}</li>`).join('')}
+      </ul>
+    </div>
+
+    <div class="actions">
+      <a href="${escapeHtml(project.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t('preview_open'))}</a>
+      <a class="ghost" href="${escapeHtml(project.url)}" target="_blank" rel="noopener noreferrer">URL real</a>
+    </div>
+  </div>
+</body>
+</html>
+        `;
+      }
+
       function setPreview(project){
         activePreview = project;
         previewTitle.textContent = project.title[currentLang];
@@ -1566,13 +1829,10 @@
         previewUrl.textContent = project.url;
         previewOpen.href = project.url;
         previewOpen.textContent = t('preview_open');
-
         currentPreviewIndex.textContent = String(project.id).padStart(2, '0');
 
         projectFrame.removeAttribute('src');
-        requestAnimationFrame(() => {
-          projectFrame.src = project.url;
-        });
+        projectFrame.srcdoc = buildPreviewCard(project);
       }
 
       function makeThumb(project){
