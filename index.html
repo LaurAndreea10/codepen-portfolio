@@ -388,6 +388,16 @@
       background:#fff;
     }
 
+    .preview-note{
+      font-size:.92rem;
+      color:var(--muted);
+      line-height:1.6;
+      padding:12px 14px;
+      border-radius:14px;
+      background:var(--panel-2);
+      border:1px solid var(--line);
+    }
+
     .section-head{
       display:flex;
       align-items:flex-end;
@@ -743,7 +753,7 @@
         <div class="stats-grid">
           <article class="stat-card glass">
             <h3 data-i18n="stat_projects">Proiecte live</h3>
-            <div class="stat-value" id="projectCount">33</div>
+            <div class="stat-value" id="projectCount">34</div>
             <div class="muted" data-i18n="stat_projects_text">Experimente și demo-uri publicate pe CodePen</div>
           </article>
 
@@ -822,7 +832,17 @@
             <div class="browser-url" id="previewUrl"></div>
           </div>
 
-          <iframe id="projectFrame" title="Project live preview" loading="lazy"></iframe>
+          <iframe
+            id="projectFrame"
+            title="Project live preview"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+          ></iframe>
+
+          <div class="preview-note" data-i18n="preview_note">
+            Dacă un proiect nu se încarcă în preview, pagina respectivă probabil blochează afișarea în iframe. Folosește butonul „Deschide proiectul”.
+          </div>
         </article>
       </div>
     </section>
@@ -835,7 +855,7 @@
             <h2 data-i18n="projects_title">Explorează colecția de proiecte</h2>
           </div>
           <div class="muted">
-            <span id="resultsCount">33</span> <span data-i18n="projects_results">rezultate afișate</span>
+            <span id="resultsCount">34</span> <span data-i18n="projects_results">rezultate afișate</span>
           </div>
         </div>
 
@@ -927,6 +947,7 @@
           about_text_2: 'Acest portofoliu este gândit ca un hub central: poți explora rapid proiectele, le poți căuta, filtra și previzualiza direct în pagină fără să părăsești site-ul.',
           preview_eyebrow: 'Preview live',
           preview_open: 'Deschide proiectul',
+          preview_note: 'Dacă un proiect nu se încarcă în preview, pagina respectivă probabil blochează afișarea în iframe. Folosește butonul „Deschide proiectul”.',
           projects_eyebrow: 'Proiecte',
           projects_title: 'Explorează colecția de proiecte',
           projects_results: 'rezultate afișate',
@@ -949,8 +970,7 @@
           open_new_tab: 'Open tab nou',
           theme_dark: '🌙 Dark',
           theme_light: '☀️ Light',
-          learn_title: 'Case study scurt',
-          learn_fallback: 'Detalii în curs de completare.'
+          learn_title: 'Case study scurt'
         },
         en: {
           brand: 'CodePen Portfolio',
@@ -977,6 +997,7 @@
           about_text_2: 'This portfolio is designed as a central hub: you can quickly explore the projects, search them, filter them and preview them directly inside the page without leaving the site.',
           preview_eyebrow: 'Live preview',
           preview_open: 'Open project',
+          preview_note: 'If a project does not load in the preview, that page is probably blocking iframe embedding. Use the “Open project” button.',
           projects_eyebrow: 'Projects',
           projects_title: 'Explore the project collection',
           projects_results: 'results shown',
@@ -999,8 +1020,7 @@
           open_new_tab: 'Open in new tab',
           theme_dark: '🌙 Dark',
           theme_light: '☀️ Light',
-          learn_title: 'Short case study',
-          learn_fallback: 'Details coming soon.'
+          learn_title: 'Short case study'
         }
       };
 
@@ -1327,7 +1347,7 @@
           tags: ['Learning', 'UI', 'Education'],
           url: 'https://es-d-9192350520260329-019d304f-7a11-7513-b501-5abb02444af7.codepen.dev/',
           title: { ro: 'BAC Learning Space Premium', en: 'BAC Learning Space Premium' },
-          description: { ro: 'Interfață alternativă pentru explorare și organizare învățare.', en: 'Alternative interface for learning content exploration.' },
+          description: { ro: 'Interfață premium pentru organizarea învățării și explorarea conținutului educațional.', en: 'Premium interface for organizing learning and exploring educational content.' },
           thumbTitle: 'BAC',
           thumbSubtitle: 'PREMIUM',
           thumbLang: 'EN',
@@ -1482,21 +1502,36 @@
               'Challenge: keeping it lightweight while still making people want one more try.'
             ]
           }
+        },
+        {
+          id: 34,
+          category: 'utility',
+          tags: ['SaaS', 'Mobile-first', 'ClientFlow'],
+          url: 'https://es-d-1647531020260404-019d4e21-afd1-7808-abf5-d9c88b726df2.codepen.dev/',
+          title: { ro: 'ClientFlow Mobile-first SaaS', en: 'ClientFlow Mobile-first SaaS' },
+          description: {
+            ro: 'Versiune ClientFlow gândită mobile-first, cu structură SaaS clară și experiență optimizată pentru ecrane mici.',
+            en: 'A mobile-first ClientFlow version with a clear SaaS structure and an experience optimized for small screens.'
+          },
+          thumbTitle: 'CLIENTFLOW',
+          thumbSubtitle: 'MOBILE-FIRST',
+          thumbLang: 'EN',
+          thumbColor: '#34d399',
+          thumbBg: 'linear-gradient(135deg, rgba(52,211,153,.28), rgba(59,130,246,.12))',
+          learned: {
+            ro: [
+              'Problemă: am vrut o experiență SaaS clară și eficientă pe mobil.',
+              'Soluție: am prioritizat layout-ul mobile-first și acțiunile esențiale.',
+              'Provocare: să păstrez senzația premium fără să aglomerez interfața pe ecrane mici.'
+            ],
+            en: [
+              'Problem: I wanted a SaaS experience that feels clear and effective on mobile.',
+              'Solution: I prioritized a mobile-first layout and the essential actions.',
+              'Challenge: keeping a premium feel without overcrowding the interface on small screens.'
+            ]
+          }
         }
       ];
-
-      const defaultLearned = {
-        ro: [
-          'Problemă: am urmărit să construiesc o interfață clară și ușor de explorat.',
-          'Soluție: am organizat conținutul astfel încât acțiunile și informațiile principale să fie rapid de înțeles.',
-          'Provocare: să păstrez un echilibru bun între prezentare vizuală, claritate și experiență responsive.'
-        ],
-        en: [
-          'Problem: I wanted to build an interface that feels clear and easy to explore.',
-          'Solution: I organized the content so the main actions and information are easy to understand.',
-          'Challenge: keeping a good balance between visual presentation, clarity and responsive experience.'
-        ]
-      };
 
       const featuredGrid = document.getElementById('featuredGrid');
       const projectsGrid = document.getElementById('projectsGrid');
@@ -1531,8 +1566,13 @@
         previewUrl.textContent = project.url;
         previewOpen.href = project.url;
         previewOpen.textContent = t('preview_open');
+
         currentPreviewIndex.textContent = String(project.id).padStart(2, '0');
-        projectFrame.src = project.url;
+
+        projectFrame.removeAttribute('src');
+        requestAnimationFrame(() => {
+          projectFrame.src = project.url;
+        });
       }
 
       function makeThumb(project){
@@ -1550,7 +1590,17 @@
       }
 
       function createProjectCard(project){
-        const learned = (project.learned && project.learned[currentLang]) || defaultLearned[currentLang];
+        const learned = (project.learned && project.learned[currentLang]) || [
+          currentLang === 'ro'
+            ? 'Problemă: am urmărit să construiesc o interfață clară și ușor de explorat.'
+            : 'Problem: I wanted to build an interface that feels clear and easy to explore.',
+          currentLang === 'ro'
+            ? 'Soluție: am organizat conținutul astfel încât acțiunile și informațiile principale să fie rapid de înțeles.'
+            : 'Solution: I organized the content so the main actions and information are easy to understand.',
+          currentLang === 'ro'
+            ? 'Provocare: să păstrez un echilibru bun între prezentare vizuală, claritate și experiență responsive.'
+            : 'Challenge: keeping a good balance between visual presentation, clarity and responsive experience.'
+        ];
 
         const article = document.createElement('article');
         article.className = 'project-card glass';
