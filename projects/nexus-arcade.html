@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS ARCADE — Ultimate Fusion Experience</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Chakra+Petch:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg:#05060d;
+  --s1:rgba(10,12,24,.92);
+  --s2:rgba(255,255,255,.04);
+  --brd:rgba(255,255,255,.07);
+  --t1:#e8eaf6;
+  --t2:#7986a0;
+  --cyan:#00e5ff;
+  --mag:#ff2d87;
+  --lime:#76ff03;
+  --amber:#ffab00;
+  --purple:#b388ff;
+  --glow-c:0 0 30px rgba(0,229,255,.25);
+  --glow-m:0 0 30px rgba(255,45,135,.25);
+  --glow-l:0 0 30px rgba(118,255,3,.25);
+  --r:14px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+
+body{
+  font-family:'Chakra Petch',sans-serif;
+  background:var(--bg);
+  color:var(--t1);
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+canvas#bgCanvas{position:fixed;inset:0;z-index:0;width:100%;height:100%;pointer-events:none}
+
+.layer{position:relative;z-index:1;height:100vh;display:flex;flex-direction:column}
+
+/* ─── HUD ─── */
+.hud{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;gap:12px;flex-wrap:wrap;
+  background:linear-gradient(180deg,rgba(0,0,0,.6),transparent);
+}
+.hud-left,.hud-right{display:flex;align-items:center;gap:14px}
+.hud-brand{font-family:'Audiowide',sans-serif;font-size:1rem;letter-spacing:.08em}
+.hud-brand span{color:var(--cyan)}
+.xp-bar-wrap{width:140px;height:6px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}
+.xp-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--cyan),var(--mag));transition:width .5s ease}
+.hud-stat{display:flex;flex-direction:column;align-items:center;line-height:1}
+.hud-stat .val{font-family:'Audiowide',sans-serif;font-size:1.1rem}
+.hud-stat .lbl{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t2)}
+.val-cyan{color:var(--cyan)}
+.val-mag{color:var(--mag)}
+.val-lime{color:var(--lime)}
+.val-amber{color:var(--amber)}
+
+/* ─── SCREENS ─── */
+.screen{
+  flex:1;display:none;flex-direction:column;align-items:center;
+  justify-content:center;padding:20px;overflow-y:auto;
+}
+.screen.active{display:flex}
+
+/* ─── MENU ─── */
+.menu-title{
+  font-family:'Audiowide',sans-serif;
+  font-size:clamp(2.4rem,7vw,5rem);
+  letter-spacing:.06em;
+  text-align:center;
+  line-height:1;
+  margin-bottom:8px;
+}
+.menu-title .n{color:var(--cyan);text-shadow:var(--glow-c)}
+.menu-title .a{color:var(--mag);text-shadow:var(--glow-m)}
+.menu-sub{color:var(--t2);font-size:.88rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:32px;text-align:center}
+
+.mode-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;width:min(100%,760px);margin-bottom:28px;
+}
+
+.mode-card{
+  padding:22px;border-radius:var(--r);border:1px solid var(--brd);
+  background:var(--s1);cursor:pointer;transition:all .25s ease;
+  position:relative;overflow:hidden;
+}
+.mode-card::before{
+  content:'';position:absolute;inset:0;opacity:0;
+  transition:opacity .3s ease;border-radius:var(--r);
+}
+.mode-card:nth-child(1)::before{background:radial-gradient(circle at 30% 30%,rgba(0,229,255,.1),transparent 60%)}
+.mode-card:nth-child(2)::before{background:radial-gradient(circle at 30% 30%,rgba(255,45,135,.1),transparent 60%)}
+.mode-card:nth-child(3)::before{background:radial-gradient(circle at 30% 30%,rgba(118,255,3,.1),transparent 60%)}
+.mode-card:hover::before{opacity:1}
+.mode-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.14)}
+
+.mode-icon{font-size:2rem;margin-bottom:10px}
+.mode-name{font-family:'Audiowide',sans-serif;font-size:1rem;letter-spacing:.04em;margin-bottom:6px}
+.mode-desc{font-size:.82rem;color:var(--t2);line-height:1.5}
+.mode-badge{
+  position:absolute;top:12px;right:12px;
+  padding:4px 10px;border-radius:999px;
+  font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+}
+.badge-cyan{background:rgba(0,229,255,.14);color:var(--cyan);border:1px solid rgba(0,229,255,.2)}
+.badge-mag{background:rgba(255,45,135,.14);color:var(--mag);border:1px solid rgba(255,45,135,.2)}
+.badge-lime{background:rgba(118,255,3,.14);color:var(--lime);border:1px solid rgba(118,255,3,.2)}
+
+.achievements{
+  width:min(100%,760px);padding:16px;border-radius:var(--r);
+  background:var(--s1);border:1px solid var(--brd);
+}
+.ach-title{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--t2);margin-bottom:10px}
+.ach-grid{display:flex;gap:10px;flex-wrap:wrap}
+.ach{
+  padding:8px 14px;border-radius:999px;font-size:.72rem;font-weight:600;
+  border:1px solid var(--brd);background:var(--s2);color:var(--t2);
+  transition:all .3s ease;
+}
+.ach.unlocked{
+  color:var(--amber);border-color:rgba(255,171,0,.3);
+  background:rgba(255,171,0,.08);
+  box-shadow:0 0 12px rgba(255,171,0,.1);
+}
+
+/* ─── GAME AREA ─── */
+.game-header{
+  display:flex;align-items:center;justify-content:space-between;
+  width:min(100%,800px);margin-bottom:14px;gap:12px;flex-wrap:wrap;
+}
+.game-info{display:flex;gap:16px;align-items:center}
+.game-timer{
+  font-family:'Audiowide',sans-serif;font-size:1.6rem;
+  color:var(--amber);min-width:60px;text-align:center;
+}
+.game-timer.danger{color:var(--mag);animation:timerPulse .5s ease infinite alternate}
+@keyframes timerPulse{0%{opacity:1}100%{opacity:.5}}
+
+.game-level{font-size:.72rem;letter-spacing:.1em;color:var(--t2);text-transform:uppercase}
+.game-level span{color:var(--cyan);font-weight:700}
+
+.game-score{font-family:'Audiowide',sans-serif;font-size:1.2rem}
+
+.g-btn{
+  padding:10px 22px;border-radius:999px;border:1px solid var(--brd);
+  background:var(--s2);color:var(--t1);font-family:'Chakra Petch',sans-serif;
+  font-weight:600;font-size:.8rem;letter-spacing:.06em;cursor:pointer;
+  transition:all .2s ease;text-transform:uppercase;
+}
+.g-btn:hover{border-color:rgba(0,229,255,.3);background:rgba(0,229,255,.08)}
+.g-btn-primary{
+  background:linear-gradient(135deg,var(--cyan),var(--mag));
+  border:none;color:#fff;font-weight:700;
+  box-shadow:0 8px 24px rgba(0,229,255,.2);
+}
+.g-btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,229,255,.3)}
+
+/* ─── MEMORY GAME ─── */
+.mem-board{
+  display:grid;gap:10px;width:min(100%,560px);
+  perspective:1000px;
+}
+.mem-card{
+  aspect-ratio:1;border-radius:var(--r);cursor:pointer;
+  perspective:600px;position:relative;
+}
+.mem-card-inner{
+  width:100%;height:100%;position:relative;
+  transform-style:preserve-3d;transition:transform .45s cubic-bezier(.4,0,.2,1);
+  border-radius:var(--r);
+}
+.mem-card.flipped .mem-card-inner{transform:rotateY(180deg)}
+.mem-card.matched .mem-card-inner{transform:rotateY(180deg)}
+.mem-face{
+  position:absolute;inset:0;backface-visibility:hidden;
+  border-radius:var(--r);display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--brd);
+}
+.mem-back{
+  background:linear-gradient(135deg,rgba(0,229,255,.06),rgba(255,45,135,.04)),var(--s1);
+}
+.mem-back::after{
+  content:'?';font-family:'Audiowide',sans-serif;font-size:1.4rem;color:rgba(255,255,255,.1);
+}
+.mem-front{
+  transform:rotateY(180deg);background:var(--s1);
+  font-size:clamp(1.6rem,5vw,2.4rem);
+}
+.mem-card.matched .mem-face.mem-front{
+  border-color:rgba(118,255,3,.4);
+  box-shadow:0 0 20px rgba(118,255,3,.12);
+}
+.mem-card.obstacle .mem-face.mem-back{
+  border-color:rgba(255,45,135,.3);
+  background:linear-gradient(135deg,rgba(255,45,135,.1),rgba(255,45,135,.03)),var(--s1);
+}
+.mem-card.obstacle .mem-face.mem-back::after{content:'☠';color:rgba(255,45,135,.4)}
+
+/* ─── HUNT GAME ─── */
+.hunt-area{
+  width:min(100%,700px);height:400px;border-radius:var(--r);
+  border:1px solid var(--brd);background:var(--s1);
+  position:relative;overflow:hidden;cursor:crosshair;
+}
+.hunt-target{
+  position:absolute;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .15s ease;
+  animation:targetSpawn .3s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes targetSpawn{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+.hunt-target:hover{transform:scale(1.1)}
+.hunt-target.good{
+  background:radial-gradient(circle,rgba(0,229,255,.3),rgba(0,229,255,.05));
+  border:2px solid rgba(0,229,255,.5);box-shadow:var(--glow-c);
+}
+.hunt-target.bonus{
+  background:radial-gradient(circle,rgba(255,171,0,.3),rgba(255,171,0,.05));
+  border:2px solid rgba(255,171,0,.5);box-shadow:0 0 20px rgba(255,171,0,.2);
+}
+.hunt-target.bad{
+  background:radial-gradient(circle,rgba(255,45,135,.3),rgba(255,45,135,.05));
+  border:2px solid rgba(255,45,135,.5);box-shadow:var(--glow-m);
+}
+.hunt-obstacle{
+  position:absolute;border-radius:var(--r);
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+}
+
+/* ─── DASH GAME ─── */
+.dash-canvas-wrap{
+  width:min(100%,700px);height:400px;border-radius:var(--r);
+  border:1px solid var(--brd);overflow:hidden;position:relative;
+}
+.dash-canvas-wrap canvas{width:100%;height:100%}
+
+/* ─── RESULTS ─── */
+.results{
+  text-align:center;width:min(100%,500px);
+  padding:32px;border-radius:20px;
+  background:var(--s1);border:1px solid var(--brd);
+}
+.results h2{
+  font-family:'Audiowide',sans-serif;font-size:1.8rem;margin-bottom:6px;
+}
+.results .big-score{
+  font-family:'Audiowide',sans-serif;font-size:3.4rem;
+  background:linear-gradient(135deg,var(--cyan),var(--mag));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin:10px 0;
+}
+.results-stats{display:flex;justify-content:center;gap:24px;margin:18px 0;flex-wrap:wrap}
+.results-stat{text-align:center}
+.results-stat .rv{font-family:'Audiowide',sans-serif;font-size:1.3rem}
+.results-stat .rl{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t2)}
+.results .new-ach{
+  margin-top:14px;padding:10px 18px;border-radius:var(--r);
+  background:rgba(255,171,0,.06);border:1px solid rgba(255,171,0,.2);
+  color:var(--amber);font-size:.82rem;
+}
+.results-btns{display:flex;gap:12px;justify-content:center;margin-top:22px;flex-wrap:wrap}
+
+/* ─── POPUP ─── */
+.popup{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);
+  z-index:200;font-family:'Audiowide',sans-serif;font-size:clamp(2rem,6vw,3.6rem);
+  pointer-events:none;opacity:0;transition:all .4s cubic-bezier(.2,.8,.2,1);
+  text-shadow:0 0 40px currentColor;white-space:nowrap;
+}
+.popup.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+.popup.hide{transform:translate(-50%,-80%) scale(.6);opacity:0}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:600px){
+  .hud{padding:8px 12px;gap:8px}
+  .mode-grid{grid-template-columns:1fr}
+  .hunt-area,.dash-canvas-wrap{height:300px}
+  .game-header{flex-direction:column;align-items:stretch;text-align:center}
+}
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<div class="layer">
+  <!-- HUD -->
+  <div class="hud">
+    <div class="hud-left">
+      <div class="hud-brand"><span>N</span>EXUS</div>
+      <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar" style="width:0%"></div></div>
+      <div class="hud-stat"><div class="val val-amber" id="hudLevel">LV 1</div><div class="lbl">Level</div></div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-stat"><div class="val val-cyan" id="hudTotal">0</div><div class="lbl">Total XP</div></div>
+      <div class="hud-stat"><div class="val val-mag" id="hudBest">0</div><div class="lbl">Best combo</div></div>
+      <div class="hud-stat"><div class="val val-lime" id="hudAch">0/12</div><div class="lbl">Medals</div></div>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <div class="screen active" id="menuScreen">
+    <div class="menu-title"><span class="n">NEXUS</span> <span class="a">ARCADE</span></div>
+    <div class="menu-sub">3 worlds &bull; infinite levels &bull; one score</div>
+    <div class="mode-grid">
+      <div class="mode-card" data-mode="memory">
+        <div class="mode-badge badge-cyan">Audio + Memory</div>
+        <div class="mode-icon">🧠</div>
+        <div class="mode-name">Synth Memory</div>
+        <div class="mode-desc">Match sound-pairs with obstacles and shrinking timer. Each level adds cards and traps.</div>
+      </div>
+      <div class="mode-card" data-mode="hunt">
+        <div class="mode-badge badge-mag">Precision + Speed</div>
+        <div class="mode-icon">🎯</div>
+        <div class="mode-name">Gravity Hunt</div>
+        <div class="mode-desc">Click targets before they vanish. Avoid traps, hit bonus orbs, survive the boss wave.</div>
+      </div>
+      <div class="mode-card" data-mode="dash">
+        <div class="mode-badge badge-lime">Reflexes + Flow</div>
+        <div class="mode-icon">⚡</div>
+        <div class="mode-name">Particle Dash</div>
+        <div class="mode-desc">Steer your particle through gates, dodge walls, collect orbs. Speed increases every 10s.</div>
+      </div>
+    </div>
+    <div class="achievements" id="achPanel">
+      <div class="ach-title">Achievements</div>
+      <div class="ach-grid" id="achGrid"></div>
+    </div>
+  </div>
+
+  <!-- MEMORY GAME -->
+  <div class="screen" id="memoryScreen">
+    <div class="game-header">
+      <div class="game-info">
+        <div class="game-timer" id="memTimer">30</div>
+        <div class="game-level">Round <span id="memRound">1</span></div>
+      </div>
+      <div class="game-info">
+        <div class="game-score" id="memScore">0 pts</div>
+        <div class="hud-stat"><div class="val val-mag" id="memCombo">0x</div><div class="lbl">Combo</div></div>
+      </div>
+      <button class="g-btn" id="memBack">Menu</button>
+    </div>
+    <div class="mem-board" id="memBoard"></div>
+  </div>
+
+  <!-- HUNT GAME -->
+  <div class="screen" id="huntScreen">
+    <div class="game-header">
+      <div class="game-info">
+        <div class="game-timer" id="huntTimer">30</div>
+        <div class="game-level">Wave <span id="huntWave">1</span></div>
+      </div>
+      <div class="game-info">
+        <div class="game-score" id="huntScore">0 pts</div>
+        <div class="hud-stat"><div class="val val-mag" id="huntCombo">0x</div><div class="lbl">Combo</div></div>
+      </div>
+      <button class="g-btn" id="huntBack">Menu</button>
+    </div>
+    <div class="hunt-area" id="huntArea"></div>
+  </div>
+
+  <!-- DASH GAME -->
+  <div class="screen" id="dashScreen">
+    <div class="game-header">
+      <div class="game-info">
+        <div class="game-timer" id="dashTimer">0</div>
+        <div class="game-level">Speed <span id="dashSpeed">1x</span></div>
+      </div>
+      <div class="game-info">
+        <div class="game-score" id="dashScore">0 pts</div>
+        <div class="hud-stat"><div class="val val-lime" id="dashOrbs">0</div><div class="lbl">Orbs</div></div>
+      </div>
+      <button class="g-btn" id="dashBack">Menu</button>
+    </div>
+    <div class="dash-canvas-wrap" id="dashWrap"><canvas id="dashCanvas"></canvas></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="resultsScreen">
+    <div class="results">
+      <h2 id="resTitle">Round Complete</h2>
+      <div class="big-score" id="resScore">0</div>
+      <div class="results-stats">
+        <div class="results-stat"><div class="rv val-cyan" id="resTime">0:00</div><div class="rl">Time</div></div>
+        <div class="results-stat"><div class="rv val-mag" id="resCombo">0x</div><div class="rl">Best combo</div></div>
+        <div class="results-stat"><div class="rv val-amber" id="resXP">+0 XP</div><div class="rl">Earned</div></div>
+      </div>
+      <div class="new-ach" id="resAch" style="display:none"></div>
+      <div class="results-btns">
+        <button class="g-btn-primary g-btn" id="resNext">Next round</button>
+        <button class="g-btn" id="resMenu">Menu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="popup" id="popup"></div>
+
+<script>
+// ─── GLOBAL STATE ───
+const S={
+  xp:0,level:1,xpNext:100,bestCombo:0,
+  totalPlayed:0,achUnlocked:new Set(),
+  memRound:1,huntWave:1,dashBest:0
+};
+
+const ACHIEVEMENTS=[
+  {id:'first_match',name:'First Blood',desc:'Match your first pair',check:s=>s.totalPlayed>=1},
+  {id:'combo3',name:'Triple Threat',desc:'3x combo in any mode',check:()=>S.bestCombo>=3},
+  {id:'combo5',name:'Unstoppable',desc:'5x combo',check:()=>S.bestCombo>=5},
+  {id:'combo8',name:'Legendary',desc:'8x combo',check:()=>S.bestCombo>=8},
+  {id:'level5',name:'Rising Star',desc:'Reach level 5',check:()=>S.level>=5},
+  {id:'level10',name:'Elite',desc:'Reach level 10',check:()=>S.level>=10},
+  {id:'mem5',name:'Memory Master',desc:'Beat Memory round 5',check:()=>S.memRound>5},
+  {id:'hunt5',name:'Sharpshooter',desc:'Beat Hunt wave 5',check:()=>S.huntWave>5},
+  {id:'dash60',name:'Speed Demon',desc:'Survive 60s in Dash',check:()=>S.dashBest>=60},
+  {id:'xp500',name:'Grinder',desc:'Earn 500 total XP',check:()=>S.xp>=500},
+  {id:'xp2000',name:'Nexus Lord',desc:'Earn 2000 total XP',check:()=>S.xp>=2000},
+  {id:'allModes',name:'Explorer',desc:'Play all 3 modes',check:()=>S.modesPlayed&&S.modesPlayed.size>=3},
+];
+
+function loadState(){
+  try{const d=JSON.parse(localStorage.getItem('nexus-state'));if(d)Object.assign(S,d);S.achUnlocked=new Set(S.achUnlocked||[]);S.modesPlayed=new Set(S.modesPlayed||[])}catch(e){}
+}
+function saveState(){
+  const d={...S,achUnlocked:[...S.achUnlocked],modesPlayed:[...S.modesPlayed||[]]};
+  try{localStorage.setItem('nexus-state',JSON.stringify(d))}catch(e){}
+}
+
+function addXP(amount){
+  S.xp+=amount;
+  while(S.xp>=S.xpNext){S.xp-=S.xpNext;S.level++;S.xpNext=Math.floor(S.xpNext*1.35)}
+  updateHUD();saveState();
+}
+
+function checkAchievements(){
+  const newOnes=[];
+  ACHIEVEMENTS.forEach(a=>{
+    if(!S.achUnlocked.has(a.id)&&a.check(S)){S.achUnlocked.add(a.id);newOnes.push(a)}
+  });
+  saveState();renderAchievements();return newOnes;
+}
+
+function updateHUD(){
+  document.getElementById('hudLevel').textContent='LV '+S.level;
+  document.getElementById('hudTotal').textContent=S.xp+Math.floor(S.xpNext*(parseFloat(document.getElementById('xpBar').style.width||0)/100));
+  document.getElementById('hudTotal').textContent=S.xp;
+  document.getElementById('hudBest').textContent=S.bestCombo+'x';
+  document.getElementById('hudAch').textContent=S.achUnlocked.size+'/'+ACHIEVEMENTS.length;
+  const pct=Math.min(100,Math.round((S.xp/S.xpNext)*100));
+  document.getElementById('xpBar').style.width=pct+'%';
+}
+
+function renderAchievements(){
+  const g=document.getElementById('achGrid');
+  g.innerHTML='';
+  ACHIEVEMENTS.forEach(a=>{
+    const d=document.createElement('div');
+    d.className='ach'+(S.achUnlocked.has(a.id)?' unlocked':'');
+    d.textContent=(S.achUnlocked.has(a.id)?'★ ':'')+a.name;
+    d.title=a.desc;
+    g.appendChild(d);
+  });
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showPopup(text,color,duration=1200){
+  const p=document.getElementById('popup');
+  p.textContent=text;p.style.color=color;
+  p.className='popup show';
+  setTimeout(()=>p.className='popup hide',duration);
+  setTimeout(()=>p.className='popup',duration+400);
+}
+
+// ─── AUDIO ───
+let audioCtx=null;
+function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)()}
+function playTone(freq,dur=.15,type='sine'){
+  initAudio();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type=type;o.frequency.value=freq;
+  g.gain.setValueAtTime(.12,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);
+  o.connect(g);g.connect(audioCtx.destination);
+  o.start();o.stop(audioCtx.currentTime+dur);
+}
+function playMatch(){playTone(523,.2,'triangle');setTimeout(()=>playTone(659,.2,'triangle'),100);setTimeout(()=>playTone(784,.3,'triangle'),200)}
+function playFail(){playTone(200,.3,'sawtooth');setTimeout(()=>playTone(150,.4,'sawtooth'),150)}
+function playHit(){playTone(880,.1,'sine')}
+function playBonus(){playTone(1047,.15,'sine');setTimeout(()=>playTone(1319,.2,'sine'),80)}
+
+// ─── BG PARTICLES ───
+const bgC=document.getElementById('bgCanvas');
+const bgX=bgC.getContext('2d');
+let bgP=[];
+function resizeBg(){bgC.width=innerWidth*devicePixelRatio;bgC.height=innerHeight*devicePixelRatio;bgX.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+resizeBg();addEventListener('resize',resizeBg);
+function emitBg(x,y,n,colors){for(let i=0;i<n;i++)bgP.push({x,y,vx:(Math.random()-.5)*10,vy:(Math.random()-.5)*10,l:1,d:.01+Math.random()*.02,s:2+Math.random()*4,c:colors[Math.random()*colors.length|0]})}
+function animBg(){
+  requestAnimationFrame(animBg);
+  bgX.clearRect(0,0,innerWidth,innerHeight);
+  bgP=bgP.filter(p=>p.l>0);
+  bgP.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vx*=.97;p.vy*=.97;p.vy+=.06;p.l-=p.d;bgX.globalAlpha=p.l;bgX.fillStyle=p.c;bgX.beginPath();bgX.arc(p.x,p.y,p.s*p.l,0,Math.PI*2);bgX.fill()});
+  bgX.globalAlpha=1;
+}
+animBg();
+
+// ─── MEMORY GAME ───
+let memCards=[],memFlipped=[],memMatched=0,memMoves=0,memCombo=0,memScore=0,memTime=0,memMaxTime=30,memInterval=null,memLocked=false;
+const MEM_SYMBOLS=['🌀','⚡','🔮','💎','🎯','🔥','🌊','✨','🎵','💫','🌙','🎪','🧊','🍀'];
+const MEM_FREQS=[262,294,330,349,392,440,494,523,587,659,698,784,831,880];
+
+function memStart(round){
+  S.memRound=round;if(!S.modesPlayed)S.modesPlayed=new Set();S.modesPlayed.add('memory');saveState();
+  const pairs=Math.min(3+round,8);
+  const cols=pairs<=4?4:pairs<=6?4:4;
+  const total=pairs*2;
+  const obstacles=Math.min(Math.floor(round/3),4);
+  const totalWithObs=total+obstacles;
+  const gridCols=totalWithObs<=8?4:totalWithObs<=12?4:totalWithObs<=16?4:5;
+
+  const symbols=MEM_SYMBOLS.slice(0,pairs);
+  let deck=[...symbols,...symbols];
+  for(let i=0;i<obstacles;i++)deck.push('☠');
+  for(let i=deck.length-1;i>0;i--){const j=Math.random()*i|0;[deck[i],deck[j]]=[deck[j],deck[i]]}
+
+  memCards=deck;memFlipped=[];memMatched=0;memMoves=0;memCombo=0;memScore=0;
+  memMaxTime=Math.max(15,35-round*2);memTime=memMaxTime;memLocked=false;
+
+  document.getElementById('memRound').textContent=round;
+  document.getElementById('memTimer').textContent=memTime;
+  document.getElementById('memTimer').classList.remove('danger');
+  document.getElementById('memScore').textContent='0 pts';
+  document.getElementById('memCombo').textContent='0x';
+
+  const board=document.getElementById('memBoard');
+  board.innerHTML='';
+  board.style.gridTemplateColumns=`repeat(${gridCols},1fr)`;
+
+  deck.forEach((sym,i)=>{
+    const card=document.createElement('div');
+    card.className='mem-card'+(sym==='☠'?' obstacle':'');
+    card.dataset.idx=i;card.dataset.sym=sym;
+    card.innerHTML=`<div class="mem-card-inner"><div class="mem-face mem-back"></div><div class="mem-face mem-front">${sym}</div></div>`;
+    card.addEventListener('click',()=>memFlip(card));
+    board.appendChild(card);
+  });
+
+  showScreen('memoryScreen');
+  if(memInterval)clearInterval(memInterval);
+  memInterval=setInterval(()=>{
+    memTime--;
+    document.getElementById('memTimer').textContent=memTime;
+    if(memTime<=5)document.getElementById('memTimer').classList.add('danger');
+    if(memTime<=0){clearInterval(memInterval);memEnd(false)}
+  },1000);
+}
+
+function memFlip(card){
+  if(memLocked)return;
+  if(card.classList.contains('flipped')||card.classList.contains('matched'))return;
+  const sym=card.dataset.sym;
+
+  if(sym==='☠'){
+    card.classList.add('flipped');
+    playFail();
+    memTime=Math.max(0,memTime-5);
+    document.getElementById('memTimer').textContent=memTime;
+    showPopup('-5 SEC',getComputedStyle(document.documentElement).getPropertyValue('--mag').trim(),800);
+    memCombo=0;document.getElementById('memCombo').textContent='0x';
+    setTimeout(()=>card.classList.remove('flipped'),600);
+    return;
+  }
+
+  playTone(MEM_FREQS[MEM_SYMBOLS.indexOf(sym)],.2,'triangle');
+  card.classList.add('flipped');
+  memFlipped.push(card);
+
+  if(memFlipped.length===2){
+    memMoves++;memLocked=true;
+    const[a,b]=memFlipped;
+    if(a.dataset.sym===b.dataset.sym){
+      memCombo++;
+      if(memCombo>S.bestCombo){S.bestCombo=memCombo;saveState();updateHUD()}
+      document.getElementById('memCombo').textContent=memCombo+'x';
+      const bonus=100*memCombo;
+      memScore+=bonus;
+      document.getElementById('memScore').textContent=memScore+' pts';
+
+      setTimeout(()=>{
+        a.classList.add('matched');b.classList.add('matched');
+        playMatch();
+        const rA=a.getBoundingClientRect(),rB=b.getBoundingClientRect();
+        emitBg(rA.left+rA.width/2,rA.top+rA.height/2,20,['#00e5ff','#76ff03','#ffab00']);
+        emitBg(rB.left+rB.width/2,rB.top+rB.height/2,20,['#00e5ff','#76ff03','#ffab00']);
+        if(memCombo>=3)showPopup(memCombo+'x COMBO!','#ffab00');
+        memMatched+=2;memFlipped=[];memLocked=false;
+        const totalPairs=memCards.filter(s=>s!=='☠').length;
+        if(memMatched>=totalPairs){clearInterval(memInterval);memEnd(true)}
+      },300);
+    }else{
+      memCombo=0;document.getElementById('memCombo').textContent='0x';
+      playFail();
+      setTimeout(()=>{a.classList.remove('flipped');b.classList.remove('flipped');memFlipped=[];memLocked=false},700);
+    }
+  }
+}
+
+function memEnd(won){
+  const timeBonus=won?memTime*20:0;
+  const total=memScore+timeBonus;
+  const xp=Math.floor(total/10);
+  if(won)S.memRound++;
+  S.totalPlayed++;addXP(xp);
+  showResults(won?'Round Complete!':'Time\'s Up!',total,memMaxTime-memTime,memCombo,xp,'memory');
+}
+
+// ─── HUNT GAME ───
+let huntScore=0,huntCombo=0,huntTime=0,huntMaxTime=25,huntInterval=null,huntSpawnInterval=null,huntWave=1;
+
+function huntStart(wave){
+  S.huntWave=wave;if(!S.modesPlayed)S.modesPlayed=new Set();S.modesPlayed.add('hunt');saveState();
+  huntWave=wave;huntScore=0;huntCombo=0;
+  huntMaxTime=Math.max(15,30-wave);huntTime=huntMaxTime;
+
+  document.getElementById('huntWave').textContent=wave;
+  document.getElementById('huntTimer').textContent=huntTime;
+  document.getElementById('huntTimer').classList.remove('danger');
+  document.getElementById('huntScore').textContent='0 pts';
+  document.getElementById('huntCombo').textContent='0x';
+
+  const area=document.getElementById('huntArea');
+  area.innerHTML='';
+
+  // Add obstacles for higher waves
+  const obsCount=Math.min(Math.floor(wave/2),6);
+  for(let i=0;i<obsCount;i++){
+    const obs=document.createElement('div');
+    obs.className='hunt-obstacle';
+    const w=40+Math.random()*60,h=40+Math.random()*60;
+    obs.style.cssText=`width:${w}px;height:${h}px;left:${10+Math.random()*80}%;top:${10+Math.random()*80}%`;
+    area.appendChild(obs);
+  }
+
+  showScreen('huntScreen');
+
+  if(huntInterval)clearInterval(huntInterval);
+  if(huntSpawnInterval)clearInterval(huntSpawnInterval);
+
+  huntInterval=setInterval(()=>{
+    huntTime--;
+    document.getElementById('huntTimer').textContent=huntTime;
+    if(huntTime<=5)document.getElementById('huntTimer').classList.add('danger');
+    if(huntTime<=0){clearInterval(huntInterval);clearInterval(huntSpawnInterval);huntEnd()}
+  },1000);
+
+  const spawnRate=Math.max(400,1200-wave*80);
+  huntSpawnInterval=setInterval(()=>huntSpawn(),spawnRate);
+  huntSpawn();
+}
+
+function huntSpawn(){
+  const area=document.getElementById('huntArea');
+  const rect=area.getBoundingClientRect();
+  const size=28+Math.random()*24;
+  const x=Math.random()*(rect.width-size-20)+10;
+  const y=Math.random()*(rect.height-size-20)+10;
+  const rand=Math.random();
+  const type=rand<.15?'bad':rand<.25?'bonus':'good';
+  const lifespan=type==='bonus'?1200:Math.max(800,2500-huntWave*120);
+
+  const t=document.createElement('div');
+  t.className='hunt-target '+type;
+  t.style.cssText=`width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
+  t.textContent=type==='bad'?'✕':type==='bonus'?'★':'●';
+  t.style.fontSize=(size*.45)+'px';t.style.color='inherit';
+
+  t.addEventListener('click',()=>{
+    if(type==='bad'){
+      huntCombo=0;huntScore=Math.max(0,huntScore-50);
+      document.getElementById('huntCombo').textContent='0x';
+      playFail();showPopup('-50','#ff2d87',600);
+    }else{
+      huntCombo++;
+      const pts=type==='bonus'?200*huntCombo:50*huntCombo;
+      huntScore+=pts;
+      if(huntCombo>S.bestCombo){S.bestCombo=huntCombo;saveState();updateHUD()}
+      document.getElementById('huntCombo').textContent=huntCombo+'x';
+      if(type==='bonus')playBonus();else playHit();
+      if(huntCombo>=3&&huntCombo%3===0)showPopup(huntCombo+'x!','#ffab00',600);
+      emitBg(t.getBoundingClientRect().left+size/2,t.getBoundingClientRect().top+size/2,12,type==='bonus'?['#ffab00','#ff2d87']:['#00e5ff','#76ff03']);
+    }
+    document.getElementById('huntScore').textContent=huntScore+' pts';
+    t.remove();
+  });
+
+  area.appendChild(t);
+  setTimeout(()=>{if(t.parentNode){t.remove();if(type==='good'){huntCombo=0;document.getElementById('huntCombo').textContent='0x'}}},lifespan);
+}
+
+function huntEnd(){
+  const xp=Math.floor(huntScore/8);
+  S.huntWave++;S.totalPlayed++;addXP(xp);
+  showResults('Wave Complete!',huntScore,huntMaxTime,huntCombo,xp,'hunt');
+}
+
+// ─── DASH GAME ───
+let dashCanvas,dashCtx,dashRunning=false,dashScore=0,dashOrbs=0,dashTime=0,dashSpeed=1,dashInterval=null,dashAnim=null;
+let player={x:0,y:0,vy:0,size:10};
+let dashObstacles=[],dashOrbsList=[],dashGates=[];
+let mouseY=0;
+
+function dashStart(){
+  if(!S.modesPlayed)S.modesPlayed=new Set();S.modesPlayed.add('dash');saveState();
+  dashCanvas=document.getElementById('dashCanvas');
+  dashCtx=dashCanvas.getContext('2d');
+
+  const wrap=document.getElementById('dashWrap');
+  const dpr=devicePixelRatio;
+  dashCanvas.width=wrap.clientWidth*dpr;
+  dashCanvas.height=wrap.clientHeight*dpr;
+  dashCtx.setTransform(dpr,0,0,dpr,0,0);
+
+  const W=wrap.clientWidth,H=wrap.clientHeight;
+  player={x:80,y:H/2,vy:0,size:8};
+  dashObstacles=[];dashOrbsList=[];dashGates=[];
+  dashScore=0;dashOrbs=0;dashTime=0;dashSpeed=1;dashRunning=true;
+
+  document.getElementById('dashTimer').textContent='0';
+  document.getElementById('dashSpeed').textContent='1x';
+  document.getElementById('dashScore').textContent='0 pts';
+  document.getElementById('dashOrbs').textContent='0';
+
+  showScreen('dashScreen');
+
+  wrap.addEventListener('pointermove',e=>{
+    const rect=wrap.getBoundingClientRect();
+    mouseY=e.clientY-rect.top;
+  });
+
+  if(dashInterval)clearInterval(dashInterval);
+  dashInterval=setInterval(()=>{
+    if(!dashRunning)return;
+    dashTime++;
+    document.getElementById('dashTimer').textContent=dashTime;
+    dashSpeed=1+Math.floor(dashTime/10)*.3;
+    document.getElementById('dashSpeed').textContent=dashSpeed.toFixed(1)+'x';
+
+    // Spawn obstacles
+    if(dashTime%2===0){
+      const gapH=Math.max(60,140-dashTime*1.5);
+      const gapY=40+Math.random()*(H-gapH-80);
+      dashObstacles.push({x:W+10,gapY,gapH,w:24,passed:false});
+    }
+    // Spawn orbs
+    if(dashTime%3===0){
+      dashOrbsList.push({x:W+10,y:30+Math.random()*(H-60),r:8,alive:true});
+    }
+  },1000);
+
+  if(dashAnim)cancelAnimationFrame(dashAnim);
+  dashLoop();
+}
+
+function dashLoop(){
+  if(!dashRunning){cancelAnimationFrame(dashAnim);return}
+  dashAnim=requestAnimationFrame(dashLoop);
+
+  const wrap=document.getElementById('dashWrap');
+  const W=wrap.clientWidth,H=wrap.clientHeight;
+
+  // Player follows mouse
+  const targetY=mouseY||H/2;
+  player.y+=(targetY-player.y)*.12;
+  player.y=Math.max(player.size,Math.min(H-player.size,player.y));
+
+  // Move obstacles
+  const spd=2*dashSpeed;
+  dashObstacles.forEach(o=>{o.x-=spd});
+  dashOrbsList.forEach(o=>{o.x-=spd*.8});
+
+  // Collision
+  dashObstacles.forEach(o=>{
+    if(o.x<player.x+player.size&&o.x+o.w>player.x-player.size){
+      if(player.y-player.size<o.gapY||player.y+player.size>o.gapY+o.gapH){
+        dashRunning=false;playFail();
+        if(dashTime>S.dashBest){S.dashBest=dashTime;saveState()}
+        clearInterval(dashInterval);
+        emitBg(wrap.getBoundingClientRect().left+player.x,wrap.getBoundingClientRect().top+player.y,40,['#ff2d87','#ffab00','#00e5ff']);
+        const xp=dashScore+dashTime*3;S.totalPlayed++;addXP(Math.floor(xp/10));
+        setTimeout(()=>showResults('Crashed!',dashScore+dashTime*10,dashTime,dashOrbs,Math.floor(xp/10),'dash'),600);
+      }else if(!o.passed&&o.x+o.w<player.x){
+        o.passed=true;dashScore+=10;
+        document.getElementById('dashScore').textContent=dashScore+' pts';
+      }
+    }
+  });
+
+  // Orb collection
+  dashOrbsList.forEach(o=>{
+    if(!o.alive)return;
+    const dx=o.x-player.x,dy=o.y-player.y;
+    if(Math.sqrt(dx*dx+dy*dy)<player.size+o.r){
+      o.alive=false;dashOrbs++;dashScore+=50;
+      document.getElementById('dashOrbs').textContent=dashOrbs;
+      document.getElementById('dashScore').textContent=dashScore+' pts';
+      playBonus();
+      emitBg(wrap.getBoundingClientRect().left+o.x,wrap.getBoundingClientRect().top+o.y,10,['#ffab00','#76ff03']);
+    }
+  });
+
+  // Cleanup
+  dashObstacles=dashObstacles.filter(o=>o.x>-30);
+  dashOrbsList=dashOrbsList.filter(o=>o.x>-20);
+
+  // Draw
+  dashCtx.fillStyle='rgba(5,6,13,.3)';
+  dashCtx.fillRect(0,0,W,H);
+
+  // Obstacles
+  dashObstacles.forEach(o=>{
+    dashCtx.fillStyle='rgba(255,45,135,.35)';
+    dashCtx.fillRect(o.x,0,o.w,o.gapY);
+    dashCtx.fillRect(o.x,o.gapY+o.gapH,o.w,H-o.gapY-o.gapH);
+    dashCtx.fillStyle='rgba(255,45,135,.6)';
+    dashCtx.fillRect(o.x,o.gapY-2,o.w,2);
+    dashCtx.fillRect(o.x,o.gapY+o.gapH,o.w,2);
+  });
+
+  // Orbs
+  dashOrbsList.forEach(o=>{
+    if(!o.alive)return;
+    dashCtx.fillStyle='rgba(255,171,0,.2)';
+    dashCtx.beginPath();dashCtx.arc(o.x,o.y,o.r*2,0,Math.PI*2);dashCtx.fill();
+    dashCtx.fillStyle='#ffab00';
+    dashCtx.beginPath();dashCtx.arc(o.x,o.y,o.r,0,Math.PI*2);dashCtx.fill();
+  });
+
+  // Player trail
+  dashCtx.fillStyle='rgba(0,229,255,.15)';
+  dashCtx.beginPath();dashCtx.arc(player.x,player.y,player.size*2.5,0,Math.PI*2);dashCtx.fill();
+  dashCtx.fillStyle='rgba(0,229,255,.3)';
+  dashCtx.beginPath();dashCtx.arc(player.x,player.y,player.size*1.5,0,Math.PI*2);dashCtx.fill();
+  dashCtx.fillStyle='#00e5ff';
+  dashCtx.beginPath();dashCtx.arc(player.x,player.y,player.size,0,Math.PI*2);dashCtx.fill();
+}
+
+// ─── RESULTS ───
+function showResults(title,score,time,combo,xp,mode){
+  document.getElementById('resTitle').textContent=title;
+  document.getElementById('resScore').textContent=score;
+  const m=Math.floor(time/60),sec=time%60;
+  document.getElementById('resTime').textContent=m+':'+String(sec).padStart(2,'0');
+  document.getElementById('resCombo').textContent=combo+'x';
+  document.getElementById('resXP').textContent='+'+xp+' XP';
+
+  const newAch=checkAchievements();
+  const achEl=document.getElementById('resAch');
+  if(newAch.length){
+    achEl.style.display='block';
+    achEl.textContent='★ New: '+newAch.map(a=>a.name).join(', ');
+  }else{
+    achEl.style.display='none';
+  }
+
+  document.getElementById('resNext').onclick=()=>{
+    if(mode==='memory')memStart(S.memRound);
+    else if(mode==='hunt')huntStart(S.huntWave);
+    else dashStart();
+  };
+
+  showScreen('resultsScreen');
+  updateHUD();
+
+  for(let i=0;i<5;i++){
+    setTimeout(()=>emitBg(Math.random()*innerWidth,Math.random()*innerHeight*.5,20,['#00e5ff','#ff2d87','#76ff03','#ffab00']),i*200);
+  }
+}
+
+// ─── NAV ───
+document.querySelectorAll('.mode-card').forEach(c=>{
+  c.addEventListener('click',()=>{
+    const mode=c.dataset.mode;
+    if(mode==='memory')memStart(S.memRound);
+    else if(mode==='hunt')huntStart(S.huntWave);
+    else dashStart();
+  });
+});
+
+document.getElementById('memBack').addEventListener('click',()=>{clearInterval(memInterval);showScreen('menuScreen')});
+document.getElementById('huntBack').addEventListener('click',()=>{clearInterval(huntInterval);clearInterval(huntSpawnInterval);showScreen('menuScreen')});
+document.getElementById('dashBack').addEventListener('click',()=>{dashRunning=false;clearInterval(dashInterval);showScreen('menuScreen')});
+document.getElementById('resMenu').addEventListener('click',()=>showScreen('menuScreen'));
+
+// ─── INIT ───
+loadState();updateHUD();renderAchievements();
+</script>
+</body>
+</html>
