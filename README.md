@@ -4,7 +4,7 @@ A modern portfolio website built to showcase interactive CodePen projects with l
 
 ## 🌐 Live Demo
 
-👉 https://laurandreea10.github.io/codepen-portfolio/
+👉 [https://laurandreea10.github.io/codepen-portfolio/](https://laurandreea10.github.io/codepen-portfolio/index.html#projects)
 
 ---
 
