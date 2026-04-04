@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRAVITY DRAW — Physics-Based Creative Canvas</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: rgba(16, 16, 24, .92);
+    --border: rgba(255,255,255,.06);
+    --rose: #f43f5e;
+    --sky: #38bdf8;
+    --lime: #a3e635;
+    --amber: #fbbf24;
+    --text: #d4d4d8;
+    --dim: #52525b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    overflow: hidden;
+    cursor: crosshair;
+  }
+
+  canvas#drawCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+  }
+
+  .toolbar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  }
+
+  .tool-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--dim);
+    font-size: .72rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tool-btn:hover {
+    background: rgba(255,255,255,.06);
+    color: var(--text);
+  }
+
+  .tool-btn.active {
+    background: rgba(255,255,255,.1);
+    border-color: var(--border);
+    color: #fff;
+  }
+
+  .color-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+
+  .color-dot:hover {
+    transform: scale(1.2);
+  }
+
+  .color-dot.active {
+    border-color: #fff;
+    box-shadow: 0 0 12px currentColor;
+  }
+
+  .sep {
+    width: 1px;
+    height: 24px;
+    background: var(--border);
+    margin: 0 6px;
+  }
+
+  .top-hud {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .hud-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: .82rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .hud-stat {
+    font-size: .72rem;
+    color: var(--dim);
+  }
+
+  .hud-stat span {
+    color: var(--sky);
+    font-weight: 500;
+  }
+
+  .gravity-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gravity-arrow {
+    width: 3px;
+    height: 18px;
+    background: var(--amber);
+    border-radius: 2px;
+    transform-origin: center top;
+    transition: transform .3s ease;
+    position: relative;
+  }
+
+  .gravity-arrow::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--amber);
+  }
+
+  input[type="range"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 80px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255,255,255,.1);
+    outline: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--sky);
+    cursor: grab;
+    border: 2px solid var(--bg);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--sky);
+    cursor: grab;
+    border: 2px solid var(--bg);
+  }
+
+  .range-label {
+    font-size: .6rem;
+    color: var(--dim);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .range-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  @media (max-width: 700px) {
+    .toolbar {
+      bottom: 12px;
+      padding: 8px 12px;
+      gap: 4px;
+      max-width: calc(100% - 24px);
+      flex-wrap: wrap;
+      border-radius: 20px;
+      justify-content: center;
+    }
+    .tool-btn { width: 36px; height: 36px; }
+    .top-hud { top: 12px; padding: 8px 14px; gap: 14px; }
+    input[type="range"] { width: 60px; }
+  }
+</style>
+</head>
+<body>
+<canvas id="drawCanvas"></canvas>
+
+<div class="top-hud">
+  <div class="hud-title">Gravity Draw</div>
+  <div class="hud-stat">Particles: <span id="particleCount">0</span></div>
+  <div class="hud-stat">FPS: <span id="fpsDisplay">60</span></div>
+</div>
+
+<div class="gravity-indicator" title="Gravity direction">
+  <div class="gravity-arrow" id="gravArrow"></div>
+</div>
+
+<div class="toolbar">
+  <div class="color-dot active" style="background:var(--rose); color:var(--rose);" data-color="#f43f5e"></div>
+  <div class="color-dot" style="background:var(--sky); color:var(--sky);" data-color="#38bdf8"></div>
+  <div class="color-dot" style="background:var(--lime); color:var(--lime);" data-color="#a3e635"></div>
+  <div class="color-dot" style="background:var(--amber); color:var(--amber);" data-color="#fbbf24"></div>
+  <div class="color-dot" style="background:#c084fc; color:#c084fc;" data-color="#c084fc"></div>
+  <div class="color-dot" style="background:#fff; color:#fff;" data-color="#ffffff"></div>
+
+  <div class="sep"></div>
+
+  <div class="range-group">
+    <div class="range-label">Size</div>
+    <input type="range" id="brushSize" min="2" max="20" value="5" step="1">
+  </div>
+
+  <div class="range-group">
+    <div class="range-label">Gravity</div>
+    <input type="range" id="gravityStr" min="0" max="5" value="1" step="0.1">
+  </div>
+
+  <div class="range-group">
+    <div class="range-label">Bounce</div>
+    <input type="range" id="bounceStr" min="0" max="1" value="0.7" step="0.05">
+  </div>
+
+  <div class="sep"></div>
+
+  <button class="tool-btn" id="freezeBtn" title="Freeze/unfreeze">❄</button>
+  <button class="tool-btn" id="explodeBtn" title="Explode all">💥</button>
+  <button class="tool-btn" id="clearBtn" title="Clear canvas">✕</button>
+</div>
+
+<script>
+const canvas = document.getElementById('drawCanvas');
+const ctx = canvas.getContext('2d');
+const dpr = window.devicePixelRatio || 1;
+
+let W, H;
+function resize() {
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resize();
+window.addEventListener('resize', resize);
+
+let currentColor = '#f43f5e';
+let particles = [];
+let isDrawing = false;
+let frozen = false;
+let gravityAngle = Math.PI / 2;
+let lastMouse = { x: 0, y: 0 };
+let frameCount = 0;
+let lastFpsTime = performance.now();
+
+class PhysicsParticle {
+  constructor(x, y, vx, vy, size, color) {
+    this.x = x;
+    this.y = y;
+    this.vx = vx;
+    this.vy = vy;
+    this.size = size;
+    this.color = color;
+    this.life = 1;
+    this.decay = 0.0003 + Math.random() * 0.0005;
+    this.trail = [];
+    this.maxTrail = 6;
+  }
+
+  update(gravity, bounce) {
+    if (frozen) return;
+
+    this.trail.push({ x: this.x, y: this.y });
+    if (this.trail.length > this.maxTrail) this.trail.shift();
+
+    const gx = Math.cos(gravityAngle) * gravity;
+    const gy = Math.sin(gravityAngle) * gravity;
+    this.vx += gx * 0.1;
+    this.vy += gy * 0.1;
+
+    this.vx *= 0.998;
+    this.vy *= 0.998;
+
+    this.x += this.vx;
+    this.y += this.vy;
+
+    if (this.x - this.size < 0) { this.x = this.size; this.vx *= -bounce; }
+    if (this.x + this.size > W) { this.x = W - this.size; this.vx *= -bounce; }
+    if (this.y - this.size < 0) { this.y = this.size; this.vy *= -bounce; }
+    if (this.y + this.size > H) { this.y = H - this.size; this.vy *= -bounce; }
+
+    this.life -= this.decay;
+  }
+
+  draw(ctx) {
+    for (let i = 0; i < this.trail.length; i++) {
+      const t = this.trail[i];
+      const alpha = (i / this.trail.length) * 0.15 * this.life;
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      ctx.arc(t.x, t.y, this.size * 0.6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.globalAlpha = this.life * 0.8;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.globalAlpha = this.life * 0.3;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.globalAlpha = 1;
+  }
+}
+
+function spawnParticle(x, y, vx, vy) {
+  const size = parseFloat(document.getElementById('brushSize').value);
+  const p = new PhysicsParticle(
+    x, y,
+    vx + (Math.random() - .5) * 2,
+    vy + (Math.random() - .5) * 2,
+    size * (0.6 + Math.random() * 0.8),
+    currentColor
+  );
+  particles.push(p);
+}
+
+canvas.addEventListener('pointerdown', e => {
+  isDrawing = true;
+  lastMouse = { x: e.clientX, y: e.clientY };
+  spawnParticle(e.clientX, e.clientY, 0, 0);
+});
+
+canvas.addEventListener('pointermove', e => {
+  if (!isDrawing) return;
+  const dx = e.clientX - lastMouse.x;
+  const dy = e.clientY - lastMouse.y;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  const steps = Math.max(1, Math.floor(dist / 4));
+
+  for (let i = 0; i < steps; i++) {
+    const t = i / steps;
+    const px = lastMouse.x + dx * t;
+    const py = lastMouse.y + dy * t;
+    spawnParticle(px, py, dx * 0.3, dy * 0.3);
+  }
+
+  lastMouse = { x: e.clientX, y: e.clientY };
+});
+
+canvas.addEventListener('pointerup', () => { isDrawing = false; });
+canvas.addEventListener('pointerleave', () => { isDrawing = false; });
+
+// Color selection
+document.querySelectorAll('.color-dot').forEach(dot => {
+  dot.addEventListener('click', () => {
+    document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+    dot.classList.add('active');
+    currentColor = dot.dataset.color;
+  });
+});
+
+// Gravity direction via mouse position (subtle)
+document.addEventListener('mousemove', e => {
+  const cx = W / 2;
+  const cy = H / 2;
+  const dx = e.clientX - cx;
+  const dy = e.clientY - cy;
+  gravityAngle = Math.atan2(dy, dx) * 0.3 + Math.PI / 2 * 0.7;
+  document.getElementById('gravArrow').style.transform = `rotate(${gravityAngle * 180 / Math.PI - 90}deg)`;
+});
+
+// Buttons
+document.getElementById('freezeBtn').addEventListener('click', () => {
+  frozen = !frozen;
+  const btn = document.getElementById('freezeBtn');
+  btn.classList.toggle('active', frozen);
+});
+
+document.getElementById('explodeBtn').addEventListener('click', () => {
+  particles.forEach(p => {
+    p.vx += (Math.random() - .5) * 30;
+    p.vy += (Math.random() - .5) * 30;
+  });
+});
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+  particles = [];
+});
+
+// Main loop
+function animate() {
+  requestAnimationFrame(animate);
+
+  ctx.fillStyle = 'rgba(10, 10, 15, .12)';
+  ctx.fillRect(0, 0, W, H);
+
+  const gravity = parseFloat(document.getElementById('gravityStr').value);
+  const bounce = parseFloat(document.getElementById('bounceStr').value);
+
+  particles = particles.filter(p => p.life > 0);
+  particles.forEach(p => {
+    p.update(gravity, bounce);
+    p.draw(ctx);
+  });
+
+  document.getElementById('particleCount').textContent = particles.length;
+
+  frameCount++;
+  const now = performance.now();
+  if (now - lastFpsTime >= 1000) {
+    document.getElementById('fpsDisplay').textContent = frameCount;
+    frameCount = 0;
+    lastFpsTime = now;
+  }
+}
+animate();
+</script>
+</body>
+</html>

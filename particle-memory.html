@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PARTICLE MEMORY — Visual Memory Game</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Anybody:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #08070e;
+    --surface: rgba(18, 16, 30, .88);
+    --border: rgba(255,255,255,.06);
+    --glow-1: #6366f1;
+    --glow-2: #ec4899;
+    --glow-3: #14b8a6;
+    --text: #e2e0f0;
+    --dim: #5c5a72;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  canvas#particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 40px;
+  }
+
+  .top-bar {
+    width: min(100%, 700px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    font-family: 'Anybody', sans-serif;
+    font-weight: 900;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    letter-spacing: .06em;
+    background: linear-gradient(135deg, var(--glow-1), var(--glow-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stats {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stat-label {
+    font-size: .62rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  .stat-value {
+    font-family: 'Anybody', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+  }
+
+  .stat-value.time { color: var(--glow-3); }
+  .stat-value.moves { color: var(--glow-1); }
+  .stat-value.combo { color: var(--glow-2); }
+
+  .board {
+    width: min(100%, 700px);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .card {
+    aspect-ratio: 1;
+    perspective: 800px;
+    cursor: pointer;
+  }
+
+  .card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform .5s cubic-bezier(.4, .0, .2, 1);
+    border-radius: 16px;
+  }
+
+  .card.flipped .card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .card.matched .card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+  }
+
+  .card-back {
+    background:
+      radial-gradient(circle at 30% 30%, rgba(99,102,241,.12), transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(236,72,153,.08), transparent 50%),
+      var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .card-back::after {
+    content: '';
+    width: 32px;
+    height: 32px;
+    border: 2px solid rgba(255,255,255,.08);
+    border-radius: 8px;
+    transform: rotate(45deg);
+  }
+
+  .card-front {
+    transform: rotateY(180deg);
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-size: clamp(2rem, 6vw, 3.2rem);
+  }
+
+  .card:hover .card-inner {
+    transform: scale(1.03);
+  }
+
+  .card.flipped:hover .card-inner,
+  .card.matched:hover .card-inner {
+    transform: rotateY(180deg) scale(1.03);
+  }
+
+  .card.matched .card-face.card-front {
+    border-color: rgba(20, 184, 166, .4);
+    box-shadow: 0 0 28px rgba(20, 184, 166, .15);
+  }
+
+  .card.matched .card-face.card-back {
+    border-color: rgba(20, 184, 166, .4);
+  }
+
+  .bottom-bar {
+    width: min(100%, 700px);
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .msg {
+    font-size: .92rem;
+    color: var(--dim);
+    min-height: 24px;
+  }
+
+  .msg.win {
+    font-family: 'Anybody', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, var(--glow-3), var(--glow-1));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .btn-reset {
+    padding: 12px 24px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.04);
+    color: var(--text);
+    font-family: 'Anybody', sans-serif;
+    font-weight: 700;
+    font-size: .82rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+
+  .btn-reset:hover {
+    border-color: var(--glow-1);
+    background: rgba(99,102,241,.1);
+    box-shadow: 0 0 16px rgba(99,102,241,.15);
+  }
+
+  .combo-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-family: 'Anybody', sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0;
+    transition: all .4s cubic-bezier(.2, .8, .2, 1);
+  }
+
+  .combo-popup.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+
+  .combo-popup.hide {
+    transform: translate(-50%, -80%) scale(.5);
+    opacity: 0;
+  }
+
+  @media (max-width: 500px) {
+    .board { gap: 8px; }
+    .card-inner { border-radius: 12px; }
+    .card-face { border-radius: 12px; }
+  }
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+<div class="app">
+  <div class="top-bar">
+    <div class="logo">PARTICLE MEMORY</div>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Time</div>
+        <div class="stat-value time" id="timer">0:00</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Moves</div>
+        <div class="stat-value moves" id="moves">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Combo</div>
+        <div class="stat-value combo" id="combo">0x</div>
+      </div>
+    </div>
+  </div>
+  <div class="board" id="board"></div>
+  <div class="bottom-bar">
+    <div class="msg" id="msg">Find all matching pairs</div>
+    <button class="btn-reset" id="resetBtn">New game</button>
+  </div>
+</div>
+<div class="combo-popup" id="comboPopup"></div>
+
+<script>
+const SYMBOLS = ['🌀','⚡','🔮','💎','🎯','🔥','🌊','✨'];
+let cards = [];
+let flipped = [];
+let matched = 0;
+let moveCount = 0;
+let comboCount = 0;
+let bestCombo = 0;
+let timerInterval = null;
+let seconds = 0;
+let locked = false;
+let gameStarted = false;
+
+// Particle system
+const pCanvas = document.getElementById('particles');
+const pCtx = pCanvas.getContext('2d');
+let particlesList = [];
+
+function resizeParticles() {
+  pCanvas.width = window.innerWidth * devicePixelRatio;
+  pCanvas.height = window.innerHeight * devicePixelRatio;
+  pCtx.scale(devicePixelRatio, devicePixelRatio);
+}
+resizeParticles();
+window.addEventListener('resize', resizeParticles);
+
+class Particle {
+  constructor(x, y, color) {
+    this.x = x;
+    this.y = y;
+    this.vx = (Math.random() - .5) * 8;
+    this.vy = (Math.random() - .5) * 8;
+    this.life = 1;
+    this.decay = .01 + Math.random() * .02;
+    this.size = 2 + Math.random() * 4;
+    this.color = color;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.vx *= .97;
+    this.vy *= .97;
+    this.vy += .08;
+    this.life -= this.decay;
+  }
+  draw(ctx) {
+    ctx.globalAlpha = this.life;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size * this.life, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+}
+
+function emitParticles(x, y, count, colors) {
+  for (let i = 0; i < count; i++) {
+    particlesList.push(new Particle(x, y, colors[Math.floor(Math.random() * colors.length)]));
+  }
+}
+
+function animateParticles() {
+  requestAnimationFrame(animateParticles);
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  pCtx.clearRect(0, 0, w, h);
+  particlesList = particlesList.filter(p => p.life > 0);
+  particlesList.forEach(p => {
+    p.update();
+    p.draw(pCtx);
+  });
+}
+animateParticles();
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function initGame() {
+  const boardEl = document.getElementById('board');
+  boardEl.innerHTML = '';
+  cards = shuffle([...SYMBOLS, ...SYMBOLS]);
+  flipped = [];
+  matched = 0;
+  moveCount = 0;
+  comboCount = 0;
+  bestCombo = 0;
+  seconds = 0;
+  locked = false;
+  gameStarted = false;
+  if (timerInterval) clearInterval(timerInterval);
+  document.getElementById('timer').textContent = '0:00';
+  document.getElementById('moves').textContent = '0';
+  document.getElementById('combo').textContent = '0x';
+  document.getElementById('msg').textContent = 'Find all matching pairs';
+  document.getElementById('msg').className = 'msg';
+
+  cards.forEach((symbol, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.index = i;
+    card.dataset.symbol = symbol;
+    card.innerHTML = `
+      <div class="card-inner">
+        <div class="card-face card-back"></div>
+        <div class="card-face card-front">${symbol}</div>
+      </div>
+    `;
+    card.addEventListener('click', () => flipCard(card));
+    boardEl.appendChild(card);
+  });
+}
+
+function startTimer() {
+  if (gameStarted) return;
+  gameStarted = true;
+  timerInterval = setInterval(() => {
+    seconds++;
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    document.getElementById('timer').textContent = `${m}:${s.toString().padStart(2, '0')}`;
+  }, 1000);
+}
+
+function flipCard(card) {
+  if (locked) return;
+  if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+  if (flipped.length >= 2) return;
+
+  startTimer();
+
+  card.classList.add('flipped');
+  flipped.push(card);
+
+  if (flipped.length === 2) {
+    moveCount++;
+    document.getElementById('moves').textContent = moveCount;
+    locked = true;
+
+    const [a, b] = flipped;
+    if (a.dataset.symbol === b.dataset.symbol) {
+      comboCount++;
+      if (comboCount > bestCombo) bestCombo = comboCount;
+      document.getElementById('combo').textContent = comboCount + 'x';
+
+      setTimeout(() => {
+        a.classList.add('matched');
+        b.classList.add('matched');
+
+        const rectA = a.getBoundingClientRect();
+        const rectB = b.getBoundingClientRect();
+        const colors = ['#6366f1', '#ec4899', '#14b8a6', '#fbbf24'];
+        emitParticles(rectA.left + rectA.width / 2, rectA.top + rectA.height / 2, 25, colors);
+        emitParticles(rectB.left + rectB.width / 2, rectB.top + rectB.height / 2, 25, colors);
+
+        if (comboCount >= 2) showComboPopup(comboCount);
+
+        matched += 2;
+        flipped = [];
+        locked = false;
+
+        if (matched === cards.length) {
+          clearInterval(timerInterval);
+          const m = Math.floor(seconds / 60);
+          const s = seconds % 60;
+          document.getElementById('msg').textContent = `Complete! ${m}:${s.toString().padStart(2, '0')} — ${moveCount} moves — Best combo: ${bestCombo}x`;
+          document.getElementById('msg').className = 'msg win';
+
+          for (let i = 0; i < 8; i++) {
+            setTimeout(() => {
+              emitParticles(
+                Math.random() * window.innerWidth,
+                Math.random() * window.innerHeight * .6,
+                40,
+                ['#6366f1', '#ec4899', '#14b8a6', '#fbbf24', '#f97316']
+              );
+            }, i * 200);
+          }
+        }
+      }, 300);
+    } else {
+      comboCount = 0;
+      document.getElementById('combo').textContent = '0x';
+      setTimeout(() => {
+        a.classList.remove('flipped');
+        b.classList.remove('flipped');
+        flipped = [];
+        locked = false;
+      }, 800);
+    }
+  }
+}
+
+function showComboPopup(count) {
+  const popup = document.getElementById('comboPopup');
+  const colors = ['#6366f1', '#ec4899', '#14b8a6', '#fbbf24'];
+  popup.style.color = colors[Math.min(count - 2, colors.length - 1)];
+  popup.style.textShadow = `0 0 40px ${popup.style.color}`;
+  popup.textContent = count + 'x COMBO!';
+  popup.className = 'combo-popup show';
+  setTimeout(() => { popup.className = 'combo-popup hide'; }, 1000);
+  setTimeout(() => { popup.className = 'combo-popup'; }, 1400);
+}
+
+document.getElementById('resetBtn').addEventListener('click', initGame);
+initGame();
+</script>
+</body>
+</html>
