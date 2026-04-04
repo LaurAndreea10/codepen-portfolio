@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breakout | Laura Andreea CodePen Portfolio</title>
+  <meta name="description" content="Joc arcade clasic tip Breakout, cu mecanici simple și rapide. Creat pe CodePen cu HTML, CSS și JavaScript." />
+  <meta name="author" content="Laura Andreea" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#071226" />
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/projects/breakout.html" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Breakout | Laura Andreea" />
+  <meta property="og:description" content="Joc arcade clasic tip Breakout, cu mecanici simple și rapide. Creat pe CodePen cu HTML, CSS și JavaScript." />
+  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/projects/breakout.html" />
+  <meta property="og:site_name" content="CodePen Portfolio" />
+  <meta property="og:locale" content="ro_RO" />
+  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Breakout | Laura Andreea" />
+  <meta name="twitter:description" content="Joc arcade clasic tip Breakout, cu mecanici simple și rapide. Creat pe CodePen cu HTML, CSS și JavaScript." />
+  <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": "Breakout",
+    "description": "Classic Breakout-style arcade game. Built on CodePen with HTML, CSS and JavaScript.",
+    "url": "https://laurandreea10.github.io/codepen-portfolio/projects/breakout.html",
+    "author": {
+      "@type": "Person",
+      "name": "Laura Andreea",
+      "url": "https://laurandreea10.github.io/codepen-portfolio/"
+    },
+    "genre": "game",
+    "keywords": "Game, Arcade, Breakout",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Laura Andreea CodePen Portfolio",
+      "url": "https://laurandreea10.github.io/codepen-portfolio/"
+    }
+  }
+  </script>
+  <style>
+    :root{
+      --bg:#071226;--bg-2:#0b1730;--panel:rgba(13,24,46,.78);--panel-2:rgba(255,255,255,.06);
+      --text:#eef4ff;--muted:#9db0d4;--line:rgba(255,255,255,.1);
+      --accent:#4f8cff;--accent-2:#8b5cf6;--shadow:0 20px 50px rgba(0,0,0,.35);--container:860px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(79,140,255,.18), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(139,92,246,.16), transparent 24%),
+        linear-gradient(180deg,var(--bg-2),var(--bg));
+      color:var(--text);
+      min-height:100vh;
+    }
+    a{color:inherit}
+    .container{width:min(var(--container), calc(100% - 32px));margin:0 auto;}
+    .glass{
+      background:var(--panel);border:1px solid var(--line);
+      box-shadow:var(--shadow);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    }
+    .topbar{padding:18px 0;}
+    .nav{
+      padding:14px 18px;border-radius:999px;display:flex;align-items:center;
+      justify-content:space-between;gap:16px;flex-wrap:wrap;
+    }
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.02em;text-decoration:none;}
+    .brand-badge{
+      width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-weight:800;
+    }
+    .back{
+      border:1px solid var(--line);background:var(--panel-2);color:var(--text);
+      border-radius:999px;padding:10px 14px;text-decoration:none;font-weight:600;transition:.2s ease;
+    }
+    .back:hover{transform:translateY(-1px);border-color:rgba(79,140,255,.34);}
+    .card{border-radius:24px;padding:28px;margin:22px 0;}
+    .eyebrow{
+      display:inline-flex;font-size:.84rem;font-weight:800;text-transform:uppercase;
+      letter-spacing:.08em;color:var(--accent);margin-bottom:14px;
+    }
+    h1{
+      margin:0 0 18px;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.1;letter-spacing:-.03em;
+    }
+    p{margin:0 0 14px;color:var(--muted);line-height:1.8;font-size:1.02rem;}
+    .tags{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0;}
+    .tag{
+      display:inline-flex;padding:8px 12px;border-radius:999px;
+      background:var(--panel-2);border:1px solid var(--line);color:var(--muted);
+      font-size:.86rem;text-transform:capitalize;
+    }
+    .tag.game{color:#ffd7c0;background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.24)}
+    .tag.utility{color:#c5ffe5;background:rgba(16,185,129,.14);border-color:rgba(16,185,129,.24)}
+    .tag.challenge{color:#edd6ff;background:rgba(168,85,247,.14);border-color:rgba(168,85,247,.24)}
+    .tag.ui{color:#cfe2ff;background:rgba(96,165,250,.14);border-color:rgba(96,165,250,.24)}
+    .thumb{
+      position:relative;min-height:220px;border-radius:22px;overflow:hidden;
+      border:1px solid var(--line);padding:14px;margin-bottom:22px;
+    }
+    .thumb-browser{display:flex;gap:6px;margin-bottom:12px;}
+    .thumb-browser span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.34);}
+    .thumb-screen{
+      min-height:170px;border-radius:18px;border:1px solid rgba(255,255,255,.08);
+      background:rgba(5,10,22,.42);display:flex;flex-direction:column;align-items:center;
+      justify-content:center;padding:24px;text-align:center;
+    }
+    .thumb-title{
+      font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:.08em;
+      text-transform:uppercase;line-height:1;
+    }
+    .thumb-subtitle{
+      margin-top:10px;font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;
+      color:rgba(255,255,255,.72);
+    }
+    .thumb-bar{
+      margin-top:18px;width:72%;height:38px;border-radius:12px;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
+    }
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0;}
+    .btn{
+      min-height:48px;display:inline-flex;align-items:center;justify-content:center;
+      padding:0 20px;border-radius:999px;font-weight:700;text-decoration:none;transition:.22s ease;
+      border:1px solid transparent;
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{
+      color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow:0 16px 28px rgba(37,99,235,.25);
+    }
+    .btn-secondary{background:var(--panel-2);color:var(--text);border-color:var(--line);}
+    .footer{padding:28px 0;text-align:center;color:var(--muted);font-size:.92rem;}
+    @media (max-width:760px){
+      .card{padding:18px;}
+      .container{width:min(var(--container), calc(100% - 20px));}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <nav class="nav glass">
+        <a class="brand" href="../index.html">
+          <span class="brand-badge" aria-hidden="true">CP</span>
+          <span>Portofoliu CodePen</span>
+        </a>
+        <a class="back" href="../index.html#projects">&larr; Toate proiectele</a>
+      </nav>
+    </div>
+  </div>
+  <main>
+    <div class="container">
+      <article class="card glass">
+        <span class="eyebrow">game</span>
+        <h1>Breakout</h1>
+        <p>Joc arcade clasic tip Breakout, cu mecanici simple și rapide. Creat pe CodePen cu HTML, CSS și JavaScript.</p>
+        <p><em>Classic Breakout-style arcade game. Built on CodePen with HTML, CSS and JavaScript.</em></p>
+        <div class="tags">
+          <span class="tag game">game</span>
+          <span class="tag">Game</span>
+          <span class="tag">Arcade</span>
+          <span class="tag">Breakout</span>
+        </div>
+        <div class="thumb" style="background:linear-gradient(135deg, rgba(249,115,22,.28), rgba(251,146,60,.10))">
+          <div class="thumb-browser"><span></span><span></span><span></span></div>
+          <div class="thumb-screen">
+            <div class="thumb-title" style="color:#f97316">BREAKOUT</div>
+            <div class="thumb-subtitle">ARCADE</div>
+            <div class="thumb-bar"></div>
+          </div>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://es-d-1768016420260328-019cf0ef-e43a-76c2-8a55-17856c11fe89.codepen.dev/" target="_blank" rel="noopener noreferrer">Deschide pe CodePen</a>
+          <a class="btn btn-secondary" href="../index.html#projects">Toate proiectele</a>
+        </div>
+        <section>
+          <h2 style="font-size:1.1rem;margin:22px 0 10px;">Despre acest proiect</h2>
+          <p>
+            Acest proiect face parte din portofoliul front-end al Laurei Andreea și a fost creat
+            folosind HTML, CSS și JavaScript. Este publicat pe CodePen și poate fi explorat
+            interactiv direct din browser. Categoria principală este <strong>game</strong>,
+            iar tehnologiile și conceptele folosite includ: Game, Arcade, Breakout.
+          </p>
+          <p>
+            This project is part of Laura Andreea's front-end portfolio and was built using
+            HTML, CSS and JavaScript. It is published on CodePen and can be explored interactively
+            in the browser. The main category is <strong>game</strong>, and the
+            technologies and concepts used include: Game, Arcade, Breakout.
+          </p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      Laura Andreea &mdash; CodePen Portfolio &bull;
+      <a href="../index.html" style="color:var(--accent)">Pagina principală</a>
+    </div>
+  </footer>
+</body>
+</html>
