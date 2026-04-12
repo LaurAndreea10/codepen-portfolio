@@ -125,7 +125,12 @@
     .tag.utility{color:#c5ffe5;background:rgba(16,185,129,.14);border-color:rgba(16,185,129,.24)}
     .tag.challenge{color:#edd6ff;background:rgba(168,85,247,.14);border-color:rgba(168,85,247,.24)}
     .tag.ui{color:#cfe2ff;background:rgba(96,165,250,.14);border-color:rgba(96,165,250,.24)}
-    body.light .tag.game{color:#9a3412} body.light .tag.utility{color:#047857} body.light .tag.challenge{color:#6d28d9} body.light .tag.ui{color:#1d4ed8}
+    .tag.fork{color:#bde7ff;background:rgba(14,165,233,.14);border-color:rgba(14,165,233,.24)}
+    body.light .tag.game{color:#9a3412}
+    body.light .tag.utility{color:#047857}
+    body.light .tag.challenge{color:#6d28d9}
+    body.light .tag.ui{color:#1d4ed8}
+    body.light .tag.fork{color:#0369a1}
     .mini-btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;border-radius:14px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);font-weight:700;transition:.2s ease;cursor:pointer}
     .mini-btn:hover{transform:translateY(-2px)}
     .mini-btn.primary{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent}
@@ -165,11 +170,8 @@
     .project-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}.project-actions .mini-btn{flex:1;min-width:120px}
     .empty-state{display:none;padding:28px;text-align:center;color:var(--muted);border-radius:24px;margin-top:12px}
     .contact-card{text-align:center;padding:34px 22px}.contact-actions{margin-top:20px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}.footer{padding:10px 0 40px;text-align:center;color:var(--muted);font-size:.95rem}
-    /* Scroll reveal */
     .reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
     .reveal.visible{opacity:1;transform:translateY(0)}
-
-    /* Timeline */
     .timeline{position:relative;padding-left:28px}
     .timeline::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(to bottom,var(--accent),var(--accent-2),var(--line));border-radius:2px}
     .timeline-item{position:relative;padding-bottom:32px}
@@ -181,8 +183,6 @@
     .timeline-desc{font-size:.92rem;color:var(--muted);line-height:1.6}
     .timeline-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
     .timeline-tags span{padding:5px 10px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);font-size:.8rem;color:var(--muted)}
-
-    /* Blog */
     .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
     .blog-card{display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:24px;transition:.22s ease}
     .blog-card:hover{transform:translateY(-4px)}
@@ -211,6 +211,7 @@
           <a href="#about" data-i18n="nav_about">Despre</a>
           <a href="#journey" data-i18n="nav_journey">Parcurs</a>
           <a href="#preview" data-i18n="nav_preview">Preview</a>
+          <a href="#forks" data-i18n="nav_forks">Forks</a>
           <a href="#projects" data-i18n="nav_projects">Proiecte</a>
           <a href="#blog" data-i18n="nav_blog">Blog</a>
           <a href="#contact" data-i18n="nav_contact">Contact</a>
@@ -238,7 +239,7 @@
         <div class="stats-grid">
           <article class="stat-card glass">
             <h3 data-i18n="stat_projects">Proiecte live</h3>
-            <div class="stat-value" id="projectCount">45</div>
+            <div class="stat-value" id="projectCount">46</div>
             <div class="muted" data-i18n="stat_projects_text">Experimente și demo-uri publicate pe CodePen</div>
           </article>
           <article class="stat-card glass">
@@ -283,6 +284,19 @@
           </div>
         </div>
         <div class="projects-grid" id="recentGrid" aria-label="Proiecte recente"></div>
+      </div>
+    </section>
+
+    <section id="forks" aria-label="Forks și proiecte inspirate">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" data-i18n="forks_eyebrow">Forks</span>
+            <h2 data-i18n="forks_title">Studii vizuale, fork-uri și explorări separate</h2>
+            <p class="muted" data-i18n="forks_text">Am separat proiectele de tip fork de colecția principală, ca să rămână clar ce este produs original și ce este studiu, inspirație sau reinterpretare vizuală.</p>
+          </div>
+        </div>
+        <div class="projects-grid" id="forksGrid" aria-label="Forks"></div>
       </div>
     </section>
 
@@ -426,7 +440,7 @@
 
       const translations = {
         ro: {
-          brand:'Portofoliu CodePen', nav_about:'Despre', nav_preview:'Preview', nav_projects:'Proiecte', nav_contact:'Contact',
+          brand:'Portofoliu CodePen', nav_about:'Despre', nav_preview:'Preview', nav_forks:'Forks', nav_projects:'Proiecte', nav_contact:'Contact',
           hero_eyebrow:'Marketing Specialist • Social Media Manager • Front-end autodidact',
           hero_title:'Construiesc experiențe digitale clare, interactive și gândite din perspectiva utilizatorului',
           hero_text:'Am experiență în CRM, Marketing Digital și Social Media Management pentru afaceri mici. Am certificări Google, freeCodeCamp, Anthropic și LinkedIn Learning. În paralel, din pasiune și disciplină, construiesc aplicații utile, mini jocuri și interfețe interactive în HTML, CSS și JavaScript.',
@@ -435,6 +449,7 @@
           stat_experience:'Certificări', stat_experience_text:'Google, freeCodeCamp, Anthropic, LinkedIn Learning', stat_focus:'Focus', stat_focus_text:'De la CRM & Marketing la front-end development autodidact',
           featured_eyebrow:'Featured', featured_title:'Selecție recomandată',
           recent_eyebrow:'Proiecte recente', recent_title:'Cele mai noi proiecte adăugate',
+          forks_eyebrow:'Forks', forks_title:'Studii vizuale, fork-uri și explorări separate', forks_text:'Am separat proiectele de tip fork de colecția principală, ca să rămână clar ce este produs original și ce este studiu, inspirație sau reinterpretare vizuală.',
           about_eyebrow:'Despre mine', about_title:'Combin experiența din CRM și Marketing cu explorarea front-end pentru a construi produse mai clare și mai umane',
           about_text_1:'Am lucrat ca Pro bono Marketing Specialist & Strategist pentru afaceri mici și ca Social Media Manager. Experiența mea acoperă CRM, administrare baze de date, campanii digitale, Facebook Ads Manager, A/B Testing, e-commerce SEO, generare de leaduri, content management și colaborare pe platforme imobiliare. Asta mi-a format o gândire orientată spre utilizator, structură și rezultate reale.',
           about_text_2:'Din 2022 am început să acumulez certificări tehnice: JavaScript Essential Training, Programming Foundations, Data Analysis with Python (freeCodeCamp), Google Ads Measurement, Google Digital Marketing și Claude Code in Action (Anthropic). În paralel, din pasiune și disciplină, dezvolt proiecte personale în HTML, CSS și JavaScript — mini jocuri, aplicații SaaS, platforme educaționale și interfețe interactive.',
@@ -450,10 +465,11 @@
           preview_live:'Preview live', open_new_tab:'Open tab nou', theme_dark:'🌙 Dark', theme_light:'☀️ Light', learn_title:'Problemă + soluție + decizii',
           nav_journey:'Parcurs', nav_blog:'Blog',
           journey_eyebrow:'Parcurs', journey_title:'De la CRM la cod — cum am ajuns aici',
-          blog_eyebrow:'Blog', blog_title:'Ce am învățat pe drum', blog_read:'Citește'
+          blog_eyebrow:'Blog', blog_title:'Ce am învățat pe drum', blog_read:'Citește',
+          fork_open:'Deschide fork-ul', fork_source:'Fork separat'
         },
         en: {
-          brand:'CodePen Portfolio', nav_about:'About', nav_preview:'Preview', nav_projects:'Projects', nav_contact:'Contact',
+          brand:'CodePen Portfolio', nav_about:'About', nav_preview:'Preview', nav_forks:'Forks', nav_projects:'Projects', nav_contact:'Contact',
           hero_eyebrow:'Marketing Specialist • Social Media Manager • Self-taught front-end',
           hero_title:'I build clear, interactive digital experiences shaped by user perspective',
           hero_text:'I have experience in CRM, Digital Marketing and Social Media Management for small businesses. I hold certifications from Google, freeCodeCamp, Anthropic and LinkedIn Learning. In parallel, through passion and discipline, I build useful apps, mini games and interactive interfaces in HTML, CSS and JavaScript.',
@@ -462,6 +478,7 @@
           stat_experience:'Certifications', stat_experience_text:'Google, freeCodeCamp, Anthropic, LinkedIn Learning', stat_focus:'Focus', stat_focus_text:'From CRM & Marketing to self-taught front-end development',
           featured_eyebrow:'Featured', featured_title:'Recommended selection',
           recent_eyebrow:'Recent projects', recent_title:'Newest added projects',
+          forks_eyebrow:'Forks', forks_title:'Separate forks and visual explorations', forks_text:'I separated fork-based projects from the main collection so original product work stays distinct from studies, inspiration and reinterpretations.',
           about_eyebrow:'About me', about_title:'I combine CRM and Marketing experience with front-end exploration to build clearer, more human digital products',
           about_text_1:'I worked as a Pro bono Marketing Specialist & Strategist for small businesses and as a Social Media Manager. My experience covers CRM, database management, digital campaigns, Facebook Ads Manager, A/B Testing, e-commerce SEO, lead generation, content management and collaboration on real estate platforms. This shaped a mindset focused on users, structure and real results.',
           about_text_2:'Since 2022 I have been accumulating technical certifications: JavaScript Essential Training, Programming Foundations, Data Analysis with Python (freeCodeCamp), Google Ads Measurement, Google Digital Marketing and Claude Code in Action (Anthropic). In parallel, through passion and discipline, I build personal projects in HTML, CSS and JavaScript — mini games, SaaS apps, educational platforms and interactive interfaces.',
@@ -477,7 +494,8 @@
           preview_live:'Live preview', open_new_tab:'Open in new tab', theme_dark:'🌙 Dark', theme_light:'☀️ Light', learn_title:'Problem + solution + decisions',
           nav_journey:'Journey', nav_blog:'Blog',
           journey_eyebrow:'Journey', journey_title:'From CRM to code — how I got here',
-          blog_eyebrow:'Blog', blog_title:'What I learned along the way', blog_read:'Read'
+          blog_eyebrow:'Blog', blog_title:'What I learned along the way', blog_read:'Read',
+          fork_open:'Open fork', fork_source:'Separate fork'
         }
       };
 
@@ -522,20 +540,40 @@
         {id:38, category:'ui', tags:['UI','Interactive','Experimental'], url:'https://es-d-6681629020260406-019d5a00-2ebc-767a-893d-eb83f59078ed.codepen.dev/', title:{ro:'Nexus Arcade', en:'Nexus Arcade'}, description:{ro:'Un nou experiment UI adăugat în portofoliu, pregătit pentru preview live și interacțiune.', en:'A new UI experiment added to the portfolio, ready for live preview and interaction.'}, thumbTitle:'NEXUS', thumbSubtitle:'ARCADE', thumbLang:'EN', thumbColor:'#22c55e', thumbBg:'linear-gradient(135deg, rgba(34,197,94,.28), rgba(59,130,246,.12))'},
         {id:39, category:'utility', tags:['BAC','Education','Quiz','AI Coach','Pomodoro'], url:'https://es-d-0809875720260407-019d5ef1-1fdb-786e-8eed-22aceacf81f9.codepen.dev/', title:{ro:'BAC Space Premium', en:'BAC Space Premium'}, description:{ro:'Platformă educațională pentru BAC care combină quiz-uri, simulări, AI coach, pomodoro și calendar de studiu într-un singur spațiu.', en:'Educational BAC platform that combines quizzes, exam simulations, AI coach, pomodoro and study calendar in one space.'}, thumbTitle:'BAC SPACE', thumbSubtitle:'PREMIUM', thumbLang:'RO', thumbColor:'#60a5fa', thumbBg:'linear-gradient(135deg, rgba(59,130,246,.28), rgba(16,185,129,.12))', learned:{ro:['Problemă: am vrut să adun într-un singur produs mai multe nevoi reale de studiu fără să creez haos în interfață.','Soluție: am construit o platformă educațională care combină quiz-uri, simulări, AI coach, pomodoro și calendar într-o structură clară și coerentă.','Decizie tehnică: am tratat fiecare funcționalitate ca parte dintr-un ecosistem, nu ca module puse la întâmplare.','Decizie UI/UX: am urmărit orientare rapidă, prioritizare clară și o experiență care susține progresul, nu doar consumul de conținut.','Provocare: să păstrez claritatea într-un produs cu mai multe instrumente și obiective diferite.','Ce demonstrează: că pot organiza produse digitale complexe în experiențe ușor de înțeles și folosit.'], en:['Problem: I wanted to bring multiple real study needs into one product without creating interface chaos.','Solution: I built an educational platform that combines quizzes, simulations, AI coach, pomodoro and a study calendar inside one clear structure.','Technical decision: I treated each feature as part of an ecosystem, not as random disconnected modules.','UI/UX decision: I focused on quick orientation, strong prioritization and an experience that supports progress, not just content consumption.','Challenge: keeping clarity inside a product with multiple tools and different goals.','What it demonstrates: that I can organize complex digital products into experiences that are easy to understand and use.']}},
         {id:40, category:'challenge', tags:['Challenge','Code Words','Strings'], url:'https://es-d-1611250420260409-019d641f-3e50-79b4-8311-0db4e163ef1b.codepen.dev/', title:{ro:'Code Words · Strings', en:'Code Words · Strings'}, description:{ro:'Challenge axat pe stringuri, cu logică de procesare, reguli clare și rezolvare orientată pe text.', en:'String-focused challenge built around text processing, clear rules and logic-driven solutions.'}, thumbTitle:'CODE WORDS', thumbSubtitle:'STRINGS', thumbLang:'EN', thumbColor:'#8b5cf6', thumbBg:'linear-gradient(135deg, rgba(139,92,246,.28), rgba(79,140,255,.12))'},
-
         {id:41, category:'utility', featured:true, tags:['Growth Lab','Client Portal','Media Studio','Content Workspace','Mobile-first','RO/EN'], url:'https://codepen.io/Laura-Andreea-the-typescripter/pen/ByLOQZV', title:{ro:'Utility Fusion Studio app', en:'Utility Fusion Studio app'}, description:{ro:'Aplicație premium unificată pentru creștere, lucru cu clienții și conținut, care combină growth lab, client portal, media studio și content workspace într-un singur produs clar și mobil-first.', en:'Unified premium app for growth, client work and content, combining a growth lab, client portal, media studio and content workspace in one clear mobile-first product.'}, thumbTitle:'FUSION', thumbSubtitle:'STUDIO APP', thumbLang:'RO/EN', thumbColor:'#22d3ee', thumbBg:'linear-gradient(135deg, rgba(34,211,238,.26), rgba(139,92,246,.18), rgba(217,70,239,.12))', learned:{ro:['Problemă: am vrut să unific mai multe concepte într-o singură aplicație fără să pierd claritatea structurii sau coerența experienței.','Soluție: am combinat growth lab, client portal, media studio, content planning și export center într-un singur workspace premium.','Decizie tehnică: am organizat produsul modular, ca microsite, demo de produs și workspace real, totul rulând local și optimizat pentru telefon.','Decizie UI/UX: am păstrat orientare clară, navigare logică și flow-uri distincte pentru lucru cu date, clienți și conținut.','Provocare: să integrez zone funcționale diferite într-o experiență unitară, fără aglomerare vizuală.','Ce demonstrează: că pot conecta mai multe tipuri de produs într-o singură interfață coerentă, utilă și prezentabilă în portofoliu.'], en:['Problem: I wanted to unify multiple concepts into one application without losing structural clarity or experience consistency.','Solution: I combined a growth lab, client portal, media studio, content planning and export center into one premium workspace.','Technical decision: I organized the product modularly so it works as a microsite, product demo and real workspace, all running locally and optimized for mobile.','UI/UX decision: I kept the orientation clear, the navigation logical and the flows distinct for data work, client work and content work.','Challenge: integrating different functional areas into one unified experience without visual clutter.','What it demonstrates: that I can connect multiple product types inside one coherent, useful and portfolio-ready interface.']}},
-
         {id:42, category:'utility', tags:['CRM','Bookings','Content Studio','XLSX','Workspace','RO/EN'], url:'https://es-d-8430037720260411-019d6ba2-ba54-745e-95fb-ae9d822cdf92.codepen.dev/', title:{ro:'ALPis Fusion v5.4', en:'ALPis Fusion v5.4'}, description:{ro:'Workspace unificat care combină CRM, programări, servicii, export XLSX workbook și Content Studio într-o singură interfață clară, modulară și orientată pe productivitate.', en:'Unified workspace that combines CRM, bookings, services, XLSX workbook export and a Content Studio inside one clear, modular and productivity-focused interface.'}, thumbTitle:'ALPIS', thumbSubtitle:'FUSION v5.4', thumbLang:'RO/EN', thumbColor:'#22d3ee', thumbBg:'linear-gradient(135deg, rgba(34,211,238,.26), rgba(59,130,246,.16), rgba(139,92,246,.14))'},
-
         {id:43, category:'utility', featured:true, tags:['Food','Menu','Planning','RO'], url:'https://es-d-4029897220260413-019d63dd-a750-7f1d-8769-de10f5881bd2.codepen.dev/', title:{ro:'Ce mâncăm azi?', en:'What Are We Eating Today?'}, description:{ro:'Aplicație orientată pe alegerea meselor și organizarea rapidă a opțiunilor culinare într-o interfață clară și prietenoasă.', en:'Meal-focused app built to help organize food choices and daily planning inside a clear and friendly interface.'}, thumbTitle:'CE MÂNCĂM', thumbSubtitle:'AZI?', thumbLang:'RO', thumbColor:'#fbbf24', thumbBg:'linear-gradient(135deg, rgba(251,191,36,.28), rgba(249,115,22,.14))'},
-
         {id:44, category:'utility', tags:['ALPis','Fusion','Workspace','RO/EN'], url:'https://es-d-4029897220260413-019d7cd3-34b4-7538-a067-51b147dd0f7b.codepen.dev/', title:{ro:'ALPis Fusion', en:'ALPis Fusion'}, description:{ro:'Workspace ALPis Fusion cu structură modulară și fluxuri clare pentru organizare, lucru și prezentare într-o singură experiență.', en:'ALPis Fusion workspace with modular structure and clear flows for organization, work and presentation in a single experience.'}, thumbTitle:'ALPIS', thumbSubtitle:'FUSION', thumbLang:'RO/EN', thumbColor:'#22d3ee', thumbBg:'linear-gradient(135deg, rgba(34,211,238,.26), rgba(59,130,246,.16), rgba(139,92,246,.14))'},
-
         {id:45, category:'utility', tags:['ALPis','CRM','Fusion','RO/EN'], url:'https://es-d-4029897220260413-019d7cd3-34b4-7538-a067-51b147dd0f7b.codepen.dev/', title:{ro:'Alpis Fusion CRM', en:'Alpis Fusion CRM'}, description:{ro:'Versiune orientată pe CRM din ecosistemul Alpis Fusion, construită pentru claritate, relații cu clienții și fluxuri ușor de urmărit.', en:'CRM-oriented version from the Alpis Fusion ecosystem, built for clarity, client work and easy-to-follow operational flows.'}, thumbTitle:'ALPIS CRM', thumbSubtitle:'FUSION', thumbLang:'RO/EN', thumbColor:'#34d399', thumbBg:'linear-gradient(135deg, rgba(52,211,153,.28), rgba(34,211,238,.14), rgba(59,130,246,.10))'}
+      ];
+
+      const forks = [
+        {
+          id:'fork-01',
+          category:'fork',
+          tags:['Fork','Pure CSS','3D','Animated Carousel','Study'],
+          url:'https://codepen.io/Laura-Andreea-the-typescripter/pen/pvEQeMp',
+          title:{ro:'Pure CSS 3D animated carousel - minimal code, heavily commented', en:'Pure CSS 3D animated carousel - minimal code, heavily commented'},
+          description:{ro:'Fork separat pentru studiul unui carousel 3D animat construit doar cu HTML + CSS, cu accent pe profunzime, rotație, layering și comentarii clare.', en:'Separate fork for studying a 3D animated carousel built with HTML + CSS only, focused on depth, rotation, layering and clear comments.'},
+          thumbTitle:'3D', thumbSubtitle:'CAROUSEL', thumbLang:'PURE CSS', thumbColor:'#7dd3fc', thumbBg:'linear-gradient(135deg, rgba(14,165,233,.26), rgba(79,70,229,.18), rgba(139,92,246,.12))',
+          learned:{
+            ro:[
+              'Problemă: am vrut să separ proiectele de tip fork de proiectele originale din portofoliu.',
+              'Soluție: am adăugat o secțiune dedicată Forks, fără să modific structura secțiunilor existente.',
+              'Ce demonstrează: că pot păstra claritatea informațională și diferența dintre produs original și studiu vizual.'
+            ],
+            en:[
+              'Problem: I wanted to separate fork-based work from original portfolio projects.',
+              'Solution: I added a dedicated Forks section without changing the existing section structure.',
+              'What it demonstrates: that I can preserve informational clarity and keep original product work distinct from visual studies.'
+            ]
+          }
+        }
       ];
 
       const featuredGrid = document.getElementById('featuredGrid');
       const recentGrid = document.getElementById('recentGrid');
+      const forksGrid = document.getElementById('forksGrid');
       const projectsGrid = document.getElementById('projectsGrid');
       const challengesGrid = document.getElementById('challengesGrid');
       const experimentsGrid = document.getElementById('experimentsGrid');
@@ -611,8 +649,19 @@
         return article;
       }
 
+      function createForkCard(project){
+        const learned = (project.learned && project.learned[currentLang]) || [];
+        const article = document.createElement('article');
+        article.className = 'project-card glass';
+        article.dataset.projectId = project.id;
+        const learnId = `learn-content-${project.id}`;
+        const toggleId = `learn-toggle-${project.id}`;
+        article.innerHTML = `${makeThumb(project)}<div class="project-top"><div><h3>${project.title[currentLang]}</h3></div><span class="tag fork">${t('fork_source')}</span></div><p class="project-desc">${project.description[currentLang]}</p><div class="skills">${project.tags.map(tag => `<span>${tag}</span>`).join('')}</div><div class="learn-box"><button class="learn-toggle" type="button" id="${toggleId}" aria-expanded="false" aria-controls="${learnId}">${t('learn_title')} <span aria-hidden="true">+</span></button><div class="learn-content" id="${learnId}" role="region" aria-labelledby="${toggleId}" hidden><ul>${learned.map(item => `<li>${item}</li>`).join('')}</ul></div></div><div class="project-actions"><a class="mini-btn primary" href="${project.url}" target="_blank" rel="noopener noreferrer">${t('fork_open')}</a><a class="mini-btn" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">CodePen</a><a class="mini-btn" href="${HUB_URL}" target="_blank" rel="noopener noreferrer">Hub</a></div>`;
+        return article;
+      }
+
       function updateActivePreviewCards(){
-        document.querySelectorAll('.project-card').forEach(card => card.classList.toggle('active-preview', Number(card.dataset.projectId) === activePreview.id));
+        document.querySelectorAll('.project-card').forEach(card => card.classList.toggle('active-preview', String(card.dataset.projectId) === String(activePreview.id)));
       }
 
       function setPreview(project){
@@ -639,7 +688,7 @@
 
       function bindCardEvents(scope){
         scope.querySelectorAll('[data-preview]').forEach(btn => btn.addEventListener('click', () => {
-          const project = projects.find(p => p.id === Number(btn.dataset.preview));
+          const project = projects.find(p => String(p.id) === String(btn.dataset.preview));
           if (!project) return;
           setPreview(project);
           document.getElementById('preview').scrollIntoView({behavior:'smooth', block:'start'});
@@ -667,6 +716,12 @@
           .slice(0, 6)
           .forEach(project => recentGrid.appendChild(createProjectCard(project)));
         bindCardEvents(recentGrid);
+      }
+
+      function renderForks(){
+        forksGrid.innerHTML = '';
+        forks.forEach(project => forksGrid.appendChild(createForkCard(project)));
+        bindCardEvents(forksGrid);
       }
 
       function renderProjects(){
@@ -705,9 +760,9 @@
         searchInput.placeholder = t('search_placeholder');
         langToggle.textContent = currentLang === 'ro' ? 'RO | EN' : 'EN | RO';
         themeToggle.textContent = document.body.classList.contains('light') ? t('theme_light') : t('theme_dark');
-        projectCount.textContent = String(projects.length);
+        projectCount.textContent = String(projects.length + forks.length);
         localStorage.setItem('portfolio-lang', currentLang);
-        updateToggleAria(); updateFilterAria(); renderFeatured(); renderRecentProjects(); renderProjects(); setPreview(activePreview);
+        updateToggleAria(); updateFilterAria(); renderFeatured(); renderRecentProjects(); renderForks(); renderProjects(); setPreview(activePreview);
         if(typeof renderTimeline === 'function') renderTimeline();
         if(typeof renderBlog === 'function') renderBlog();
       }
@@ -724,12 +779,24 @@
         themeToggle.textContent = document.body.classList.contains('light') ? t('theme_light') : t('theme_dark');
         updateToggleAria();
       });
-      langToggle.addEventListener('click', () => { currentLang = currentLang === 'ro' ? 'en' : 'ro'; localStorage.setItem('portfolio-lang', currentLang); applyTranslations(); });
-      filterChips.addEventListener('click', event => { const chip = event.target.closest('.chip'); if (!chip) return; activeFilter = chip.dataset.filter; updateFilterAria(); renderProjects(); });
+
+      langToggle.addEventListener('click', () => {
+        currentLang = currentLang === 'ro' ? 'en' : 'ro';
+        localStorage.setItem('portfolio-lang', currentLang);
+        applyTranslations();
+      });
+
+      filterChips.addEventListener('click', event => {
+        const chip = event.target.closest('.chip');
+        if (!chip) return;
+        activeFilter = chip.dataset.filter;
+        updateFilterAria();
+        renderProjects();
+      });
+
       searchInput.addEventListener('input', renderProjects);
       ['hubLinkTop','hubLinkHero','previewHub','hubLinkContact'].forEach(id => { const el = document.getElementById(id); if (el) el.href = HUB_URL; });
-      projectCount.textContent = String(projects.length);
-      /* ── Timeline data & render ── */
+
       const timelineData = [
         { year:'Ian 2022', title:{ro:'Primele certificări tehnice și de marketing', en:'First technical & marketing certifications'}, desc:{ro:'Am obținut certificări LinkedIn în JavaScript Essential Training, Programming Foundations, Google Ads, Social Media Marketing Strategy și Project Management Communication. Primii pași concreți spre o bază solidă.', en:'Earned LinkedIn certifications in JavaScript Essential Training, Programming Foundations, Google Ads, Social Media Marketing Strategy and Project Management Communication. First concrete steps toward a solid foundation.'}, tags:['JavaScript','Google Ads','Social Media','Project Management']},
         { year:'Aug 2022', title:{ro:'Certificări Google — Marketing Digital & YouTube', en:'Google Certifications — Digital Marketing & YouTube'}, desc:{ro:'Am obținut certificarea Google în Noțiuni fundamentale de marketing digital și certificarea YouTube Music prin Skillshop. Am consolidat cunoștințele în SEO, SEM, email marketing și content marketing.', en:'Earned Google Digital Marketing Fundamentals and YouTube Music certification through Skillshop. Consolidated knowledge in SEO, SEM, email marketing and content marketing.'}, tags:['Google','SEO','SEM','Email Marketing','Content Marketing']},
@@ -758,7 +825,6 @@
         observeReveals();
       }
 
-      /* ── Blog data & render ── */
       const blogData = [
         { date:'Ian 2022', title:{ro:'De la marketing la cod: de ce am simțit că lipsește ceva', en:'From marketing to code: why I felt something was missing'}, desc:{ro:'Ani de zile am gândit produse digitale din perspectiva marketingului — campanii, funnel-uri, conversii. Dar nu puteam construi ce gândeam. În ianuarie 2022 am luat primele certificări în JavaScript și Programming Foundations. Nu știam încă unde mă va duce, dar știam că vreau să înțeleg cum funcționează lucrurile sub capotă.', en:'For years I thought about digital products from a marketing perspective — campaigns, funnels, conversions. But I couldn\'t build what I was thinking. In January 2022 I took my first certifications in JavaScript and Programming Foundations. I didn\'t know where it would lead, but I knew I wanted to understand how things work under the hood.'}, tags:['Career shift','JavaScript','Motivation']},
         { date:'Mar 2026', title:{ro:'Cum am construit Basket vs AI — primul meu joc serios', en:'How I built Basket vs AI — my first serious game'}, desc:{ro:'Game loop, state management, logica adversarului controlat de cod, feedback vizual instant. Ce m-a surprins: cât de mult contează timing-ul și ritmul într-un joc. Nu e doar despre cod corect — e despre cum se simte interacțiunea. Experiența din CRM cu feedback-ul utilizatorului m-a ajutat enorm aici.', en:'Game loop, state management, code-controlled opponent logic, instant visual feedback. What surprised me: how much timing and rhythm matter in a game. It\'s not just about correct code — it\'s about how the interaction feels. My CRM experience with user feedback helped enormously here.'}, tags:['JavaScript','Game Loop','AI Logic','UX']},
@@ -781,7 +847,6 @@
         observeReveals();
       }
 
-      /* ── Scroll Reveal ── */
       function observeReveals(){
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         document.querySelectorAll('.reveal:not(.visible)').forEach((el, i) => {
@@ -808,7 +873,9 @@
 
       document.querySelectorAll('.stat-card, .about-card, .preview-card, .contact-card, .section-head').forEach(el => el.classList.add('reveal'));
 
-      applySavedTheme(); applyTranslations(); setPreview(activePreview);
+      applySavedTheme();
+      applyTranslations();
+      setPreview(activePreview);
     });
   </script>
 </body>
