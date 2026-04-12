@@ -165,6 +165,33 @@
     .project-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}.project-actions .mini-btn{flex:1;min-width:120px}
     .empty-state{display:none;padding:28px;text-align:center;color:var(--muted);border-radius:24px;margin-top:12px}
     .contact-card{text-align:center;padding:34px 22px}.contact-actions{margin-top:20px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}.footer{padding:10px 0 40px;text-align:center;color:var(--muted);font-size:.95rem}
+    /* Scroll reveal */
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    /* Timeline */
+    .timeline{position:relative;padding-left:28px}
+    .timeline::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(to bottom,var(--accent),var(--accent-2),var(--line));border-radius:2px}
+    .timeline-item{position:relative;padding-bottom:32px}
+    .timeline-item:last-child{padding-bottom:0}
+    .timeline-dot{position:absolute;left:-24px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);z-index:1;transition:.25s ease}
+    .timeline-item:hover .timeline-dot{background:var(--accent);box-shadow:0 0 10px rgba(79,140,255,.4)}
+    .timeline-year{font-size:.78rem;font-weight:800;color:var(--accent);letter-spacing:.05em;margin-bottom:4px}
+    .timeline-title{font-size:1rem;font-weight:700;margin-bottom:4px}
+    .timeline-desc{font-size:.92rem;color:var(--muted);line-height:1.6}
+    .timeline-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+    .timeline-tags span{padding:5px 10px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);font-size:.8rem;color:var(--muted)}
+
+    /* Blog */
+    .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+    .blog-card{display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:24px;transition:.22s ease}
+    .blog-card:hover{transform:translateY(-4px)}
+    .blog-date{font-size:.78rem;font-weight:700;color:var(--accent);letter-spacing:.04em}
+    .blog-card h3{font-size:1.1rem;line-height:1.3;letter-spacing:-.02em}
+    .blog-card p{color:var(--muted);line-height:1.7;font-size:.94rem;flex:1}
+    .blog-tags{display:flex;flex-wrap:wrap;gap:6px}
+    .blog-tags span{padding:5px 10px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);font-size:.8rem;color:var(--muted)}
+
     @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
     @media (max-width:1080px){.hero-grid,.two-col,.projects-grid{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
     @media (max-width:760px){.container{width:min(var(--container),calc(100% - 20px))}.hero-grid,.stats-grid,.projects-grid{grid-template-columns:1fr}.nav{border-radius:24px}.hero-card,.stat-card,.about-card,.preview-card,.controls,.project-card,.contact-card{padding:18px}h1{max-width:100%;font-size:clamp(2rem,9vw,3rem)}iframe{min-height:280px}.project-actions{flex-direction:column}}
@@ -182,8 +209,10 @@
         </a>
         <div class="nav-links">
           <a href="#about" data-i18n="nav_about">Despre</a>
+          <a href="#journey" data-i18n="nav_journey">Parcurs</a>
           <a href="#preview" data-i18n="nav_preview">Preview</a>
           <a href="#projects" data-i18n="nav_projects">Proiecte</a>
+          <a href="#blog" data-i18n="nav_blog">Blog</a>
           <a href="#contact" data-i18n="nav_contact">Contact</a>
           <a id="hubLinkTop" class="pill" href="https://es-d-6681629020260406-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/#projects" target="_blank" rel="noopener noreferrer">Hub</a>
           <button class="pill" id="langToggle" type="button" aria-label="Schimbă limba între română și engleză" aria-pressed="false">RO | EN</button>
@@ -197,7 +226,7 @@
     <div class="container">
       <div class="hero-grid">
         <article class="hero-card glass">
-          <span class="eyebrow" data-i18n="hero_eyebrow">CRM • Marketing • Front-end autodidact</span>
+          <span class="eyebrow" data-i18n="hero_eyebrow">Marketing Specialist • Social Media Manager • Front-end autodidact</span>
           <h1 data-i18n="hero_title">Construiesc experiențe digitale clare, interactive și gândite din perspectiva utilizatorului</h1>
           <p class="hero-text" data-i18n="hero_text">Am peste 5 ani de experiență în CRM și Marketing, iar în paralel explorez front-end development din pasiune și disciplină. Portofoliul meu reunește aplicații utile, mini jocuri și interfețe interactive construite pentru a demonstra logică, structură, feedback și decizii UI/UX, nu doar estetică.</p>
           <div class="hero-actions">
@@ -218,14 +247,14 @@
             <div class="muted" data-i18n="stat_preview_text">Poți schimba proiectul afișat direct din carduri</div>
           </article>
           <article class="stat-card glass">
-            <h3 data-i18n="stat_experience">Background</h3>
-            <div class="stat-value">CRM</div>
-            <div class="muted" data-i18n="stat_experience_text">Relații cu clienții, retenție, campanii și gândire orientată pe utilizator</div>
+            <h3 data-i18n="stat_experience">Certificări</h3>
+            <div class="stat-value">10+</div>
+            <div class="muted" data-i18n="stat_experience_text">Google, freeCodeCamp, Anthropic, LinkedIn Learning</div>
           </article>
           <article class="stat-card glass">
             <h3 data-i18n="stat_focus">Focus</h3>
             <div class="stat-value">JS</div>
-            <div class="muted" data-i18n="stat_focus_text">Interfețe interactive, flow-uri utile, mini-jocuri și prototipuri front-end</div>
+            <div class="muted" data-i18n="stat_focus_text">De la CRM & Marketing la front-end development autodidact</div>
           </article>
         </div>
       </div>
@@ -262,10 +291,10 @@
         <article class="about-card glass">
           <span class="eyebrow" data-i18n="about_eyebrow">Despre mine</span>
           <h2 data-i18n="about_title">Combin experiența din CRM și Marketing cu explorarea front-end pentru a construi produse mai clare și mai umane</h2>
-          <p data-i18n="about_text_1">Cu peste 5 ani de experiență în CRM și Marketing, am lucrat cu baze de date, campanii, retenție, comunicare și optimizarea relației cu potențialii clienți. Asta mi-a format o gândire orientată spre utilizator, structură și rezultate reale.</p>
-          <p data-i18n="about_text_2">În paralel, din pasiune și dorința de a învăța continuu, dezvolt proiecte personale în HTML, CSS și JavaScript. Construiesc mini jocuri, interfețe interactive și pagini moderne în care mă interesează nu doar cum arată produsul, ci și cum se simte, cum reacționează și cât de clar își transmite scopul.</p>
+          <p data-i18n="about_text_1">Am lucrat ca Pro bono Marketing Specialist & Strategist pentru afaceri mici și ca Social Media Manager. Experiența mea acoperă CRM, administrare baze de date, campanii digitale, Facebook Ads Manager, A/B Testing, e-commerce SEO, generare de leaduri, content management și colaborare pe platforme imobiliare. Asta mi-a format o gândire orientată spre utilizator, structură și rezultate reale.</p>
+          <p data-i18n="about_text_2">Din 2022 am început să acumulez certificări tehnice: JavaScript Essential Training, Programming Foundations, Data Analysis with Python (freeCodeCamp), Google Ads Measurement, Google Digital Marketing și Claude Code in Action (Anthropic). În paralel, din pasiune și disciplină, dezvolt proiecte personale în HTML, CSS și JavaScript — mini jocuri, aplicații SaaS, platforme educaționale și interfețe interactive.</p>
           <div class="skills">
-            <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Responsive Design</span><span>UI/UX Thinking</span><span>CRM</span><span>Marketing</span><span>State & Interaction</span>
+            <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Python</span><span>Responsive Design</span><span>UI/UX Thinking</span><span>CRM</span><span>Marketing Digital</span><span>Google Ads</span><span>SEO</span><span>SEM</span><span>A/B Testing</span><span>Social Media</span><span>Content Marketing</span><span>Email Marketing</span><span>Data Analysis</span><span>GDPR</span><span>Facebook Ads</span><span>State & Interaction</span>
           </div>
         </article>
 
@@ -288,6 +317,18 @@
           <iframe id="projectFrame" title="Preview proiect CodePen" loading="lazy" sandbox="allow-same-origin"></iframe>
           <div class="preview-note" data-i18n="preview_note">Preview-ul este generat local în portofoliu ca să fie afișat mereu, inclusiv pentru proiectele care blochează iframe extern.</div>
         </article>
+      </div>
+    </section>
+
+    <section id="journey" aria-label="Parcursul meu">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" data-i18n="journey_eyebrow">Parcurs</span>
+            <h2 data-i18n="journey_title">De la CRM la cod — cum am ajuns aici</h2>
+          </div>
+        </div>
+        <div class="timeline" id="timelineContainer"></div>
       </div>
     </section>
 
@@ -346,6 +387,18 @@
       </div>
     </section>
 
+    <section id="blog" aria-label="Blog">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" data-i18n="blog_eyebrow">Blog</span>
+            <h2 data-i18n="blog_title">Ce am învățat pe drum</h2>
+          </div>
+        </div>
+        <div class="blog-grid" id="blogGrid"></div>
+      </div>
+    </section>
+
     <section id="contact">
       <div class="container">
         <article class="contact-card glass">
@@ -355,6 +408,7 @@
           <div class="contact-actions">
             <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com" data-i18n="contact_email">Email</a>
             <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="btn btn-secondary" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">CodePen</a>
             <a class="btn btn-secondary" id="hubLinkContact" href="https://es-d-6681629020260406-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/#projects" target="_blank" rel="noopener noreferrer" data-i18n="contact_hub">Hub complet</a>
           </div>
         </article>
@@ -373,17 +427,17 @@
       const translations = {
         ro: {
           brand:'Portofoliu CodePen', nav_about:'Despre', nav_preview:'Preview', nav_projects:'Proiecte', nav_contact:'Contact',
-          hero_eyebrow:'CRM • Marketing • Front-end autodidact',
+          hero_eyebrow:'Marketing Specialist • Social Media Manager • Front-end autodidact',
           hero_title:'Construiesc experiențe digitale clare, interactive și gândite din perspectiva utilizatorului',
-          hero_text:'Am peste 5 ani de experiență în CRM și Marketing, iar în paralel explorez front-end development din pasiune și disciplină. Portofoliul meu reunește aplicații utile, mini jocuri și interfețe interactive construite pentru a demonstra logică, structură, feedback și decizii UI/UX, nu doar estetică.',
+          hero_text:'Am experiență în CRM, Marketing Digital și Social Media Management pentru afaceri mici. Am certificări Google, freeCodeCamp, Anthropic și LinkedIn Learning. În paralel, din pasiune și disciplină, construiesc aplicații utile, mini jocuri și interfețe interactive în HTML, CSS și JavaScript.',
           hero_cta_1:'Vezi proiectele', hero_cta_2:'Despre mine', hero_cta_3:'Deschide hub-ul complet',
           stat_projects:'Proiecte live', stat_projects_text:'Experimente și demo-uri publicate pe CodePen', stat_preview:'Preview activ', stat_preview_text:'Poți schimba proiectul afișat direct din carduri',
-          stat_experience:'Background', stat_experience_text:'Relații cu clienții, retenție, campanii și gândire orientată pe utilizator', stat_focus:'Focus', stat_focus_text:'Interfețe interactive, flow-uri utile, mini-jocuri și prototipuri front-end',
+          stat_experience:'Certificări', stat_experience_text:'Google, freeCodeCamp, Anthropic, LinkedIn Learning', stat_focus:'Focus', stat_focus_text:'De la CRM & Marketing la front-end development autodidact',
           featured_eyebrow:'Featured', featured_title:'Selecție recomandată',
           recent_eyebrow:'Proiecte recente', recent_title:'Cele mai noi proiecte adăugate',
           about_eyebrow:'Despre mine', about_title:'Combin experiența din CRM și Marketing cu explorarea front-end pentru a construi produse mai clare și mai umane',
-          about_text_1:'Cu peste 5 ani de experiență în CRM și Marketing, am lucrat cu baze de date, campanii, retenție, comunicare și optimizarea relației cu potențialii clienți. Asta mi-a format o gândire orientată spre utilizator, structură și rezultate reale.',
-          about_text_2:'În paralel, din pasiune și dorința de a învăța continuu, dezvolt proiecte personale în HTML, CSS și JavaScript. Construiesc mini jocuri, interfețe interactive și pagini moderne în care mă interesează nu doar cum arată produsul, ci și cum se simte, cum reacționează și cât de clar își transmite scopul.',
+          about_text_1:'Am lucrat ca Pro bono Marketing Specialist & Strategist pentru afaceri mici și ca Social Media Manager. Experiența mea acoperă CRM, administrare baze de date, campanii digitale, Facebook Ads Manager, A/B Testing, e-commerce SEO, generare de leaduri, content management și colaborare pe platforme imobiliare. Asta mi-a format o gândire orientată spre utilizator, structură și rezultate reale.',
+          about_text_2:'Din 2022 am început să acumulez certificări tehnice: JavaScript Essential Training, Programming Foundations, Data Analysis with Python (freeCodeCamp), Google Ads Measurement, Google Digital Marketing și Claude Code in Action (Anthropic). În paralel, din pasiune și disciplină, dezvolt proiecte personale în HTML, CSS și JavaScript — mini jocuri, aplicații SaaS, platforme educaționale și interfețe interactive.',
           preview_eyebrow:'Preview live', preview_open:'Deschide proiectul', preview_hub:'Vezi hub-ul complet', preview_note:'Preview-ul este generat local în portofoliu ca să fie afișat mereu, inclusiv pentru proiectele care blochează iframe extern.', preview_fallback_label:'Preview local',
           projects_eyebrow:'Proiecte', projects_title:'Explorează colecția de proiecte', projects_results:'rezultate afișate', filter_all:'Toate',
           main_projects_eyebrow:'Top Projects', main_projects_title:'Proiecte care arată cel mai clar cum transform o problemă într-o soluție digitală cu logică, structură și experiență bună',
@@ -393,21 +447,24 @@
           contact_eyebrow:'Contact', contact_title:'Lasă-mi o sugestie', contact_text:'Lasă-mi o sugestie despre ce ai vrea să mai adaug în portofoliu', contact_email:'Email', contact_hub:'Hub complet',
           footer_text:'Creat pentru prezentarea proiectelor tale CodePen • Responsive • Dark/Light • Live Preview',
           search_placeholder:'Caută după nume, tag sau descriere...', search_label:'Caută proiecte după nume, tag sau descriere', search_help:'Scrie pentru a filtra proiectele afișate.',
-          preview_live:'Preview live', open_new_tab:'Open tab nou', theme_dark:'🌙 Dark', theme_light:'☀️ Light', learn_title:'Problemă + soluție + decizii'
+          preview_live:'Preview live', open_new_tab:'Open tab nou', theme_dark:'🌙 Dark', theme_light:'☀️ Light', learn_title:'Problemă + soluție + decizii',
+          nav_journey:'Parcurs', nav_blog:'Blog',
+          journey_eyebrow:'Parcurs', journey_title:'De la CRM la cod — cum am ajuns aici',
+          blog_eyebrow:'Blog', blog_title:'Ce am învățat pe drum', blog_read:'Citește'
         },
         en: {
           brand:'CodePen Portfolio', nav_about:'About', nav_preview:'Preview', nav_projects:'Projects', nav_contact:'Contact',
-          hero_eyebrow:'CRM • Marketing • Self-taught front-end',
+          hero_eyebrow:'Marketing Specialist • Social Media Manager • Self-taught front-end',
           hero_title:'I build clear, interactive digital experiences shaped by user perspective',
-          hero_text:'I have 5+ years of experience in CRM and Marketing, and in parallel I explore front-end development through passion and discipline. My portfolio brings together useful apps, mini games and interactive interfaces built to show logic, structure, feedback and UI/UX decisions, not just aesthetics.',
+          hero_text:'I have experience in CRM, Digital Marketing and Social Media Management for small businesses. I hold certifications from Google, freeCodeCamp, Anthropic and LinkedIn Learning. In parallel, through passion and discipline, I build useful apps, mini games and interactive interfaces in HTML, CSS and JavaScript.',
           hero_cta_1:'View projects', hero_cta_2:'About me', hero_cta_3:'Open full hub',
           stat_projects:'Live projects', stat_projects_text:'Experiments and demos published on CodePen', stat_preview:'Active preview', stat_preview_text:'You can switch the shown project directly from the cards',
-          stat_experience:'Background', stat_experience_text:'Customer relationships, retention, campaigns and user-focused thinking', stat_focus:'Focus', stat_focus_text:'Interactive interfaces, useful flows, mini-games and front-end prototypes',
+          stat_experience:'Certifications', stat_experience_text:'Google, freeCodeCamp, Anthropic, LinkedIn Learning', stat_focus:'Focus', stat_focus_text:'From CRM & Marketing to self-taught front-end development',
           featured_eyebrow:'Featured', featured_title:'Recommended selection',
           recent_eyebrow:'Recent projects', recent_title:'Newest added projects',
           about_eyebrow:'About me', about_title:'I combine CRM and Marketing experience with front-end exploration to build clearer, more human digital products',
-          about_text_1:'With 5+ years of experience in CRM and Marketing, I have worked with databases, campaigns, retention, communication and optimizing the relationship with potential clients. That shaped a mindset focused on users, structure and real results.',
-          about_text_2:'At the same time, through curiosity and continuous learning, I build personal projects in HTML, CSS and JavaScript. I create mini games, interactive interfaces and modern pages where I care not only about how the product looks, but also how it feels, how it reacts and how clearly it communicates its purpose.',
+          about_text_1:'I worked as a Pro bono Marketing Specialist & Strategist for small businesses and as a Social Media Manager. My experience covers CRM, database management, digital campaigns, Facebook Ads Manager, A/B Testing, e-commerce SEO, lead generation, content management and collaboration on real estate platforms. This shaped a mindset focused on users, structure and real results.',
+          about_text_2:'Since 2022 I have been accumulating technical certifications: JavaScript Essential Training, Programming Foundations, Data Analysis with Python (freeCodeCamp), Google Ads Measurement, Google Digital Marketing and Claude Code in Action (Anthropic). In parallel, through passion and discipline, I build personal projects in HTML, CSS and JavaScript — mini games, SaaS apps, educational platforms and interactive interfaces.',
           preview_eyebrow:'Live preview', preview_open:'Open project', preview_hub:'View full hub', preview_note:'The preview is generated locally inside the portfolio so it always shows, including projects that block external iframe embedding.', preview_fallback_label:'Local preview',
           projects_eyebrow:'Projects', projects_title:'Explore the project collection', projects_results:'results shown', filter_all:'All',
           main_projects_eyebrow:'Top Projects', main_projects_title:'Projects that best show how I turn a problem into a digital solution through logic, structure and strong UX',
@@ -417,7 +474,10 @@
           contact_eyebrow:'Contact', contact_title:'Leave me a suggestion', contact_text:'Leave me a suggestion about what you’d like me to add next to the portfolio', contact_email:'Email', contact_hub:'Full hub',
           footer_text:'Built to showcase your CodePen projects • Responsive • Dark/Light • Live Preview',
           search_placeholder:'Search by name, tag or description...', search_label:'Search projects by name, tag or description', search_help:'Type to filter the displayed projects.',
-          preview_live:'Live preview', open_new_tab:'Open in new tab', theme_dark:'🌙 Dark', theme_light:'☀️ Light', learn_title:'Problem + solution + decisions'
+          preview_live:'Live preview', open_new_tab:'Open in new tab', theme_dark:'🌙 Dark', theme_light:'☀️ Light', learn_title:'Problem + solution + decisions',
+          nav_journey:'Journey', nav_blog:'Blog',
+          journey_eyebrow:'Journey', journey_title:'From CRM to code — how I got here',
+          blog_eyebrow:'Blog', blog_title:'What I learned along the way', blog_read:'Read'
         }
       };
 
@@ -648,6 +708,8 @@
         projectCount.textContent = String(projects.length);
         localStorage.setItem('portfolio-lang', currentLang);
         updateToggleAria(); updateFilterAria(); renderFeatured(); renderRecentProjects(); renderProjects(); setPreview(activePreview);
+        if(typeof renderTimeline === 'function') renderTimeline();
+        if(typeof renderBlog === 'function') renderBlog();
       }
 
       function applySavedTheme(){
@@ -667,6 +729,85 @@
       searchInput.addEventListener('input', renderProjects);
       ['hubLinkTop','hubLinkHero','previewHub','hubLinkContact'].forEach(id => { const el = document.getElementById(id); if (el) el.href = HUB_URL; });
       projectCount.textContent = String(projects.length);
+      /* ── Timeline data & render ── */
+      const timelineData = [
+        { year:'Ian 2022', title:{ro:'Primele certificări tehnice și de marketing', en:'First technical & marketing certifications'}, desc:{ro:'Am obținut certificări LinkedIn în JavaScript Essential Training, Programming Foundations, Google Ads, Social Media Marketing Strategy și Project Management Communication. Primii pași concreți spre o bază solidă.', en:'Earned LinkedIn certifications in JavaScript Essential Training, Programming Foundations, Google Ads, Social Media Marketing Strategy and Project Management Communication. First concrete steps toward a solid foundation.'}, tags:['JavaScript','Google Ads','Social Media','Project Management']},
+        { year:'Aug 2022', title:{ro:'Certificări Google — Marketing Digital & YouTube', en:'Google Certifications — Digital Marketing & YouTube'}, desc:{ro:'Am obținut certificarea Google în Noțiuni fundamentale de marketing digital și certificarea YouTube Music prin Skillshop. Am consolidat cunoștințele în SEO, SEM, email marketing și content marketing.', en:'Earned Google Digital Marketing Fundamentals and YouTube Music certification through Skillshop. Consolidated knowledge in SEO, SEM, email marketing and content marketing.'}, tags:['Google','SEO','SEM','Email Marketing','Content Marketing']},
+        { year:'2022–2024', title:{ro:'Marketing Specialist & Social Media Manager', en:'Marketing Specialist & Social Media Manager'}, desc:{ro:'Pro bono Marketing Specialist & Strategist pentru afaceri mici. Social Media Manager. Am lucrat cu CRM, baze de date, campanii, Facebook Ads Manager, A/B Testing, e-commerce SEO, generare de leaduri și content management. Am colaborat și pe platforme imobiliare (Storia, OLX, Imobiliare, Homezz).', en:'Pro bono Marketing Specialist & Strategist for small businesses. Social Media Manager. Worked with CRM, databases, campaigns, Facebook Ads Manager, A/B Testing, e-commerce SEO, lead generation and content management. Also collaborated on real estate platforms.'}, tags:['CRM','Social Media','Facebook Ads','A/B Testing','Lead Generation']},
+        { year:'Apr 2024', title:{ro:'Data Analysis with Python — freeCodeCamp', en:'Data Analysis with Python — freeCodeCamp'}, desc:{ro:'Am obținut certificarea freeCodeCamp în analiza datelor cu Python. Un pas important spre înțelegerea datelor dincolo de marketing — programare, structuri de date și analiză.', en:'Earned freeCodeCamp certification in Data Analysis with Python. An important step toward understanding data beyond marketing — programming, data structures and analysis.'}, tags:['Python','Data Analysis','freeCodeCamp']},
+        { year:'Dec 2024', title:{ro:'Google Ads Measurement Certification', en:'Google Ads Measurement Certification'}, desc:{ro:'Am reînnoit certificarea Google Ads Measurement prin Skillshop. Am aprofundat măsurarea performanței campaniilor, conversii și atribuire.', en:'Renewed Google Ads Measurement certification through Skillshop. Deepened understanding of campaign performance measurement, conversions and attribution.'}, tags:['Google Ads','Measurement','Skillshop']},
+        { year:'2025', title:{ro:'Tranziția spre front-end — învățare autodidactă', en:'Transition to front-end — self-taught learning'}, desc:{ro:'Am început să învăț HTML, CSS și JavaScript pe cont propriu, din documentație, tutoriale și experimentare directă. Motivația: să construiesc eu însămi produsele digitale pe care le gândeam în marketing.', en:'Started learning HTML, CSS and JavaScript on my own, from documentation, tutorials and direct experimentation. The motivation: to build the digital products I was conceptualizing in marketing.'}, tags:['HTML','CSS','JavaScript','Self-taught']},
+        { year:'Mar 2026', title:{ro:'Claude Code in Action — certificări Anthropic & AI Central', en:'Claude Code in Action — Anthropic & AI Central certifications'}, desc:{ro:'Am obținut certificările Claude Code in Action de la Anthropic și AI Central. Am integrat AI în workflow-ul meu de dezvoltare — nu doar ca instrument, ci ca mod de gândire.', en:'Earned Claude Code in Action certifications from Anthropic and AI Central. Integrated AI into my development workflow — not just as a tool, but as a way of thinking.'}, tags:['AI','Claude','Anthropic','Certification']},
+        { year:'Mar 2026', title:{ro:'Primele proiecte pe CodePen', en:'First projects on CodePen'}, desc:{ro:'Am publicat primele experimente: Tic Tac Toe, Void Hunter, PvAI, Basket vs AI. Am descoperit că pot construi sisteme interactive cu logică reală, nu doar pagini statice.', en:'Published first experiments: Tic Tac Toe, Void Hunter, PvAI, Basket vs AI. Discovered I could build interactive systems with real logic, not just static pages.'}, tags:['CodePen','Games','Interactive']},
+        { year:'Mar–Apr 2026', title:{ro:'45 de proiecte în câteva săptămâni', en:'45 projects in a few weeks'}, desc:{ro:'Mini jocuri, aplicații SaaS (ClientFlow, BudgetFlow Pro X), platforme educaționale (BAC Space Premium), experimente UI (Synth Wave, Gravity Draw), challenge-uri logice. Fiecare proiect — o lecție nouă în JavaScript, state management, responsive design și product thinking.', en:'Mini games, SaaS apps (ClientFlow, BudgetFlow Pro X), educational platforms (BAC Space Premium), UI experiments (Synth Wave, Gravity Draw), logic challenges. Each project — a new lesson in JavaScript, state management, responsive design and product thinking.'}, tags:['SaaS','Games','UI','Product Thinking','45 projects']},
+        { year:'Apr 2026', title:{ro:'Acest portofoliu — proiect în sine', en:'This portfolio — a project in itself'}, desc:{ro:'Am construit portofoliul de la zero: dark/light mode, preview live cu srcdoc, filtrare și căutare, i18n RO/EN, studii de caz, responsive, OG tags, structured data. Tot ce am învățat, într-un singur loc.', en:'Built the portfolio from scratch: dark/light mode, live preview with srcdoc, filtering and search, i18n RO/EN, case studies, responsive, OG tags, structured data. Everything I learned, in one place.'}, tags:['Portfolio','i18n','Dark/Light','Responsive','SEO']}
+      ];
+
+      function renderTimeline(){
+        const container = document.getElementById('timelineContainer');
+        if(!container) return;
+        container.innerHTML = timelineData.map(item => `
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">${item.year}</div>
+            <div class="timeline-title">${item.title[currentLang]}</div>
+            <div class="timeline-desc">${item.desc[currentLang]}</div>
+            <div class="timeline-tags">${item.tags.map(tag => `<span>${tag}</span>`).join('')}</div>
+          </div>
+        `).join('');
+        observeReveals();
+      }
+
+      /* ── Blog data & render ── */
+      const blogData = [
+        { date:'Ian 2022', title:{ro:'De la marketing la cod: de ce am simțit că lipsește ceva', en:'From marketing to code: why I felt something was missing'}, desc:{ro:'Ani de zile am gândit produse digitale din perspectiva marketingului — campanii, funnel-uri, conversii. Dar nu puteam construi ce gândeam. În ianuarie 2022 am luat primele certificări în JavaScript și Programming Foundations. Nu știam încă unde mă va duce, dar știam că vreau să înțeleg cum funcționează lucrurile sub capotă.', en:'For years I thought about digital products from a marketing perspective — campaigns, funnels, conversions. But I couldn\'t build what I was thinking. In January 2022 I took my first certifications in JavaScript and Programming Foundations. I didn\'t know where it would lead, but I knew I wanted to understand how things work under the hood.'}, tags:['Career shift','JavaScript','Motivation']},
+        { date:'Mar 2026', title:{ro:'Cum am construit Basket vs AI — primul meu joc serios', en:'How I built Basket vs AI — my first serious game'}, desc:{ro:'Game loop, state management, logica adversarului controlat de cod, feedback vizual instant. Ce m-a surprins: cât de mult contează timing-ul și ritmul într-un joc. Nu e doar despre cod corect — e despre cum se simte interacțiunea. Experiența din CRM cu feedback-ul utilizatorului m-a ajutat enorm aici.', en:'Game loop, state management, code-controlled opponent logic, instant visual feedback. What surprised me: how much timing and rhythm matter in a game. It\'s not just about correct code — it\'s about how the interaction feels. My CRM experience with user feedback helped enormously here.'}, tags:['JavaScript','Game Loop','AI Logic','UX']},
+        { date:'Apr 2026', title:{ro:'De ce mobile-first m-a forțat să gândesc mai bine', en:'Why mobile-first forced me to think better'}, desc:{ro:'Când am adaptat ClientFlow pentru mobile, am realizat că limitarea spațiului te obligă să prioritizezi. Am învățat mai mult despre ierarhie vizuală comprimând un dashboard decât construind unul de la zero. Lecția: constrângerile nu sunt dușmani — sunt instrumente de design.', en:'When I adapted ClientFlow for mobile, I realized that space constraints force you to prioritize. I learned more about visual hierarchy by compressing a dashboard than building one from scratch. The lesson: constraints aren\'t enemies — they\'re design tools.'}, tags:['Mobile-first','UX','Layout','Constraints']},
+        { date:'Apr 2026', title:{ro:'Ce am învățat integrând 5 funcționalități într-un singur produs', en:'What I learned integrating 5 features into one product'}, desc:{ro:'BAC Space Premium combină quiz-uri, simulări de examen, AI coach, pomodoro și calendar de studiu. Provocarea: fiecare feature trebuie să facă parte din ecosistem, nu să fie adăugată la întâmplare. Am descoperit că product thinking înseamnă să spui „nu" la 10 idei ca să le faci bine pe 5.', en:'BAC Space Premium combines quizzes, exam simulations, AI coach, pomodoro and a study calendar. The challenge: each feature must be part of an ecosystem, not added randomly. I discovered that product thinking means saying "no" to 10 ideas so you can do 5 well.'}, tags:['Product Thinking','Architecture','Education']},
+        { date:'Apr 2026', title:{ro:'De la 0 la 45 de proiecte — ce m-a învățat ritmul intens', en:'From 0 to 45 projects — what intense momentum taught me'}, desc:{ro:'În câteva săptămâni am trecut de la „învăț HTML" la aplicații SaaS, jocuri cu AI, platforme educaționale și un portofoliu complet. Secretul nu a fost talentul, ci disciplina: un proiect pe zi, fiecare mai complex decât precedentul. Am învățat că progresul vine din repetiție cu intenție, nu din perfecțiune.', en:'In a few weeks I went from "learning HTML" to SaaS apps, AI games, educational platforms and a full portfolio. The secret wasn\'t talent, but discipline: one project a day, each more complex than the last. I learned that progress comes from repetition with intention, not perfection.'}, tags:['Discipline','Growth','Self-taught','Momentum']}
+      ];
+
+      function renderBlog(){
+        const container = document.getElementById('blogGrid');
+        if(!container) return;
+        container.innerHTML = blogData.map(item => `
+          <article class="blog-card glass reveal">
+            <div class="blog-date">${item.date}</div>
+            <h3>${item.title[currentLang]}</h3>
+            <p>${item.desc[currentLang]}</p>
+            <div class="blog-tags">${item.tags.map(tag => `<span>${tag}</span>`).join('')}</div>
+          </article>
+        `).join('');
+        observeReveals();
+      }
+
+      /* ── Scroll Reveal ── */
+      function observeReveals(){
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        document.querySelectorAll('.reveal:not(.visible)').forEach((el, i) => {
+          if(reducedMotion){
+            el.classList.add('visible');
+            return;
+          }
+          const rect = el.getBoundingClientRect();
+          if(rect.top < window.innerHeight && rect.bottom > 0){
+            setTimeout(() => el.classList.add('visible'), i * 60);
+          } else {
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if(entry.isIntersecting){
+                  entry.target.classList.add('visible');
+                  observer.unobserve(entry.target);
+                }
+              });
+            }, { threshold: 0.08 });
+            observer.observe(el);
+          }
+        });
+      }
+
+      document.querySelectorAll('.stat-card, .about-card, .preview-card, .contact-card, .section-head').forEach(el => el.classList.add('reveal'));
+
       applySavedTheme(); applyTranslations(); setPreview(activePreview);
     });
   </script>
