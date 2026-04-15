@@ -3,7 +3,7 @@
  * Loads projects from projects.json (no more hard-coded data in HTML)
  */
 
-const HUB_URL = 'https://es-d-6681629020260406-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/#projects';
+const HUB_URL = 'https://codepen.io/Laura-Andreea-the-typescripter/pen/019d2b3a-2991-75d3-9c59-15de01ca8079#projects';
 
 /* ============================================================
    i18n translations
