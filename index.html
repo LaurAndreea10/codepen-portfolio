@@ -4,40 +4,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Laura Andreea | CodePen Portfolio</title>
-
-  <!-- SEO -->
   <meta name="description" content="Portofoliu front-end Laura Andreea: aplicații interactive, mini jocuri, experimente UI și studii de caz scurte, cu preview live și structură clară." />
   <meta name="author" content="Laura Andreea" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#071226" />
   <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/" />
-
-  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Laura Andreea | CodePen Portfolio" />
   <meta property="og:description" content="Portofoliu interactiv cu proiecte front-end, studii de caz scurte și preview live." />
   <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/" />
   <meta property="og:site_name" content="CodePen Portfolio" />
   <meta property="og:locale" content="ro_RO" />
-  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.svg" />
+  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Laura Andreea CodePen Portfolio preview cover" />
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Laura Andreea | CodePen Portfolio" />
   <meta name="twitter:description" content="Portofoliu interactiv cu proiecte front-end, studii de caz scurte și preview live." />
-  <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.svg" />
+  <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg" />
   <meta name="twitter:image:alt" content="Laura Andreea CodePen Portfolio preview cover" />
 
-  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -49,15 +40,166 @@
   }
   </script>
 
-  <!-- Stylesheet (extracted from inline) -->
-  <link rel="stylesheet" href="style.css" />
-</head>
+  <style>
+    :root{
+      --bg:#071226;
+      --bg-2:#0b1730;
+      --panel:rgba(13,24,46,.78);
+      --panel-2:rgba(255,255,255,.06);
+      --text:#eef4ff;
+      --muted:#9db0d4;
+      --line:rgba(255,255,255,.1);
+      --accent:#4f8cff;
+      --accent-2:#8b5cf6;
+      --shadow:0 20px 50px rgba(0,0,0,.35);
+      --container:1280px;
+    }
+    body.light{
+      --bg:#f5f8fd;
+      --bg-2:#edf3fb;
+      --panel:rgba(255,255,255,.88);
+      --panel-2:rgba(16,24,40,.05);
+      --text:#13203d;
+      --muted:#4f6283;
+      --line:rgba(16,24,40,.08);
+      --accent:#2563eb;
+      --accent-2:#7c3aed;
+      --shadow:0 16px 36px rgba(15,23,42,.12);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(79,140,255,.18), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(139,92,246,.16), transparent 24%),
+        linear-gradient(180deg,var(--bg-2),var(--bg));
+      color:var(--text);
+      overflow-x:hidden;
+    }
+    a{text-decoration:none;color:inherit}
+    button{font:inherit}
+    .container{width:min(var(--container),calc(100% - 32px));margin:0 auto}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .skip-link{position:absolute;left:12px;top:-48px;z-index:1000;background:#fff;color:#000;padding:10px 14px;border-radius:12px;font-weight:700;transition:top .2s ease}
+    .skip-link:focus{top:12px}
+    .glass{background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+    .topbar{position:sticky;top:0;z-index:50;padding:14px 0;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);background:linear-gradient(to bottom, rgba(0,0,0,.24), transparent)}
+    .nav{padding:14px 18px;border-radius:999px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.02em}
+    .brand-badge{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-weight:800}
+    .nav-links{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .pill,.nav-links a{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:999px;padding:10px 14px;cursor:pointer;transition:.2s ease}
+    .pill:hover,.nav-links a:hover{transform:translateY(-1px);border-color:rgba(79,140,255,.34);background:linear-gradient(135deg, rgba(79,140,255,.14), rgba(139,92,246,.12))}
+    .pill:focus-visible,.nav-links a:focus-visible,.btn:focus-visible,.mini-btn:focus-visible,.chip:focus-visible,.search-wrap input:focus-visible,.learn-toggle:focus-visible,.brand:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+    h1,h2,h3,p{margin:0}
+    .hero{padding:34px 0 18px}
+    .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:stretch}
+    .hero-card,.stat-card,.about-card,.preview-card,.controls,.project-card,.contact-card{border-radius:24px}
+    .hero-card{padding:32px;position:relative;overflow:hidden;background:radial-gradient(circle at top left, rgba(79,140,255,.2), transparent 30%),radial-gradient(circle at top right, rgba(139,92,246,.16), transparent 26%),linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));border:1px solid var(--line);box-shadow:var(--shadow)}
+    .eyebrow{display:inline-flex;font-size:.84rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:14px}
+    h1{font-size:clamp(2.2rem,5vw,4.6rem);line-height:.95;letter-spacing:-.04em;max-width:12ch}
+    .hero-text{margin-top:18px;color:var(--muted);line-height:1.8;max-width:68ch;font-size:1.04rem}
+    .hero-actions{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap}
+    .btn{min-height:48px;display:inline-flex;align-items:center;justify-content:center;padding:0 18px;border-radius:999px;font-weight:700;transition:.22s ease;border:1px solid transparent}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 16px 28px rgba(37,99,235,.25)}
+    .btn-secondary{background:var(--panel-2);color:var(--text);border-color:var(--line)}
+    .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .stat-card{padding:22px}
+    .stat-card h3{font-size:1rem;letter-spacing:-.02em}
+    .stat-value{margin-top:22px;font-weight:800;font-size:clamp(2rem,4vw,2.8rem)}
+    .muted{color:var(--muted);line-height:1.7}
+    section{padding:22px 0}
+    .two-col{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:start}
+    .about-card,.preview-card,.controls,.project-card,.contact-card{padding:22px}
+    .about-card p{color:var(--muted);line-height:1.8;margin-top:14px}
+    .skills{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px}
+    .skills span{padding:9px 12px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);font-size:.94rem}
+    .preview-card{display:flex;flex-direction:column;gap:16px;min-height:560px}
+    .preview-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+    .preview-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .tag{display:inline-flex;align-items:center;justify-content:center;padding:8px 10px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);color:var(--muted);font-size:.82rem;text-transform:capitalize;white-space:nowrap}
+    .tag.game{color:#ffd7c0;background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.24)}
+    .tag.utility{color:#c5ffe5;background:rgba(16,185,129,.14);border-color:rgba(16,185,129,.24)}
+    .tag.challenge{color:#edd6ff;background:rgba(168,85,247,.14);border-color:rgba(168,85,247,.24)}
+    .tag.ui{color:#cfe2ff;background:rgba(96,165,250,.14);border-color:rgba(96,165,250,.24)}
+    .tag.fork{color:#bde7ff;background:rgba(14,165,233,.14);border-color:rgba(14,165,233,.24)}
+    body.light .tag.game{color:#9a3412}
+    body.light .tag.utility{color:#047857}
+    body.light .tag.challenge{color:#6d28d9}
+    body.light .tag.ui{color:#1d4ed8}
+    body.light .tag.fork{color:#0369a1}
+    .mini-btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;border-radius:14px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);font-weight:700;transition:.2s ease;cursor:pointer}
+    .mini-btn:hover{transform:translateY(-2px)}
+    .mini-btn.primary{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent}
+    .browser-bar{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;background:var(--panel-2);border:1px solid var(--line);color:var(--muted);min-width:0}
+    .dots{display:flex;gap:6px}.dots span{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.3)} body.light .dots span{background:rgba(16,24,40,.18)}
+    .browser-url{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.9rem}
+    iframe{width:100%;min-height:430px;border:0;border-radius:18px;background:#fff}
+    .preview-note{font-size:.92rem;color:var(--muted);line-height:1.6;padding:12px 14px;border-radius:14px;background:var(--panel-2);border:1px solid var(--line)}
+    .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+    .controls{display:grid;gap:16px;margin-bottom:18px}
+    .search-wrap{position:relative}
+    .search-wrap input{width:100%;min-height:56px;border-radius:20px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);padding:0 18px 0 48px;outline:none;font-size:1rem}
+    .search-wrap input:focus{border-color:rgba(79,140,255,.38);box-shadow:0 0 0 5px rgba(79,140,255,.12)}
+    .search-wrap svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:18px;height:18px;fill:var(--muted);opacity:.85}
+    .chip-row{display:flex;flex-wrap:wrap;gap:10px}
+    .chip{padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);cursor:pointer;transition:.2s ease;font-weight:600}
+    .chip:hover,.chip.active,.chip[aria-pressed="true"]{background:linear-gradient(135deg, rgba(79,140,255,.16), rgba(139,92,246,.14));border-color:rgba(79,140,255,.28)}
+    .projects-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .project-card{display:flex;flex-direction:column;gap:16px;min-height:420px;position:relative;overflow:hidden;transition:.22s ease}
+    .project-card:hover{transform:translateY(-5px)}
+    .project-card.active-preview{border-color:rgba(79,140,255,.5);box-shadow:0 0 0 1px rgba(79,140,255,.28),0 20px 50px rgba(0,0,0,.35),0 0 32px rgba(79,140,255,.18)}
+    .project-card.active-preview::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:24px;box-shadow:inset 0 0 0 1px rgba(79,140,255,.2)}
+    .project-thumb{position:relative;min-height:180px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--thumb-bg,linear-gradient(135deg, rgba(79,140,255,.18), rgba(139,92,246,.12)));padding:12px}
+    .thumb-browser{display:flex;gap:6px;margin-bottom:10px}.thumb-browser span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.34)}
+    .thumb-screen{height:142px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(5,10,22,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;position:relative;overflow:hidden}
+    .thumb-lang{position:absolute;top:10px;right:10px;padding:6px 10px;border-radius:999px;font-size:.72rem;letter-spacing:.05em;font-weight:700;color:rgba(255,255,255,.9);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)}
+    .thumb-title{font-size:1.6rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--thumb-color,#fff);line-height:1}
+    .thumb-subtitle{margin-top:8px;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.82)}
+    .thumb-bar{margin-top:16px;width:76%;height:34px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)}
+    .project-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .project-card h3{font-size:1.14rem;letter-spacing:-.03em}
+    .project-desc{color:var(--muted);line-height:1.72;font-size:.96rem;flex:1}
+    .learn-box{border:1px solid var(--line);border-radius:18px;background:var(--panel-2);overflow:hidden}
+    .learn-toggle{width:100%;border:0;background:transparent;color:var(--text);text-align:left;padding:13px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:700;cursor:pointer}
+    .learn-content{padding:0 14px 14px;color:var(--muted);line-height:1.7;font-size:.94rem}
+    .learn-content[hidden]{display:none}.learn-content ul{margin:8px 0 0;padding-left:18px}.learn-content li{margin-bottom:8px}
+    .project-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}.project-actions .mini-btn{flex:1;min-width:120px}
+    .empty-state{display:none;padding:28px;text-align:center;color:var(--muted);border-radius:24px;margin-top:12px}
+    .contact-card{text-align:center;padding:34px 22px}.contact-actions{margin-top:20px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}.footer{padding:10px 0 40px;text-align:center;color:var(--muted);font-size:.95rem}
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .timeline{position:relative;padding-left:28px}
+    .timeline::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(to bottom,var(--accent),var(--accent-2),var(--line));border-radius:2px}
+    .timeline-item{position:relative;padding-bottom:32px}
+    .timeline-item:last-child{padding-bottom:0}
+    .timeline-dot{position:absolute;left:-24px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);z-index:1;transition:.25s ease}
+    .timeline-item:hover .timeline-dot{background:var(--accent);box-shadow:0 0 10px rgba(79,140,255,.4)}
+    .timeline-year{font-size:.78rem;font-weight:800;color:var(--accent);letter-spacing:.05em;margin-bottom:4px}
+    .timeline-title{font-size:1rem;font-weight:700;margin-bottom:4px}
+    .timeline-desc{font-size:.92rem;color:var(--muted);line-height:1.6}
+    .timeline-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+    .timeline-tags span{padding:5px 10px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);font-size:.8rem;color:var(--muted)}
+    .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+    .blog-card{display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:24px;transition:.22s ease}
+    .blog-card:hover{transform:translateY(-4px)}
+    .blog-date{font-size:.78rem;font-weight:700;color:var(--accent);letter-spacing:.04em}
+    .blog-card h3{font-size:1.1rem;line-height:1.3;letter-spacing:-.02em}
+    .blog-card p{color:var(--muted);line-height:1.7;font-size:.94rem;flex:1}
+    .blog-tags{display:flex;flex-wrap:wrap;gap:6px}
+    .blog-tags span{padding:5px 10px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);font-size:.8rem;color:var(--muted)}
 
+    @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+    @media (max-width:1080px){.hero-grid,.two-col,.projects-grid{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+    @media (max-width:760px){.container{width:min(var(--container),calc(100% - 20px))}.hero-grid,.stats-grid,.projects-grid{grid-template-columns:1fr}.nav{border-radius:24px}.hero-card,.stat-card,.about-card,.preview-card,.controls,.project-card,.contact-card{padding:18px}h1{max-width:100%;font-size:clamp(2rem,9vw,3rem)}iframe{min-height:280px}.project-actions{flex-direction:column}}
+  </style>
+</head>
 <body>
-  <!-- Skip navigation -->
   <a class="skip-link" href="#main-content">Sari la conținut</a>
 
-  <!-- ── Topbar ── -->
   <div class="topbar">
     <div class="container">
       <nav class="nav glass" aria-label="Navigare principală">
@@ -66,40 +208,38 @@
           <span data-i18n="brand">Portofoliu CodePen</span>
         </a>
         <div class="nav-links">
-          <a href="#about"   data-i18n="nav_about">Despre</a>
+          <a href="#about" data-i18n="nav_about">Despre</a>
+          <a href="#journey" data-i18n="nav_journey">Parcurs</a>
           <a href="#preview" data-i18n="nav_preview">Preview</a>
+          <a href="#forks" data-i18n="nav_forks">Forks</a>
           <a href="#projects" data-i18n="nav_projects">Proiecte</a>
+          <a href="#blog" data-i18n="nav_blog">Blog</a>
           <a href="#contact" data-i18n="nav_contact">Contact</a>
-          <a id="hubLinkTop" class="pill" href="#" target="_blank" rel="noopener noreferrer">Hub</a>
-          <button class="pill" id="langToggle" type="button"
-                  aria-label="Schimbă limba între română și engleză" aria-pressed="false">RO | EN</button>
-          <button class="pill" id="themeToggle" type="button"
-                  aria-label="Comută tema deschisă sau închisă" aria-pressed="false">🌙 Dark</button>
+          <a id="hubLinkTop" class="pill" href="https://es-d-6681629020260406-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/#projects" target="_blank" rel="noopener noreferrer">Hub</a>
+          <button class="pill" id="langToggle" type="button" aria-label="Schimbă limba între română și engleză" aria-pressed="false">RO | EN</button>
+          <button class="pill" id="themeToggle" type="button" aria-label="Comută tema deschisă sau închisă" aria-pressed="false">🌙 Dark</button>
         </div>
       </nav>
     </div>
   </div>
 
-  <!-- ── Hero ── -->
   <header class="hero" id="home">
     <div class="container">
       <div class="hero-grid">
         <article class="hero-card glass">
-          <span class="eyebrow" data-i18n="hero_eyebrow">CRM • Marketing • Front-end autodidact</span>
+          <span class="eyebrow" data-i18n="hero_eyebrow">Marketing Specialist • Social Media Manager • Front-end autodidact</span>
           <h1 data-i18n="hero_title">Construiesc experiențe digitale clare, interactive și gândite din perspectiva utilizatorului</h1>
-          <p class="hero-text" data-i18n="hero_text">Am peste 5 ani de experiență în CRM și Marketing…</p>
+          <p class="hero-text" data-i18n="hero_text">Am peste 5 ani de experiență în CRM și Marketing, iar în paralel explorez front-end development din pasiune și disciplină. Portofoliul meu reunește aplicații utile, mini jocuri și interfețe interactive construite pentru a demonstra logică, structură, feedback și decizii UI/UX, nu doar estetică.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary"   href="#projects" data-i18n="hero_cta_1">Vezi proiectele</a>
-            <a class="btn btn-secondary" href="#about"    data-i18n="hero_cta_2">Despre mine</a>
-            <a class="btn btn-secondary" id="hubLinkHero" href="#" target="_blank"
-               rel="noopener noreferrer" data-i18n="hero_cta_3">Deschide hub-ul complet</a>
+            <a class="btn btn-primary" href="#projects" data-i18n="hero_cta_1">Vezi proiectele</a>
+            <a class="btn btn-secondary" href="#about" data-i18n="hero_cta_2">Despre mine</a>
+            <a class="btn btn-secondary" id="hubLinkHero" href="https://es-d-6681629020260406-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/#projects" target="_blank" rel="noopener noreferrer" data-i18n="hero_cta_3">Deschide hub-ul complet</a>
           </div>
         </article>
-
         <div class="stats-grid">
           <article class="stat-card glass">
             <h3 data-i18n="stat_projects">Proiecte live</h3>
-            <div class="stat-value" id="projectCount">…</div>
+            <div class="stat-value" id="projectCount">48</div>
             <div class="muted" data-i18n="stat_projects_text">Experimente și demo-uri publicate pe CodePen</div>
           </article>
           <article class="stat-card glass">
@@ -108,24 +248,21 @@
             <div class="muted" data-i18n="stat_preview_text">Poți schimba proiectul afișat direct din carduri</div>
           </article>
           <article class="stat-card glass">
-            <h3 data-i18n="stat_experience">Background</h3>
-            <div class="stat-value">CRM</div>
-            <div class="muted" data-i18n="stat_experience_text">Relații cu clienții, retenție, campanii și gândire orientată pe utilizator</div>
+            <h3 data-i18n="stat_experience">Certificări</h3>
+            <div class="stat-value">10+</div>
+            <div class="muted" data-i18n="stat_experience_text">Google, freeCodeCamp, Anthropic, LinkedIn Learning</div>
           </article>
           <article class="stat-card glass">
             <h3 data-i18n="stat_focus">Focus</h3>
             <div class="stat-value">JS</div>
-            <div class="muted" data-i18n="stat_focus_text">Interfețe interactive, flow-uri utile, mini-jocuri și prototipuri front-end</div>
+            <div class="muted" data-i18n="stat_focus_text">De la CRM & Marketing la front-end development autodidact</div>
           </article>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- ── Main content ── -->
   <main id="main-content">
-
-    <!-- Featured -->
     <section id="featured" aria-label="Proiecte evidențiate">
       <div class="container">
         <div class="section-head">
@@ -138,7 +275,6 @@
       </div>
     </section>
 
-    <!-- Recent -->
     <section id="recent-projects" aria-label="Proiecte recente">
       <div class="container">
         <div class="section-head">
@@ -151,18 +287,28 @@
       </div>
     </section>
 
-    <!-- About + Preview -->
+    <section id="forks" aria-label="Forks și proiecte inspirate">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" data-i18n="forks_eyebrow">Forks</span>
+            <h2 data-i18n="forks_title">Studii vizuale, fork-uri și explorări separate</h2>
+            <p class="muted" data-i18n="forks_text">Am separat proiectele de tip fork de colecția principală, ca să rămână clar ce este produs original și ce este studiu, inspirație sau reinterpretare vizuală.</p>
+          </div>
+        </div>
+        <div class="projects-grid" id="forksGrid" aria-label="Forks"></div>
+      </div>
+    </section>
+
     <section id="about">
       <div class="container two-col">
         <article class="about-card glass">
           <span class="eyebrow" data-i18n="about_eyebrow">Despre mine</span>
           <h2 data-i18n="about_title">Combin experiența din CRM și Marketing cu explorarea front-end pentru a construi produse mai clare și mai umane</h2>
-          <p data-i18n="about_text_1">Cu peste 5 ani de experiență în CRM și Marketing…</p>
-          <p data-i18n="about_text_2">În paralel, din pasiune și dorința de a învăța continuu…</p>
+          <p data-i18n="about_text_1">Am lucrat ca Pro bono Marketing Specialist & Strategist pentru afaceri mici și ca Social Media Manager. Experiența mea acoperă CRM, administrare baze de date, campanii digitale, Facebook Ads Manager, A/B Testing, e-commerce SEO, generare de leaduri, content management și colaborare pe platforme imobiliare. Asta mi-a format o gândire orientată spre utilizator, structură și rezultate reale.</p>
+          <p data-i18n="about_text_2">Din 2022 am început să acumulez certificări tehnice: JavaScript Essential Training, Programming Foundations, Data Analysis with Python (freeCodeCamp), Google Ads Measurement, Google Digital Marketing și Claude Code in Action (Anthropic). În paralel, din pasiune și disciplină, dezvolt proiecte personale în HTML, CSS și JavaScript — mini jocuri, aplicații SaaS, platforme educaționale și interfețe interactive.</p>
           <div class="skills">
-            <span>HTML5</span><span>CSS3</span><span>JavaScript</span>
-            <span>Responsive Design</span><span>UI/UX Thinking</span>
-            <span>CRM</span><span>Marketing</span><span>State &amp; Interaction</span>
+            <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Python</span><span>Responsive Design</span><span>UI/UX Thinking</span><span>CRM</span><span>Marketing Digital</span><span>Google Ads</span><span>SEO</span><span>SEM</span><span>A/B Testing</span><span>Social Media</span><span>Content Marketing</span><span>Email Marketing</span><span>Data Analysis</span><span>GDPR</span><span>Facebook Ads</span><span>State & Interaction</span>
           </div>
         </article>
 
@@ -170,31 +316,36 @@
           <div class="preview-head">
             <div>
               <span class="eyebrow" data-i18n="preview_eyebrow">Preview live</span>
-              <h2 id="previewTitle">…</h2>
+              <h2 id="previewTitle">BASKET VS AI</h2>
             </div>
             <div class="preview-meta">
               <span class="tag game" id="previewTag">game</span>
-              <a class="mini-btn primary" id="previewOpen" href="#" target="_blank"
-                 rel="noopener noreferrer" data-i18n="preview_open">Deschide proiectul</a>
-              <a class="mini-btn" id="previewHub" href="#" target="_blank"
-                 rel="noopener noreferrer" data-i18n="preview_hub">Vezi hub-ul complet</a>
+              <a class="mini-btn primary" id="previewOpen" href="#" target="_blank" rel="noopener noreferrer" data-i18n="preview_open">Deschide proiectul</a>
+              <a class="mini-btn" id="previewHub" href="https://es-d-6681629020260406-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/#projects" target="_blank" rel="noopener noreferrer" data-i18n="preview_hub">Vezi hub-ul complet</a>
             </div>
           </div>
           <div class="browser-bar">
             <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
             <div class="browser-url" id="previewUrl"></div>
           </div>
-          <iframe id="projectFrame" title="Preview proiect CodePen"
-                  loading="lazy" sandbox="allow-same-origin"></iframe>
-          <div class="preview-note" data-i18n="preview_note">
-            Preview-ul este generat local în portofoliu ca să fie afișat mereu,
-            inclusiv pentru proiectele care blochează iframe extern.
-          </div>
+          <iframe id="projectFrame" title="Preview proiect CodePen" loading="lazy" sandbox="allow-same-origin"></iframe>
+          <div class="preview-note" data-i18n="preview_note">Preview-ul este generat local în portofoliu ca să fie afișat mereu, inclusiv pentru proiectele care blochează iframe extern.</div>
         </article>
       </div>
     </section>
 
-    <!-- Projects collection -->
+    <section id="journey" aria-label="Parcursul meu">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" data-i18n="journey_eyebrow">Parcurs</span>
+            <h2 data-i18n="journey_title">De la CRM la cod — cum am ajuns aici</h2>
+          </div>
+        </div>
+        <div class="timeline" id="timelineContainer"></div>
+      </div>
+    </section>
+
     <section id="projects" aria-label="Colecție de proiecte">
       <div class="container">
         <div class="section-head">
@@ -202,40 +353,26 @@
             <span class="eyebrow" data-i18n="projects_eyebrow">Proiecte</span>
             <h2 data-i18n="projects_title">Explorează colecția de proiecte</h2>
           </div>
-          <div class="muted" aria-live="polite" aria-atomic="true">
-            <span id="resultsCount">…</span>
-            <span data-i18n="projects_results">rezultate afișate</span>
-          </div>
+          <div class="muted" aria-live="polite" aria-atomic="true"><span id="resultsCount">47</span> <span data-i18n="projects_results">rezultate afișate</span></div>
         </div>
 
-        <!-- Search + filters -->
         <div class="controls glass">
           <div class="search-wrap">
-            <label class="sr-only" for="searchInput" data-i18n="search_label">
-              Caută proiecte după nume, tag sau descriere
-            </label>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M10 4a6 6 0 1 0 3.874 10.582l4.272 4.272 1.414-1.414-4.272-4.272A6 6 0 0 0 10 4Zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/>
-            </svg>
-            <input type="text" id="searchInput"
-                   placeholder="Caută după nume, tag sau descriere..."
-                   aria-describedby="searchHelp" aria-label="Search projects" />
-            <p id="searchHelp" class="sr-only" data-i18n="search_help">
-              Scrie pentru a filtra proiectele afișate.
-            </p>
+            <label class="sr-only" for="searchInput" data-i18n="search_label">Caută proiecte după nume, tag sau descriere</label>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4a6 6 0 1 0 3.874 10.582l4.272 4.272 1.414-1.414-4.272-4.272A6 6 0 0 0 10 4Zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/></svg>
+            <input type="text" id="searchInput" placeholder="Caută după nume, tag sau descriere..." aria-describedby="searchHelp" aria-label="Search projects" />
+            <p id="searchHelp" class="sr-only" data-i18n="search_help">Scrie pentru a filtra proiectele afișate.</p>
           </div>
           <div class="chip-row" id="filterChips" role="group" aria-label="Filtre proiecte">
-            <button class="chip active" type="button" data-filter="all"
-                    data-i18n="filter_all" aria-pressed="true">Toate</button>
-            <button class="chip" type="button" data-filter="game"      aria-pressed="false">Game</button>
-            <button class="chip" type="button" data-filter="utility"   aria-pressed="false">Utility</button>
-            <button class="chip" type="button" data-filter="ui"        aria-pressed="false">UI</button>
+            <button class="chip active" type="button" data-filter="all" data-i18n="filter_all" aria-pressed="true">Toate</button>
+            <button class="chip" type="button" data-filter="game" aria-pressed="false">Game</button>
+            <button class="chip" type="button" data-filter="utility" aria-pressed="false">Utility</button>
+            <button class="chip" type="button" data-filter="ui" aria-pressed="false">UI</button>
             <button class="chip" type="button" data-filter="challenge" aria-pressed="false">Challenge</button>
           </div>
         </div>
 
-        <!-- Top projects -->
-        <div class="section-head" style="margin-top:10px;margin-bottom:12px">
+        <div class="section-head" style="margin-top:10px; margin-bottom:12px;">
           <div>
             <span class="eyebrow" data-i18n="main_projects_eyebrow">Top Projects</span>
             <h2 data-i18n="main_projects_title">Proiecte care arată cel mai clar cum transform o problemă într-o soluție digitală cu logică, structură și experiență bună</h2>
@@ -243,20 +380,16 @@
         </div>
         <div class="projects-grid" id="projectsGrid" aria-label="Proiecte principale"></div>
 
-        <!-- Experiments -->
-        <div class="section-head" style="margin-top:22px;margin-bottom:12px">
+        <div class="section-head" style="margin-top:22px; margin-bottom:12px;">
           <div>
             <span class="eyebrow" data-i18n="experiments_eyebrow">Other experiments</span>
             <h2 data-i18n="experiments_title">Explorări UI, mini concepte și prototipuri vizuale</h2>
-            <p class="muted" data-i18n="experiments_text">
-              Această secțiune include experimente UI, mini jocuri și explorări vizuale…
-            </p>
+            <p class="muted" data-i18n="experiments_text">Această secțiune include experimente UI, mini jocuri și explorări vizuale construite pentru a testa interacțiuni, layout-uri, feedback vizual și idei de prototipare rapidă.</p>
           </div>
         </div>
         <div class="projects-grid" id="experimentsGrid" aria-label="Experimente UI"></div>
 
-        <!-- Challenges -->
-        <div class="section-head" style="margin-top:22px;margin-bottom:12px">
+        <div class="section-head" style="margin-top:22px; margin-bottom:12px;">
           <div>
             <span class="eyebrow" data-i18n="challenges_eyebrow">Challenges</span>
             <h2 data-i18n="challenges_title">Provocări și exerciții logice</h2>
@@ -264,43 +397,489 @@
         </div>
         <div class="projects-grid" id="challengesGrid" aria-label="Challenges"></div>
 
-        <div class="empty-state glass" id="emptyState" data-i18n="empty_state">
-          Nu am găsit proiecte pentru filtrul sau căutarea curentă.
-        </div>
+        <div class="empty-state glass" id="emptyState" data-i18n="empty_state">Nu am găsit proiecte pentru filtrul sau căutarea curentă.</div>
       </div>
     </section>
 
-    <!-- Contact -->
+    <section id="blog" aria-label="Blog">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" data-i18n="blog_eyebrow">Blog</span>
+            <h2 data-i18n="blog_title">Ce am învățat pe drum</h2>
+          </div>
+        </div>
+        <div class="blog-grid" id="blogGrid"></div>
+      </div>
+    </section>
+
     <section id="contact">
       <div class="container">
         <article class="contact-card glass">
           <span class="eyebrow" data-i18n="contact_eyebrow">Contact</span>
           <h2 data-i18n="contact_title">Lasă-mi o sugestie</h2>
-          <p class="muted" data-i18n="contact_text">
-            Lasă-mi o sugestie despre ce ai vrea să mai adaug în portofoliu
-          </p>
+          <p class="muted" data-i18n="contact_text">Lasă-mi o sugestie despre ce ai vrea să mai adaug în portofoliu</p>
           <div class="contact-actions">
-            <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com"
-               data-i18n="contact_email">Email</a>
-            <a class="btn btn-secondary" href="https://github.com/LaurAndreea10"
-               target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a class="btn btn-secondary" id="hubLinkContact" href="#"
-               target="_blank" rel="noopener noreferrer" data-i18n="contact_hub">Hub complet</a>
+            <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com" data-i18n="contact_email">Email</a>
+            <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="btn btn-secondary" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">CodePen</a>
+            <a class="btn btn-secondary" id="hubLinkContact" href="https://es-d-6681629020260406-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/#projects" target="_blank" rel="noopener noreferrer" data-i18n="contact_hub">Hub complet</a>
           </div>
         </article>
       </div>
     </section>
-
   </main>
 
-  <!-- ── Footer ── -->
   <footer class="footer">
-    <div class="container" data-i18n="footer_text">
-      Creat pentru prezentarea proiectelor CodePen • Responsive • Dark/Light • Live Preview
-    </div>
+    <div class="container" data-i18n="footer_text">Creat pentru prezentarea proiectelor CodePen • Responsive • Dark/Light • Live Preview</div>
   </footer>
 
-  <!-- JavaScript (extracted from inline) — loads projects.json async -->
-  <script src="main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const HUB_URL = 'https://es-d-6681629020260406-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/#projects';
+
+      const translations = {
+        ro: {
+          brand:'Portofoliu CodePen', nav_about:'Despre', nav_preview:'Preview', nav_forks:'Forks', nav_projects:'Proiecte', nav_contact:'Contact',
+          hero_eyebrow:'Marketing Specialist • Social Media Manager • Front-end autodidact',
+          hero_title:'Construiesc experiențe digitale clare, interactive și gândite din perspectiva utilizatorului',
+          hero_text:'Am experiență în CRM, Marketing Digital și Social Media Management pentru afaceri mici. Am certificări Google, freeCodeCamp, Anthropic și LinkedIn Learning. În paralel, din pasiune și disciplină, construiesc aplicații utile, mini jocuri și interfețe interactive în HTML, CSS și JavaScript.',
+          hero_cta_1:'Vezi proiectele', hero_cta_2:'Despre mine', hero_cta_3:'Deschide hub-ul complet',
+          stat_projects:'Proiecte live', stat_projects_text:'Experimente și demo-uri publicate pe CodePen', stat_preview:'Preview activ', stat_preview_text:'Poți schimba proiectul afișat direct din carduri',
+          stat_experience:'Certificări', stat_experience_text:'Google, freeCodeCamp, Anthropic, LinkedIn Learning', stat_focus:'Focus', stat_focus_text:'De la CRM & Marketing la front-end development autodidact',
+          featured_eyebrow:'Featured', featured_title:'Selecție recomandată',
+          recent_eyebrow:'Proiecte recente', recent_title:'Cele mai noi proiecte adăugate',
+          forks_eyebrow:'Forks', forks_title:'Studii vizuale, fork-uri și explorări separate', forks_text:'Am separat proiectele de tip fork de colecția principală, ca să rămână clar ce este produs original și ce este studiu, inspirație sau reinterpretare vizuală.',
+          about_eyebrow:'Despre mine', about_title:'Combin experiența din CRM și Marketing cu explorarea front-end pentru a construi produse mai clare și mai umane',
+          about_text_1:'Am lucrat ca Pro bono Marketing Specialist & Strategist pentru afaceri mici și ca Social Media Manager. Experiența mea acoperă CRM, administrare baze de date, campanii digitale, Facebook Ads Manager, A/B Testing, e-commerce SEO, generare de leaduri, content management și colaborare pe platforme imobiliare. Asta mi-a format o gândire orientată spre utilizator, structură și rezultate reale.',
+          about_text_2:'Din 2022 am început să acumulez certificări tehnice: JavaScript Essential Training, Programming Foundations, Data Analysis with Python (freeCodeCamp), Google Ads Measurement, Google Digital Marketing și Claude Code in Action (Anthropic). În paralel, din pasiune și disciplină, dezvolt proiecte personale în HTML, CSS și JavaScript — mini jocuri, aplicații SaaS, platforme educaționale și interfețe interactive.',
+          preview_eyebrow:'Preview live', preview_open:'Deschide proiectul', preview_hub:'Vezi hub-ul complet', preview_note:'Preview-ul este generat local în portofoliu ca să fie afișat mereu, inclusiv pentru proiectele care blochează iframe extern.', preview_fallback_label:'Preview local',
+          projects_eyebrow:'Proiecte', projects_title:'Explorează colecția de proiecte', projects_results:'rezultate afișate', filter_all:'Toate',
+          main_projects_eyebrow:'Top Projects', main_projects_title:'Proiecte care arată cel mai clar cum transform o problemă într-o soluție digitală cu logică, structură și experiență bună',
+          experiments_eyebrow:'Other experiments', experiments_title:'Explorări UI, mini concepte și prototipuri vizuale', experiments_text:'Această secțiune include experimente UI, mini jocuri și explorări vizuale construite pentru a testa interacțiuni, layout-uri, feedback vizual și idei de prototipare rapidă.',
+          challenges_eyebrow:'Challenges', challenges_title:'Provocări și exerciții logice',
+          empty_state:'Nu am găsit proiecte pentru filtrul sau căutarea curentă.',
+          contact_eyebrow:'Contact', contact_title:'Lasă-mi o sugestie', contact_text:'Lasă-mi o sugestie despre ce ai vrea să mai adaug în portofoliu', contact_email:'Email', contact_hub:'Hub complet',
+          footer_text:'Creat pentru prezentarea proiectelor tale CodePen • Responsive • Dark/Light • Live Preview',
+          search_placeholder:'Caută după nume, tag sau descriere...', search_label:'Caută proiecte după nume, tag sau descriere', search_help:'Scrie pentru a filtra proiectele afișate.',
+          preview_live:'Preview live', open_new_tab:'Open tab nou', theme_dark:'🌙 Dark', theme_light:'☀️ Light', learn_title:'Problemă + soluție + decizii',
+          nav_journey:'Parcurs', nav_blog:'Blog',
+          journey_eyebrow:'Parcurs', journey_title:'De la CRM la cod — cum am ajuns aici',
+          blog_eyebrow:'Blog', blog_title:'Ce am învățat pe drum', blog_read:'Citește',
+          fork_open:'Deschide fork-ul', fork_source:'Fork separat'
+        },
+        en: {
+          brand:'CodePen Portfolio', nav_about:'About', nav_preview:'Preview', nav_forks:'Forks', nav_projects:'Projects', nav_contact:'Contact',
+          hero_eyebrow:'Marketing Specialist • Social Media Manager • Self-taught front-end',
+          hero_title:'I build clear, interactive digital experiences shaped by user perspective',
+          hero_text:'I have experience in CRM, Digital Marketing and Social Media Management for small businesses. I hold certifications from Google, freeCodeCamp, Anthropic and LinkedIn Learning. In parallel, through passion and discipline, I build useful apps, mini games and interactive interfaces in HTML, CSS and JavaScript.',
+          hero_cta_1:'View projects', hero_cta_2:'About me', hero_cta_3:'Open full hub',
+          stat_projects:'Live projects', stat_projects_text:'Experiments and demos published on CodePen', stat_preview:'Active preview', stat_preview_text:'You can switch the shown project directly from the cards',
+          stat_experience:'Certifications', stat_experience_text:'Google, freeCodeCamp, Anthropic, LinkedIn Learning', stat_focus:'Focus', stat_focus_text:'From CRM & Marketing to self-taught front-end development',
+          featured_eyebrow:'Featured', featured_title:'Recommended selection',
+          recent_eyebrow:'Recent projects', recent_title:'Newest added projects',
+          forks_eyebrow:'Forks', forks_title:'Separate forks and visual explorations', forks_text:'I separated fork-based projects from the main collection so original product work stays distinct from studies, inspiration and reinterpretations.',
+          about_eyebrow:'About me', about_title:'I combine CRM and Marketing experience with front-end exploration to build clearer, more human digital products',
+          about_text_1:'I worked as a Pro bono Marketing Specialist & Strategist for small businesses and as a Social Media Manager. My experience covers CRM, database management, digital campaigns, Facebook Ads Manager, A/B Testing, e-commerce SEO, lead generation, content management and collaboration on real estate platforms. This shaped a mindset focused on users, structure and real results.',
+          about_text_2:'Since 2022 I have been accumulating technical certifications: JavaScript Essential Training, Programming Foundations, Data Analysis with Python (freeCodeCamp), Google Ads Measurement, Google Digital Marketing and Claude Code in Action (Anthropic). In parallel, through passion and discipline, I build personal projects in HTML, CSS and JavaScript — mini games, SaaS apps, educational platforms and interactive interfaces.',
+          preview_eyebrow:'Live preview', preview_open:'Open project', preview_hub:'View full hub', preview_note:'The preview is generated locally inside the portfolio so it always shows, including projects that block external iframe embedding.', preview_fallback_label:'Local preview',
+          projects_eyebrow:'Projects', projects_title:'Explore the project collection', projects_results:'results shown', filter_all:'All',
+          main_projects_eyebrow:'Top Projects', main_projects_title:'Projects that best show how I turn a problem into a digital solution through logic, structure and strong UX',
+          experiments_eyebrow:'Other experiments', experiments_title:'UI explorations, mini concepts and visual prototypes', experiments_text:'This section includes UI experiments, mini games and visual explorations built to test interactions, layouts, visual feedback and rapid prototyping ideas.',
+          challenges_eyebrow:'Challenges', challenges_title:'Logic challenges and coding exercises',
+          empty_state:'No projects found for the current search or filter.',
+          contact_eyebrow:'Contact', contact_title:'Leave me a suggestion', contact_text:'Leave me a suggestion about what you\'d like me to add next to the portfolio', contact_email:'Email', contact_hub:'Full hub',
+          footer_text:'Built to showcase your CodePen projects • Responsive • Dark/Light • Live Preview',
+          search_placeholder:'Search by name, tag or description...', search_label:'Search projects by name, tag or description', search_help:'Type to filter the displayed projects.',
+          preview_live:'Live preview', open_new_tab:'Open in new tab', theme_dark:'🌙 Dark', theme_light:'☀️ Light', learn_title:'Problem + solution + decisions',
+          nav_journey:'Journey', nav_blog:'Blog',
+          journey_eyebrow:'Journey', journey_title:'From CRM to code — how I got here',
+          blog_eyebrow:'Blog', blog_title:'What I learned along the way', blog_read:'Read',
+          fork_open:'Open fork', fork_source:'Separate fork'
+        }
+      };
+
+      const projects = [
+        {id:1, category:'game', featured:true, tags:['Game','AI','Basketball'], url:'https://es-d-5697283320260328-019d2b27-6fb7-7f3c-ae84-cf130aae5231.codepen.dev/', title:{ro:'BASKET VS AI', en:'BASKET VS AI'}, description:{ro:'Joc arcade construit în jurul reacției rapide, feedback-ului instant și unui adversar controlat logic.', en:'Arcade game built around quick reactions, instant feedback and a logically controlled opponent.'}, thumbTitle:'BASKET', thumbSubtitle:'VS AI', thumbLang:'RO', thumbColor:'#ff7a30', thumbBg:'linear-gradient(135deg, rgba(255,122,48,.28), rgba(255,160,64,.10))', learned:{ro:['Problemă: am vrut să dezvolt un joc arcade care combină reacția rapidă, feedback-ul vizual și unui adversar controlat logic.','Soluție: am construit o experiență bazată pe interacțiune în timp real, ritm de joc și feedback vizual clar pentru fiecare acțiune.','Decizie tehnică: am tratat logica de joc și actualizarea stării ca elemente centrale, nu doar decor pentru un UI atractiv.','Decizie UI/UX: am urmărit feedback instant, lizibilitate bună și o interfață care susține ritmul jocului fără să distragă.','Provocare: să păstrez echilibrul dintre dificultate, claritate și energie vizuală.','Ce demonstrează: că pot construi sisteme interactive cu logică în timp real, nu doar interfețe statice.'], en:['Problem: I wanted to build an arcade game that combines quick reaction, visual feedback and a logically controlled opponent.','Solution: I built a real-time experience focused on pacing, interaction and clear visual feedback for every action.','Technical decision: I treated game logic and state updates as core elements, not just decoration around an attractive UI.','UI/UX decision: I focused on instant feedback, readability and an interface that supports the rhythm of the game without distracting.','Challenge: keeping the balance between difficulty, clarity and visual energy.','What it demonstrates: that I can build interactive systems with real-time logic, not just static interfaces.']}},
+        {id:2, category:'game', tags:['Game','AI','Pro'], url:'https://es-d-5697283320260328-019d267b-0535-7927-99da-f35c852ebaf1.codepen.dev/', title:{ro:'BASKET VS AI PRO', en:'BASKET VS AI PRO'}, description:{ro:'Versiune extinsă a jocului, cu ritm mai rapid și prezentare premium.', en:'Expanded version with faster pace and a premium feel.'}, thumbTitle:'BASKET PRO', thumbSubtitle:'VS AI', thumbLang:'EN', thumbColor:'#60a5fa', thumbBg:'linear-gradient(135deg, rgba(96,165,250,.26), rgba(99,102,241,.10))'},
+        {id:3, category:'utility', featured:true, tags:['SaaS','Portal','Editable'], url:'https://es-d-5697283320260328-019d248d-5848-7531-8d9d-23699aa47d61.codepen.dev/', title:{ro:'ClientFlow', en:'ClientFlow'}, description:{ro:'Mini portal de tip SaaS care organizează informația într-o structură clară, editabilă și ușor de extins.', en:'Mini SaaS portal that organizes information in a clear, editable and scalable structure.'}, thumbTitle:'CLIENTFLOW', thumbSubtitle:'PORTAL', thumbLang:'RO', thumbColor:'#34d399', thumbBg:'linear-gradient(135deg, rgba(52,211,153,.28), rgba(59,130,246,.10))', learned:{ro:['Problemă: am vrut să construiesc un mini portal de tip SaaS care organizează informația într-o structură clară, editabilă și ușor de extins.','Soluție: am creat un layout de dashboard, zone editabile și o arhitectură modulară care susține claritatea și controlul.','Decizie tehnică: am separat logica de prezentare ca structura să poată fi extinsă și reutilizată mai ușor.','Decizie UI/UX: am ales o ierarhie vizuală clară și un flow familiar de produs, astfel încât utilizatorul să înțeleagă rapid unde se află și ce poate face.','Provocare: să păstrez interfața aerisită chiar dacă proiectul are mai multe zone funcționale și comportamente diferite.','Ce demonstrează: că pot construi interfețe de produs, nu doar pagini de prezentare.'], en:['Problem: I wanted to build a mini SaaS-style portal that organizes information in a clear, editable and extensible structure.','Solution: I created a dashboard layout, editable areas and a modular architecture that supports clarity and control.','Technical decision: I separated presentation from logic so the structure can scale and be reused more easily.','UI/UX decision: I chose a clear visual hierarchy and a familiar product flow so users can quickly understand where they are and what they can do.','Challenge: keeping the interface airy even though the project includes multiple functional areas and behaviors.','What it demonstrates: that I can build product-oriented interfaces, not just showcase pages.']}},
+        {id:4, category:'game', tags:['Game','Board','Classic'], url:'https://es-d-5697283320260328-019d202f-93fa-7c03-8496-9a9f55afbf17.codepen.dev/', title:{ro:'Tic Tac Toe', en:'Tic Tac Toe'}, description:{ro:'Varianta ta pentru jocul clasic, într-o interfață simplă și clară.', en:'Classic game rebuilt in a simple and clear UI.'}, thumbTitle:'TIC TAC TOE', thumbSubtitle:'CLASSIC', thumbLang:'EN', thumbColor:'#fb7185', thumbBg:'linear-gradient(135deg, rgba(251,113,133,.28), rgba(168,85,247,.10))'},
+        {id:5, category:'game', tags:['Game','Shooter','Space'], url:'https://es-d-5697283320260328-019d1ef0-2fb8-7dea-9187-a0ec413b8b23.codepen.dev/', title:{ro:'VOID HUNTER — Space Shooter', en:'VOID HUNTER — Space Shooter'}, description:{ro:'Space shooter cu energie arcade și look sci-fi.', en:'Arcade sci-fi shooter with a bold feel.'}, thumbTitle:'VOID HUNTER', thumbSubtitle:'SPACE SHOOTER', thumbLang:'EN', thumbColor:'#f59e0b', thumbBg:'linear-gradient(135deg, rgba(245,158,11,.28), rgba(249,115,22,.10))'},
+        {id:6, category:'game', tags:['Game','AI','PvAI'], url:'https://es-d-5697283320260328-019d19ba-35cc-7dc8-93fb-0f7b3071579c.codepen.dev/', title:{ro:'PvAI - New Game+ v5', en:'PvAI - New Game+ v5'}, description:{ro:'Concept de joc PvAI cu feel de progres și iterare avansată.', en:'PvAI concept focused on progression and iteration.'}, thumbTitle:'PVAI', thumbSubtitle:'NEW GAME+', thumbLang:'EN', thumbColor:'#818cf8', thumbBg:'linear-gradient(135deg, rgba(129,140,248,.28), rgba(14,165,233,.10))'},
+        {id:7, category:'utility', tags:['Photo','Studio','Premium'], url:'https://es-d-5697283320260328-019d0c67-c913-7756-bbca-4e6b932229a1.codepen.dev/', title:{ro:'PhotoAuto Studio Premium', en:'PhotoAuto Studio Premium'}, description:{ro:'Interfață premium pentru fluxuri foto și automatizare de studio.', en:'Premium interface for studio photo workflows.'}, thumbTitle:'PHOTOAUTO', thumbSubtitle:'STUDIO', thumbLang:'RO', thumbColor:'#22c55e', thumbBg:'linear-gradient(135deg, rgba(34,197,94,.28), rgba(20,184,166,.10))'},
+        {id:8, category:'game', tags:['Game','Arcade','Hockey'], url:'https://es-d-5697283320260328-019cceb2-062d-7969-8c7f-407fbcfeac92.codepen.dev/', title:{ro:'Home Air Hockey', en:'Home Air Hockey'}, description:{ro:'Joc rapid, arcade, cu energie casual și feedback instant.', en:'Fast arcade game with instant feedback.'}, thumbTitle:'AIR HOCKEY', thumbSubtitle:'HOME', thumbLang:'EN', thumbColor:'#e879f9', thumbBg:'linear-gradient(135deg, rgba(232,121,249,.28), rgba(168,85,247,.10))'},
+        {id:9, category:'game', tags:['Game','Arcade','Action'], url:'https://es-d-5697283320260328-019ccc82-9700-75d0-8200-29b1d0b01b21.codepen.dev/', title:{ro:'Bomberman Neo', en:'Bomberman Neo'}, description:{ro:'Interpretare modernă pentru un concept arcade clasic.', en:'Modern take on a classic arcade concept.'}, thumbTitle:'BOMBERMAN', thumbSubtitle:'NEO', thumbLang:'RO', thumbColor:'#38bdf8', thumbBg:'linear-gradient(135deg, rgba(56,189,248,.28), rgba(37,99,235,.10))'},
+        {id:10, category:'challenge', tags:['Challenge','Logic','CodePen'], url:'https://codepen.io/Laura-Andreea-the-typescripter/pen/EagbjvB', title:{ro:'Opposite Directions', en:'Opposite Directions'}, description:{ro:'Challenge de logică și direcție, cu focus pe claritate și comportament.', en:'Logic challenge focused on directions and behavior.'}, thumbTitle:'OPPOSITE', thumbSubtitle:'DIRECTIONS', thumbLang:'EN', thumbColor:'#60a5fa', thumbBg:'linear-gradient(135deg, rgba(96,165,250,.28), rgba(59,130,246,.10))'},
+        {id:11, category:'challenge', tags:['Challenge','Boolean','Logic'], url:'https://codepen.io/Laura-Andreea-the-typescripter/pen/zxKzdyg', title:{ro:'BOOLEAN ORACLE', en:'BOOLEAN ORACLE'}, description:{ro:'Challenge logic inspirat de condiții și decizii booleene.', en:'Boolean logic challenge about conditions and decisions.'}, thumbTitle:'BOOLEAN', thumbSubtitle:'ORACLE', thumbLang:'EN', thumbColor:'#facc15', thumbBg:'linear-gradient(135deg, rgba(250,204,21,.28), rgba(234,88,12,.10))'},
+        {id:12, category:'challenge', tags:['Challenge','Constraints','Logic'], url:'https://codepen.io/Laura-Andreea-the-typescripter/pen/bNwwQzQ', title:{ro:'Min. Preferred. Max.', en:'Min. Preferred. Max.'}, description:{ro:'Challenge bazat pe limite, preferințe și reguli de evaluare.', en:'Challenge about constraints and evaluation rules.'}, thumbTitle:'MIN PREF MAX', thumbSubtitle:'RULES', thumbLang:'EN', thumbColor:'#c084fc', thumbBg:'linear-gradient(135deg, rgba(192,132,252,.28), rgba(236,72,153,.10))'},
+        {id:13, category:'utility', featured:true, tags:['App','Finance'], url:'https://es-d-9192350520260329-019cf25e-1ee9-7655-ae8c-9d6b150b25e0.codepen.dev/', title:{ro:'BudgetFlow Pro X', en:'BudgetFlow Pro X'}, description:{ro:'Aplicație financiară care transformă datele de buget într-o experiență clară, ușor de scanat și de înțeles.', en:'Financial app that turns budget data into a clear experience that is easy to scan and understand.'}, thumbTitle:'BUDGETFLOW', thumbSubtitle:'PRO X', thumbLang:'EN', thumbColor:'#22c55e', thumbBg:'linear-gradient(135deg, rgba(34,197,94,.28), rgba(16,185,129,.10))', learned:{ro:['Problemă: am vrut să creez o aplicație financiară care transformă datele de buget într-o experiență ușor de urmărit și ușor de înțeles.','Soluție: am organizat informația financiară în jurul categoriilor, valorilor și scanării rapide, astfel încât utilizatorul să poată înțelege imediat ce contează.','Decizie tehnică: am tratat datele ca nucleu al aplicației și am construit UI-ul în jurul lor, nu invers.','Decizie UI/UX: am păstrat layout-ul aerisit și am accentuat informațiile importante pentru a reduce încărcarea cognitivă.','Provocare: să găsesc echilibrul dintre claritatea datelor și o prezentare vizuală modernă, fără rigiditate.','Ce demonstrează: că pot construi aplicații orientate pe date și pe utilitate reală, nu doar experimente vizuale.'], en:['Problem: I wanted to create a financial app that turns budget data into an experience that is easy to follow and understand.','Solution: I organized the financial information around categories, values and fast scanning so users can instantly understand what matters.','Technical decision: I treated the data as the core of the product and organized the UI around it, not the other way around.','UI/UX decision: I kept the layout airy and emphasized the most important information to reduce cognitive load.','Challenge: finding the balance between data clarity and a modern presentation without making it feel rigid.','What it demonstrates: that I can build data-oriented apps with practical value, not just visual experiments.']}},
+        {id:14, category:'game', tags:['Game','Arcade','Breakout'], url:'https://es-d-1768016420260328-019cf0ef-e43a-76c2-8a55-17856c11fe89.codepen.dev/', title:{ro:'Breakout', en:'Breakout'}, description:{ro:'Joc arcade clasic tip Breakout, cu mecanici simple și rapide.', en:'Classic Breakout-style arcade game.'}, thumbTitle:'BREAKOUT', thumbSubtitle:'ARCADE', thumbLang:'EN', thumbColor:'#f97316', thumbBg:'linear-gradient(135deg, rgba(249,115,22,.28), rgba(251,146,60,.10))'},
+        {id:15, category:'challenge', tags:['Challenge','UI'], url:'https://codepen.io/Laura-Andreea-the-typescripter/pen/GgjpBJP', title:{ro:'Front-End Opposites', en:'Front-End Opposites'}, description:{ro:'Challenge de UI bazat pe contraste și opoziții vizuale.', en:'UI challenge about contrast and visual opposites.'}, thumbTitle:'OPPOSITES', thumbSubtitle:'FRONT-END', thumbLang:'EN', thumbColor:'#f43f5e', thumbBg:'linear-gradient(135deg, rgba(244,63,94,.28), rgba(236,72,153,.10))'},
+        {id:16, category:'challenge', tags:['Challenge','UI'], url:'https://codepen.io/Laura-Andreea-the-typescripter/pen/yyaYEdY', title:{ro:'Front-End Opposites 2', en:'Front-End Opposites 2'}, description:{ro:'Explorare vizuală a conceptului de opoziție în UI.', en:'Visual exploration of opposites in UI design.'}, thumbTitle:'OPPOSITES', thumbSubtitle:'UI DESIGN', thumbLang:'EN', thumbColor:'#fb7185', thumbBg:'linear-gradient(135deg, rgba(251,113,133,.28), rgba(190,24,93,.10))'},
+        {id:17, category:'ui', tags:['UI','CSS','Colors'], url:'https://codepen.io/Laura-Andreea-the-typescripter/pen/zxKObPV', title:{ro:'Color Lab', en:'Color Lab'}, description:{ro:'Modern CSS colors: light-dark(), culori relative, hwb() și altele.', en:'Modern CSS colors and visual exploration.'}, thumbTitle:'COLOR LAB', thumbSubtitle:'CSS COLORS', thumbLang:'EN', thumbColor:'#facc15', thumbBg:'linear-gradient(135deg, rgba(250,204,21,.28), rgba(234,88,12,.10))'},
+        {id:18, category:'utility', featured:true, tags:['SaaS','Impact','Platform'], url:'https://es-d-9192350520260329-019d2e42-65ac-7734-91ba-16cfe41a0086.codepen.dev/#missions', title:{ro:'ALPIS ImpactPath', en:'ALPIS ImpactPath'}, description:{ro:'Platformă orientată pe impact, construită în jurul misiunilor, progresului și clarității de navigare.', en:'Impact-focused platform built around missions, progress and clear navigation.'}, thumbTitle:'IMPACTPATH', thumbSubtitle:'ALPIS', thumbLang:'EN', thumbColor:'#10b981', thumbBg:'linear-gradient(135deg, rgba(16,185,129,.28), rgba(34,197,94,.10))', learned:{ro:['Problemă: am vrut să organizez un produs orientat pe impact într-o structură ușor de urmărit, fără să pierd claritatea pe parcurs.','Soluție: am construit o platformă în jurul ideii de misiuni, progres și navigare logică, astfel încât utilizatorul să înțeleagă rapid unde este și ce urmează.','Decizie tehnică: am tratat structura informației ca scheletul produsului și am legat fiecare secțiune de un flow coerent.','Decizie UI/UX: am urmărit orientare rapidă, ierarhie vizuală clară și senzația de progres continuu.','Provocare: să transform o platformă cu multe puncte de interacțiune într-o experiență simplă și lizibilă.','Ce demonstrează: că pot gândi produse digitale cu structură, scop și consistență, nu doar ecrane individuale.'], en:['Problem: I wanted to organize an impact-oriented product into a structure that is easy to follow without losing clarity.','Solution: I built a platform around missions, progress and logical navigation so users can quickly understand where they are and what comes next.','Technical decision: I treated information architecture as the backbone of the product and connected each section to a coherent flow.','UI/UX decision: I focused on quick orientation, clear hierarchy and a strong sense of continuous progress.','Challenge: turning a platform with many interaction points into a simple and readable experience.','What it demonstrates: that I can think in terms of digital products with structure, purpose and consistency, not just individual screens.']}},
+        {id:19, category:'utility', featured:true, tags:['Planner','Events','UI'], url:'https://es-d-9192350520260329-019d2ebf-cf4f-7615-b85e-da92ef38af41.codepen.dev/', title:{ro:'Event Planner', en:'Event Planner'}, description:{ro:'Aplicație de planificare care transformă organizarea evenimentelor într-un flow simplu, clar și ușor de urmărit.', en:'Planning app that turns event organization into a simple, clear and easy-to-follow flow.'}, thumbTitle:'EVENT', thumbSubtitle:'PLANNER', thumbLang:'EN', thumbColor:'#14b8a6', thumbBg:'linear-gradient(135deg, rgba(20,184,166,.28), rgba(59,130,246,.10))', learned:{ro:['Problemă: am vrut să construiesc o aplicație de organizare care transformă planificarea evenimentelor într-un flow simplu și clar.','Soluție: am structurat informațiile și acțiunile astfel încât utilizatorul să poată planifica fără fricțiune și fără aglomerare vizuală.','Decizie tehnică: am pornit de la fluxul utilizatorului, nu doar de la layout, pentru ca pașii să aibă sens și să fie ușor de urmărit.','Decizie UI/UX: am grupat informația predictibil și am evitat supraîncărcarea interfeței, pentru a păstra focusul pe acțiune.','Provocare: să păstrez flexibilitate pentru mai multe tipuri de evenimente fără să complic interfața.','Ce demonstrează: că pot construi produse centrate pe organizare, claritate și usability.'], en:['Problem: I wanted to build an organization app that turns event planning into a simple and clear flow.','Solution: I structured information and actions so users can plan without friction or visual overload.','Technical decision: I designed the project around the user flow, not just the layout, so the steps feel meaningful and easy to follow.','UI/UX decision: I grouped information predictably and avoided clutter so the user can stay focused on action.','Challenge: keeping enough flexibility for multiple event types without overcomplicating the interface.','What it demonstrates: that I can build products centered on organization, clarity and usability.']}},
+        {id:20, category:'game', tags:['Game','Arcade','Flappy'], url:'https://es-d-9192350520260329-019d2f0c-26b1-74c4-a2c0-04310269a74f.codepen.dev/', title:{ro:'Flappy Ball', en:'Flappy Ball'}, description:{ro:'Joc arcade inspirat de mecanica Flappy, cu mișcare continuă și reflexe rapide.', en:'Arcade game inspired by Flappy mechanics.'}, thumbTitle:'FLAPPY BALL', thumbSubtitle:'ARCADE', thumbLang:'EN', thumbColor:'#facc15', thumbBg:'linear-gradient(135deg, rgba(250,204,21,.28), rgba(234,88,12,.10))'},
+        {id:21, category:'game', tags:['Game','Physics','Bounce'], url:'https://es-d-9192350520260329-019d2f46-380a-7240-86d0-2a6138bfc072.codepen.dev/', title:{ro:'Bounce Ball', en:'Bounce Ball'}, description:{ro:'Joc bazat pe fizică și ricoșeu, cu interacțiuni dinamice.', en:'Physics-based bouncing game with dynamic interaction.'}, thumbTitle:'BOUNCE BALL', thumbSubtitle:'PHYSICS', thumbLang:'EN', thumbColor:'#38bdf8', thumbBg:'linear-gradient(135deg, rgba(56,189,248,.28), rgba(59,130,246,.10))'},
+        {id:22, category:'game', tags:['Game','Maze','Logic'], url:'https://es-d-9192350520260329-019d2f38-a9f8-7ecb-9ef2-986872686b7a.codepen.dev/', title:{ro:'Labirint', en:'Maze'}, description:{ro:'Joc tip labirint cu navigare și rezolvare de trasee.', en:'Maze game focused on navigation and path solving.'}, thumbTitle:'MAZE', thumbSubtitle:'LABYRINTH', thumbLang:'EN', thumbColor:'#a78bfa', thumbBg:'linear-gradient(135deg, rgba(167,139,250,.28), rgba(139,92,246,.10))'},
+        {id:23, category:'utility', tags:['Learning','Excel','Education'], url:'https://es-d-9192350520260329-019d3034-1834-761b-8817-917926dc413b.codepen.dev/', title:{ro:'Învață Excel', en:'Learn Excel'}, description:{ro:'Interfață educațională pentru învățarea funcțiilor și conceptelor Excel.', en:'Educational interface for learning Excel concepts.'}, thumbTitle:'EXCEL', thumbSubtitle:'LEARN', thumbLang:'RO', thumbColor:'#22c55e', thumbBg:'linear-gradient(135deg, rgba(34,197,94,.28), rgba(16,185,129,.10))'},
+        {id:24, category:'utility', tags:['Learning','Space','Education'], url:'https://es-d-9192350520260329-019d3097-692c-722d-b484-4bb3b55a345a.codepen.dev/', title:{ro:'Spațiu de învățare', en:'Learning Space'}, description:{ro:'Spațiu organizat pentru studiu și explorare interactivă.', en:'Organized space for study and interactive exploration.'}, thumbTitle:'LEARNING', thumbSubtitle:'SPACE', thumbLang:'RO', thumbColor:'#60a5fa', thumbBg:'linear-gradient(135deg, rgba(96,165,250,.28), rgba(59,130,246,.10))'},
+        {id:25, category:'utility', tags:['Learning','UI','Education'], url:'https://es-d-9192350520260329-019d304f-7a11-7513-b501-5abb02444af7.codepen.dev/', title:{ro:'BAC Learning Space Premium', en:'BAC Learning Space Premium'}, description:{ro:'Interfață premium pentru organizarea învățării și explorarea conținutului educațional.', en:'Premium interface for organizing learning and exploring educational content.'}, thumbTitle:'BAC', thumbSubtitle:'PREMIUM', thumbLang:'EN', thumbColor:'#3b82f6', thumbBg:'linear-gradient(135deg, rgba(59,130,246,.28), rgba(96,165,250,.10))'},
+        {id:26, category:'game', tags:['Game','Arcade','Mobile'], url:'https://es-d-5927833420260331-019d35b9-3b6b-728e-99f9-1e9a2bc673fa.codepen.dev/', title:{ro:'Arcade Fusion Mobile Game', en:'Arcade Fusion Mobile Game'}, description:{ro:'Versiune mobile a conceptului Arcade Fusion, optimizată pentru joc rapid.', en:'Mobile version of Arcade Fusion optimized for quick gameplay.'}, thumbTitle:'ARCADE', thumbSubtitle:'MOBILE', thumbLang:'EN', thumbColor:'#fb7185', thumbBg:'linear-gradient(135deg, rgba(251,113,133,.28), rgba(244,63,94,.10))'},
+        {id:27, category:'game', tags:['Game','Arcade','Fusion'], url:'https://es-d-5927833420260331-019d35b6-42da-71e8-a23f-17e06e63e336.codepen.dev/', title:{ro:'Arcade Fusion', en:'Arcade Fusion'}, description:{ro:'Joc arcade cu energie vizuală modernă și ritm dinamic.', en:'Arcade game with dynamic pacing and modern style.'}, thumbTitle:'ARCADE', thumbSubtitle:'FUSION', thumbLang:'EN', thumbColor:'#60a5fa', thumbBg:'linear-gradient(135deg, rgba(96,165,250,.28), rgba(59,130,246,.10))'},
+        {id:28, category:'game', tags:['Game','Arcade','Fusion 3'], url:'https://es-d-5927833420260331-019d35c8-6e69-7bba-9adc-38275de6f7ca.codepen.dev/', title:{ro:'Arcade Fusion 3', en:'Arcade Fusion 3'}, description:{ro:'A treia iterație Arcade Fusion, cu stil intens și prezentare extinsă.', en:'Third Arcade Fusion iteration with stronger style.'}, thumbTitle:'FUSION 3', thumbSubtitle:'EVOLVE', thumbLang:'EN', thumbColor:'#a78bfa', thumbBg:'linear-gradient(135deg, rgba(167,139,250,.28), rgba(139,92,246,.10))'},
+        {id:29, category:'utility', featured:true, tags:['AI','Coaching','App'], url:'https://es-d-5927833420260331-019d34e3-9f79-783e-a678-fdb79af31291.codepen.dev/', title:{ro:'CoachingAI', en:'CoachingAI'}, description:{ro:'Aplicație orientată spre ghidare și progres, construită ca experiență clară de coaching asistat de AI.', en:'Guidance-focused app built as a clear AI-assisted coaching experience.'}, thumbTitle:'COACHING', thumbSubtitle:'AI APP', thumbLang:'EN', thumbColor:'#14b8a6', thumbBg:'linear-gradient(135deg, rgba(20,184,166,.28), rgba(59,130,246,.10))', learned:{ro:['Problemă: am vrut să transform o idee abstractă de coaching asistat de AI într-o interfață clară și ușor de urmărit.','Soluție: am construit o aplicație orientată pe ghidare, progres și pași ușor de înțeles, nu pe complexitate inutilă.','Decizie tehnică: am organizat produsul în jurul fluxului de utilizare și al clarității informației, nu doar în jurul conceptului de AI.','Decizie UI/UX: am urmărit o experiență calmă, predictibilă și suficient de structurată încât utilizatorul să știe mereu ce urmează.','Provocare: să păstrez produsul credibil și util fără să îl încarc vizual sau funcțional.','Ce demonstrează: că pot transforma concepte moderne în interfețe utile și coerente.'], en:['Problem: I wanted to turn an abstract AI-assisted coaching idea into a clear and easy-to-follow interface.','Solution: I built an experience focused on guidance, progress and understandable steps instead of unnecessary complexity.','Technical decision: I organized the product around user flow and clarity of information, not just around the AI concept itself.','UI/UX decision: I aimed for a calm, predictable experience structured enough that users always know what comes next.','Challenge: keeping the product credible and useful without overloading it visually or functionally.','What it demonstrates: that I can turn modern concepts into useful and coherent interfaces.']}},
+        {id:30, category:'utility', tags:['Content','Studio','Brand'], url:'https://es-d-4875001020260401-019d38a5-0907-75f2-b1ab-22d6a511a9b2.codepen.dev/', title:{ro:'ALPis CONTENT STUDIO', en:'ALPis CONTENT STUDIO'}, description:{ro:'Studio de conținut ALPis, cu prezentare modernă și structură orientată spre branding.', en:'Content studio with branding-focused modern presentation.'}, thumbTitle:'ALPIS', thumbSubtitle:'CONTENT STUDIO', thumbLang:'EN', thumbColor:'#f472b6', thumbBg:'linear-gradient(135deg, rgba(244,114,182,.28), rgba(139,92,246,.10))'},
+        {id:31, category:'ui', tags:['UI','Glassmorphism','Mood'], url:'https://es-d-1647531020260404-019d4d33-33a9-7efa-bf07-66c38bc4ab53.codepen.dev/', title:{ro:'Tristețea poate fi elegantă', en:'Sadness Can Be Elegant'}, description:{ro:'Un UI melancolic, calm și cinematografic, cu blur moale, contrast bun și ritm lent.', en:'A melancholic, calm and cinematic UI with soft blur, strong contrast and a slow rhythm.'}, thumbTitle:'ELEGANT', thumbSubtitle:'SAD UI', thumbLang:'RO', thumbColor:'#a5b4fc', thumbBg:'linear-gradient(135deg, rgba(31,42,68,.30), rgba(107,126,165,.14))'},
+        {id:32, category:'ui', tags:['UI','Design','Experiment'], url:'https://es-d-1647531020260404-019d4d1e-fe34-79ef-a2c3-151dbe2f7b6b.codepen.dev/', title:{ro:'Front-End Playground Ultra', en:'Front-End Playground Ultra'}, description:{ro:'Explorare vizuală de interfață adăugată în portofoliu, pregătită pentru preview live și filtrare.', en:'A visual interface exploration added to the portfolio, ready for live preview and filtering.'}, thumbTitle:'PLAYGROUND', thumbSubtitle:'ULTRA', thumbLang:'EN', thumbColor:'#8b5cf6', thumbBg:'linear-gradient(135deg, rgba(79,140,255,.20), rgba(139,92,246,.18))'},
+        {id:33, category:'ui', tags:['UI','Fun','Addictive'], url:'https://es-d-1647531020260404-019d4da3-1f66-70ec-8302-5dd35a1b3138.codepen.dev/', title:{ro:'Useless but addictive', en:'Useless but addictive'}, description:{ro:'Un experiment interactiv jucăuș, inutil în cel mai bun sens, dar surprinzător de captivant.', en:'A playful interactive experiment, gloriously useless and surprisingly addictive.'}, thumbTitle:'USELESS', thumbSubtitle:'ADDICTIVE', thumbLang:'EN', thumbColor:'#f472b6', thumbBg:'linear-gradient(135deg, rgba(244,114,182,.24), rgba(251,191,36,.16))'},
+        {id:34, category:'utility', featured:true, tags:['SaaS','Mobile-first','ClientFlow'], url:'https://es-d-1647531020260404-019d4e21-afd1-7808-abf5-d9c88b726df2.codepen.dev/', title:{ro:'ClientFlow Mobile-first SaaS', en:'ClientFlow Mobile-first SaaS'}, description:{ro:'Versiune mobile-first pentru un produs de tip SaaS, optimizată pentru claritate, structură și utilizare pe ecrane mici.', en:'Mobile-first SaaS product version optimized for clarity, structure and small-screen usability.'}, thumbTitle:'CLIENTFLOW', thumbSubtitle:'MOBILE-FIRST', thumbLang:'EN', thumbColor:'#34d399', thumbBg:'linear-gradient(135deg, rgba(52,211,153,.28), rgba(59,130,246,.12))', learned:{ro:['Problemă: am vrut să adaptez logica unui produs de tip SaaS pentru mobile fără să pierd claritatea structurii.','Soluție: am reconstruit experiența într-o versiune mobile-first, în care informația, ierarhia și acțiunile rămân ușor de folosit pe ecrane mici.','Decizie tehnică: am gândit layout-ul și ordinea conținutului pornind de la constrângerile reale ale mobilului, nu doar prin comprimarea versiunii desktop.','Decizie UI/UX: am simplificat flow-ul, am păstrat elementele esențiale și am urmărit interacțiuni curate, ușor de parcurs cu degetul.','Provocare: să păstrez senzația de produs complet într-un spațiu vizual mult mai restrâns.','Ce demonstrează: că pot adapta o interfață de produs la contexte reale de utilizare, nu doar la ecrane ideale.'], en:['Problem: I wanted to adapt a SaaS-style product for mobile without losing structural clarity.','Solution: I rebuilt the experience as a mobile-first version where information, hierarchy and actions remain easy to use on small screens.','Technical decision: I designed the layout and content order from real mobile constraints, not by simply compressing the desktop version.','UI/UX decision: I simplified the flow, kept only the essentials and focused on clean interactions that are easy to navigate with touch.','Challenge: preserving the feeling of a complete product inside a much tighter visual space.','What it demonstrates: that I can adapt product interfaces to real usage contexts, not just ideal screens.']}},
+        {id:35, category:'ui', tags:['UI','Interactive','Physics'], url:'https://es-d-6681629020260406-019d59d7-b493-7866-bfab-44bb7e61c88c.codepen.dev/', title:{ro:'Gravity Draw', en:'Gravity Draw'}, description:{ro:'Experiment interactiv de desen cu efecte inspirate de gravitație și mișcare fluidă.', en:'Interactive drawing experiment with gravity-inspired effects and fluid motion.'}, thumbTitle:'GRAVITY', thumbSubtitle:'DRAW', thumbLang:'EN', thumbColor:'#60a5fa', thumbBg:'linear-gradient(135deg, rgba(96,165,250,.28), rgba(139,92,246,.12))'},
+        {id:36, category:'game', tags:['Game','Memory','Particles'], url:'https://es-d-6681629020260406-019d59e3-a37f-7501-934b-600ada71d3d6.codepen.dev/', title:{ro:'PARTICLE MEMORY', en:'PARTICLE MEMORY'}, description:{ro:'Joc / experiment vizual de memorie construit în jurul particulelor și feedback-ului dinamic.', en:'Memory game / visual experiment built around particles and dynamic feedback.'}, thumbTitle:'PARTICLE', thumbSubtitle:'MEMORY', thumbLang:'EN', thumbColor:'#f472b6', thumbBg:'linear-gradient(135deg, rgba(244,114,182,.26), rgba(56,189,248,.14))'},
+        {id:37, category:'ui', tags:['UI','Visual','Synthwave'], url:'https://es-d-6681629020260406-019d59f1-7414-7cbf-829a-d28a18ba0163.codepen.dev/', title:{ro:'SYNTH WAVE', en:'SYNTH WAVE'}, description:{ro:'Experiment vizual UI cu estetică synthwave, lumini neon și atmosferă retro-futuristă.', en:'Visual UI experiment with a synthwave aesthetic, neon lights and a retro-futuristic mood.'}, thumbTitle:'SYNTH', thumbSubtitle:'WAVE', thumbLang:'EN', thumbColor:'#a78bfa', thumbBg:'linear-gradient(135deg, rgba(167,139,250,.28), rgba(244,114,182,.14))'},
+        {id:38, category:'ui', tags:['UI','Interactive','Experimental'], url:'https://es-d-6681629020260406-019d5a00-2ebc-767a-893d-eb83f59078ed.codepen.dev/', title:{ro:'Nexus Arcade', en:'Nexus Arcade'}, description:{ro:'Un nou experiment UI adăugat în portofoliu, pregătit pentru preview live și interacțiune.', en:'A new UI experiment added to the portfolio, ready for live preview and interaction.'}, thumbTitle:'NEXUS', thumbSubtitle:'ARCADE', thumbLang:'EN', thumbColor:'#22c55e', thumbBg:'linear-gradient(135deg, rgba(34,197,94,.28), rgba(59,130,246,.12))'},
+        {id:39, category:'utility', tags:['BAC','Education','Quiz','AI Coach','Pomodoro'], url:'https://es-d-0809875720260407-019d5ef1-1fdb-786e-8eed-22aceacf81f9.codepen.dev/', title:{ro:'BAC Space Premium', en:'BAC Space Premium'}, description:{ro:'Platformă educațională pentru BAC care combină quiz-uri, simulări, AI coach, pomodoro și calendar de studiu într-un singur spațiu.', en:'Educational BAC platform that combines quizzes, exam simulations, AI coach, pomodoro and study calendar in one space.'}, thumbTitle:'BAC SPACE', thumbSubtitle:'PREMIUM', thumbLang:'RO', thumbColor:'#60a5fa', thumbBg:'linear-gradient(135deg, rgba(59,130,246,.28), rgba(16,185,129,.12))', learned:{ro:['Problemă: am vrut să adun într-un singur produs mai multe nevoi reale de studiu fără să creez haos în interfață.','Soluție: am construit o platformă educațională care combină quiz-uri, simulări, AI coach, pomodoro și calendar într-o structură clară și coerentă.','Decizie tehnică: am tratat fiecare funcționalitate ca parte dintr-un ecosistem, nu ca module puse la întâmplare.','Decizie UI/UX: am urmărit orientare rapidă, prioritizare clară și o experiență care susține progresul, nu doar consumul de conținut.','Provocare: să păstrez claritatea într-un produs cu mai multe instrumente și obiective diferite.','Ce demonstrează: că pot organiza produse digitale complexe în experiențe ușor de înțeles și folosit.'], en:['Problem: I wanted to bring multiple real study needs into one product without creating interface chaos.','Solution: I built an educational platform that combines quizzes, simulations, AI coach, pomodoro and a study calendar inside one clear structure.','Technical decision: I treated each feature as part of an ecosystem, not as random disconnected modules.','UI/UX decision: I focused on quick orientation, strong prioritization and an experience that supports progress, not just content consumption.','Challenge: keeping clarity inside a product with multiple tools and different goals.','What it demonstrates: that I can organize complex digital products into experiences that are easy to understand and use.']}},
+        {id:40, category:'challenge', tags:['Challenge','Code Words','Strings'], url:'https://es-d-1611250420260409-019d641f-3e50-79b4-8311-0db4e163ef1b.codepen.dev/', title:{ro:'Code Words · Strings', en:'Code Words · Strings'}, description:{ro:'Challenge axat pe stringuri, cu logică de procesare, reguli clare și rezolvare orientată pe text.', en:'String-focused challenge built around text processing, clear rules and logic-driven solutions.'}, thumbTitle:'CODE WORDS', thumbSubtitle:'STRINGS', thumbLang:'EN', thumbColor:'#8b5cf6', thumbBg:'linear-gradient(135deg, rgba(139,92,246,.28), rgba(79,140,255,.12))'},
+        {id:41, category:'utility', featured:true, tags:['Growth Lab','Client Portal','Media Studio','Content Workspace','Mobile-first','RO/EN'], url:'https://codepen.io/Laura-Andreea-the-typescripter/pen/ByLOQZV', title:{ro:'Utility Fusion Studio app', en:'Utility Fusion Studio app'}, description:{ro:'Aplicație premium unificată pentru creștere, lucru cu clienții și conținut, care combină growth lab, client portal, media studio și content workspace într-un singur produs clar și mobil-first.', en:'Unified premium app for growth, client work and content, combining a growth lab, client portal, media studio and content workspace in one clear mobile-first product.'}, thumbTitle:'FUSION', thumbSubtitle:'STUDIO APP', thumbLang:'RO/EN', thumbColor:'#22d3ee', thumbBg:'linear-gradient(135deg, rgba(34,211,238,.26), rgba(139,92,246,.18), rgba(217,70,239,.12))', learned:{ro:['Problemă: am vrut să unific mai multe concepte într-o singură aplicație fără să pierd claritatea structurii sau coerența experienței.','Soluție: am combinat growth lab, client portal, media studio, content planning și export center într-un singur workspace premium.','Decizie tehnică: am organizat produsul modular, ca microsite, demo de produs și workspace real, totul rulând local și optimizat pentru telefon.','Decizie UI/UX: am păstrat orientare clară, navigare logică și flow-uri distincte pentru lucru cu date, clienți și conținut.','Provocare: să integrez zone funcționale diferite într-o experiență unitară, fără aglomerare vizuală.','Ce demonstrează: că pot conecta mai multe tipuri de produs într-o singură interfață coerentă, utilă și prezentabilă în portofoliu.'], en:['Problem: I wanted to unify multiple concepts into one application without losing structural clarity or experience consistency.','Solution: I combined a growth lab, client portal, media studio, content planning and export center into one premium workspace.','Technical decision: I organized the product modularly so it works as a microsite, product demo and real workspace, all running locally and optimized for mobile.','UI/UX decision: I kept the orientation clear, the navigation logical and the flows distinct for data work, client work and content work.','Challenge: integrating different functional areas into one unified experience without visual clutter.','What it demonstrates: that I can connect multiple product types inside one coherent, useful and portfolio-ready interface.']}},
+        {id:42, category:'utility', tags:['CRM','Bookings','Content Studio','XLSX','Workspace','RO/EN'], url:'https://es-d-8430037720260411-019d6ba2-ba54-745e-95fb-ae9d822cdf92.codepen.dev/', title:{ro:'ALPis Fusion v5.4', en:'ALPis Fusion v5.4'}, description:{ro:'Workspace unificat care combină CRM, programări, servicii, export XLSX workbook și Content Studio într-o singură interfață clară, modulară și orientată pe productivitate.', en:'Unified workspace that combines CRM, bookings, services, XLSX workbook export and a Content Studio inside one clear, modular and productivity-focused interface.'}, thumbTitle:'ALPIS', thumbSubtitle:'FUSION v5.4', thumbLang:'RO/EN', thumbColor:'#22d3ee', thumbBg:'linear-gradient(135deg, rgba(34,211,238,.26), rgba(59,130,246,.16), rgba(139,92,246,.14))'},
+        {id:43, category:'utility', featured:true, tags:['Food','Menu','Planning','RO'], url:'https://es-d-4029897220260413-019d63dd-a750-7f1d-8769-de10f5881bd2.codepen.dev/', title:{ro:'Ce mâncăm azi?', en:'What Are We Eating Today?'}, description:{ro:'Aplicație orientată pe alegerea meselor și organizarea rapidă a opțiunilor culinare într-o interfață clară și prietenoasă.', en:'Meal-focused app built to help organize food choices and daily planning inside a clear and friendly interface.'}, thumbTitle:'CE MÂNCĂM', thumbSubtitle:'AZI?', thumbLang:'RO', thumbColor:'#fbbf24', thumbBg:'linear-gradient(135deg, rgba(251,191,36,.28), rgba(249,115,22,.14))'},
+        {id:44, category:'utility', tags:['ALPis','Fusion','Workspace','RO/EN'], url:'https://es-d-4029897220260413-019d7cd3-34b4-7538-a067-51b147dd0f7b.codepen.dev/', title:{ro:'ALPis Fusion', en:'ALPis Fusion'}, description:{ro:'Workspace ALPis Fusion cu structură modulară și fluxuri clare pentru organizare, lucru și prezentare într-o singură experiență.', en:'ALPis Fusion workspace with modular structure and clear flows for organization, work and presentation in a single experience.'}, thumbTitle:'ALPIS', thumbSubtitle:'FUSION', thumbLang:'RO/EN', thumbColor:'#22d3ee', thumbBg:'linear-gradient(135deg, rgba(34,211,238,.26), rgba(59,130,246,.16), rgba(139,92,246,.14))'},
+        {id:45, category:'utility', tags:['ALPis','CRM','Fusion','RO/EN'], url:'https://es-d-4029897220260413-019d7cd3-34b4-7538-a067-51b147dd0f7b.codepen.dev/', title:{ro:'Alpis Fusion CRM', en:'Alpis Fusion CRM'}, description:{ro:'Versiune orientată pe CRM din ecosistemul Alpis Fusion, construită pentru claritate, relații cu clienții și fluxuri ușor de urmărit.', en:'CRM-oriented version from the Alpis Fusion ecosystem, built for clarity, client work and easy-to-follow operational flows.'}, thumbTitle:'ALPIS CRM', thumbSubtitle:'FUSION', thumbLang:'RO/EN', thumbColor:'#34d399', thumbBg:'linear-gradient(135deg, rgba(52,211,153,.28), rgba(34,211,238,.14), rgba(59,130,246,.10))'},
+        {id:46, category:'challenge', tags:['Challenge','Code Words','Loop','Logic'], url:'https://codepen.io/Laura-Andreea-the-typescripter/pen/dPpwZjR', title:{ro:'Code Words · Loop', en:'Code Words · Loop'}, description:{ro:'Challenge axat pe bucle și iterație, cu logică repetitivă, reguli clare și rezolvare orientată pe cicluri.', en:'Loop-focused challenge built around iteration, repetitive logic, clear rules and cycle-driven solutions.'}, thumbTitle:'CODE WORDS', thumbSubtitle:'LOOP', thumbLang:'EN', thumbColor:'#a78bfa', thumbBg:'linear-gradient(135deg, rgba(167,139,250,.28), rgba(79,140,255,.14))'},
+        {id:47, category:'game', tags:['Game','Arcade','World','Collection'], url:'https://es-d-0728073020260417-019d8fca-8d0c-70aa-ac45-d66d5b467a3d.codepen.dev/', title:{ro:'ARCADE WORLD', en:'ARCADE WORLD'}, description:{ro:'Colecție arcade completă într-o singură experiență — mai multe jocuri, un singur univers, energie retro și gameplay variat.', en:'Complete arcade collection in one experience — multiple games, one universe, retro energy and varied gameplay.'}, thumbTitle:'ARCADE', thumbSubtitle:'WORLD', thumbLang:'EN', thumbColor:'#f59e0b', thumbBg:'linear-gradient(135deg, rgba(245,158,11,.28), rgba(251,113,133,.14), rgba(139,92,246,.10))'}
+      ];
+
+      const forks = [
+        {
+          id:'fork-01',
+          category:'fork',
+          tags:['Fork','Pure CSS','3D','Animated Carousel','Study'],
+          url:'https://codepen.io/Laura-Andreea-the-typescripter/pen/pvEQeMp',
+          title:{ro:'Pure CSS 3D animated carousel - minimal code, heavily commented', en:'Pure CSS 3D animated carousel - minimal code, heavily commented'},
+          description:{ro:'Fork separat pentru studiul unui carousel 3D animat construit doar cu HTML + CSS, cu accent pe profunzime, rotație, layering și comentarii clare.', en:'Separate fork for studying a 3D animated carousel built with HTML + CSS only, focused on depth, rotation, layering and clear comments.'},
+          thumbTitle:'3D', thumbSubtitle:'CAROUSEL', thumbLang:'PURE CSS', thumbColor:'#7dd3fc', thumbBg:'linear-gradient(135deg, rgba(14,165,233,.26), rgba(79,70,229,.18), rgba(139,92,246,.12))',
+          learned:{
+            ro:[
+              'Problemă: am vrut să separ proiectele de tip fork de proiectele originale din portofoliu.',
+              'Soluție: am adăugat o secțiune dedicată Forks, fără să modific structura secțiunilor existente.',
+              'Ce demonstrează: că pot păstra claritatea informațională și diferența dintre produs original și studiu vizual.'
+            ],
+            en:[
+              'Problem: I wanted to separate fork-based work from original portfolio projects.',
+              'Solution: I added a dedicated Forks section without changing the existing section structure.',
+              'What it demonstrates: that I can preserve informational clarity and keep original product work distinct from visual studies.'
+            ]
+          }
+        }
+      ];
+
+      const featuredGrid = document.getElementById('featuredGrid');
+      const recentGrid = document.getElementById('recentGrid');
+      const forksGrid = document.getElementById('forksGrid');
+      const projectsGrid = document.getElementById('projectsGrid');
+      const challengesGrid = document.getElementById('challengesGrid');
+      const experimentsGrid = document.getElementById('experimentsGrid');
+      const resultsCount = document.getElementById('resultsCount');
+      const projectCount = document.getElementById('projectCount');
+      const currentPreviewIndex = document.getElementById('currentPreviewIndex');
+      const projectFrame = document.getElementById('projectFrame');
+      const previewTitle = document.getElementById('previewTitle');
+      const previewTag = document.getElementById('previewTag');
+      const previewUrl = document.getElementById('previewUrl');
+      const previewOpen = document.getElementById('previewOpen');
+      const emptyState = document.getElementById('emptyState');
+      const searchInput = document.getElementById('searchInput');
+      const filterChips = document.getElementById('filterChips');
+      const themeToggle = document.getElementById('themeToggle');
+      const langToggle = document.getElementById('langToggle');
+      let currentLang = localStorage.getItem('portfolio-lang') || 'ro';
+      if (!translations[currentLang]) currentLang = 'ro';
+      let activeFilter = 'all';
+      let activePreview = projects[0];
+      const selectedWorkIds = [1,3,13,18,19,29,34,39,41,42,43,44,45];
+
+      function t(key){ return translations[currentLang][key] || key; }
+      function escapeHtml(str=''){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+      function updateMetaForLanguage(){
+        document.documentElement.lang = currentLang;
+        const titleMap = { ro:'Laura Andreea | CodePen Portfolio', en:'Laura Andreea | CodePen Portfolio' };
+        const descMap = {
+          ro:'Portofoliu front-end Laura Andreea: aplicații interactive, mini jocuri, experimente UI și studii de caz scurte, cu preview live și structură clară.',
+          en:'Laura Andreea front-end portfolio: interactive apps, mini games, UI experiments and short case studies with live preview.'
+        };
+        const ogLocaleMap = { ro:'ro_RO', en:'en_US' };
+        document.title = titleMap[currentLang];
+        document.querySelector('meta[name="description"]').setAttribute('content', descMap[currentLang]);
+        document.querySelector('meta[property="og:title"]').setAttribute('content', titleMap[currentLang]);
+        document.querySelector('meta[property="og:description"]').setAttribute('content', descMap[currentLang]);
+        document.querySelector('meta[property="og:locale"]').setAttribute('content', ogLocaleMap[currentLang]);
+        document.querySelector('meta[name="twitter:title"]').setAttribute('content', titleMap[currentLang]);
+        document.querySelector('meta[name="twitter:description"]').setAttribute('content', descMap[currentLang]);
+      }
+
+      function buildPreviewCard(project){
+        const thumbBg = project.thumbBg || 'linear-gradient(135deg, rgba(79,140,255,.18), rgba(139,92,246,.12))';
+        const thumbColor = project.thumbColor || '#ffffff';
+        const thumbLang = project.thumbLang || 'EN';
+        const thumbTitle = project.thumbTitle || project.title[currentLang];
+        const thumbSubtitle = project.thumbSubtitle || project.category;
+        const learned = (project.learned && project.learned[currentLang]) || [
+          currentLang === 'ro' ? 'Problemă: am urmărit să construiesc o interfață clară și ușor de explorat.' : 'Problem: I wanted to build an interface that feels clear and easy to explore.',
+          currentLang === 'ro' ? 'Soluție: am organizat conținutul astfel încât acțiunile și informațiile principale să fie rapid de înțeles.' : 'Solution: I organized the content so the main actions and information are easy to understand.',
+          currentLang === 'ro' ? 'Provocare: să păstrez un echilibru bun între prezentare vizuală, claritate și experiență responsive.' : 'Challenge: keeping a good balance between visual presentation, clarity and responsive experience.'
+        ];
+        return `<!DOCTYPE html><html lang="${currentLang}"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><style>*{box-sizing:border-box}html,body{height:100%}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top left, rgba(79,140,255,.18), transparent 28%),radial-gradient(circle at bottom right, rgba(139,92,246,.16), transparent 24%),linear-gradient(180deg,#0b1730,#071226);color:#eef4ff}.box{width:min(100%,820px);border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);border-radius:24px;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.35)}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}.label{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8fb6ff;background:rgba(79,140,255,.12);border:1px solid rgba(79,140,255,.24)}.cat{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;font-size:.78rem;font-weight:700;text-transform:capitalize;color:#dbe8ff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}.thumb{position:relative;min-height:260px;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:${thumbBg};padding:14px;margin-bottom:20px}.thumb-browser{display:flex;gap:6px;margin-bottom:12px}.thumb-browser span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.34)}.thumb-screen{min-height:200px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(5,10,22,.42);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;position:relative;overflow:hidden}.thumb-lang{position:absolute;top:10px;right:10px;padding:6px 10px;border-radius:999px;font-size:.72rem;letter-spacing:.05em;font-weight:700;color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)}.thumb-title{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:${thumbColor};line-height:1}.thumb-subtitle{margin-top:10px;font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72)}.thumb-bar{margin-top:18px;width:72%;height:38px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)}h2{margin:0 0 10px;font-size:1.45rem;line-height:1.2}p{margin:0;color:#9db0d4;line-height:1.75}.tags{margin-top:16px;display:flex;flex-wrap:wrap;gap:10px}.tags span{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);color:#eef4ff;font-size:.9rem}.learn{margin-top:18px;padding:16px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}.learn ul{margin:0;padding-left:18px;color:#b6c7e6;line-height:1.7}.actions{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:999px;color:#fff;text-decoration:none;font-weight:700;background:linear-gradient(135deg,#4f8cff,#8b5cf6)}.ghost{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);color:#eef4ff}</style></head><body><div class="box"><div class="top"><div class="label">${escapeHtml(t('preview_fallback_label'))}</div><div class="cat">${escapeHtml(project.category)}</div></div><div class="thumb"><div class="thumb-browser"><span></span><span></span><span></span></div><div class="thumb-screen"><div class="thumb-lang">${escapeHtml(thumbLang)}</div><div class="thumb-title">${escapeHtml(thumbTitle)}</div><div class="thumb-subtitle">${escapeHtml(thumbSubtitle)}</div><div class="thumb-bar"></div></div></div><h2>${escapeHtml(project.title[currentLang])}</h2><p>${escapeHtml(project.description[currentLang])}</p><div class="tags">${project.tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join('')}</div><div class="learn"><ul>${learned.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div><div class="actions"><a href="${escapeHtml(project.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t('preview_open'))}</a><a class="ghost" href="${escapeHtml(HUB_URL)}" target="_blank" rel="noopener noreferrer">Hub</a></div></div></body></html>`;
+      }
+
+      function makeThumb(project){
+        return `<div class="project-thumb" style="--thumb-bg:${project.thumbBg}; --thumb-color:${project.thumbColor}"><div class="thumb-browser"><span></span><span></span><span></span></div><div class="thumb-screen"><div class="thumb-lang">${project.thumbLang || 'EN'}</div><div class="thumb-title">${project.thumbTitle || project.title[currentLang]}</div><div class="thumb-subtitle">${project.thumbSubtitle || project.category}</div><div class="thumb-bar"></div></div></div>`;
+      }
+
+      function createProjectCard(project){
+        const learned = (project.learned && project.learned[currentLang]) || [
+          currentLang === 'ro' ? 'Problemă: am urmărit să construiesc o interfață clară și ușor de explorat.' : 'Problem: I wanted to build an interface that feels clear and easy to explore.',
+          currentLang === 'ro' ? 'Soluție: am organizat conținutul astfel încât acțiunile și informațiile principale să fie rapid de înțeles.' : 'Solution: I organized the content so the main actions and information are easy to understand.',
+          currentLang === 'ro' ? 'Provocare: să păstrez un echilibru bun între prezentare vizuală, claritate și experiență responsive.' : 'Challenge: keeping a good balance between visual presentation, clarity and responsive experience.'
+        ];
+        const article = document.createElement('article');
+        article.className = 'project-card glass';
+        article.dataset.projectId = project.id;
+        const learnId = `learn-content-${project.id}`;
+        const toggleId = `learn-toggle-${project.id}`;
+        article.innerHTML = `${makeThumb(project)}<div class="project-top"><div><h3>${project.title[currentLang]}</h3></div><span class="tag ${project.category}">${project.category}</span></div><p class="project-desc">${project.description[currentLang]}</p><div class="skills">${project.tags.map(tag => `<span>${tag}</span>`).join('')}</div><div class="learn-box"><button class="learn-toggle" type="button" id="${toggleId}" aria-expanded="false" aria-controls="${learnId}">${t('learn_title')} <span aria-hidden="true">+</span></button><div class="learn-content" id="${learnId}" role="region" aria-labelledby="${toggleId}" hidden><ul>${learned.map(item => `<li>${item}</li>`).join('')}</ul></div></div><div class="project-actions"><button class="mini-btn primary" type="button" data-preview="${project.id}">${t('preview_live')}</button><a class="mini-btn" href="${project.url}" target="_blank" rel="noopener noreferrer">${t('open_new_tab')}</a><a class="mini-btn" href="${HUB_URL}" target="_blank" rel="noopener noreferrer">Hub</a></div>`;
+        return article;
+      }
+
+      function createForkCard(project){
+        const learned = (project.learned && project.learned[currentLang]) || [];
+        const article = document.createElement('article');
+        article.className = 'project-card glass';
+        article.dataset.projectId = project.id;
+        const learnId = `learn-content-${project.id}`;
+        const toggleId = `learn-toggle-${project.id}`;
+        article.innerHTML = `${makeThumb(project)}<div class="project-top"><div><h3>${project.title[currentLang]}</h3></div><span class="tag fork">${t('fork_source')}</span></div><p class="project-desc">${project.description[currentLang]}</p><div class="skills">${project.tags.map(tag => `<span>${tag}</span>`).join('')}</div><div class="learn-box"><button class="learn-toggle" type="button" id="${toggleId}" aria-expanded="false" aria-controls="${learnId}">${t('learn_title')} <span aria-hidden="true">+</span></button><div class="learn-content" id="${learnId}" role="region" aria-labelledby="${toggleId}" hidden><ul>${learned.map(item => `<li>${item}</li>`).join('')}</ul></div></div><div class="project-actions"><a class="mini-btn primary" href="${project.url}" target="_blank" rel="noopener noreferrer">${t('fork_open')}</a><a class="mini-btn" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">CodePen</a><a class="mini-btn" href="${HUB_URL}" target="_blank" rel="noopener noreferrer">Hub</a></div>`;
+        return article;
+      }
+
+      function updateActivePreviewCards(){
+        document.querySelectorAll('.project-card').forEach(card => card.classList.toggle('active-preview', String(card.dataset.projectId) === String(activePreview.id)));
+      }
+
+      function setPreview(project){
+        activePreview = project;
+        previewTitle.textContent = project.title[currentLang];
+        previewTag.textContent = project.category;
+        previewTag.className = 'tag ' + project.category;
+        previewUrl.textContent = project.url;
+        previewOpen.href = project.url;
+        currentPreviewIndex.textContent = String(project.id).padStart(2, '0');
+        projectFrame.removeAttribute('src');
+        projectFrame.srcdoc = buildPreviewCard(project);
+        updateActivePreviewCards();
+      }
+
+      function getFilteredProjects(){
+        const query = searchInput.value.trim().toLowerCase();
+        return projects.filter(project => {
+          const matchesFilter = activeFilter === 'all' || project.category === activeFilter || project.tags.some(tag => tag.toLowerCase() === activeFilter);
+          const haystack = [project.title.ro, project.title.en, project.description.ro, project.description.en, project.category, ...project.tags].join(' ').toLowerCase();
+          return matchesFilter && haystack.includes(query);
+        });
+      }
+
+      function bindCardEvents(scope){
+        scope.querySelectorAll('[data-preview]').forEach(btn => btn.addEventListener('click', () => {
+          const project = projects.find(p => String(p.id) === String(btn.dataset.preview));
+          if (!project) return;
+          setPreview(project);
+          document.getElementById('preview').scrollIntoView({behavior:'smooth', block:'start'});
+        }));
+        scope.querySelectorAll('.learn-toggle').forEach(btn => btn.addEventListener('click', () => {
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          const content = document.getElementById(btn.getAttribute('aria-controls'));
+          btn.setAttribute('aria-expanded', String(!expanded));
+          content.hidden = expanded;
+        }));
+      }
+
+      function renderFeatured(){
+        featuredGrid.innerHTML = '';
+        projects.filter(p => p.featured).forEach(project => featuredGrid.appendChild(createProjectCard(project)));
+        bindCardEvents(featuredGrid);
+      }
+
+      function renderRecentProjects(){
+        recentGrid.innerHTML = '';
+        projects
+          .filter(p => !p.featured)
+          .slice()
+          .sort((a, b) => b.id - a.id)
+          .slice(0, 6)
+          .forEach(project => recentGrid.appendChild(createProjectCard(project)));
+        bindCardEvents(recentGrid);
+      }
+
+      function renderForks(){
+        forksGrid.innerHTML = '';
+        forks.forEach(project => forksGrid.appendChild(createForkCard(project)));
+        bindCardEvents(forksGrid);
+      }
+
+      function renderProjects(){
+        const filtered = getFilteredProjects();
+        const main = filtered.filter(p => selectedWorkIds.includes(p.id) && p.category !== 'challenge');
+        const challenges = filtered.filter(p => p.category === 'challenge');
+        const experiments = filtered.filter(p => !selectedWorkIds.includes(p.id) && p.category !== 'challenge');
+        projectsGrid.innerHTML = '';
+        challengesGrid.innerHTML = '';
+        experimentsGrid.innerHTML = '';
+        main.forEach(project => projectsGrid.appendChild(createProjectCard(project)));
+        experiments.forEach(project => experimentsGrid.appendChild(createProjectCard(project)));
+        challenges.forEach(project => challengesGrid.appendChild(createProjectCard(project)));
+        bindCardEvents(projectsGrid); bindCardEvents(experimentsGrid); bindCardEvents(challengesGrid);
+        resultsCount.textContent = String(filtered.length);
+        emptyState.style.display = filtered.length ? 'none' : 'block';
+        updateActivePreviewCards();
+      }
+
+      function updateFilterAria(){
+        filterChips.querySelectorAll('.chip').forEach(btn => {
+          const pressed = btn.dataset.filter === activeFilter;
+          btn.classList.toggle('active', pressed);
+          btn.setAttribute('aria-pressed', String(pressed));
+        });
+      }
+
+      function updateToggleAria(){
+        langToggle.setAttribute('aria-pressed', String(currentLang === 'en'));
+        themeToggle.setAttribute('aria-pressed', String(document.body.classList.contains('light')));
+      }
+
+      function applyTranslations(){
+        updateMetaForLanguage();
+        document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+        searchInput.placeholder = t('search_placeholder');
+        langToggle.textContent = currentLang === 'ro' ? 'RO | EN' : 'EN | RO';
+        themeToggle.textContent = document.body.classList.contains('light') ? t('theme_light') : t('theme_dark');
+        projectCount.textContent = String(projects.length + forks.length);
+        localStorage.setItem('portfolio-lang', currentLang);
+        updateToggleAria(); updateFilterAria(); renderFeatured(); renderRecentProjects(); renderForks(); renderProjects(); setPreview(activePreview);
+        if(typeof renderTimeline === 'function') renderTimeline();
+        if(typeof renderBlog === 'function') renderBlog();
+      }
+
+      function applySavedTheme(){
+        if (localStorage.getItem('portfolio-theme') === 'light') document.body.classList.add('light');
+        themeToggle.textContent = document.body.classList.contains('light') ? t('theme_light') : t('theme_dark');
+        updateToggleAria();
+      }
+
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('light');
+        localStorage.setItem('portfolio-theme', document.body.classList.contains('light') ? 'light' : 'dark');
+        themeToggle.textContent = document.body.classList.contains('light') ? t('theme_light') : t('theme_dark');
+        updateToggleAria();
+      });
+
+      langToggle.addEventListener('click', () => {
+        currentLang = currentLang === 'ro' ? 'en' : 'ro';
+        localStorage.setItem('portfolio-lang', currentLang);
+        applyTranslations();
+      });
+
+      filterChips.addEventListener('click', event => {
+        const chip = event.target.closest('.chip');
+        if (!chip) return;
+        activeFilter = chip.dataset.filter;
+        updateFilterAria();
+        renderProjects();
+      });
+
+      searchInput.addEventListener('input', renderProjects);
+      ['hubLinkTop','hubLinkHero','previewHub','hubLinkContact'].forEach(id => { const el = document.getElementById(id); if (el) el.href = HUB_URL; });
+
+      const timelineData = [
+        { year:'Ian 2022', title:{ro:'Primele certificări tehnice și de marketing', en:'First technical & marketing certifications'}, desc:{ro:'Am obținut certificări LinkedIn în JavaScript Essential Training, Programming Foundations, Google Ads, Social Media Marketing Strategy și Project Management Communication. Primii pași concreți spre o bază solidă.', en:'Earned LinkedIn certifications in JavaScript Essential Training, Programming Foundations, Google Ads, Social Media Marketing Strategy and Project Management Communication. First concrete steps toward a solid foundation.'}, tags:['JavaScript','Google Ads','Social Media','Project Management']},
+        { year:'Aug 2022', title:{ro:'Certificări Google — Marketing Digital & YouTube', en:'Google Certifications — Digital Marketing & YouTube'}, desc:{ro:'Am obținut certificarea Google în Noțiuni fundamentale de marketing digital și certificarea YouTube Music prin Skillshop. Am consolidat cunoștințele în SEO, SEM, email marketing și content marketing.', en:'Earned Google Digital Marketing Fundamentals and YouTube Music certification through Skillshop. Consolidated knowledge in SEO, SEM, email marketing and content marketing.'}, tags:['Google','SEO','SEM','Email Marketing','Content Marketing']},
+        { year:'2022–2024', title:{ro:'Marketing Specialist & Social Media Manager', en:'Marketing Specialist & Social Media Manager'}, desc:{ro:'Pro bono Marketing Specialist & Strategist pentru afaceri mici. Social Media Manager. Am lucrat cu CRM, baze de date, campanii, Facebook Ads Manager, A/B Testing, e-commerce SEO, generare de leaduri și content management. Am colaborat și pe platforme imobiliare (Storia, OLX, Imobiliare, Homezz).', en:'Pro bono Marketing Specialist & Strategist for small businesses. Social Media Manager. Worked with CRM, databases, campaigns, Facebook Ads Manager, A/B Testing, e-commerce SEO, lead generation and content management. Also collaborated on real estate platforms.'}, tags:['CRM','Social Media','Facebook Ads','A/B Testing','Lead Generation']},
+        { year:'Apr 2024', title:{ro:'Data Analysis with Python — freeCodeCamp', en:'Data Analysis with Python — freeCodeCamp'}, desc:{ro:'Am obținut certificarea freeCodeCamp în analiza datelor cu Python. Un pas important spre înțelegerea datelor dincolo de marketing — programare, structuri de date și analiză.', en:'Earned freeCodeCamp certification in Data Analysis with Python. An important step toward understanding data beyond marketing — programming, data structures and analysis.'}, tags:['Python','Data Analysis','freeCodeCamp']},
+        { year:'Dec 2024', title:{ro:'Google Ads Measurement Certification', en:'Google Ads Measurement Certification'}, desc:{ro:'Am reînnoit certificarea Google Ads Measurement prin Skillshop. Am aprofundat măsurarea performanței campaniilor, conversii și atribuire.', en:'Renewed Google Ads Measurement certification through Skillshop. Deepened understanding of campaign performance measurement, conversions and attribution.'}, tags:['Google Ads','Measurement','Skillshop']},
+        { year:'2025', title:{ro:'Tranziția spre front-end — învățare autodidactă', en:'Transition to front-end — self-taught learning'}, desc:{ro:'Am început să învăț HTML, CSS și JavaScript pe cont propriu, din documentație, tutoriale și experimentare directă. Motivația: să construiesc eu însămi produsele digitale pe care le gândeam în marketing.', en:'Started learning HTML, CSS and JavaScript on my own, from documentation, tutorials and direct experimentation. The motivation: to build the digital products I was conceptualizing in marketing.'}, tags:['HTML','CSS','JavaScript','Self-taught']},
+        { year:'Mar 2026', title:{ro:'Claude Code in Action — certificări Anthropic & AI Central', en:'Claude Code in Action — Anthropic & AI Central certifications'}, desc:{ro:'Am obținut certificările Claude Code in Action de la Anthropic și AI Central. Am integrat AI în workflow-ul meu de dezvoltare — nu doar ca instrument, ci ca mod de gândire.', en:'Earned Claude Code in Action certifications from Anthropic and AI Central. Integrated AI into my development workflow — not just as a tool, but as a way of thinking.'}, tags:['AI','Claude','Anthropic','Certification']},
+        { year:'Mar 2026', title:{ro:'Primele proiecte pe CodePen', en:'First projects on CodePen'}, desc:{ro:'Am publicat primele experimente: Tic Tac Toe, Void Hunter, PvAI, Basket vs AI. Am descoperit că pot construi sisteme interactive cu logică reală, nu doar pagini statice.', en:'Published first experiments: Tic Tac Toe, Void Hunter, PvAI, Basket vs AI. Discovered I could build interactive systems with real logic, not just static pages.'}, tags:['CodePen','Games','Interactive']},
+        { year:'Mar–Apr 2026', title:{ro:'45 de proiecte în câteva săptămâni', en:'45 projects in a few weeks'}, desc:{ro:'Mini jocuri, aplicații SaaS (ClientFlow, BudgetFlow Pro X), platforme educaționale (BAC Space Premium), experimente UI (Synth Wave, Gravity Draw), challenge-uri logice. Fiecare proiect — o lecție nouă în JavaScript, state management, responsive design și product thinking.', en:'Mini games, SaaS apps (ClientFlow, BudgetFlow Pro X), educational platforms (BAC Space Premium), UI experiments (Synth Wave, Gravity Draw), logic challenges. Each project — a new lesson in JavaScript, state management, responsive design and product thinking.'}, tags:['SaaS','Games','UI','Product Thinking','45 projects']},
+        { year:'Apr 2026', title:{ro:'Acest portofoliu — proiect în sine', en:'This portfolio — a project in itself'}, desc:{ro:'Am construit portofoliul de la zero: dark/light mode, preview live cu srcdoc, filtrare și căutare, i18n RO/EN, studii de caz, responsive, OG tags, structured data. Tot ce am învățat, într-un singur loc.', en:'Built the portfolio from scratch: dark/light mode, live preview with srcdoc, filtering and search, i18n RO/EN, case studies, responsive, OG tags, structured data. Everything I learned, in one place.'}, tags:['Portfolio','i18n','Dark/Light','Responsive','SEO']}
+      ];
+
+      function renderTimeline(){
+        const container = document.getElementById('timelineContainer');
+        if(!container) return;
+        container.innerHTML = timelineData.map(item => `
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">${item.year}</div>
+            <div class="timeline-title">${item.title[currentLang]}</div>
+            <div class="timeline-desc">${item.desc[currentLang]}</div>
+            <div class="timeline-tags">${item.tags.map(tag => `<span>${tag}</span>`).join('')}</div>
+          </div>
+        `).join('');
+        observeReveals();
+      }
+
+      const blogData = [
+        { date:'Ian 2022', title:{ro:'De la marketing la cod: de ce am simțit că lipsește ceva', en:'From marketing to code: why I felt something was missing'}, desc:{ro:'Ani de zile am gândit produse digitale din perspectiva marketingului — campanii, funnel-uri, conversii. Dar nu puteam construi ce gândeam. În ianuarie 2022 am luat primele certificări în JavaScript și Programming Foundations. Nu știam încă unde mă va duce, dar știam că vreau să înțeleg cum funcționează lucrurile sub capotă.', en:'For years I thought about digital products from a marketing perspective — campaigns, funnels, conversions. But I couldn\'t build what I was thinking. In January 2022 I took my first certifications in JavaScript and Programming Foundations. I didn\'t know where it would lead, but I knew I wanted to understand how things work under the hood.'}, tags:['Career shift','JavaScript','Motivation']},
+        { date:'Mar 2026', title:{ro:'Cum am construit Basket vs AI — primul meu joc serios', en:'How I built Basket vs AI — my first serious game'}, desc:{ro:'Game loop, state management, logica adversarului controlat de cod, feedback vizual instant. Ce m-a surprins: cât de mult contează timing-ul și ritmul într-un joc. Nu e doar despre cod corect — e despre cum se simte interacțiunea. Experiența din CRM cu feedback-ul utilizatorului m-a ajutat enorm aici.', en:'Game loop, state management, code-controlled opponent logic, instant visual feedback. What surprised me: how much timing and rhythm matter in a game. It\'s not just about correct code — it\'s about how the interaction feels. My CRM experience with user feedback helped enormously here.'}, tags:['JavaScript','Game Loop','AI Logic','UX']},
+        { date:'Apr 2026', title:{ro:'De ce mobile-first m-a forțat să gândesc mai bine', en:'Why mobile-first forced me to think better'}, desc:{ro:'Când am adaptat ClientFlow pentru mobile, am realizat că limitarea spațiului te obligă să prioritizezi. Am învățat mai mult despre ierarhie vizuală comprimând un dashboard decât construind unul de la zero. Lecția: constrângerile nu sunt dușmani — sunt instrumente de design.', en:'When I adapted ClientFlow for mobile, I realized that space constraints force you to prioritize. I learned more about visual hierarchy by compressing a dashboard than building one from scratch. The lesson: constraints aren\'t enemies — they\'re design tools.'}, tags:['Mobile-first','UX','Layout','Constraints']},
+        { date:'Apr 2026', title:{ro:'Ce am învățat integrând 5 funcționalități într-un singur produs', en:'What I learned integrating 5 features into one product'}, desc:{ro:'BAC Space Premium combină quiz-uri, simulări de examen, AI coach, pomodoro și calendar de studiu. Provocarea: fiecare feature trebuie să facă parte din ecosistem, nu să fie adăugată la întâmplare. Am descoperit că product thinking înseamnă să spui „nu" la 10 idei ca să le faci bine pe 5.', en:'BAC Space Premium combines quizzes, exam simulations, AI coach, pomodoro and a study calendar. The challenge: each feature must be part of an ecosystem, not added randomly. I discovered that product thinking means saying "no" to 10 ideas so you can do 5 well.'}, tags:['Product Thinking','Architecture','Education']},
+        { date:'Apr 2026', title:{ro:'De la 0 la 45 de proiecte — ce m-a învățat ritmul intens', en:'From 0 to 45 projects — what intense momentum taught me'}, desc:{ro:'În câteva săptămâni am trecut de la „învăț HTML" la aplicații SaaS, jocuri cu AI, platforme educaționale și un portofoliu complet. Secretul nu a fost talentul, ci disciplina: un proiect pe zi, fiecare mai complex decât precedentul. Am învățat că progresul vine din repetiție cu intenție, nu din perfecțiune.', en:'In a few weeks I went from "learning HTML" to SaaS apps, AI games, educational platforms and a full portfolio. The secret wasn\'t talent, but discipline: one project a day, each more complex than the last. I learned that progress comes from repetition with intention, not perfection.'}, tags:['Discipline','Growth','Self-taught','Momentum']},
+        { date:'Apr 2026', title:{ro:'CoachingAI Health Companion — cum am transformat wellness-ul într-un dashboard accesibil', en:'CoachingAI Health Companion — how I turned wellness into an accessible dashboard'}, desc:{ro:'Am vrut să construiesc ceva care depășește un simplu tracker de obiceiuri. CoachingAI Health Companion combină coaching zilnic, task planning, timer pomodoro, exerciții adaptive pentru persoane cu mobilitate redusă, plan alimentar pe 7 zile, jocuri cognitive și un sistem de XP și badge-uri — totul într-un singur fișier HTML responsive. Cea mai mare provocare a fost accesibilitatea: am gândit fiecare interacțiune pentru utilizatori cu nevoi diferite, de la touch targets mari la modul simplificat și contrast ridicat. Ce m-a învățat: că un produs digital cu adevărat util nu e doar funcțional, ci și empatic.', en:'I wanted to build something that goes beyond a simple habit tracker. CoachingAI Health Companion combines daily coaching, task planning, pomodoro timer, adaptive exercises for people with mobility impairments, a 7-day meal plan, cognitive games and an XP and badge system — all inside a single responsive HTML file. The biggest challenge was accessibility: I designed every interaction for users with different needs, from large touch targets to simplified mode and high contrast. What it taught me: that a truly useful digital product isn\'t just functional — it\'s empathetic.'}, tags:['Accessibility','Wellness','AI Coaching','Product Design','Empathy']},
+      ];
+
+      function renderBlog(){
+        const container = document.getElementById('blogGrid');
+        if(!container) return;
+        container.innerHTML = blogData.map(item => `
+          <article class="blog-card glass reveal">
+            <div class="blog-date">${item.date}</div>
+            <h3>${item.title[currentLang]}</h3>
+            <p>${item.desc[currentLang]}</p>
+            <div class="blog-tags">${item.tags.map(tag => `<span>${tag}</span>`).join('')}</div>
+          </article>
+        `).join('');
+        observeReveals();
+      }
+
+      function observeReveals(){
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        document.querySelectorAll('.reveal:not(.visible)').forEach((el, i) => {
+          if(reducedMotion){
+            el.classList.add('visible');
+            return;
+          }
+          const rect = el.getBoundingClientRect();
+          if(rect.top < window.innerHeight && rect.bottom > 0){
+            setTimeout(() => el.classList.add('visible'), i * 60);
+          } else {
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if(entry.isIntersecting){
+                  entry.target.classList.add('visible');
+                  observer.unobserve(entry.target);
+                }
+              });
+            }, { threshold: 0.08 });
+            observer.observe(el);
+          }
+        });
+      }
+
+      document.querySelectorAll('.stat-card, .about-card, .preview-card, .contact-card, .section-head').forEach(el => el.classList.add('reveal'));
+
+      applySavedTheme();
+      applyTranslations();
+      setPreview(activePreview);
+    });
+  </script>
 </body>
 </html>
