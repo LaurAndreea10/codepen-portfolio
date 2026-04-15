@@ -4,7 +4,7 @@
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-laurandreea10.github.io-4f8cff?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/)
 [![GitHub Pages](https://img.shields.io/badge/Hosted_on-GitHub_Pages-8b5cf6?style=for-the-badge&logo=github&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/)
-[![Projects](https://img.shields.io/badge/Projects-45_live-22c55e?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/#projects)
+[![Projects](https://img.shields.io/badge/Projects-48_live-22c55e?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/#projects)
 [![Language](https://img.shields.io/badge/Lang-RO_%7C_EN-facc15?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/)
 
 </div>
@@ -16,7 +16,7 @@
 
 <br>
 
-> **Portofoliu front-end interactiv** cu 45 de proiecte live, preview instant, filtrare, căutare, mod întunecat/luminos și suport bilingv RO/EN.
+> **Portofoliu front-end interactiv** cu 48 de proiecte live, preview instant, filtrare, căutare, mod întunecat/luminos și suport bilingv RO/EN.
 > Construit din pasiune pentru front-end, cu o gândire formată în 5+ ani de CRM și Marketing.
 
 ### ✨ Features
@@ -51,7 +51,7 @@ codepen-portfolio/
 ├── index.html        # Structura HTML — fără CSS sau JS inline
 ├── style.css         # Toate stilurile, variabile CSS, responsive
 ├── main.js           # Logica aplicației, i18n, filtre, preview, render
-├── projects.json     # Datele celor 45 de proiecte — editabil separat
+├── projects.json     # Datele celor 48 de proiecte — editabil separat
 ├── favicon.svg       # Favicon vector gradient CP
 ├── og-cover.svg      # Cover 1200×630 pentru Open Graph / Twitter Card
 ├── robots.txt        # Directive pentru crawlere
@@ -94,7 +94,7 @@ Instalează extensia [Live Server](https://marketplace.visualstudio.com/items?it
 ### 📐 Decizii de arhitectură
 
 **Date externalizate în JSON**
-`projects.json` conține toate cele 45 de proiecte cu titlu, descriere, tags, URL și mini case study în RO și EN. Adăugarea unui proiect nou = un obiect JSON, fără atingerea codului HTML sau JS.
+`projects.json` conține toate cele 48 de proiecte cu titlu, descriere, tags, URL și mini case study în RO și EN. Adăugarea unui proiect nou = un obiect JSON, fără atingerea codului HTML sau JS.
 
 **i18n fără librărie**
 Traducerile sunt stocate într-un obiect `translations` în `main.js`. Elementele HTML cu `data-i18n` sunt actualizate la toggle, inclusiv meta tags OG și Twitter Card.
@@ -130,7 +130,7 @@ Lasă un ⭐ pe repo și deschide portofoliul live — fiecare proiect are un pr
 
 <br>
 
-> **Interactive front-end portfolio** with 45 live projects, instant preview, filtering, search, dark/light mode and bilingual RO/EN support.
+> **Interactive front-end portfolio** with 48 live projects, instant preview, filtering, search, dark/light mode and bilingual RO/EN support.
 > Built from a passion for front-end development, shaped by 5+ years of experience in CRM and Marketing.
 
 ### ✨ Features
@@ -165,7 +165,7 @@ codepen-portfolio/
 ├── index.html        # HTML structure — no inline CSS or JS
 ├── style.css         # All styles, CSS variables, responsive rules
 ├── main.js           # App logic: i18n, filters, preview, rendering
-├── projects.json     # Data for all 45 projects — editable independently
+├── projects.json     # Data for all 48 projects — editable independently
 ├── favicon.svg       # Vector gradient CP favicon
 ├── og-cover.svg      # 1200×630 cover for Open Graph / Twitter Card
 ├── robots.txt        # Crawler directives
@@ -208,7 +208,7 @@ Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ri
 ### 📐 Architecture decisions
 
 **Data externalized to JSON**
-`projects.json` holds all 45 projects with title, description, tags, URL and a bilingual mini case study. Adding a new project = one JSON object, no HTML or JS changes needed.
+`projects.json` holds all 48 projects with title, description, tags, URL and a bilingual mini case study. Adding a new project = one JSON object, no HTML or JS changes needed.
 
 **i18n without a library**
 Translations are stored in a `translations` object in `main.js`. Elements with `data-i18n` are updated on toggle, including OG and Twitter Card meta tags — useful for shared links in either language.
