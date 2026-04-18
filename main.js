@@ -1,10 +1,11 @@
-const HUB_URL = 'https://codepen.io/Laura-Andreea-the-typescripter/pen/019d2b3a-2991-75d3-9c59-15de01ca8079#projects';
-const BLOG_URL = 'https://es-d-7037060320260420-019d9f7f-067d-7de0-a4e9-3438cc67bdaa.codepen.dev/';
-const PARCURS_URL = '#';
-const PREVIEW_URL = '#';
-const FORKS_URL = '#';
-const FUSIONS_URL = '#';
-const PROJECTS_URL = '#';
+const PORTFOLIO_SOURCE_URL = 'https://codepen.io/editor/Laura-Andreea-the-typescripter/pen/019d2b3a-2991-75d3-9c59-15de01ca8079';
+const HUB_URL = `${PORTFOLIO_SOURCE_URL}#projects`;
+const BLOG_URL = `${PORTFOLIO_SOURCE_URL}#blog`;
+const PARCURS_URL = `${PORTFOLIO_SOURCE_URL}#parcurs`;
+const PREVIEW_URL = `${PORTFOLIO_SOURCE_URL}#preview`;
+const FORKS_URL = `${PORTFOLIO_SOURCE_URL}#forks`;
+const FUSIONS_URL = `${PORTFOLIO_SOURCE_URL}#fusions`;
+const PROJECTS_URL = `${PORTFOLIO_SOURCE_URL}#projects`;
 const KEY_PROJECT_IDS = [1, 3, 39];
 
 const translations = {
