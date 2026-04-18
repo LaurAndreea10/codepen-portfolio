@@ -10,6 +10,41 @@ const CRM_URL = `${JOURNEY_SOURCE_URL}#crm`;
 const FUSIONS_URL = `${JOURNEY_SOURCE_URL}#crm-fusion`;
 const PROJECTS_URL = `${PORTFOLIO_SOURCE_URL}#projects`;
 const KEY_PROJECT_IDS = [1, 3, 49];
+const STATIC_FALLBACK_PROJECTS = [
+  {
+    id: 1,
+    title: { ro: 'Arcade Fusion', en: 'Arcade Fusion' },
+    description: {
+      ro: 'Joc arcade cu feedback instant, scor live și ritm progresiv.',
+      en: 'Arcade game with instant feedback, live score and progressive pace.'
+    },
+    category: 'game',
+    tags: ['arcade', 'js', 'ux'],
+    url: 'projects/arcade-fusion.html'
+  },
+  {
+    id: 3,
+    title: { ro: 'ClientFlow', en: 'ClientFlow' },
+    description: {
+      ro: 'Dashboard utilitar pentru lead-uri, task-uri și urmărirea acțiunilor.',
+      en: 'Utility dashboard for leads, tasks and action tracking.'
+    },
+    category: 'utility',
+    tags: ['crm', 'dashboard', 'workflow'],
+    url: 'projects/clientflow.html'
+  },
+  {
+    id: 49,
+    title: { ro: 'Alpis Fusion CRM Premium', en: 'Alpis Fusion CRM Premium' },
+    description: {
+      ro: 'CRM modular cu kanban, flow builder, roluri și billing într-un singur SPA.',
+      en: 'Modular CRM with kanban, flow builder, roles and billing in one SPA.'
+    },
+    category: 'ui',
+    tags: ['crm', 'rbac', 'kanban'],
+    url: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/'
+  }
+];
 
 const translations = {
   ro: {
@@ -21,7 +56,7 @@ const translations = {
     key_title: 'O selecție de proiecte care reflectă cel mai bine modul în care gândesc interacțiunea, structura unei interfețe și experiența utilizatorului.',
     problem: 'Problemă', stack: 'Stack', logic: 'Logică', result: 'Rezultat', open: 'Deschide proiectul',
     about_eyebrow: 'Despre mine', about_title: 'Despre mine',
-    about_text: 'Combin experiența din CRM și marketing cu interesul meu pentru front-end development, pentru a construi produse digitale mai clare, mai utile și mai ușor de folosit. Am lucrat în roluri precum Pro bono Marketing Specialist & Strategist pentru afaceri mici și Social Media Manager, acumulând experiență în CRM, administrare baze de date, campanii digitale, Facebook Ads Manager, A/B testing, e-commerce SEO, generare de leaduri, content management și colaborare pe platforme imobiliare. Această bază profesională m-a format să gândesc în termeni de structură, claritate, comportament de utilizator și eficiență. Din dorința de a înțelege mai profund cum se construiesc experiențele digitale, am început să mă dezvolt în zona de front-end, unde lucrez la proiecte personale în HTML, CSS și JavaScript. Portofoliul meu include mini jocuri, aplicații de tip utility, interfețe interactive și concepte digitale create pentru a demonstra nu doar execuție vizuală, ci și logică, atenție la detalii și gândire orientată spre utilizator.',
+    about_text: 'Combin experiența din CRM și marketing cu interesul meu pentru front-end development, pentru a construi produse digitale mai clare, mai utile și mai ușor de folosit. Un exemplu concret: am construit Alpis Fusion CRM Premium ca SPA publicat pe GitHub Pages, cu kanban, flow builder, RBAC și billing într-o singură interfață.',
     contact_eyebrow: 'Contact', contact_title: 'Lasă-mi o sugestie',
     contact_text: 'Dacă ai o idee, o sugestie sau un feedback despre ce ai vrea să mai adaug în portofoliu, îmi poți scrie. Sunt deschisă la recomandări, colaborări și conversații care construiesc mai departe.',
     contact_email: 'Email', hub_eyebrow: 'Hub secundar',
@@ -67,7 +102,7 @@ const translations = {
     key_title: '3 projects that best show how I work',
     problem: 'Problem', stack: 'Stack', logic: 'Logic', result: 'Outcome', open: 'Open project',
     about_eyebrow: 'About', about_title: 'Short background',
-    about_text: 'My background is in CRM and marketing; in front-end I focus on interfaces that solve real problems with clear flows, feedback and explainable UI/UX decisions.',
+    about_text: 'My background is in CRM and marketing; in front-end I focus on interfaces that solve real problems with clear flows, feedback and explainable UI/UX decisions. A concrete example is Alpis Fusion CRM Premium, a GitHub Pages SPA that combines kanban, flow builder, RBAC and billing.',
     contact_eyebrow: 'Contact', contact_title: 'Let’s talk',
     contact_text: 'If you want, I can share detailed case-study versions for each core project.',
     contact_email: 'Email', hub_eyebrow: 'Secondary hub',
@@ -314,8 +349,8 @@ async function init() {
     projects = await response.json();
   } catch (error) {
     console.error('Nu am putut încărca projects.json', error);
-    dom.libraryGrid.innerHTML = `<div class="empty-state">${currentLang === 'ro' ? 'Eroare la încărcarea proiectelor. Reîncarcă pagina.' : 'Failed to load projects. Please refresh the page.'}</div>`;
-    return;
+    projects = STATIC_FALLBACK_PROJECTS;
+    dom.libraryGrid.innerHTML = `<div class="empty-state">${currentLang === 'ro' ? 'Am încărcat o versiune fallback cu proiecte esențiale, deoarece projects.json nu a fost disponibil.' : 'Loaded fallback essentials because projects.json was unavailable.'}</div>`;
   }
 
   render();
