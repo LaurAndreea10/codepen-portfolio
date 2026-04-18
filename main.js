@@ -6,17 +6,18 @@ const BLOG_URL = `${PORTFOLIO_SOURCE_URL}#blog`;
 const PARCURS_URL = `${JOURNEY_SOURCE_URL}#journey`;
 const PREVIEW_URL = `${PORTFOLIO_SOURCE_URL}#preview`;
 const FORKS_URL = `${PORTFOLIO_SOURCE_URL}#forks`;
+const CRM_URL = `${JOURNEY_SOURCE_URL}#crm`;
 const FUSIONS_URL = `${JOURNEY_SOURCE_URL}#crm-fusion`;
 const PROJECTS_URL = `${PORTFOLIO_SOURCE_URL}#projects`;
 const KEY_PROJECT_IDS = [1, 3, 39];
 
 const translations = {
   ro: {
-    brand: 'Portofoliu CodePen', nav_work: 'Proiecte recomandate', nav_fusions: 'Parcurs', nav_about: 'Despre mine', nav_contact: 'Contact',
+    brand: 'Portofoliu CodePen', nav_work: 'Top proiecte', nav_crm: 'CRM', nav_fusions: 'Fusion', nav_about: 'Despre mine', nav_contact: 'Contact',
     hero_eyebrow: 'Marketing Specialist • Social Media Manager • Front-end autodidact',
     hero_title: 'Construiesc experiențe digitale clare, interactive și gândite din perspectiva utilizatorului',
     hero_text: 'Am peste 5 ani de experiență în CRM și marketing, iar în paralel îmi dezvolt constant competențele în front-end development. Portofoliul meu reunește aplicații utile, mini jocuri și interfețe interactive create pentru a demonstra logică, structură, feedback și decizii UI/UX bine gândite — nu doar estetică.',
-    hero_cta: 'Vezi proiectele', key_eyebrow: 'Proiecte recomandate',
+    hero_cta: 'Vezi proiectele', key_eyebrow: 'Top proiecte',
     key_title: 'O selecție de proiecte care reflectă cel mai bine modul în care gândesc interacțiunea, structura unei interfețe și experiența utilizatorului.',
     problem: 'Problemă', stack: 'Stack', logic: 'Logică', result: 'Rezultat', open: 'Deschide proiectul',
     about_eyebrow: 'Despre mine', about_title: 'Despre mine',
@@ -36,6 +37,10 @@ const translations = {
     preview_title: 'Preview live',
     preview_note: 'Aici poți vedea unul dintre proiectele mele direct în portofoliu, într-un format gândit pentru explorare rapidă și experiență fluentă. Această zonă funcționează ca demonstrație practică a modului în care construiesc interacțiuni clare, feedback vizual și flow coerent între utilizator și interfață.',
     preview_cta: 'Deschide proiectul',
+    crm_eyebrow: 'CRM',
+    crm_title: 'Sisteme CRM și flow-uri orientate pe utilizator',
+    crm_note: 'Secțiune dedicată proiectelor în care combin organizarea datelor, automatizarea și experiența utilizatorului pentru procese mai clare.',
+    crm_cta: 'Deschide CRM',
     forks_eyebrow: 'Top Projects',
     forks_title: 'Top Projects',
     forks_note: 'Proiectele care exprimă cel mai bine felul în care transform o idee într-o experiență digitală clară, interactivă și bine structurată.',
@@ -54,7 +59,7 @@ const translations = {
     filter_state: 'Filtru: {filter} • Căutare: {query}'
   },
   en: {
-    brand: 'CodePen Portfolio', nav_work: 'Key projects', nav_fusions: 'Fusions', nav_about: 'About', nav_contact: 'Contact',
+    brand: 'CodePen Portfolio', nav_work: 'Top projects', nav_crm: 'CRM', nav_fusions: 'Fusion', nav_about: 'About', nav_contact: 'Contact',
     hero_eyebrow: 'CRM • Marketing • Self-taught front-end',
     hero_title: 'I build clear digital products: problem → logic → outcome',
     hero_text: 'The homepage now focuses on the 3 most relevant projects. The full library is still available in a secondary hub.',
@@ -78,6 +83,10 @@ const translations = {
     preview_title: 'Quick previews for experiments',
     preview_note: 'A separate area for visual previews and intermediate versions before final publishing.',
     preview_cta: 'Open Preview',
+    crm_eyebrow: 'CRM',
+    crm_title: 'CRM systems and user-focused flows',
+    crm_note: 'A dedicated section for projects where I combine data organization, automation and user experience to make processes clearer.',
+    crm_cta: 'Open CRM',
     forks_eyebrow: 'Forks',
     forks_title: 'Forks and technical reinterpretations',
     forks_note: 'A collection of ideas started from existing projects and adapted with my own logic and UX upgrades.',
@@ -264,6 +273,7 @@ async function init() {
     parcursExternalLink: document.getElementById('parcursExternalLink'),
     previewExternalLink: document.getElementById('previewExternalLink'),
     forksExternalLink: document.getElementById('forksExternalLink'),
+    crmExternalLink: document.getElementById('crmExternalLink'),
     fusionsExternalLink: document.getElementById('fusionsExternalLink'),
     projectsExternalLink: document.getElementById('projectsExternalLink'),
     hubExternalLink: document.getElementById('hubExternalLink'),
@@ -278,6 +288,7 @@ async function init() {
   dom.parcursExternalLink.href = PARCURS_URL;
   dom.previewExternalLink.href = PREVIEW_URL;
   dom.forksExternalLink.href = FORKS_URL;
+  dom.crmExternalLink.href = CRM_URL;
   dom.fusionsExternalLink.href = FUSIONS_URL;
   dom.projectsExternalLink.href = PROJECTS_URL;
   dom.hubExternalLink.href = HUB_URL;
