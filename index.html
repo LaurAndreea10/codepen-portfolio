@@ -20,6 +20,11 @@
   <meta property="og:site_name" content="CodePen Portfolio" />
   <meta property="og:locale" content="ro_RO" />
   <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.svg" />
+  <meta property="og:image:alt" content="Preview Laura Andreea CodePen Portfolio" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Laura Andreea | CodePen Portfolio" />
+  <meta name="twitter:description" content="Portofoliu interactiv cu proiecte-cheie, studii de caz și bibliotecă completă în hub secundar." />
+  <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.svg" />
 
   <script type="application/ld+json">
     {
@@ -52,6 +57,7 @@
     h1{margin-top:14px;font-size:clamp(2rem,5vw,4rem);line-height:.96;max-width:14ch;letter-spacing:-.04em}.hero-text{margin-top:14px;color:var(--muted);line-height:1.75;max-width:72ch}
     .hero-preview{display:flex;flex-direction:column;gap:12px;min-height:540px;padding:12px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
     .hero-preview-wrap{position:relative;flex:1;min-height:460px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:#081326}
+    .hero-preview-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.72}
     .hero-preview-hint{position:absolute;inset:auto 12px 12px 12px;z-index:2;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(7,18,38,.72);font-size:.84rem;color:var(--muted);pointer-events:none}
     .hero-preview-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
     .hero-preview-top p{font-size:.9rem;color:var(--muted)}
@@ -72,6 +78,9 @@
     .about-card,.contact-card,.hub-card{border-radius:22px;padding:22px}
     .about-card p,.contact-card p,.hub-note{color:var(--muted);line-height:1.7;margin-top:10px}
     .skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.skills span{padding:7px 10px;border:1px solid var(--line);border-radius:999px;font-size:.86rem;background:rgba(255,255,255,.04)}
+    .case-study{margin-top:14px;padding:14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+    .case-study h3{font-size:1rem}
+    .case-study ul{margin:8px 0 0 18px;padding:0;color:var(--muted);line-height:1.65}
     .controls{display:grid;gap:10px;margin:14px 0}.search{width:100%;min-height:50px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.04);padding:0 14px;color:var(--text)}
     .chip-row{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);cursor:pointer;color:var(--text)}
     .chip.active{background:linear-gradient(135deg, rgba(79,140,255,.2), rgba(139,92,246,.18));border-color:rgba(79,140,255,.35)}
@@ -89,6 +98,14 @@
   <a class="skip-link" href="#key-projects">Sari la proiectele recomandate</a>
   <noscript>
     <div style="padding:12px 16px;text-align:center;background:#b91c1c;color:#fff;font-weight:700;">Acest portofoliu folosește JavaScript pentru a încărca proiectele.</div>
+    <div style="padding:12px 16px;background:#071226;color:#fff;">
+      <strong>Fallback proiecte-cheie:</strong>
+      <ul>
+        <li><a href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Alpis Fusion CRM Premium</a></li>
+        <li><a href="projects/clientflow.html" target="_blank" rel="noopener noreferrer">ClientFlow</a></li>
+        <li><a href="projects/alpis-impactpath.html" target="_blank" rel="noopener noreferrer">Alpis Impact Path</a></li>
+      </ul>
+    </div>
   </noscript>
   <div class="topbar">
     <div class="container">
@@ -126,6 +143,7 @@
             </div>
             <p>Integrare live pentru Alpis Fusion CRM Premium direct în spațiul din dreapta.</p>
             <div class="hero-preview-wrap">
+              <img class="hero-preview-fallback" src="assets/alpis-fusion-crm-placeholder.svg" alt="Screenshot static pentru Alpis Fusion CRM Premium" loading="lazy" />
               <iframe class="hero-preview-frame" src="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" title="Alpis Fusion CRM Premium" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
               <div class="hero-preview-hint">Dacă preview-ul este blocat de browser/rețea, folosește butonul „Deschide separat”.</div>
             </div>
@@ -144,7 +162,26 @@
             <h2 data-i18n="key_title">3 proiecte care arată cel mai clar modul meu de lucru</h2>
           </div>
         </div>
-        <div class="projects-grid" id="keyProjectsGrid"></div>
+        <div class="projects-grid" id="keyProjectsGrid">
+          <article class="project-card glass">
+            <span class="tag">crm</span>
+            <h3>Alpis Fusion CRM Premium</h3>
+            <p class="project-desc">CRM modular cu secțiuni pentru clienți, task-uri și billing, construit pentru flow clar și acțiuni rapide.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Deschide proiectul</a></div>
+          </article>
+          <article class="project-card glass">
+            <span class="tag">utility</span>
+            <h3>ClientFlow</h3>
+            <p class="project-desc">Dashboard utilitar pentru urmărirea lead-urilor și acțiunilor zilnice, cu structură orientată pe prioritizare.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="projects/clientflow.html" target="_blank" rel="noopener noreferrer">Deschide proiectul</a></div>
+          </article>
+          <article class="project-card glass">
+            <span class="tag">ui</span>
+            <h3>Alpis Impact Path</h3>
+            <p class="project-desc">Concept de experiență interactivă care combină storytelling vizual și layout adaptiv pentru claritate.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="projects/alpis-impactpath.html" target="_blank" rel="noopener noreferrer">Deschide proiectul</a></div>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -153,9 +190,14 @@
         <article class="about-card glass">
           <span class="eyebrow" data-i18n="about_eyebrow">About</span>
           <h2 data-i18n="about_title">Context scurt</h2>
-          <p data-i18n="about_text">Vin din CRM și marketing, iar în front-end mă concentrez pe interfețe care rezolvă probleme reale: claritate de flux, feedback, structură și decizii UI/UX explicabile.</p>
+          <p data-i18n="about_text">Vin din CRM și marketing, iar în front-end mă concentrez pe interfețe care rezolvă probleme reale: claritate de flux, feedback, structură și decizii UI/UX explicabile. De exemplu, am construit un CRM cu kanban, flow builder, RBAC și billing într-un singur SPA publicat pe GitHub Pages.</p>
           <div class="skills">
-            <span>HTML</span><span>CSS</span><span>JavaScript</span><span>UI/UX</span><span>CRM</span><span>Product Thinking</span>
+            <span title="Structură semantică și componente UI reutilizabile în Alpis Fusion CRM.">HTML</span>
+            <span title="Design system și responsive layout pentru dashboard-uri CRM și hub-uri de proiecte.">CSS</span>
+            <span title="Logica de filtrare, state management și interacțiuni în proiectele din portofoliu.">JavaScript</span>
+            <span title="Fluxuri cu feedback clar, ierarhie vizuală și decizii orientate pe utilizator.">UI/UX</span>
+            <span title="Workflows pentru lead-uri, task-uri, roluri și automatizări în Alpis Fusion CRM.">CRM</span>
+            <span title="Definirea problemei, prioritizare și validare prin prototipuri și iterații rapide.">Product Thinking</span>
           </div>
         </article>
 
@@ -166,6 +208,8 @@
           <div class="card-actions" style="margin-top:16px;">
             <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com" data-i18n="contact_email">Email</a>
             <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="btn btn-secondary" href="https://www.linkedin.com/in/laura-andreea/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a class="btn btn-secondary" href="mailto:andreealaurap@gmail.com?subject=Cerere%20CV%20PDF">Descarcă CV</a>
           </div>
         </article>
       </div>
@@ -241,6 +285,15 @@
               <span class="eyebrow" data-i18n="crm_eyebrow">CRM</span>
               <h2 data-i18n="crm_title">Sisteme CRM și flow-uri orientate pe utilizator</h2>
               <p class="hub-note" data-i18n="crm_note">Secțiune dedicată proiectelor în care combin organizarea datelor, automatizarea și experiența utilizatorului pentru procese mai clare.</p>
+              <div class="case-study">
+                <h3>Mini case study — Alpis Fusion CRM</h3>
+                <ul>
+                  <li><strong>Problemă:</strong> informația despre lead-uri, task-uri și billing era fragmentată între ecrane.</li>
+                  <li><strong>Decizie:</strong> am proiectat un SPA modular cu kanban, flow builder și roluri RBAC într-un singur dashboard.</li>
+                  <li><strong>Implementare:</strong> am folosit componente UI reutilizabile, feedback vizual constant și trasee scurte spre acțiunile importante.</li>
+                  <li><strong>Rezultat:</strong> navigare mai predictibilă, timp mai mic pentru acțiuni repetitive și onboarding mai rapid pentru utilizatori noi.</li>
+                </ul>
+              </div>
             </div>
             <a class="btn btn-primary" id="crmExternalLink" target="_blank" rel="noopener noreferrer" data-i18n="crm_cta">Deschide CRM</a>
           </div>
@@ -299,7 +352,7 @@
               <button class="chip" type="button" data-filter="ui" aria-pressed="false">UI</button>
               <button class="chip" type="button" data-filter="challenge" aria-pressed="false">Challenge</button>
             </div>
-            <div class="status" role="status" aria-live="polite"><span id="resultsCount">0</span> <span data-i18n="results">rezultate</span> • <span id="filterState"></span></div>
+            <div class="status" role="status" aria-live="polite"><span id="resultsCount">—</span> <span data-i18n="results">rezultate</span> • <span id="filterState">Se încarcă…</span></div>
           </div>
 
           <div class="projects-grid" id="libraryGrid"></div>
