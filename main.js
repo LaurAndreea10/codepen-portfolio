@@ -89,6 +89,8 @@ let currentLang = localStorage.getItem('portfolio-lang') || 'ro';
 if (!translations[currentLang]) currentLang = 'ro';
 let activeFilter = 'all';
 let projects = [];
+let dom = {};
+let searchDebounceId;
 
 function t(key) { return translations[currentLang][key] || key; }
 
@@ -106,14 +108,29 @@ function createLibraryCard(project) {
   card.className = 'project-card glass';
   const title = project.title[currentLang];
   const description = project.description[currentLang];
-  card.innerHTML = `
-    <span class="tag">${project.category}</span>
-    <h3>${title}</h3>
-    <p class="project-desc">${description}</p>
-    <div class="card-actions">
-      <a class="btn btn-secondary" href="${project.url}" target="_blank" rel="noopener noreferrer">${t('open')}</a>
-    </div>
-  `;
+  const tag = document.createElement('span');
+  tag.className = 'tag';
+  tag.textContent = project.category;
+
+  const heading = document.createElement('h3');
+  heading.textContent = title;
+
+  const desc = document.createElement('p');
+  desc.className = 'project-desc';
+  desc.textContent = description;
+
+  const actions = document.createElement('div');
+  actions.className = 'card-actions';
+
+  const link = document.createElement('a');
+  link.className = 'btn btn-secondary';
+  link.href = project.url;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.textContent = t('open');
+
+  actions.append(link);
+  card.append(tag, heading, desc, actions);
   return card;
 }
 
@@ -146,16 +163,28 @@ function updateFilterState(query, total) {
 }
 
 function applyFilters() {
-  const query = document.getElementById('searchInput').value.trim().toLowerCase();
+  const query = dom.searchInput.value.trim().toLowerCase();
   const filtered = projects.filter(project => {
     const matchFilter = activeFilter === 'all' || project.category === activeFilter;
     const haystack = [project.title.ro, project.title.en, project.description.ro, project.description.en, project.category, ...(project.tags || [])].join(' ').toLowerCase();
     return matchFilter && haystack.includes(query);
   });
 
-  const libraryGrid = document.getElementById('libraryGrid');
-  libraryGrid.innerHTML = '';
-  filtered.forEach(project => libraryGrid.appendChild(createLibraryCard(project)));
+  dom.libraryGrid.innerHTML = '';
+  if (!filtered.length) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.textContent = currentLang === 'ro'
+      ? 'Nu am găsit proiecte pentru filtrul/căutarea curentă.'
+      : 'No projects matched the current filter/search.';
+    dom.libraryGrid.appendChild(empty);
+    updateFilterState(query, 0);
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+  filtered.forEach(project => fragment.appendChild(createLibraryCard(project)));
+  dom.libraryGrid.appendChild(fragment);
   updateFilterState(query, filtered.length);
 }
 
@@ -165,27 +194,42 @@ function render() {
     .map(id => projects.find(project => project.id === id))
     .filter(Boolean);
 
-  const keyGrid = document.getElementById('keyProjectsGrid');
-  keyGrid.innerHTML = '';
-  keyProjects.forEach(project => keyGrid.appendChild(createKeyCard(project)));
+  dom.keyProjectsGrid.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+  keyProjects.forEach(project => fragment.appendChild(createKeyCard(project)));
+  dom.keyProjectsGrid.appendChild(fragment);
   applyFilters();
 }
 
 async function init() {
-  document.getElementById('hubExternalLink').href = HUB_URL;
+  dom = {
+    hubExternalLink: document.getElementById('hubExternalLink'),
+    searchInput: document.getElementById('searchInput'),
+    filterChips: document.getElementById('filterChips'),
+    themeToggle: document.getElementById('themeToggle'),
+    langToggle: document.getElementById('langToggle'),
+    keyProjectsGrid: document.getElementById('keyProjectsGrid'),
+    libraryGrid: document.getElementById('libraryGrid')
+  };
+  dom.hubExternalLink.href = HUB_URL;
 
   try {
     const response = await fetch('projects.json');
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     projects = await response.json();
   } catch (error) {
     console.error('Nu am putut încărca projects.json', error);
+    dom.libraryGrid.innerHTML = `<div class="empty-state">${currentLang === 'ro' ? 'Eroare la încărcarea proiectelor. Reîncarcă pagina.' : 'Failed to load projects. Please refresh the page.'}</div>`;
     return;
   }
 
   render();
 
-  document.getElementById('searchInput').addEventListener('input', applyFilters);
-  document.getElementById('filterChips').addEventListener('click', (event) => {
+  dom.searchInput.addEventListener('input', () => {
+    window.clearTimeout(searchDebounceId);
+    searchDebounceId = window.setTimeout(applyFilters, 120);
+  });
+  dom.filterChips.addEventListener('click', (event) => {
     const chip = event.target.closest('[data-filter]');
     if (!chip) return;
     activeFilter = chip.dataset.filter;
@@ -197,20 +241,19 @@ async function init() {
     applyFilters();
   });
 
-  const themeToggle = document.getElementById('themeToggle');
   const applyTheme = (isLight) => {
     document.body.classList.toggle('light', isLight);
-    themeToggle.textContent = isLight ? '☀️ Light' : '🌙 Dark';
+    dom.themeToggle.textContent = isLight ? '☀️ Light' : '🌙 Dark';
   };
 
   applyTheme(localStorage.getItem('portfolio-theme') === 'light');
-  themeToggle.addEventListener('click', () => {
+  dom.themeToggle.addEventListener('click', () => {
     const nextLight = !document.body.classList.contains('light');
     applyTheme(nextLight);
     localStorage.setItem('portfolio-theme', nextLight ? 'light' : 'dark');
   });
 
-  document.getElementById('langToggle').addEventListener('click', () => {
+  dom.langToggle.addEventListener('click', () => {
     currentLang = currentLang === 'ro' ? 'en' : 'ro';
     localStorage.setItem('portfolio-lang', currentLang);
     render();
