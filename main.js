@@ -1,5 +1,10 @@
 const HUB_URL = 'https://codepen.io/Laura-Andreea-the-typescripter/pen/019d2b3a-2991-75d3-9c59-15de01ca8079#projects';
 const BLOG_URL = 'https://es-d-7037060320260420-019d9f7f-067d-7de0-a4e9-3438cc67bdaa.codepen.dev/';
+const PARCURS_URL = '#';
+const PREVIEW_URL = '#';
+const FORKS_URL = '#';
+const FUSIONS_URL = '#';
+const PROJECTS_URL = '#';
 const KEY_PROJECT_IDS = [1, 3, 39];
 
 const translations = {
@@ -20,6 +25,26 @@ const translations = {
     blog_title: 'Articole și idei din procesul meu',
     blog_note: 'Am integrat și zona de blog pentru insight-uri despre proiecte, workflow și experimente front-end.',
     blog_cta: 'Deschide blogul',
+    parcurs_eyebrow: 'Parcurs',
+    parcurs_title: 'Evoluție, etape și învățăminte aplicate',
+    parcurs_note: 'Un spațiu dedicat progresului meu: ce am construit, ce am iterat și cum am rafinat deciziile de produs.',
+    parcurs_cta: 'Deschide Parcurs',
+    preview_eyebrow: 'Preview',
+    preview_title: 'Previzualizări rapide pentru experimente',
+    preview_note: 'O zonă separată pentru preview-uri vizuale și versiuni intermediare înainte de publicarea finală.',
+    preview_cta: 'Deschide Preview',
+    forks_eyebrow: 'Forks',
+    forks_title: 'Fork-uri și reinterpretări tehnice',
+    forks_note: 'Colecție de idei pornite din proiecte existente, adaptate cu logică proprie și îmbunătățiri de UX.',
+    forks_cta: 'Deschide Forks',
+    fusions_eyebrow: 'Fusions',
+    fusions_title: 'Fuziuni de concepte și module',
+    fusions_note: 'Experimente unde combin componente, pattern-uri și flow-uri diferite într-o singură experiență coerentă.',
+    fusions_cta: 'Deschide Fusions',
+    projects_eyebrow: 'Proiecte',
+    projects_title: 'Toate proiectele într-o secțiune dedicată',
+    projects_note: 'Acces direct la lista completă de proiecte, organizată pentru explorare rapidă și comparație între idei.',
+    projects_cta: 'Deschide Proiecte',
     hub_title: 'Biblioteca completă de proiecte',
     hub_note: 'Am păstrat întreaga bibliotecă aici, într-o secțiune secundară. Este accesibilă, dar nu domină funnel-ul principal.',
     hub_external: 'Deschide hub extern', results: 'rezultate', footer: 'Funnel principal: Hero → 3 proiecte-cheie → About → Contact',
@@ -42,6 +67,26 @@ const translations = {
     blog_title: 'Articles and ideas from my process',
     blog_note: 'I also integrated the blog area for insights on projects, workflow and front-end experiments.',
     blog_cta: 'Open blog',
+    parcurs_eyebrow: 'Journey',
+    parcurs_title: 'Progress, milestones and applied learnings',
+    parcurs_note: 'A dedicated space for my evolution: what I built, what I iterated and how product decisions improved over time.',
+    parcurs_cta: 'Open Journey',
+    preview_eyebrow: 'Preview',
+    preview_title: 'Quick previews for experiments',
+    preview_note: 'A separate area for visual previews and intermediate versions before final publishing.',
+    preview_cta: 'Open Preview',
+    forks_eyebrow: 'Forks',
+    forks_title: 'Forks and technical reinterpretations',
+    forks_note: 'A collection of ideas started from existing projects and adapted with my own logic and UX upgrades.',
+    forks_cta: 'Open Forks',
+    fusions_eyebrow: 'Fusions',
+    fusions_title: 'Concept and module fusions',
+    fusions_note: 'Experiments that combine different components, patterns and flows into one coherent experience.',
+    fusions_cta: 'Open Fusions',
+    projects_eyebrow: 'Projects',
+    projects_title: 'All projects in a dedicated section',
+    projects_note: 'Direct access to the complete list of projects, organized for quick exploration and idea comparison.',
+    projects_cta: 'Open Projects',
     hub_title: 'Complete project library',
     hub_note: 'I kept the full library here in a secondary area. It remains accessible but no longer dominates the main funnel.',
     hub_external: 'Open external hub', results: 'results', footer: 'Main funnel: Hero → 3 key projects → About → Contact',
@@ -213,6 +258,11 @@ function render() {
 async function init() {
   dom = {
     blogExternalLink: document.getElementById('blogExternalLink'),
+    parcursExternalLink: document.getElementById('parcursExternalLink'),
+    previewExternalLink: document.getElementById('previewExternalLink'),
+    forksExternalLink: document.getElementById('forksExternalLink'),
+    fusionsExternalLink: document.getElementById('fusionsExternalLink'),
+    projectsExternalLink: document.getElementById('projectsExternalLink'),
     hubExternalLink: document.getElementById('hubExternalLink'),
     searchInput: document.getElementById('searchInput'),
     filterChips: document.getElementById('filterChips'),
@@ -222,6 +272,11 @@ async function init() {
     libraryGrid: document.getElementById('libraryGrid')
   };
   dom.blogExternalLink.href = BLOG_URL;
+  dom.parcursExternalLink.href = PARCURS_URL;
+  dom.previewExternalLink.href = PREVIEW_URL;
+  dom.forksExternalLink.href = FORKS_URL;
+  dom.fusionsExternalLink.href = FUSIONS_URL;
+  dom.projectsExternalLink.href = PROJECTS_URL;
   dom.hubExternalLink.href = HUB_URL;
 
   try {
