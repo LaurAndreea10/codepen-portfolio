@@ -1,9 +1,10 @@
 const HUB_URL = 'https://codepen.io/Laura-Andreea-the-typescripter/pen/019d2b3a-2991-75d3-9c59-15de01ca8079#projects';
+const BLOG_URL = 'https://es-d-7037060320260420-019d9f7f-067d-7de0-a4e9-3438cc67bdaa.codepen.dev/';
 const KEY_PROJECT_IDS = [1, 3, 39];
 
 const translations = {
   ro: {
-    brand: 'Portofoliu CodePen', nav_work: 'Proiecte-cheie', nav_about: 'Despre', nav_contact: 'Contact',
+    brand: 'Portofoliu CodePen', nav_work: 'Proiecte-cheie', nav_blog: 'Blog', nav_about: 'Despre', nav_contact: 'Contact',
     hero_eyebrow: 'CRM • Marketing • Front-end autodidact',
     hero_title: 'Construiesc produse digitale clare: problemă → logică → rezultat',
     hero_text: 'Pagina principală este acum concentrată pe cele mai relevante 3 proiecte. Biblioteca completă rămâne disponibilă într-un hub secundar pentru explorare detaliată.',
@@ -15,13 +16,17 @@ const translations = {
     contact_eyebrow: 'Contact', contact_title: 'Hai să discutăm',
     contact_text: 'Dacă vrei, îți pot trimite și versiuni detaliate tip case study pentru fiecare proiect principal.',
     contact_email: 'Email', hub_eyebrow: 'Hub secundar',
+    blog_eyebrow: 'Blog',
+    blog_title: 'Articole și idei din procesul meu',
+    blog_note: 'Am integrat și zona de blog pentru insight-uri despre proiecte, workflow și experimente front-end.',
+    blog_cta: 'Deschide blogul',
     hub_title: 'Biblioteca completă de proiecte',
     hub_note: 'Am păstrat întreaga bibliotecă aici, într-o secțiune secundară. Este accesibilă, dar nu domină funnel-ul principal.',
     hub_external: 'Deschide hub extern', results: 'rezultate', footer: 'Funnel principal: Hero → 3 proiecte-cheie → About → Contact',
     filter_state: 'Filtru: {filter} • Căutare: {query}'
   },
   en: {
-    brand: 'CodePen Portfolio', nav_work: 'Key projects', nav_about: 'About', nav_contact: 'Contact',
+    brand: 'CodePen Portfolio', nav_work: 'Key projects', nav_blog: 'Blog', nav_about: 'About', nav_contact: 'Contact',
     hero_eyebrow: 'CRM • Marketing • Self-taught front-end',
     hero_title: 'I build clear digital products: problem → logic → outcome',
     hero_text: 'The homepage now focuses on the 3 most relevant projects. The full library is still available in a secondary hub.',
@@ -33,6 +38,10 @@ const translations = {
     contact_eyebrow: 'Contact', contact_title: 'Let’s talk',
     contact_text: 'If you want, I can share detailed case-study versions for each core project.',
     contact_email: 'Email', hub_eyebrow: 'Secondary hub',
+    blog_eyebrow: 'Blog',
+    blog_title: 'Articles and ideas from my process',
+    blog_note: 'I also integrated the blog area for insights on projects, workflow and front-end experiments.',
+    blog_cta: 'Open blog',
     hub_title: 'Complete project library',
     hub_note: 'I kept the full library here in a secondary area. It remains accessible but no longer dominates the main funnel.',
     hub_external: 'Open external hub', results: 'results', footer: 'Main funnel: Hero → 3 key projects → About → Contact',
@@ -203,6 +212,7 @@ function render() {
 
 async function init() {
   dom = {
+    blogExternalLink: document.getElementById('blogExternalLink'),
     hubExternalLink: document.getElementById('hubExternalLink'),
     searchInput: document.getElementById('searchInput'),
     filterChips: document.getElementById('filterChips'),
@@ -211,6 +221,7 @@ async function init() {
     keyProjectsGrid: document.getElementById('keyProjectsGrid'),
     libraryGrid: document.getElementById('libraryGrid')
   };
+  dom.blogExternalLink.href = BLOG_URL;
   dom.hubExternalLink.href = HUB_URL;
 
   try {
