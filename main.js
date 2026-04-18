@@ -1,5 +1,5 @@
 const PORTFOLIO_SOURCE_URL = 'https://es-d-7037060320260420-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/';
-const JOURNEY_SOURCE_URL = 'https://es-d-7037060320260420-019d9f7f-067d-7de0-a4e9-3438cc67bdaa.codepen.dev/';
+const JOURNEY_SOURCE_URL = 'https://es-d-7037060320260420-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/';
 
 const HUB_URL = `${PORTFOLIO_SOURCE_URL}#projects`;
 const BLOG_URL = `${PORTFOLIO_SOURCE_URL}#blog`;
@@ -13,7 +13,7 @@ const KEY_PROJECT_IDS = [1, 3, 39];
 
 const translations = {
   ro: {
-    brand: 'Portofoliu CodePen', nav_work: 'Top proiecte', nav_crm: 'CRM', nav_fusions: 'Fusion', nav_about: 'Despre mine', nav_contact: 'Contact',
+    brand: 'Portofoliu CodePen', nav_work: 'Top proiecte', nav_crm: 'CRM', nav_fusions: 'Fusion', nav_journey: 'Parcurs', nav_about: 'Despre mine', nav_contact: 'Contact',
     hero_eyebrow: 'Marketing Specialist • Social Media Manager • Front-end autodidact',
     hero_title: 'Construiesc experiențe digitale clare, interactive și gândite din perspectiva utilizatorului',
     hero_text: 'Am peste 5 ani de experiență în CRM și marketing, iar în paralel îmi dezvolt constant competențele în front-end development. Portofoliul meu reunește aplicații utile, mini jocuri și interfețe interactive create pentru a demonstra logică, structură, feedback și decizii UI/UX bine gândite — nu doar estetică.',
@@ -59,7 +59,7 @@ const translations = {
     filter_state: 'Filtru: {filter} • Căutare: {query}'
   },
   en: {
-    brand: 'CodePen Portfolio', nav_work: 'Top projects', nav_crm: 'CRM', nav_fusions: 'Fusion', nav_about: 'About', nav_contact: 'Contact',
+    brand: 'CodePen Portfolio', nav_work: 'Top projects', nav_crm: 'CRM', nav_fusions: 'Fusion', nav_journey: 'Journey', nav_about: 'About', nav_contact: 'Contact',
     hero_eyebrow: 'CRM • Marketing • Self-taught front-end',
     hero_title: 'I build clear digital products: problem → logic → outcome',
     hero_text: 'The homepage now focuses on the 3 most relevant projects. The full library is still available in a secondary hub.',
