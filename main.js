@@ -1,16 +1,18 @@
-const PORTFOLIO_SOURCE_URL = 'https://codepen.io/editor/Laura-Andreea-the-typescripter/pen/019d2b3a-2991-75d3-9c59-15de01ca8079';
+const PORTFOLIO_SOURCE_URL = 'https://es-d-7037060320260420-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/';
+const JOURNEY_SOURCE_URL = 'https://es-d-7037060320260420-019d9f7f-067d-7de0-a4e9-3438cc67bdaa.codepen.dev/';
+
 const HUB_URL = `${PORTFOLIO_SOURCE_URL}#projects`;
 const BLOG_URL = `${PORTFOLIO_SOURCE_URL}#blog`;
-const PARCURS_URL = `${PORTFOLIO_SOURCE_URL}#parcurs`;
+const PARCURS_URL = `${JOURNEY_SOURCE_URL}#journey`;
 const PREVIEW_URL = `${PORTFOLIO_SOURCE_URL}#preview`;
 const FORKS_URL = `${PORTFOLIO_SOURCE_URL}#forks`;
-const FUSIONS_URL = `${PORTFOLIO_SOURCE_URL}#fusions`;
+const FUSIONS_URL = `${JOURNEY_SOURCE_URL}#crm-fusion`;
 const PROJECTS_URL = `${PORTFOLIO_SOURCE_URL}#projects`;
 const KEY_PROJECT_IDS = [1, 3, 39];
 
 const translations = {
   ro: {
-    brand: 'Portofoliu CodePen', nav_work: 'Proiecte-cheie', nav_blog: 'Blog', nav_about: 'Despre', nav_contact: 'Contact',
+    brand: 'Portofoliu CodePen', nav_work: 'Proiecte-cheie', nav_fusions: 'Fusions', nav_about: 'Despre', nav_contact: 'Contact',
     hero_eyebrow: 'CRM • Marketing • Front-end autodidact',
     hero_title: 'Construiesc produse digitale clare: problemă → logică → rezultat',
     hero_text: 'Pagina principală este acum concentrată pe cele mai relevante 3 proiecte. Biblioteca completă rămâne disponibilă într-un hub secundar pentru explorare detaliată.',
@@ -52,7 +54,7 @@ const translations = {
     filter_state: 'Filtru: {filter} • Căutare: {query}'
   },
   en: {
-    brand: 'CodePen Portfolio', nav_work: 'Key projects', nav_blog: 'Blog', nav_about: 'About', nav_contact: 'Contact',
+    brand: 'CodePen Portfolio', nav_work: 'Key projects', nav_fusions: 'Fusions', nav_about: 'About', nav_contact: 'Contact',
     hero_eyebrow: 'CRM • Marketing • Self-taught front-end',
     hero_title: 'I build clear digital products: problem → logic → outcome',
     hero_text: 'The homepage now focuses on the 3 most relevant projects. The full library is still available in a secondary hub.',
