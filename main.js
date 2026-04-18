@@ -53,13 +53,14 @@ const translations = {
     hero_title: 'Construiesc experiențe digitale clare, interactive și gândite din perspectiva utilizatorului',
     hero_text: 'Am peste 5 ani de experiență în CRM și marketing, iar în paralel îmi dezvolt constant competențele în front-end development. Portofoliul meu reunește aplicații utile, mini jocuri și interfețe interactive create pentru a demonstra logică, structură, feedback și decizii UI/UX bine gândite — nu doar estetică.',
     hero_cta: 'Vezi proiectele', key_eyebrow: 'Top proiecte',
-    key_title: 'O selecție de proiecte care reflectă cel mai bine modul în care gândesc interacțiunea, structura unei interfețe și experiența utilizatorului.',
+    key_title: '3 proiecte care arată cel mai clar modul meu de lucru',
+    key_subtitle: 'Le-am ales pentru că evidențiază cel mai bine felul în care combin claritatea, logica și deciziile de produs în proiecte interactive.',
     problem: 'Problemă', stack: 'Stack', logic: 'Logică', result: 'Rezultat', open: 'Deschide proiectul',
     about_eyebrow: 'Despre mine', about_title: 'Despre mine',
     about_text: 'Combin experiența din CRM și marketing cu interesul meu pentru front-end development, pentru a construi produse digitale mai clare, mai utile și mai ușor de folosit. Un exemplu concret: am construit Alpis Fusion CRM Premium ca SPA publicat pe GitHub Pages, cu kanban, flow builder, RBAC și billing într-o singură interfață.',
     contact_eyebrow: 'Contact', contact_title: 'Lasă-mi o sugestie',
     contact_text: 'Dacă ai o idee, o sugestie sau un feedback despre ce ai vrea să mai adaug în portofoliu, îmi poți scrie. Sunt deschisă la recomandări, colaborări și conversații care construiesc mai departe.',
-    contact_email: 'Email', hub_eyebrow: 'Hub secundar',
+    contact_email: 'Email', hub_eyebrow: 'Bibliotecă extinsă',
     blog_eyebrow: 'Blog',
     blog_title: 'Ce am învățat pe drum',
     blog_note: 'O selecție de reflecții, observații și idei desprinse din procesul meu de învățare, lucru practic și construcție de proiecte. Secțiunea aceasta completează portofoliul cu partea de gândire din spatele execuției.',
@@ -89,7 +90,7 @@ const translations = {
     projects_note: 'Exerciții și provocări practice prin care îmi antrenez logica, structura și capacitatea de a construi soluții simple, clare și funcționale.',
     projects_cta: 'Deschide Proiecte',
     hub_title: 'Explorează colecția de proiecte',
-    hub_note: 'Portofoliul include 49 de proiecte organizate pe categorii, astfel încât să poată fi explorate ușor în funcție de interes: jocuri, aplicații utility, interfețe UI și challenge-uri logice.',
+    hub_note: 'Biblioteca completă de proiecte rămâne disponibilă separat, pentru explorare extinsă. Pagina principală păstrează doar selecția esențială.',
     hub_external: 'Hub complet', results: 'rezultate', footer: 'Creat pentru prezentarea proiectelor CodePen, cu accent pe claritate, explorare ușoară, responsive design, suport dark/light mode și live preview.',
     filter_state: 'Filtru: {filter} • Căutare: {query}',
     library_empty_fallback: 'Nu există rezultate pentru filtrul curent. Poți reveni la listarea completă sau accesa direct cele 3 proiecte-cheie:',
@@ -102,12 +103,13 @@ const translations = {
     hero_text: 'The homepage now focuses on the 3 most relevant projects. The full library is still available in a secondary hub.',
     hero_cta: 'View the 3 key projects', key_eyebrow: 'Key projects',
     key_title: '3 projects that best show how I work',
+    key_subtitle: 'I selected these because they best highlight how I combine clarity, logic, and product decisions in interactive work.',
     problem: 'Problem', stack: 'Stack', logic: 'Logic', result: 'Outcome', open: 'Open project',
     about_eyebrow: 'About', about_title: 'Short background',
     about_text: 'My background is in CRM and marketing; in front-end I focus on interfaces that solve real problems with clear flows, feedback and explainable UI/UX decisions. A concrete example is Alpis Fusion CRM Premium, a GitHub Pages SPA that combines kanban, flow builder, RBAC and billing.',
     contact_eyebrow: 'Contact', contact_title: 'Let’s talk',
     contact_text: 'If you want, I can share detailed case-study versions for each core project.',
-    contact_email: 'Email', hub_eyebrow: 'Secondary hub',
+    contact_email: 'Email', hub_eyebrow: 'Extended library',
     blog_eyebrow: 'Blog',
     blog_title: 'Articles and ideas from my process',
     blog_note: 'I also integrated the blog area for insights on projects, workflow and front-end experiments.',
@@ -137,7 +139,7 @@ const translations = {
     projects_note: 'Direct access to the complete list of projects, organized for quick exploration and idea comparison.',
     projects_cta: 'Open Projects',
     hub_title: 'Complete project library',
-    hub_note: 'I kept the full library here in a secondary area. It remains accessible but no longer dominates the main funnel.',
+    hub_note: 'The complete project library remains available in a separate space for deeper exploration. The homepage keeps only the essential selection.',
     hub_external: 'Open external hub', results: 'results', footer: 'Main funnel: Hero → 3 key projects → About → Contact',
     filter_state: 'Filter: {filter} • Search: {query}',
     library_empty_fallback: 'No results for the current filter. You can reset to the full list or jump straight to the 3 key projects:',
@@ -282,8 +284,19 @@ function updateFilterState(query, total) {
   const readableFilter = filterName.toUpperCase();
   const q = query ? `"${query}"` : '—';
   const text = t('filter_state').replace('{filter}', readableFilter).replace('{query}', q);
-  document.getElementById('filterState').textContent = text;
+  const filterStateEl = document.getElementById('filterState');
+  const separatorEl = document.getElementById('statusSeparator');
   document.getElementById('resultsCount').textContent = String(total);
+
+  if (total === 0) {
+    filterStateEl.hidden = true;
+    separatorEl.hidden = true;
+    return;
+  }
+
+  filterStateEl.hidden = false;
+  separatorEl.hidden = false;
+  filterStateEl.textContent = text;
 }
 
 function applyFilters() {
