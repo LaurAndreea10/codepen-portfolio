@@ -91,7 +91,9 @@ const translations = {
     hub_title: 'Explorează colecția de proiecte',
     hub_note: 'Portofoliul include 49 de proiecte organizate pe categorii, astfel încât să poată fi explorate ușor în funcție de interes: jocuri, aplicații utility, interfețe UI și challenge-uri logice.',
     hub_external: 'Hub complet', results: 'rezultate', footer: 'Creat pentru prezentarea proiectelor CodePen, cu accent pe claritate, explorare ușoară, responsive design, suport dark/light mode și live preview.',
-    filter_state: 'Filtru: {filter} • Căutare: {query}'
+    filter_state: 'Filtru: {filter} • Căutare: {query}',
+    library_empty_fallback: 'Nu există rezultate pentru filtrul curent. Poți reveni la listarea completă sau accesa direct cele 3 proiecte-cheie:',
+    reset_filters: 'Resetează filtrele'
   },
   en: {
     brand: 'CodePen Portfolio', nav_work: 'Top projects', nav_crm: 'CRM', nav_fusions: 'Fusion', nav_about: 'About', nav_contact: 'Contact',
@@ -137,7 +139,9 @@ const translations = {
     hub_title: 'Complete project library',
     hub_note: 'I kept the full library here in a secondary area. It remains accessible but no longer dominates the main funnel.',
     hub_external: 'Open external hub', results: 'results', footer: 'Main funnel: Hero → 3 key projects → About → Contact',
-    filter_state: 'Filter: {filter} • Search: {query}'
+    filter_state: 'Filter: {filter} • Search: {query}',
+    library_empty_fallback: 'No results for the current filter. You can reset to the full list or jump straight to the 3 key projects:',
+    reset_filters: 'Reset filters'
   }
 };
 
@@ -217,6 +221,10 @@ function applyTranslations() {
     if (translations[currentLang][key]) el.textContent = translations[currentLang][key];
   });
   document.getElementById('langToggle').textContent = currentLang === 'ro' ? 'RO | EN' : 'EN | RO';
+  const fallbackText = document.getElementById('libraryFallbackText');
+  const resetButton = document.getElementById('resetFiltersBtn');
+  if (fallbackText) fallbackText.textContent = t('library_empty_fallback');
+  if (resetButton) resetButton.textContent = t('reset_filters');
 }
 
 function createLibraryCard(project) {
@@ -288,16 +296,14 @@ function applyFilters() {
 
   dom.libraryGrid.innerHTML = '';
   if (!filtered.length) {
-    const empty = document.createElement('div');
-    empty.className = 'empty-state';
-    empty.textContent = currentLang === 'ro'
-      ? 'Nu am găsit proiecte pentru filtrul sau căutarea curentă.'
-      : 'No projects matched the current filter/search.';
-    dom.libraryGrid.appendChild(empty);
+    dom.libraryGrid.hidden = true;
+    dom.libraryFallback.classList.add('show');
     updateFilterState(query, 0);
     return;
   }
 
+  dom.libraryGrid.hidden = false;
+  dom.libraryFallback.classList.remove('show');
   const fragment = document.createDocumentFragment();
   filtered.forEach(project => fragment.appendChild(createLibraryCard(project)));
   dom.libraryGrid.appendChild(fragment);
@@ -310,10 +316,13 @@ function render() {
     .map(id => projects.find(project => project.id === id))
     .filter(Boolean);
 
-  dom.keyProjectsGrid.innerHTML = '';
-  const fragment = document.createDocumentFragment();
-  keyProjects.forEach(project => fragment.appendChild(createKeyCard(project)));
-  dom.keyProjectsGrid.appendChild(fragment);
+  if (keyProjects.length === KEY_PROJECT_IDS.length) {
+    dom.keyProjectsGrid.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+    keyProjects.forEach(project => fragment.appendChild(createKeyCard(project)));
+    dom.keyProjectsGrid.appendChild(fragment);
+  }
+
   applyFilters();
 }
 
@@ -332,7 +341,9 @@ async function init() {
     themeToggle: document.getElementById('themeToggle'),
     langToggle: document.getElementById('langToggle'),
     keyProjectsGrid: document.getElementById('keyProjectsGrid'),
-    libraryGrid: document.getElementById('libraryGrid')
+    libraryGrid: document.getElementById('libraryGrid'),
+    libraryFallback: document.getElementById('libraryFallback'),
+    resetFiltersBtn: document.getElementById('resetFiltersBtn')
   };
   dom.blogExternalLink.href = BLOG_URL;
   dom.parcursExternalLink.href = PARCURS_URL;
@@ -365,6 +376,16 @@ async function init() {
     activeFilter = chip.dataset.filter;
     document.querySelectorAll('.chip').forEach(button => {
       const isActive = button.dataset.filter === activeFilter;
+      button.classList.toggle('active', isActive);
+      button.setAttribute('aria-pressed', String(isActive));
+    });
+    applyFilters();
+  });
+  dom.resetFiltersBtn.addEventListener('click', () => {
+    activeFilter = 'all';
+    dom.searchInput.value = '';
+    document.querySelectorAll('.chip').forEach(button => {
+      const isActive = button.dataset.filter === 'all';
       button.classList.toggle('active', isActive);
       button.setAttribute('aria-pressed', String(isActive));
     });
