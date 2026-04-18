@@ -85,6 +85,11 @@
     .chip-row{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);cursor:pointer;color:var(--text)}
     .chip.active{background:linear-gradient(135deg, rgba(79,140,255,.2), rgba(139,92,246,.18));border-color:rgba(79,140,255,.35)}
     .status{font-size:.92rem;color:var(--muted)}
+    .library-fallback{display:none;margin-top:12px;padding:16px;border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.03)}
+    .library-fallback.show{display:block}
+    .library-fallback p{color:var(--muted);line-height:1.65;margin-bottom:10px}
+    .library-fallback ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.7}
+    .library-fallback .btn{margin-top:12px}
     .footer{padding:20px 0 36px;text-align:center;color:var(--muted)}
     .skip-link{position:absolute;left:12px;top:-200px;z-index:100;background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;font-weight:700}
     .skip-link:focus{top:12px}
@@ -287,12 +292,10 @@
               <p class="hub-note" data-i18n="crm_note">Secțiune dedicată proiectelor în care combin organizarea datelor, automatizarea și experiența utilizatorului pentru procese mai clare.</p>
               <div class="case-study">
                 <h3>Mini case study — Alpis Fusion CRM</h3>
-                <ul>
-                  <li><strong>Problemă:</strong> informația despre lead-uri, task-uri și billing era fragmentată între ecrane.</li>
-                  <li><strong>Decizie:</strong> am proiectat un SPA modular cu kanban, flow builder și roluri RBAC într-un singur dashboard.</li>
-                  <li><strong>Implementare:</strong> am folosit componente UI reutilizabile, feedback vizual constant și trasee scurte spre acțiunile importante.</li>
-                  <li><strong>Rezultat:</strong> navigare mai predictibilă, timp mai mic pentru acțiuni repetitive și onboarding mai rapid pentru utilizatori noi.</li>
-                </ul>
+                <p class="hub-note"><strong>Problemă:</strong> lead-urile, task-urile și billing-ul erau gestionate în zone separate, iar echipa pierdea context între pași.</p>
+                <p class="hub-note"><strong>Decizie:</strong> am centralizat tot fluxul într-un dashboard modular (kanban + flow builder + RBAC), cu ierarhie vizuală clară.</p>
+                <p class="hub-note"><strong>Implementare:</strong> am introdus componente reutilizabile și shortcut-uri pentru acțiunile frecvente, ca utilizatorii să ajungă mai repede la următorul pas.</p>
+                <p class="hub-note"><strong>Rezultat:</strong> traseul pentru actualizarea unui lead a devenit mai scurt și mai predictibil, iar onboarding-ul utilizatorilor noi a devenit mai rapid.</p>
               </div>
             </div>
             <a class="btn btn-primary" id="crmExternalLink" target="_blank" rel="noopener noreferrer" data-i18n="crm_cta">Deschide CRM</a>
@@ -356,6 +359,15 @@
           </div>
 
           <div class="projects-grid" id="libraryGrid"></div>
+          <div class="library-fallback" id="libraryFallback" aria-live="polite">
+            <p id="libraryFallbackText">Nu există rezultate pentru filtrul curent. Poți reveni la listarea completă sau accesa direct cele 3 proiecte-cheie:</p>
+            <ul>
+              <li><a href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Alpis Fusion CRM Premium</a></li>
+              <li><a href="projects/clientflow.html" target="_blank" rel="noopener noreferrer">ClientFlow</a></li>
+              <li><a href="projects/alpis-impactpath.html" target="_blank" rel="noopener noreferrer">Alpis Impact Path</a></li>
+            </ul>
+            <button class="btn btn-secondary" id="resetFiltersBtn" type="button">Resetează filtrele</button>
+          </div>
         </article>
       </div>
     </section>
