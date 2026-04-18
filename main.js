@@ -9,7 +9,7 @@ const FORKS_URL = `${PORTFOLIO_SOURCE_URL}#forks`;
 const CRM_URL = `${JOURNEY_SOURCE_URL}#crm`;
 const FUSIONS_URL = `${JOURNEY_SOURCE_URL}#crm-fusion`;
 const PROJECTS_URL = `${PORTFOLIO_SOURCE_URL}#projects`;
-const KEY_PROJECT_IDS = [1, 3, 39];
+const KEY_PROJECT_IDS = [1, 3, 49];
 
 const translations = {
   ro: {
@@ -54,7 +54,7 @@ const translations = {
     projects_note: 'Exerciții și provocări practice prin care îmi antrenez logica, structura și capacitatea de a construi soluții simple, clare și funcționale.',
     projects_cta: 'Deschide Proiecte',
     hub_title: 'Explorează colecția de proiecte',
-    hub_note: 'Portofoliul include 48 de proiecte organizate pe categorii, astfel încât să poată fi explorate ușor în funcție de interes: jocuri, aplicații utility, interfețe UI și challenge-uri logice.',
+    hub_note: 'Portofoliul include 49 de proiecte organizate pe categorii, astfel încât să poată fi explorate ușor în funcție de interes: jocuri, aplicații utility, interfețe UI și challenge-uri logice.',
     hub_external: 'Hub complet', results: 'rezultate', footer: 'Creat pentru prezentarea proiectelor CodePen, cu accent pe claritate, explorare ușoară, responsive design, suport dark/light mode și live preview.',
     filter_state: 'Filtru: {filter} • Căutare: {query}'
   },
@@ -147,6 +147,21 @@ const keyProjectDetails = {
       stack: 'HTML, CSS, JavaScript (learning + planning modules).',
       logic: 'Unified ecosystem of quizzes, simulations, coaching and scheduling in one coherent flow.',
       result: 'A complex but easy-to-navigate educational platform.'
+    }
+  }
+  ,
+  49: {
+    ro: {
+      problem: 'Un CRM premium care să păstreze multe funcții fără să încarce interfața.',
+      stack: 'HTML, CSS, JavaScript (dashboard modular + fluxuri CRM).',
+      logic: 'Secțiuni clare pentru clienți, task-uri și organizare, cu navigare predictibilă.',
+      result: 'Flux de lucru mai rapid, structură ușor de înțeles și experiență coerentă.'
+    },
+    en: {
+      problem: 'A premium CRM that keeps rich features without overwhelming the interface.',
+      stack: 'HTML, CSS, JavaScript (modular dashboard + CRM flows).',
+      logic: 'Clear sections for clients, tasks and organization with predictable navigation.',
+      result: 'Faster workflow, easy-to-understand structure and a coherent experience.'
     }
   }
 };
