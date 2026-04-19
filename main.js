@@ -57,11 +57,11 @@ const translations = {
     hero_cta: 'Vezi cel mai puternic case study', key_eyebrow: 'Top proiecte',
     key_title: '3 proiecte care arată cel mai clar modul meu de lucru',
     key_subtitle: 'Le-am ales pentru că evidențiază cel mai bine felul în care combin claritatea, logica și deciziile de produs în proiecte interactive.',
-    problem: 'Problemă', stack: 'Rolul meu', logic: 'Ce am decis', result: 'Rezultatul', open: 'Deschide proiectul',
+    context: 'Context', problem: 'Problemă', constraints: 'Constrângeri', decision: 'Decizia mea', priority: 'Ce am prioritizat', learning: 'Ce am învățat', proof: 'Dovezi observabile', open: 'Deschide proiectul',
     about_eyebrow: 'Despre mine', about_title: 'Despre mine',
     about_text: 'Combin experiența din CRM și marketing cu interesul meu pentru front-end development, pentru a construi produse digitale mai clare, mai utile și mai ușor de folosit. Un exemplu concret: am construit Alpis Fusion CRM Premium ca SPA publicat pe GitHub Pages, cu kanban, flow builder, RBAC și billing într-o singură interfață.',
-    contact_eyebrow: 'Contact', contact_title: 'Lasă-mi o sugestie',
-    contact_text: 'Dacă ai o idee, o sugestie sau un feedback despre ce ai vrea să mai adaug în portofoliu, îmi poți scrie. Sunt deschisă la recomandări, colaborări și conversații care construiesc mai departe.',
+    contact_eyebrow: 'Contact', contact_title: 'Disponibilă pentru roluri front-end junior și colaborări UI prototyping',
+    contact_text: 'Scrie-mi pentru roluri front-end junior, colaborări pe UI prototyping sau dacă vrei case studies detaliate la cerere.',
     contact_email: 'Email', hub_eyebrow: 'Bibliotecă extinsă',
     blog_eyebrow: 'Blog',
     blog_title: 'Ce am învățat pe drum',
@@ -93,7 +93,7 @@ const translations = {
     projects_cta: 'Deschide Proiecte',
     hub_title: 'Explorează colecția de proiecte',
     hub_note: 'Biblioteca completă de proiecte rămâne disponibilă separat, pentru explorare extinsă. Pagina principală păstrează doar selecția esențială.',
-    hub_external: 'Deschide hub-ul complet', results: 'rezultate', footer: 'Funnel principal: Hero → 3 proiecte-cheie → About → Contact',
+    hub_external: 'Explorează mai mult', results: 'rezultate', footer: 'Funnel principal: Hero → 3 proiecte-cheie → Contact. Restul secțiunilor sunt grupate în hub-ul secundar „Explorează mai mult”.',
     filter_state: 'Filtru: {filter} • Căutare: {query}',
     library_empty_fallback: 'Nu există rezultate pentru filtrul curent. Poți reveni la listarea completă sau accesa direct cele 3 proiecte-cheie:',
     reset_filters: 'Resetează filtrele'
@@ -106,11 +106,11 @@ const translations = {
     hero_cta: 'View strongest case study', key_eyebrow: 'Key projects',
     key_title: '3 projects that best show how I work',
     key_subtitle: 'I selected these because they best highlight how I combine clarity, logic, and product decisions in interactive projects.',
-    problem: 'Problem', stack: 'My role', logic: 'Decision', result: 'Outcome', open: 'Open project',
+    context: 'Context', problem: 'Problem', constraints: 'Constraints', decision: 'Decision', priority: 'What I prioritized', learning: 'What I learned', proof: 'Observable evidence', open: 'Open project',
     about_eyebrow: 'About', about_title: 'Short background',
     about_text: 'My background is in CRM and marketing; in front-end I focus on interfaces that solve real problems with clear flows, feedback and explainable UI/UX decisions. A concrete example is Alpis Fusion CRM Premium, a GitHub Pages SPA that combines kanban, flow builder, RBAC and billing.',
-    contact_eyebrow: 'Contact', contact_title: 'Let’s talk',
-    contact_text: 'If you want, I can share detailed case-study versions for each core project.',
+    contact_eyebrow: 'Contact', contact_title: 'Available for junior front-end roles and UI prototyping collaborations',
+    contact_text: 'Reach out for junior front-end roles, UI prototyping collaborations, or detailed case studies on request.',
     contact_email: 'Email', hub_eyebrow: 'Extended library',
     blog_eyebrow: 'Blog',
     blog_title: 'Articles and ideas from my process',
@@ -142,7 +142,7 @@ const translations = {
     projects_cta: 'Open Projects',
     hub_title: 'Complete project library',
     hub_note: 'The complete project library remains available in a separate hub for deeper exploration. The homepage keeps only the essential selection.',
-    hub_external: 'Open full hub', results: 'results', footer: 'Main funnel: Hero → 3 key projects → About → Contact',
+    hub_external: 'Explore more', results: 'results', footer: 'Main funnel: Hero → 3 key projects → Contact. The rest is grouped in the secondary “Explore more” hub.',
     filter_state: 'Filter: {filter} • Search: {query}',
     library_empty_fallback: 'No results for the current filter. You can reset to the full list or jump straight to the 3 key projects:',
     reset_filters: 'Reset filters'
@@ -166,45 +166,87 @@ const keyProjectDetails = {
   },
   3: {
     ro: {
-      problem: 'Lead-urile, follow-up-urile și prioritățile zilnice erau urmărite în liste diferite, iar echipa rata contextul când schimba rapid task-uri.',
-      stack: 'Am definit structura dashboard-ului, ierarhia de informație și regulile de prioritizare; implementare front-end în HTML/CSS/JS modular.',
-      logic: 'Am grupat lead-urile pe stadii, am introdus indicatori vizuali pentru urgență și shortcut-uri pentru acțiunile repetate din workflow.',
-      result: 'Timp mai scurt pentru trierea lead-urilor, overview mai clar în daily use și mai puține reveniri între ecrane pentru aceleași acțiuni.'
+      context: 'Lead-urile și follow-up-urile erau urmărite în liste diferite, fără o imagine comună de zi cu zi.',
+      problem: 'Echipa pierdea context când schimba rapid task-uri, iar trierea devenea inconsistentă.',
+      constraints: 'Interfață simplă, rapidă și ușor de întreținut, fără dependențe externe complexe.',
+      decision: 'Am grupat lead-urile pe stadii, cu semnale vizuale de urgență și shortcut-uri pentru acțiuni repetitive.',
+      priority: 'Triage rapid, overview zilnic clar și minimizarea revenirilor între ecrane.',
+      learning: 'Ierarhia de informație bună crește viteza deciziilor mai mult decât adăugarea de widget-uri.',
+      proof: [
+        'Am redus pașii pentru trierea lead-urilor în workflow-ul zilnic.',
+        'Am făcut trecerea între acțiuni mai predictibilă pentru echipă.',
+        'Am reorganizat informația astfel încât urgențele să fie vizibile imediat.'
+      ]
     },
     en: {
-      problem: 'Leads, follow-ups and daily priorities were split across separate lists, so context was lost during quick task switching.',
-      stack: 'I defined dashboard structure, information hierarchy and prioritization rules; front-end implementation used modular HTML/CSS/JS.',
-      logic: 'I grouped leads by stage, added urgency visual signals and shortcuts for repeated actions in the core workflow.',
-      result: 'Faster lead triage, clearer daily overview and fewer back-and-forth screen hops for routine actions.'
+      context: 'Leads and follow-ups were split across separate lists, with no shared day-to-day overview.',
+      problem: 'Context was lost during quick task switching, making prioritization inconsistent.',
+      constraints: 'The interface had to stay simple, fast, and easy to maintain without heavy dependencies.',
+      decision: 'I grouped leads by stage, added urgency signals, and created shortcuts for repetitive actions.',
+      priority: 'Fast triage, clear daily overview, and fewer back-and-forth screen hops.',
+      learning: 'Strong information hierarchy improves decision speed more than adding more widgets.',
+      proof: [
+        'I reduced the steps needed for daily lead triage.',
+        'I made action switching more predictable for the team.',
+        'I reorganized information so urgent items stand out immediately.'
+      ]
     }
   },
   18: {
     ro: {
-      problem: 'Proiectul trebuia să explice pașii de impact într-un mod motivațional, dar fără pagini lungi și fără pierderea mesajului principal.',
-      stack: 'Am conceput flow-ul narativ, microcopy-ul și ordinea modulelor interactive; front-end construit cu HTML/CSS/JS și layout responsive.',
-      logic: 'Am împărțit experiența în misiuni scurte cu progres vizibil, CTA contextual și tranziții care păstrează utilizatorul orientat.',
-      result: 'Parcurgere mai fluentă, mesaj mai ușor de reținut și engagement mai bun în comparație cu structura statică inițială.'
+      context: 'Produsul trebuia să comunice pașii de impact într-un mod motivațional și ușor de parcurs.',
+      problem: 'Versiunea statică era lungă, iar utilizatorii pierdeau mesajul principal pe parcurs.',
+      constraints: 'Conținut dens, dar nevoie de ritm scurt, orientare clară și layout responsive.',
+      decision: 'Am împărțit experiența în misiuni scurte cu progres vizibil, CTA contextual și tranziții ghidate.',
+      priority: 'Orientarea utilizatorului, retenția mesajului principal și flow fluent cap-coadă.',
+      learning: 'Storytelling-ul interactiv funcționează mai bine când ritmul e controlat prin pași clari.',
+      proof: [
+        'Am redus abandonul pe parcurs prin secțiuni mai scurte și progres vizibil.',
+        'Am făcut onboarding-ul în experiență mai previzibil prin tranziții ghidate.',
+        'Am reorganizat informația astfel încât mesajul principal să se rețină mai ușor.'
+      ]
     },
     en: {
-      problem: 'The product had to explain impact steps in a motivational way, without long pages or losing the core message.',
-      stack: 'I designed narrative flow, microcopy and module sequence; front-end built with HTML/CSS/JS and responsive layout.',
-      logic: 'I split the journey into short missions with visible progress, contextual CTAs and transitions that keep orientation.',
-      result: 'Smoother completion flow, better message retention and stronger engagement compared with the initial static structure.'
+      context: 'The product had to communicate impact steps in a motivational, easy-to-follow experience.',
+      problem: 'The static version was too long, and users lost the main message during the journey.',
+      constraints: 'Dense content with a need for short pacing, clear orientation, and responsive structure.',
+      decision: 'I split the journey into short missions with visible progress, contextual CTAs, and guided transitions.',
+      priority: 'User orientation, main-message retention, and a smooth end-to-end flow.',
+      learning: 'Interactive storytelling works better when pacing is controlled through clear steps.',
+      proof: [
+        'I reduced drop-off through shorter sections and visible progress.',
+        'I made onboarding into the experience more predictable with guided transitions.',
+        'I reorganized information so the core message is easier to retain.'
+      ]
     }
   }
   ,
   49: {
     ro: {
-      problem: 'Datele de client, task management-ul și billing-ul erau fragmentate între ecrane diferite, ceea ce creștea timpul de execuție pentru același proces.',
-      stack: 'Am definit arhitectura produsului, prioritizarea modulelor și interacțiunile cheie; implementare în HTML/CSS/JS cu componente reutilizabile.',
-      logic: 'Am centralizat fluxul în dashboard modular cu kanban, flow builder și RBAC, plus shortcut-uri pentru acțiuni frecvente.',
-      result: 'Flux mai predictibil pentru echipă, onboarding mai rapid pentru utilizatori noi și reducerea pașilor necesari pentru update-uri recurente.'
+      context: 'Datele de client, task-urile și billing-ul erau distribuite în zone separate ale produsului.',
+      problem: 'Aceeași operațiune cerea prea multe schimbări de ecran, cu risc de eroare și ritm lent.',
+      constraints: 'Single-page app publicat pe GitHub Pages, cu module clare și componente reutilizabile.',
+      decision: 'Am centralizat fluxul într-un dashboard modular cu kanban, flow builder, RBAC și shortcut-uri de execuție.',
+      priority: 'Predictibilitate în onboarding, claritate operațională și reducerea pașilor pentru update-uri recurente.',
+      learning: 'Un flow compact și coerent ajută mai mult decât extinderea continuă a funcționalităților.',
+      proof: [
+        'Am redus pașii pentru update-uri recurente prin acțiuni rapide în dashboard.',
+        'Am făcut onboarding-ul mai predictibil pentru utilizatori noi.',
+        'Am reorganizat informația ca deciziile zilnice să se ia dintr-un singur punct.'
+      ]
     },
     en: {
-      problem: 'Client data, task management and billing were split across different screens, increasing execution time for the same process.',
-      stack: 'I defined product architecture, module priority and key interactions; implementation used reusable HTML/CSS/JS components.',
-      logic: 'I centralized the flow in a modular dashboard with kanban, flow builder and RBAC, plus shortcuts for frequent actions.',
-      result: 'More predictable team workflow, faster onboarding for new users and fewer steps for recurring updates.'
+      context: 'Client data, tasks, and billing were spread across separate product areas.',
+      problem: 'The same operation required too many screen switches, slowing execution and increasing error risk.',
+      constraints: 'A GitHub Pages single-page app with clear modules and reusable components.',
+      decision: 'I centralized the flow in a modular dashboard with kanban, flow builder, RBAC, and execution shortcuts.',
+      priority: 'Predictable onboarding, operational clarity, and fewer steps for recurring updates.',
+      learning: 'A compact, coherent flow delivers more value than continuously adding features.',
+      proof: [
+        'I reduced the steps for recurring updates through quick dashboard actions.',
+        'I made onboarding more predictable for new users.',
+        'I reorganized information so daily decisions can be made from one main point.'
+      ]
     }
   }
 };
@@ -267,6 +309,7 @@ function createLibraryCard(project) {
 
 function createKeyCard(project) {
   const meta = keyProjectDetails[project.id][currentLang];
+  const proofItems = (meta.proof || []).map(item => `<li>${item}</li>`).join('');
   const card = document.createElement('article');
   card.className = 'project-card glass';
   card.innerHTML = `
@@ -274,11 +317,14 @@ function createKeyCard(project) {
     <h3>${project.title[currentLang]}</h3>
     <p class="project-desc">${project.description[currentLang]}</p>
     <div class="mini-grid">
+      <div class="mini-item"><strong>${t('context')}</strong><span>${meta.context}</span></div>
       <div class="mini-item"><strong>${t('problem')}</strong><span>${meta.problem}</span></div>
-      <div class="mini-item"><strong>${t('stack')}</strong><span>${meta.stack}</span></div>
-      <div class="mini-item"><strong>${t('logic')}</strong><span>${meta.logic}</span></div>
-      <div class="mini-item"><strong>${t('result')}</strong><span>${meta.result}</span></div>
+      <div class="mini-item"><strong>${t('constraints')}</strong><span>${meta.constraints}</span></div>
+      <div class="mini-item"><strong>${t('decision')}</strong><span>${meta.decision}</span></div>
+      <div class="mini-item"><strong>${t('priority')}</strong><span>${meta.priority}</span></div>
+      <div class="mini-item"><strong>${t('learning')}</strong><span>${meta.learning}</span></div>
     </div>
+    <div class="project-proof"><strong>${t('proof')}</strong><ul>${proofItems}</ul></div>
     <div class="card-actions"><a class="btn btn-primary" href="${project.url}" target="_blank" rel="noopener noreferrer">${t('open')}</a></div>
   `;
   return card;
