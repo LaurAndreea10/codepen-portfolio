@@ -265,6 +265,8 @@ let dom = {};
 let searchDebounceId;
 let previewSlideIndex = 0;
 let previewIntervalId;
+let previewAutoPlayAllowed = true;
+let heroPreviewIsVisible = true;
 const HERO_PREVIEW_AUTOPLAY_MS = 4500;
 
 function t(key) { return translations[currentLang][key] || key; }
@@ -440,7 +442,7 @@ function setHeroPreviewSlide(index) {
 
 function restartHeroPreviewAutoplay() {
   window.clearInterval(previewIntervalId);
-  if (HERO_PREVIEW_SLIDES.length < 2) return;
+  if (!previewAutoPlayAllowed || !heroPreviewIsVisible || HERO_PREVIEW_SLIDES.length < 2) return;
   previewIntervalId = window.setInterval(() => {
     setHeroPreviewSlide(previewSlideIndex + 1);
   }, HERO_PREVIEW_AUTOPLAY_MS);
@@ -448,6 +450,11 @@ function restartHeroPreviewAutoplay() {
 
 function stopHeroPreviewAutoplay() {
   window.clearInterval(previewIntervalId);
+}
+
+function disableHeroPreviewAutoplayPermanently() {
+  previewAutoPlayAllowed = false;
+  stopHeroPreviewAutoplay();
 }
 
 async function init() {
@@ -472,6 +479,27 @@ async function init() {
   restartHeroPreviewAutoplay();
   dom.heroPreviewLinks?.addEventListener('pointerenter', stopHeroPreviewAutoplay);
   dom.heroPreviewLinks?.addEventListener('pointerleave', restartHeroPreviewAutoplay);
+  window.addEventListener('wheel', disableHeroPreviewAutoplayPermanently, { passive: true, once: true });
+  window.addEventListener('touchmove', disableHeroPreviewAutoplayPermanently, { passive: true, once: true });
+  window.addEventListener('keydown', (event) => {
+    if (['PageDown', 'ArrowDown', 'Space', 'Home', 'End'].includes(event.code)) {
+      disableHeroPreviewAutoplayPermanently();
+    }
+  }, { once: true });
+
+  const heroSection = document.getElementById('home');
+  if ('IntersectionObserver' in window && heroSection) {
+    const observer = new IntersectionObserver((entries) => {
+      heroPreviewIsVisible = entries.some((entry) => entry.isIntersecting && entry.intersectionRatio > 0.35);
+      if (heroPreviewIsVisible) {
+        restartHeroPreviewAutoplay();
+        return;
+      }
+      stopHeroPreviewAutoplay();
+    }, { threshold: [0, 0.35, 1] });
+    observer.observe(heroSection);
+  }
+
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       stopHeroPreviewAutoplay();
