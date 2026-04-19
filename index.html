@@ -56,7 +56,7 @@
     .hero-main{display:flex;flex-direction:column;justify-content:center}
     h1{margin-top:14px;font-size:clamp(2rem,5vw,4rem);line-height:.96;max-width:14ch;letter-spacing:-.04em}.hero-text{margin-top:14px;color:var(--muted);line-height:1.75;max-width:72ch}
     .hero-preview{display:flex;flex-direction:column;gap:12px;min-height:540px;padding:12px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
-    .hero-preview-wrap{position:relative;flex:1;min-height:460px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:#081326}
+    .hero-preview-wrap{position:relative;flex:1;min-height:460px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:radial-gradient(circle at 10% 10%,rgba(79,140,255,.28),transparent 45%),radial-gradient(circle at 90% 90%,rgba(139,92,246,.24),transparent 48%),#081326}
     .hero-preview-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.72}
     .hero-preview-hint{position:absolute;inset:auto 12px 12px 12px;z-index:2;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(7,18,38,.72);font-size:.84rem;color:var(--muted);pointer-events:none}
     .hero-preview-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
@@ -68,6 +68,11 @@
     .hero-preview-links::-webkit-scrollbar{display:none}
     .hero-preview-links .chip{font-size:.82rem;padding:8px 12px;white-space:nowrap;flex:0 0 auto}
     .hero-preview-links .chip.active{color:#fff}
+    .hero-preview-stage{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:12px;padding:22px;background:linear-gradient(180deg,rgba(8,19,38,.18),rgba(8,19,38,.95))}
+    .hero-preview-stage h3{font-size:1.45rem;line-height:1.2;margin:0}
+    .hero-preview-stage p{margin:0;color:var(--muted);line-height:1.6}
+    .hero-preview-stage a{color:#c9dcff;font-size:.92rem;word-break:break-word}
+
     .hero-actions{margin-top:24px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border-radius:999px;border:1px solid transparent;font-weight:700}
     .btn-primary{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}.btn-secondary{border-color:var(--line);background:rgba(255,255,255,.04)}
     section{padding:22px 0}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px}
@@ -167,21 +172,16 @@
                 <span class="eyebrow" data-i18n="preview_eyebrow">Preview live</span>
                 <p id="heroPreviewTitle">Alpis Fusion CRM Premium</p>
               </div>
-              <a class="btn btn-secondary" id="heroPreviewOpen" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer" data-i18n="preview_cta">Deschide proiectul</a>
+              <a class="btn btn-secondary" id="heroPreviewOpen" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer" data-i18n="preview_cta">Deschide proiectul</a>
             </div>
             <div class="hero-preview-links" id="heroPreviewLinks" aria-label="Selectează preview proiect"></div>
             <div class="hero-preview-wrap">
-              <img class="hero-preview-fallback" src="assets/alpis-fusion-crm-placeholder.svg" alt="Preview fallback proiect" loading="lazy" />
-              <iframe
-                class="hero-preview-frame"
-                id="heroPreviewFrame"
-                src="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/"
-                title="Alpis Fusion CRM Premium"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                allowfullscreen
-              ></iframe>
-              <div class="hero-preview-hint">Preview fallback when embedded view is blocked</div>
+              <div class="hero-preview-stage">
+                <span class="tag" id="heroPreviewType">Repository</span>
+                <h3 id="heroPreviewHeading">Alpis Fusion CRM Premium</h3>
+                <p id="heroPreviewDescription">Colecție de module CRM premium pentru lead pipeline, task management și automatizări.</p>
+                <a id="heroPreviewUrl" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">github.com/LaurAndreea10/Alpis-Fusion-CRM-premium</a>
+              </div>
             </div>
           </aside>
         </div>

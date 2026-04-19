@@ -37,13 +37,48 @@ const STATIC_FALLBACK_PROJECTS = [
   }
 ];
 const HERO_PREVIEW_SLIDES = [
-  { title: 'Alpis Fusion CRM Premium', url: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/' },
-  { title: 'ARCADE WORLD', url: 'https://github.com/LaurAndreea10/ARCADE-WORLD' },
-  { title: 'Coaching AI', url: 'https://github.com/LaurAndreea10/Coaching-AI' },
-  { title: 'ClientFlow SaaS CRM', url: 'https://github.com/LaurAndreea10/ClientFlow-SaaS-CRM-task-manager-automation-suite' },
-  { title: 'ALPis CONTENT STUDIO', url: 'https://github.com/LaurAndreea10/ALPis-CONTENT-STUDIO' },
-  { title: 'Code Words Strings', url: 'https://github.com/LaurAndreea10/CodePen-Challenge-Code-Words-Strings' },
-  { title: 'Mood UI Generator', url: 'https://github.com/LaurAndreea10/Mood-UI-Generator' }
+  {
+    title: 'Alpis Fusion CRM Premium',
+    label: 'CRM premium',
+    description: 'Colecție modulară pentru lead pipeline, task management, billing și automatizări.',
+    url: 'https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium'
+  },
+  {
+    title: 'ARCADE WORLD',
+    label: 'Arcade',
+    description: 'Experimente arcade cu interacțiuni rapide, feedback vizual și ritm progresiv.',
+    url: 'https://github.com/LaurAndreea10/ARCADE-WORLD'
+  },
+  {
+    title: 'Coaching AI',
+    label: 'AI product',
+    description: 'Interfață de coaching asistat AI, focusată pe flux clar și recomandări contextuale.',
+    url: 'https://github.com/LaurAndreea10/Coaching-AI'
+  },
+  {
+    title: 'ClientFlow SaaS CRM',
+    label: 'SaaS CRM',
+    description: 'Sistem CRM orientat pe task-uri, automatizări și acțiuni operaționale zilnice.',
+    url: 'https://github.com/LaurAndreea10/ClientFlow-SaaS-CRM-task-manager-automation-suite'
+  },
+  {
+    title: 'ALPis CONTENT STUDIO',
+    label: 'Content ops',
+    description: 'Hub pentru planificare editorială, producție content și colaborare în echipă.',
+    url: 'https://github.com/LaurAndreea10/ALPis-CONTENT-STUDIO'
+  },
+  {
+    title: 'Code Words Strings',
+    label: 'CodePen challenge',
+    description: 'Provocări de logică și string processing construite în stil playground interactiv.',
+    url: 'https://github.com/LaurAndreea10/CodePen-Challenge-Code-Words-Strings'
+  },
+  {
+    title: 'Mood UI Generator',
+    label: 'UI generator',
+    description: 'Generator vizual pentru stări UI și combinații de componente orientate pe atmosferă.',
+    url: 'https://github.com/LaurAndreea10/Mood-UI-Generator'
+  }
 ];
 
 const translations = {
@@ -474,13 +509,19 @@ function keepActiveChipInView(chip) {
 }
 
 function setHeroPreviewSlide(index) {
-  if (!dom.heroPreviewFrame || !dom.heroPreviewTitle || !dom.heroPreviewOpen) return;
+  if (!dom.heroPreviewTitle || !dom.heroPreviewOpen) return;
   previewSlideIndex = (index + HERO_PREVIEW_SLIDES.length) % HERO_PREVIEW_SLIDES.length;
   const slide = HERO_PREVIEW_SLIDES[previewSlideIndex];
-  dom.heroPreviewFrame.src = slide.url;
-  dom.heroPreviewFrame.title = slide.title;
   dom.heroPreviewTitle.textContent = slide.title;
   dom.heroPreviewOpen.href = slide.url;
+  if (dom.heroPreviewHeading) dom.heroPreviewHeading.textContent = slide.title;
+  if (dom.heroPreviewDescription) dom.heroPreviewDescription.textContent = slide.description;
+  if (dom.heroPreviewType) dom.heroPreviewType.textContent = slide.label;
+  if (dom.heroPreviewUrl) {
+    const cleanUrl = slide.url.replace(/^https?:\/\//, '');
+    dom.heroPreviewUrl.textContent = cleanUrl;
+    dom.heroPreviewUrl.href = slide.url;
+  }
   const chips = dom.heroPreviewLinks?.querySelectorAll('.chip') || [];
   chips.forEach((chip, chipIndex) => {
     const isActive = chipIndex === previewSlideIndex;
@@ -518,9 +559,12 @@ async function init() {
     libraryGrid: document.getElementById('libraryGrid'),
     libraryFallback: document.getElementById('libraryFallback'),
     resetFiltersBtn: document.getElementById('resetFiltersBtn'),
-    heroPreviewFrame: document.getElementById('heroPreviewFrame'),
     heroPreviewOpen: document.getElementById('heroPreviewOpen'),
     heroPreviewTitle: document.getElementById('heroPreviewTitle'),
+    heroPreviewHeading: document.getElementById('heroPreviewHeading'),
+    heroPreviewDescription: document.getElementById('heroPreviewDescription'),
+    heroPreviewType: document.getElementById('heroPreviewType'),
+    heroPreviewUrl: document.getElementById('heroPreviewUrl'),
     heroPreviewLinks: document.getElementById('heroPreviewLinks'),
     keyCarouselPrev: document.getElementById('keyCarouselPrev'),
     keyCarouselNext: document.getElementById('keyCarouselNext'),
