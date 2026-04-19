@@ -1,15 +1,6 @@
 const PORTFOLIO_SOURCE_URL = 'https://es-d-7037060320260420-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/';
-const JOURNEY_SOURCE_URL = 'https://es-d-7037060320260420-019d9f7f-067d-7de0-a4e9-3438cc67bdaa.codepen.dev/';
-
 const HUB_URL = `${PORTFOLIO_SOURCE_URL}#projects`;
-const BLOG_URL = `${PORTFOLIO_SOURCE_URL}#blog`;
-const PARCURS_URL = `${JOURNEY_SOURCE_URL}#journey`;
-const PREVIEW_URL = `${PORTFOLIO_SOURCE_URL}#preview`;
-const FORKS_URL = `${PORTFOLIO_SOURCE_URL}#forks`;
-const CRM_URL = `${JOURNEY_SOURCE_URL}#crm`;
-const FUSIONS_URL = `${JOURNEY_SOURCE_URL}#crm-fusion`;
-const PROJECTS_URL = `${PORTFOLIO_SOURCE_URL}#projects`;
-const KEY_PROJECT_IDS = [1, 3, 49];
+const KEY_PROJECT_IDS = [49, 3, 18];
 const STATIC_FALLBACK_PROJECTS = [
   {
     id: 1,
@@ -59,14 +50,14 @@ const HERO_PREVIEW_SLIDES = [
 
 const translations = {
   ro: {
-    brand: 'Portofoliu CodePen', nav_work: 'Top proiecte', nav_crm: 'CRM', nav_fusions: 'Fusion', nav_about: 'Despre mine', nav_contact: 'Contact',
+    brand: 'Portofoliu CodePen', nav_work: 'Top proiecte', nav_about: 'Despre mine', nav_contact: 'Contact',
     hero_eyebrow: 'Marketing Specialist • Social Media Manager • Front-end autodidact',
     hero_title: 'Construiesc experiențe digitale clare, interactive și gândite din perspectiva utilizatorului',
     hero_text: 'Am peste 5 ani de experiență în CRM și marketing, iar în paralel îmi dezvolt constant competențele în front-end development. Portofoliul meu reunește aplicații utile, mini jocuri și interfețe interactive create pentru a demonstra logică, structură, feedback și decizii UI/UX bine gândite — nu doar estetică.',
-    hero_cta: 'Vezi proiectele', key_eyebrow: 'Top proiecte',
+    hero_cta: 'Vezi cel mai puternic case study', key_eyebrow: 'Top proiecte',
     key_title: '3 proiecte care arată cel mai clar modul meu de lucru',
     key_subtitle: 'Le-am ales pentru că evidențiază cel mai bine felul în care combin claritatea, logica și deciziile de produs în proiecte interactive.',
-    problem: 'Problemă', stack: 'Stack', logic: 'Logică', result: 'Rezultat', open: 'Deschide proiectul',
+    problem: 'Problemă', stack: 'Rolul meu', logic: 'Ce am decis', result: 'Rezultatul', open: 'Deschide proiectul',
     about_eyebrow: 'Despre mine', about_title: 'Despre mine',
     about_text: 'Combin experiența din CRM și marketing cu interesul meu pentru front-end development, pentru a construi produse digitale mai clare, mai utile și mai ușor de folosit. Un exemplu concret: am construit Alpis Fusion CRM Premium ca SPA publicat pe GitHub Pages, cu kanban, flow builder, RBAC și billing într-o singură interfață.',
     contact_eyebrow: 'Contact', contact_title: 'Lasă-mi o sugestie',
@@ -102,20 +93,20 @@ const translations = {
     projects_cta: 'Deschide Proiecte',
     hub_title: 'Explorează colecția de proiecte',
     hub_note: 'Biblioteca completă de proiecte rămâne disponibilă separat, pentru explorare extinsă. Pagina principală păstrează doar selecția esențială.',
-    hub_external: 'Hub complet', results: 'rezultate', footer: 'Creat pentru prezentarea proiectelor CodePen, cu accent pe claritate, explorare ușoară, responsive design, suport dark/light mode și live preview.',
+    hub_external: 'Deschide hub-ul complet', results: 'rezultate', footer: 'Funnel principal: Hero → 3 proiecte-cheie → About → Contact',
     filter_state: 'Filtru: {filter} • Căutare: {query}',
     library_empty_fallback: 'Nu există rezultate pentru filtrul curent. Poți reveni la listarea completă sau accesa direct cele 3 proiecte-cheie:',
     reset_filters: 'Resetează filtrele'
   },
   en: {
-    brand: 'CodePen Portfolio', nav_work: 'Top projects', nav_crm: 'CRM', nav_fusions: 'Fusion', nav_about: 'About', nav_contact: 'Contact',
+    brand: 'CodePen Portfolio', nav_work: 'Top projects', nav_about: 'About', nav_contact: 'Contact',
     hero_eyebrow: 'CRM • Marketing • Self-taught front-end',
     hero_title: 'I build clear digital products: problem → logic → outcome',
     hero_text: 'The homepage now focuses on the 3 most relevant projects. The full library is still available in a secondary hub.',
-    hero_cta: 'View the 3 key projects', key_eyebrow: 'Key projects',
+    hero_cta: 'View strongest case study', key_eyebrow: 'Key projects',
     key_title: '3 projects that best show how I work',
     key_subtitle: 'I selected these because they best highlight how I combine clarity, logic, and product decisions in interactive projects.',
-    problem: 'Problem', stack: 'Stack', logic: 'Logic', result: 'Outcome', open: 'Open project',
+    problem: 'Problem', stack: 'My role', logic: 'Decision', result: 'Outcome', open: 'Open project',
     about_eyebrow: 'About', about_title: 'Short background',
     about_text: 'My background is in CRM and marketing; in front-end I focus on interfaces that solve real problems with clear flows, feedback and explainable UI/UX decisions. A concrete example is Alpis Fusion CRM Premium, a GitHub Pages SPA that combines kanban, flow builder, RBAC and billing.',
     contact_eyebrow: 'Contact', contact_title: 'Let’s talk',
@@ -151,7 +142,7 @@ const translations = {
     projects_cta: 'Open Projects',
     hub_title: 'Complete project library',
     hub_note: 'The complete project library remains available in a separate hub for deeper exploration. The homepage keeps only the essential selection.',
-    hub_external: 'Open external hub', results: 'results', footer: 'Main funnel: Hero → 3 key projects → About → Contact',
+    hub_external: 'Open full hub', results: 'results', footer: 'Main funnel: Hero → 3 key projects → About → Contact',
     filter_state: 'Filter: {filter} • Search: {query}',
     library_empty_fallback: 'No results for the current filter. You can reset to the full list or jump straight to the 3 key projects:',
     reset_filters: 'Reset filters'
@@ -175,45 +166,45 @@ const keyProjectDetails = {
   },
   3: {
     ro: {
-      problem: 'Structurare clară pentru un mini portal SaaS editabil.',
-      stack: 'HTML, CSS, JavaScript modular.',
-      logic: 'Separare între layout și fluxuri, cu zone care pot crește fără haos.',
-      result: 'Produs demo ușor de extins, orientat pe claritate și utilitate.'
+      problem: 'Lead-urile, follow-up-urile și prioritățile zilnice erau urmărite în liste diferite, iar echipa rata contextul când schimba rapid task-uri.',
+      stack: 'Am definit structura dashboard-ului, ierarhia de informație și regulile de prioritizare; implementare front-end în HTML/CSS/JS modular.',
+      logic: 'Am grupat lead-urile pe stadii, am introdus indicatori vizuali pentru urgență și shortcut-uri pentru acțiunile repetate din workflow.',
+      result: 'Timp mai scurt pentru trierea lead-urilor, overview mai clar în daily use și mai puține reveniri între ecrane pentru aceleași acțiuni.'
     },
     en: {
-      problem: 'Clear structure for an editable mini SaaS portal.',
-      stack: 'Modular HTML, CSS and JavaScript.',
-      logic: 'Separation between layout and flows, with scalable functional areas.',
-      result: 'An extendable product demo focused on clarity and utility.'
+      problem: 'Leads, follow-ups and daily priorities were split across separate lists, so context was lost during quick task switching.',
+      stack: 'I defined dashboard structure, information hierarchy and prioritization rules; front-end implementation used modular HTML/CSS/JS.',
+      logic: 'I grouped leads by stage, added urgency visual signals and shortcuts for repeated actions in the core workflow.',
+      result: 'Faster lead triage, clearer daily overview and fewer back-and-forth screen hops for routine actions.'
     }
   },
-  39: {
+  18: {
     ro: {
-      problem: 'Integrarea mai multor funcții educaționale fără aglomerare.',
-      stack: 'HTML, CSS, JavaScript (module educaționale + planning).',
-      logic: 'Ecosistem unificat de quiz, simulări, coach și calendar într-un flow coerent.',
-      result: 'Platformă educațională complexă, dar ușor de parcurs și folosit.'
+      problem: 'Proiectul trebuia să explice pașii de impact într-un mod motivațional, dar fără pagini lungi și fără pierderea mesajului principal.',
+      stack: 'Am conceput flow-ul narativ, microcopy-ul și ordinea modulelor interactive; front-end construit cu HTML/CSS/JS și layout responsive.',
+      logic: 'Am împărțit experiența în misiuni scurte cu progres vizibil, CTA contextual și tranziții care păstrează utilizatorul orientat.',
+      result: 'Parcurgere mai fluentă, mesaj mai ușor de reținut și engagement mai bun în comparație cu structura statică inițială.'
     },
     en: {
-      problem: 'Integrating multiple education features without clutter.',
-      stack: 'HTML, CSS, JavaScript (learning + planning modules).',
-      logic: 'Unified ecosystem of quizzes, simulations, coaching and scheduling in one coherent flow.',
-      result: 'A complex but easy-to-navigate educational platform.'
+      problem: 'The product had to explain impact steps in a motivational way, without long pages or losing the core message.',
+      stack: 'I designed narrative flow, microcopy and module sequence; front-end built with HTML/CSS/JS and responsive layout.',
+      logic: 'I split the journey into short missions with visible progress, contextual CTAs and transitions that keep orientation.',
+      result: 'Smoother completion flow, better message retention and stronger engagement compared with the initial static structure.'
     }
   }
   ,
   49: {
     ro: {
-      problem: 'Un CRM premium care să păstreze multe funcții fără să încarce interfața.',
-      stack: 'HTML, CSS, JavaScript (dashboard modular + fluxuri CRM).',
-      logic: 'Secțiuni clare pentru clienți, task-uri și organizare, cu navigare predictibilă.',
-      result: 'Flux de lucru mai rapid, structură ușor de înțeles și experiență coerentă.'
+      problem: 'Datele de client, task management-ul și billing-ul erau fragmentate între ecrane diferite, ceea ce creștea timpul de execuție pentru același proces.',
+      stack: 'Am definit arhitectura produsului, prioritizarea modulelor și interacțiunile cheie; implementare în HTML/CSS/JS cu componente reutilizabile.',
+      logic: 'Am centralizat fluxul în dashboard modular cu kanban, flow builder și RBAC, plus shortcut-uri pentru acțiuni frecvente.',
+      result: 'Flux mai predictibil pentru echipă, onboarding mai rapid pentru utilizatori noi și reducerea pașilor necesari pentru update-uri recurente.'
     },
     en: {
-      problem: 'A premium CRM that keeps rich features without overwhelming the interface.',
-      stack: 'HTML, CSS, JavaScript (modular dashboard + CRM flows).',
-      logic: 'Clear sections for clients, tasks and organization with predictable navigation.',
-      result: 'Faster workflow, easy-to-understand structure and a coherent experience.'
+      problem: 'Client data, task management and billing were split across different screens, increasing execution time for the same process.',
+      stack: 'I defined product architecture, module priority and key interactions; implementation used reusable HTML/CSS/JS components.',
+      logic: 'I centralized the flow in a modular dashboard with kanban, flow builder and RBAC, plus shortcuts for frequent actions.',
+      result: 'More predictable team workflow, faster onboarding for new users and fewer steps for recurring updates.'
     }
   }
 };
@@ -294,13 +285,16 @@ function createKeyCard(project) {
 }
 
 function updateFilterState(query, total) {
+  const filterStateEl = document.getElementById('filterState');
+  const separatorEl = document.getElementById('statusSeparator');
+  const resultsCountEl = document.getElementById('resultsCount');
+  if (!filterStateEl || !separatorEl || !resultsCountEl) return;
+
   const filterName = activeFilter === 'all' ? 'all' : activeFilter;
   const readableFilter = filterName.toUpperCase();
   const q = query ? `"${query}"` : '—';
   const text = t('filter_state').replace('{filter}', readableFilter).replace('{query}', q);
-  const filterStateEl = document.getElementById('filterState');
-  const separatorEl = document.getElementById('statusSeparator');
-  document.getElementById('resultsCount').textContent = String(total);
+  resultsCountEl.textContent = String(total);
 
   if (total === 0) {
     filterStateEl.hidden = true;
@@ -314,6 +308,7 @@ function updateFilterState(query, total) {
 }
 
 function applyFilters() {
+  if (!dom.searchInput || !dom.libraryGrid || !dom.libraryFallback) return;
   const query = dom.searchInput.value.trim().toLowerCase();
   const filtered = projects.filter(project => {
     const matchFilter = activeFilter === 'all' || project.category === activeFilter;
@@ -350,7 +345,7 @@ function render() {
     dom.keyProjectsGrid.appendChild(fragment);
   }
 
-  applyFilters();
+  if (dom.searchInput && dom.libraryGrid && dom.libraryFallback) applyFilters();
 }
 
 function renderHeroPreviewChips() {
@@ -405,13 +400,6 @@ function stopHeroPreviewAutoplay() {
 
 async function init() {
   dom = {
-    blogExternalLink: document.getElementById('blogExternalLink'),
-    parcursExternalLink: document.getElementById('parcursExternalLink'),
-    previewExternalLink: document.getElementById('previewExternalLink'),
-    forksExternalLink: document.getElementById('forksExternalLink'),
-    crmExternalLink: document.getElementById('crmExternalLink'),
-    fusionsExternalLink: document.getElementById('fusionsExternalLink'),
-    projectsExternalLink: document.getElementById('projectsExternalLink'),
     hubExternalLink: document.getElementById('hubExternalLink'),
     searchInput: document.getElementById('searchInput'),
     filterChips: document.getElementById('filterChips'),
@@ -426,14 +414,7 @@ async function init() {
     heroPreviewTitle: document.getElementById('heroPreviewTitle'),
     heroPreviewLinks: document.getElementById('heroPreviewLinks')
   };
-  dom.blogExternalLink.href = BLOG_URL;
-  dom.parcursExternalLink.href = PARCURS_URL;
-  dom.previewExternalLink.href = PREVIEW_URL;
-  dom.forksExternalLink.href = FORKS_URL;
-  dom.crmExternalLink.href = CRM_URL;
-  dom.fusionsExternalLink.href = FUSIONS_URL;
-  dom.projectsExternalLink.href = PROJECTS_URL;
-  dom.hubExternalLink.href = HUB_URL;
+  if (dom.hubExternalLink) dom.hubExternalLink.href = HUB_URL;
   renderHeroPreviewChips();
   setHeroPreviewSlide(0);
   restartHeroPreviewAutoplay();
@@ -454,16 +435,18 @@ async function init() {
   } catch (error) {
     console.error('Nu am putut încărca projects.json', error);
     projects = STATIC_FALLBACK_PROJECTS;
-    dom.libraryGrid.innerHTML = `<div class="empty-state">${currentLang === 'ro' ? 'Am încărcat o versiune fallback cu proiecte esențiale, deoarece projects.json nu a fost disponibil.' : 'Loaded fallback essentials because projects.json was unavailable.'}</div>`;
+    if (dom.libraryGrid) {
+      dom.libraryGrid.innerHTML = `<div class="empty-state">${currentLang === 'ro' ? 'Am încărcat o versiune fallback cu proiecte esențiale, deoarece projects.json nu a fost disponibil.' : 'Loaded fallback essentials because projects.json was unavailable.'}</div>`;
+    }
   }
 
   render();
 
-  dom.searchInput.addEventListener('input', () => {
+  dom.searchInput?.addEventListener('input', () => {
     window.clearTimeout(searchDebounceId);
     searchDebounceId = window.setTimeout(applyFilters, 120);
   });
-  dom.filterChips.addEventListener('click', (event) => {
+  dom.filterChips?.addEventListener('click', (event) => {
     const chip = event.target.closest('[data-filter]');
     if (!chip) return;
     activeFilter = chip.dataset.filter;
@@ -474,10 +457,10 @@ async function init() {
     });
     applyFilters();
   });
-  dom.resetFiltersBtn.addEventListener('click', () => {
+  dom.resetFiltersBtn?.addEventListener('click', () => {
     activeFilter = 'all';
-    dom.searchInput.value = '';
-    dom.filterChips.querySelectorAll('.chip').forEach(button => {
+    if (dom.searchInput) dom.searchInput.value = '';
+    dom.filterChips?.querySelectorAll('.chip').forEach(button => {
       const isActive = button.dataset.filter === 'all';
       button.classList.toggle('active', isActive);
       button.setAttribute('aria-pressed', String(isActive));
