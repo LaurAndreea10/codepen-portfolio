@@ -41,43 +41,33 @@ const HERO_PREVIEW_SLIDES = [
     title: 'Alpis Fusion CRM Premium',
     label: 'CRM premium',
     description: 'Colecție modulară pentru lead pipeline, task management, billing și automatizări.',
-    url: 'https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium'
+    meta: 'Vite + React · ~287KB build · Deploy automatizat',
+    url: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/',
+    codeUrl: 'https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium'
   },
   {
     title: 'ARCADE WORLD',
     label: 'Arcade',
     description: 'Experimente arcade cu interacțiuni rapide, feedback vizual și ritm progresiv.',
-    url: 'https://github.com/LaurAndreea10/ARCADE-WORLD'
+    meta: 'Vanilla JS · Canvas · Game loop propriu',
+    url: 'projects/arcade-fusion.html',
+    codeUrl: 'https://github.com/LaurAndreea10/ARCADE-WORLD'
   },
   {
     title: 'Coaching AI',
     label: 'AI product',
     description: 'Interfață de coaching asistat AI, focusată pe flux clar și recomandări contextuale.',
-    url: 'https://github.com/LaurAndreea10/Coaching-AI'
+    meta: 'Claude API · Conversational UI · State management',
+    url: 'projects/coachingai.html',
+    codeUrl: 'https://github.com/LaurAndreea10/Coaching-AI'
   },
   {
     title: 'ClientFlow SaaS CRM',
     label: 'SaaS CRM',
     description: 'Sistem CRM orientat pe task-uri, automatizări și acțiuni operaționale zilnice.',
-    url: 'https://github.com/LaurAndreea10/ClientFlow-SaaS-CRM-task-manager-automation-suite'
-  },
-  {
-    title: 'ALPis CONTENT STUDIO',
-    label: 'Content ops',
-    description: 'Hub pentru planificare editorială, producție content și colaborare în echipă.',
-    url: 'https://github.com/LaurAndreea10/ALPis-CONTENT-STUDIO'
-  },
-  {
-    title: 'Code Words Strings',
-    label: 'CodePen challenge',
-    description: 'Provocări de logică și string processing construite în stil playground interactiv.',
-    url: 'https://github.com/LaurAndreea10/CodePen-Challenge-Code-Words-Strings'
-  },
-  {
-    title: 'Mood UI Generator',
-    label: 'UI generator',
-    description: 'Generator vizual pentru stări UI și combinații de componente orientate pe atmosferă.',
-    url: 'https://github.com/LaurAndreea10/Mood-UI-Generator'
+    meta: 'Kanban + triage · Shortcuts · Prioritizare vizuală',
+    url: 'projects/clientflow.html',
+    codeUrl: 'https://github.com/LaurAndreea10/ClientFlow-SaaS-CRM-task-manager-automation-suite'
   }
 ];
 
@@ -514,7 +504,9 @@ function setHeroPreviewSlide(index) {
   const slide = HERO_PREVIEW_SLIDES[previewSlideIndex];
   dom.heroPreviewTitle.textContent = slide.title;
   dom.heroPreviewOpen.href = slide.url;
+  if (dom.heroPreviewOpenSecondary) dom.heroPreviewOpenSecondary.href = slide.url;
   if (dom.heroPreviewHeading) dom.heroPreviewHeading.textContent = slide.title;
+  if (dom.heroPreviewMeta) dom.heroPreviewMeta.textContent = slide.meta || '';
   if (dom.heroPreviewDescription) dom.heroPreviewDescription.textContent = slide.description;
   if (dom.heroPreviewType) dom.heroPreviewType.textContent = slide.label;
   if (dom.heroPreviewUrl) {
@@ -522,6 +514,7 @@ function setHeroPreviewSlide(index) {
     dom.heroPreviewUrl.textContent = cleanUrl;
     dom.heroPreviewUrl.href = slide.url;
   }
+  if (dom.heroPreviewCode) dom.heroPreviewCode.href = slide.codeUrl || slide.url;
   const chips = dom.heroPreviewLinks?.querySelectorAll('.chip') || [];
   chips.forEach((chip, chipIndex) => {
     const isActive = chipIndex === previewSlideIndex;
@@ -560,11 +553,14 @@ async function init() {
     libraryFallback: document.getElementById('libraryFallback'),
     resetFiltersBtn: document.getElementById('resetFiltersBtn'),
     heroPreviewOpen: document.getElementById('heroPreviewOpen'),
+    heroPreviewOpenSecondary: document.getElementById('heroPreviewOpenSecondary'),
     heroPreviewTitle: document.getElementById('heroPreviewTitle'),
     heroPreviewHeading: document.getElementById('heroPreviewHeading'),
+    heroPreviewMeta: document.getElementById('heroPreviewMeta'),
     heroPreviewDescription: document.getElementById('heroPreviewDescription'),
     heroPreviewType: document.getElementById('heroPreviewType'),
     heroPreviewUrl: document.getElementById('heroPreviewUrl'),
+    heroPreviewCode: document.getElementById('heroPreviewCode'),
     heroPreviewLinks: document.getElementById('heroPreviewLinks'),
     keyCarouselPrev: document.getElementById('keyCarouselPrev'),
     keyCarouselNext: document.getElementById('keyCarouselNext'),
