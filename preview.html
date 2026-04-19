@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laura Andreea | Portfolio Upgrade Preview</title>
+<style>
+  :root {
+    --bg: #0a0a12;
+    --bg-elevated: #111118;
+    --text: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.7);
+    --text-dim: rgba(255, 255, 255, 0.5);
+    --border: rgba(255, 255, 255, 0.08);
+    --accent: #818cf8;
+    --accent-2: #c4b5fd;
+    --accent-glow: rgba(99, 102, 241, 0.3);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 80px 0; }
+
+  .section-header { margin-bottom: 40px; max-width: 800px; }
+  .section-eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .section-subtitle {
+    font-size: 1rem;
+    color: var(--text-dim);
+    margin-top: 12px;
+  }
+
+  /* HERO — păstrat din screenshot */
+  .hero {
+    padding: 80px 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-eyebrow {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: #4f46e5;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+  .hero p { color: var(--text-muted); font-size: 1rem; margin-bottom: 32px; max-width: 500px; }
+  .hero-preview {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    min-height: 420px;
+  }
+  .preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .preview-label { font-size: 0.7rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; }
+  .preview-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .preview-tab {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+  .preview-tab.active {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.5);
+    color: var(--accent-2);
+  }
+  .preview-mock {
+    height: 200px;
+    background: linear-gradient(135deg, rgba(30,30,40,0.8), rgba(20,20,30,0.9));
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+
+  /* === NEW: BARA DE CREDIBILITATE === */
+  .credibility-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 48px 0;
+  }
+  .cred-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+  }
+  .cred-card--cta {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.08));
+    border-color: rgba(139, 92, 246, 0.35);
+    cursor: pointer;
+  }
+  .cred-card--cta:hover {
+    transform: translateY(-2px);
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 0 8px 24px var(--accent-glow);
+  }
+  .cred-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .cred-card--cta .cred-number {
+    background: linear-gradient(135deg, #818cf8, #c4b5fd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .cred-label { font-size: 0.95rem; color: rgba(255,255,255,0.85); font-weight: 500; }
+  .cred-label span {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    font-weight: 400;
+    margin-top: 4px;
+  }
+  .cred-arrow {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1.25rem;
+    color: rgba(139, 92, 246, 0.8);
+    transition: transform 0.2s ease;
+  }
+  .cred-card--cta:hover .cred-arrow { transform: translate(4px, -4px); }
+
+  /* === NEW: META-RÂND ÎN CARUSEL === */
+  .preview-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0 16px;
+  }
+  .preview-meta-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(129, 140, 248, 0.1);
+    color: #a5b4fc;
+    border: 1px solid rgba(129, 140, 248, 0.2);
+  }
+  .preview-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+  /* BUTOANE */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+  }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-secondary {
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .btn-secondary:hover { border-color: rgba(139, 92, 246, 0.4); background: rgba(139, 92, 246, 0.08); }
+  .btn-large { padding: 14px 28px; font-size: 1rem; }
+  .btn-codepen {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: var(--text);
+    box-shadow: 0 4px 16px var(--accent-glow);
+  }
+  .btn-codepen:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  }
+  .btn .arrow { transition: transform 0.2s ease; }
+  .btn-codepen:hover .arrow { transform: translateX(4px); }
+
+  /* === CASE STUDIES === */
+  .case-studies { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+  .case-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.2s ease;
+  }
+  .case-card:hover { border-color: rgba(139, 92, 246, 0.3); }
+  .case-category {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .case-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; }
+  .case-card > p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px; }
+  .case-block { margin-bottom: 14px; }
+  .case-block strong { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); margin-bottom: 4px; }
+  .case-block p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+  .case-evidence ul { list-style: none; margin-top: 8px; }
+  .case-evidence li {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .case-evidence li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .case-evidence strong { color: var(--text); font-weight: 600; }
+
+  /* === TIMELINE === */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+    position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: 5%;
+    right: 5%;
+    height: 2px;
+    background: linear-gradient(90deg,
+      rgba(129, 140, 248, 0.2),
+      rgba(139, 92, 246, 0.4),
+      rgba(196, 181, 253, 0.6));
+    z-index: 0;
+  }
+  .timeline-step { position: relative; z-index: 1; }
+  .timeline-step::before {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid rgba(139, 92, 246, 0.6);
+    margin: 8px auto 20px;
+  }
+  .timeline-step--current::before {
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.2);
+  }
+  .timeline-year {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-2);
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+  .timeline-content h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }
+  .timeline-content p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+
+  /* === ABOUT === */
+  .about-content { max-width: 800px; margin: 40px 0; }
+  .about-content p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 20px;
+  }
+  .about-content strong { color: var(--text); font-weight: 600; }
+  .skills-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; max-width: 900px; }
+  .skill-badge {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.75);
+    border: 1px solid var(--border);
+    transition: all 0.15s ease;
+  }
+  .skill-badge:hover {
+    background: rgba(129, 140, 248, 0.1);
+    border-color: rgba(129, 140, 248, 0.3);
+    color: var(--accent-2);
+  }
+
+  /* === EXPLORATIONS === */
+  .explorations-card {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.04));
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 24px;
+    padding: 48px;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .explorations-content h2 { font-size: 2rem; font-weight: 700; margin: 8px 0 16px; line-height: 1.2; }
+  .explorations-content p { color: rgba(255,255,255,0.75); margin-bottom: 28px; line-height: 1.6; }
+  .explorations-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-left: 32px;
+    border-left: 1px solid var(--border);
+  }
+  .stat-item { display: flex; align-items: baseline; gap: 16px; }
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--accent-2);
+    letter-spacing: -0.02em;
+    min-width: 60px;
+  }
+  .stat-label { font-size: 0.9rem; color: var(--text-dim); line-height: 1.4; }
+
+  /* === BLOG === */
+  .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+  .blog-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.2s ease;
+  }
+  .blog-card:hover {
+    border-color: rgba(139, 92, 246, 0.3);
+    background: rgba(139, 92, 246, 0.04);
+    transform: translateY(-2px);
+  }
+  .blog-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .blog-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(129, 140, 248, 0.12);
+    color: #a5b4fc;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .blog-date { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+  .blog-card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; line-height: 1.35; }
+  .blog-card p { font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+  /* === CONTACT === */
+  .contact-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+  /* === FOOTER === */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+    margin-top: 40px;
+    text-align: center;
+  }
+  .footer-tagline { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px; }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+  }
+  .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.95rem; transition: color 0.15s; }
+  .footer-links a:hover { color: var(--accent-2); }
+  .footer-links a strong { color: var(--text); }
+  .footer-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(129, 140, 248, 0.15);
+    color: #a5b4fc;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+
+  /* Section label pentru demo */
+  .demo-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #22c55e;
+    color: #000;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .demo-label.existing { background: rgba(255,255,255,0.15); color: var(--text); }
+
+  @media (max-width: 900px) {
+    .hero, .case-studies, .timeline, .blog-grid, .explorations-card, .credibility-bar {
+      grid-template-columns: 1fr;
+    }
+    .hero h1 { font-size: 2.5rem; }
+    .timeline::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO (PĂSTRAT) ============ -->
+<section class="hero container">
+  <div>
+    <span class="demo-label existing">PĂSTRAT</span>
+    <div class="hero-eyebrow">CRM · MARKETING · FRONT-END AUTODIDACT</div>
+    <h1>Construiesc interfețe CRM și dashboard-uri care transformă procese complicate în fluxuri clare</h1>
+    <p>Vin din CRM și marketing, iar în front-end mă concentrez pe produse unde structura, prioritizarea și feedback-ul vizual ajută utilizatorii să înțeleagă mai repede ce au de făcut.</p>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <a href="#key-projects" class="btn btn-primary btn-large">Vezi proiectele-cheie</a>
+      <a href="#contact" class="btn btn-secondary btn-large">Contactează-mă</a>
+    </div>
+  </div>
+
+  <div class="hero-preview">
+    <div class="preview-header">
+      <div>
+        <div class="preview-label">PREVIEW LIVE</div>
+        <div style="color: var(--text-dim); font-size: 0.85rem; margin-top: 4px;">ClientFlow SaaS CRM</div>
+      </div>
+      <a href="#" class="btn btn-primary">Deschide proiectul</a>
+    </div>
+    <div class="preview-tabs">
+      <span class="preview-tab">Premium</span>
+      <span class="preview-tab">ARCADE WORLD</span>
+      <span class="preview-tab">Coaching AI</span>
+      <span class="preview-tab active">ClientFlow SaaS CRM</span>
+    </div>
+    <div class="preview-mock"></div>
+    <div style="font-size: 0.75rem; color: var(--accent); margin-bottom: 8px;">SaaS CRM</div>
+    <h3 style="font-size: 1.2rem; margin-bottom: 8px;">ClientFlow SaaS CRM</h3>
+
+    <!-- NEW: Meta-rând tehnic -->
+    <div class="preview-meta">
+      <span class="preview-meta-tag">Kanban + triage</span>
+      <span class="preview-meta-tag">Shortcuts tastatură</span>
+      <span class="preview-meta-tag">Prioritizare vizuală</span>
+    </div>
+
+    <p style="color: var(--text-muted); font-size: 0.9rem;">Sistem CRM orientat pe task-uri, automatizări și acțiuni operaționale zilnice.</p>
+
+    <!-- NEW: Buton CodePen per card -->
+    <div class="preview-actions">
+      <a href="#" class="btn btn-primary">Deschide proiectul</a>
+      <a href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" class="btn btn-secondary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 8.5v7L12 22l10-6.5v-7L12 2zm0 2.3l7.5 4.9-3.6 2.4L12 9l-3.9 2.6-3.6-2.4L12 4.3z"/></svg>
+        Vezi codul pe CodePen
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEW: BARA DE CREDIBILITATE ============ -->
+<section class="container">
+  <span class="demo-label">NOU · CTA CODEPEN #1</span>
+  <div class="credibility-bar">
+    <a href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" class="cred-card cred-card--cta">
+      <div class="cred-number">48</div>
+      <div class="cred-label">proiecte live pe CodePen</div>
+      <div class="cred-arrow">→</div>
+    </a>
+    <div class="cred-card">
+      <div class="cred-number">10+</div>
+      <div class="cred-label">certificări<span>Google · freeCodeCamp · Anthropic · LinkedIn Learning</span></div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-number">6</div>
+      <div class="cred-label">module SaaS<span>în Alpis Fusion CRM Premium</span></div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-number">2022 →</div>
+      <div class="cred-label">tranziție<span>din CRM &amp; Marketing în front-end</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CASE STUDIES (ÎMBUNĂTĂȚITE) ============ -->
+<section id="key-projects" class="section container">
+  <div class="section-header">
+    <span class="demo-label existing">ÎMBUNĂTĂȚIT · Dovezi rescrise</span>
+    <span class="section-eyebrow" style="display:block; margin-top:12px;">Proiecte-cheie</span>
+    <h2>3 proiecte care arată cel mai clar cum gândesc produsul și interfața</h2>
+  </div>
+
+  <div class="case-studies">
+    <!-- 1. Alpis Fusion -->
+    <div class="case-card">
+      <div class="case-category">CRM</div>
+      <h3>Alpis Fusion CRM Premium</h3>
+      <p>Am centralizat lead pipeline, task management și billing într-un dashboard modular, pentru un flux mai scurt și onboarding mai predictibil.</p>
+
+      <div class="case-block"><strong>Problemă</strong><p>Lead-urile, task-urile și billing-ul erau în zone separate, cu multe schimbări de ecran.</p></div>
+      <div class="case-block"><strong>Decizie</strong><p>Am definit un flow unic în dashboard, cu prioritizare clară și acțiuni rapide.</p></div>
+      <div class="case-block"><strong>Rezultat</strong><p>Decizii zilnice mai rapide, mai puțină fricțiune și onboarding predictibil.</p></div>
+
+      <div class="case-block case-evidence">
+        <strong>Dovezi observabile</strong>
+        <ul>
+          <li>Arhitectură modulară cu <strong>6 zone funcționale</strong> integrate: CRM, booking, content studio, billing, automatizări, RBAC — cu flow builder și kanban.</li>
+          <li><strong>Stack de producție:</strong> Vite + React, build ~287KB minified, deploy automatizat prin GitHub Actions.</li>
+          <li><strong>Booking</strong> cu detectare conflicte și duplicate, <strong>facturare</strong> cu print PDF, export CSV/JSON, autosave.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2. ClientFlow -->
+    <div class="case-card">
+      <div class="case-category">UTILITY</div>
+      <h3>ClientFlow</h3>
+      <p>Am reorganizat lead pipeline și task management într-un dashboard simplu, orientat pe prioritizare și acțiuni rapide.</p>
+
+      <div class="case-block"><strong>Problemă</strong><p>Context pierdut între liste separate și triere inconsistentă în zile aglomerate.</p></div>
+      <div class="case-block"><strong>Decizie</strong><p>Am standardizat stadiile și semnalele vizuale pentru urgențe, cu shortcut-uri rapide.</p></div>
+      <div class="case-block"><strong>Rezultat</strong><p>Triage mai rapid, decizii mai consistente și mai puține reveniri între ecrane.</p></div>
+
+      <div class="case-block case-evidence">
+        <strong>Dovezi observabile</strong>
+        <ul>
+          <li><strong>Stadii standardizate</strong> pentru pipeline, cu semnale vizuale pentru urgențe (culoare + iconiță + poziție în board).</li>
+          <li><strong>Shortcut-uri de tastatură</strong> pentru acțiunile repetitive — mai puține click-uri pe zilele aglomerate.</li>
+          <li><strong>Un singur ecran principal</strong> pentru triage zilnic — fără navigare între liste separate.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3. Impact Path -->
+    <div class="case-card">
+      <div class="case-category">UI</div>
+      <h3>Alpis Impact Path</h3>
+      <p>Am transformat un mesaj lung într-un flow interactiv, cu pași clari, progres vizibil și CTA-uri contextuale.</p>
+
+      <div class="case-block"><strong>Problemă</strong><p>Versiunea statică era lungă, iar utilizatorii pierdeau mesajul principal.</p></div>
+      <div class="case-block"><strong>Decizie</strong><p>Am spart parcursul în misiuni scurte, cu progres vizibil și ritm controlat.</p></div>
+      <div class="case-block"><strong>Rezultat</strong><p>Onboarding mai clar, retenție mai bună a mesajului și abandon redus.</p></div>
+
+      <div class="case-block case-evidence">
+        <strong>Dovezi observabile</strong>
+        <ul>
+          <li>Parcursul static spart în <strong>misiuni scurte cu progres vizibil</strong> (bară + procent + număr pas curent din total).</li>
+          <li><strong>Tranziții ghidate</strong> între pași, cu ritm controlat, ca utilizatorul să nu se piardă.</li>
+          <li><strong>CTA-uri contextuale</strong> care apar doar când pasul e complet — nu toate în bloc la final.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEW: TIMELINE PARCURS ============ -->
+<section id="journey" class="section container">
+  <div class="section-header">
+    <span class="demo-label">NOU</span>
+    <span class="section-eyebrow" style="display:block; margin-top:12px;">Parcurs</span>
+    <h2>De la CRM la cod — cum am ajuns aici</h2>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-year">2019–2022</div>
+      <div class="timeline-content">
+        <h3>Marketing &amp; CRM</h3>
+        <p>Pro bono Marketing Specialist &amp; Strategist, Social Media Manager. Baze de date, Facebook Ads, A/B Testing, e-commerce SEO, platforme imobiliare.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-year">2022</div>
+      <div class="timeline-content">
+        <h3>Primele certificări tehnice</h3>
+        <p>JavaScript Essential Training, Programming Foundations, Google Digital Marketing, Google Ads Measurement.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-year">2023–2024</div>
+      <div class="timeline-content">
+        <h3>Proiecte personale publicate</h3>
+        <p>Mini jocuri, SaaS, platforme educaționale, interfețe interactive publicate pe CodePen și GitHub. Data Analysis with Python.</p>
+      </div>
+    </div>
+    <div class="timeline-step timeline-step--current">
+      <div class="timeline-year">2024–2026</div>
+      <div class="timeline-content">
+        <h3>Portofoliu production-ready</h3>
+        <p>Alpis Fusion CRM Premium, ClientFlow, Impact Path. Vite + React, GitHub Actions, deploy automatizat. Claude Code in Action (Anthropic).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT (EXTINS) ============ -->
+<section id="about" class="section container">
+  <div class="section-header">
+    <span class="demo-label existing">REFĂCUT · text real din CodePen</span>
+    <span class="section-eyebrow" style="display:block; margin-top:12px;">Despre mine</span>
+    <h2>Combin experiența din CRM și Marketing cu explorarea front-end pentru a construi produse mai clare și mai umane</h2>
+  </div>
+
+  <div class="about-content">
+    <p>Am lucrat ca <strong>Pro bono Marketing Specialist &amp; Strategist</strong> pentru afaceri mici și ca <strong>Social Media Manager</strong>. Experiența mea acoperă CRM, administrare baze de date, campanii digitale, Facebook Ads Manager, A/B Testing, e-commerce SEO, generare de leaduri, content management și colaborare pe platforme imobiliare. Asta mi-a format o gândire orientată spre utilizator, structură și rezultate reale.</p>
+    <p>Din 2022 am început să acumulez certificări tehnice: <strong>JavaScript Essential Training</strong>, <strong>Programming Foundations</strong>, <strong>Data Analysis with Python</strong> (freeCodeCamp), <strong>Google Ads Measurement</strong>, <strong>Google Digital Marketing</strong> și <strong>Claude Code in Action</strong> (Anthropic). În paralel, din pasiune și disciplină, dezvolt proiecte personale în HTML, CSS și JavaScript — mini jocuri, aplicații SaaS, platforme educaționale și interfețe interactive.</p>
+  </div>
+
+  <div class="skills-grid">
+    <span class="skill-badge">HTML5</span><span class="skill-badge">CSS3</span><span class="skill-badge">JavaScript</span>
+    <span class="skill-badge">Python</span><span class="skill-badge">React</span><span class="skill-badge">Vite</span>
+    <span class="skill-badge">Responsive Design</span><span class="skill-badge">UI/UX Thinking</span>
+    <span class="skill-badge">CRM</span><span class="skill-badge">Marketing Digital</span>
+    <span class="skill-badge">Google Ads</span><span class="skill-badge">SEO</span><span class="skill-badge">SEM</span>
+    <span class="skill-badge">A/B Testing</span><span class="skill-badge">Social Media</span>
+    <span class="skill-badge">Content Marketing</span><span class="skill-badge">Email Marketing</span>
+    <span class="skill-badge">Data Analysis</span><span class="skill-badge">GDPR</span>
+    <span class="skill-badge">Facebook Ads</span><span class="skill-badge">State &amp; Interaction</span>
+    <span class="skill-badge">Product Thinking</span>
+  </div>
+</section>
+
+<!-- ============ NEW: EXPLORĂRI (CTA #3) ============ -->
+<section class="section container">
+  <span class="demo-label">NOU · CTA CODEPEN #3</span>
+  <div class="explorations-card" style="margin-top: 16px;">
+    <div class="explorations-content">
+      <span class="section-eyebrow">Explorări</span>
+      <h2>Dincolo de cele 3 proiecte-cheie</h2>
+      <p>Pe CodePen am publicat mini jocuri (<strong>ARCADE WORLD</strong>, <strong>Basket vs AI</strong>), explorări UI, fork-uri și prototipuri rapide. Le țin separate de proiectele-produs, ca să fie clar ce e original și ce e studiu.</p>
+      <a href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" class="btn btn-codepen btn-large">
+        Vezi cele 48 de proiecte pe CodePen
+        <span class="arrow">→</span>
+      </a>
+    </div>
+    <div class="explorations-stats">
+      <div class="stat-item"><div class="stat-number">48</div><div class="stat-label">proiecte live</div></div>
+      <div class="stat-item"><div class="stat-number">4</div><div class="stat-label">categorii<br>Game · Utility · UI · Challenge</div></div>
+      <div class="stat-item"><div class="stat-number">∞</div><div class="stat-label">experimente</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEW: BLOG STUB ============ -->
+<section class="section container">
+  <div class="section-header">
+    <span class="demo-label">NOU</span>
+    <span class="section-eyebrow" style="display:block; margin-top:12px;">Blog</span>
+    <h2>Ce am învățat pe drum</h2>
+    <p class="section-subtitle">Note despre deciziile tehnice și UX din proiectele mele. Articole complete în curând.</p>
+  </div>
+
+  <div class="blog-grid">
+    <article class="blog-card">
+      <div class="blog-meta"><span class="blog-tag">Architecture</span><span class="blog-date">În curând</span></div>
+      <h3>De ce am trecut de la single-file HTML la Vite + React pentru Alpis Fusion</h3>
+      <p>Când 1917 linii într-un singur fișier încep să doară — migrarea, structura nouă și ce am câștigat.</p>
+    </article>
+    <article class="blog-card">
+      <div class="blog-meta"><span class="blog-tag">UX decisions</span><span class="blog-date">În curând</span></div>
+      <h3>Flow builder vs Kanban: când alegi unul și când pe celălalt</h3>
+      <p>Două pattern-uri aparent similare, două probleme diferite. Cum decid în funcție de tipul deciziei utilizatorului.</p>
+    </article>
+    <article class="blog-card">
+      <div class="blog-meta"><span class="blog-tag">Lessons</span><span class="blog-date">În curând</span></div>
+      <h3>3 lecții din construirea unui SaaS CRM de la zero, ca autodidact</h3>
+      <p>Ce aș face diferit, ce păstrez, și de ce CRM-ul m-a învățat să codez mai bine decât orice tutorial.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ CONTACT (REPARAT) ============ -->
+<section id="contact" class="section container">
+  <div class="section-header">
+    <span class="demo-label existing">REPARAT · CV PDF + CodePen adăugat</span>
+    <span class="section-eyebrow" style="display:block; margin-top:12px;">Contact</span>
+    <h2>Lucrezi la un CRM, dashboard sau produs intern?</h2>
+    <p class="section-subtitle">Scrie-mi dacă vrei să vezi case study-urile complete sau să discutăm o colaborare. Între timp, poți vedea cum gândesc codul pe <strong>CodePen</strong> și GitHub.</p>
+  </div>
+
+  <div class="contact-actions">
+    <a href="mailto:andreealaurap@gmail.com" class="btn btn-primary btn-large">Trimite email</a>
+    <a href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" class="btn btn-codepen btn-large">
+      CodePen · 48 proiecte live <span class="arrow">→</span>
+    </a>
+    <a href="https://github.com/LaurAndreea10" target="_blank" class="btn btn-secondary btn-large">GitHub</a>
+    <a href="https://www.linkedin.com/in/laura-andreea/" target="_blank" class="btn btn-secondary btn-large">LinkedIn</a>
+    <a href="/cv/laura-andreea-cv.pdf" download class="btn btn-secondary btn-large">Descarcă CV (PDF)</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER (REORGANIZAT) ============ -->
+<footer class="site-footer container">
+  <p class="footer-tagline">Portofoliu selectat, construit în jurul proiectelor care mă reprezintă cel mai bine.</p>
+  <nav class="footer-links">
+    <a href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank">
+      <strong>CodePen</strong> <span class="footer-badge">48 proiecte live</span>
+    </a>
+    <a href="https://github.com/LaurAndreea10" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/laura-andreea/" target="_blank">LinkedIn</a>
+    <a href="/cv/laura-andreea-cv.pdf" download>CV</a>
+  </nav>
+</footer>
+
+</body>
+</html>
