@@ -421,6 +421,26 @@ function renderHeroPreviewChips() {
   dom.heroPreviewLinks.appendChild(fragment);
 }
 
+function keepActiveChipInView(chip) {
+  const container = dom.heroPreviewLinks;
+  if (!container || !chip) return;
+  const containerRect = container.getBoundingClientRect();
+  const chipRect = chip.getBoundingClientRect();
+  const chipLeft = chipRect.left - containerRect.left + container.scrollLeft;
+  const chipRight = chipLeft + chipRect.width;
+  const visibleLeft = container.scrollLeft;
+  const visibleRight = visibleLeft + container.clientWidth;
+
+  if (chipLeft < visibleLeft) {
+    container.scrollTo({ left: chipLeft - 8, behavior: 'smooth' });
+    return;
+  }
+
+  if (chipRight > visibleRight) {
+    container.scrollTo({ left: chipRight - container.clientWidth + 8, behavior: 'smooth' });
+  }
+}
+
 function setHeroPreviewSlide(index) {
   if (!dom.heroPreviewFrame || !dom.heroPreviewTitle || !dom.heroPreviewOpen) return;
   previewSlideIndex = (index + HERO_PREVIEW_SLIDES.length) % HERO_PREVIEW_SLIDES.length;
@@ -434,9 +454,7 @@ function setHeroPreviewSlide(index) {
     const isActive = chipIndex === previewSlideIndex;
     chip.classList.toggle('active', isActive);
     chip.setAttribute('aria-pressed', String(isActive));
-    if (isActive) {
-      chip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    }
+    if (isActive) keepActiveChipInView(chip);
   });
 }
 
