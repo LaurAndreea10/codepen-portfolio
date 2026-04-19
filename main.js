@@ -51,21 +51,23 @@ const HERO_PREVIEW_SLIDES = [
 const translations = {
   ro: {
     brand: 'Portofoliu CodePen', nav_work: 'Top proiecte', nav_about: 'Despre mine', nav_contact: 'Contact',
-    hero_eyebrow: 'CRM • Marketing • Front-end autodidact început în CodePen',
-    hero_title: 'Construiesc dashboard-uri și interfețe CRM care reduc fricțiunea și fac fluxurile mai ușor de urmărit.',
-    hero_text: 'Vin din CRM și marketing, iar în front-end mă concentrez pe produse unde structura, feedback-ul și prioritizarea fac diferența în onboarding, task management și deciziile zilnice.',
+    hero_eyebrow: 'CRM • Marketing • Front-end autodidact',
+    hero_title: 'Construiesc interfețe CRM și dashboard-uri care transformă procese complicate în fluxuri clare',
+    hero_text: 'Vin din CRM și marketing, iar în front-end mă concentrez pe produse unde structura, prioritizarea și feedback-ul vizual ajută utilizatorii să înțeleagă mai repede ce au de făcut și să acționeze fără fricțiune.',
     hero_cta: 'Vezi proiectele-cheie', hero_cta_secondary: 'Contactează-mă',
-    hero_proof_1: 'SPA CRM cu kanban, flow builder, RBAC și billing',
-    hero_proof_2: 'UI/UX orientat pe fluxuri și acțiuni rapide',
-    hero_proof_3: 'UI/UX orientat pe flow și decizii explicabile', key_eyebrow: 'Top proiecte',
-    key_title: '3 proiecte care arată cel mai clar modul meu de lucru',
-    key_subtitle: 'Le-am ales pentru că evidențiază cel mai bine felul în care combin claritatea, logica și deciziile de produs în proiecte interactive.',
-    context: 'Context', problem: 'Problemă', constraints: 'Constrângeri', decision: 'Decizia mea', priority: 'Ce am prioritizat', learning: 'Ce am învățat', proof: 'Dovezi observabile', open: 'Deschide proiectul',
-    about_eyebrow: 'Despre mine', about_title: 'Despre mine',
-    about_text: 'Am început autodidact în CodePen, apoi am extins în proiecte front-end complete. Vin din CRM și marketing, iar acum construiesc dashboard-uri și interfețe unde structura, feedback-ul și prioritizarea reduc fricțiunea pentru utilizator.',
-    contact_eyebrow: 'Contact', contact_title: 'Ai un CRM, dashboard sau produs intern care trebuie simplificat?',
-    contact_text: 'Trimite-mi un mesaj cu contextul și obiectivul, iar îți răspund cu următorul pas concret pentru colaborare.',
-    contact_email: 'Trimite brief-ul pe email', hub_eyebrow: 'Bibliotecă extinsă',
+    hero_proof_1: 'Kanban',
+    hero_proof_2: 'Flow builder',
+    hero_proof_3: 'RBAC',
+    hero_proof_4: 'Billing',
+    hero_proof_5: 'UI/UX orientat pe decizie', key_eyebrow: 'Proiecte-cheie',
+    key_title: '3 proiecte care arată cel mai clar cum gândesc produsul și interfața',
+    key_subtitle: 'Am ales 3 proiecte care mă reprezintă cel mai bine: structură clară, logică de produs, interfețe construite pentru acțiune și decizii UI/UX pe care le pot explica.',
+    context: 'Rol / tip', problem: 'Problemă', constraints: 'Descriere', decision: 'Ce am construit', priority: 'Rezultat', learning: 'Focus', proof: 'CTA', open: 'Vezi proiectul',
+    about_eyebrow: 'Despre mine', about_title: 'Context scurt',
+    about_text: 'Vin din zona de CRM și marketing, iar asta îmi influențează felul în care construiesc interfețe: nu mă interesează doar cum arată un produs, ci și cum ghidează utilizatorul, cum reduce fricțiunea și cum susține obiective reale. În front-end mă atrag proiectele unde logica, structura și deciziile UI/UX fac diferența.',
+    contact_eyebrow: 'Contact', contact_title: 'Lucrezi la un CRM, dashboard sau produs intern?',
+    contact_text: 'Scrie-mi dacă vrei să vezi case study-urile complete, să discutăm o colaborare sau să-ți dau feedback pe un produs orientat pe fluxuri, claritate și UX.',
+    contact_email: 'Trimite email', hub_eyebrow: 'Bibliotecă extinsă',
     blog_eyebrow: 'Blog',
     blog_title: 'Ce am învățat pe drum',
     blog_note: 'O selecție de reflecții, observații și idei desprinse din procesul meu de învățare, lucru practic și construcție de proiecte. Secțiunea aceasta completează portofoliul cu partea de gândire din spatele execuției.',
@@ -96,28 +98,30 @@ const translations = {
     projects_cta: 'Deschide Proiecte',
     hub_title: 'Explorează colecția de proiecte',
     hub_note: 'Biblioteca completă de proiecte rămâne disponibilă separat, pentru explorare extinsă. Pagina principală păstrează doar selecția esențială.',
-    hub_external: 'Explorează mai mult', results: 'rezultate', footer: 'Funnel principal: Hero → 3 proiecte-cheie → Contact. Restul secțiunilor sunt grupate în hub-ul secundar „Explorează mai mult”.',
+    hub_external: 'Explorează mai mult', results: 'rezultate', footer: 'Portofoliu selectat, construit în jurul proiectelor care mă reprezintă cel mai bine.',
     filter_state: 'Filtru: {filter} • Căutare: {query}',
     library_empty_fallback: 'Nu există rezultate pentru filtrul curent. Poți reveni la listarea completă sau accesa direct cele 3 proiecte-cheie:',
     reset_filters: 'Resetează filtrele'
   },
   en: {
     brand: 'CodePen Portfolio', nav_work: 'Top projects', nav_about: 'About', nav_contact: 'Contact',
-    hero_eyebrow: 'CRM • Marketing • Self-taught front-end started in CodePen',
-    hero_title: 'I build dashboards and CRM interfaces that reduce friction and make workflows easier to follow.',
-    hero_text: 'My background is in CRM and marketing, and in front-end I focus on products where structure, feedback, and prioritization improve onboarding, task management, and daily decisions.',
+    hero_eyebrow: 'CRM • Marketing • Self-taught front-end',
+    hero_title: 'I build CRM interfaces and dashboards that turn complex processes into clear flows.',
+    hero_text: 'My background is in CRM and marketing, and in front-end I focus on products where structure, prioritization, and visual feedback help users understand faster what to do and act with less friction.',
     hero_cta: 'View key projects', hero_cta_secondary: 'Contact me',
-    hero_proof_1: 'CRM SPA with kanban, flow builder, RBAC, and billing',
-    hero_proof_2: 'Flow-oriented UI/UX built for quick actions',
-    hero_proof_3: 'Flow-oriented UI/UX with explainable decisions', key_eyebrow: 'Key projects',
-    key_title: '3 projects that best show how I work',
-    key_subtitle: 'I selected these because they best highlight how I combine clarity, logic, and product decisions in interactive projects.',
-    context: 'Context', problem: 'Problem', constraints: 'Constraints', decision: 'Decision', priority: 'What I prioritized', learning: 'What I learned', proof: 'Observable evidence', open: 'Open project',
-    about_eyebrow: 'About', about_title: 'Short background',
-    about_text: 'I started self-taught in CodePen, then expanded into complete front-end projects. My CRM and marketing background now translates into dashboards and interfaces where structure, feedback, and prioritization reduce user friction.',
-    contact_eyebrow: 'Contact', contact_title: 'Do you have a CRM, dashboard, or internal product that needs simplification?',
-    contact_text: 'Send me your context and objective, and I will reply with the next concrete step for collaboration.',
-    contact_email: 'Send your brief by email', hub_eyebrow: 'Extended library',
+    hero_proof_1: 'Kanban',
+    hero_proof_2: 'Flow builder',
+    hero_proof_3: 'RBAC',
+    hero_proof_4: 'Billing',
+    hero_proof_5: 'Decision-oriented UI/UX', key_eyebrow: 'Key projects',
+    key_title: '3 projects that best show how I think about product and interface',
+    key_subtitle: 'I selected 3 projects that represent me best: clear structure, product logic, action-oriented interfaces, and UI/UX decisions I can explain.',
+    context: 'Role / type', problem: 'Problem', constraints: 'Description', decision: 'What I built', priority: 'Result', learning: 'Focus', proof: 'CTA', open: 'View project',
+    about_eyebrow: 'About', about_title: 'Short context',
+    about_text: 'I come from CRM and marketing, and that shapes how I build interfaces: I care not only how a product looks, but how it guides users, reduces friction, and supports real goals. In front-end, I am drawn to projects where logic, structure, and UI/UX decisions make the difference.',
+    contact_eyebrow: 'Contact', contact_title: 'Are you working on a CRM, dashboard, or internal product?',
+    contact_text: 'Write to me if you want full case studies, to discuss a collaboration, or to get feedback on a flow-oriented, clarity-first UX product.',
+    contact_email: 'Send email', hub_eyebrow: 'Extended library',
     blog_eyebrow: 'Blog',
     blog_title: 'Articles and ideas from my process',
     blog_note: 'I also integrated the blog area for insights on projects, workflow and front-end experiments.',
@@ -148,7 +152,7 @@ const translations = {
     projects_cta: 'Open Projects',
     hub_title: 'Complete project library',
     hub_note: 'The complete project library remains available in a separate hub for deeper exploration. The homepage keeps only the essential selection.',
-    hub_external: 'Explore more', results: 'results', footer: 'Main funnel: Hero → 3 key projects → Contact. The rest is grouped in the secondary “Explore more” hub.',
+    hub_external: 'Explore more', results: 'results', footer: 'Selected portfolio, built around the projects that represent me best.',
     filter_state: 'Filter: {filter} • Search: {query}',
     library_empty_fallback: 'No results for the current filter. You can reset to the full list or jump straight to the 3 key projects:',
     reset_filters: 'Reset filters'
@@ -172,86 +176,74 @@ const keyProjectDetails = {
   },
   3: {
     ro: {
-      context: 'Lead-urile și follow-up-urile erau urmărite în liste diferite, fără o imagine comună de zi cu zi.',
-      problem: 'Echipa pierdea context când schimba rapid task-uri, iar trierea devenea inconsistentă.',
-      constraints: 'Interfață simplă, rapidă și ușor de întreținut, fără dependențe externe complexe.',
-      decision: 'Am grupat lead-urile pe stadii, cu semnale vizuale de urgență și shortcut-uri pentru acțiuni repetitive.',
-      priority: 'Triage rapid, overview zilnic clar și minimizarea revenirilor între ecrane.',
-      learning: 'Ierarhia de informație bună crește viteza deciziilor mai mult decât adăugarea de widget-uri.',
+      context: 'Design systems thinking • Module fusion • UX structure',
+      problem: 'Multe produse cresc prin adăugiri succesive și ajung să pară lipite din bucăți, fără ierarhie clară.',
+      constraints: 'Un proiect construit în jurul ideii de a combina pattern-uri, module și fluxuri diferite într-o experiență unitară.',
+      decision: 'Am lucrat cu structură modulară, secțiuni coerente și logică de navigare care leagă mai natural zonele produsului.',
+      priority: 'O experiență mai coerentă, mai ușor de înțeles și mai ușor de extins.',
+      learning: 'Interfață modulară și coerență UX',
       proof: [
-        'Am redus pașii pentru trierea lead-urilor în workflow-ul zilnic.',
-        'Am făcut trecerea între acțiuni mai predictibilă pentru echipă.',
-        'Am reorganizat informația astfel încât urgențele să fie vizibile imediat.'
+        'Vezi proiectul'
       ]
     },
     en: {
-      context: 'Leads and follow-ups were split across separate lists, with no shared day-to-day overview.',
-      problem: 'Context was lost during quick task switching, making prioritization inconsistent.',
-      constraints: 'The interface had to stay simple, fast, and easy to maintain without heavy dependencies.',
-      decision: 'I grouped leads by stage, added urgency signals, and created shortcuts for repetitive actions.',
-      priority: 'Fast triage, clear daily overview, and fewer back-and-forth screen hops.',
-      learning: 'Strong information hierarchy improves decision speed more than adding more widgets.',
+      context: 'Design systems thinking • Module fusion • UX structure',
+      problem: 'Many products grow through successive additions and end up feeling stitched together without clear hierarchy.',
+      constraints: 'A project built around combining patterns, modules, and different flows into one unified experience.',
+      decision: 'I worked with modular structure, coherent sections, and navigation logic that naturally connects product areas.',
+      priority: 'A more coherent experience that is easier to understand and easier to extend.',
+      learning: 'Modular interface and UX coherence',
       proof: [
-        'I reduced the steps needed for daily lead triage.',
-        'I made action switching more predictable for the team.',
-        'I reorganized information so urgent items stand out immediately.'
+        'View project'
       ]
     }
   },
   18: {
     ro: {
-      context: 'Produsul trebuia să comunice pașii de impact într-un mod motivațional și ușor de parcurs.',
-      problem: 'Versiunea statică era lungă, iar utilizatorii pierdeau mesajul principal pe parcurs.',
-      constraints: 'Conținut dens, dar nevoie de ritm scurt, orientare clară și layout responsive.',
-      decision: 'Am împărțit experiența în misiuni scurte cu progres vizibil, CTA contextual și tranziții ghidate.',
-      priority: 'Orientarea utilizatorului, retenția mesajului principal și flow fluent cap-coadă.',
-      learning: 'Storytelling-ul interactiv funcționează mai bine când ritmul e controlat prin pași clari.',
+      context: 'Front-end concept • UI feedback • Interaction clarity',
+      problem: 'Când layout-ul, semnalele vizuale și stările UI nu sunt bine prioritizate, utilizatorul pierde timp și încredere.',
+      constraints: 'Un proiect axat pe claritatea interacțiunii, ierarhie vizuală și feedback în interfață.',
+      decision: 'Am lucrat cu layout adaptiv, componente clare, stări UI recognoscibile și prioritizare vizuală mai bună.',
+      priority: 'O interfață mai ușor de parcurs și mai predictibilă pentru utilizator.',
+      learning: 'Claritate de interacțiune și feedback UI',
       proof: [
-        'Am redus abandonul pe parcurs prin secțiuni mai scurte și progres vizibil.',
-        'Am făcut onboarding-ul în experiență mai previzibil prin tranziții ghidate.',
-        'Am reorganizat informația astfel încât mesajul principal să se rețină mai ușor.'
+        'Vezi proiectul'
       ]
     },
     en: {
-      context: 'The product had to communicate impact steps in a motivational, easy-to-follow experience.',
-      problem: 'The static version was too long, and users lost the main message during the journey.',
-      constraints: 'Dense content with a need for short pacing, clear orientation, and responsive structure.',
-      decision: 'I split the journey into short missions with visible progress, contextual CTAs, and guided transitions.',
-      priority: 'User orientation, main-message retention, and a smooth end-to-end flow.',
-      learning: 'Interactive storytelling works better when pacing is controlled through clear steps.',
+      context: 'Front-end concept • UI feedback • Interaction clarity',
+      problem: 'When layout, visual cues, and UI states are not well prioritized, users lose time and confidence.',
+      constraints: 'A project focused on interaction clarity, visual hierarchy, and interface feedback.',
+      decision: 'I worked with adaptive layout, clear components, recognizable UI states, and better visual prioritization.',
+      priority: 'An interface that is easier to scan and more predictable for users.',
+      learning: 'Interaction clarity and UI feedback',
       proof: [
-        'I reduced drop-off through shorter sections and visible progress.',
-        'I made onboarding into the experience more predictable with guided transitions.',
-        'I reorganized information so the core message is easier to retain.'
+        'View project'
       ]
     }
   }
   ,
   49: {
     ro: {
-      context: 'Datele de client, task-urile și billing-ul erau distribuite în zone separate ale produsului.',
-      problem: 'Aceeași operațiune cerea prea multe schimbări de ecran, cu risc de eroare și ritm lent.',
-      constraints: 'Single-page app publicat pe GitHub Pages, cu module clare și componente reutilizabile.',
-      decision: 'Am centralizat fluxul într-un dashboard modular cu kanban, flow builder, RBAC și shortcut-uri de execuție.',
-      priority: 'Predictibilitate în onboarding, claritate operațională și reducerea pașilor pentru update-uri recurente.',
-      learning: 'Un flow compact și coerent ajută mai mult decât extinderea continuă a funcționalităților.',
+      context: 'CRM SPA • Product thinking • UI architecture',
+      problem: 'Procesele devin greu de urmărit când informația este fragmentată, iar utilizatorul trebuie să schimbe prea multe contexte pentru a-și face treaba.',
+      constraints: 'Un CRM construit ca sistem modular, gândit pentru echipe care au nevoie de claritate în lead-uri, task-uri, automatizări și billing.',
+      decision: 'Am organizat produsul în module clare, cu kanban, flow builder, roluri și permisiuni, billing și componente reutilizabile care susțin o experiență coerentă.',
+      priority: 'O interfață care reduce fricțiunea, face prioritățile mai vizibile și susține un ritm de lucru mai clar.',
+      learning: 'Modularizare și product clarity',
       proof: [
-        'Am redus pașii pentru update-uri recurente prin acțiuni rapide în dashboard.',
-        'Am făcut onboarding-ul mai predictibil pentru utilizatori noi.',
-        'Am reorganizat informația ca deciziile zilnice să se ia dintr-un singur punct.'
+        'Vezi proiectul'
       ]
     },
     en: {
-      context: 'Client data, tasks, and billing were spread across separate product areas.',
-      problem: 'The same operation required too many screen switches, slowing execution and increasing error risk.',
-      constraints: 'A GitHub Pages single-page app with clear modules and reusable components.',
-      decision: 'I centralized the flow in a modular dashboard with kanban, flow builder, RBAC, and execution shortcuts.',
-      priority: 'Predictable onboarding, operational clarity, and fewer steps for recurring updates.',
-      learning: 'A compact, coherent flow delivers more value than continuously adding features.',
+      context: 'CRM SPA • Product thinking • UI architecture',
+      problem: 'Processes become hard to follow when information is fragmented and users must switch too many contexts.',
+      constraints: 'A CRM built as a modular system for teams that need clarity in leads, tasks, automations, and billing.',
+      decision: 'I organized the product into clear modules with kanban, flow builder, roles and permissions, billing, and reusable components.',
+      priority: 'An interface that reduces friction, makes priorities clearer, and supports a clearer working rhythm.',
+      learning: 'Modularization and product clarity',
       proof: [
-        'I reduced the steps for recurring updates through quick dashboard actions.',
-        'I made onboarding more predictable for new users.',
-        'I reorganized information so daily decisions can be made from one main point.'
+        'View project'
       ]
     }
   }
