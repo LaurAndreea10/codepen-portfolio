@@ -226,6 +226,7 @@ let dom = {};
 let searchDebounceId;
 let previewSlideIndex = 0;
 let previewIntervalId;
+const HERO_PREVIEW_AUTOPLAY_MS = 4500;
 
 function t(key) { return translations[currentLang][key] || key; }
 
@@ -384,14 +385,22 @@ function setHeroPreviewSlide(index) {
     const isActive = chipIndex === previewSlideIndex;
     chip.classList.toggle('active', isActive);
     chip.setAttribute('aria-pressed', String(isActive));
+    if (isActive) {
+      chip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
   });
 }
 
 function restartHeroPreviewAutoplay() {
   window.clearInterval(previewIntervalId);
+  if (HERO_PREVIEW_SLIDES.length < 2) return;
   previewIntervalId = window.setInterval(() => {
     setHeroPreviewSlide(previewSlideIndex + 1);
-  }, 4500);
+  }, HERO_PREVIEW_AUTOPLAY_MS);
+}
+
+function stopHeroPreviewAutoplay() {
+  window.clearInterval(previewIntervalId);
 }
 
 async function init() {
@@ -428,6 +437,15 @@ async function init() {
   renderHeroPreviewChips();
   setHeroPreviewSlide(0);
   restartHeroPreviewAutoplay();
+  dom.heroPreviewLinks?.addEventListener('pointerenter', stopHeroPreviewAutoplay);
+  dom.heroPreviewLinks?.addEventListener('pointerleave', restartHeroPreviewAutoplay);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopHeroPreviewAutoplay();
+      return;
+    }
+    restartHeroPreviewAutoplay();
+  });
 
   try {
     const response = await fetch('projects.json');
@@ -449,7 +467,7 @@ async function init() {
     const chip = event.target.closest('[data-filter]');
     if (!chip) return;
     activeFilter = chip.dataset.filter;
-    document.querySelectorAll('.chip').forEach(button => {
+    dom.filterChips.querySelectorAll('.chip').forEach(button => {
       const isActive = button.dataset.filter === activeFilter;
       button.classList.toggle('active', isActive);
       button.setAttribute('aria-pressed', String(isActive));
@@ -459,7 +477,7 @@ async function init() {
   dom.resetFiltersBtn.addEventListener('click', () => {
     activeFilter = 'all';
     dom.searchInput.value = '';
-    document.querySelectorAll('.chip').forEach(button => {
+    dom.filterChips.querySelectorAll('.chip').forEach(button => {
       const isActive = button.dataset.filter === 'all';
       button.classList.toggle('active', isActive);
       button.setAttribute('aria-pressed', String(isActive));
