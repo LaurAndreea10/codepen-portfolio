@@ -45,6 +45,17 @@ const STATIC_FALLBACK_PROJECTS = [
     url: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/'
   }
 ];
+const HERO_PREVIEW_SLIDES = [
+  { title: 'Alpis Fusion CRM Premium', url: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/' },
+  { title: 'BACapp', url: 'https://laurandreea10.github.io/BACapp/' },
+  { title: 'ARCADE WORLD', url: 'https://github.com/LaurAndreea10/ARCADE-WORLD' },
+  { title: 'Coaching AI', url: 'https://github.com/LaurAndreea10/Coaching-AI' },
+  { title: 'Nexus Arcade', url: 'https://laurandreea10.github.io/Nexus-arcade/' },
+  { title: 'ALPis Content Studio', url: 'https://github.com/LaurAndreea10/ALPis-CONTENT-STUDIO' },
+  { title: 'ClientFlow SaaS CRM Suite', url: 'https://github.com/LaurAndreea10/ClientFlow-SaaS-CRM-task-manager-automation-suite' },
+  { title: 'Mood UI Generator', url: 'https://github.com/LaurAndreea10/Mood-UI-Generator' },
+  { title: 'Code Words Strings Challenge', url: 'https://github.com/LaurAndreea10/CodePen-Challenge-Code-Words-Strings' }
+];
 
 const translations = {
   ro: {
@@ -213,6 +224,8 @@ let activeFilter = 'all';
 let projects = [];
 let dom = {};
 let searchDebounceId;
+let previewSlideIndex = 0;
+let previewIntervalId;
 
 function t(key) { return translations[currentLang][key] || key; }
 
@@ -339,6 +352,48 @@ function render() {
   applyFilters();
 }
 
+function renderHeroPreviewChips() {
+  if (!dom.heroPreviewLinks) return;
+  dom.heroPreviewLinks.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+  HERO_PREVIEW_SLIDES.forEach((slide, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'chip';
+    button.textContent = slide.title;
+    button.setAttribute('aria-label', `Preview ${slide.title}`);
+    button.addEventListener('click', () => {
+      setHeroPreviewSlide(index);
+      restartHeroPreviewAutoplay();
+    });
+    fragment.appendChild(button);
+  });
+  dom.heroPreviewLinks.appendChild(fragment);
+}
+
+function setHeroPreviewSlide(index) {
+  if (!dom.heroPreviewFrame || !dom.heroPreviewTitle || !dom.heroPreviewOpen) return;
+  previewSlideIndex = (index + HERO_PREVIEW_SLIDES.length) % HERO_PREVIEW_SLIDES.length;
+  const slide = HERO_PREVIEW_SLIDES[previewSlideIndex];
+  dom.heroPreviewFrame.src = slide.url;
+  dom.heroPreviewFrame.title = slide.title;
+  dom.heroPreviewTitle.textContent = slide.title;
+  dom.heroPreviewOpen.href = slide.url;
+  const chips = dom.heroPreviewLinks?.querySelectorAll('.chip') || [];
+  chips.forEach((chip, chipIndex) => {
+    const isActive = chipIndex === previewSlideIndex;
+    chip.classList.toggle('active', isActive);
+    chip.setAttribute('aria-pressed', String(isActive));
+  });
+}
+
+function restartHeroPreviewAutoplay() {
+  window.clearInterval(previewIntervalId);
+  previewIntervalId = window.setInterval(() => {
+    setHeroPreviewSlide(previewSlideIndex + 1);
+  }, 4500);
+}
+
 async function init() {
   dom = {
     blogExternalLink: document.getElementById('blogExternalLink'),
@@ -356,7 +411,11 @@ async function init() {
     keyProjectsGrid: document.getElementById('keyProjectsGrid'),
     libraryGrid: document.getElementById('libraryGrid'),
     libraryFallback: document.getElementById('libraryFallback'),
-    resetFiltersBtn: document.getElementById('resetFiltersBtn')
+    resetFiltersBtn: document.getElementById('resetFiltersBtn'),
+    heroPreviewFrame: document.getElementById('heroPreviewFrame'),
+    heroPreviewOpen: document.getElementById('heroPreviewOpen'),
+    heroPreviewTitle: document.getElementById('heroPreviewTitle'),
+    heroPreviewLinks: document.getElementById('heroPreviewLinks')
   };
   dom.blogExternalLink.href = BLOG_URL;
   dom.parcursExternalLink.href = PARCURS_URL;
@@ -366,6 +425,9 @@ async function init() {
   dom.fusionsExternalLink.href = FUSIONS_URL;
   dom.projectsExternalLink.href = PROJECTS_URL;
   dom.hubExternalLink.href = HUB_URL;
+  renderHeroPreviewChips();
+  setHeroPreviewSlide(0);
+  restartHeroPreviewAutoplay();
 
   try {
     const response = await fetch('projects.json');
