@@ -255,6 +255,7 @@ let activeFilter = 'all';
 let projects = [];
 let dom = {};
 let searchDebounceId;
+let keyCarouselIndex = 0;
 let previewSlideIndex = 0;
 let previewIntervalId;
 let previewAutoPlayAllowed = true;
@@ -389,9 +390,50 @@ function render() {
     const fragment = document.createDocumentFragment();
     keyProjects.forEach(project => fragment.appendChild(createKeyCard(project)));
     dom.keyProjectsGrid.appendChild(fragment);
+    setupKeyProjectsCarousel();
   }
 
   if (dom.searchInput && dom.libraryGrid && dom.libraryFallback) applyFilters();
+}
+
+function renderKeyCarouselDots(totalSlides) {
+  if (!dom.keyCarouselDots) return;
+  dom.keyCarouselDots.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+  for (let index = 0; index < totalSlides; index += 1) {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'key-carousel-dot';
+    dot.setAttribute('aria-label', `Slide ${index + 1}`);
+    dot.addEventListener('click', () => setKeyCarouselSlide(index));
+    fragment.appendChild(dot);
+  }
+  dom.keyCarouselDots.appendChild(fragment);
+}
+
+function setKeyCarouselSlide(index) {
+  if (!dom.keyProjectsGrid) return;
+  const cards = dom.keyProjectsGrid.querySelectorAll('.project-card');
+  if (!cards.length) return;
+  keyCarouselIndex = (index + cards.length) % cards.length;
+  dom.keyProjectsGrid.style.transform = `translateX(-${keyCarouselIndex * 100}%)`;
+  dom.keyCarouselPrev?.toggleAttribute('disabled', cards.length < 2);
+  dom.keyCarouselNext?.toggleAttribute('disabled', cards.length < 2);
+  const dots = dom.keyCarouselDots?.querySelectorAll('.key-carousel-dot') || [];
+  dots.forEach((dot, dotIndex) => {
+    const isActive = dotIndex === keyCarouselIndex;
+    dot.classList.toggle('active', isActive);
+    dot.setAttribute('aria-pressed', String(isActive));
+  });
+}
+
+function setupKeyProjectsCarousel() {
+  if (!dom.keyProjectsGrid) return;
+  const cards = dom.keyProjectsGrid.querySelectorAll('.project-card');
+  if (!cards.length) return;
+  keyCarouselIndex = 0;
+  renderKeyCarouselDots(cards.length);
+  setKeyCarouselSlide(0);
 }
 
 function renderHeroPreviewChips() {
@@ -481,7 +523,10 @@ async function init() {
     heroPreviewFrame: document.getElementById('heroPreviewFrame'),
     heroPreviewOpen: document.getElementById('heroPreviewOpen'),
     heroPreviewTitle: document.getElementById('heroPreviewTitle'),
-    heroPreviewLinks: document.getElementById('heroPreviewLinks')
+    heroPreviewLinks: document.getElementById('heroPreviewLinks'),
+    keyCarouselPrev: document.getElementById('keyCarouselPrev'),
+    keyCarouselNext: document.getElementById('keyCarouselNext'),
+    keyCarouselDots: document.getElementById('keyCarouselDots')
   };
   if (dom.hubExternalLink) dom.hubExternalLink.href = HUB_URL;
   renderHeroPreviewChips();
@@ -489,6 +534,8 @@ async function init() {
   restartHeroPreviewAutoplay();
   dom.heroPreviewLinks?.addEventListener('pointerenter', stopHeroPreviewAutoplay);
   dom.heroPreviewLinks?.addEventListener('pointerleave', restartHeroPreviewAutoplay);
+  dom.keyCarouselPrev?.addEventListener('click', () => setKeyCarouselSlide(keyCarouselIndex - 1));
+  dom.keyCarouselNext?.addEventListener('click', () => setKeyCarouselSlide(keyCarouselIndex + 1));
   window.addEventListener('wheel', disableHeroPreviewAutoplayPermanently, { passive: true, once: true });
   window.addEventListener('touchmove', disableHeroPreviewAutoplayPermanently, { passive: true, once: true });
   window.addEventListener('keydown', (event) => {

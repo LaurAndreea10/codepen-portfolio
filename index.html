@@ -72,6 +72,17 @@
     .btn-primary{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}.btn-secondary{border-color:var(--line);background:rgba(255,255,255,.04)}
     section{padding:22px 0}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px}
     .projects-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .key-carousel{position:relative}
+    .key-carousel-viewport{overflow:hidden;border-radius:24px}
+    .key-carousel-track{display:flex;transition:transform .4s ease}
+    .key-carousel-track .project-card{min-width:100%}
+    .key-carousel-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px}
+    .key-carousel-nav{display:flex;gap:8px}
+    .key-carousel-btn{width:44px;height:44px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;font-size:1.2rem;line-height:1}
+    .key-carousel-btn:disabled{opacity:.45;cursor:not-allowed}
+    .key-carousel-dots{display:flex;gap:8px;flex-wrap:wrap}
+    .key-carousel-dot{width:10px;height:10px;border-radius:999px;border:0;background:rgba(157,176,212,.5);cursor:pointer}
+    .key-carousel-dot.active{width:26px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
     .project-card{border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:12px}
     .tag{display:inline-flex;padding:6px 10px;border-radius:999px;border:1px solid var(--line);font-size:.8rem;color:var(--muted);text-transform:capitalize}
     .project-desc{color:var(--muted);line-height:1.7}
@@ -177,7 +188,9 @@
             <p class="section-subtitle" data-i18n="key_subtitle">Am ales 3 proiecte care mă reprezintă cel mai bine: structură clară, logică de produs, interfețe construite pentru acțiune și decizii UI/UX pe care le pot explica.</p>
           </div>
         </div>
-        <div class="projects-grid" id="keyProjectsGrid">
+        <div class="key-carousel">
+          <div class="key-carousel-viewport">
+            <div class="projects-grid key-carousel-track" id="keyProjectsGrid">
           <article class="project-card glass">
             <span class="tag">crm</span>
             <h3>Alpis Fusion CRM Premium</h3>
@@ -235,6 +248,15 @@
             </div>
             <div class="card-actions"><a class="btn btn-primary" href="projects/alpis-impactpath.html" target="_blank" rel="noopener noreferrer">Deschide proiectul</a></div>
           </article>
+            </div>
+          </div>
+          <div class="key-carousel-controls">
+            <div class="key-carousel-nav">
+              <button class="key-carousel-btn" id="keyCarouselPrev" type="button" aria-label="Proiectul anterior">‹</button>
+              <button class="key-carousel-btn" id="keyCarouselNext" type="button" aria-label="Proiectul următor">›</button>
+            </div>
+            <div class="key-carousel-dots" id="keyCarouselDots" aria-label="Selectează proiectul" role="tablist"></div>
+          </div>
         </div>
       </div>
     </section>
