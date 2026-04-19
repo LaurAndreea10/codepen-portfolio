@@ -43,7 +43,7 @@ const HERO_PREVIEW_SLIDES = [
     description: 'Colecție modulară pentru lead pipeline, task management, billing și automatizări.',
     meta: 'Vite + React · ~287KB build · Deploy automatizat',
     url: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/',
-    codeUrl: 'https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium'
+    codeUrl: 'https://codepen.io/Laura-Andreea-the-typescripter'
   },
   {
     title: 'ARCADE WORLD',
@@ -51,7 +51,7 @@ const HERO_PREVIEW_SLIDES = [
     description: 'Experimente arcade cu interacțiuni rapide, feedback vizual și ritm progresiv.',
     meta: 'Vanilla JS · Canvas · Game loop propriu',
     url: 'projects/arcade-fusion.html',
-    codeUrl: 'https://github.com/LaurAndreea10/ARCADE-WORLD'
+    codeUrl: 'https://codepen.io/Laura-Andreea-the-typescripter'
   },
   {
     title: 'Coaching AI',
@@ -59,7 +59,7 @@ const HERO_PREVIEW_SLIDES = [
     description: 'Interfață de coaching asistat AI, focusată pe flux clar și recomandări contextuale.',
     meta: 'Claude API · Conversational UI · State management',
     url: 'projects/coachingai.html',
-    codeUrl: 'https://github.com/LaurAndreea10/Coaching-AI'
+    codeUrl: 'https://codepen.io/Laura-Andreea-the-typescripter'
   },
   {
     title: 'ClientFlow SaaS CRM',
@@ -67,7 +67,7 @@ const HERO_PREVIEW_SLIDES = [
     description: 'Sistem CRM orientat pe task-uri, automatizări și acțiuni operaționale zilnice.',
     meta: 'Kanban + triage · Shortcuts · Prioritizare vizuală',
     url: 'projects/clientflow.html',
-    codeUrl: 'https://github.com/LaurAndreea10/ClientFlow-SaaS-CRM-task-manager-automation-suite'
+    codeUrl: 'https://codepen.io/Laura-Andreea-the-typescripter'
   }
 ];
 

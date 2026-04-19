@@ -41,7 +41,7 @@
   </script>
 
   <style>
-    :root{--bg:#071226;--bg2:#0b1730;--panel:rgba(13,24,46,.78);--line:rgba(255,255,255,.1);--text:#eef4ff;--muted:#9db0d4;--accent:#4f8cff;--accent2:#8b5cf6;--shadow:0 20px 48px rgba(0,0,0,.32);--container:1120px}
+    :root{--bg:#050d1f;--bg2:#08142b;--panel:rgba(10,22,46,.8);--line:rgba(255,255,255,.1);--text:#eef4ff;--muted:#9db0d4;--accent:#4f8cff;--accent2:#8b5cf6;--shadow:0 20px 48px rgba(0,0,0,.32);--container:1120px}
     body.light{--bg:#f5f8fd;--bg2:#edf3fb;--panel:rgba(255,255,255,.88);--line:rgba(16,24,40,.1);--text:#16213e;--muted:#4f6283;--accent:#2563eb;--accent2:#7c3aed;--shadow:0 14px 30px rgba(15,23,42,.12)}
     *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--text);background:linear-gradient(180deg,var(--bg2),var(--bg));}
     a{text-decoration:none;color:inherit} h1,h2,h3,p{margin:0}
@@ -76,6 +76,7 @@
     .hero-preview-actions{display:flex;gap:8px;flex-wrap:wrap}
     .cred-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
     .cred-item{border:1px solid var(--line);border-radius:16px;padding:14px;background:rgba(255,255,255,.03)}
+    .cred-item:first-child{background:linear-gradient(135deg,rgba(79,140,255,.2),rgba(139,92,246,.15));border-color:rgba(139,92,246,.45)}
     .cred-item strong{display:block;font-size:1.5rem}
     .cred-item p{margin-top:6px;color:var(--muted);line-height:1.45}
     .timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
@@ -84,6 +85,8 @@
 
     .hero-actions{margin-top:24px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border-radius:999px;border:1px solid transparent;font-weight:700}
     .btn-primary{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}.btn-secondary{border-color:var(--line);background:rgba(255,255,255,.04)}
+    .btn-codepen{color:#fff;border-color:rgba(139,92,246,.45);background:linear-gradient(135deg,rgba(79,140,255,.34),rgba(139,92,246,.34))}
+    .btn-codepen:hover{border-color:rgba(196,181,253,.8)}
     section{padding:22px 0}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px}
     .projects-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
     .key-carousel{position:relative}
@@ -108,6 +111,8 @@
     .project-proof strong{display:block;font-size:.78rem;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
     .project-proof ul{margin:0;padding-left:18px;color:var(--text);line-height:1.55}
     .project-proof li+li{margin-top:4px}
+    .project-meta-row{display:flex;flex-wrap:wrap;gap:8px}
+    .project-meta-tag{font-size:.76rem;padding:4px 10px;border-radius:999px;border:1px solid rgba(129,140,248,.34);background:rgba(79,140,255,.14);color:#c9d8ff}
     .card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
     .about-contact{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .about-card,.contact-card,.hub-card{border-radius:22px;padding:22px}
@@ -192,7 +197,7 @@
                 <p id="heroPreviewDescription">Colecție de module CRM premium pentru lead pipeline, task management și automatizări.</p>
                 <div class="hero-preview-actions">
                   <a class="btn btn-primary" id="heroPreviewOpenSecondary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Deschide proiectul</a>
-                  <a class="btn btn-secondary" id="heroPreviewCode" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">Vezi codul pe CodePen →</a>
+                  <a class="btn btn-codepen" id="heroPreviewCode" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">Vezi codul pe CodePen →</a>
                 </div>
                 <a id="heroPreviewUrl" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">github.com/LaurAndreea10/Alpis-Fusion-CRM-premium</a>
               </div>
@@ -243,6 +248,11 @@
             <span class="tag">crm</span>
             <h3>Alpis Fusion CRM Premium</h3>
             <p class="project-desc">Am centralizat lead pipeline, task management și billing într-un dashboard modular, pentru un flux mai scurt și onboarding mai predictibil.</p>
+            <div class="project-meta-row" aria-label="Meta tehnic">
+              <span class="project-meta-tag">Vite + React</span>
+              <span class="project-meta-tag">~287KB build</span>
+              <span class="project-meta-tag">Deploy automatizat</span>
+            </div>
             <div class="mini-grid">
               <div class="mini-item"><strong>Problemă</strong><span>Lead-urile, task-urile și billing-ul erau în zone separate, cu multe schimbări de ecran.</span></div>
               <div class="mini-item"><strong>Decizie</strong><span>Am definit un flow unic în dashboard, cu prioritizare clară și acțiuni rapide.</span></div>
@@ -256,12 +266,20 @@
                 <li>Booking cu detectare automată de conflicte/duplicate, facturare cu print PDF, export CSV/JSON și autosave.</li>
               </ul>
             </div>
-            <div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Deschide proiectul</a></div>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Deschide proiectul</a>
+              <a class="btn btn-codepen" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">Vezi codul pe CodePen</a>
+            </div>
           </article>
           <article class="project-card glass">
             <span class="tag">utility</span>
             <h3>ClientFlow</h3>
             <p class="project-desc">Am reorganizat lead pipeline și task management într-un dashboard simplu, orientat pe prioritizare și acțiuni rapide.</p>
+            <div class="project-meta-row" aria-label="Meta tehnic">
+              <span class="project-meta-tag">Kanban + triage</span>
+              <span class="project-meta-tag">Shortcuts tastatură</span>
+              <span class="project-meta-tag">Prioritizare vizuală</span>
+            </div>
             <div class="mini-grid">
               <div class="mini-item"><strong>Problemă</strong><span>Context pierdut între liste separate și triere inconsistentă în zile aglomerate.</span></div>
               <div class="mini-item"><strong>Decizie</strong><span>Am standardizat stadiile și semnalele vizuale pentru urgențe, cu shortcut-uri rapide.</span></div>
@@ -275,12 +293,20 @@
                 <li>Un singur ecran principal, fără navigare între liste separate pentru lead-uri și task-uri.</li>
               </ul>
             </div>
-            <div class="card-actions"><a class="btn btn-primary" href="projects/clientflow.html" target="_blank" rel="noopener noreferrer">Deschide proiectul</a></div>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="projects/clientflow.html" target="_blank" rel="noopener noreferrer">Deschide proiectul</a>
+              <a class="btn btn-codepen" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">Vezi codul pe CodePen</a>
+            </div>
           </article>
           <article class="project-card glass">
             <span class="tag">ui</span>
             <h3>Alpis Impact Path</h3>
             <p class="project-desc">Am transformat un mesaj lung într-un flow interactiv, cu pași clari, progres vizibil și CTA-uri contextuale.</p>
+            <div class="project-meta-row" aria-label="Meta tehnic">
+              <span class="project-meta-tag">Mission-based flow</span>
+              <span class="project-meta-tag">Progress vizibil</span>
+              <span class="project-meta-tag">CTA contextuale</span>
+            </div>
             <div class="mini-grid">
               <div class="mini-item"><strong>Problemă</strong><span>Versiunea statică era lungă, iar utilizatorii pierdeau mesajul principal.</span></div>
               <div class="mini-item"><strong>Decizie</strong><span>Am spart parcursul în misiuni scurte, cu progres vizibil și ritm controlat.</span></div>
@@ -294,7 +320,10 @@
                 <li>CTA-uri contextuale apar doar când pasul curent e complet, nu în bloc la final.</li>
               </ul>
             </div>
-            <div class="card-actions"><a class="btn btn-primary" href="projects/alpis-impactpath.html" target="_blank" rel="noopener noreferrer">Deschide proiectul</a></div>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="projects/alpis-impactpath.html" target="_blank" rel="noopener noreferrer">Deschide proiectul</a>
+              <a class="btn btn-codepen" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">Vezi codul pe CodePen</a>
+            </div>
           </article>
             </div>
           </div>
@@ -341,11 +370,11 @@
           <h2 data-i18n="contact_title">Lucrezi la un CRM, dashboard sau produs intern?</h2>
           <p>Scrie-mi dacă lucrezi la un CRM, dashboard sau produs intern. Între timp, poți vedea cum gândesc codul pe CodePen și GitHub.</p>
           <div class="card-actions" style="margin-top:16px;">
-            <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Discutie%20proiect%20CRM%20%2F%20Dashboard" data-i18n="contact_email">Trimite email</a>
-            <a class="btn btn-secondary" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">CodePen</a>
+            <a class="btn btn-primary" href="cv/laura-andreea-cv.pdf" target="_blank" rel="noopener noreferrer">Descarcă CV (PDF)</a>
+            <a class="btn btn-codepen" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">CodePen</a>
+            <a class="btn btn-secondary" href="mailto:andreealaurap@gmail.com?subject=Discutie%20proiect%20CRM%20%2F%20Dashboard" data-i18n="contact_email">Trimite email</a>
             <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a class="btn btn-secondary" href="https://www.linkedin.com/in/laura-andreea/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a class="btn btn-secondary" href="cv/laura-andreea-cv.pdf" target="_blank" rel="noopener noreferrer">Descarcă CV</a>
           </div>
         </article>
       </div>
