@@ -38,14 +38,12 @@ const STATIC_FALLBACK_PROJECTS = [
 ];
 const HERO_PREVIEW_SLIDES = [
   { title: 'Alpis Fusion CRM Premium', url: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/' },
-  { title: 'BACapp', url: 'https://laurandreea10.github.io/BACapp/' },
   { title: 'ARCADE WORLD', url: 'https://github.com/LaurAndreea10/ARCADE-WORLD' },
   { title: 'Coaching AI', url: 'https://github.com/LaurAndreea10/Coaching-AI' },
-  { title: 'Nexus Arcade', url: 'https://laurandreea10.github.io/Nexus-arcade/' },
-  { title: 'ALPis Content Studio', url: 'https://github.com/LaurAndreea10/ALPis-CONTENT-STUDIO' },
-  { title: 'ClientFlow SaaS CRM Suite', url: 'https://github.com/LaurAndreea10/ClientFlow-SaaS-CRM-task-manager-automation-suite' },
-  { title: 'Mood UI Generator', url: 'https://github.com/LaurAndreea10/Mood-UI-Generator' },
-  { title: 'Code Words Strings Challenge', url: 'https://github.com/LaurAndreea10/CodePen-Challenge-Code-Words-Strings' }
+  { title: 'ClientFlow SaaS CRM', url: 'https://github.com/LaurAndreea10/ClientFlow-SaaS-CRM-task-manager-automation-suite' },
+  { title: 'ALPis CONTENT STUDIO', url: 'https://github.com/LaurAndreea10/ALPis-CONTENT-STUDIO' },
+  { title: 'Code Words Strings', url: 'https://github.com/LaurAndreea10/CodePen-Challenge-Code-Words-Strings' },
+  { title: 'Mood UI Generator', url: 'https://github.com/LaurAndreea10/Mood-UI-Generator' }
 ];
 
 const translations = {
