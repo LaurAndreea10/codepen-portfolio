@@ -61,7 +61,12 @@
     .hero-preview-hint{position:absolute;inset:auto 12px 12px 12px;z-index:2;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(7,18,38,.72);font-size:.84rem;color:var(--muted);pointer-events:none}
     .hero-preview-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
     .hero-preview-top p{font-size:.9rem;color:var(--muted)}
+    .hero-preview-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .hero-preview-dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);box-shadow:0 0 0 4px rgba(139,92,246,.16)}
     .hero-preview-frame{width:100%;height:100%;min-height:460px;border:0;border-radius:14px;background:#081326}
+    .hero-preview-links{display:flex;gap:8px;flex-wrap:wrap}
+    .hero-preview-links .chip{font-size:.82rem;padding:8px 12px}
+    .hero-preview-links .chip.active{color:#fff}
     .hero-actions{margin-top:24px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border-radius:999px;border:1px solid transparent;font-weight:700}
     .btn-primary{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}.btn-secondary{border-color:var(--line);background:rgba(255,255,255,.04)}
     section{padding:22px 0}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px}
@@ -141,15 +146,20 @@
               <a class="btn btn-primary" href="#key-projects" data-i18n="hero_cta">Vezi cele 3 proiecte-cheie</a>
             </div>
           </div>
-          <aside class="hero-preview" aria-label="Preview Alpis Fusion CRM premium">
+          <aside class="hero-preview" aria-label="Carusel automat preview proiecte">
             <div class="hero-preview-top">
-              <span class="eyebrow">CRM preview</span>
-              <a class="btn btn-secondary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Deschide separat</a>
+              <div class="hero-preview-meta">
+                <span class="eyebrow">Preview carusel</span>
+                <span class="hero-preview-dot" aria-hidden="true"></span>
+                <p id="heroPreviewTitle">Alpis Fusion CRM Premium</p>
+              </div>
+              <a class="btn btn-secondary" id="heroPreviewOpen" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Deschide separat</a>
             </div>
-            <p>Integrare live pentru Alpis Fusion CRM Premium direct în spațiul din dreapta.</p>
+            <p>Caruselul din dreapta schimbă automat proiectul afișat, iar butonul „Deschide separat” urmărește mereu proiectul curent.</p>
+            <div class="hero-preview-links" id="heroPreviewLinks" aria-label="Selecție rapidă proiecte preview"></div>
             <div class="hero-preview-wrap">
               <img class="hero-preview-fallback" src="assets/alpis-fusion-crm-placeholder.svg" alt="Screenshot static pentru Alpis Fusion CRM Premium" loading="lazy" />
-              <iframe class="hero-preview-frame" src="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" title="Alpis Fusion CRM Premium" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              <iframe class="hero-preview-frame" id="heroPreviewFrame" src="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" title="Alpis Fusion CRM Premium" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
               <div class="hero-preview-hint">Dacă preview-ul este blocat de browser/rețea, folosește butonul „Deschide separat”.</div>
             </div>
           </aside>
