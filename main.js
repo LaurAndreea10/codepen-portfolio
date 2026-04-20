@@ -295,13 +295,93 @@ function toggleHeroPreviewFallback(shouldShowFallback) {
   }
 }
 
-function loadHeroPreviewFrame(url) {
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function createHeroPreviewSrcdoc(slide) {
+  const title = escapeHtml(slide.title || 'Project preview');
+  const description = escapeHtml(slide.description || '');
+  const meta = escapeHtml(slide.meta || '');
+  const safeUrl = escapeHtml(slide.url || '#');
+  return `<!doctype html>
+<html lang="${currentLang}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>${title}</title>
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+        background:
+          radial-gradient(circle at 12% 15%, rgba(79,140,255,.24), transparent 45%),
+          radial-gradient(circle at 88% 82%, rgba(139,92,246,.22), transparent 48%),
+          #081326;
+        color: #e8f0ff;
+      }
+      .card {
+        width: min(640px, 100%);
+        border: 1px solid rgba(255,255,255,.14);
+        border-radius: 16px;
+        background: rgba(8, 22, 46, 0.86);
+        padding: 20px;
+      }
+      h1 { margin: 0 0 10px; font-size: 1.3rem; line-height: 1.2; }
+      p { margin: 0 0 10px; color: #b8cae8; line-height: 1.55; }
+      .meta { font-size: .85rem; color: #c9dcff; margin-bottom: 14px; }
+      a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: #051022;
+        background: linear-gradient(135deg, #60a5fa, #a78bfa);
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="card">
+      <h1>${title}</h1>
+      <p>${description}</p>
+      <p class="meta">${meta}</p>
+      <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">
+        ${currentLang === 'ro' ? 'Deschide proiectul complet' : 'Open full project'}
+      </a>
+    </article>
+  </body>
+</html>`;
+}
+
+function loadHeroPreviewFrame(slide) {
   if (!dom.heroPreviewFrame) return;
   window.clearTimeout(heroPreviewFrameErrorTimer);
   toggleHeroPreviewFallback(false);
-  dom.heroPreviewFrame.src = url;
+  const resolvedUrl = new URL(slide.url, window.location.href);
+  const isExternal = resolvedUrl.origin !== window.location.origin;
+  dom.heroPreviewFrame.removeAttribute('srcdoc');
+  if (isExternal) {
+    dom.heroPreviewFrame.srcdoc = createHeroPreviewSrcdoc(slide);
+    return;
+  }
+  dom.heroPreviewFrame.src = resolvedUrl.toString();
   heroPreviewFrameErrorTimer = window.setTimeout(() => {
-    toggleHeroPreviewFallback(true);
+    dom.heroPreviewFrame.srcdoc = createHeroPreviewSrcdoc(slide);
+    toggleHeroPreviewFallback(false);
   }, 2600);
 }
 
@@ -525,7 +605,7 @@ function setHeroPreviewSlide(index) {
     dom.heroPreviewUrl.href = slide.url;
   }
   if (dom.heroPreviewCode) dom.heroPreviewCode.href = slide.codeUrl || slide.url;
-  loadHeroPreviewFrame(slide.url);
+  loadHeroPreviewFrame(slide);
   const chips = dom.heroPreviewLinks?.querySelectorAll('.chip') || [];
   chips.forEach((chip, chipIndex) => {
     const isActive = chipIndex === previewSlideIndex;
