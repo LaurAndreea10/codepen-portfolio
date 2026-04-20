@@ -65,3 +65,5 @@ done
 
 echo ""
 echo "✅ Done. Fișiere finale în ./output/"
+echo ""
+echo "Copiază-le în repo la: assets/"
