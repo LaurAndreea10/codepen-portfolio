@@ -3,205 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ClientFlow | Laura Andreea CodePen Portfolio</title>
-  <meta name="description" content="Mini SaaS portal editabil, fără cont, gata de export. Interfață utilă construită cu HTML, CSS și JavaScript pe CodePen." />
-  <meta name="author" content="Laura Andreea" />
-  <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#071226" />
+  <title>ClientFlow | Laura Andreea</title>
+  <meta name="description" content="ClientFlow case study: triere lead-uri în board unic, dovadă before/after, walkthrough și embed CodePen direct în pagină." />
   <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/projects/clientflow.html" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-  <meta property="og:type" content="article" />
-  <meta property="og:title" content="ClientFlow | Laura Andreea" />
-  <meta property="og:description" content="Mini SaaS portal editabil, fără cont, gata de export. Interfață utilă construită cu HTML, CSS și JavaScript pe CodePen." />
-  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/projects/clientflow.html" />
-  <meta property="og:site_name" content="CodePen Portfolio" />
-  <meta property="og:locale" content="ro_RO" />
-  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg" />
+  <meta property="og:title" content="ClientFlow — Case Study" />
+  <meta property="og:description" content="De la liste fragmentate la board unic: triere, status și prioritizare în același flux." />
+  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/clientflow-demo-poster.svg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="ClientFlow | Laura Andreea" />
-  <meta name="twitter:description" content="Mini SaaS portal editabil, fără cont, gata de export. Interfață utilă construită cu HTML, CSS și JavaScript pe CodePen." />
-  <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg" />
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "CreativeWork",
-    "name": "ClientFlow",
-    "description": "Mini SaaS editable portal ready for export. Useful interface built with HTML, CSS and JavaScript on CodePen.",
-    "url": "https://laurandreea10.github.io/codepen-portfolio/projects/clientflow.html",
-    "author": {
-      "@type": "Person",
-      "name": "Laura Andreea",
-      "url": "https://laurandreea10.github.io/codepen-portfolio/"
-    },
-    "genre": "utility",
-    "keywords": "SaaS, Portal, Editable",
-    "isPartOf": {
-      "@type": "WebSite",
-      "name": "Laura Andreea CodePen Portfolio",
-      "url": "https://laurandreea10.github.io/codepen-portfolio/"
-    }
-  }
-  </script>
-  <style>
-    :root{
-      --bg:#071226;--bg-2:#0b1730;--panel:rgba(13,24,46,.78);--panel-2:rgba(255,255,255,.06);
-      --text:#eef4ff;--muted:#9db0d4;--line:rgba(255,255,255,.1);
-      --accent:#4f8cff;--accent-2:#8b5cf6;--shadow:0 20px 50px rgba(0,0,0,.35);--container:860px;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(79,140,255,.18), transparent 26%),
-        radial-gradient(circle at bottom right, rgba(139,92,246,.16), transparent 24%),
-        linear-gradient(180deg,var(--bg-2),var(--bg));
-      color:var(--text);
-      min-height:100vh;
-    }
-    a{color:inherit}
-    .container{width:min(var(--container), calc(100% - 32px));margin:0 auto;}
-    .glass{
-      background:var(--panel);border:1px solid var(--line);
-      box-shadow:var(--shadow);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-    }
-    .topbar{padding:18px 0;}
-    .nav{
-      padding:14px 18px;border-radius:999px;display:flex;align-items:center;
-      justify-content:space-between;gap:16px;flex-wrap:wrap;
-    }
-    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.02em;text-decoration:none;}
-    .brand-badge{
-      width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
-      background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-weight:800;
-    }
-    .back{
-      border:1px solid var(--line);background:var(--panel-2);color:var(--text);
-      border-radius:999px;padding:10px 14px;text-decoration:none;font-weight:600;transition:.2s ease;
-    }
-    .back:hover{transform:translateY(-1px);border-color:rgba(79,140,255,.34);}
-    .card{border-radius:24px;padding:28px;margin:22px 0;}
-    .eyebrow{
-      display:inline-flex;font-size:.84rem;font-weight:800;text-transform:uppercase;
-      letter-spacing:.08em;color:var(--accent);margin-bottom:14px;
-    }
-    h1{
-      margin:0 0 18px;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.1;letter-spacing:-.03em;
-    }
-    p{margin:0 0 14px;color:var(--muted);line-height:1.8;font-size:1.02rem;}
-    .tags{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0;}
-    .tag{
-      display:inline-flex;padding:8px 12px;border-radius:999px;
-      background:var(--panel-2);border:1px solid var(--line);color:var(--muted);
-      font-size:.86rem;text-transform:capitalize;
-    }
-    .tag.game{color:#ffd7c0;background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.24)}
-    .tag.utility{color:#c5ffe5;background:rgba(16,185,129,.14);border-color:rgba(16,185,129,.24)}
-    .tag.challenge{color:#edd6ff;background:rgba(168,85,247,.14);border-color:rgba(168,85,247,.24)}
-    .tag.ui{color:#cfe2ff;background:rgba(96,165,250,.14);border-color:rgba(96,165,250,.24)}
-    .thumb{
-      position:relative;min-height:220px;border-radius:22px;overflow:hidden;
-      border:1px solid var(--line);padding:14px;margin-bottom:22px;
-    }
-    .thumb-browser{display:flex;gap:6px;margin-bottom:12px;}
-    .thumb-browser span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.34);}
-    .thumb-screen{
-      min-height:170px;border-radius:18px;border:1px solid rgba(255,255,255,.08);
-      background:rgba(5,10,22,.42);display:flex;flex-direction:column;align-items:center;
-      justify-content:center;padding:24px;text-align:center;
-    }
-    .thumb-title{
-      font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:.08em;
-      text-transform:uppercase;line-height:1;
-    }
-    .thumb-subtitle{
-      margin-top:10px;font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;
-      color:rgba(255,255,255,.72);
-    }
-    .thumb-bar{
-      margin-top:18px;width:72%;height:38px;border-radius:12px;
-      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
-    }
-    .actions{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0;}
-    .btn{
-      min-height:48px;display:inline-flex;align-items:center;justify-content:center;
-      padding:0 20px;border-radius:999px;font-weight:700;text-decoration:none;transition:.22s ease;
-      border:1px solid transparent;
-    }
-    .btn:hover{transform:translateY(-2px)}
-    .btn-primary{
-      color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2));
-      box-shadow:0 16px 28px rgba(37,99,235,.25);
-    }
-    .btn-secondary{background:var(--panel-2);color:var(--text);border-color:var(--line);}
-    .footer{padding:28px 0;text-align:center;color:var(--muted);font-size:.92rem;}
-    @media (max-width:760px){
-      .card{padding:18px;}
-      .container{width:min(var(--container), calc(100% - 20px));}
-    }
-  </style>
+  <meta name="twitter:title" content="ClientFlow — Case Study" />
+  <meta name="twitter:description" content="Case study ClientFlow cu Problemă → Decizie → Rezultat, screenshot-uri și CodePen embed." />
+  <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/clientflow-demo-poster.svg" />
+  <style>body{margin:0;font-family:Inter,system-ui;background:#08142b;color:#eef4ff}.container{width:min(1100px,calc(100% - 32px));margin:0 auto}.glass{background:rgba(10,22,46,.8);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:22px}.section{padding:16px 0}.btn{display:inline-flex;padding:10px 16px;border:1px solid rgba(255,255,255,.1);border-radius:999px;color:#eef4ff;text-decoration:none}.btn-row{display:flex;gap:10px;flex-wrap:wrap}.btn-primary{background:linear-gradient(135deg,#4f8cff,#8b5cf6);border-color:transparent}.subtitle{color:#9db0d4;line-height:1.7}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.shot{border:1px solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden}.shot img{width:100%}.case{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.case article{border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px}.embed{width:100%;height:520px;border-radius:16px;border:1px solid rgba(255,255,255,.1)}.stack{display:flex;gap:8px;flex-wrap:wrap}.stack span{padding:6px 10px;border:1px solid rgba(255,255,255,.1);border-radius:999px}.footer{padding:24px 0;text-align:center}.top{padding:14px 0} @media(max-width:900px){.grid,.case{grid-template-columns:1fr}}</style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="container">
-      <nav class="nav glass">
-        <a class="brand" href="../index.html">
-          <span class="brand-badge" aria-hidden="true">CP</span>
-          <span>Portofoliu CodePen</span>
-        </a>
-        <a class="back" href="../index.html#projects">&larr; Toate proiectele</a>
-      </nav>
-    </div>
-  </div>
-  <main>
-    <div class="container">
-      <article class="card glass">
-        <span class="eyebrow">utility</span>
-        <h1>ClientFlow</h1>
-        <p>Mini SaaS portal editabil, fără cont, gata de export. Interfață utilă construită cu HTML, CSS și JavaScript pe CodePen.</p>
-        <p><em>Mini SaaS editable portal ready for export. Useful interface built with HTML, CSS and JavaScript on CodePen.</em></p>
-        <div class="tags">
-          <span class="tag utility">utility</span>
-          <span class="tag">SaaS</span>
-          <span class="tag">Portal</span>
-          <span class="tag">Editable</span>
-        </div>
-        <div class="thumb" style="background:linear-gradient(135deg, rgba(52,211,153,.28), rgba(59,130,246,.10))">
-          <div class="thumb-browser"><span></span><span></span><span></span></div>
-          <div class="thumb-screen">
-            <div class="thumb-title" style="color:#34d399">CLIENTFLOW</div>
-            <div class="thumb-subtitle">PORTAL</div>
-            <div class="thumb-bar"></div>
-          </div>
-        </div>
-        <div class="actions">
-          <a class="btn btn-primary" href="https://es-d-5697283320260328-019d248d-5848-7531-8d9d-23699aa47d61.codepen.dev/" target="_blank" rel="noopener noreferrer">Deschide pe CodePen</a>
-          <a class="btn btn-secondary" href="../index.html#projects">Toate proiectele</a>
-        </div>
-        <section>
-          <h2 style="font-size:1.1rem;margin:22px 0 10px;">Despre acest proiect</h2>
-          <p>
-            Acest proiect face parte din portofoliul front-end al Laurei Andreea și a fost creat
-            folosind HTML, CSS și JavaScript. Este publicat pe CodePen și poate fi explorat
-            interactiv direct din browser. Categoria principală este <strong>utility</strong>,
-            iar tehnologiile și conceptele folosite includ: SaaS, Portal, Editable.
-          </p>
-          <p>
-            This project is part of Laura Andreea's front-end portfolio and was built using
-            HTML, CSS and JavaScript. It is published on CodePen and can be explored interactively
-            in the browser. The main category is <strong>utility</strong>, and the
-            technologies and concepts used include: SaaS, Portal, Editable.
-          </p>
-        </section>
-      </article>
-    </div>
+  <div class="top"><div class="container"><a class="btn" href="../index.html">← Portofoliu CodePen</a></div></div>
+  <main class="container">
+    <section class="section"><article class="glass"><h1>ClientFlow</h1><p class="subtitle">Board operațional pentru triere rapidă în CRM.<br><em>Operational board for fast CRM triage.</em></p><p class="subtitle"><strong>Mini-walkthrough:</strong> Deschide dashboard-ul → click pe un lead → vezi cum se actualizează statusul și prioritatea instant.<br><em>Open dashboard → click a lead → watch status and priority update instantly.</em></p><div class="btn-row"><a class="btn btn-primary" href="https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/" target="_blank">Deschide proiectul</a><a class="btn" href="https://es-d-5697283320260328-019d248d-5848-7531-8d9d-23699aa47d61.codepen.dev/" target="_blank">Deschide pe CodePen</a><a class="btn" href="https://github.com/LaurAndreea10" target="_blank">Vezi codul pe GitHub</a></div></article></section>
+    <section class="section"><article class="glass"><h2>Case study — Problemă → Decizie → Rezultat</h2><div class="case"><article><h3>Problemă</h3><p class="subtitle">Triage-ul zilnic era distribuit în liste separate, cu multe reveniri și update-uri pierdute.</p></article><article><h3>Decizie</h3><p class="subtitle">Am mutat acțiunile într-un board unic cu semnale vizuale, shortcut-uri și statusuri standardizate.</p></article><article><h3>Rezultat</h3><p class="subtitle">De la ~7 click-uri la 2 pentru update-uri recurente și reasignări rapide.</p></article></div><p class="subtitle">Am calibrat ierarhia vizuală pentru a reduce deciziile de navigare: utilizatorul decide prioritatea într-o singură suprafață, apoi execută. <br><em>I tuned visual hierarchy to remove navigation decisions and keep execution in one surface.</em></p><p class="subtitle">Shortcuts-urile de tastatură sunt deliberate pentru rolurile operaționale: viteza devine avantaj concret la volume mari.<br><em>Keyboard shortcuts are intentional for operational roles where speed matters at high volume.</em></p></article></section>
+    <section class="section"><article class="glass"><h2>Screenshot-uri proiect</h2><div class="grid"><figure class="shot"><img src="../assets/screenshots/clientflow-hero.svg" alt="ClientFlow hero" /></figure><figure class="shot"><img src="../assets/screenshots/clientflow-flow.svg" alt="ClientFlow flow" /></figure><figure class="shot"><img src="../assets/screenshots/clientflow-ui-detail.svg" alt="ClientFlow detail" /></figure></div></article></section>
+    <section class="section"><article class="glass"><h2>CodePen embed</h2><iframe class="embed" src="https://codepen.io/Laura-Andreea-the-typescripter/embed/preview?default-tab=result" loading="lazy" title="ClientFlow embed"></iframe></article></section>
+    <section class="section"><article class="glass"><h2>Construit cu:</h2><div class="stack"><span>Kanban</span><span>React</span><span>Vite</span><span>Flow Builder</span><span>CSV/JSON Export</span></div></article></section>
   </main>
-  <footer class="footer">
-    <div class="container">
-      Laura Andreea &mdash; CodePen Portfolio &bull;
-      <a href="../index.html" style="color:var(--accent)">Pagina principală</a>
-    </div>
-  </footer>
+  <footer class="footer"><div class="container"><div class="btn-row" style="justify-content:center"><a class="btn" href="mailto:andreealaurap@gmail.com?subject=Feedback%20ClientFlow">Scrie-mi pe email</a><a class="btn" href="https://www.linkedin.com/in/laura-andreea/" target="_blank">LinkedIn</a><a class="btn" href="https://github.com/LaurAndreea10" target="_blank">GitHub</a><a class="btn" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank">CodePen</a></div></div></footer>
 </body>
 </html>
