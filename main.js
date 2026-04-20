@@ -283,7 +283,27 @@ let previewSlideIndex = 0;
 let previewIntervalId;
 let previewAutoPlayAllowed = true;
 let heroPreviewIsVisible = true;
+let heroPreviewFrameErrorTimer;
 const HERO_PREVIEW_AUTOPLAY_MS = 4500;
+
+function toggleHeroPreviewFallback(shouldShowFallback) {
+  if (dom.heroPreviewFallback) {
+    dom.heroPreviewFallback.style.opacity = shouldShowFallback ? '0.72' : '0';
+  }
+  if (dom.heroPreviewHint) {
+    dom.heroPreviewHint.style.opacity = shouldShowFallback ? '1' : '0';
+  }
+}
+
+function loadHeroPreviewFrame(url) {
+  if (!dom.heroPreviewFrame) return;
+  window.clearTimeout(heroPreviewFrameErrorTimer);
+  toggleHeroPreviewFallback(false);
+  dom.heroPreviewFrame.src = url;
+  heroPreviewFrameErrorTimer = window.setTimeout(() => {
+    toggleHeroPreviewFallback(true);
+  }, 2600);
+}
 
 function t(key) { return translations[currentLang][key] || key; }
 
@@ -505,6 +525,7 @@ function setHeroPreviewSlide(index) {
     dom.heroPreviewUrl.href = slide.url;
   }
   if (dom.heroPreviewCode) dom.heroPreviewCode.href = slide.codeUrl || slide.url;
+  loadHeroPreviewFrame(slide.url);
   const chips = dom.heroPreviewLinks?.querySelectorAll('.chip') || [];
   chips.forEach((chip, chipIndex) => {
     const isActive = chipIndex === previewSlideIndex;
@@ -614,10 +635,21 @@ async function init() {
     heroPreviewUrl: document.getElementById('heroPreviewUrl'),
     heroPreviewCode: document.getElementById('heroPreviewCode'),
     heroPreviewLinks: document.getElementById('heroPreviewLinks'),
+    heroPreviewFrame: document.getElementById('heroPreviewFrame'),
+    heroPreviewFallback: document.getElementById('heroPreviewFallback'),
+    heroPreviewHint: document.getElementById('heroPreviewHint'),
     keyCarouselPrev: document.getElementById('keyCarouselPrev'),
     keyCarouselNext: document.getElementById('keyCarouselNext'),
     keyCarouselDots: document.getElementById('keyCarouselDots')
   };
+  dom.heroPreviewFrame?.addEventListener('load', () => {
+    window.clearTimeout(heroPreviewFrameErrorTimer);
+    toggleHeroPreviewFallback(false);
+  });
+  dom.heroPreviewFrame?.addEventListener('error', () => {
+    window.clearTimeout(heroPreviewFrameErrorTimer);
+    toggleHeroPreviewFallback(true);
+  });
   if (dom.hubExternalLink) dom.hubExternalLink.href = HUB_URL;
   renderHeroPreviewChips();
   setHeroPreviewSlide(0);
