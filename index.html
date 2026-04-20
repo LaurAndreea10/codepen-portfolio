@@ -112,6 +112,13 @@
     .project-proof strong{display:block;font-size:.78rem;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
     .project-proof ul{margin:0;padding-left:18px;color:var(--text);line-height:1.55}
     .project-proof li+li{margin-top:4px}
+    .project-card-video{position:relative;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:#000;cursor:pointer;isolation:isolate;border:1px solid var(--line)}
+    .card-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+    .video-badge{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.7);color:#fff;padding:4px 10px;border-radius:999px;font-size:.72rem;font-weight:600;display:inline-flex;align-items:center;gap:5px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:2;pointer-events:none}
+    .video-hover-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:rgba(255,255,255,.85);padding:5px 12px;border-radius:999px;font-size:.7rem;font-weight:500;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:2;opacity:0;transition:opacity .25s ease;pointer-events:none;white-space:nowrap}
+    .project-card-video:not(.has-played):hover .video-hover-hint{opacity:1}
+    .project-card-video.is-playing{box-shadow:0 0 0 2px rgba(139,92,246,.4)}
+    @media (hover:hover){.project-card-video .card-video{transition:transform .4s ease}.project-card-video:hover .card-video{transform:scale(1.02)}}
     .project-meta-row{display:flex;flex-wrap:wrap;gap:8px}
     .project-meta-tag{font-size:.76rem;padding:4px 10px;border-radius:999px;border:1px solid rgba(129,140,248,.34);background:rgba(79,140,255,.14);color:#c9d8ff}
     .card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
@@ -287,13 +294,21 @@
             <div class="mini-grid">
               <div class="mini-item"><strong>Context</strong><span>Operatorul trecea între tool-uri diferite pentru lead, task și facturare în același flux comercial.</span></div>
               <div class="mini-item"><strong>Decizie</strong><span>Am păstrat tot fluxul într-un dashboard cu acțiuni contextuale, fără să trimit utilizatorul în pagini separate.</span></div>
-              <div class="mini-item"><strong>Impact demonstrabil</strong><span>Fluxul principal a trecut de la 3 suprafețe separate la 1 workspace cu 6 module conectate.</span></div>
+              <div class="mini-item"><strong>Impact demonstrabil</strong><span>Fluxul principal a trecut de la 3 suprafețe separate la 1 workspace cu 6 module conectate și 5 acțiuni consecutive pe același ecran.</span></div>
+            </div>
+            <div class="project-card-video" data-project="alpis-fusion" data-duration="40">
+              <video class="card-video" muted loop playsinline preload="none" poster="assets/alpis-fusion-crm-placeholder.svg" aria-label="Demo video 40 secunde — Alpis Fusion CRM Premium">
+                <source src="assets/alpis-fusion-demo.webm" type="video/webm">
+                <source src="assets/alpis-fusion-demo.mp4" type="video/mp4">
+              </video>
+              <div class="video-badge" aria-hidden="true">▶ Demo 40s</div>
+              <div class="video-hover-hint">Hover pentru a porni · Tap pe mobile</div>
             </div>
             <div class="project-proof">
               <strong>Dovezi observabile</strong>
               <ul>
                 <li><b>Înainte vs după (structură):</b> 3 arii separate (lead, task, billing) → 1 workspace unic cu acțiuni legate între ele.</li>
-                <li><b>Acțiuni într-un singur flux:</b> creare lead, schimbare status, task follow-up, rezervare și factură fără părăsirea ecranului principal.</li>
+                <li><b>Acțiuni într-un singur flux:</b> creare lead, schimbare status, task follow-up, rezervare și factură fără părăsirea ecranului principal (5 acțiuni, 0 schimbări de pagină).</li>
                 <li><b>Probe tehnice:</b> Vite + React, build ~287KB minified, deploy automatizat prin GitHub Actions, export CSV/JSON + print PDF.</li>
               </ul>
             </div>
@@ -314,13 +329,21 @@
             <div class="mini-grid">
               <div class="mini-item"><strong>Context</strong><span>Triage-ul era fragmentat în liste diferite, cu reveniri frecvente și prioritizare inconsistentă.</span></div>
               <div class="mini-item"><strong>Decizie</strong><span>Am introdus pipeline standardizat + shortcut-uri de tastatură pentru stadii și reasignare.</span></div>
-              <div class="mini-item"><strong>Impact demonstrabil</strong><span>Triage zilnic: din 2–3 ecrane separate la 1 ecran principal, cu acțiuni repetitive unite.</span></div>
+              <div class="mini-item"><strong>Impact demonstrabil</strong><span>Triage zilnic: din 2–3 ecrane separate la 1 ecran principal, cu 4 acțiuni repetitive unite într-un flux unic.</span></div>
+            </div>
+            <div class="project-card-video" data-project="clientflow" data-duration="30">
+              <video class="card-video" muted loop playsinline preload="none" poster="assets/alpis-fusion-crm-placeholder.svg" aria-label="Demo video 30 secunde — ClientFlow">
+                <source src="assets/clientflow-demo.webm" type="video/webm">
+                <source src="assets/clientflow-demo.mp4" type="video/mp4">
+              </video>
+              <div class="video-badge" aria-hidden="true">▶ Demo 30s</div>
+              <div class="video-hover-hint">Hover pentru a porni · Tap pe mobile</div>
             </div>
             <div class="project-proof">
               <strong>Dovezi observabile</strong>
               <ul>
                 <li><b>Înainte vs după (navigare):</b> triere între liste separate → triere dintr-un board unic cu context complet.</li>
-                <li><b>Acțiuni unite:</b> triage, reasignare, status update și prioritizare în același loc (fără schimbare de pagină).</li>
+                <li><b>Acțiuni unite:</b> triage, reasignare, status update și prioritizare în același loc (4 acțiuni, fără schimbare de pagină).</li>
                 <li><b>Semnale verificabile:</b> urgență marcată prin culoare + iconiță + poziție, nu doar text descriptiv.</li>
               </ul>
             </div>
@@ -341,7 +364,15 @@
             <div class="mini-grid">
               <div class="mini-item"><strong>Context</strong><span>Mesajul inițial era livrat ca bloc lung de conținut, fără feedback de progres și fără pași intermediari.</span></div>
               <div class="mini-item"><strong>Decizie</strong><span>Am refăcut experiența ca wizard în 5 pași, cu CTA contextual și progres (pas + procent) în permanență.</span></div>
-              <div class="mini-item"><strong>Impact demonstrabil</strong><span>Din „citește tot apoi decide” la „1 decizie/ecran”, cu ritm controlat și claritate mai bună pe parcurs.</span></div>
+              <div class="mini-item"><strong>Impact demonstrabil</strong><span>Din „citește tot apoi decide” la „1 decizie/ecran”: 5 pași, 5 CTA contextuale, progres 20/40/60/80/100%.</span></div>
+            </div>
+            <div class="project-card-video" data-project="impact-path" data-duration="35">
+              <video class="card-video" muted loop playsinline preload="none" poster="assets/alpis-fusion-crm-placeholder.svg" aria-label="Demo video 35 secunde — Alpis Impact Path">
+                <source src="assets/impact-path-demo.webm" type="video/webm">
+                <source src="assets/impact-path-demo.mp4" type="video/mp4">
+              </video>
+              <div class="video-badge" aria-hidden="true">▶ Demo 35s</div>
+              <div class="video-hover-hint">Hover pentru a porni · Tap pe mobile</div>
             </div>
             <div class="project-proof">
               <strong>Dovezi observabile</strong>
@@ -416,6 +447,7 @@
             </div>
             <h3>Decision log per proiect</h3>
             <p>2–3 decizii controversate + trade-off arată maturitate de produs: de ce ai ales ceva și ce ai sacrificat.</p>
+            <p><strong>Decision log — Alpis Fusion CRM Premium · 3 decizii</strong></p>
             <ul class="decision-list">
               <li><strong>Navigare pe un singur ecran.</strong> <span>+ rapiditate, - densitate informațională.</span></li>
               <li><strong>Wizard în loc de form lung.</strong> <span>+ completion rate, - click-uri în plus.</span></li>
@@ -431,9 +463,9 @@
             <h3>Proof vizual · demo video autoplay on hover</h3>
             <p>Clipuri de 30–60s, silent, loop, sub 1MB. Pe desktop pornesc la hover, pe mobile la tap.</p>
             <div class="demo-grid" aria-label="Demo proiecte planificate">
-              <div class="demo-pill">▶ Demo 40s · Alpis Fusion</div>
-              <div class="demo-pill">▶ Demo 30s · ClientFlow</div>
-              <div class="demo-pill">▶ Demo 35s · Impact Path</div>
+              <div class="demo-pill">▶ Demo 40s · Alpis Fusion (asset gata de montat)</div>
+              <div class="demo-pill">▶ Demo 30s · ClientFlow (asset gata de montat)</div>
+              <div class="demo-pill">▶ Demo 35s · Impact Path (asset gata de montat)</div>
             </div>
           </article>
 
