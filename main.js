@@ -563,6 +563,7 @@ function initVideoCards() {
     const video = card.querySelector('.card-video');
     if (!video) return;
     let hasPlayed = card.classList.contains('has-played');
+    const openUrl = card.dataset.openUrl || '';
 
     const play = () => {
       if (prefersReducedMotion) return;
@@ -586,9 +587,24 @@ function initVideoCards() {
     };
 
     if (!card.dataset.videoInitialized) {
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.addEventListener('keydown', (event) => {
+        if (!openUrl) return;
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          window.open(openUrl, '_blank', 'noopener,noreferrer');
+        }
+      });
+
       if (!isTouch) {
         card.addEventListener('mouseenter', play);
         card.addEventListener('mouseleave', reset);
+        card.addEventListener('click', (event) => {
+          if (!openUrl) return;
+          event.preventDefault();
+          window.open(openUrl, '_blank', 'noopener,noreferrer');
+        });
       } else {
         card.addEventListener('click', (event) => {
           event.preventDefault();
