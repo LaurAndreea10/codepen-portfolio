@@ -57,8 +57,8 @@
     h1{margin-top:14px;font-size:clamp(2rem,5vw,4rem);line-height:.96;max-width:14ch;letter-spacing:-.04em}.hero-text{margin-top:14px;color:var(--muted);line-height:1.75;max-width:72ch}
     .hero-preview{display:flex;flex-direction:column;gap:12px;min-height:540px;padding:12px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
     .hero-preview-wrap{position:relative;flex:1;min-height:460px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:radial-gradient(circle at 10% 10%,rgba(79,140,255,.28),transparent 45%),radial-gradient(circle at 90% 90%,rgba(139,92,246,.24),transparent 48%),#081326}
-    .hero-preview-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.72}
-    .hero-preview-hint{position:absolute;inset:auto 12px 12px 12px;z-index:2;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(7,18,38,.72);font-size:.84rem;color:var(--muted);pointer-events:none}
+    .hero-preview-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .25s ease}
+    .hero-preview-hint{position:absolute;inset:auto 12px 12px 12px;z-index:2;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(7,18,38,.72);font-size:.84rem;color:var(--muted);pointer-events:none;opacity:0;transition:opacity .25s ease}
     .hero-preview-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
     .hero-preview-top p{font-size:.9rem;color:var(--muted)}
     .hero-preview-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -220,6 +220,22 @@
             </div>
             <div class="hero-preview-links" id="heroPreviewLinks" aria-label="Selectează preview proiect"></div>
             <div class="hero-preview-wrap">
+              <img
+                class="hero-preview-fallback"
+                id="heroPreviewFallback"
+                src="assets/alpis-fusion-crm-placeholder.svg"
+                alt="Preview static proiect"
+                loading="lazy"
+              />
+              <iframe
+                class="hero-preview-frame"
+                id="heroPreviewFrame"
+                title="Live project preview"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+              ></iframe>
+              <p class="hero-preview-hint" id="heroPreviewHint">Preview fallback when embedded view is blocked</p>
               <div class="hero-preview-stage">
                 <span class="tag" id="heroPreviewType">Repository</span>
                 <h3 id="heroPreviewHeading">Alpis Fusion CRM Premium</h3>
