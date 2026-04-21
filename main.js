@@ -68,6 +68,14 @@ const HERO_PREVIEW_SLIDES = [
     meta: 'Kanban + triage · Shortcuts · Prioritizare vizuală',
     url: 'projects/clientflow.html',
     codeUrl: 'https://codepen.io/Laura-Andreea-the-typescripter'
+  },
+  {
+    title: 'Link Video Editor Studio',
+    label: 'Video studio',
+    description: 'Studio pentru editare video orientat pe workflow clar, navigare rapidă și prezentare premium.',
+    meta: 'HTML · CSS · JavaScript · Deploy GitHub Pages',
+    url: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/',
+    codeUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/'
   }
 ];
 
