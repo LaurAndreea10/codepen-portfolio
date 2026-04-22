@@ -1,4 +1,4 @@
-const PORTFOLIO_SOURCE_URL = 'https://es-d-7037060320260420-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/';
+const PORTFOLIO_SOURCE_URL = 'https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/';
 const HUB_URL = `${PORTFOLIO_SOURCE_URL}#projects`;
 const KEY_PROJECT_IDS = [49, 3, 18];
 const STATIC_FALLBACK_PROJECTS = [
@@ -22,7 +22,7 @@ const STATIC_FALLBACK_PROJECTS = [
     },
     category: 'utility',
     tags: ['crm', 'dashboard', 'workflow'],
-    url: 'projects/clientflow.html'
+    url: 'https://es-d-1647531020260404-019d4e21-afd1-7808-abf5-d9c88b726df2.codepen.dev/'
   },
   {
     id: 49,
@@ -33,7 +33,7 @@ const STATIC_FALLBACK_PROJECTS = [
     },
     category: 'ui',
     tags: ['crm', 'rbac', 'kanban'],
-    url: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/'
+    url: 'https://es-d-4029897220260413-019d7cd3-34b4-7538-a067-51b147dd0f7b.codepen.dev/'
   }
 ];
 const HERO_PREVIEW_SLIDES = [
@@ -42,8 +42,7 @@ const HERO_PREVIEW_SLIDES = [
     label: 'CRM premium',
     description: 'Colecție modulară pentru lead pipeline, task management, billing și automatizări.',
     meta: 'Vite + React · ~287KB build · Deploy automatizat',
-    url: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/',
-    codeUrl: 'https://codepen.io/Laura-Andreea-the-typescripter'
+    url: 'https://es-d-4029897220260413-019d7cd3-34b4-7538-a067-51b147dd0f7b.codepen.dev/',
   },
   {
     title: 'ARCADE WORLD',
@@ -51,7 +50,6 @@ const HERO_PREVIEW_SLIDES = [
     description: 'Experimente arcade cu interacțiuni rapide, feedback vizual și ritm progresiv.',
     meta: 'Vanilla JS · Canvas · Game loop propriu',
     url: 'projects/arcade-fusion.html',
-    codeUrl: 'https://codepen.io/Laura-Andreea-the-typescripter'
   },
   {
     title: 'Coaching AI',
@@ -59,15 +57,13 @@ const HERO_PREVIEW_SLIDES = [
     description: 'Interfață de coaching asistat AI, focusată pe flux clar și recomandări contextuale.',
     meta: 'Claude API · Conversational UI · State management',
     url: 'projects/coachingai.html',
-    codeUrl: 'https://codepen.io/Laura-Andreea-the-typescripter'
   },
   {
     title: 'ClientFlow SaaS CRM',
     label: 'SaaS CRM',
     description: 'Sistem CRM orientat pe task-uri, automatizări și acțiuni operaționale zilnice.',
     meta: 'Kanban + triage · Shortcuts · Prioritizare vizuală',
-    url: 'projects/clientflow.html',
-    codeUrl: 'https://codepen.io/Laura-Andreea-the-typescripter'
+    url: 'https://es-d-1647531020260404-019d4e21-afd1-7808-abf5-d9c88b726df2.codepen.dev/',
   },
   {
     title: 'Link Video Editor Studio',
@@ -612,7 +608,7 @@ function setHeroPreviewSlide(index) {
     dom.heroPreviewUrl.textContent = cleanUrl;
     dom.heroPreviewUrl.href = slide.url;
   }
-  if (dom.heroPreviewCode) dom.heroPreviewCode.href = slide.codeUrl || slide.url;
+  if (dom.heroPreviewCode) dom.heroPreviewCode.href = slide.url;
   loadHeroPreviewFrame(slide);
   const chips = dom.heroPreviewLinks?.querySelectorAll('.chip') || [];
   chips.forEach((chip, chipIndex) => {
