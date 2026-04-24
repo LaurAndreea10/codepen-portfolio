@@ -329,12 +329,60 @@ iframe {
   gap: 16px; margin-bottom: 18px; flex-wrap: wrap;
 }
 
+.section-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 
 .section-subtitle {
   margin-top: 10px;
   max-width: 74ch;
   color: var(--muted);
   line-height: 1.7;
+}
+
+.project-lineage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 10px;
+  margin: 2px 0 18px;
+  align-items: stretch;
+}
+
+.lineage-step,
+.lineage-target {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel-2);
+  padding: 12px;
+}
+
+.lineage-target {
+  background: linear-gradient(135deg, rgba(79, 140, 255, .18), rgba(139, 92, 246, .14));
+  border-color: rgba(79, 140, 255, .35);
+}
+
+.lineage-step strong,
+.lineage-target strong {
+  display: block;
+  font-size: .82rem;
+  margin-bottom: 6px;
+}
+
+.lineage-step p,
+.lineage-target p {
+  color: var(--muted);
+  font-size: .86rem;
+  line-height: 1.5;
+}
+
+.lineage-arrow {
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-weight: 800;
 }
 /* --- Controls (search + chips) --- */
 .controls { display: grid; gap: 16px; margin-bottom: 18px; }
@@ -509,6 +557,15 @@ iframe {
 @media (max-width: 1080px) {
   .hero-grid, .two-col, .projects-grid { grid-template-columns: 1fr 1fr; }
   .two-col { grid-template-columns: 1fr; }
+
+  .project-lineage {
+    grid-template-columns: 1fr;
+  }
+
+  .lineage-arrow {
+    transform: rotate(90deg);
+    min-height: 22px;
+  }
 }
 
 @media (max-width: 760px) {
