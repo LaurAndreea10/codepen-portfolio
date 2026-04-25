@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClientFlow PRO Insights — Laura Andreea</title>
+  <meta name="description" content="Lecții, decizii de arhitectură și decizii UX din construirea ClientFlow PRO și Alpis Fusion." />
+  <meta name="author" content="Laura Andreea" />
+  <meta name="theme-color" content="#071226" />
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/insights.html" />
+  <style>
+    :root{--bg:#050d1f;--bg2:#08142b;--panel:rgba(10,22,46,.84);--line:rgba(255,255,255,.12);--text:#eef4ff;--muted:#9db0d4;--accent:#4f8cff;--accent2:#8b5cf6;--shadow:0 20px 48px rgba(0,0,0,.32);--container:1040px}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(circle at top left,rgba(79,140,255,.24),transparent 34%),radial-gradient(circle at bottom right,rgba(139,92,246,.2),transparent 38%),linear-gradient(180deg,var(--bg2),var(--bg));line-height:1.6}a{color:inherit;text-decoration:none}.container{width:min(var(--container),calc(100% - 32px));margin:0 auto}.glass{background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(14px)}.topbar{position:sticky;top:0;z-index:5;padding:12px 0;background:linear-gradient(to bottom,rgba(5,13,31,.92),rgba(5,13,31,.2),transparent)}.nav{display:flex;justify-content:space-between;gap:12px;align-items:center;border-radius:999px;padding:12px 16px}.brand{display:flex;align-items:center;gap:10px;font-weight:800}.badge{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}.pill,.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:999px;padding:10px 14px;background:rgba(255,255,255,.04);font-weight:700}.btn-primary{border:0;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}.hero{padding:48px 0 24px}.hero-card{border-radius:28px;padding:clamp(22px,5vw,44px)}.eyebrow{display:inline-flex;color:var(--accent);font-size:.8rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}h1{font-size:clamp(2.2rem,6vw,4.7rem);line-height:.96;letter-spacing:-.055em;max-width:11ch;margin:14px 0 0}h2{font-size:clamp(1.6rem,4vw,2.7rem);line-height:1.05;letter-spacing:-.035em;margin:0}h3{font-size:1.28rem;line-height:1.2;margin:0}.hero p,.section-intro,.card p,.card li{color:var(--muted)}.hero p{max-width:70ch;margin:18px 0 0}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.section{padding:24px 0}.section-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;flex-wrap:wrap;margin-bottom:16px}.section-intro{max-width:72ch;margin-top:10px}.cards{display:grid;gap:16px}.card{border-radius:24px;padding:clamp(18px,3vw,28px)}.card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:12px}.label{display:inline-flex;border:1px solid rgba(129,140,248,.34);background:rgba(79,140,255,.14);color:#c9d8ff;border-radius:999px;padding:5px 11px;font-size:.76rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase}.card p{margin:10px 0 0}.lesson-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}.lesson{border:1px solid var(--line);border-radius:18px;padding:16px;background:rgba(255,255,255,.035)}.lesson strong{display:block;margin-bottom:8px;color:#fff}.lesson p{font-size:.94rem;margin:0}.split{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}.panel{border:1px solid var(--line);border-radius:18px;padding:16px;background:rgba(255,255,255,.035)}.panel strong{display:block;color:#fff;margin-bottom:8px}.panel ul{margin:0;padding-left:18px}.quote{margin-top:16px;padding:16px;border-radius:18px;border:1px dashed var(--line);background:rgba(255,255,255,.025);color:#fff;font-size:1.04rem}.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}.compare article{border:1px solid var(--line);border-radius:18px;padding:16px;background:rgba(255,255,255,.035)}.compare h4{margin:0 0 8px;font-size:1rem}.footer{padding:28px 0 44px;color:var(--muted);text-align:center}@media(max-width:860px){.lesson-grid,.split,.compare{grid-template-columns:1fr}.nav{border-radius:22px;align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <nav class="nav glass" aria-label="Navigare">
+        <a class="brand" href="index.html"><span class="badge">CP</span><span>Portofoliu CodePen</span></a>
+        <a class="pill" href="index.html#key-projects">Înapoi la proiecte</a>
+      </nav>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="container">
+      <article class="hero-card glass">
+        <span class="eyebrow">ClientFlow PRO · product thinking</span>
+        <h1>Insight-uri din construcția unui CRM SaaS</h1>
+        <p>O colecție de lecții, decizii de arhitectură și decizii UX din construirea ClientFlow PRO și din evoluția proiectelor Alpis Fusion. Accentul este pe cum am trecut de la prototipuri front-end la un produs mai coerent, scalabil și orientat spre decizie.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://github.com/LaurAndreea10/ClientFlow-PRO" target="_blank" rel="noopener noreferrer">Vezi ClientFlow PRO pe GitHub</a>
+          <a class="btn" href="index.html#contact">Contact</a>
+        </div>
+      </article>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="lessons">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Lessons</span>
+            <h2>3 lecții din construirea unui SaaS CRM de la zero, ca autodidact</h2>
+            <p class="section-intro">Construirea ClientFlow PRO m-a învățat că un CRM nu este doar o colecție de carduri, tabele și statusuri. Este un sistem de decizii. Fiecare ecran trebuie să răspundă rapid la întrebări simple: ce este urgent, ce trebuie făcut acum, ce poate aștepta și unde se pierde timp.</p>
+          </div>
+        </div>
+        <article class="card glass">
+          <div class="lesson-grid">
+            <div class="lesson">
+              <strong>1. Un dashboard bun nu afișează tot — prioritizează.</strong>
+              <p>La început, tentația este să pui cât mai multe informații pe ecran: lead-uri, task-uri, statistici, activități, filtre, grafice. În ClientFlow PRO am înțeles că valoarea reală vine din ierarhie: utilizatorul trebuie să vadă întâi semnalele critice, apoi acțiunile disponibile, apoi detaliile. Interfața nu trebuie să impresioneze prin densitate, ci să reducă timpul până la decizie.</p>
+            </div>
+            <div class="lesson">
+              <strong>2. Workflow-ul contează mai mult decât componenta izolată.</strong>
+              <p>Un card de lead, un task sau un buton pot arăta bine separat, dar produsul devine util doar când acțiunile se leagă logic între ele. În ClientFlow PRO am gândit fluxul ca o succesiune: identifici lead-ul, vezi contextul, alegi următorul pas, actualizezi statusul și păstrezi istoricul clar.</p>
+            </div>
+            <div class="lesson">
+              <strong>3. Înveți cel mai mult când construiești sisteme complete.</strong>
+              <p>Proiectele mici m-au ajutat să învăț HTML, CSS și JavaScript. ClientFlow PRO m-a forțat să gândesc structură, scalabilitate, naming, stare, componente, date demo, cazuri goale, acțiuni repetitive și experiență end-to-end.</p>
+            </div>
+          </div>
+          <p class="quote">Diferența dintre „știu să fac o interfață” și „pot construi un produs coerent” apare când trebuie să conectezi toate aceste decizii într-un singur sistem.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="architecture">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Architecture</span>
+            <h2>De ce am trecut de la single-file HTML la Vite + React pentru Alpis Fusion</h2>
+            <p class="section-intro">Primele versiuni ale proiectului Alpis Fusion au fost construite într-un singur fișier HTML. A fost o alegere bună pentru început: rapidă, simplă, ușor de testat și perfectă pentru prototipare. Dar pe măsură ce proiectul a crescut, fișierul unic a devenit greu de întreținut.</p>
+          </div>
+        </div>
+        <article class="card glass">
+          <h3>Când 1917 linii într-un singur fișier încep să doară</h3>
+          <p>Când ai aproape 1917 linii într-un singur fișier, fiecare modificare începe să coste mai mult. CSS-ul devine greu de urmărit, logica se amestecă cu markup-ul, componentele se repetă, iar orice schimbare mică poate afecta zone neașteptate ale interfeței. Acolo am simțit clar limita abordării single-file.</p>
+          <p>Migrarea spre Vite + React a schimbat modul în care am organizat produsul. În loc să gândesc pagina ca un bloc mare, am început să o împart în componente: layout, dashboard cards, flow sections, metric panels, CTA-uri și zone de conținut reutilizabile. Asta a făcut proiectul mai ușor de extins și mai apropiat de modul real în care se construiesc aplicațiile front-end moderne.</p>
+          <div class="split">
+            <div class="panel">
+              <strong>Problema în single-file HTML</strong>
+              <ul>
+                <li>CSS, markup și logică în același loc.</li>
+                <li>Componente repetate și greu de refactorizat.</li>
+                <li>Schimbări mici cu risc mare de efecte secundare.</li>
+                <li>Creștere dificilă când proiectul devine aplicație.</li>
+              </ul>
+            </div>
+            <div class="panel">
+              <strong>Ce am câștigat cu Vite + React</strong>
+              <ul>
+                <li>Structură mai clară, cu responsabilități separate.</li>
+                <li>Componente reutilizabile pentru zone recurente.</li>
+                <li>Scalabilitate pentru module noi.</li>
+                <li>Workflow profesionist: build, preview și deploy.</li>
+                <li>Bază mai bună pentru ClientFlow PRO.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="quote">Această migrare a fost un pas important: de la „pot face o pagină complexă” la „pot structura o aplicație front-end care poate crește”.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="ux-decisions">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">UX decisions</span>
+            <h2>Flow builder vs Kanban: când alegi unul și când pe celălalt</h2>
+            <p class="section-intro">În proiectele CRM, Flow builder și Kanban pot părea asemănătoare: ambele organizează pași, stări și progres. Dar ele răspund la probleme diferite.</p>
+          </div>
+        </div>
+        <article class="card glass">
+          <div class="compare">
+            <article>
+              <h4>Kanban</h4>
+              <p>Un Kanban este potrivit când utilizatorul trebuie să urmărească obiecte care trec prin etape clare: lead nou, contactat, ofertă trimisă, negociere, câștigat sau pierdut. Este excelent pentru pipeline-uri, task-uri și procese unde contează statusul curent. În ClientFlow PRO, Kanban-ul ajută la vizualizarea rapidă a volumului de lucru și la prioritizarea lead-urilor.</p>
+            </article>
+            <article>
+              <h4>Flow builder</h4>
+              <p>Un Flow builder este potrivit când utilizatorul nu urmărește doar statusuri, ci construiește o logică. De exemplu: dacă un lead completează un formular, trimite email; dacă nu răspunde în 3 zile, creează follow-up; dacă scorul crește, mută-l într-o etapă nouă. Aici problema nu este „unde se află acest lead?”, ci „ce se întâmplă automat în funcție de condiții?”.</p>
+            </article>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <strong>Kanban răspunde la:</strong>
+              <p>„Care este starea lucrurilor acum?”</p>
+            </div>
+            <div class="panel">
+              <strong>Flow builder răspunde la:</strong>
+              <p>„Ce ar trebui să se întâmple mai departe, automat sau condiționat?”</p>
+            </div>
+          </div>
+          <p>De aceea, în ClientFlow PRO, aș folosi Kanban pentru vizibilitate operațională și Flow builder pentru automatizare. Kanban-ul oferă control și claritate imediată. Flow builder-ul oferă logică, reguli și scalare.</p>
+          <p class="quote">Kanban-ul organizează munca. Flow builder-ul organizează deciziile.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© Laura Andreea · ClientFlow PRO insights</div>
+  </footer>
+</body>
+</html>
