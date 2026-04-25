@@ -2,12 +2,16 @@ name: Repair homepage insights
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/repair-homepage-insights.yml'
 
 permissions:
   contents: write
 
 jobs:
   repair:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,7 +25,6 @@ jobs:
           path = Path('index.html')
           text = path.read_text(encoding='utf-8')
 
-          # Remove accidental closing article tags inserted inside the mini-grid notes section.
           text = re.sub(
               r'(</span></span></div>)\s*</article>\s*(<div class="mini-item"><strong>UX decisions</strong>)',
               r'\1\n            \2',
@@ -34,8 +37,6 @@ jobs:
               text,
               flags=re.S,
           )
-
-          # Remove a previously introduced duplicate footer/main pattern, if present.
           text = text.replace(
               '</main>\n\n  <footer class="footer">\n  </main>\n\n  <footer class="footer">',
               '</main>\n\n  <footer class="footer">'
@@ -113,3 +114,4 @@ jobs:
             git commit -m "Repair homepage insights markup"
             git push
           fi
+# trigger: 2026-04-25T10:34Z
