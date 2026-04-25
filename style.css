@@ -335,7 +335,6 @@ iframe {
   gap: 10px;
 }
 
-
 .section-subtitle {
   margin-top: 10px;
   max-width: 74ch;
@@ -420,6 +419,18 @@ iframe {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
+}
+
+#insights .projects-grid,
+#insights .insights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+#insights .project-card {
+  height: 100%;
 }
 
 /* --- Project card --- */
@@ -574,16 +585,14 @@ iframe {
   .nav { border-radius: 24px; }
   .hero-card, .stat-card, .about-card,
   .preview-card, .controls, .project-card, .contact-card { padding: 18px; }
-   .insights-grid{
-  grid-template-columns:repeat(2,minmax(0,1fr));
-}
-
-@media(max-width:700px){
-  .insights-grid{
-    grid-template-columns:1fr;
-  }
-}
   h1 { max-width: 100%; font-size: clamp(2rem, 9vw, 3rem); }
   iframe { min-height: 280px; }
   .project-actions { flex-direction: column; }
+}
+
+@media (max-width: 700px) {
+  #insights .projects-grid,
+  #insights .insights-grid {
+    grid-template-columns: 1fr;
+  }
 }
