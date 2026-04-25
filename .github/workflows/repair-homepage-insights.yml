@@ -1,0 +1,115 @@
+name: Repair homepage insights
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Repair index.html insights section
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          # Remove accidental closing article tags inserted inside the mini-grid notes section.
+          text = re.sub(
+              r'(</span></span></div>)\s*</article>\s*(<div class="mini-item"><strong>UX decisions</strong>)',
+              r'\1\n            \2',
+              text,
+              flags=re.S,
+          )
+          text = re.sub(
+              r'(</span></span></div>)\s*</article>\s*</div>\s*</article>\s*</div>\s*</section>',
+              r'\1\n          </div>\n        </article>\n      </div>\n    </section>',
+              text,
+              flags=re.S,
+          )
+
+          # Remove a previously introduced duplicate footer/main pattern, if present.
+          text = text.replace(
+              '</main>\n\n  <footer class="footer">\n  </main>\n\n  <footer class="footer">',
+              '</main>\n\n  <footer class="footer">'
+          )
+
+          insights_block = '''    <section id="insights">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Insights</span>
+            <h2>Decizii și lecții din ClientFlow PRO</h2>
+            <p class="section-subtitle">3 insight-uri despre produs, arhitectură și UX din construirea unui CRM SaaS ca autodidact.</p>
+          </div>
+        </div>
+
+        <div class="projects-grid insights-grid">
+          <article class="project-card glass">
+            <span class="tag">Lessons</span>
+            <h3>3 lecții din construirea unui SaaS CRM de la zero, ca autodidact</h3>
+            <p class="project-desc">ClientFlow PRO m-a învățat că un CRM este un sistem de decizii, nu doar o interfață cu lead-uri și task-uri. Un dashboard bun prioritizează, nu afișează tot. Un workflow bun leagă acțiunile într-un flux clar. Iar pentru un autodidact, saltul real apare când treci de la proiecte izolate la un produs coerent, cu stare, date, cazuri goale și experiență end-to-end.</p>
+          </article>
+
+          <article class="project-card glass">
+            <span class="tag">Architecture</span>
+            <h3>De ce am trecut de la single-file HTML la Vite + React pentru Alpis Fusion</h3>
+            <p class="project-desc">Alpis Fusion a început ca prototip rapid într-un singur fișier HTML, dar la aproape 1917 linii devenea greu de întreținut. Migrarea spre Vite + React mi-a permis să separ layout-ul, cardurile, metricile și fluxurile în componente reutilizabile. A fost trecerea de la o pagină complexă la o aplicație front-end care poate crește, aceeași direcție care a susținut ClientFlow PRO.</p>
+          </article>
+
+          <article class="project-card glass">
+            <span class="tag">UX decisions</span>
+            <h3>Flow builder vs Kanban: când alegi unul și când pe celălalt</h3>
+            <p class="project-desc">Kanban-ul este potrivit când utilizatorul trebuie să vadă starea curentă a muncii: lead-uri, task-uri, etape și priorități. Flow builder-ul este potrivit când utilizatorul definește reguli: ce se întâmplă automat, în ce condiții și care este următorul pas. În ClientFlow PRO, Kanban-ul organizează munca, iar Flow builder-ul organizează deciziile.</p>
+          </article>
+
+          <article class="project-card glass">
+            <span class="tag">Subiecte viitoare</span>
+            <h3>Ce aș dezvolta mai departe în ClientFlow PRO</h3>
+            <p class="project-desc">Următorul pas ar fi să documentez deciziile din spatele automatizărilor: când merită un flow builder, cum prioritizezi lead scoring-ul și cum construiești un sistem CRM care rămâne clar chiar și când cresc datele, regulile și acțiunile.</p>
+          </article>
+        </div>
+      </div>
+    </section>'''
+
+          start = text.find('    <section id="insights">')
+          if start == -1:
+              marker = '\n  </main>'
+              if marker not in text:
+                  raise SystemExit('Could not find </main> marker for inserting insights section')
+              text = text.replace(marker, '\n' + insights_block + marker, 1)
+          else:
+              end = text.find('\n  </main>', start)
+              if end == -1:
+                  raise SystemExit('Could not find closing </main> after insights section')
+              text = text[:start] + insights_block + text[end:]
+
+          css = '''
+    #insights .insights-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch}
+    #insights .project-card{height:100%}
+    @media(max-width:700px){#insights .insights-grid{grid-template-columns:1fr}}
+'''
+          if '#insights .insights-grid' not in text:
+              text = text.replace('  </style>', css + '  </style>', 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No index.html changes to commit"
+          else
+            git commit -m "Repair homepage insights markup"
+            git push
+          fi
