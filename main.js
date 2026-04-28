@@ -1,6 +1,7 @@
 const PORTFOLIO_SOURCE_URL = 'https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/';
 const HUB_URL = `${PORTFOLIO_SOURCE_URL}#projects`;
 const KEY_PROJECT_IDS = [49, 3, 18];
+const GH_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg>';
 const STATIC_FALLBACK_PROJECTS = [
   {
     id: 1,
@@ -128,7 +129,14 @@ const translations = {
     hub_external: 'Explorează mai mult', results: 'rezultate', footer: 'Portofoliu selectat, construit în jurul proiectelor care mă reprezintă cel mai bine.',
     filter_state: 'Filtru: {filter} • Căutare: {query}',
     library_empty_fallback: 'Nu există rezultate pentru filtrul curent. Poți reveni la listarea completă sau accesa direct cele 3 proiecte-cheie:',
-    reset_filters: 'Resetează filtrele'
+    reset_filters: 'Resetează filtrele',
+    github_eyebrow: '🚀 Latest on GitHub',
+    github_title: 'Cele mai noi proiecte cu repo public',
+    github_meta: 'Cod public • Deploy automat • Open source',
+    view_repo: 'View on GitHub',
+    view_live: 'Live Demo',
+    view_live_pro: 'Enhanced Pro',
+    badge_new: 'NEW'
   },
   en: {
     brand: 'CodePen Portfolio', nav_work: 'Top projects', nav_about: 'About', nav_contact: 'Contact',
@@ -182,7 +190,14 @@ const translations = {
     hub_external: 'Explore more', results: 'results', footer: 'Selected portfolio, built around the projects that represent me best.',
     filter_state: 'Filter: {filter} • Search: {query}',
     library_empty_fallback: 'No results for the current filter. You can reset to the full list or jump straight to the 3 key projects:',
-    reset_filters: 'Reset filters'
+    reset_filters: 'Reset filters',
+    github_eyebrow: '🚀 Latest on GitHub',
+    github_title: 'Newest projects with public repo',
+    github_meta: 'Public code • Auto deploy • Open source',
+    view_repo: 'View on GitHub',
+    view_live: 'Live Demo',
+    view_live_pro: 'Enhanced Pro',
+    badge_new: 'NEW'
   }
 };
 
@@ -400,8 +415,10 @@ function applyTranslations() {
   document.getElementById('langToggle').textContent = currentLang === 'ro' ? 'RO | EN' : 'EN | RO';
   const fallbackText = document.getElementById('libraryFallbackText');
   const resetButton = document.getElementById('resetFiltersBtn');
+  const latestMeta = document.getElementById('githubMeta');
   if (fallbackText) fallbackText.textContent = t('library_empty_fallback');
   if (resetButton) resetButton.textContent = t('reset_filters');
+  if (latestMeta) latestMeta.textContent = t('github_meta');
 }
 
 function createLibraryCard(project) {
@@ -410,7 +427,7 @@ function createLibraryCard(project) {
   const title = project.title[currentLang];
   const description = project.description[currentLang];
   const tag = document.createElement('span');
-  tag.className = 'tag';
+  tag.className = `tag ${project.category || ''}`.trim();
   tag.textContent = project.category;
 
   const heading = document.createElement('h3');
@@ -423,16 +440,77 @@ function createLibraryCard(project) {
   const actions = document.createElement('div');
   actions.className = 'card-actions';
 
-  const link = document.createElement('a');
-  link.className = 'btn btn-secondary';
-  link.href = project.url;
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
-  link.textContent = t('open');
+  if (project.isNew) {
+    const newBadge = document.createElement('span');
+    newBadge.className = 'badge-new';
+    newBadge.textContent = t('badge_new');
+    card.append(newBadge);
+  }
 
-  actions.append(link);
-  card.append(tag, heading, desc, actions);
+  const top = document.createElement('div');
+  top.className = 'project-top';
+  const topLeft = document.createElement('div');
+  topLeft.append(heading);
+  if (project.repoUrl) {
+    const ghBadge = document.createElement('span');
+    ghBadge.className = 'badge-github';
+    ghBadge.innerHTML = `${GH_ICON}<span>GitHub</span>`;
+    topLeft.append(ghBadge);
+  }
+  top.append(topLeft, tag);
+
+  if (project.liveUrl) {
+    const liveBtn = document.createElement('a');
+    liveBtn.className = 'mini-btn primary';
+    liveBtn.href = project.liveUrl;
+    liveBtn.target = '_blank';
+    liveBtn.rel = 'noopener noreferrer';
+    liveBtn.textContent = t('view_live');
+    actions.append(liveBtn);
+  }
+
+  if (project.liveUrlPro) {
+    const liveProBtn = document.createElement('a');
+    liveProBtn.className = 'mini-btn';
+    liveProBtn.href = project.liveUrlPro;
+    liveProBtn.target = '_blank';
+    liveProBtn.rel = 'noopener noreferrer';
+    liveProBtn.textContent = t('view_live_pro');
+    actions.append(liveProBtn);
+  }
+
+  if (project.repoUrl) {
+    const repoBtn = document.createElement('a');
+    repoBtn.className = 'mini-btn';
+    repoBtn.href = project.repoUrl;
+    repoBtn.target = '_blank';
+    repoBtn.rel = 'noopener noreferrer';
+    repoBtn.innerHTML = `${GH_ICON}<span style="margin-left:6px">${t('view_repo')}</span>`;
+    actions.append(repoBtn);
+  } else {
+    const link = document.createElement('a');
+    link.className = 'btn btn-secondary';
+    link.href = project.url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = t('open');
+    actions.append(link);
+  }
+
+  card.append(top, desc, actions);
   return card;
+}
+
+function renderLatestGithub() {
+  const latestGrid = document.getElementById('latestGithubGrid');
+  if (!latestGrid) return;
+  latestGrid.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+  projects
+    .filter(project => project.category === 'github')
+    .sort((a, b) => b.id - a.id)
+    .forEach(project => fragment.appendChild(createLibraryCard(project)));
+  latestGrid.appendChild(fragment);
 }
 
 function createKeyCard(project) {
@@ -508,6 +586,7 @@ function applyFilters() {
 
 function render() {
   applyTranslations();
+  renderLatestGithub();
   setupKeyProjectsCarousel();
 
   if (dom.searchInput && dom.libraryGrid && dom.libraryFallback) applyFilters();
