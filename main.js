@@ -82,7 +82,7 @@ const translations = {
     hero_eyebrow: 'CRM • Marketing • Front-end autodidact',
     hero_title: 'Construiesc interfețe CRM și dashboard-uri care transformă procese complicate în fluxuri clare',
     hero_text: 'Vin din CRM și marketing, iar în front-end mă concentrez pe produse unde structura, prioritizarea și feedback-ul vizual ajută utilizatorii să înțeleagă mai repede ce au de făcut și să acționeze fără fricțiune.',
-    hero_cta: 'Vezi proiectele-cheie', hero_cta_secondary: 'Contactează-mă',
+    hero_cta: 'Scrie-mi despre un proiect', hero_cta_secondary: 'Scrie-mi despre un proiect',
     hero_proof_1: 'Kanban',
     hero_proof_2: 'Flow builder',
     hero_proof_3: 'RBAC',
@@ -95,7 +95,7 @@ const translations = {
     about_text: 'Vin din zona de CRM și marketing, iar asta îmi influențează felul în care construiesc interfețe: nu mă interesează doar cum arată un produs, ci și cum ghidează utilizatorul, cum reduce fricțiunea și cum susține obiective reale. În front-end mă atrag proiectele unde logica, structura și deciziile UI/UX fac diferența.',
     contact_eyebrow: 'Contact', contact_title: 'Lucrezi la un CRM, dashboard sau produs intern?',
     contact_text: 'Scrie-mi dacă vrei să vezi case study-urile complete, să discutăm o colaborare sau să-ți dau feedback pe un produs orientat pe fluxuri, claritate și UX.',
-    contact_email: 'Scrie-mi pe email', hub_eyebrow: 'Bibliotecă extinsă',
+    contact_email: 'Scrie-mi despre un proiect', hub_eyebrow: 'Bibliotecă extinsă',
     blog_eyebrow: 'Blog',
     blog_title: 'Ce am învățat pe drum',
     blog_note: 'O selecție de reflecții, observații și idei desprinse din procesul meu de învățare, lucru practic și construcție de proiecte. Secțiunea aceasta completează portofoliul cu partea de gândire din spatele execuției.',
@@ -143,7 +143,7 @@ const translations = {
     hero_eyebrow: 'CRM • Marketing • Self-taught front-end',
     hero_title: 'I build CRM interfaces and dashboards that turn complex processes into clear flows.',
     hero_text: 'My background is in CRM and marketing, and in front-end I focus on products where structure, prioritization, and visual feedback help users understand faster what to do and act with less friction.',
-    hero_cta: 'View key projects', hero_cta_secondary: 'Contact me',
+    hero_cta: 'Write me about a project', hero_cta_secondary: 'Write me about a project',
     hero_proof_1: 'Kanban',
     hero_proof_2: 'Flow builder',
     hero_proof_3: 'RBAC',
@@ -156,7 +156,7 @@ const translations = {
     about_text: 'I come from CRM and marketing, and that shapes how I build interfaces: I care not only how a product looks, but how it guides users, reduces friction, and supports real goals. In front-end, I am drawn to projects where logic, structure, and UI/UX decisions make the difference.',
     contact_eyebrow: 'Contact', contact_title: 'Are you working on a CRM, dashboard, or internal product?',
     contact_text: 'Write to me if you want full case studies, to discuss a collaboration, or to get feedback on a flow-oriented, clarity-first UX product.',
-    contact_email: 'Email me', hub_eyebrow: 'Extended library',
+    contact_email: 'Write me about a project', hub_eyebrow: 'Extended library',
     blog_eyebrow: 'Blog',
     blog_title: 'Articles and ideas from my process',
     blog_note: 'I also integrated the blog area for insights on projects, workflow and front-end experiments.',
@@ -562,8 +562,11 @@ function updateFilterState(query, total) {
 function applyFilters() {
   if (!dom.searchInput || !dom.libraryGrid || !dom.libraryFallback) return;
   const query = dom.searchInput.value.trim().toLowerCase();
-  const filtered = projects.filter(project => {
-    const matchFilter = activeFilter === 'all' || project.category === activeFilter;
+  const sourceProjects = Array.isArray(projects) && projects.length ? projects : STATIC_FALLBACK_PROJECTS;
+  const normalizedFilter = (activeFilter || 'all').toLowerCase();
+  const filtered = sourceProjects.filter(project => {
+    const projectCategory = (project.category || '').toLowerCase();
+    const matchFilter = normalizedFilter === 'all' || projectCategory === normalizedFilter;
     const haystack = [project.title.ro, project.title.en, project.description.ro, project.description.en, project.category, ...(project.tags || [])].join(' ').toLowerCase();
     return matchFilter && haystack.includes(query);
   });
