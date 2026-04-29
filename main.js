@@ -37,6 +37,46 @@ const STATIC_FALLBACK_PROJECTS = [
     url: 'https://es-d-4029897220260413-019d7cd3-34b4-7538-a067-51b147dd0f7b.codepen.dev/'
   }
 ];
+const STATIC_FALLBACK_GITHUB_PROJECTS = [
+  {
+    id: 49,
+    title: { ro: 'Alpis Fusion CRM Premium', en: 'Alpis Fusion CRM Premium' },
+    description: {
+      ro: 'CRM modular publicat cu focus pe fluxuri clare, roluri și automatizări.',
+      en: 'Modular CRM published with a focus on clear flows, roles and automations.'
+    },
+    category: 'github',
+    tags: ['github', 'crm', 'vite'],
+    url: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/',
+    liveUrl: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/',
+    repoUrl: 'https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium'
+  },
+  {
+    id: 3,
+    title: { ro: 'ClientFlow', en: 'ClientFlow' },
+    description: {
+      ro: 'Dashboard CRM orientat pe task management și claritate operațională.',
+      en: 'CRM dashboard focused on task management and operational clarity.'
+    },
+    category: 'github',
+    tags: ['github', 'dashboard', 'crm'],
+    url: 'https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/',
+    liveUrl: 'https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/',
+    repoUrl: 'https://github.com/LaurAndreea10/ClientFlow-PRO'
+  },
+  {
+    id: 18,
+    title: { ro: 'ALPIS Impact Path', en: 'ALPIS Impact Path' },
+    description: {
+      ro: 'Proiect educațional public, gândit pe structură și progres vizibil.',
+      en: 'Public educational project designed around structure and visible progress.'
+    },
+    category: 'github',
+    tags: ['github', 'education', 'ux'],
+    url: 'https://github.com/LaurAndreea10/ALPIS-ImpactPath',
+    repoUrl: 'https://github.com/LaurAndreea10/ALPIS-ImpactPath'
+  }
+];
 const HERO_PREVIEW_SLIDES = [
   {
     title: 'Alpis Fusion CRM Premium',
@@ -506,10 +546,13 @@ function renderLatestGithub() {
   if (!latestGrid) return;
   latestGrid.innerHTML = '';
   const fragment = document.createDocumentFragment();
-  projects
-    .filter(project => project.category === 'github')
-    .sort((a, b) => b.id - a.id)
-    .forEach(project => fragment.appendChild(createLibraryCard(project)));
+  const sourceProjects = Array.isArray(projects) ? projects : [];
+  const githubProjects = sourceProjects.filter(project => (project.category || '').toLowerCase() === 'github');
+  const fallbackFromRepoUrls = sourceProjects.filter(project => project.repoUrl);
+  const latestProjects = (githubProjects.length ? githubProjects : (fallbackFromRepoUrls.length ? fallbackFromRepoUrls : STATIC_FALLBACK_GITHUB_PROJECTS))
+    .sort((a, b) => (Number(b.id) || 0) - (Number(a.id) || 0))
+    .slice(0, 6);
+  latestProjects.forEach(project => fragment.appendChild(createLibraryCard(project)));
   latestGrid.appendChild(fragment);
 }
 
