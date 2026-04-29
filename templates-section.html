@@ -1,0 +1,752 @@
+<!--
+  ====================================================================
+  ŞABLOANE FREE — secțiune completă pentru portofoliu
+  Integrare: copiază tot blocul <section id="templates"> ... </section>
+  în pagina principală, înainte de secțiunea Contact.
+  
+  Stil: respectă dark/light mode din variabilele :root existente.
+  Bilingv RO/EN: data-ro / data-en pe textele care trebuie traduse,
+  compatibil cu sistemul tău de i18n.
+  ====================================================================
+-->
+
+<!-- ====================== STYLES ====================== -->
+<!-- Adaugă acest <style> în <head> sau în CSS-ul existent -->
+<style>
+  /* === Templates section === */
+  .templates-section {
+    padding: 6rem 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .templates-kicker {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent, #7F77DD);
+    background: color-mix(in srgb, var(--accent, #7F77DD) 12%, transparent);
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    margin-bottom: 1.25rem;
+  }
+
+  .templates-headline {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 0 0 1rem;
+    max-width: 780px;
+    color: var(--fg, #F1EFE8);
+  }
+
+  .templates-subhead {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--fg-muted, #B4B2A9);
+    max-width: 680px;
+    margin: 0 0 3rem;
+  }
+
+  /* === Filter bar === */
+  .templates-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border, rgba(255,255,255,0.08));
+  }
+
+  .tpl-filter-btn {
+    background: transparent;
+    border: 1px solid var(--border, rgba(255,255,255,0.12));
+    color: var(--fg-muted, #B4B2A9);
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .tpl-filter-btn:hover {
+    border-color: var(--accent, #7F77DD);
+    color: var(--fg, #F1EFE8);
+  }
+
+  .tpl-filter-btn[aria-pressed="true"] {
+    background: var(--accent, #7F77DD);
+    border-color: var(--accent, #7F77DD);
+    color: #0F0F14;
+  }
+
+  /* === Grid === */
+  .templates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* === Card === */
+  .tpl-card {
+    background: var(--card-bg, rgba(255,255,255,0.02));
+    border: 1px solid var(--border, rgba(255,255,255,0.08));
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+
+  .tpl-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent, #7F77DD);
+  }
+
+  .tpl-preview {
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, #0F0F14, #1A1A22);
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border, rgba(255,255,255,0.08));
+  }
+
+  .tpl-preview svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .tpl-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+  }
+
+  .tpl-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--fg-muted, #888780);
+  }
+
+  .tpl-tag {
+    background: color-mix(in srgb, var(--accent, #7F77DD) 15%, transparent);
+    color: var(--accent, #AFA9EC);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tpl-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--fg, #F1EFE8);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .tpl-desc {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--fg-muted, #B4B2A9);
+    margin: 0;
+    flex: 1;
+  }
+
+  .tpl-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tpl-btn {
+    flex: 1;
+    min-width: 0;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    border-radius: 8px;
+    border: 1px solid var(--border, rgba(255,255,255,0.12));
+    background: transparent;
+    color: var(--fg, #F1EFE8);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+
+  .tpl-btn:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: var(--accent, #7F77DD);
+  }
+
+  .tpl-btn-primary {
+    background: var(--accent, #7F77DD);
+    border-color: var(--accent, #7F77DD);
+    color: #0F0F14;
+  }
+
+  .tpl-btn-primary:hover {
+    background: color-mix(in srgb, var(--accent, #7F77DD) 85%, white);
+    border-color: color-mix(in srgb, var(--accent, #7F77DD) 85%, white);
+  }
+
+  .tpl-btn .tpl-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  /* === Toast === */
+  .tpl-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    background: var(--accent, #7F77DD);
+    color: #0F0F14;
+    padding: 0.75rem 1.25rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    z-index: 9999;
+    transition: transform 0.3s ease;
+    pointer-events: none;
+  }
+
+  .tpl-toast.is-visible {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* === Light mode override === */
+  body.light .tpl-card {
+    background: rgba(0,0,0,0.02);
+    border-color: rgba(0,0,0,0.08);
+  }
+
+  body.light .tpl-preview {
+    background: linear-gradient(135deg, #F1EFE8, #FAFAF7);
+  }
+
+  body.light .tpl-btn-primary {
+    color: #FFFFFF;
+  }
+
+  /* === Mobile === */
+  @media (max-width: 640px) {
+    .templates-section {
+      padding: 4rem 1rem;
+    }
+    .templates-grid {
+      grid-template-columns: 1fr;
+    }
+    .tpl-actions {
+      flex-direction: column;
+    }
+    .tpl-btn {
+      flex: none;
+    }
+  }
+</style>
+
+
+<!-- ====================== HTML ====================== -->
+<section id="templates" class="templates-section" aria-labelledby="templates-headline">
+  <span class="templates-kicker" data-ro="Resurse gratuite" data-en="Free resources">Resurse gratuite</span>
+  
+  <h2 id="templates-headline" class="templates-headline"
+      data-ro="Șabloane HTML/CSS gratuite, gata de folosit"
+      data-en="Free HTML/CSS templates, ready to use">
+    Șabloane HTML/CSS gratuite, gata de folosit
+  </h2>
+  
+  <p class="templates-subhead"
+     data-ro="O colecție de componente și layout-uri pe care le construiesc în paralel cu proiectele-cheie. Cod curat, dark/light mode inclus, fără dependințe. Copiază, descarcă sau forkuiește pe CodePen."
+     data-en="A collection of components and layouts I build alongside my main projects. Clean code, dark/light mode included, no dependencies. Copy, download, or fork on CodePen.">
+    O colecție de componente și layout-uri pe care le construiesc în paralel cu proiectele-cheie. Cod curat, dark/light mode inclus, fără dependințe. Copiază, descarcă sau forkuiește pe CodePen.
+  </p>
+
+  <!-- Filter bar -->
+  <div class="templates-filters" role="tablist" aria-label="Filtru categorii">
+    <button class="tpl-filter-btn" data-filter="all" aria-pressed="true">
+      <span data-ro="Toate" data-en="All">Toate</span>
+    </button>
+    <button class="tpl-filter-btn" data-filter="component" aria-pressed="false">
+      <span data-ro="Componente" data-en="Components">Componente</span>
+    </button>
+    <button class="tpl-filter-btn" data-filter="section" aria-pressed="false">
+      <span data-ro="Secțiuni landing" data-en="Landing sections">Secțiuni landing</span>
+    </button>
+    <button class="tpl-filter-btn" data-filter="layout" aria-pressed="false">
+      <span data-ro="Layout-uri" data-en="Full layouts">Layout-uri</span>
+    </button>
+  </div>
+
+  <!-- Grid -->
+  <div class="templates-grid" id="templatesGrid">
+    
+    <!-- ========== TEMPLATE 1: Hero Section ========== -->
+    <article class="tpl-card" data-category="section">
+      <div class="tpl-preview">
+        <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="200" fill="#0F0F14"/>
+          <circle cx="60" cy="50" r="80" fill="#7F77DD" opacity="0.25"/>
+          <circle cx="270" cy="170" r="70" fill="#5DCAA5" opacity="0.18"/>
+          <rect x="24" y="24" width="60" height="10" rx="5" fill="#7F77DD" opacity="0.6"/>
+          <rect x="24" y="60" width="220" height="14" rx="2" fill="#F1EFE8"/>
+          <rect x="24" y="82" width="180" height="14" rx="2" fill="#F1EFE8"/>
+          <rect x="24" y="116" width="160" height="6" rx="2" fill="#888780"/>
+          <rect x="24" y="128" width="140" height="6" rx="2" fill="#888780"/>
+          <rect x="24" y="152" width="76" height="22" rx="11" fill="#7F77DD"/>
+          <rect x="108" y="152" width="76" height="22" rx="11" fill="none" stroke="#888780"/>
+        </svg>
+      </div>
+      <div class="tpl-body">
+        <div class="tpl-meta">
+          <span class="tpl-tag" data-ro="Secțiune" data-en="Section">Secțiune</span>
+          <span data-ro="HTML + CSS · 4KB" data-en="HTML + CSS · 4KB">HTML + CSS · 4KB</span>
+        </div>
+        <h3 class="tpl-title" data-ro="Hero cu orbi luminoși" data-en="Hero with glowing orbs">
+          Hero cu orbi luminoși
+        </h3>
+        <p class="tpl-desc"
+           data-ro="Hero section dark elegant cu gradiente radiale, kicker și CTA dual. Responsive nativ."
+           data-en="Dark elegant hero section with radial gradients, kicker, and dual CTA. Natively responsive.">
+          Hero section dark elegant cu gradiente radiale, kicker și CTA dual. Responsive nativ.
+        </p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="hero-orbs">
+            <svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>
+            <span data-ro="Copiază" data-en="Copy">Copiază</span>
+          </button>
+          <button class="tpl-btn" data-action="download" data-tpl="hero-orbs">
+            <svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>
+            ZIP
+          </button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/hero-orbs" target="_blank" rel="noopener">
+            CodePen
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ========== TEMPLATE 2: Pricing Card ========== -->
+    <article class="tpl-card" data-category="component">
+      <div class="tpl-preview">
+        <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="200" fill="#0F0F14"/>
+          <rect x="40" y="36" width="80" height="128" rx="10" fill="none" stroke="#444441" stroke-width="0.8"/>
+          <rect x="120" y="24" width="80" height="152" rx="10" fill="#1A1A22" stroke="#7F77DD" stroke-width="1.5"/>
+          <rect x="200" y="36" width="80" height="128" rx="10" fill="none" stroke="#444441" stroke-width="0.8"/>
+          <rect x="138" y="36" width="44" height="14" rx="7" fill="#7F77DD"/>
+          <rect x="56" y="56" width="40" height="6" rx="2" fill="#888780"/>
+          <rect x="136" y="62" width="48" height="10" rx="2" fill="#F1EFE8"/>
+          <rect x="216" y="56" width="40" height="6" rx="2" fill="#888780"/>
+          <rect x="56" y="76" width="48" height="14" rx="2" fill="#F1EFE8"/>
+          <rect x="134" y="84" width="52" height="18" rx="2" fill="#F1EFE8"/>
+          <rect x="216" y="76" width="48" height="14" rx="2" fill="#F1EFE8"/>
+          <rect x="56" y="106" width="44" height="4" fill="#444441"/>
+          <rect x="56" y="118" width="36" height="4" fill="#444441"/>
+          <rect x="136" y="116" width="48" height="4" fill="#444441"/>
+          <rect x="136" y="128" width="40" height="4" fill="#444441"/>
+          <rect x="216" y="106" width="44" height="4" fill="#444441"/>
+          <rect x="56" y="138" width="48" height="14" rx="7" fill="none" stroke="#888780"/>
+          <rect x="134" y="148" width="52" height="16" rx="8" fill="#7F77DD"/>
+          <rect x="216" y="138" width="48" height="14" rx="7" fill="none" stroke="#888780"/>
+        </svg>
+      </div>
+      <div class="tpl-body">
+        <div class="tpl-meta">
+          <span class="tpl-tag" data-ro="Component" data-en="Component">Component</span>
+          <span data-ro="HTML + CSS · 3KB" data-en="HTML + CSS · 3KB">HTML + CSS · 3KB</span>
+        </div>
+        <h3 class="tpl-title" data-ro="Pricing cu plan recomandat" data-en="Pricing with featured plan">
+          Pricing cu plan recomandat
+        </h3>
+        <p class="tpl-desc"
+           data-ro="Trei planuri side-by-side, cu accent vizual pe planul featured. Listă de feature-uri și CTA per card."
+           data-en="Three plans side-by-side, with visual emphasis on the featured plan. Feature list and CTA per card.">
+          Trei planuri side-by-side, cu accent vizual pe planul featured. Listă de feature-uri și CTA per card.
+        </p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="pricing-3col">
+            <svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>
+            <span data-ro="Copiază" data-en="Copy">Copiază</span>
+          </button>
+          <button class="tpl-btn" data-action="download" data-tpl="pricing-3col">
+            <svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>
+            ZIP
+          </button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/pricing-3col" target="_blank" rel="noopener">
+            CodePen
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ========== TEMPLATE 3: Contact Form ========== -->
+    <article class="tpl-card" data-category="component">
+      <div class="tpl-preview">
+        <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="200" fill="#0F0F14"/>
+          <rect x="80" y="24" width="160" height="152" rx="10" fill="#1A1A22" stroke="#444441" stroke-width="0.8"/>
+          <rect x="96" y="40" width="60" height="8" rx="2" fill="#F1EFE8"/>
+          <rect x="96" y="58" width="92" height="4" fill="#888780"/>
+          <rect x="96" y="76" width="128" height="22" rx="4" fill="none" stroke="#444441"/>
+          <rect x="96" y="106" width="128" height="22" rx="4" fill="none" stroke="#444441"/>
+          <rect x="96" y="136" width="128" height="14" rx="4" fill="#7F77DD"/>
+        </svg>
+      </div>
+      <div class="tpl-body">
+        <div class="tpl-meta">
+          <span class="tpl-tag" data-ro="Component" data-en="Component">Component</span>
+          <span data-ro="HTML + CSS · 2KB" data-en="HTML + CSS · 2KB">HTML + CSS · 2KB</span>
+        </div>
+        <h3 class="tpl-title" data-ro="Form contact minimalist" data-en="Minimal contact form">
+          Form contact minimalist
+        </h3>
+        <p class="tpl-desc"
+           data-ro="Form de contact cu validare nativă, focus states elegante și accesibilitate ARIA."
+           data-en="Contact form with native validation, elegant focus states, and ARIA accessibility.">
+          Form de contact cu validare nativă, focus states elegante și accesibilitate ARIA.
+        </p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="contact-form">
+            <svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>
+            <span data-ro="Copiază" data-en="Copy">Copiază</span>
+          </button>
+          <button class="tpl-btn" data-action="download" data-tpl="contact-form">
+            <svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>
+            ZIP
+          </button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/contact-form" target="_blank" rel="noopener">
+            CodePen
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ========== TEMPLATE 4: Stats Grid ========== -->
+    <article class="tpl-card" data-category="section">
+      <div class="tpl-preview">
+        <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="200" fill="#0F0F14"/>
+          <rect x="24" y="36" width="64" height="20" rx="2" fill="#F1EFE8"/>
+          <rect x="24" y="64" width="180" height="6" rx="2" fill="#888780"/>
+          <rect x="24" y="100" width="64" height="76" rx="6" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/>
+          <rect x="96" y="100" width="64" height="76" rx="6" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/>
+          <rect x="168" y="100" width="64" height="76" rx="6" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/>
+          <rect x="240" y="100" width="64" height="76" rx="6" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/>
+          <rect x="32" y="116" width="32" height="20" rx="2" fill="#7F77DD"/>
+          <rect x="104" y="116" width="40" height="20" rx="2" fill="#5DCAA5"/>
+          <rect x="176" y="116" width="32" height="20" rx="2" fill="#F0997B"/>
+          <rect x="248" y="116" width="36" height="20" rx="2" fill="#F1EFE8"/>
+          <rect x="32" y="148" width="40" height="4" fill="#888780"/>
+          <rect x="104" y="148" width="40" height="4" fill="#888780"/>
+          <rect x="176" y="148" width="40" height="4" fill="#888780"/>
+          <rect x="248" y="148" width="40" height="4" fill="#888780"/>
+        </svg>
+      </div>
+      <div class="tpl-body">
+        <div class="tpl-meta">
+          <span class="tpl-tag" data-ro="Secțiune" data-en="Section">Secțiune</span>
+          <span data-ro="HTML + CSS · 2.5KB" data-en="HTML + CSS · 2.5KB">HTML + CSS · 2.5KB</span>
+        </div>
+        <h3 class="tpl-title" data-ro="Grid statistici cu accent" data-en="Stats grid with accent">
+          Grid statistici cu accent
+        </h3>
+        <p class="tpl-desc"
+           data-ro="Patru carduri de metrici cu numere mari, etichete și cod color. Perfect pentru dashboard sau landing."
+           data-en="Four metric cards with big numbers, labels, and color coding. Perfect for dashboards or landings.">
+          Patru carduri de metrici cu numere mari, etichete și cod color. Perfect pentru dashboard sau landing.
+        </p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="stats-grid">
+            <svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>
+            <span data-ro="Copiază" data-en="Copy">Copiază</span>
+          </button>
+          <button class="tpl-btn" data-action="download" data-tpl="stats-grid">
+            <svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>
+            ZIP
+          </button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/stats-grid" target="_blank" rel="noopener">
+            CodePen
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ========== TEMPLATE 5: Dashboard Layout ========== -->
+    <article class="tpl-card" data-category="layout">
+      <div class="tpl-preview">
+        <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="200" fill="#0F0F14"/>
+          <rect x="0" y="0" width="64" height="200" fill="#1A1A22"/>
+          <rect x="12" y="20" width="40" height="6" rx="2" fill="#7F77DD"/>
+          <rect x="12" y="48" width="40" height="4" fill="#888780"/>
+          <rect x="12" y="62" width="40" height="4" fill="#888780"/>
+          <rect x="12" y="76" width="40" height="4" fill="#F1EFE8"/>
+          <rect x="12" y="90" width="40" height="4" fill="#888780"/>
+          <rect x="80" y="20" width="100" height="8" rx="2" fill="#F1EFE8"/>
+          <rect x="80" y="44" width="68" height="48" rx="4" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/>
+          <rect x="156" y="44" width="68" height="48" rx="4" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/>
+          <rect x="232" y="44" width="68" height="48" rx="4" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/>
+          <rect x="80" y="104" width="220" height="80" rx="4" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/>
+          <polyline points="92,160 120,140 148,150 176,128 204,138 232,118 260,128 288,114" fill="none" stroke="#7F77DD" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="tpl-body">
+        <div class="tpl-meta">
+          <span class="tpl-tag" data-ro="Layout" data-en="Layout">Layout</span>
+          <span data-ro="HTML + CSS · 6KB" data-en="HTML + CSS · 6KB">HTML + CSS · 6KB</span>
+        </div>
+        <h3 class="tpl-title" data-ro="Dashboard CRM (sidebar + grid)" data-en="CRM dashboard (sidebar + grid)">
+          Dashboard CRM (sidebar + grid)
+        </h3>
+        <p class="tpl-desc"
+           data-ro="Layout complet cu sidebar navigabil, header, KPI cards și zonă de chart. Inspirat din Alpis Fusion."
+           data-en="Complete layout with navigable sidebar, header, KPI cards, and chart area. Inspired by Alpis Fusion.">
+          Layout complet cu sidebar navigabil, header, KPI cards și zonă de chart. Inspirat din Alpis Fusion.
+        </p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="dashboard-crm">
+            <svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>
+            <span data-ro="Copiază" data-en="Copy">Copiază</span>
+          </button>
+          <button class="tpl-btn" data-action="download" data-tpl="dashboard-crm">
+            <svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>
+            ZIP
+          </button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/dashboard-crm" target="_blank" rel="noopener">
+            CodePen
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ========== TEMPLATE 6: Testimonial Card ========== -->
+    <article class="tpl-card" data-category="component">
+      <div class="tpl-preview">
+        <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="200" fill="#0F0F14"/>
+          <rect x="40" y="40" width="240" height="120" rx="10" fill="#1A1A22" stroke="#444441" stroke-width="0.8"/>
+          <text x="60" y="86" font-family="Georgia, serif" font-size="42" fill="#7F77DD" opacity="0.55">"</text>
+          <rect x="60" y="80" width="200" height="6" rx="2" fill="#F1EFE8"/>
+          <rect x="60" y="94" width="180" height="6" rx="2" fill="#F1EFE8"/>
+          <rect x="60" y="108" width="140" height="6" rx="2" fill="#F1EFE8"/>
+          <line x1="60" y1="128" x2="80" y2="128" stroke="#888780" stroke-width="1"/>
+          <circle cx="68" cy="144" r="8" fill="#7F77DD" opacity="0.4"/>
+          <rect x="84" y="139" width="60" height="4" rx="2" fill="#F1EFE8"/>
+          <rect x="84" y="148" width="80" height="3" rx="2" fill="#888780"/>
+        </svg>
+      </div>
+      <div class="tpl-body">
+        <div class="tpl-meta">
+          <span class="tpl-tag" data-ro="Component" data-en="Component">Component</span>
+          <span data-ro="HTML + CSS · 1.5KB" data-en="HTML + CSS · 1.5KB">HTML + CSS · 1.5KB</span>
+        </div>
+        <h3 class="tpl-title" data-ro="Card testimonial cu citat" data-en="Testimonial card with quote">
+          Card testimonial cu citat
+        </h3>
+        <p class="tpl-desc"
+           data-ro="Card de testimonial cu citat marcat tipografic, avatar, nume și rol. Reutilizabil în orice grilă."
+           data-en="Testimonial card with typographic quote mark, avatar, name, and role. Reusable in any grid.">
+          Card de testimonial cu citat marcat tipografic, avatar, nume și rol. Reutilizabil în orice grilă.
+        </p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="testimonial">
+            <svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>
+            <span data-ro="Copiază" data-en="Copy">Copiază</span>
+          </button>
+          <button class="tpl-btn" data-action="download" data-tpl="testimonial">
+            <svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>
+            ZIP
+          </button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/testimonial" target="_blank" rel="noopener">
+            CodePen
+          </a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- Toast container -->
+  <div class="tpl-toast" id="tplToast" role="status" aria-live="polite"></div>
+</section>
+
+
+<!-- ====================== TEMPLATES STORE ====================== -->
+<!-- 
+  Aici sunt definite codurile fiecărui template.
+  Pentru fiecare șablon: cheia = data-tpl din butoane.
+  Adaugă/editează pentru fiecare șablon nou.
+-->
+<script id="tpl-store" type="application/json">
+{
+  "hero-orbs": {
+    "name": "Hero with Glowing Orbs",
+    "html": "<section class=\"hero-orbs\">\n  <div class=\"hero-orbs__bg\">\n    <div class=\"hero-orbs__orb hero-orbs__orb--purple\"></div>\n    <div class=\"hero-orbs__orb hero-orbs__orb--teal\"></div>\n  </div>\n  <div class=\"hero-orbs__content\">\n    <span class=\"hero-orbs__kicker\">Kicker text</span>\n    <h1 class=\"hero-orbs__title\">Titlul tău aici, mare și clar</h1>\n    <p class=\"hero-orbs__desc\">Descriere scurtă care explică valoarea în 1-2 propoziții.</p>\n    <div class=\"hero-orbs__cta\">\n      <a href=\"#\" class=\"btn btn--primary\">Acțiune principală</a>\n      <a href=\"#\" class=\"btn btn--ghost\">Acțiune secundară</a>\n    </div>\n  </div>\n</section>",
+    "css": ".hero-orbs{position:relative;min-height:90vh;display:flex;align-items:center;padding:4rem 1.5rem;background:#0F0F14;color:#F1EFE8;overflow:hidden}\n.hero-orbs__bg{position:absolute;inset:0;pointer-events:none}\n.hero-orbs__orb{position:absolute;border-radius:50%;filter:blur(60px)}\n.hero-orbs__orb--purple{width:400px;height:400px;background:#7F77DD;opacity:.35;top:-100px;left:-100px}\n.hero-orbs__orb--teal{width:500px;height:500px;background:#5DCAA5;opacity:.22;bottom:-150px;right:-100px}\n.hero-orbs__content{position:relative;max-width:760px;margin:0 auto}\n.hero-orbs__kicker{display:inline-block;font-size:.75rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:#AFA9EC;background:rgba(127,119,221,.15);padding:.4rem .9rem;border-radius:999px;margin-bottom:1.5rem}\n.hero-orbs__title{font-size:clamp(2rem,5vw,3.5rem);font-weight:500;line-height:1.15;margin:0 0 1.25rem;letter-spacing:-.02em}\n.hero-orbs__desc{font-size:1.125rem;line-height:1.65;color:#B4B2A9;margin:0 0 2rem;max-width:560px}\n.hero-orbs__cta{display:flex;gap:.75rem;flex-wrap:wrap}\n.btn{padding:.75rem 1.5rem;border-radius:8px;font-weight:500;text-decoration:none;transition:all .2s}\n.btn--primary{background:#7F77DD;color:#0F0F14}\n.btn--primary:hover{background:#9088E8}\n.btn--ghost{border:1px solid #444441;color:#F1EFE8}\n.btn--ghost:hover{border-color:#7F77DD}"
+  },
+  "pricing-3col": {
+    "name": "Pricing 3 Columns",
+    "html": "<section class=\"pricing\">\n  <div class=\"pricing__grid\">\n    <article class=\"pricing__card\">\n      <h3 class=\"pricing__name\">Starter</h3>\n      <p class=\"pricing__price\"><span>0</span>€/lună</p>\n      <ul class=\"pricing__features\">\n        <li>Feature de bază 1</li>\n        <li>Feature de bază 2</li>\n        <li>Suport email</li>\n      </ul>\n      <a href=\"#\" class=\"pricing__btn\">Începe gratuit</a>\n    </article>\n    <article class=\"pricing__card pricing__card--featured\">\n      <span class=\"pricing__badge\">Recomandat</span>\n      <h3 class=\"pricing__name\">Pro</h3>\n      <p class=\"pricing__price\"><span>29</span>€/lună</p>\n      <ul class=\"pricing__features\">\n        <li>Tot din Starter</li>\n        <li>Feature avansat 1</li>\n        <li>Feature avansat 2</li>\n        <li>Suport prioritar</li>\n      </ul>\n      <a href=\"#\" class=\"pricing__btn pricing__btn--primary\">Începe acum</a>\n    </article>\n    <article class=\"pricing__card\">\n      <h3 class=\"pricing__name\">Business</h3>\n      <p class=\"pricing__price\"><span>99</span>€/lună</p>\n      <ul class=\"pricing__features\">\n        <li>Tot din Pro</li>\n        <li>Acces API</li>\n        <li>Suport dedicat</li>\n      </ul>\n      <a href=\"#\" class=\"pricing__btn\">Contactează-ne</a>\n    </article>\n  </div>\n</section>",
+    "css": ".pricing{padding:4rem 1.5rem;background:#0F0F14;color:#F1EFE8}\n.pricing__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto}\n.pricing__card{position:relative;padding:2rem 1.75rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;display:flex;flex-direction:column}\n.pricing__card--featured{border-color:#7F77DD;border-width:2px}\n.pricing__badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#7F77DD;color:#0F0F14;font-size:.75rem;font-weight:500;padding:.3rem .8rem;border-radius:999px}\n.pricing__name{font-size:1.25rem;font-weight:500;margin:0 0 .5rem}\n.pricing__price{font-size:1rem;color:#888780;margin:0 0 1.5rem}\n.pricing__price span{font-size:2.5rem;font-weight:500;color:#F1EFE8}\n.pricing__features{list-style:none;padding:0;margin:0 0 2rem;flex:1}\n.pricing__features li{padding:.5rem 0;color:#B4B2A9;font-size:.95rem;border-bottom:1px solid #2C2C2A}\n.pricing__btn{display:block;text-align:center;padding:.75rem;border:1px solid #444441;border-radius:8px;color:#F1EFE8;text-decoration:none;font-weight:500;transition:all .2s}\n.pricing__btn:hover{border-color:#7F77DD}\n.pricing__btn--primary{background:#7F77DD;border-color:#7F77DD;color:#0F0F14}\n.pricing__btn--primary:hover{background:#9088E8}"
+  },
+  "contact-form": {
+    "name": "Contact Form",
+    "html": "<form class=\"contact-form\" novalidate>\n  <h2 class=\"contact-form__title\">Hai să vorbim</h2>\n  <p class=\"contact-form__desc\">Completează formularul și revin în 24h.</p>\n  <label class=\"contact-form__field\">\n    <span>Nume</span>\n    <input type=\"text\" name=\"name\" required>\n  </label>\n  <label class=\"contact-form__field\">\n    <span>Email</span>\n    <input type=\"email\" name=\"email\" required>\n  </label>\n  <label class=\"contact-form__field\">\n    <span>Mesaj</span>\n    <textarea name=\"message\" rows=\"4\" required></textarea>\n  </label>\n  <button type=\"submit\" class=\"contact-form__submit\">Trimite mesajul</button>\n</form>",
+    "css": ".contact-form{max-width:480px;margin:0 auto;padding:2rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;color:#F1EFE8}\n.contact-form__title{font-size:1.5rem;font-weight:500;margin:0 0 .5rem}\n.contact-form__desc{font-size:.95rem;color:#888780;margin:0 0 1.5rem}\n.contact-form__field{display:block;margin-bottom:1rem}\n.contact-form__field span{display:block;font-size:.85rem;font-weight:500;margin-bottom:.4rem;color:#B4B2A9}\n.contact-form__field input,.contact-form__field textarea{width:100%;padding:.7rem .9rem;background:#0F0F14;border:1px solid #2C2C2A;border-radius:8px;color:#F1EFE8;font-family:inherit;font-size:.95rem;transition:border-color .2s}\n.contact-form__field input:focus,.contact-form__field textarea:focus{outline:none;border-color:#7F77DD}\n.contact-form__field textarea{resize:vertical;min-height:90px}\n.contact-form__submit{width:100%;padding:.85rem;background:#7F77DD;color:#0F0F14;border:none;border-radius:8px;font-weight:500;cursor:pointer;transition:background .2s;font-family:inherit;font-size:1rem}\n.contact-form__submit:hover{background:#9088E8}"
+  },
+  "stats-grid": {
+    "name": "Stats Grid",
+    "html": "<section class=\"stats\">\n  <header class=\"stats__head\">\n    <h2 class=\"stats__title\">Rezultate concrete</h2>\n    <p class=\"stats__desc\">Cifrele care contează din ultimele 12 luni.</p>\n  </header>\n  <div class=\"stats__grid\">\n    <div class=\"stats__card\"><div class=\"stats__num stats__num--purple\">120+</div><div class=\"stats__label\">Proiecte livrate</div></div>\n    <div class=\"stats__card\"><div class=\"stats__num stats__num--teal\">98%</div><div class=\"stats__label\">Satisfacție clienți</div></div>\n    <div class=\"stats__card\"><div class=\"stats__num stats__num--coral\">24h</div><div class=\"stats__label\">Timp mediu răspuns</div></div>\n    <div class=\"stats__card\"><div class=\"stats__num\">15+</div><div class=\"stats__label\">Țări deservite</div></div>\n  </div>\n</section>",
+    "css": ".stats{padding:4rem 1.5rem;background:#0F0F14;color:#F1EFE8;max-width:1200px;margin:0 auto}\n.stats__head{margin-bottom:2.5rem;max-width:680px}\n.stats__title{font-size:clamp(1.75rem,3.5vw,2.5rem);font-weight:500;margin:0 0 .75rem;line-height:1.2}\n.stats__desc{font-size:1.05rem;color:#B4B2A9;margin:0;line-height:1.6}\n.stats__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}\n.stats__card{padding:1.75rem 1.5rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:12px}\n.stats__num{font-size:2.5rem;font-weight:500;line-height:1;margin-bottom:.5rem;color:#F1EFE8}\n.stats__num--purple{color:#7F77DD}\n.stats__num--teal{color:#5DCAA5}\n.stats__num--coral{color:#F0997B}\n.stats__label{font-size:.875rem;color:#888780;letter-spacing:.02em}"
+  },
+  "dashboard-crm": {
+    "name": "CRM Dashboard Layout",
+    "html": "<div class=\"dash\">\n  <aside class=\"dash__sidebar\">\n    <div class=\"dash__logo\">CRM</div>\n    <nav class=\"dash__nav\">\n      <a href=\"#\">Dashboard</a>\n      <a href=\"#\">Lead-uri</a>\n      <a href=\"#\" class=\"dash__nav-active\">Pipeline</a>\n      <a href=\"#\">Rapoarte</a>\n      <a href=\"#\">Setări</a>\n    </nav>\n  </aside>\n  <main class=\"dash__main\">\n    <header class=\"dash__header\"><h1>Pipeline overview</h1></header>\n    <div class=\"dash__kpis\">\n      <div class=\"dash__kpi\"><div class=\"dash__kpi-label\">Lead-uri active</div><div class=\"dash__kpi-num\">142</div></div>\n      <div class=\"dash__kpi\"><div class=\"dash__kpi-label\">Conversie</div><div class=\"dash__kpi-num\">24.6%</div></div>\n      <div class=\"dash__kpi\"><div class=\"dash__kpi-label\">Revenue</div><div class=\"dash__kpi-num\">€48k</div></div>\n    </div>\n    <div class=\"dash__chart\"><div class=\"dash__chart-placeholder\">Chart area</div></div>\n  </main>\n</div>",
+    "css": ".dash{display:grid;grid-template-columns:220px 1fr;min-height:100vh;background:#0F0F14;color:#F1EFE8;font-family:system-ui,sans-serif}\n.dash__sidebar{background:#1A1A22;border-right:1px solid #2C2C2A;padding:1.5rem 1rem}\n.dash__logo{font-size:1.25rem;font-weight:500;color:#7F77DD;margin-bottom:2rem;padding:0 .5rem}\n.dash__nav{display:flex;flex-direction:column;gap:.25rem}\n.dash__nav a{padding:.6rem .75rem;color:#B4B2A9;text-decoration:none;border-radius:6px;font-size:.9rem;transition:all .2s}\n.dash__nav a:hover{background:#2C2C2A;color:#F1EFE8}\n.dash__nav-active{background:rgba(127,119,221,.15)!important;color:#AFA9EC!important}\n.dash__main{padding:2rem}\n.dash__header h1{font-size:1.5rem;font-weight:500;margin:0 0 1.5rem}\n.dash__kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.5rem}\n.dash__kpi{padding:1.25rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:10px}\n.dash__kpi-label{font-size:.8rem;color:#888780;margin-bottom:.5rem}\n.dash__kpi-num{font-size:1.75rem;font-weight:500}\n.dash__chart{padding:1.5rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:10px;min-height:280px}\n.dash__chart-placeholder{display:flex;align-items:center;justify-content:center;height:100%;color:#888780;border:1px dashed #2C2C2A;border-radius:6px}\n@media(max-width:768px){.dash{grid-template-columns:1fr}.dash__sidebar{border-right:none;border-bottom:1px solid #2C2C2A}}"
+  },
+  "testimonial": {
+    "name": "Testimonial Card",
+    "html": "<article class=\"testimonial\">\n  <div class=\"testimonial__quote-mark\">\u201C</div>\n  <blockquote class=\"testimonial__quote\">\n    Laura a refăcut complet experiența CRM-ului nostru. Echipa lucrează acum mai rapid și deciziile sunt mai clare.\n  </blockquote>\n  <footer class=\"testimonial__author\">\n    <div class=\"testimonial__avatar\">MR</div>\n    <div>\n      <div class=\"testimonial__name\">Maria Radu</div>\n      <div class=\"testimonial__role\">Founder · Acme Studio</div>\n    </div>\n  </footer>\n</article>",
+    "css": ".testimonial{position:relative;max-width:520px;padding:2rem 2rem 1.5rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;color:#F1EFE8}\n.testimonial__quote-mark{position:absolute;top:.5rem;left:1.25rem;font-family:Georgia,serif;font-size:4rem;color:#7F77DD;opacity:.55;line-height:1;pointer-events:none}\n.testimonial__quote{margin:1.5rem 0 1.5rem;font-size:1.05rem;line-height:1.6;font-style:normal;color:#F1EFE8}\n.testimonial__author{display:flex;align-items:center;gap:.75rem;padding-top:1rem;border-top:1px solid #2C2C2A}\n.testimonial__avatar{width:40px;height:40px;border-radius:50%;background:rgba(127,119,221,.25);color:#AFA9EC;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:.85rem}\n.testimonial__name{font-size:.95rem;font-weight:500}\n.testimonial__role{font-size:.8rem;color:#888780;margin-top:.15rem}"
+  }
+}
+</script>
+
+
+<!-- ====================== SCRIPT ====================== -->
+<script>
+(function() {
+  'use strict';
+
+  // Load templates store
+  var storeEl = document.getElementById('tpl-store');
+  if (!storeEl) return;
+  var store;
+  try { store = JSON.parse(storeEl.textContent); }
+  catch (e) { console.error('Templates store JSON invalid', e); return; }
+
+  var grid = document.getElementById('templatesGrid');
+  var toast = document.getElementById('tplToast');
+  var filterBtns = document.querySelectorAll('.tpl-filter-btn');
+  var toastTimeout;
+
+  // Toast helper - respects current language
+  function showToast(msgRo, msgEn) {
+    var lang = document.documentElement.lang === 'en' ? 'en' : 'ro';
+    toast.textContent = lang === 'en' ? msgEn : msgRo;
+    toast.classList.add('is-visible');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(function() {
+      toast.classList.remove('is-visible');
+    }, 2200);
+  }
+
+  // Build full standalone HTML for download or copy
+  function buildStandaloneHTML(key) {
+    var tpl = store[key];
+    if (!tpl) return '';
+    return '<!DOCTYPE html>\n' +
+      '<html lang="ro">\n' +
+      '<head>\n' +
+      '<meta charset="UTF-8">\n' +
+      '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+      '<title>' + tpl.name + ' — Laura Andreea</title>\n' +
+      '<style>\nbody{margin:0;font-family:system-ui,-apple-system,sans-serif;background:#0F0F14;color:#F1EFE8}\n* { box-sizing: border-box; }\n' + tpl.css + '\n</style>\n' +
+      '</head>\n' +
+      '<body>\n' + tpl.html + '\n</body>\n' +
+      '</html>';
+  }
+
+  // Copy action
+  function handleCopy(key) {
+    var code = buildStandaloneHTML(key);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(
+        function() { showToast('Cod copiat în clipboard ✓', 'Code copied to clipboard ✓'); },
+        function() { fallbackCopy(code); }
+      );
+    } else {
+      fallbackCopy(code);
+    }
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast('Cod copiat în clipboard ✓', 'Code copied to clipboard ✓'); }
+    catch (e) { showToast('Nu am putut copia automat', 'Could not copy automatically'); }
+    document.body.removeChild(ta);
+  }
+
+  // Download action — single HTML file
+  function handleDownload(key) {
+    var tpl = store[key];
+    if (!tpl) return;
+    var code = buildStandaloneHTML(key);
+    var blob = new Blob([code], { type: 'text/html;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = key + '.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+    showToast('Fișier descărcat ✓', 'File downloaded ✓');
+  }
+
+  // Filter action
+  function handleFilter(category) {
+    var cards = grid.querySelectorAll('.tpl-card');
+    cards.forEach(function(card) {
+      var match = category === 'all' || card.getAttribute('data-category') === category;
+      card.style.display = match ? '' : 'none';
+    });
+    filterBtns.forEach(function(b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-filter') === category ? 'true' : 'false');
+    });
+  }
+
+  // Wire up events
+  grid.addEventListener('click', function(e) {
+    var btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    var action = btn.getAttribute('data-action');
+    var key = btn.getAttribute('data-tpl');
+    if (action === 'copy') handleCopy(key);
+    else if (action === 'download') handleDownload(key);
+  });
+
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      handleFilter(btn.getAttribute('data-filter'));
+    });
+  });
+})();
+</script>

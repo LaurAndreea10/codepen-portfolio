@@ -1,0 +1,454 @@
+<!--
+  ============================================================================
+  PACHET EXTINS · 12 ȘABLOANE HTML/CSS GRATUITE
+  Versiune actualizată cu 6 șabloane noi:
+    7. Navbar responsive cu logo + menu
+    8. Footer cu coloane + social links
+    9. Modal dialog cu backdrop
+   10. Card cu imagine și overlay
+   11. Tabs orizontale cu indicator
+   12. Sidebar mobile (drawer)
+  ============================================================================
+-->
+
+<style>
+  .templates-section{padding:6rem 1.5rem;max-width:1200px;margin:0 auto}
+  .templates-kicker{display:inline-block;font-size:.75rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--accent,#7F77DD);background:color-mix(in srgb,var(--accent,#7F77DD) 12%,transparent);padding:.4rem .9rem;border-radius:999px;margin-bottom:1.25rem}
+  .templates-headline{font-size:clamp(1.75rem,3.5vw,2.5rem);font-weight:500;line-height:1.2;margin:0 0 1rem;max-width:780px;color:var(--fg,#F1EFE8)}
+  .templates-subhead{font-size:1.05rem;line-height:1.65;color:var(--fg-muted,#B4B2A9);max-width:680px;margin:0 0 3rem}
+  .templates-filters{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border,rgba(255,255,255,.08))}
+  .tpl-filter-btn{background:transparent;border:1px solid var(--border,rgba(255,255,255,.12));color:var(--fg-muted,#B4B2A9);padding:.5rem 1rem;font-size:.875rem;font-weight:500;border-radius:999px;cursor:pointer;transition:all .2s ease;font-family:inherit}
+  .tpl-filter-btn:hover{border-color:var(--accent,#7F77DD);color:var(--fg,#F1EFE8)}
+  .tpl-filter-btn[aria-pressed="true"]{background:var(--accent,#7F77DD);border-color:var(--accent,#7F77DD);color:#0F0F14}
+  .templates-count{font-size:.8rem;color:var(--fg-muted,#888780);margin-left:auto;align-self:center}
+  .templates-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+  .tpl-card{background:var(--card-bg,rgba(255,255,255,.02));border:1px solid var(--border,rgba(255,255,255,.08));border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:transform .25s ease,border-color .25s ease}
+  .tpl-card:hover{transform:translateY(-4px);border-color:var(--accent,#7F77DD)}
+  .tpl-preview{aspect-ratio:16/10;background:linear-gradient(135deg,#0F0F14,#1A1A22);position:relative;overflow:hidden;border-bottom:1px solid var(--border,rgba(255,255,255,.08))}
+  .tpl-preview svg{width:100%;height:100%;display:block}
+  .tpl-body{padding:1.25rem 1.5rem 1.5rem;display:flex;flex-direction:column;gap:.75rem;flex:1}
+  .tpl-meta{display:flex;align-items:center;gap:.75rem;font-size:.75rem;color:var(--fg-muted,#888780)}
+  .tpl-tag{background:color-mix(in srgb,var(--accent,#7F77DD) 15%,transparent);color:var(--accent,#AFA9EC);padding:.25rem .6rem;border-radius:4px;font-weight:500;text-transform:uppercase;letter-spacing:.05em}
+  .tpl-title{font-size:1.125rem;font-weight:500;color:var(--fg,#F1EFE8);margin:0;line-height:1.3}
+  .tpl-desc{font-size:.875rem;line-height:1.55;color:var(--fg-muted,#B4B2A9);margin:0;flex:1}
+  .tpl-actions{display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap}
+  .tpl-btn{flex:1;min-width:0;padding:.55rem .9rem;font-size:.8125rem;font-weight:500;border-radius:8px;border:1px solid var(--border,rgba(255,255,255,.12));background:transparent;color:var(--fg,#F1EFE8);cursor:pointer;transition:all .2s ease;font-family:inherit;text-decoration:none;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:.35rem}
+  .tpl-btn:hover{background:rgba(255,255,255,.04);border-color:var(--accent,#7F77DD)}
+  .tpl-btn-primary{background:var(--accent,#7F77DD);border-color:var(--accent,#7F77DD);color:#0F0F14}
+  .tpl-btn-primary:hover{background:color-mix(in srgb,var(--accent,#7F77DD) 85%,white);border-color:color-mix(in srgb,var(--accent,#7F77DD) 85%,white)}
+  .tpl-btn .tpl-icon{width:14px;height:14px;flex-shrink:0}
+  .tpl-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120%);background:var(--accent,#7F77DD);color:#0F0F14;padding:.75rem 1.25rem;border-radius:999px;font-size:.875rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.3);z-index:9999;transition:transform .3s ease;pointer-events:none}
+  .tpl-toast.is-visible{transform:translateX(-50%) translateY(0)}
+  body.light .tpl-card{background:rgba(0,0,0,.02);border-color:rgba(0,0,0,.08)}
+  body.light .tpl-preview{background:linear-gradient(135deg,#F1EFE8,#FAFAF7)}
+  body.light .tpl-btn-primary{color:#FFFFFF}
+  @media(max-width:640px){.templates-section{padding:4rem 1rem}.templates-grid{grid-template-columns:1fr}.tpl-actions{flex-direction:column}.tpl-btn{flex:none}}
+</style>
+
+
+<section id="templates" class="templates-section" aria-labelledby="templates-headline">
+  <span class="templates-kicker" data-ro="Resurse gratuite" data-en="Free resources">Resurse gratuite</span>
+  
+  <h2 id="templates-headline" class="templates-headline"
+      data-ro="12 șabloane HTML/CSS gratuite, gata de folosit"
+      data-en="12 free HTML/CSS templates, ready to use">
+    12 șabloane HTML/CSS gratuite, gata de folosit
+  </h2>
+  
+  <p class="templates-subhead"
+     data-ro="O colecție de componente și layout-uri pe care le construiesc în paralel cu proiectele-cheie. Cod curat, dark mode inclus, fără dependințe. Copiază, descarcă sau forkuiește pe CodePen."
+     data-en="A collection of components and layouts I build alongside my main projects. Clean code, dark mode included, no dependencies. Copy, download, or fork on CodePen.">
+    O colecție de componente și layout-uri pe care le construiesc în paralel cu proiectele-cheie. Cod curat, dark mode inclus, fără dependințe. Copiază, descarcă sau forkuiește pe CodePen.
+  </p>
+
+  <div class="templates-filters" role="tablist" aria-label="Filtru categorii">
+    <button class="tpl-filter-btn" data-filter="all" aria-pressed="true">
+      <span data-ro="Toate" data-en="All">Toate</span>
+    </button>
+    <button class="tpl-filter-btn" data-filter="component" aria-pressed="false">
+      <span data-ro="Componente" data-en="Components">Componente</span>
+    </button>
+    <button class="tpl-filter-btn" data-filter="section" aria-pressed="false">
+      <span data-ro="Secțiuni landing" data-en="Landing sections">Secțiuni landing</span>
+    </button>
+    <button class="tpl-filter-btn" data-filter="layout" aria-pressed="false">
+      <span data-ro="Layout-uri" data-en="Full layouts">Layout-uri</span>
+    </button>
+    <span class="templates-count" id="tplCount"></span>
+  </div>
+
+  <div class="templates-grid" id="templatesGrid">
+
+    <!-- 1. HERO ORBS -->
+    <article class="tpl-card" data-category="section">
+      <div class="tpl-preview"><svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0F0F14"/><circle cx="60" cy="50" r="80" fill="#7F77DD" opacity="0.25"/><circle cx="270" cy="170" r="70" fill="#5DCAA5" opacity="0.18"/><rect x="24" y="24" width="60" height="10" rx="5" fill="#7F77DD" opacity="0.6"/><rect x="24" y="60" width="220" height="14" rx="2" fill="#F1EFE8"/><rect x="24" y="82" width="180" height="14" rx="2" fill="#F1EFE8"/><rect x="24" y="116" width="160" height="6" rx="2" fill="#888780"/><rect x="24" y="128" width="140" height="6" rx="2" fill="#888780"/><rect x="24" y="152" width="76" height="22" rx="11" fill="#7F77DD"/><rect x="108" y="152" width="76" height="22" rx="11" fill="none" stroke="#888780"/></svg></div>
+      <div class="tpl-body">
+        <div class="tpl-meta"><span class="tpl-tag">Secțiune</span><span>HTML + CSS · 4KB</span></div>
+        <h3 class="tpl-title">Hero cu orbi luminoși</h3>
+        <p class="tpl-desc">Hero section dark elegant cu gradiente radiale, kicker și CTA dual. Responsive nativ.</p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="hero-orbs"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>Copiază</button>
+          <button class="tpl-btn" data-action="download" data-tpl="hero-orbs"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>ZIP</button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/hero-orbs" target="_blank" rel="noopener">CodePen</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 2. PRICING -->
+    <article class="tpl-card" data-category="component">
+      <div class="tpl-preview"><svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0F0F14"/><rect x="40" y="36" width="80" height="128" rx="10" fill="none" stroke="#444441" stroke-width="0.8"/><rect x="120" y="24" width="80" height="152" rx="10" fill="#1A1A22" stroke="#7F77DD" stroke-width="1.5"/><rect x="200" y="36" width="80" height="128" rx="10" fill="none" stroke="#444441" stroke-width="0.8"/><rect x="138" y="36" width="44" height="14" rx="7" fill="#7F77DD"/><rect x="56" y="76" width="48" height="14" rx="2" fill="#F1EFE8"/><rect x="134" y="84" width="52" height="18" rx="2" fill="#F1EFE8"/><rect x="216" y="76" width="48" height="14" rx="2" fill="#F1EFE8"/><rect x="56" y="138" width="48" height="14" rx="7" fill="none" stroke="#888780"/><rect x="134" y="148" width="52" height="16" rx="8" fill="#7F77DD"/><rect x="216" y="138" width="48" height="14" rx="7" fill="none" stroke="#888780"/></svg></div>
+      <div class="tpl-body">
+        <div class="tpl-meta"><span class="tpl-tag">Component</span><span>HTML + CSS · 3KB</span></div>
+        <h3 class="tpl-title">Pricing cu plan recomandat</h3>
+        <p class="tpl-desc">Trei planuri side-by-side, cu accent vizual pe planul featured.</p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="pricing-3col"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>Copiază</button>
+          <button class="tpl-btn" data-action="download" data-tpl="pricing-3col"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>ZIP</button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/pricing-3col" target="_blank" rel="noopener">CodePen</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3. CONTACT FORM -->
+    <article class="tpl-card" data-category="component">
+      <div class="tpl-preview"><svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0F0F14"/><rect x="80" y="24" width="160" height="152" rx="10" fill="#1A1A22" stroke="#444441" stroke-width="0.8"/><rect x="96" y="40" width="60" height="8" rx="2" fill="#F1EFE8"/><rect x="96" y="58" width="92" height="4" fill="#888780"/><rect x="96" y="76" width="128" height="22" rx="4" fill="none" stroke="#444441"/><rect x="96" y="106" width="128" height="22" rx="4" fill="none" stroke="#444441"/><rect x="96" y="136" width="128" height="14" rx="4" fill="#7F77DD"/></svg></div>
+      <div class="tpl-body">
+        <div class="tpl-meta"><span class="tpl-tag">Component</span><span>HTML + CSS · 2KB</span></div>
+        <h3 class="tpl-title">Form contact minimalist</h3>
+        <p class="tpl-desc">Form de contact cu validare nativă, focus states elegante și ARIA.</p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="contact-form"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>Copiază</button>
+          <button class="tpl-btn" data-action="download" data-tpl="contact-form"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>ZIP</button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/contact-form" target="_blank" rel="noopener">CodePen</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 4. STATS GRID -->
+    <article class="tpl-card" data-category="section">
+      <div class="tpl-preview"><svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0F0F14"/><rect x="24" y="36" width="64" height="20" rx="2" fill="#F1EFE8"/><rect x="24" y="64" width="180" height="6" rx="2" fill="#888780"/><rect x="24" y="100" width="64" height="76" rx="6" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/><rect x="96" y="100" width="64" height="76" rx="6" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/><rect x="168" y="100" width="64" height="76" rx="6" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/><rect x="240" y="100" width="64" height="76" rx="6" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/><rect x="32" y="116" width="32" height="20" rx="2" fill="#7F77DD"/><rect x="104" y="116" width="40" height="20" rx="2" fill="#5DCAA5"/><rect x="176" y="116" width="32" height="20" rx="2" fill="#F0997B"/><rect x="248" y="116" width="36" height="20" rx="2" fill="#F1EFE8"/></svg></div>
+      <div class="tpl-body">
+        <div class="tpl-meta"><span class="tpl-tag">Secțiune</span><span>HTML + CSS · 2.5KB</span></div>
+        <h3 class="tpl-title">Grid statistici cu accent</h3>
+        <p class="tpl-desc">Patru carduri de metrici cu numere mari, etichete și cod color.</p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="stats-grid"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>Copiază</button>
+          <button class="tpl-btn" data-action="download" data-tpl="stats-grid"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>ZIP</button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/stats-grid" target="_blank" rel="noopener">CodePen</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 5. DASHBOARD CRM -->
+    <article class="tpl-card" data-category="layout">
+      <div class="tpl-preview"><svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0F0F14"/><rect x="0" y="0" width="64" height="200" fill="#1A1A22"/><rect x="12" y="20" width="40" height="6" rx="2" fill="#7F77DD"/><rect x="12" y="48" width="40" height="4" fill="#888780"/><rect x="12" y="62" width="40" height="4" fill="#888780"/><rect x="12" y="76" width="40" height="4" fill="#F1EFE8"/><rect x="12" y="90" width="40" height="4" fill="#888780"/><rect x="80" y="20" width="100" height="8" rx="2" fill="#F1EFE8"/><rect x="80" y="44" width="68" height="48" rx="4" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/><rect x="156" y="44" width="68" height="48" rx="4" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/><rect x="232" y="44" width="68" height="48" rx="4" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/><rect x="80" y="104" width="220" height="80" rx="4" fill="#1A1A22" stroke="#444441" stroke-width="0.5"/><polyline points="92,160 120,140 148,150 176,128 204,138 232,118 260,128 288,114" fill="none" stroke="#7F77DD" stroke-width="1.5"/></svg></div>
+      <div class="tpl-body">
+        <div class="tpl-meta"><span class="tpl-tag">Layout</span><span>HTML + CSS · 6KB</span></div>
+        <h3 class="tpl-title">Dashboard CRM (sidebar + grid)</h3>
+        <p class="tpl-desc">Layout complet cu sidebar navigabil, header, KPI cards și zonă de chart.</p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="dashboard-crm"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>Copiază</button>
+          <button class="tpl-btn" data-action="download" data-tpl="dashboard-crm"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>ZIP</button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/dashboard-crm" target="_blank" rel="noopener">CodePen</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 6. TESTIMONIAL -->
+    <article class="tpl-card" data-category="component">
+      <div class="tpl-preview"><svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0F0F14"/><rect x="40" y="40" width="240" height="120" rx="10" fill="#1A1A22" stroke="#444441" stroke-width="0.8"/><text x="60" y="86" font-family="Georgia,serif" font-size="42" fill="#7F77DD" opacity="0.55">"</text><rect x="60" y="80" width="200" height="6" rx="2" fill="#F1EFE8"/><rect x="60" y="94" width="180" height="6" rx="2" fill="#F1EFE8"/><rect x="60" y="108" width="140" height="6" rx="2" fill="#F1EFE8"/><circle cx="68" cy="144" r="8" fill="#7F77DD" opacity="0.4"/><rect x="84" y="139" width="60" height="4" rx="2" fill="#F1EFE8"/><rect x="84" y="148" width="80" height="3" rx="2" fill="#888780"/></svg></div>
+      <div class="tpl-body">
+        <div class="tpl-meta"><span class="tpl-tag">Component</span><span>HTML + CSS · 1.5KB</span></div>
+        <h3 class="tpl-title">Card testimonial cu citat</h3>
+        <p class="tpl-desc">Card de testimonial cu citat marcat tipografic, avatar și rol.</p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="testimonial"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>Copiază</button>
+          <button class="tpl-btn" data-action="download" data-tpl="testimonial"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>ZIP</button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/testimonial" target="_blank" rel="noopener">CodePen</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 7. NAVBAR (NEW) -->
+    <article class="tpl-card" data-category="component">
+      <div class="tpl-preview"><svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0F0F14"/><rect x="0" y="60" width="320" height="48" fill="#1A1A22"/><line x1="0" y1="60" x2="320" y2="60" stroke="#2C2C2A" stroke-width="0.5"/><line x1="0" y1="108" x2="320" y2="108" stroke="#2C2C2A" stroke-width="0.5"/><circle cx="32" cy="84" r="9" fill="#7F77DD"/><rect x="48" y="80" width="42" height="8" rx="2" fill="#F1EFE8"/><rect x="140" y="82" width="32" height="4" fill="#888780"/><rect x="184" y="82" width="32" height="4" fill="#F1EFE8"/><rect x="184" y="89" width="20" height="1.5" fill="#7F77DD"/><rect x="228" y="82" width="32" height="4" fill="#888780"/><rect x="270" y="76" width="36" height="16" rx="8" fill="#7F77DD"/><rect x="0" y="120" width="320" height="80" fill="#0F0F14"/></svg></div>
+      <div class="tpl-body">
+        <div class="tpl-meta"><span class="tpl-tag">Component</span><span>HTML + CSS · 3KB</span></div>
+        <h3 class="tpl-title">Navbar responsive cu logo</h3>
+        <p class="tpl-desc">Navbar fixă cu logo, meniu orizontal, indicator activ și CTA. Hamburger pe mobile.</p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="navbar"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>Copiază</button>
+          <button class="tpl-btn" data-action="download" data-tpl="navbar"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>ZIP</button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/navbar" target="_blank" rel="noopener">CodePen</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 8. FOOTER (NEW) -->
+    <article class="tpl-card" data-category="section">
+      <div class="tpl-preview"><svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0F0F14"/><rect x="0" y="40" width="320" height="160" fill="#1A1A22"/><line x1="0" y1="40" x2="320" y2="40" stroke="#2C2C2A" stroke-width="0.5"/><circle cx="32" cy="64" r="8" fill="#7F77DD"/><rect x="46" y="60" width="50" height="8" rx="2" fill="#F1EFE8"/><rect x="24" y="84" width="80" height="4" fill="#888780"/><rect x="24" y="94" width="60" height="4" fill="#888780"/><rect x="140" y="64" width="40" height="6" rx="2" fill="#F1EFE8"/><rect x="140" y="80" width="50" height="4" fill="#888780"/><rect x="140" y="92" width="40" height="4" fill="#888780"/><rect x="140" y="104" width="46" height="4" fill="#888780"/><rect x="220" y="64" width="40" height="6" rx="2" fill="#F1EFE8"/><rect x="220" y="80" width="50" height="4" fill="#888780"/><rect x="220" y="92" width="40" height="4" fill="#888780"/><rect x="220" y="104" width="46" height="4" fill="#888780"/><line x1="24" y1="160" x2="296" y2="160" stroke="#2C2C2A" stroke-width="0.5"/><rect x="24" y="172" width="120" height="4" fill="#888780"/><circle cx="244" cy="174" r="6" fill="none" stroke="#888780"/><circle cx="262" cy="174" r="6" fill="none" stroke="#888780"/><circle cx="280" cy="174" r="6" fill="none" stroke="#888780"/></svg></div>
+      <div class="tpl-body">
+        <div class="tpl-meta"><span class="tpl-tag">Secțiune</span><span>HTML + CSS · 4KB</span></div>
+        <h3 class="tpl-title">Footer cu coloane și social</h3>
+        <p class="tpl-desc">Footer cu logo, descriere, două coloane de link-uri și icoane social. Copyright bar separat.</p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="footer"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>Copiază</button>
+          <button class="tpl-btn" data-action="download" data-tpl="footer"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>ZIP</button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/footer" target="_blank" rel="noopener">CodePen</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 9. MODAL (NEW) -->
+    <article class="tpl-card" data-category="component">
+      <div class="tpl-preview"><svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0F0F14"/><rect width="320" height="200" fill="#000000" opacity="0.55"/><rect x="60" y="36" width="200" height="128" rx="12" fill="#1A1A22" stroke="#2C2C2A"/><rect x="76" y="56" width="100" height="10" rx="2" fill="#F1EFE8"/><rect x="240" y="52" width="12" height="12" rx="2" fill="none" stroke="#888780"/><line x1="244" y1="56" x2="248" y2="60" stroke="#888780"/><line x1="248" y1="56" x2="244" y2="60" stroke="#888780"/><rect x="76" y="80" width="168" height="4" fill="#888780"/><rect x="76" y="90" width="140" height="4" fill="#888780"/><rect x="76" y="100" width="160" height="4" fill="#888780"/><line x1="76" y1="124" x2="244" y2="124" stroke="#2C2C2A"/><rect x="158" y="138" width="38" height="16" rx="8" fill="none" stroke="#888780"/><rect x="200" y="138" width="44" height="16" rx="8" fill="#7F77DD"/></svg></div>
+      <div class="tpl-body">
+        <div class="tpl-meta"><span class="tpl-tag">Component</span><span>HTML + CSS · 3KB</span></div>
+        <h3 class="tpl-title">Modal dialog cu backdrop</h3>
+        <p class="tpl-desc">Modal accesibil cu backdrop blur, buton de închidere, slot pentru conținut și două CTA-uri.</p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="modal"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>Copiază</button>
+          <button class="tpl-btn" data-action="download" data-tpl="modal"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>ZIP</button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/modal" target="_blank" rel="noopener">CodePen</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 10. IMAGE CARD (NEW) -->
+    <article class="tpl-card" data-category="component">
+      <div class="tpl-preview"><svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0F0F14"/><rect x="80" y="24" width="160" height="152" rx="10" fill="#1A1A22" stroke="#2C2C2A"/><rect x="80" y="24" width="160" height="80" rx="10" fill="#26215C"/><circle cx="120" cy="64" r="14" fill="#7F77DD" opacity="0.6"/><polygon points="200,90 220,64 240,90" fill="#534AB7"/><polygon points="170,104 200,76 230,104" fill="#3C3489"/><rect x="92" y="120" width="48" height="14" rx="7" fill="rgba(127,119,221,0.18)"/><rect x="100" y="124" width="32" height="6" rx="2" fill="#AFA9EC"/><rect x="92" y="142" width="100" height="8" rx="2" fill="#F1EFE8"/><rect x="92" y="156" width="80" height="4" fill="#888780"/></svg></div>
+      <div class="tpl-body">
+        <div class="tpl-meta"><span class="tpl-tag">Component</span><span>HTML + CSS · 2KB</span></div>
+        <h3 class="tpl-title">Card cu imagine și badge</h3>
+        <p class="tpl-desc">Card cu zonă de imagine, badge categorie, titlu și descriere. Hover cu lift subtil.</p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="image-card"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>Copiază</button>
+          <button class="tpl-btn" data-action="download" data-tpl="image-card"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>ZIP</button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/image-card" target="_blank" rel="noopener">CodePen</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 11. TABS (NEW) -->
+    <article class="tpl-card" data-category="component">
+      <div class="tpl-preview"><svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0F0F14"/><rect x="40" y="40" width="240" height="120" rx="10" fill="#1A1A22" stroke="#2C2C2A"/><line x1="40" y1="76" x2="280" y2="76" stroke="#2C2C2A"/><rect x="60" y="56" width="40" height="6" rx="2" fill="#F1EFE8"/><rect x="60" y="74" width="40" height="2" fill="#7F77DD"/><rect x="120" y="56" width="40" height="6" rx="2" fill="#888780"/><rect x="180" y="56" width="40" height="6" rx="2" fill="#888780"/><rect x="60" y="98" width="200" height="4" fill="#888780"/><rect x="60" y="110" width="180" height="4" fill="#888780"/><rect x="60" y="122" width="160" height="4" fill="#888780"/><rect x="60" y="138" width="60" height="14" rx="7" fill="#7F77DD"/></svg></div>
+      <div class="tpl-body">
+        <div class="tpl-meta"><span class="tpl-tag">Component</span><span>HTML + CSS · 2.5KB</span></div>
+        <h3 class="tpl-title">Tabs orizontale cu indicator</h3>
+        <p class="tpl-desc">Tabs accesibile cu indicator activ animat, conținut comutabil și ARIA roles corecte.</p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="tabs"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>Copiază</button>
+          <button class="tpl-btn" data-action="download" data-tpl="tabs"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>ZIP</button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/tabs" target="_blank" rel="noopener">CodePen</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 12. MOBILE DRAWER (NEW) -->
+    <article class="tpl-card" data-category="layout">
+      <div class="tpl-preview"><svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0F0F14"/><rect x="100" y="20" width="120" height="160" rx="14" fill="#1A1A22" stroke="#2C2C2A"/><rect x="108" y="32" width="104" height="20" rx="2" fill="#0F0F14"/><line x1="116" y1="38" x2="124" y2="38" stroke="#F1EFE8" stroke-width="1.5"/><line x1="116" y1="42" x2="128" y2="42" stroke="#F1EFE8" stroke-width="1.5"/><line x1="116" y1="46" x2="124" y2="46" stroke="#F1EFE8" stroke-width="1.5"/><rect x="100" y="60" width="80" height="120" fill="#1A1A22" stroke="#7F77DD" stroke-width="0.8"/><circle cx="118" cy="76" r="6" fill="#7F77DD"/><rect x="130" y="74" width="40" height="4" fill="#F1EFE8"/><rect x="108" y="92" width="64" height="14" rx="2" fill="rgba(127,119,221,0.15)"/><rect x="116" y="98" width="40" height="2" fill="#AFA9EC"/><rect x="108" y="112" width="64" height="6" fill="#888780"/><rect x="108" y="126" width="64" height="6" fill="#888780"/><rect x="108" y="140" width="64" height="6" fill="#888780"/><rect x="108" y="160" width="64" height="14" rx="7" fill="#7F77DD"/><rect x="180" y="60" width="40" height="120" fill="#000000" opacity="0.4"/></svg></div>
+      <div class="tpl-body">
+        <div class="tpl-meta"><span class="tpl-tag">Layout</span><span>HTML + CSS · 4KB</span></div>
+        <h3 class="tpl-title">Sidebar drawer mobile</h3>
+        <p class="tpl-desc">Drawer lateral pentru mobile cu hamburger trigger, backdrop și animație de slide.</p>
+        <div class="tpl-actions">
+          <button class="tpl-btn" data-action="copy" data-tpl="drawer"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11V3.5C3 2.67 3.67 2 4.5 2H11"/></svg>Copiază</button>
+          <button class="tpl-btn" data-action="download" data-tpl="drawer"><svg class="tpl-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l3-3m-3 3l-3-3M3 13h10"/></svg>ZIP</button>
+          <a class="tpl-btn tpl-btn-primary" href="https://codepen.io/LaurAndreea10/pen/drawer" target="_blank" rel="noopener">CodePen</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="tpl-toast" id="tplToast" role="status" aria-live="polite"></div>
+</section>
+
+
+<script id="tpl-store" type="application/json">
+{
+  "hero-orbs": {
+    "name": "Hero with Glowing Orbs",
+    "html": "<section class=\"hero-orbs\">\n  <div class=\"hero-orbs__bg\">\n    <div class=\"hero-orbs__orb hero-orbs__orb--purple\"></div>\n    <div class=\"hero-orbs__orb hero-orbs__orb--teal\"></div>\n  </div>\n  <div class=\"hero-orbs__content\">\n    <span class=\"hero-orbs__kicker\">Kicker text</span>\n    <h1 class=\"hero-orbs__title\">Titlul tău aici, mare și clar</h1>\n    <p class=\"hero-orbs__desc\">Descriere scurtă care explică valoarea în 1-2 propoziții.</p>\n    <div class=\"hero-orbs__cta\">\n      <a href=\"#\" class=\"btn btn--primary\">Acțiune principală</a>\n      <a href=\"#\" class=\"btn btn--ghost\">Acțiune secundară</a>\n    </div>\n  </div>\n</section>",
+    "css": ".hero-orbs{position:relative;min-height:90vh;display:flex;align-items:center;padding:4rem 1.5rem;background:#0F0F14;color:#F1EFE8;overflow:hidden}\n.hero-orbs__bg{position:absolute;inset:0;pointer-events:none}\n.hero-orbs__orb{position:absolute;border-radius:50%;filter:blur(60px)}\n.hero-orbs__orb--purple{width:400px;height:400px;background:#7F77DD;opacity:.35;top:-100px;left:-100px}\n.hero-orbs__orb--teal{width:500px;height:500px;background:#5DCAA5;opacity:.22;bottom:-150px;right:-100px}\n.hero-orbs__content{position:relative;max-width:760px;margin:0 auto}\n.hero-orbs__kicker{display:inline-block;font-size:.75rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:#AFA9EC;background:rgba(127,119,221,.15);padding:.4rem .9rem;border-radius:999px;margin-bottom:1.5rem}\n.hero-orbs__title{font-size:clamp(2rem,5vw,3.5rem);font-weight:500;line-height:1.15;margin:0 0 1.25rem;letter-spacing:-.02em}\n.hero-orbs__desc{font-size:1.125rem;line-height:1.65;color:#B4B2A9;margin:0 0 2rem;max-width:560px}\n.hero-orbs__cta{display:flex;gap:.75rem;flex-wrap:wrap}\n.btn{padding:.75rem 1.5rem;border-radius:8px;font-weight:500;text-decoration:none;transition:all .2s}\n.btn--primary{background:#7F77DD;color:#0F0F14}\n.btn--primary:hover{background:#9088E8}\n.btn--ghost{border:1px solid #444441;color:#F1EFE8}\n.btn--ghost:hover{border-color:#7F77DD}"
+  },
+  "pricing-3col": {
+    "name": "Pricing 3 Columns",
+    "html": "<section class=\"pricing\">\n  <div class=\"pricing__grid\">\n    <article class=\"pricing__card\">\n      <h3 class=\"pricing__name\">Starter</h3>\n      <p class=\"pricing__price\"><span>0</span>\u20ac/lun\u0103</p>\n      <ul class=\"pricing__features\">\n        <li>Feature de baz\u0103 1</li>\n        <li>Feature de baz\u0103 2</li>\n        <li>Suport email</li>\n      </ul>\n      <a href=\"#\" class=\"pricing__btn\">\u00cencepe gratuit</a>\n    </article>\n    <article class=\"pricing__card pricing__card--featured\">\n      <span class=\"pricing__badge\">Recomandat</span>\n      <h3 class=\"pricing__name\">Pro</h3>\n      <p class=\"pricing__price\"><span>29</span>\u20ac/lun\u0103</p>\n      <ul class=\"pricing__features\">\n        <li>Tot din Starter</li>\n        <li>Feature avansat 1</li>\n        <li>Feature avansat 2</li>\n        <li>Suport prioritar</li>\n      </ul>\n      <a href=\"#\" class=\"pricing__btn pricing__btn--primary\">\u00cencepe acum</a>\n    </article>\n    <article class=\"pricing__card\">\n      <h3 class=\"pricing__name\">Business</h3>\n      <p class=\"pricing__price\"><span>99</span>\u20ac/lun\u0103</p>\n      <ul class=\"pricing__features\">\n        <li>Tot din Pro</li>\n        <li>Acces API</li>\n        <li>Suport dedicat</li>\n      </ul>\n      <a href=\"#\" class=\"pricing__btn\">Contacteaz\u0103-ne</a>\n    </article>\n  </div>\n</section>",
+    "css": ".pricing{padding:4rem 1.5rem;background:#0F0F14;color:#F1EFE8}\n.pricing__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto}\n.pricing__card{position:relative;padding:2rem 1.75rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;display:flex;flex-direction:column}\n.pricing__card--featured{border-color:#7F77DD;border-width:2px}\n.pricing__badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#7F77DD;color:#0F0F14;font-size:.75rem;font-weight:500;padding:.3rem .8rem;border-radius:999px}\n.pricing__name{font-size:1.25rem;font-weight:500;margin:0 0 .5rem}\n.pricing__price{font-size:1rem;color:#888780;margin:0 0 1.5rem}\n.pricing__price span{font-size:2.5rem;font-weight:500;color:#F1EFE8}\n.pricing__features{list-style:none;padding:0;margin:0 0 2rem;flex:1}\n.pricing__features li{padding:.5rem 0;color:#B4B2A9;font-size:.95rem;border-bottom:1px solid #2C2C2A}\n.pricing__btn{display:block;text-align:center;padding:.75rem;border:1px solid #444441;border-radius:8px;color:#F1EFE8;text-decoration:none;font-weight:500;transition:all .2s}\n.pricing__btn:hover{border-color:#7F77DD}\n.pricing__btn--primary{background:#7F77DD;border-color:#7F77DD;color:#0F0F14}\n.pricing__btn--primary:hover{background:#9088E8}"
+  },
+  "contact-form": {
+    "name": "Contact Form",
+    "html": "<form class=\"contact-form\" novalidate>\n  <h2 class=\"contact-form__title\">Hai s\u0103 vorbim</h2>\n  <p class=\"contact-form__desc\">Completeaz\u0103 formularul \u0219i revin \u00een 24h.</p>\n  <label class=\"contact-form__field\">\n    <span>Nume</span>\n    <input type=\"text\" name=\"name\" required>\n  </label>\n  <label class=\"contact-form__field\">\n    <span>Email</span>\n    <input type=\"email\" name=\"email\" required>\n  </label>\n  <label class=\"contact-form__field\">\n    <span>Mesaj</span>\n    <textarea name=\"message\" rows=\"4\" required></textarea>\n  </label>\n  <button type=\"submit\" class=\"contact-form__submit\">Trimite mesajul</button>\n</form>",
+    "css": ".contact-form{max-width:480px;margin:0 auto;padding:2rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;color:#F1EFE8}\n.contact-form__title{font-size:1.5rem;font-weight:500;margin:0 0 .5rem}\n.contact-form__desc{font-size:.95rem;color:#888780;margin:0 0 1.5rem}\n.contact-form__field{display:block;margin-bottom:1rem}\n.contact-form__field span{display:block;font-size:.85rem;font-weight:500;margin-bottom:.4rem;color:#B4B2A9}\n.contact-form__field input,.contact-form__field textarea{width:100%;padding:.7rem .9rem;background:#0F0F14;border:1px solid #2C2C2A;border-radius:8px;color:#F1EFE8;font-family:inherit;font-size:.95rem;transition:border-color .2s}\n.contact-form__field input:focus,.contact-form__field textarea:focus{outline:none;border-color:#7F77DD}\n.contact-form__field textarea{resize:vertical;min-height:90px}\n.contact-form__submit{width:100%;padding:.85rem;background:#7F77DD;color:#0F0F14;border:none;border-radius:8px;font-weight:500;cursor:pointer;transition:background .2s;font-family:inherit;font-size:1rem}\n.contact-form__submit:hover{background:#9088E8}"
+  },
+  "stats-grid": {
+    "name": "Stats Grid",
+    "html": "<section class=\"stats\">\n  <header class=\"stats__head\">\n    <h2 class=\"stats__title\">Rezultate concrete</h2>\n    <p class=\"stats__desc\">Cifrele care conteaz\u0103 din ultimele 12 luni.</p>\n  </header>\n  <div class=\"stats__grid\">\n    <div class=\"stats__card\"><div class=\"stats__num stats__num--purple\">120+</div><div class=\"stats__label\">Proiecte livrate</div></div>\n    <div class=\"stats__card\"><div class=\"stats__num stats__num--teal\">98%</div><div class=\"stats__label\">Satisfac\u021bie clien\u021bi</div></div>\n    <div class=\"stats__card\"><div class=\"stats__num stats__num--coral\">24h</div><div class=\"stats__label\">Timp mediu r\u0103spuns</div></div>\n    <div class=\"stats__card\"><div class=\"stats__num\">15+</div><div class=\"stats__label\">\u021a\u0103ri deservite</div></div>\n  </div>\n</section>",
+    "css": ".stats{padding:4rem 1.5rem;background:#0F0F14;color:#F1EFE8;max-width:1200px;margin:0 auto}\n.stats__head{margin-bottom:2.5rem;max-width:680px}\n.stats__title{font-size:clamp(1.75rem,3.5vw,2.5rem);font-weight:500;margin:0 0 .75rem;line-height:1.2}\n.stats__desc{font-size:1.05rem;color:#B4B2A9;margin:0;line-height:1.6}\n.stats__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}\n.stats__card{padding:1.75rem 1.5rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:12px}\n.stats__num{font-size:2.5rem;font-weight:500;line-height:1;margin-bottom:.5rem;color:#F1EFE8}\n.stats__num--purple{color:#7F77DD}\n.stats__num--teal{color:#5DCAA5}\n.stats__num--coral{color:#F0997B}\n.stats__label{font-size:.875rem;color:#888780;letter-spacing:.02em}"
+  },
+  "dashboard-crm": {
+    "name": "CRM Dashboard Layout",
+    "html": "<div class=\"dash\">\n  <aside class=\"dash__sidebar\">\n    <div class=\"dash__logo\">CRM</div>\n    <nav class=\"dash__nav\">\n      <a href=\"#\">Dashboard</a>\n      <a href=\"#\">Lead-uri</a>\n      <a href=\"#\" class=\"dash__nav-active\">Pipeline</a>\n      <a href=\"#\">Rapoarte</a>\n      <a href=\"#\">Set\u0103ri</a>\n    </nav>\n  </aside>\n  <main class=\"dash__main\">\n    <header class=\"dash__header\"><h1>Pipeline overview</h1></header>\n    <div class=\"dash__kpis\">\n      <div class=\"dash__kpi\"><div class=\"dash__kpi-label\">Lead-uri active</div><div class=\"dash__kpi-num\">142</div></div>\n      <div class=\"dash__kpi\"><div class=\"dash__kpi-label\">Conversie</div><div class=\"dash__kpi-num\">24.6%</div></div>\n      <div class=\"dash__kpi\"><div class=\"dash__kpi-label\">Revenue</div><div class=\"dash__kpi-num\">\u20ac48k</div></div>\n    </div>\n    <div class=\"dash__chart\"><div class=\"dash__chart-placeholder\">Chart area</div></div>\n  </main>\n</div>",
+    "css": ".dash{display:grid;grid-template-columns:220px 1fr;min-height:100vh;background:#0F0F14;color:#F1EFE8;font-family:system-ui,sans-serif}\n.dash__sidebar{background:#1A1A22;border-right:1px solid #2C2C2A;padding:1.5rem 1rem}\n.dash__logo{font-size:1.25rem;font-weight:500;color:#7F77DD;margin-bottom:2rem;padding:0 .5rem}\n.dash__nav{display:flex;flex-direction:column;gap:.25rem}\n.dash__nav a{padding:.6rem .75rem;color:#B4B2A9;text-decoration:none;border-radius:6px;font-size:.9rem;transition:all .2s}\n.dash__nav a:hover{background:#2C2C2A;color:#F1EFE8}\n.dash__nav-active{background:rgba(127,119,221,.15)!important;color:#AFA9EC!important}\n.dash__main{padding:2rem}\n.dash__header h1{font-size:1.5rem;font-weight:500;margin:0 0 1.5rem}\n.dash__kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.5rem}\n.dash__kpi{padding:1.25rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:10px}\n.dash__kpi-label{font-size:.8rem;color:#888780;margin-bottom:.5rem}\n.dash__kpi-num{font-size:1.75rem;font-weight:500}\n.dash__chart{padding:1.5rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:10px;min-height:280px}\n.dash__chart-placeholder{display:flex;align-items:center;justify-content:center;height:100%;color:#888780;border:1px dashed #2C2C2A;border-radius:6px}\n@media(max-width:768px){.dash{grid-template-columns:1fr}.dash__sidebar{border-right:none;border-bottom:1px solid #2C2C2A}}"
+  },
+  "testimonial": {
+    "name": "Testimonial Card",
+    "html": "<article class=\"testimonial\">\n  <div class=\"testimonial__quote-mark\">\u201C</div>\n  <blockquote class=\"testimonial__quote\">\n    Laura a ref\u0103cut complet experien\u021ba CRM-ului nostru. Echipa lucreaz\u0103 acum mai rapid \u0219i deciziile sunt mai clare.\n  </blockquote>\n  <footer class=\"testimonial__author\">\n    <div class=\"testimonial__avatar\">MR</div>\n    <div>\n      <div class=\"testimonial__name\">Maria Radu</div>\n      <div class=\"testimonial__role\">Founder \u00b7 Acme Studio</div>\n    </div>\n  </footer>\n</article>",
+    "css": ".testimonial{position:relative;max-width:520px;padding:2rem 2rem 1.5rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;color:#F1EFE8}\n.testimonial__quote-mark{position:absolute;top:.5rem;left:1.25rem;font-family:Georgia,serif;font-size:4rem;color:#7F77DD;opacity:.55;line-height:1;pointer-events:none}\n.testimonial__quote{margin:1.5rem 0 1.5rem;font-size:1.05rem;line-height:1.6;font-style:normal;color:#F1EFE8}\n.testimonial__author{display:flex;align-items:center;gap:.75rem;padding-top:1rem;border-top:1px solid #2C2C2A}\n.testimonial__avatar{width:40px;height:40px;border-radius:50%;background:rgba(127,119,221,.25);color:#AFA9EC;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:.85rem}\n.testimonial__name{font-size:.95rem;font-weight:500}\n.testimonial__role{font-size:.8rem;color:#888780;margin-top:.15rem}"
+  },
+  "navbar": {
+    "name": "Responsive Navbar",
+    "html": "<header class=\"nav\">\n  <a href=\"#\" class=\"nav__logo\"><span class=\"nav__dot\"></span> Brand</a>\n  <button class=\"nav__toggle\" aria-label=\"Meniu\" aria-expanded=\"false\"><span></span><span></span><span></span></button>\n  <nav class=\"nav__menu\">\n    <a href=\"#\">Acas\u0103</a>\n    <a href=\"#\" class=\"nav__active\">Servicii</a>\n    <a href=\"#\">Despre</a>\n    <a href=\"#\">Contact</a>\n    <a href=\"#\" class=\"nav__cta\">\u00cencepe</a>\n  </nav>\n</header>",
+    "css": ".nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:rgba(15,15,20,.85);backdrop-filter:blur(12px);border-bottom:1px solid #2C2C2A;color:#F1EFE8}\n.nav__logo{display:flex;align-items:center;gap:.5rem;font-weight:500;text-decoration:none;color:#F1EFE8}\n.nav__dot{width:10px;height:10px;border-radius:50%;background:#7F77DD}\n.nav__menu{display:flex;align-items:center;gap:1.75rem}\n.nav__menu a{color:#B4B2A9;text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s}\n.nav__menu a:hover{color:#F1EFE8}\n.nav__active{color:#F1EFE8!important;position:relative}\n.nav__active::after{content:\"\";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:#7F77DD}\n.nav__cta{padding:.5rem 1rem;background:#7F77DD;color:#0F0F14!important;border-radius:8px}\n.nav__cta:hover{background:#9088E8}\n.nav__toggle{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:.5rem}\n.nav__toggle span{width:22px;height:2px;background:#F1EFE8;border-radius:2px}\n@media(max-width:720px){.nav__toggle{display:flex}.nav__menu{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;padding:1rem;background:#1A1A22;border-bottom:1px solid #2C2C2A;gap:.75rem;display:none}.nav__menu.is-open{display:flex}}",
+    "js": "document.querySelector('.nav__toggle').addEventListener('click', function(){\n  var menu = document.querySelector('.nav__menu');\n  var open = menu.classList.toggle('is-open');\n  this.setAttribute('aria-expanded', open);\n});"
+  },
+  "footer": {
+    "name": "Footer with Columns",
+    "html": "<footer class=\"footer\">\n  <div class=\"footer__main\">\n    <div class=\"footer__brand\">\n      <a href=\"#\" class=\"footer__logo\"><span class=\"footer__dot\"></span> Brand</a>\n      <p class=\"footer__tagline\">Construim produse digitale care ajut\u0103 echipele s\u0103 lucreze mai clar.</p>\n    </div>\n    <div class=\"footer__col\">\n      <h4>Produs</h4>\n      <a href=\"#\">Funcționalit\u0103\u021bi</a>\n      <a href=\"#\">Pre\u021buri</a>\n      <a href=\"#\">Schimb\u0103ri</a>\n      <a href=\"#\">Roadmap</a>\n    </div>\n    <div class=\"footer__col\">\n      <h4>Companie</h4>\n      <a href=\"#\">Despre</a>\n      <a href=\"#\">Blog</a>\n      <a href=\"#\">Cariere</a>\n      <a href=\"#\">Contact</a>\n    </div>\n  </div>\n  <div class=\"footer__bar\">\n    <span>\u00a9 2026 Brand. Toate drepturile rezervate.</span>\n    <div class=\"footer__social\">\n      <a href=\"#\" aria-label=\"LinkedIn\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14M8.34 18v-7.5H6V18h2.34M7.17 9.39a1.36 1.36 0 1 0 0-2.72 1.36 1.36 0 0 0 0 2.72M18 18v-4.11c0-2.16-1.16-3.16-2.7-3.16a2.33 2.33 0 0 0-2.13 1.17V10.5h-2.34V18h2.34v-4.05c0-1.02.52-1.62 1.39-1.62.86 0 1.43.6 1.43 1.62V18H18z\"/></svg></a>\n      <a href=\"#\" aria-label=\"GitHub\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 2A10 10 0 0 0 2 12a10 10 0 0 0 6.84 9.5c.5.08.66-.23.66-.5v-1.7C6.73 19.91 6.14 18 6.14 18a2.69 2.69 0 0 0-1.13-1.5c-.91-.62.07-.6.07-.6a2.13 2.13 0 0 1 1.55 1.04 2.16 2.16 0 0 0 2.94.83 2.16 2.16 0 0 1 .64-1.35c-2.22-.25-4.55-1.11-4.55-4.94a3.86 3.86 0 0 1 1.03-2.68 3.6 3.6 0 0 1 .1-2.64s.84-.27 2.75 1.02a9.57 9.57 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02a3.6 3.6 0 0 1 .1 2.64 3.86 3.86 0 0 1 1.03 2.68c0 3.84-2.34 4.69-4.57 4.93a2.42 2.42 0 0 1 .69 1.88V21c0 .27.16.59.67.5A10 10 0 0 0 22 12 10 10 0 0 0 12 2z\"/></svg></a>\n      <a href=\"#\" aria-label=\"Twitter\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05A4.28 4.28 0 0 0 11.74 8c-3.59 0-6.5-2.91-6.5-6.5 0-.51.06-1.01.17-1.49a12.13 12.13 0 0 0 8.79 4.45 4.85 4.85 0 0 1-.13-1.1 4.28 4.28 0 0 1 7.4-2.93c.99-.2 1.93-.55 2.78-1.04-.33 1.02-1.02 1.86-1.92 2.4.88-.1 1.72-.34 2.5-.69-.6.88-1.34 1.65-2.2 2.27z\"/></svg></a>\n    </div>\n  </div>\n</footer>",
+    "css": ".footer{background:#1A1A22;border-top:1px solid #2C2C2A;color:#B4B2A9;padding:3rem 1.5rem 1.5rem}\n.footer__main{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;max-width:1100px;margin:0 auto 2rem}\n.footer__logo{display:inline-flex;align-items:center;gap:.5rem;font-weight:500;color:#F1EFE8;text-decoration:none;margin-bottom:1rem}\n.footer__dot{width:10px;height:10px;border-radius:50%;background:#7F77DD}\n.footer__tagline{font-size:.9rem;line-height:1.6;max-width:320px;margin:0}\n.footer__col h4{font-size:.85rem;font-weight:500;color:#F1EFE8;margin:0 0 1rem;letter-spacing:.05em}\n.footer__col a{display:block;color:#B4B2A9;text-decoration:none;font-size:.9rem;padding:.3rem 0;transition:color .2s}\n.footer__col a:hover{color:#F1EFE8}\n.footer__bar{display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:0 auto;padding-top:1.5rem;border-top:1px solid #2C2C2A;font-size:.8rem}\n.footer__social{display:flex;gap:.75rem}\n.footer__social a{color:#888780;transition:color .2s}\n.footer__social a:hover{color:#7F77DD}\n@media(max-width:640px){.footer__main{grid-template-columns:1fr;gap:2rem}.footer__bar{flex-direction:column;gap:1rem}}"
+  },
+  "modal": {
+    "name": "Modal Dialog",
+    "html": "<button class=\"modal-trigger\" id=\"openModal\">Deschide modal</button>\n\n<div class=\"modal\" id=\"myModal\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"modalTitle\" hidden>\n  <div class=\"modal__backdrop\" data-close></div>\n  <div class=\"modal__dialog\">\n    <header class=\"modal__head\">\n      <h2 id=\"modalTitle\" class=\"modal__title\">Confirmare</h2>\n      <button class=\"modal__close\" aria-label=\"\u00cenchide\" data-close>&times;</button>\n    </header>\n    <div class=\"modal__body\">\n      <p>E\u0219ti sigur c\u0103 vrei s\u0103 continui? Aceast\u0103 ac\u021biune va modifica setarea curent\u0103 \u0219i nu poate fi anulat\u0103.</p>\n    </div>\n    <footer class=\"modal__foot\">\n      <button class=\"modal__btn\" data-close>Anulează</button>\n      <button class=\"modal__btn modal__btn--primary\">Confirmă</button>\n    </footer>\n  </div>\n</div>",
+    "css": ".modal-trigger{padding:.6rem 1rem;background:#7F77DD;color:#0F0F14;border:none;border-radius:8px;font-weight:500;cursor:pointer;font-family:inherit}\n.modal[hidden]{display:none}\n.modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem}\n.modal__backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}\n.modal__dialog{position:relative;width:100%;max-width:440px;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;color:#F1EFE8;animation:modalIn .2s ease}\n@keyframes modalIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}\n.modal__head{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid #2C2C2A}\n.modal__title{font-size:1.125rem;font-weight:500;margin:0}\n.modal__close{background:none;border:none;color:#888780;font-size:1.5rem;line-height:1;cursor:pointer;padding:.25rem;transition:color .2s}\n.modal__close:hover{color:#F1EFE8}\n.modal__body{padding:1.25rem 1.5rem;line-height:1.6;color:#B4B2A9;font-size:.95rem}\n.modal__body p{margin:0}\n.modal__foot{display:flex;justify-content:flex-end;gap:.5rem;padding:1rem 1.5rem;border-top:1px solid #2C2C2A}\n.modal__btn{padding:.55rem 1.1rem;border-radius:8px;border:1px solid #444441;background:transparent;color:#F1EFE8;font-weight:500;cursor:pointer;font-family:inherit;transition:all .2s}\n.modal__btn:hover{border-color:#7F77DD}\n.modal__btn--primary{background:#7F77DD;border-color:#7F77DD;color:#0F0F14}",
+    "js": "var modal = document.getElementById('myModal');\nvar trigger = document.getElementById('openModal');\ntrigger.addEventListener('click', function(){ modal.hidden = false; });\nmodal.addEventListener('click', function(e){\n  if (e.target.hasAttribute('data-close')) modal.hidden = true;\n});\ndocument.addEventListener('keydown', function(e){\n  if (e.key === 'Escape') modal.hidden = true;\n});"
+  },
+  "image-card": {
+    "name": "Image Card with Badge",
+    "html": "<article class=\"img-card\">\n  <div class=\"img-card__media\">\n    <div class=\"img-card__placeholder\">\n      <svg viewBox=\"0 0 100 100\" width=\"48\" height=\"48\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"35\" cy=\"35\" r=\"8\"/><path d=\"M10 80 L35 55 L55 70 L80 45 L90 55 L90 90 L10 90 Z\" fill=\"currentColor\" opacity=\"0.3\"/></svg>\n    </div>\n  </div>\n  <div class=\"img-card__body\">\n    <span class=\"img-card__badge\">Tutorial</span>\n    <h3 class=\"img-card__title\">Titlul articolului aici</h3>\n    <p class=\"img-card__desc\">O descriere scurt\u0103, 1-2 r\u00e2nduri, despre con\u021binutul articolului sau resursei.</p>\n    <a href=\"#\" class=\"img-card__link\">Cite\u0219te mai mult \u2192</a>\n  </div>\n</article>",
+    "css": ".img-card{max-width:340px;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;overflow:hidden;color:#F1EFE8;transition:transform .25s,border-color .25s}\n.img-card:hover{transform:translateY(-4px);border-color:#7F77DD}\n.img-card__media{aspect-ratio:16/10;background:linear-gradient(135deg,#26215C,#3C3489);display:flex;align-items:center;justify-content:center}\n.img-card__placeholder{color:#AFA9EC;opacity:.7}\n.img-card__body{padding:1.25rem 1.5rem 1.5rem}\n.img-card__badge{display:inline-block;background:rgba(127,119,221,.18);color:#AFA9EC;font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.05em;padding:.25rem .6rem;border-radius:4px;margin-bottom:.75rem}\n.img-card__title{font-size:1.1rem;font-weight:500;line-height:1.3;margin:0 0 .5rem}\n.img-card__desc{font-size:.875rem;line-height:1.55;color:#B4B2A9;margin:0 0 1rem}\n.img-card__link{color:#AFA9EC;text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}\n.img-card__link:hover{color:#F1EFE8}"
+  },
+  "tabs": {
+    "name": "Horizontal Tabs",
+    "html": "<div class=\"tabs\">\n  <div class=\"tabs__list\" role=\"tablist\">\n    <button class=\"tabs__btn is-active\" role=\"tab\" aria-selected=\"true\" data-tab=\"1\">General</button>\n    <button class=\"tabs__btn\" role=\"tab\" aria-selected=\"false\" data-tab=\"2\">Setări</button>\n    <button class=\"tabs__btn\" role=\"tab\" aria-selected=\"false\" data-tab=\"3\">Avansat</button>\n  </div>\n  <div class=\"tabs__panel is-active\" role=\"tabpanel\" data-panel=\"1\">\n    <h3>Informa\u021bii generale</h3>\n    <p>Con\u021binutul primului tab. Pune aici informa\u021bii de baz\u0103 despre profil, cont sau produs.</p>\n  </div>\n  <div class=\"tabs__panel\" role=\"tabpanel\" data-panel=\"2\" hidden>\n    <h3>Set\u0103ri</h3>\n    <p>Con\u021binutul celui de-al doilea tab. Aici intr\u0103 op\u021biuni configurabile \u0219i preferin\u021be.</p>\n  </div>\n  <div class=\"tabs__panel\" role=\"tabpanel\" data-panel=\"3\" hidden>\n    <h3>Op\u021biuni avansate</h3>\n    <p>Con\u021binutul celui de-al treilea tab. Aici intr\u0103 setări tehnice sau pentru utilizatori avansați.</p>\n  </div>\n</div>",
+    "css": ".tabs{max-width:560px;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;overflow:hidden;color:#F1EFE8}\n.tabs__list{display:flex;border-bottom:1px solid #2C2C2A;padding:0 .5rem}\n.tabs__btn{position:relative;padding:1rem 1.25rem;background:none;border:none;color:#888780;font-weight:500;font-size:.9rem;cursor:pointer;font-family:inherit;transition:color .2s}\n.tabs__btn:hover{color:#F1EFE8}\n.tabs__btn.is-active{color:#F1EFE8}\n.tabs__btn.is-active::after{content:\"\";position:absolute;left:1.25rem;right:1.25rem;bottom:-1px;height:2px;background:#7F77DD;border-radius:2px}\n.tabs__panel{padding:1.5rem 1.75rem}\n.tabs__panel[hidden]{display:none}\n.tabs__panel h3{margin:0 0 .5rem;font-size:1rem;font-weight:500}\n.tabs__panel p{margin:0;line-height:1.6;color:#B4B2A9;font-size:.9rem}",
+    "js": "var btns = document.querySelectorAll('.tabs__btn');\nvar panels = document.querySelectorAll('.tabs__panel');\nbtns.forEach(function(btn){\n  btn.addEventListener('click', function(){\n    var id = btn.getAttribute('data-tab');\n    btns.forEach(function(b){\n      var active = b === btn;\n      b.classList.toggle('is-active', active);\n      b.setAttribute('aria-selected', active);\n    });\n    panels.forEach(function(p){\n      var match = p.getAttribute('data-panel') === id;\n      p.classList.toggle('is-active', match);\n      if (match) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');\n    });\n  });\n});"
+  },
+  "drawer": {
+    "name": "Mobile Sidebar Drawer",
+    "html": "<div class=\"drawer-demo\">\n  <header class=\"drawer-demo__bar\">\n    <button class=\"drawer-toggle\" id=\"drawerToggle\" aria-label=\"Deschide meniu\" aria-expanded=\"false\">\n      <span></span><span></span><span></span>\n    </button>\n    <span class=\"drawer-demo__title\">Aplica\u021bia mea</span>\n  </header>\n  <main class=\"drawer-demo__main\">\n    <p>Con\u021binutul principal al paginii. Pe mobile, apas\u0103 hamburger-ul pentru meniu.</p>\n  </main>\n</div>\n\n<aside class=\"drawer\" id=\"drawer\" aria-hidden=\"true\">\n  <div class=\"drawer__panel\">\n    <header class=\"drawer__head\">\n      <span class=\"drawer__brand\"><span class=\"drawer__dot\"></span> Brand</span>\n      <button class=\"drawer__close\" data-close-drawer aria-label=\"\u00cenchide\">&times;</button>\n    </header>\n    <nav class=\"drawer__nav\">\n      <a href=\"#\" class=\"is-active\">Acas\u0103</a>\n      <a href=\"#\">Proiecte</a>\n      <a href=\"#\">Despre</a>\n      <a href=\"#\">Contact</a>\n    </nav>\n    <a href=\"#\" class=\"drawer__cta\">\u00cencepe acum</a>\n  </div>\n  <div class=\"drawer__backdrop\" data-close-drawer></div>\n</aside>",
+    "css": ".drawer-demo{min-height:300px;background:#0F0F14;color:#F1EFE8}\n.drawer-demo__bar{display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;border-bottom:1px solid #2C2C2A}\n.drawer-toggle{display:flex;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:.4rem}\n.drawer-toggle span{width:22px;height:2px;background:#F1EFE8;border-radius:2px}\n.drawer-demo__title{font-weight:500}\n.drawer-demo__main{padding:1.5rem 1.25rem;color:#B4B2A9;line-height:1.6}\n.drawer{position:fixed;inset:0;z-index:60;pointer-events:none}\n.drawer.is-open{pointer-events:auto}\n.drawer__backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .25s}\n.drawer.is-open .drawer__backdrop{opacity:1}\n.drawer__panel{position:absolute;top:0;left:0;bottom:0;width:280px;max-width:80vw;background:#1A1A22;border-right:1px solid #2C2C2A;color:#F1EFE8;padding:1.25rem;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .25s ease}\n.drawer.is-open .drawer__panel{transform:translateX(0)}\n.drawer__head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}\n.drawer__brand{display:flex;align-items:center;gap:.5rem;font-weight:500}\n.drawer__dot{width:10px;height:10px;border-radius:50%;background:#7F77DD}\n.drawer__close{background:none;border:none;color:#888780;font-size:1.5rem;cursor:pointer;padding:.25rem}\n.drawer__nav{display:flex;flex-direction:column;gap:.25rem;flex:1}\n.drawer__nav a{padding:.7rem .9rem;color:#B4B2A9;text-decoration:none;border-radius:8px;font-size:.95rem;transition:all .2s}\n.drawer__nav a:hover{background:#2C2C2A;color:#F1EFE8}\n.drawer__nav a.is-active{background:rgba(127,119,221,.15);color:#AFA9EC}\n.drawer__cta{display:block;text-align:center;padding:.75rem;background:#7F77DD;color:#0F0F14;border-radius:8px;text-decoration:none;font-weight:500;margin-top:1rem}",
+    "js": "var drawer = document.getElementById('drawer');\nvar toggle = document.getElementById('drawerToggle');\nfunction openDrawer(){ drawer.classList.add('is-open'); drawer.setAttribute('aria-hidden','false'); toggle.setAttribute('aria-expanded','true'); }\nfunction closeDrawer(){ drawer.classList.remove('is-open'); drawer.setAttribute('aria-hidden','true'); toggle.setAttribute('aria-expanded','false'); }\ntoggle.addEventListener('click', openDrawer);\ndrawer.addEventListener('click', function(e){ if (e.target.hasAttribute('data-close-drawer')) closeDrawer(); });\ndocument.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeDrawer(); });"
+  }
+}
+</script>
+
+
+<script>
+(function() {
+  'use strict';
+
+  var storeEl = document.getElementById('tpl-store');
+  if (!storeEl) return;
+  var store;
+  try { store = JSON.parse(storeEl.textContent); }
+  catch (e) { console.error('Templates store JSON invalid', e); return; }
+
+  var grid = document.getElementById('templatesGrid');
+  var toast = document.getElementById('tplToast');
+  var filterBtns = document.querySelectorAll('.tpl-filter-btn');
+  var countEl = document.getElementById('tplCount');
+  var toastTimeout;
+
+  function showToast(msgRo, msgEn) {
+    var lang = document.documentElement.lang === 'en' ? 'en' : 'ro';
+    toast.textContent = lang === 'en' ? msgEn : msgRo;
+    toast.classList.add('is-visible');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(function() {
+      toast.classList.remove('is-visible');
+    }, 2200);
+  }
+
+  function buildStandaloneHTML(key) {
+    var tpl = store[key];
+    if (!tpl) return '';
+    var jsBlock = tpl.js ? '\n<script>\n' + tpl.js + '\n<\/script>' : '';
+    return '<!DOCTYPE html>\n' +
+      '<html lang="ro">\n' +
+      '<head>\n<meta charset="UTF-8">\n' +
+      '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+      '<title>' + tpl.name + ' — Laura Andreea</title>\n' +
+      '<style>\nbody{margin:0;font-family:system-ui,-apple-system,sans-serif;background:#0F0F14;color:#F1EFE8}\n*{box-sizing:border-box}\n' + tpl.css + '\n</style>\n' +
+      '</head>\n<body>\n' + tpl.html + jsBlock + '\n</body>\n</html>';
+  }
+
+  function handleCopy(key) {
+    var code = buildStandaloneHTML(key);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(
+        function() { showToast('Cod copiat în clipboard ✓', 'Code copied to clipboard ✓'); },
+        function() { fallbackCopy(code); }
+      );
+    } else {
+      fallbackCopy(code);
+    }
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast('Cod copiat în clipboard ✓', 'Code copied to clipboard ✓'); }
+    catch (e) { showToast('Nu am putut copia automat', 'Could not copy automatically'); }
+    document.body.removeChild(ta);
+  }
+
+  function handleDownload(key) {
+    var tpl = store[key];
+    if (!tpl) return;
+    var code = buildStandaloneHTML(key);
+    var blob = new Blob([code], { type: 'text/html;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = key + '.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+    showToast('Fișier descărcat ✓', 'File downloaded ✓');
+  }
+
+  function updateCount() {
+    var visible = grid.querySelectorAll('.tpl-card:not([style*="display: none"])').length;
+    if (countEl) {
+      var lang = document.documentElement.lang === 'en' ? 'en' : 'ro';
+      countEl.textContent = lang === 'en' ? (visible + ' templates') : (visible + ' șabloane');
+    }
+  }
+
+  function handleFilter(category) {
+    var cards = grid.querySelectorAll('.tpl-card');
+    cards.forEach(function(card) {
+      var match = category === 'all' || card.getAttribute('data-category') === category;
+      card.style.display = match ? '' : 'none';
+    });
+    filterBtns.forEach(function(b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-filter') === category ? 'true' : 'false');
+    });
+    updateCount();
+  }
+
+  grid.addEventListener('click', function(e) {
+    var btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    var action = btn.getAttribute('data-action');
+    var key = btn.getAttribute('data-tpl');
+    if (action === 'copy') handleCopy(key);
+    else if (action === 'download') handleDownload(key);
+  });
+
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      handleFilter(btn.getAttribute('data-filter'));
+    });
+  });
+
+  updateCount();
+})();
+</script>
