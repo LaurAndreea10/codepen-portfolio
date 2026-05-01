@@ -470,7 +470,7 @@ function applyTranslations() {
   document.getElementById('langToggle').textContent = currentLang === 'ro' ? 'RO | EN' : 'EN | RO';
   const fallbackText = document.getElementById('libraryFallbackText');
   const resetButton = document.getElementById('resetFiltersBtn');
-  const latestMeta = document.getElementById('githubMeta');
+  const latestMeta = document.getElementById('gh-meta-static');
   if (fallbackText) fallbackText.textContent = t('library_empty_fallback');
   if (resetButton) resetButton.textContent = t('reset_filters');
   if (latestMeta) latestMeta.textContent = t('github_meta');
@@ -556,20 +556,7 @@ function createLibraryCard(project) {
   return card;
 }
 
-function renderLatestGithub() {
-  const latestGrid = document.getElementById('latestGithubGrid');
-  if (!latestGrid) return;
-  latestGrid.innerHTML = '';
-  const fragment = document.createDocumentFragment();
-  const sourceProjects = Array.isArray(projects) ? projects : [];
-  const githubProjects = sourceProjects.filter(project => (project.category || '').toLowerCase() === 'github');
-  const fallbackFromRepoUrls = sourceProjects.filter(project => project.repoUrl);
-  const latestProjects = (githubProjects.length ? githubProjects : (fallbackFromRepoUrls.length ? fallbackFromRepoUrls : STATIC_FALLBACK_GITHUB_PROJECTS))
-    .sort((a, b) => (Number(b.id) || 0) - (Number(a.id) || 0))
-    .slice(0, 6);
-  latestProjects.forEach(project => fragment.appendChild(createLibraryCard(project)));
-  latestGrid.appendChild(fragment);
-}
+function renderLatestGithub() { /* GitHub section is static HTML — do not overwrite */ }
 
 function createKeyCard(project) {
   const meta = keyProjectDetails[project.id][currentLang];
@@ -647,7 +634,7 @@ function applyFilters() {
 
 function render() {
   applyTranslations();
-  // renderLatestGithub(); // GitHub section is now static HTML
+  // // renderLatestGithub(); // static HTML // GitHub section is now static HTML
   setupKeyProjectsCarousel();
 
   if (dom.searchInput && dom.libraryGrid && dom.libraryFallback) applyFilters();
