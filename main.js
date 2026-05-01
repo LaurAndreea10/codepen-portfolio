@@ -38,6 +38,21 @@ const STATIC_FALLBACK_PROJECTS = [
   }
 ];
 const STATIC_FALLBACK_GITHUB_PROJECTS = [
+ {
+  id: 23,
+  title: { ro: 'Excel-Quest', en: 'Excel-Quest' },
+  description: {
+    ro: 'Case study despre transformarea unui landing într-un produs cu progres salvat și hub de reluare.',
+    en: 'Case study on turning a landing page into a product with saved progress and a resume hub.'
+  },
+  category: 'github',
+  tags: ['github', 'excel', 'education', 'ux'],
+  url: 'projects/excel-quest.html',
+  liveUrl: 'https://laurandreea10.github.io/Excel-Quest/excel-quest-hub.html',
+  liveUrlPro: 'https://laurandreea10.github.io/Excel-Quest/enhanced-pro-v2.html',
+  repoUrl: 'https://github.com/LaurAndreea10/Excel-Quest',
+  isNew: true
+}
   {
     id: 49,
     title: { ro: 'Alpis Fusion CRM Premium', en: 'Alpis Fusion CRM Premium' },
