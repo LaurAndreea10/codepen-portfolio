@@ -647,7 +647,7 @@ function applyFilters() {
 
 function render() {
   applyTranslations();
-  renderLatestGithub();
+  // renderLatestGithub(); // GitHub section is now static HTML
   setupKeyProjectsCarousel();
 
   if (dom.searchInput && dom.libraryGrid && dom.libraryFallback) applyFilters();
