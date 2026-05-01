@@ -35,6 +35,76 @@ const STATIC_FALLBACK_PROJECTS = [
     category: 'ui',
     tags: ['crm', 'rbac', 'kanban'],
     url: 'https://es-d-4029897220260413-019d7cd3-34b4-7538-a067-51b147dd0f7b.codepen.dev/'
+  },
+  {
+    id: 49,
+    title: { ro: 'Excel-Quest', en: 'Excel-Quest' },
+    description: {
+      ro: 'Aplicație educațională gamificată pentru învățarea Excel cu structură de quest și progres vizibil.',
+      en: 'Gamified educational app for learning Excel with quest structure and visible progress.'
+    },
+    category: 'github',
+    tags: ['github', 'education', 'excel', 'pages'],
+    url: 'projects/excel-quest.html',
+    liveUrl: 'https://laurandreea10.github.io/Excel-Quest/',
+    repoUrl: 'https://github.com/LaurAndreea10/Excel-Quest',
+    isNew: true
+  },
+  {
+    id: 50,
+    title: { ro: 'BASKET VS AI', en: 'BASKET VS AI' },
+    description: {
+      ro: 'Joc arcade cu două variante live: Main și Enhanced Pro. Deploy automat, repo public.',
+      en: 'Arcade game with two live builds: Main and Enhanced Pro. Auto deploy, public repo.'
+    },
+    category: 'github',
+    tags: ['github', 'game', 'ai', 'arcade'],
+    url: 'https://laurandreea10.github.io/BASKET-VS-AI/',
+    liveUrl: 'https://laurandreea10.github.io/BASKET-VS-AI/',
+    liveUrlPro: 'https://laurandreea10.github.io/BASKET-VS-AI/enhanced.html',
+    repoUrl: 'https://github.com/LaurAndreea10/BASKET-VS-AI',
+    isNew: true
+  },
+  {
+    id: 51,
+    title: { ro: 'Link Video Editor Studio', en: 'Link Video Editor Studio' },
+    description: {
+      ro: 'Studio front-end pentru planuri de producție video cu zone funcționale clare.',
+      en: 'Front-end studio for video production plans with clear functional zones.'
+    },
+    category: 'github',
+    tags: ['github', 'video', 'tool', 'studio'],
+    url: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/',
+    liveUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/',
+    repoUrl: 'https://github.com/LaurAndreea10/Link-Video-Editor-Studio',
+    isNew: true
+  },
+  {
+    id: 52,
+    title: { ro: 'ARCADE-WORLD', en: 'ARCADE-WORLD' },
+    description: {
+      ro: 'Lume arcade pe GitHub Pages cu estetică retro-modernă și prezentare orientată pe explorare.',
+      en: 'Arcade world on GitHub Pages with retro-modern aesthetics and exploration-focused presentation.'
+    },
+    category: 'github',
+    tags: ['github', 'arcade', 'game', 'pages'],
+    url: 'https://laurandreea10.github.io/ARCADE-WORLD/',
+    liveUrl: 'https://laurandreea10.github.io/ARCADE-WORLD/',
+    repoUrl: 'https://github.com/LaurAndreea10/ARCADE-WORLD',
+    isNew: true
+  },
+  {
+    id: 53,
+    title: { ro: 'BACapp', en: 'BACapp' },
+    description: {
+      ro: 'Aplicație de pregătire BAC cu structură clară și conținut educațional organizat pe secțiuni.',
+      en: 'BAC prep app with clear structure and educational content organized into distinct sections.'
+    },
+    category: 'github',
+    tags: ['github', 'education', 'bac', 'app'],
+    url: 'https://github.com/LaurAndreea10/BACapp',
+    repoUrl: 'https://github.com/LaurAndreea10/BACapp',
+    isNew: true
   }
 ];
 const STATIC_FALLBACK_GITHUB_PROJECTS = [
@@ -593,6 +663,12 @@ function updateFilterState(query, total) {
   const text = t('filter_state').replace('{filter}', readableFilter).replace('{query}', q);
   resultsCountEl.textContent = String(total);
 
+  // Reveal the status bar now that JS has run
+  const statusBar = document.getElementById('libraryStatus');
+  const resetBtn = document.getElementById('resetFiltersBtn');
+  if (statusBar) statusBar.style.visibility = '';
+  if (resetBtn) resetBtn.style.visibility = '';
+
   if (total === 0) {
     filterStateEl.hidden = true;
     separatorEl.hidden = true;
@@ -919,11 +995,9 @@ async function init() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     projects = await response.json();
   } catch (error) {
-    console.error('Nu am putut încărca projects.json', error);
+    console.warn('projects.json unavailable, using built-in fallback', error);
     projects = STATIC_FALLBACK_PROJECTS;
-    if (dom.libraryGrid) {
-      dom.libraryGrid.innerHTML = `<div class="empty-state">${currentLang === 'ro' ? 'Am încărcat o versiune fallback cu proiecte esențiale, deoarece projects.json nu a fost disponibil.' : 'Loaded fallback essentials because projects.json was unavailable.'}</div>`;
-    }
+    // Don't show error message in the grid — fallback projects will render normally
   }
 
   render();
