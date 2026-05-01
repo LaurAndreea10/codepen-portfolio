@@ -52,7 +52,7 @@ const STATIC_FALLBACK_GITHUB_PROJECTS = [
   liveUrlPro: 'https://laurandreea10.github.io/Excel-Quest/enhanced-pro-v2.html',
   repoUrl: 'https://github.com/LaurAndreea10/Excel-Quest',
   isNew: true
-}
+},
   {
     id: 49,
     title: { ro: 'Alpis Fusion CRM Premium', en: 'Alpis Fusion CRM Premium' },
