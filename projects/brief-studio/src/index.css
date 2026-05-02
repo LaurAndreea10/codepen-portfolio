@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply font-body bg-cream-50 text-ink-600 dark:bg-ink-700 dark:text-cream-100 antialiased;
+    background-image:
+      radial-gradient(at 0% 0%, rgba(107, 29, 42, 0.04) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(201, 169, 97, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(at 0% 0%, rgba(201, 169, 97, 0.06) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(107, 29, 42, 0.08) 0px, transparent 50%);
+  }
+
+  ::selection { @apply bg-oxblood-500 text-cream-50; }
+  .dark ::selection { @apply bg-gold-400 text-ink-700; }
+}
+
+@layer components {
+  .text-display {
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-variation-settings: "SOFT" 50, "WONK" 0;
+    letter-spacing: -0.02em;
+  }
+
+  .grain::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .input-field {
+    @apply w-full bg-transparent border-b-2 border-ink-400/20 dark:border-cream-100/15 px-1 py-3 text-ink-600 dark:text-cream-100 focus:border-oxblood-500 dark:focus:border-gold-400 focus:outline-none transition-colors duration-300 placeholder:text-ink-400/40 dark:placeholder:text-cream-100/30;
+  }
+
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 bg-oxblood-500 dark:bg-gold-400 text-cream-50 dark:text-ink-700 px-8 py-4 font-medium tracking-wide uppercase text-xs transition-all duration-300 hover:bg-oxblood-600 dark:hover:bg-gold-500 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 border border-ink-400/30 dark:border-cream-100/20 px-5 py-2.5 text-xs uppercase tracking-wider hover:bg-ink-400/5 dark:hover:bg-cream-100/5 transition-colors duration-200;
+  }
+
+  .chip {
+    @apply inline-flex items-center px-3 py-1.5 text-xs uppercase tracking-wider border border-ink-400/20 dark:border-cream-100/15 cursor-pointer transition-all duration-200 hover:border-oxblood-500 dark:hover:border-gold-400 select-none;
+  }
+
+  .chip-active {
+    @apply bg-oxblood-500 dark:bg-gold-400 text-cream-50 dark:text-ink-700 border-oxblood-500 dark:border-gold-400;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(107, 29, 42, 0.2); border-radius: 3px; }
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(201, 169, 97, 0.2); }
+}
