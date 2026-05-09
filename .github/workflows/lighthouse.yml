@@ -1,0 +1,26 @@
+name: Lighthouse CI
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 9 * * 1'
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for Pages deploy
+        if: github.event_name == 'push'
+        run: sleep 90
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            https://laurandreea10.github.io/codepen-portfolio/
+            https://laurandreea10.github.io/codepen-portfolio/process.html
+            https://laurandreea10.github.io/codepen-portfolio/uses.html
+            https://laurandreea10.github.io/codepen-portfolio/projects/alpis-fusion-crm.html
+          uploadArtifacts: true
+          temporaryPublicStorage: true
