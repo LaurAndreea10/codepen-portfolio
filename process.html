@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Procesul meu de lucru — Laura Andreea</title>
+  <meta name="description" content="De la idee la deploy: cum construiesc un proiect front-end în 6 pași, cu studiu de caz Alpis Fusion CRM Premium." />
+  <meta name="theme-color" content="#071226" />
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/process.html" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Procesul meu de lucru — de la idee la deploy" />
+  <meta property="og:description" content="6 pași concreți, cu trade-off-uri explicite, pe baza Alpis Fusion CRM Premium." />
+  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/process.html" />
+
+  <style>
+    :root {
+      --bg:#050d1f;--bg2:#08142b;--panel:rgba(10,22,46,.8);--line:rgba(255,255,255,.1);
+      --text:#eef4ff;--muted:#9db0d4;--accent:#4f8cff;--accent2:#8b5cf6;
+      --green:#4ade80;--amber:#f59e0b;
+      --shadow:0 20px 48px rgba(0,0,0,.32);--container:880px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--text);
+      background:linear-gradient(180deg,var(--bg2),var(--bg));min-height:100vh;
+      line-height:1.7}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    h1,h2,h3,p,ul,ol{margin:0}
+    .container{width:min(var(--container),calc(100% - 32px));margin:0 auto;padding:32px 0}
+    .glass{background:var(--panel);border:1px solid var(--line);
+      box-shadow:var(--shadow);backdrop-filter:blur(14px);border-radius:22px;padding:28px}
+    .topbar{padding:20px 0;border-bottom:1px solid var(--line)}
+    .topbar .container{padding:0;display:flex;justify-content:space-between;align-items:center}
+    .brand{font-weight:800;color:var(--text)}
+    .back-link{color:var(--muted);font-size:.9rem}
+    .eyebrow{font-size:.78rem;font-weight:800;text-transform:uppercase;
+      letter-spacing:.1em;color:var(--accent)}
+    h1{font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.1;letter-spacing:-.03em;margin-top:14px}
+    .lead{margin-top:18px;color:var(--muted);font-size:1.1rem}
+    .process-steps{margin-top:32px;list-style:none;padding:0;display:flex;flex-direction:column;gap:18px}
+    .step{padding:22px;border:1px solid var(--line);border-radius:18px;
+      background:rgba(255,255,255,.03)}
+    .step h2{font-size:1.2rem;color:var(--accent);margin-bottom:10px}
+    .step p{color:var(--muted)}
+    .step p+p{margin-top:10px}
+    .step strong{color:var(--text)}
+    .lessons{margin-top:32px;padding:22px;border:1px solid rgba(245,158,11,.25);
+      border-radius:18px;background:rgba(245,158,11,.06)}
+    .lessons h2{font-size:1.2rem;color:var(--amber);margin-bottom:14px}
+    .lessons ul{margin:0;padding-left:22px;color:var(--muted)}
+    .lessons li+li{margin-top:8px}
+    .footer-cta{margin-top:32px;text-align:center;padding:28px;
+      border:1px solid rgba(139,92,246,.3);border-radius:22px;
+      background:linear-gradient(135deg,rgba(79,140,255,.12),rgba(139,92,246,.10))}
+    .btn{display:inline-flex;align-items:center;justify-content:center;
+      min-height:48px;padding:0 24px;border-radius:999px;border:1px solid transparent;
+      font-weight:700;font-size:.95rem;color:#fff;
+      background:linear-gradient(135deg,var(--accent),var(--accent2))}
+    .btn:hover{opacity:.9;text-decoration:none}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <a class="brand" href="/codepen-portfolio/">← Laura Andreea</a>
+      <a class="back-link" href="/codepen-portfolio/#key-projects">Top proiecte</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="glass">
+      <span class="eyebrow">Process</span>
+      <h1>De la idee la deploy — în 6 pași</h1>
+      <p class="lead">Procesul meu nu e linear. E iterativ, cu pași înapoi când o decizie nu se mai justifică. Mai jos — exemplu real cu Alpis Fusion CRM Premium.</p>
+
+      <ol class="process-steps">
+        <li class="step">
+          <h2>1. Problema, înainte de cod</h2>
+          <p>Pentru Alpis am pornit de la o întrebare: <strong>cum arată un CRM care nu cere training de 2 ore?</strong> Am scris pe hârtie 5 user stories și am ales cel mai dureros: „vreau să închid un flux comercial fără să-mi schimb tool-ul".</p>
+          <p>Trade-off acceptat: am ignorat 4 user stories care păreau importante, dar nu erau urgente. <strong>Mai bine un produs care rezolvă o problemă bine decât 5 jumătate.</strong></p>
+        </li>
+
+        <li class="step">
+          <h2>2. Wireframe înainte de stack</h2>
+          <p>Am desenat în Excalidraw layout-ul principal. Fără culori, fără fonturi — doar ierarhie. Sidebar fix vs top nav, kanban vs list, comand palette vs menu.</p>
+          <p>Apoi am decis stack-ul: <strong>Vite + React + TypeScript</strong>. Vite pentru DX (dev server ~50ms), React pentru componente reutilizabile, TS pentru refactor safe la 1000+ linii.</p>
+        </li>
+
+        <li class="step">
+          <h2>3. Prototip într-un singur fișier</h2>
+          <p>Primul commit Alpis a fost ~400 linii într-un component. Antipattern? Nu pentru exploratory phase. Am ajuns la <strong>~1917 linii</strong> înainte să refactorez. Asta mi-a permis să iterez foarte rapid pe UX fără overhead de structură.</p>
+          <p>Lecția: <strong>nu refactora prea devreme.</strong> Codul „prea simplu" la început îți permite să descoperi forma reală a produsului.</p>
+        </li>
+
+        <li class="step">
+          <h2>4. Refactor când durerea > beneficiul</h2>
+          <p>La 1917 linii nu mai puteam adăuga features fără să sparg ceva. Am extras: feature folders (lead, task, billing, automation), custom hooks (`useKanban`, `useFlowBuilder`), types într-un fișier dedicat.</p>
+          <p>Aici am învățat că <strong>refactorul e o decizie de timing, nu o regulă.</strong> A face refactor la 200 linii e overengineering. La 2000 linii e supraviețuire.</p>
+        </li>
+
+        <li class="step">
+          <h2>5. Deploy ca prima feature, nu ultima</h2>
+          <p>GitHub Actions cu Vite deploy de la primul commit. <strong>Dacă nu pot vedea ce am construit live, nu construiesc.</strong></p>
+          <p>Troubleshooting-ul cu workflow file placement și `npm ci` vs `npm install` m-a învățat mai mult decât 10 tutoriale. Lock file lipsă → fail. Workflow în loc greșit → fail tăcut. <strong>Deploy-ul e o feature care merită prioritizată.</strong></p>
+        </li>
+
+        <li class="step">
+          <h2>6. Decizii documentate</h2>
+          <p>Pentru fiecare alegere majoră am notat: ce am ales, ce am respins, de ce. Vezi Decision Log în studiul de caz Alpis. <strong>Recruiter-ul tehnic citește asta, nu README-ul.</strong></p>
+          <p>3 decizii din Alpis: navigare pe un singur ecran (+ rapiditate, − densitate), wizard în loc de form lung (+ completion rate, − click-uri în plus), CTA contextual (+ relevanță, − implementare complexă).</p>
+        </li>
+      </ol>
+
+      <section class="lessons">
+        <h2>⚡ Ce aș face altfel</h2>
+        <ul>
+          <li>Aș scrie teste mai devreme — am ajuns la bug-uri în Kanban drag &amp; drop pe care un test simplu le-ar fi prins.</li>
+          <li>Aș alege Tailwind de la început, nu CSS modules — am pierdut timp pe naming conventions.</li>
+          <li>Aș face deploy preview pentru fiecare PR, nu doar pe main.</li>
+          <li>Aș extrage tipurile TypeScript în `types.ts` din prima zi, nu la refactor.</li>
+        </ul>
+      </section>
+
+      <div class="footer-cta">
+        <span class="eyebrow">Hai să lucrăm</span>
+        <p style="margin-top:10px;color:var(--muted);">Construiești un CRM intern, dashboard sau produs cu fluxuri clare?</p>
+        <a class="btn" href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect" style="margin-top:16px;">Scrie-mi despre proiectul tău →</a>
+      </div>
+    </article>
+  </main>
+</body>
+</html>
