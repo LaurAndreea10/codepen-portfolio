@@ -59,8 +59,13 @@ const HERO_PREVIEW_AUTOPLAY_MS=4800;
 let heroPreviewFrameErrorTimer=null;
 let heroPreviewIsVisible=true;
 let previewAutoPlayAllowed=true;
-let currentLang=localStorage.getItem('portfolio-lang')||'ro';
-if(!translations[currentLang]) currentLang='ro';
+// Lang detection: URL param > localStorage > default
+const urlLang = new URLSearchParams(location.search).get('lang');
+let currentLang = (urlLang === 'en' || urlLang === 'ro')
+  ? urlLang
+  : (localStorage.getItem('portfolio-lang') || 'ro');
+if (!translations[currentLang]) currentLang = 'ro';
+localStorage.setItem('portfolio-lang', currentLang);
 
 let activeFilter='all';
 let projects=[];
@@ -116,6 +121,7 @@ function loadHeroPreviewFrame(slide){
 }
 
 function applyTranslations(){
+  document.documentElement.lang = currentLang;
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const key=el.dataset.i18n;
     if(translations[currentLang]?.[key]) el.textContent=translations[currentLang][key];
@@ -583,31 +589,14 @@ function cacheDom(){
 }
 
 async function fetchProjectsFromRemote(){
-  try{
-    const res=await fetch(PORTFOLIO_SOURCE_URL,{cache:'no-store'});
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    const html=await res.text();
-    const matches=[...html.matchAll(/(?:const|let|var)\s+(?:projects|portfolioProjects|STATIC_FALLBACK_PROJECTS)\s*=\s*(\[[\s\S]*?\]);/g)];
-    if(!matches.length) throw new Error('No project array found');
-
-    let extracted=[];
-    for(const m of matches){
-      try{
-        const parsed=Function(`return ${m[1]}`)();
-        if(Array.isArray(parsed)&&parsed.length){
-          extracted=parsed;
-          break;
-        }
-      }catch{}
-    }
-
-    if(!Array.isArray(extracted)||!extracted.length) throw new Error('Parsed data is empty');
-    return dedupeProjects(extracted);
-  }catch{
-    return dedupeProjects([...STATIC_FALLBACK_PROJECTS,...STATIC_FALLBACK_GITHUB_PROJECTS]);
-  }
+  // Static-only data source pentru predictibilitate și securitate.
+  // Dacă vrei sync remote, mută datele într-un projects.json în repo
+  // și fă: const res = await fetch('./projects.json'); return r.json();
+  return dedupeProjects([
+    ...STATIC_FALLBACK_PROJECTS,
+    ...STATIC_FALLBACK_GITHUB_PROJECTS
+  ]);
 }
-
 async function loadProjects(){
   const remoteProjects=await fetchProjectsFromRemote();
   projects=dedupeProjects([...remoteProjects,...STATIC_FALLBACK_PROJECTS,...STATIC_FALLBACK_GITHUB_PROJECTS]);
