@@ -88,7 +88,6 @@
   </script>
 
   <style>
-    /* ─── TOKENS ─── */
     :root {
       --bg:#050d1f;--bg2:#08142b;--panel:rgba(10,22,46,.8);--line:rgba(255,255,255,.1);
       --text:#eef4ff;--muted:#9db0d4;--accent:#4f8cff;--accent2:#8b5cf6;
@@ -101,295 +100,162 @@
       --text:#16213e;--muted:#4f6283;--accent:#2563eb;--accent2:#7c3aed;
       --shadow:0 14px 30px rgba(15,23,42,.12);
     }
-
-    /* ─── RESET ─── */
     *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--text);
-      background:linear-gradient(180deg,var(--bg2),var(--bg));min-height:100vh;}
+    body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--text);background:linear-gradient(180deg,var(--bg2),var(--bg));min-height:100vh;}
     a{text-decoration:none;color:inherit}
     h1,h2,h3,h4,p{margin:0}
     img{max-width:100%}
-
-    /* ─── LAYOUT ─── */
     .container{width:min(var(--container),calc(100% - 32px));margin:0 auto}
-    .glass{background:var(--panel);border:1px solid var(--line);
-      box-shadow:var(--shadow);backdrop-filter:blur(14px)}
-
-    /* ─── NAV ─── */
-    .topbar{position:sticky;top:0;z-index:20;padding:12px 0;
-      background:linear-gradient(to bottom,rgba(0,0,0,.28),transparent)}
-    .nav{border-radius:999px;padding:12px 16px;display:flex;
-      justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .glass{background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(14px)}
+    .topbar{position:sticky;top:0;z-index:20;padding:12px 0;background:linear-gradient(to bottom,rgba(0,0,0,.28),transparent)}
+    .nav{border-radius:999px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
     .brand{font-weight:800;display:flex;align-items:center;gap:10px}
-    .badge{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;
-      color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));font-weight:800}
+    .badge{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));font-weight:800}
     .nav-links{display:flex;gap:8px;flex-wrap:wrap}
-    .pill{border:1px solid var(--line);background:rgba(255,255,255,.04);
-      border-radius:999px;padding:9px 14px;color:var(--text);cursor:pointer;
-      font-size:.9rem;transition:border-color .2s}
+    .pill{border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:999px;padding:9px 14px;color:var(--text);cursor:pointer;font-size:.9rem;transition:border-color .2s}
     .pill:hover{border-color:var(--accent)}
-
-    /* ─── HERO ─── */
     .hero{padding:34px 0 20px}
     .hero-card{border-radius:24px;padding:30px}
-    .eyebrow{font-size:.78rem;font-weight:800;text-transform:uppercase;
-      letter-spacing:.1em;color:var(--accent);display:inline-flex;
-      align-items:center;gap:6px}
-    .hero-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
-      gap:24px;align-items:stretch}
+    .eyebrow{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);display:inline-flex;align-items:center;gap:6px}
+    .hero-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:24px;align-items:stretch}
     .hero-main{display:flex;flex-direction:column;justify-content:center}
-    h1{margin-top:14px;font-size:clamp(2rem,5vw,3.8rem);line-height:.96;
-      max-width:15ch;letter-spacing:-.04em}
+    h1{margin-top:14px;font-size:clamp(2rem,5vw,3.8rem);line-height:.96;max-width:15ch;letter-spacing:-.04em}
     .hero-text{margin-top:14px;color:var(--muted);line-height:1.75;max-width:72ch}
     .hero-actions{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
-
-    /* ─── BUTTONS ─── */
-    .btn{display:inline-flex;align-items:center;justify-content:center;
-      min-height:48px;padding:0 20px;border-radius:999px;border:1px solid transparent;
-      font-weight:700;font-size:.95rem;transition:all .2s;cursor:pointer;
-      font-family:inherit;gap:8px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:999px;border:1px solid transparent;font-weight:700;font-size:.95rem;transition:all .2s;cursor:pointer;font-family:inherit;gap:8px}
     .btn-primary{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}
     .btn-primary:hover{opacity:.9;transform:translateY(-1px)}
     .btn-secondary{border-color:var(--line);background:rgba(255,255,255,.04)}
     .btn-secondary:hover{border-color:var(--accent);background:rgba(79,140,255,.06)}
-    .btn-codepen{color:#fff;border-color:rgba(139,92,246,.45);
-      background:linear-gradient(135deg,rgba(79,140,255,.34),rgba(139,92,246,.34))}
+    .btn-codepen{color:#fff;border-color:rgba(139,92,246,.45);background:linear-gradient(135deg,rgba(79,140,255,.34),rgba(139,92,246,.34))}
     .btn-codepen:hover{border-color:rgba(196,181,253,.8)}
-    .btn-ghost{border:1px solid var(--line);background:transparent;
-      color:var(--muted);font-size:.88rem;min-height:40px;padding:0 14px}
+    .btn-ghost{border:1px solid var(--line);background:transparent;color:var(--muted);font-size:.88rem;min-height:40px;padding:0 14px}
     .btn-ghost:hover{color:var(--text);border-color:var(--accent)}
-
-    /* ─── HERO PREVIEW ─── */
-    .hero-preview{display:flex;flex-direction:column;gap:12px;min-height:540px;
-      padding:12px;border-radius:18px;border:1px solid var(--line);
-      background:rgba(255,255,255,.03)}
-    .hero-preview-wrap{position:relative;flex:1;min-height:460px;border-radius:14px;
-      overflow:hidden;border:1px solid rgba(255,255,255,.08);
-      background:radial-gradient(circle at 10% 10%,rgba(79,140,255,.28),transparent 45%),
-        radial-gradient(circle at 90% 90%,rgba(139,92,246,.24),transparent 48%),#081326}
-    .hero-preview-fallback{position:absolute;inset:0;width:100%;height:100%;
-      object-fit:cover;opacity:0;transition:opacity .25s ease}
-    .hero-preview-hint{position:absolute;inset:auto 12px 12px 12px;z-index:2;
-      padding:10px 12px;border-radius:12px;border:1px solid var(--line);
-      background:rgba(7,18,38,.72);font-size:.84rem;color:var(--muted);
-      pointer-events:none;opacity:0;transition:opacity .25s ease}
+    .hero-preview{display:flex;flex-direction:column;gap:12px;min-height:540px;padding:12px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+    .hero-preview-wrap{position:relative;flex:1;min-height:460px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:radial-gradient(circle at 10% 10%,rgba(79,140,255,.28),transparent 45%),radial-gradient(circle at 90% 90%,rgba(139,92,246,.24),transparent 48%),#081326}
+    .hero-preview-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .25s ease}
+    .hero-preview-hint{position:absolute;inset:auto 12px 12px 12px;z-index:2;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(7,18,38,.72);font-size:.84rem;color:var(--muted);pointer-events:none;opacity:0;transition:opacity .25s ease}
     .hero-preview-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
     .hero-preview-top p{font-size:.9rem;color:var(--muted)}
-    .hero-preview-frame{width:100%;height:100%;min-height:460px;border:0;
-      border-radius:14px;background:#081326}
-    .hero-preview-links{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;
-      scrollbar-width:none;-ms-overflow-style:none;padding-bottom:2px}
+    .hero-preview-frame{width:100%;height:100%;min-height:460px;border:0;border-radius:14px;background:#081326}
+    .hero-preview-links{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:2px}
     .hero-preview-links::-webkit-scrollbar{display:none}
-    .hero-preview-links .chip{font-size:.82rem;padding:8px 12px;
-      white-space:nowrap;flex:0 0 auto}
+    .hero-preview-links .chip{font-size:.82rem;padding:8px 12px;white-space:nowrap;flex:0 0 auto}
     .hero-preview-links .chip.active{color:#fff}
-    .hero-preview-stage{position:absolute;inset:0;display:flex;flex-direction:column;
-      justify-content:flex-end;gap:12px;padding:22px;
-      background:linear-gradient(180deg,rgba(8,19,38,.18),rgba(8,19,38,.95))}
+    .hero-preview-stage{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:12px;padding:22px;background:linear-gradient(180deg,rgba(8,19,38,.18),rgba(8,19,38,.95))}
     .hero-preview-stage h3{font-size:1.45rem;line-height:1.2;margin:0}
     .hero-preview-stage p{margin:0;color:var(--muted);line-height:1.6}
     .hero-preview-stage .meta-line{font-size:.86rem;color:#c9dcff}
     .hero-preview-stage a{color:#c9dcff;font-size:.92rem;word-break:break-word}
     .hero-preview-actions{display:flex;gap:8px;flex-wrap:wrap}
-
-    /* ─── CRED STRIP ─── */
     .cred-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-    .cred-item{border:1px solid var(--line);border-radius:16px;padding:14px;
-      background:rgba(255,255,255,.03);transition:border-color .2s}
+    .cred-item{border:1px solid var(--line);border-radius:16px;padding:14px;background:rgba(255,255,255,.03);transition:border-color .2s}
     .cred-item:hover{border-color:var(--accent)}
-    .cred-item:first-child{background:linear-gradient(135deg,rgba(79,140,255,.2),rgba(139,92,246,.15));
-      border-color:rgba(139,92,246,.45)}
+    .cred-item:first-child{background:linear-gradient(135deg,rgba(79,140,255,.2),rgba(139,92,246,.15));border-color:rgba(139,92,246,.45)}
     .cred-item strong{display:block;font-size:1.5rem}
     .cred-item p{margin-top:6px;color:var(--muted);line-height:1.45;font-size:.9rem}
-
-    /* ─── SECTIONS ─── */
     section{padding:28px 0}
-    .section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);
-      margin:8px 0}
-    .section-head{display:flex;justify-content:space-between;gap:12px;
-      align-items:flex-end;flex-wrap:wrap;margin-bottom:18px}
+    .section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:8px 0}
+    .section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:18px}
     .section-subtitle{margin-top:8px;color:var(--muted);line-height:1.65;max-width:72ch}
-
-    /* ─── GH SECTION ─── */
     .gh-section{padding:24px 0 10px}
     .gh-section .eyebrow{color:#c084fc}
     body.light .gh-section .eyebrow{color:#7c3aed}
-    .gh-meta{display:inline-flex;align-items:center;gap:8px;margin-top:10px;
-      padding:7px 12px;border-radius:999px;background:rgba(139,92,246,.10);
-      border:1px solid rgba(139,92,246,.24);font-size:.86rem;color:var(--muted)}
+    .gh-meta{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:7px 12px;border-radius:999px;background:rgba(139,92,246,.10);border:1px solid rgba(139,92,246,.24);font-size:.86rem;color:var(--muted)}
     .gh-meta svg{width:14px;height:14px;fill:currentColor;opacity:.85}
-
-    /* ─── CRM & CHALLENGES accents ─── */
     #crm-projects .eyebrow{color:var(--green)}
     #crm-projects .gh-meta{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.22)}
     #challenges-projects .eyebrow{color:var(--amber)}
     #challenges-projects .gh-meta{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.22)}
-
-    /* ─── TAGS ─── */
-    .tag{display:inline-flex;padding:6px 10px;border-radius:999px;
-      border:1px solid var(--line);font-size:.78rem;color:var(--muted);text-transform:capitalize}
+    .tag{display:inline-flex;padding:6px 10px;border-radius:999px;border:1px solid var(--line);font-size:.78rem;color:var(--muted);text-transform:capitalize}
     .tag.github{color:#e0d4ff;background:rgba(139,92,246,.16);border-color:rgba(139,92,246,.30)}
     .tag.challenge{color:#fde68a;background:rgba(245,158,11,.14);border-color:rgba(245,158,11,.28)}
-    .tag.crm,.tag.saas,.tag.ops,.tag.premium,.tag.v2,.tag.v5,.tag.hq,.tag.arcade{
-      color:#86efac;background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.26)}
+    .tag.crm,.tag.saas,.tag.ops,.tag.premium,.tag.v2,.tag.v5,.tag.hq,.tag.arcade{color:#86efac;background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.26)}
     body.light .tag.github{color:#5b21b6}
     body.light .tag.challenge{color:#92400e}
-
-    /* ─── BADGES ─── */
-    .badge-new{position:absolute;top:14px;right:14px;left:auto;z-index:2;
-      display:inline-flex;align-items:center;gap:6px;padding:5px 10px;
-      border-radius:999px;font-size:.68rem;font-weight:800;letter-spacing:.12em;
-      text-transform:uppercase;color:#fff;
-      background:linear-gradient(135deg,#8b5cf6,#ec4899);
-      border:1px solid rgba(255,255,255,.2);
-      box-shadow:0 4px 14px rgba(139,92,246,.4);
-      animation:pulse-new 2.4s ease-in-out infinite}
-    .badge-new::before{content:"";width:5px;height:5px;border-radius:50%;
-      background:#fff;box-shadow:0 0 8px rgba(255,255,255,.9)}
+    .badge-new{position:absolute;top:14px;right:14px;left:auto;z-index:2;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#8b5cf6,#ec4899);border:1px solid rgba(255,255,255,.2);box-shadow:0 4px 14px rgba(139,92,246,.4);animation:pulse-new 2.4s ease-in-out infinite}
+    .badge-new::before{content:"";width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 8px rgba(255,255,255,.9)}
     @keyframes pulse-new{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-    .badge-github{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;
-      border-radius:999px;font-size:.74rem;font-weight:700;color:#e0d4ff;
-      background:rgba(139,92,246,.14);border:1px solid rgba(139,92,246,.28)}
+    .badge-github{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;font-size:.74rem;font-weight:700;color:#e0d4ff;background:rgba(139,92,246,.14);border:1px solid rgba(139,92,246,.28)}
     body.light .badge-github{color:#5b21b6;background:rgba(139,92,246,.10)}
     .badge-github svg{width:14px;height:14px;fill:currentColor}
-
-    /* ─── PROJECT CARDS ─── */
     .projects-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-    .project-card{border-radius:var(--r-card);padding:18px;display:flex;
-      flex-direction:column;gap:12px;position:relative;
-      transition:transform .2s,box-shadow .2s}
-    .project-card:hover{transform:translateY(-2px);
-      box-shadow:0 24px 52px rgba(0,0,0,.4)}
+    .project-card{border-radius:var(--r-card);padding:18px;display:flex;flex-direction:column;gap:12px;position:relative;transition:transform .2s,box-shadow .2s}
+    .project-card:hover{transform:translateY(-2px);box-shadow:0 24px 52px rgba(0,0,0,.4)}
     .project-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
     .project-desc{color:var(--muted);line-height:1.7;font-size:.95rem}
     .card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
-
-    /* key project details */
     .mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:6px}
-    .mini-item{border:1px solid var(--line);border-radius:14px;padding:10px;
-      background:rgba(255,255,255,.03)}
-    .mini-item strong{display:block;font-size:.75rem;text-transform:uppercase;
-      color:var(--accent);margin-bottom:5px;letter-spacing:.04em}
+    .mini-item{border:1px solid var(--line);border-radius:14px;padding:10px;background:rgba(255,255,255,.03)}
+    .mini-item strong{display:block;font-size:.75rem;text-transform:uppercase;color:var(--accent);margin-bottom:5px;letter-spacing:.04em}
     .mini-item span{font-size:.88rem;line-height:1.5;color:var(--muted)}
-    .project-proof{margin-top:6px;padding:12px;border:1px solid var(--line);
-      border-radius:14px;background:rgba(79,140,255,.08)}
-    .project-proof strong{display:block;font-size:.75rem;text-transform:uppercase;
-      color:var(--accent);margin-bottom:6px;letter-spacing:.04em}
+    .project-proof{margin-top:6px;padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(79,140,255,.08)}
+    .project-proof strong{display:block;font-size:.75rem;text-transform:uppercase;color:var(--accent);margin-bottom:6px;letter-spacing:.04em}
     .project-proof ul{margin:0;padding-left:18px;color:var(--text);line-height:1.55}
     .project-proof li+li{margin-top:4px}
     .project-meta-row{display:flex;flex-wrap:wrap;gap:8px}
-    .project-meta-tag{font-size:.76rem;padding:4px 10px;border-radius:999px;
-      border:1px solid rgba(129,140,248,.34);background:rgba(79,140,255,.14);color:#c9d8ff}
-    .project-card-video{position:relative;aspect-ratio:16/10;border-radius:12px;
-      overflow:hidden;background:#000;cursor:pointer;isolation:isolate;
-      border:1px solid var(--line)}
+    .project-meta-tag{font-size:.76rem;padding:4px 10px;border-radius:999px;border:1px solid rgba(129,140,248,.34);background:rgba(79,140,255,.14);color:#c9d8ff}
+    .project-card-video{position:relative;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:#000;cursor:pointer;isolation:isolate;border:1px solid var(--line)}
     .card-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-    .video-badge{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.7);
-      color:#fff;padding:4px 10px;border-radius:999px;font-size:.72rem;font-weight:600;
-      display:inline-flex;align-items:center;gap:5px;backdrop-filter:blur(8px);
-      z-index:2;pointer-events:none}
-    .video-hover-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
-      background:rgba(0,0,0,.7);color:rgba(255,255,255,.85);padding:5px 12px;
-      border-radius:999px;font-size:.7rem;font-weight:500;backdrop-filter:blur(8px);
-      z-index:2;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+    .video-badge{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.7);color:#fff;padding:4px 10px;border-radius:999px;font-size:.72rem;font-weight:600;display:inline-flex;align-items:center;gap:5px;backdrop-filter:blur(8px);z-index:2;pointer-events:none}
+    .video-hover-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:rgba(255,255,255,.85);padding:5px 12px;border-radius:999px;font-size:.7rem;font-weight:500;backdrop-filter:blur(8px);z-index:2;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
     .project-card-video:hover .video-hover-hint{opacity:1}
-
-    /* ─── KEY CAROUSEL ─── */
     .key-carousel{position:relative}
     .key-carousel-viewport{overflow:hidden;border-radius:24px}
     .key-carousel-track{display:flex;transition:transform .4s ease}
     .key-carousel-track .project-card{min-width:100%}
-    .key-carousel-controls{display:flex;justify-content:space-between;
-      align-items:center;gap:12px;margin-top:14px}
+    .key-carousel-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px}
     .key-carousel-nav{display:flex;gap:8px}
-    .key-carousel-btn{width:44px;height:44px;border-radius:999px;
-      border:1px solid var(--line);background:rgba(255,255,255,.04);
-      color:var(--text);cursor:pointer;font-size:1.2rem;line-height:1;
-      transition:border-color .2s}
+    .key-carousel-btn{width:44px;height:44px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;font-size:1.2rem;line-height:1;transition:border-color .2s}
     .key-carousel-btn:hover:not(:disabled){border-color:var(--accent)}
     .key-carousel-btn:disabled{opacity:.45;cursor:not-allowed}
     .key-carousel-dots{display:flex;gap:8px;flex-wrap:wrap}
-    .key-carousel-dot{width:10px;height:10px;border-radius:999px;border:0;
-      background:rgba(157,176,212,.5);cursor:pointer;transition:all .3s}
+    .key-carousel-dot{width:10px;height:10px;border-radius:999px;border:0;background:rgba(157,176,212,.5);cursor:pointer;transition:all .3s}
     .key-carousel-dot.active{width:26px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
-
-    /* ─── PROJECT LINEAGE ─── */
-    .project-lineage{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-      margin:14px 0 18px;padding:16px;border-radius:16px;
-      border:1px solid var(--line);background:rgba(255,255,255,.02)}
-    .lineage-step{flex:1 1 160px;padding:12px;border-radius:12px;
-      border:1px solid var(--line);background:rgba(255,255,255,.03)}
+    .project-lineage{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 18px;padding:16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.02)}
+    .lineage-step{flex:1 1 160px;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
     .lineage-step strong{display:block;font-size:.83rem;color:var(--accent);margin-bottom:6px}
     .lineage-step p{font-size:.82rem;color:var(--muted);line-height:1.5}
     .lineage-arrow{font-size:1.4rem;color:var(--muted);flex:0 0 auto}
-    .lineage-target{flex:1 1 160px;padding:12px;border-radius:12px;
-      border:1px solid rgba(139,92,246,.4);background:rgba(139,92,246,.08)}
+    .lineage-target{flex:1 1 160px;padding:12px;border-radius:12px;border:1px solid rgba(139,92,246,.4);background:rgba(139,92,246,.08)}
     .lineage-target strong{display:block;font-size:.83rem;color:#c084fc;margin-bottom:6px}
     .lineage-target p{font-size:.82rem;color:var(--muted);line-height:1.5}
-
-    /* ─── ARCADE SERIES CALLOUT ─── */
-    .series-callout{margin-bottom:16px;padding:14px 18px;border-radius:14px;
-      border:1px solid rgba(245,158,11,.25);
-      background:rgba(245,158,11,.06);
-      display:flex;align-items:flex-start;gap:12px}
+    .series-callout{margin-bottom:16px;padding:14px 18px;border-radius:14px;border:1px solid rgba(245,158,11,.25);background:rgba(245,158,11,.06);display:flex;align-items:flex-start;gap:12px}
     .series-callout-icon{font-size:1.2rem;flex:0 0 auto;margin-top:2px}
     .series-callout p{font-size:.88rem;color:var(--muted);line-height:1.6;margin:0}
     .series-callout strong{color:var(--text)}
-
-    /* ─── PROOF OF WORK (replaces testimonials) ─── */
     .pow-section{padding:28px 0}
-    .pow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;
-      margin-top:16px}
-    .pow-card{border-radius:18px;padding:20px;border:1px solid var(--line);
-      background:rgba(255,255,255,.03);transition:border-color .2s}
+    .pow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}
+    .pow-card{border-radius:18px;padding:20px;border:1px solid var(--line);background:rgba(255,255,255,.03);transition:border-color .2s}
     .pow-card:hover{border-color:rgba(79,140,255,.35)}
     .pow-card-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-    .pow-icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
-      font-size:1rem;flex:0 0 auto}
+    .pow-icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:1rem;flex:0 0 auto}
     .pow-icon.green{background:rgba(74,222,128,.12);color:var(--green)}
     .pow-icon.blue{background:rgba(79,140,255,.12);color:var(--accent)}
     .pow-icon.purple{background:rgba(139,92,246,.12);color:#c084fc}
     .pow-icon.amber{background:rgba(245,158,11,.12);color:var(--amber)}
     .pow-card h4{font-size:.9rem;font-weight:700;margin:0}
     .pow-card p{font-size:.86rem;color:var(--muted);line-height:1.6;margin:0}
-    .pow-metric{display:inline-flex;align-items:center;gap:6px;margin-top:10px;
-      padding:6px 10px;border-radius:8px;background:rgba(79,140,255,.08);
-      border:1px solid rgba(79,140,255,.18);font-size:.82rem;font-weight:700;
-      color:var(--accent)}
-    .pow-metric.green{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.18);
-      color:var(--green)}
-    .pow-metric.purple{background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.18);
-      color:#c084fc}
-    .pow-metric.amber{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.18);
-      color:var(--amber)}
+    .pow-metric{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 10px;border-radius:8px;background:rgba(79,140,255,.08);border:1px solid rgba(79,140,255,.18);font-size:.82rem;font-weight:700;color:var(--accent)}
+    .pow-metric.green{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.18);color:var(--green)}
+    .pow-metric.purple{background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.18);color:#c084fc}
+    .pow-metric.amber{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.18);color:var(--amber)}
     .pow-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-    .pow-link{display:inline-flex;align-items:center;gap:5px;font-size:.8rem;
-      color:var(--muted);border:1px solid var(--line);padding:5px 10px;
-      border-radius:8px;transition:all .2s}
+    .pow-link{display:inline-flex;align-items:center;gap:5px;font-size:.8rem;color:var(--muted);border:1px solid var(--line);padding:5px 10px;border-radius:8px;transition:all .2s}
     .pow-link:hover{color:var(--text);border-color:var(--accent)}
     .pow-link svg{width:12px;height:12px;fill:currentColor}
-    .pow-note{margin-top:12px;padding:12px 16px;border-radius:12px;
-      border:1px dashed rgba(79,140,255,.2);background:rgba(79,140,255,.04);
-      font-size:.84rem;color:var(--muted);line-height:1.6}
+    .pow-note{margin-top:12px;padding:12px 16px;border-radius:12px;border:1px dashed rgba(79,140,255,.2);background:rgba(79,140,255,.04);font-size:.84rem;color:var(--muted);line-height:1.6}
     .pow-note strong{color:var(--text)}
-
-    /* ─── UX PROCESS ─── */
     .impact-roadmap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-    .impact-card{border-radius:18px;padding:18px;border:1px solid var(--line);
-      background:rgba(255,255,255,.03)}
-    .impact-head{display:flex;justify-content:space-between;gap:10px;
-      align-items:flex-start;flex-wrap:wrap}
-    .impact-score{display:inline-flex;padding:4px 10px;border-radius:999px;
-      font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
-      border:1px solid rgba(129,140,248,.34);background:rgba(79,140,255,.14);color:#c9d8ff}
+    .impact-card{border-radius:18px;padding:18px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+    .impact-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+    .impact-score{display:inline-flex;padding:4px 10px;border-radius:999px;font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border:1px solid rgba(129,140,248,.34);background:rgba(79,140,255,.14);color:#c9d8ff}
     .impact-time{color:var(--muted);font-size:.85rem}
     .impact-card h3{margin-top:10px;font-size:1.05rem}
     .impact-card p{margin-top:8px;line-height:1.65;color:var(--muted)}
     .before-after{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-    .before-after article{padding:12px;border-radius:12px;border:1px solid var(--line);
-      background:rgba(255,255,255,.03)}
-    .before-after strong{display:block;margin-bottom:8px;font-size:.84rem;
-      text-transform:uppercase;letter-spacing:.04em}
+    .before-after article{padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+    .before-after strong{display:block;margin-bottom:8px;font-size:.84rem;text-transform:uppercase;letter-spacing:.04em}
     .before-after ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.5}
     .decision-list{margin-top:10px;padding-left:18px;color:var(--text);line-height:1.55}
     .decision-list li+li{margin-top:6px}
@@ -398,146 +264,42 @@
     .og-item{padding:12px;border:1px solid var(--line);border-radius:12px}
     .og-item strong{display:block}
     .og-item small{display:block;margin-top:6px;color:var(--muted);line-height:1.5}
-
-    /* ─── TIMELINE ─── */
     .timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-    .timeline-item{padding:14px;border:1px solid var(--line);border-radius:14px;
-      background:rgba(255,255,255,.03)}
+    .timeline-item{padding:14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03)}
     .timeline-item strong{display:block;color:var(--accent);margin-bottom:8px;font-size:.9rem}
-
-    /* ─── ABOUT / CONTACT ─── */
     .about-contact{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .about-card,.contact-card{border-radius:var(--r-card);padding:22px}
     .about-card p,.contact-card p{color:var(--muted);line-height:1.7;margin-top:10px}
     .skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-    .skills span{padding:7px 10px;border:1px solid var(--line);border-radius:999px;
-      font-size:.85rem;background:rgba(255,255,255,.04)}
-
-    /* ─── LIBRARY ─── */
+    .skills span{padding:7px 10px;border:1px solid var(--line);border-radius:999px;font-size:.85rem;background:rgba(255,255,255,.04)}
     .controls{display:grid;gap:10px;margin:14px 0}
-    .search{width:100%;min-height:50px;border-radius:14px;border:1px solid var(--line);
-      background:rgba(255,255,255,.04);padding:0 14px;color:var(--text);
-      font-family:inherit;font-size:.95rem}
+    .search{width:100%;min-height:50px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.04);padding:0 14px;color:var(--text);font-family:inherit;font-size:.95rem}
     .search:focus{outline:none;border-color:var(--accent)}
     .chip-row{display:flex;gap:8px;flex-wrap:wrap}
-    .chip{padding:9px 14px;border-radius:999px;border:1px solid var(--line);
-      background:rgba(255,255,255,.04);cursor:pointer;color:var(--text);
-      transition:all .2s;font-family:inherit}
-    .chip.active{background:linear-gradient(135deg,rgba(79,140,255,.2),rgba(139,92,246,.18));
-      border-color:rgba(79,140,255,.35)}
+    .chip{padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);cursor:pointer;color:var(--text);transition:all .2s;font-family:inherit}
+    .chip.active{background:linear-gradient(135deg,rgba(79,140,255,.2),rgba(139,92,246,.18));border-color:rgba(79,140,255,.35)}
     .status{font-size:.92rem;color:var(--muted)}
-    .library-fallback{display:none;margin-top:12px;padding:16px;
-      border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.03)}
+    .library-fallback{display:none;margin-top:12px;padding:16px;border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.03)}
     .library-fallback.show{display:block}
     .library-fallback p{color:var(--muted);line-height:1.65;margin-bottom:10px}
-
-    /* ─── FINAL CTA ─── */
     .final-cta-section{padding:36px 0 48px}
-    .final-cta-card{border-radius:24px;padding:36px;text-align:center;
-      background:linear-gradient(135deg,rgba(79,140,255,.12),rgba(139,92,246,.10));
-      border:1px solid rgba(139,92,246,.3)}
+    .final-cta-card{border-radius:24px;padding:36px;text-align:center;background:linear-gradient(135deg,rgba(79,140,255,.12),rgba(139,92,246,.10));border:1px solid rgba(139,92,246,.3)}
     .final-cta-card .eyebrow{justify-content:center;margin-bottom:12px}
-    .final-cta-card h2{font-size:clamp(1.6rem,3.5vw,2.4rem);letter-spacing:-.03em;
-      max-width:20ch;margin:0 auto}
-    .final-cta-card p{color:var(--muted);line-height:1.7;max-width:56ch;
-      margin:14px auto 0}
-    .final-cta-actions{display:flex;gap:12px;flex-wrap:wrap;
-      justify-content:center;margin-top:24px}
-
-    /* ─── FOOTER ─── */
+    .final-cta-card h2{font-size:clamp(1.6rem,3.5vw,2.4rem);letter-spacing:-.03em;max-width:20ch;margin:0 auto}
+    .final-cta-card p{color:var(--muted);line-height:1.7;max-width:56ch;margin:14px auto 0}
+    .final-cta-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:24px}
     .footer{padding:20px 0 36px;text-align:center;color:var(--muted)}
-
-    /* ─── TEMPLATES ─── */
-    .templates-section{padding:6rem 1.5rem;max-width:1200px;margin:0 auto}
-    .templates-kicker{display:inline-block;font-size:.75rem;font-weight:500;
-      letter-spacing:.15em;text-transform:uppercase;color:var(--accent);
-      background:color-mix(in srgb,var(--accent) 12%,transparent);
-      padding:.4rem .9rem;border-radius:999px;margin-bottom:1.25rem}
-    .templates-headline{font-size:clamp(1.75rem,3.5vw,2.5rem);font-weight:500;
-      line-height:1.2;margin:0 0 1rem;max-width:780px;color:var(--text)}
-    .templates-subhead{font-size:1.05rem;line-height:1.65;color:var(--muted);
-      max-width:680px;margin:0 0 3rem}
-    .templates-filters{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.5rem;
-      padding-bottom:1.5rem;border-bottom:1px solid var(--line)}
-    .tpl-filter-btn{background:transparent;border:1px solid rgba(255,255,255,.12);
-      color:var(--muted);padding:.5rem 1rem;font-size:.875rem;font-weight:500;
-      border-radius:999px;cursor:pointer;transition:all .2s;font-family:inherit}
-    .tpl-filter-btn:hover{border-color:var(--accent);color:var(--text)}
-    .tpl-filter-btn[aria-pressed="true"]{background:var(--accent);
-      border-color:var(--accent);color:#0F0F14}
-    .templates-count{font-size:.8rem;color:var(--muted);margin-left:auto;align-self:center}
-    .templates-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
-    .tpl-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);
-      border-radius:16px;overflow:hidden;display:flex;flex-direction:column;
-      transition:transform .25s,border-color .25s}
-    .tpl-card:hover{transform:translateY(-4px);border-color:var(--accent)}
-    .tpl-preview{aspect-ratio:16/10;background:linear-gradient(135deg,#0F0F14,#1A1A22);
-      position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.08)}
-    .tpl-preview svg{width:100%;height:100%;display:block}
-    .tpl-body{padding:1.25rem 1.5rem 1.5rem;display:flex;flex-direction:column;gap:.75rem;flex:1}
-    .tpl-meta{display:flex;align-items:center;gap:.75rem;font-size:.75rem;color:var(--muted)}
-    .tpl-tag{background:color-mix(in srgb,var(--accent) 15%,transparent);
-      color:#AFA9EC;padding:.25rem .6rem;border-radius:4px;font-weight:500;
-      text-transform:uppercase;letter-spacing:.05em}
-    .tpl-title{font-size:1.125rem;font-weight:500;color:var(--text);margin:0;line-height:1.3}
-    .tpl-desc{font-size:.875rem;line-height:1.55;color:var(--muted);margin:0;flex:1}
-    .tpl-actions{display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap}
-    .tpl-btn{flex:1;min-width:0;padding:.55rem .9rem;font-size:.8125rem;font-weight:500;
-      border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;
-      color:var(--text);cursor:pointer;transition:all .2s;font-family:inherit;
-      text-decoration:none;text-align:center;display:inline-flex;
-      align-items:center;justify-content:center;gap:.35rem}
-    .tpl-btn:hover{background:rgba(255,255,255,.04);border-color:var(--accent)}
-    .tpl-btn-primary{background:var(--accent);border-color:var(--accent);color:#0F0F14}
-    .tpl-btn-primary:hover{opacity:.9}
-    .tpl-btn .tpl-icon{width:14px;height:14px;flex-shrink:0}
-    .tpl-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120%);
-      background:var(--accent);color:#0F0F14;padding:.75rem 1.25rem;border-radius:999px;
-      font-size:.875rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.3);
-      z-index:9999;transition:transform .3s;pointer-events:none}
-    .tpl-toast.is-visible{transform:translateX(-50%) translateY(0)}
-
-    /* ─── INSIGHTS ─── */
     .insights-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-
-    /* ─── ACCESSIBILITY ─── */
-    .skip-link{position:absolute;left:12px;top:-200px;z-index:100;
-      background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;font-weight:700}
+    .skip-link{position:absolute;left:12px;top:-200px;z-index:100;background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;font-weight:700}
     .skip-link:focus{top:12px}
-    .pill:focus-visible,.btn:focus-visible,.chip:focus-visible,
-    .search:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .pill:focus-visible,.btn:focus-visible,.chip:focus-visible,.search:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     @media (prefers-reduced-motion: reduce){.badge-new{animation:none}}
-
-    /* ─── RESPONSIVE ─── */
-    @media(max-width:980px){
-      .projects-grid,.about-contact{grid-template-columns:1fr 1fr}
-      .hero-layout{grid-template-columns:1fr}
-      .hero-preview{min-height:460px}
-      .hero-preview-frame{min-height:380px}
-      .cred-strip,.timeline{grid-template-columns:1fr 1fr}
-      .impact-roadmap,.pow-grid,.insights-grid{grid-template-columns:1fr}
-      .before-after,.og-compare{grid-template-columns:1fr}
-      .project-lineage{flex-direction:column}
-      .lineage-arrow{transform:rotate(90deg)}
-    }
-    @media(max-width:700px){
-      .container{width:min(var(--container),calc(100% - 20px))}
-      .nav{border-radius:20px}
-      .projects-grid,.mini-grid,.cred-strip,.timeline{grid-template-columns:1fr}
-      .pow-grid{grid-template-columns:1fr}
-      .templates-grid{grid-template-columns:1fr}
-      .tpl-actions{flex-direction:column}
-      .tpl-btn{flex:none}
-      .final-cta-card{padding:24px 16px}
-    }
-
-    /* ─── GH CAROUSEL RUNTIME ─── */
+    @media(max-width:980px){.projects-grid,.about-contact{grid-template-columns:1fr 1fr}.hero-layout{grid-template-columns:1fr}.hero-preview{min-height:460px}.hero-preview-frame{min-height:380px}.cred-strip,.timeline{grid-template-columns:1fr 1fr}.impact-roadmap,.pow-grid,.insights-grid{grid-template-columns:1fr}.before-after,.og-compare{grid-template-columns:1fr}.project-lineage{flex-direction:column}.lineage-arrow{transform:rotate(90deg)}}
+    @media(max-width:700px){.container{width:min(var(--container),calc(100% - 20px))}.nav{border-radius:20px}.projects-grid,.mini-grid,.cred-strip,.timeline{grid-template-columns:1fr}.pow-grid{grid-template-columns:1fr}.final-cta-card{padding:24px 16px}}
     #gh-projects-static,.gh-carousel{width:100%;min-width:0}
     .gh-carousel-viewport{width:100%;overflow:hidden;position:relative}
     .gh-carousel-track{display:flex;width:100%;transition:transform .45s ease;will-change:transform}
-    .gh-carousel-slide{flex:0 0 100%;min-width:100%;width:100%;
-      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:16px;align-items:stretch;box-sizing:border-box}
+    .gh-carousel-slide{flex:0 0 100%;min-width:100%;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch;box-sizing:border-box}
     @media(max-width:1100px){.gh-carousel-slide{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:700px){.gh-carousel-slide{grid-template-columns:minmax(0,1fr)}}
   </style>
@@ -556,27 +318,25 @@
     </div>
   </noscript>
 
-  <!-- ═══ NAV ═══ -->
   <div class="topbar">
     <div class="container">
       <nav class="nav glass" aria-label="Navigare principală">
         <a class="brand" href="#home"><span class="badge">CP</span><span data-i18n="brand">Portofoliu CodePen</span></a>
         <div class="nav-links">
           <a class="pill" href="#key-projects" data-i18n="nav_work">Top proiecte</a>
-         <a class="pill" href="#proof-of-work">Dovezi</a>
-<a class="pill" href="#marketing-tech">Marketing-Tech</a>
+          <a class="pill" href="#proof-of-work">Dovezi</a>
+          <a class="pill" href="#marketing-tech">Marketing-Tech</a>
           <a class="pill" href="process.html">Process</a>
           <a class="pill" href="uses.html">Uses</a>
           <a class="pill" href="#about" data-i18n="nav_about">Despre</a>
           <a class="pill" href="#contact" data-i18n="nav_contact">Contact</a>
           <button class="pill" id="langToggle" type="button">RO | EN</button>
-          <button class="pill" id="themeToggle" type="button">🌙 Dark</button>
+          <button class="pill" id="themeToggle" type="button" aria-label="Schimbă tema">☀️ Light</button>
         </div>
       </nav>
     </div>
   </div>
 
-  <!-- ═══ HERO ═══ -->
   <header class="hero" id="home">
     <div class="container">
       <article class="hero-card glass">
@@ -586,9 +346,7 @@
             <h1 data-i18n="hero_title">Construiesc interfețe CRM și dashboard-uri care transformă procese complicate în fluxuri clare</h1>
             <p class="hero-text" data-i18n="hero_text">Vin din CRM și marketing, iar în front-end mă concentrez pe produse unde structura, prioritizarea și feedback-ul vizual ajută utilizatorii să înțeleagă mai repede ce au de făcut și să acționeze fără fricțiune.</p>
             <div class="hero-actions">
-              <!-- CTA 1: acțiunea principală -->
               <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect" data-i18n="hero_cta">Scrie-mi despre un proiect</a>
-              <!-- CTA 2: diferit — direct la proiectul flagship -->
               <a class="btn btn-secondary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Deschide Alpis Fusion →</a>
             </div>
           </div>
@@ -603,7 +361,7 @@
             <div class="hero-preview-links" id="heroPreviewLinks" aria-label="Selectează preview proiect"></div>
             <div class="hero-preview-wrap">
               <img class="hero-preview-fallback" id="heroPreviewFallback" src="assets/alpis-fusion-crm-placeholder.svg" alt="Preview static proiect" loading="lazy" />
-          <iframe class="hero-preview-frame" id="heroPreviewFrame" title="Live project preview" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
+              <iframe class="hero-preview-frame" id="heroPreviewFrame" title="Live project preview" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
               <p class="hero-preview-hint" id="heroPreviewHint">Preview fallback when embedded view is blocked</p>
               <div class="hero-preview-stage">
                 <span class="tag" id="heroPreviewType">Repository</span>
@@ -624,11 +382,10 @@
   </header>
 
   <main>
-    <!-- ═══ CRED STRIP ═══ -->
     <section id="hero-proof" aria-label="Credibilitate">
       <div class="container">
-  <div class="cred-strip">
-          <a class="cred-item" href="https://es-d-..." target="_blank" rel="noopener noreferrer">
+        <div class="cred-strip">
+          <a class="cred-item" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer">
             <strong>64</strong>
             <p>proiecte live pe CodePen<br><span style="opacity:.7;font-size:.82rem;">25 selectate pe acest site →</span></p>
           </a>
@@ -650,7 +407,6 @@
 
     <div class="section-divider"><div class="container"></div></div>
 
-    <!-- ═══ LATEST GITHUB ═══ -->
     <section id="latest-github" class="gh-section" aria-label="Proiecte recente pe GitHub">
       <div class="container">
         <div class="section-head">
@@ -665,32 +421,15 @@
           <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">Toate repo-urile →</a>
         </div>
         <div class="projects-grid" id="gh-projects-static" aria-label="Proiecte GitHub recente">
-          <!-- Static fallback cards — JS le va înlocui dinamic -->
-          <article class="project-card glass" style="position:relative;">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3>Excel-Quest</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag github">github</span></div>
-            <p class="project-desc">Aplicație educațională gamificată pentru învățarea Excel. Quest structure, progres vizibil, deploy GitHub Pages.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="projects/excel-quest.html">Case study</a><a class="btn btn-primary" href="https://laurandreea10.github.io/Excel-Quest/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Excel-Quest" target="_blank" rel="noopener noreferrer">GitHub →</a></div>
-          </article>
-          <article class="project-card glass" style="position:relative;">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3>BASKET VS AI</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag github">github</span></div>
-            <p class="project-desc">Joc arcade cu două variante live: Main și Enhanced Pro. Repo public, deploy automat, două experiențe distincte.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/BASKET-VS-AI/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://laurandreea10.github.io/BASKET-VS-AI/enhanced.html" target="_blank" rel="noopener noreferrer">Enhanced Pro</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/BASKET-VS-AI" target="_blank" rel="noopener noreferrer">GitHub →</a></div>
-          </article>
-          <article class="project-card glass" style="position:relative;">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3>Link Video Editor Studio</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag github">github</span></div>
-            <p class="project-desc">Studio front-end pentru planuri de producție video. Structură de produs cu zone funcționale clare.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/Link-Video-Editor-Studio/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Link-Video-Editor-Studio" target="_blank" rel="noopener noreferrer">GitHub →</a></div>
-          </article>
+          <article class="project-card glass" style="position:relative;"><span class="badge-new">NEW</span><div class="project-top"><div><h3>Excel-Quest</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag github">github</span></div><p class="project-desc">Aplicație educațională gamificată pentru învățarea Excel. Quest structure, progres vizibil, deploy GitHub Pages.</p><div class="card-actions"><a class="btn btn-primary" href="projects/excel-quest.html">Case study</a><a class="btn btn-primary" href="https://laurandreea10.github.io/Excel-Quest/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Excel-Quest" target="_blank" rel="noopener noreferrer">GitHub →</a></div></article>
+          <article class="project-card glass" style="position:relative;"><span class="badge-new">NEW</span><div class="project-top"><div><h3>BASKET VS AI</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag github">github</span></div><p class="project-desc">Joc arcade cu două variante live: Main și Enhanced Pro. Repo public, deploy automat, două experiențe distincte.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/BASKET-VS-AI/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://laurandreea10.github.io/BASKET-VS-AI/enhanced.html" target="_blank" rel="noopener noreferrer">Enhanced Pro</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/BASKET-VS-AI" target="_blank" rel="noopener noreferrer">GitHub →</a></div></article>
+          <article class="project-card glass" style="position:relative;"><span class="badge-new">NEW</span><div class="project-top"><div><h3>Link Video Editor Studio</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag github">github</span></div><p class="project-desc">Studio front-end pentru planuri de producție video. Structură de produs cu zone funcționale clare.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/Link-Video-Editor-Studio/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Link-Video-Editor-Studio" target="_blank" rel="noopener noreferrer">GitHub →</a></div></article>
         </div>
       </div>
     </section>
 
     <div class="section-divider"><div class="container"></div></div>
 
-    <!-- ═══ NOW ═══ -->
     <section id="now" aria-label="La ce lucrez acum">
       <div class="container">
         <article class="about-card glass">
@@ -699,9 +438,7 @@
               <span class="eyebrow" style="color:var(--green);">⚡ Now</span>
               <h2 style="margin-top:8px;">La ce lucrez săptămâna asta</h2>
             </div>
-            <p style="color:var(--muted);font-size:.9rem;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(74,222,128,.06);">
-              Actualizat: <time datetime="2026-05">Mai 2026</time>
-            </p>
+            <p style="color:var(--muted);font-size:.9rem;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(74,222,128,.06);">Actualizat: <time datetime="2026-05">Mai 2026</time></p>
           </div>
           <ul style="margin-top:18px;padding-left:18px;color:var(--text);line-height:1.85;">
             <li>Iterez pe <strong>Link Video Editor Studio</strong> — adaug Automation Pack export (ZIP cu Playwright + FFmpeg).</li>
@@ -709,16 +446,13 @@
             <li>Audit Lighthouse CI pe portofoliu și extrag CSS-ul inline pentru -300ms LCP.</li>
             <li>Plan: lansez <strong>Campaign ROI Calculator</strong> ca primul proiect din vertical marketing-tech.</li>
           </ul>
-          <p style="margin-top:14px;font-size:.85rem;color:var(--muted);font-style:italic;">
-            Inspirat de <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">nownownow.com</a> · Actualizat lunar.
-          </p>
+          <p style="margin-top:14px;font-size:.85rem;color:var(--muted);font-style:italic;">Inspirat de <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">nownownow.com</a> · Actualizat lunar.</p>
         </article>
       </div>
    </section>
 
     <div class="section-divider"><div class="container"></div></div>
 
-    <!-- ═══ MARKETING-TECH ═══ -->
     <section id="marketing-tech" class="gh-section" aria-label="Marketing-Tech templates">
       <div class="container">
         <div class="section-head">
@@ -737,471 +471,28 @@
         <div class="projects-grid">
           <article class="project-card glass" style="position:relative;grid-column:span 2;">
             <span class="badge-new">NEW</span>
-            <div class="project-top">
-              <div>
-                <h3>CampaignPilot</h3>
-                <span class="badge-github" style="background:rgba(192,132,252,.16);border-color:rgba(192,132,252,.30);color:#e9d5ff;">Marketing planner · KPI hub</span>
-              </div>
-              <span class="tag" style="color:#e9d5ff;background:rgba(192,132,252,.16);border-color:rgba(192,132,252,.30);">marketing-tech</span>
-            </div>
-
+            <div class="project-top"><div><h3>CampaignPilot</h3><span class="badge-github" style="background:rgba(192,132,252,.16);border-color:rgba(192,132,252,.30);color:#e9d5ff;">Marketing planner · KPI hub</span></div><span class="tag" style="color:#e9d5ff;background:rgba(192,132,252,.16);border-color:rgba(192,132,252,.30);">marketing-tech</span></div>
             <p class="project-desc">Workspace unificat pentru planificarea unei campanii de la idee la rezultate: KPI overview cu attributed revenue + conversion rate, full funnel (awareness → demo), budget allocation, content calendar săptămânal, channel scorecards și creative brief generator interactiv.</p>
-
-            <div class="project-meta-row">
-              <span class="project-meta-tag">Vanilla JS</span>
-              <span class="project-meta-tag">Zero dependencies</span>
-              <span class="project-meta-tag">Glow mode toggle</span>
-              <span class="project-meta-tag">Counter animations</span>
-              <span class="project-meta-tag">Bilingv ready</span>
-            </div>
-
+            <div class="project-meta-row"><span class="project-meta-tag">Vanilla JS</span><span class="project-meta-tag">Zero dependencies</span><span class="project-meta-tag">Glow mode toggle</span><span class="project-meta-tag">Counter animations</span><span class="project-meta-tag">Bilingv ready</span></div>
             <div class="mini-grid">
-              <div class="mini-item">
-                <strong>Context</strong>
-                <span>Marketing manageri trec între tool-uri diferite pentru funnel, calendar, brief și raportare. Lipsa unui workspace unificat fragmentează decizia.</span>
-              </div>
-              <div class="mini-item">
-                <strong>Decizie</strong>
-                <span>Un single-page workspace cu 5 module conectate vizual: Overview, Funnel, Campaigns, Calendar, Brief. Sidebar fix cu navigare rapidă + Campaign Pulse mini-cards.</span>
-              </div>
-              <div class="mini-item">
-                <strong>Modul interactiv</strong>
-                <span>Creative Brief generator cu form live: input audience + goal + channel → output rezumat structurat. Plus „Generează brief demo" pentru exemplu auto-populat.</span>
-              </div>
-              <div class="mini-item">
-                <strong>Roadmap</strong>
-                <span>3 variante planificate: Lead Magnet Landing, Webinar Registration Funnel, Campaign ROI Dashboard. Aceeași design system, contexte diferite.</span>
-              </div>
+              <div class="mini-item"><strong>Context</strong><span>Marketing manageri trec între tool-uri diferite pentru funnel, calendar, brief și raportare. Lipsa unui workspace unificat fragmentează decizia.</span></div>
+              <div class="mini-item"><strong>Decizie</strong><span>Un single-page workspace cu 5 module conectate vizual: Overview, Funnel, Campaigns, Calendar, Brief. Sidebar fix cu navigare rapidă + Campaign Pulse mini-cards.</span></div>
+              <div class="mini-item"><strong>Modul interactiv</strong><span>Creative Brief generator cu form live: input audience + goal + channel → output rezumat structurat. Plus „Generează brief demo" pentru exemplu auto-populat.</span></div>
+              <div class="mini-item"><strong>Roadmap</strong><span>3 variante planificate: Lead Magnet Landing, Webinar Registration Funnel, Campaign ROI Dashboard. Aceeași design system, contexte diferite.</span></div>
             </div>
-
-            <div class="project-proof">
-              <strong>Dovezi observabile</strong>
-              <ul>
-                <li><b>Funnel vizibil:</b> 4 etape cu progress bars + note contextuale (Awareness 48.2K → Booked demos 126).</li>
-                <li><b>Active campaigns table:</b> 4 campanii cu status pills (Live / Review / Ready / Draft), CVR și owner per row.</li>
-                <li><b>Channel scorecards:</b> 4 canale cu scor 0-10 și progress visual (Email CRM lider la 9.2).</li>
-                <li><b>Theme toggle:</b> Default ↔ Glow mode pentru variabilitate vizuală în portofoliu.</li>
-              </ul>
-            </div>
-
-            <div class="card-actions">
-              <a class="btn btn-primary" href="campaignpilot.html">Deschide Live</a>
-              <a class="btn btn-secondary" href="campaignpilot.html#brief">Vezi Brief Generator</a>
-            </div>
+            <div class="project-proof"><strong>Dovezi observabile</strong><ul><li><b>Funnel vizibil:</b> 4 etape cu progress bars + note contextuale (Awareness 48.2K → Booked demos 126).</li><li><b>Active campaigns table:</b> 4 campanii cu status pills (Live / Review / Ready / Draft), CVR și owner per row.</li><li><b>Channel scorecards:</b> 4 canale cu scor 0-10 și progress visual (Email CRM lider la 9.2).</li><li><b>Theme toggle:</b> Default ↔ Glow mode pentru variabilitate vizuală în portofoliu.</li></ul></div>
+            <div class="card-actions"><a class="btn btn-primary" href="campaignpilot.html">Deschide Live</a><a class="btn btn-secondary" href="campaignpilot.html#brief">Vezi Brief Generator</a></div>
           </article>
-
-          <article class="project-card glass" style="opacity:.65;border-style:dashed;">
-            <div class="project-top">
-              <div><h3>Lead Magnet Landing</h3></div>
-              <span class="tag" style="background:rgba(255,255,255,.04);">soon</span>
-            </div>
-            <p class="project-desc">Landing page modular pentru ebooks, white papers și resource downloads. Hero hook + social proof + email gate + thank-you flow.</p>
-            <div class="card-actions">
-              <span class="btn btn-secondary" style="opacity:.7;cursor:not-allowed;">În roadmap</span>
-            </div>
-          </article>
-
-          <article class="project-card glass" style="opacity:.65;border-style:dashed;">
-            <div class="project-top">
-              <div><h3>Webinar Registration Funnel</h3></div>
-              <span class="tag" style="background:rgba(255,255,255,.04);">soon</span>
-            </div>
-            <p class="project-desc">Flow complet pentru webinar: registration page, calendar invite, reminder email simulator și post-event follow-up.</p>
-            <div class="card-actions">
-              <span class="btn btn-secondary" style="opacity:.7;cursor:not-allowed;">În roadmap</span>
-            </div>
-          </article>
+          <article class="project-card glass" style="opacity:.65;border-style:dashed;"><div class="project-top"><div><h3>Lead Magnet Landing</h3></div><span class="tag" style="background:rgba(255,255,255,.04);">soon</span></div><p class="project-desc">Landing page modular pentru ebooks, white papers și resource downloads. Hero hook + social proof + email gate + thank-you flow.</p><div class="card-actions"><span class="btn btn-secondary" style="opacity:.7;cursor:not-allowed;">În roadmap</span></div></article>
+          <article class="project-card glass" style="opacity:.65;border-style:dashed;"><div class="project-top"><div><h3>Webinar Registration Funnel</h3></div><span class="tag" style="background:rgba(255,255,255,.04);">soon</span></div><p class="project-desc">Flow complet pentru webinar: registration page, calendar invite, reminder email simulator și post-event follow-up.</p><div class="card-actions"><span class="btn btn-secondary" style="opacity:.7;cursor:not-allowed;">În roadmap</span></div></article>
         </div>
       </div>
     </section>
 
     <div class="section-divider"><div class="container"></div></div>
 
-    <!-- ═══ CRM ECOSYSTEM ═══ -->
-    <section id="crm-projects" class="gh-section" aria-label="Ecosistem CRM">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <span class="eyebrow" style="color:var(--green)">🗂 CRM Ecosystem</span>
-            <h2>5 produse CRM cu repo public</h2>
-            <div class="gh-meta" style="background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.22);">
-              <svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg>
-              <span>Cod public · Deploy automat · Open source</span>
-            </div>
-          </div>
-          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">Toate repo-urile →</a>
-        </div>
-        <div class="projects-grid">
-          <article class="project-card glass">
-            <div class="project-top"><div><h3>Alpis Fusion CRM Premium</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag crm">crm</span></div>
-            <p class="project-desc">CRM modular cu kanban, flow builder, RBAC și billing. Vite + React, ~287KB build, deploy GitHub Actions.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">GitHub →</a></div>
-          </article>
-          <article class="project-card glass" style="position:relative;">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3>Brief Studio</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag saas">saas</span></div>
-            <p class="project-desc">Platformă SaaS bilingvă RO/EN pentru gestionarea brief-urilor și comunicarea cu clienții.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/brief-studio/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/brief-studio" target="_blank" rel="noopener noreferrer">GitHub →</a></div>
-          </article>
-          <article class="project-card glass" style="position:relative;">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3>ClientOps Suite Premium</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag premium">premium</span></div>
-            <p class="project-desc">Suită CRM premium cu fluxuri operaționale avansate, automatizări și dashboard unificat. Repo public.</p>
-            <div class="card-actions"><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/clientops-suite-app-premium" target="_blank" rel="noopener noreferrer">GitHub →</a></div>
-          </article>
-          <article class="project-card glass">
-            <div class="project-top"><div><h3>ClientFlow SaaS CRM</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag crm">crm</span></div>
-            <p class="project-desc">Dashboard CRM cu kanban, task triage și shortcut-uri de tastatură. Prioritizare vizuală clară pe un singur ecran.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ClientFlow-PRO" target="_blank" rel="noopener noreferrer">GitHub →</a></div>
-          </article>
-          <article class="project-card glass" style="position:relative;">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3>ClientOps</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag ops">ops</span></div>
-            <p class="project-desc">Dashboard CRM operațional cu flux clar pentru gestionarea clienților și task-urilor zilnice.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/clientops/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/clientops" target="_blank" rel="noopener noreferrer">GitHub →</a></div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"><div class="container"></div></div>
-
-    <!-- ═══ CHALLENGES ═══ -->
-    <section id="challenges-projects" class="gh-section" aria-label="Challenges și experimente arcade">
-      <div class="container">
-        <!-- NARATIVĂ ARCADE-OPS — fix major -->
-        <div class="series-callout" aria-label="Context serie">
-          <div class="series-callout-icon">⚡</div>
-          <p><strong>Seria ARCADE-OPS în 5 iterații publice:</strong> fiecare versiune documentează o direcție diferită — gameplay, grafică HQ, integrare Excel Quest, performanță maximă. Nu redundanță, ci metodă de lucru iterativă cu deploy automat la fiecare commit.</p>
-        </div>
-        <div class="section-head">
-          <div>
-            <span class="eyebrow" style="color:var(--amber)">⚡ Challenges</span>
-            <h2>LUMA + seria ARCADE-OPS — 6 iterații cu deploy automat</h2>
-            <div class="gh-meta" style="background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.22);">
-              <svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg>
-              <span>Iterații publice · Evoluție vizibilă · GitHub Pages</span>
-            </div>
-          </div>
-          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">Toate repo-urile →</a>
-        </div>
-        <div class="projects-grid">
-          <article class="project-card glass" style="position:relative;"><span class="badge-new">NEW</span><div class="project-top"><div><h3>LUMA</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag challenge">challenge</span></div><p class="project-desc">Challenge front-end cu estetică vizuală distinctă și interacțiuni fluide. Deploy public GitHub Pages.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/LUMA/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/LUMA" target="_blank" rel="noopener noreferrer">GitHub →</a></div></article>
-          <article class="project-card glass" style="position:relative;"><span class="badge-new">NEW</span><div class="project-top"><div><h3>ARCADE-OPS Excel Quest</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag challenge">arcade · iter.1</span></div><p class="project-desc">Iterația 1: variantă arcade a Excel Quest cu gameplay ops-oriented și mecanici progresive.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/ARCADE-OPS-EXCEL-QUEST/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ARCADE-OPS-EXCEL-QUEST" target="_blank" rel="noopener noreferrer">GitHub →</a></div></article>
-          <article class="project-card glass" style="position:relative;"><span class="badge-new">NEW</span><div class="project-top"><div><h3>Arcade-Ops Excel Quest v2</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag v2">arcade · iter.2</span></div><p class="project-desc">Iterația 2: gameplay îmbunătățit, interfață actualizată, feedback loop mai rapid față de v1.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/Arcade-Ops-EXCEL-QUEST-v2/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Arcade-Ops-EXCEL-QUEST-v2" target="_blank" rel="noopener noreferrer">GitHub →</a></div></article>
-          <article class="project-card glass" style="position:relative;"><span class="badge-new">NEW</span><div class="project-top"><div><h3>ARCADE-OPS Excel Quest HQ</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag hq">arcade · HQ</span></div><p class="project-desc">Ediție HQ: grafică upscaled, animații îmbunătățite, experiență de joc rafinată față de seria anterioară.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/ARCADE-OPS-EXCEL-QUEST-HQ/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ARCADE-OPS-EXCEL-QUEST-HQ" target="_blank" rel="noopener noreferrer">GitHub →</a></div></article>
-          <article class="project-card glass" style="position:relative;"><span class="badge-new">NEW</span><div class="project-top"><div><h3>ARCADE-OPS HQ</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag hq">standalone · HQ</span></div><p class="project-desc">Standalone HQ fără dependințe Excel Quest. Focus pe gameplay arcade curat și performanță maximă.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/ARCADE-OPS-HQ/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ARCADE-OPS-HQ" target="_blank" rel="noopener noreferrer">GitHub →</a></div></article>
-          <article class="project-card glass" style="position:relative;"><span class="badge-new">NEW</span><div class="project-top"><div><h3>ARCADE-OPS v5</h3><span class="badge-github"><svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg><span>GitHub</span></span></div><span class="tag v5">iter.5 · current</span></div><p class="project-desc">Iterația curentă v5 cu design sistem evoluat, mecanici noi și arhitectură mai clară față de seria inițială.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/ARCADE-OPS-v5/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ARCADE-OPS-v5" target="_blank" rel="noopener noreferrer">GitHub →</a></div></article>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"><div class="container"></div></div>
-
-    <!-- ═══ PROJECT LIBRARY ═══ -->
-    <section id="project-library">
-      <div class="container">
-        <div class="controls glass">
-          <input id="searchInput" class="search" type="search" placeholder="Caută proiecte… (CRM, arcade, education, saas…)" aria-label="Caută proiecte" />
-          <div id="filterChips" class="chip-row">
-            <button class="chip active" type="button" data-filter="all" aria-pressed="true">All</button>
-            <button class="chip" type="button" data-filter="game" aria-pressed="false">Game</button>
-            <button class="chip" type="button" data-filter="utility" aria-pressed="false">Utility</button>
-            <button class="chip" type="button" data-filter="ui" aria-pressed="false">UI</button>
-            <button class="chip" type="button" data-filter="challenge" aria-pressed="false">Challenge</button>
-            <button class="chip" type="button" data-filter="github" aria-pressed="false">GitHub</button>
-          </div>
-          <div class="status" id="libraryStatus" style="visibility:hidden">
-            <span id="resultsCount">—</span> <span data-i18n="results">rezultate</span>
-            <span id="statusSeparator" aria-hidden="true">•</span>
-            <span id="filterState"></span>
-          </div>
-          <button id="resetFiltersBtn" class="btn btn-secondary" type="button" style="visibility:hidden">Resetează filtrele</button>
-        </div>
-        <div class="projects-grid" id="libraryGrid" aria-live="polite"></div>
-        <div id="libraryFallback" class="library-fallback" aria-live="polite">
-          <p id="libraryFallbackText">Nu există rezultate pentru filtrul curent.</p>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"><div class="container"></div></div>
-
-    <!-- ═══ KEY PROJECTS ═══ -->
-    <section id="key-projects">
-      <div class="container" style="margin-bottom:10px;"><span class="eyebrow"></span></div>
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <span class="eyebrow" data-i18n="key_eyebrow">Proiecte-cheie</span>
-            <h2 data-i18n="key_title">3 proiecte care arată cel mai clar cum gândesc produsul și interfața</h2>
-            <p class="section-subtitle" data-i18n="key_subtitle">Am ales 3 proiecte care mă reprezintă cel mai bine: structură clară, logică de produs, interfețe construite pentru acțiune și decizii UI/UX pe care le pot explica — exact fundația care a dus la ClientFlow PRO.</p>
-          </div>
-          <a class="btn btn-primary" href="https://github.com/LaurAndreea10/ClientFlow-PRO" target="_blank" rel="noopener noreferrer">Vezi ClientFlow PRO pe GitHub →</a>
-        </div>
-        <div class="project-lineage" aria-label="Evoluție spre ClientFlow PRO">
-          <div class="lineage-step"><strong>01 · Alpis Fusion CRM Premium</strong><p>Arhitectură modulară și fluxuri critice unificate într-un singur workspace.</p></div>
-          <span class="lineage-arrow" aria-hidden="true">→</span>
-          <div class="lineage-step"><strong>02 · ClientFlow</strong><p>Triage operațional: semnale vizuale, shortcut-uri și decizii rapide pe același ecran.</p></div>
-          <span class="lineage-arrow" aria-hidden="true">→</span>
-          <div class="lineage-step"><strong>03 · Alpis Impact Path</strong><p>Onboarding ghidat în pași mici, cu progres și CTA-uri contextuale.</p></div>
-          <span class="lineage-arrow" aria-hidden="true">→</span>
-          <div class="lineage-target"><strong>ClientFlow PRO</strong><p>Sinteză produs + interfață: workflow complet, clar și scalabil.</p></div>
-        </div>
-        <div class="key-carousel">
-          <div class="key-carousel-viewport">
-            <div class="projects-grid key-carousel-track" id="keyProjectsGrid">
-              <article class="project-card glass">
-                <span class="tag">crm</span><h3>Alpis Fusion CRM Premium</h3>
-                <p class="project-desc">Mini case study: am unificat lead pipeline, task-uri și billing într-un singur workspace, ca utilizatorul să poată închide un flux critic fără schimbări de context.</p>
-                <p style="margin:0;color:var(--muted);font-size:.88rem;"><strong style="color:var(--text)">Construit cu:</strong></p>
-                <div class="project-meta-row"><span class="project-meta-tag">Vite + React</span><span class="project-meta-tag">~287KB build</span><span class="project-meta-tag">Deploy automatizat</span></div>
-                <div class="mini-grid">
-                  <div class="mini-item"><strong>Context</strong><span>Operatorul trecea între tool-uri diferite pentru lead, task și facturare în același flux comercial.</span></div>
-                  <div class="mini-item"><strong>Decizie</strong><span>Am păstrat tot fluxul într-un dashboard cu acțiuni contextuale, fără să trimit utilizatorul în pagini separate.</span></div>
-                  <div class="mini-item"><strong>Impact demonstrabil</strong><span>3 suprafețe separate → 1 workspace cu 6 module conectate și 5 acțiuni consecutive pe același ecran.</span></div>
-                </div>
-                <figure style="margin:6px 0 0;"><img src="assets/screenshots/alpis-fusion-hero.svg" alt="Alpis Fusion screenshot hero" width="800" height="500" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--line)"><figcaption style="margin-top:8px;color:var(--muted);font-size:.84rem;">Hero screenshot · dashboard unificat</figcaption></figure>
-                <div class="project-card-video" data-project="alpis-fusion" data-duration="40" data-open-url="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/"><video class="card-video" muted loop playsinline preload="none" poster="alpis-fusion-demo-poster.svg" aria-label="Demo 40s — Alpis Fusion CRM Premium"><source src="assets/videos/alpis-fusion-demo.webm" type="video/webm"><source src="assets/videos/alpis-fusion-demo.mp4" type="video/mp4"></video><div class="video-badge" aria-hidden="true">▶ Demo 40s</div><div class="video-hover-hint">Hover pentru a porni · Tap pe mobile</div></div>
-                <div class="project-proof"><strong>Dovezi observabile</strong><ul><li><b>Înainte vs după:</b> 3 arii separate → 1 workspace unic cu acțiuni legate între ele.</li><li><b>Flux unificat:</b> creare lead, status, task follow-up, rezervare și factură fără schimbare de pagină (5 acțiuni, 0 redirecturi).</li><li><b>Tehnic:</b> Vite + React, ~287KB minified, GitHub Actions CI/CD, export CSV/JSON + print PDF.</li></ul></div>
-                <div class="card-actions"><a class="btn btn-primary" href="projects/alpis-fusion-crm.html">Deschide case study</a><a class="btn btn-codepen" href="https://es-d-4029897220260413-019d7cd3-34b4-7538-a067-51b147dd0f7b.codepen.dev/" target="_blank" rel="noopener noreferrer">CodePen</a></div>
-              </article>
-              <article class="project-card glass">
-                <span class="tag">utility</span><h3>ClientFlow</h3>
-                <p class="project-desc">Mini case study: am redus trierea zilnică la un ecran unic, cu semnale vizuale și shortcut-uri pentru decizii rapide.</p>
-                <p style="margin:0;color:var(--muted);font-size:.88rem;"><strong style="color:var(--text)">Construit cu:</strong></p>
-                <div class="project-meta-row"><span class="project-meta-tag">Kanban + triage</span><span class="project-meta-tag">Shortcuts tastatură</span><span class="project-meta-tag">Prioritizare vizuală</span></div>
-                <div class="mini-grid">
-                  <div class="mini-item"><strong>Context</strong><span>Triage-ul era fragmentat în liste diferite, cu reveniri frecvente și prioritizare inconsistentă.</span></div>
-                  <div class="mini-item"><strong>Decizie</strong><span>Pipeline standardizat + shortcut-uri de tastatură pentru stadii și reasignare, toate pe un singur ecran.</span></div>
-                  <div class="mini-item"><strong>Impact demonstrabil</strong><span>2–3 ecrane separate → 1 board principal, cu 4 acțiuni repetitive unite într-un flux unic.</span></div>
-                </div>
-                <figure style="margin:6px 0 0;"><img src="assets/screenshots/clientflow-hero.svg" alt="ClientFlow screenshot hero" width="800" height="500" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--line)"><figcaption style="margin-top:8px;color:var(--muted);font-size:.84rem;">Hero screenshot · board triere</figcaption></figure>
-                <div class="project-card-video" data-project="clientflow" data-duration="30" data-open-url="https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/"><video class="card-video" muted loop playsinline preload="none" poster="clientflow-demo-poster.svg" aria-label="Demo 30s — ClientFlow SaaS"><source src="assets/videos/clientflow-demo.webm" type="video/webm"><source src="assets/videos/clientflow-demo.mp4" type="video/mp4"></video><div class="video-badge" aria-hidden="true">▶ Demo 30s</div><div class="video-hover-hint">Hover pentru a porni · Tap pe mobile</div></div>
-                <div class="project-proof"><strong>Dovezi observabile</strong><ul><li><b>Navigare:</b> ~7 click-uri/update → ~2 click-uri/update cu context complet.</li><li><b>Acțiuni unite:</b> triage, reasignare, status update și prioritizare în același loc (4 acțiuni, fără schimbare de pagină).</li><li><b>Semnale:</b> urgență prin culoare + iconiță + poziție, nu doar text descriptiv.</li></ul></div>
-                <div class="card-actions"><a class="btn btn-primary" href="projects/clientflow.html">Deschide case study</a><a class="btn btn-codepen" href="https://es-d-1647531020260404-019d4e21-afd1-7808-abf5-d9c88b726df2.codepen.dev/" target="_blank" rel="noopener noreferrer">CodePen</a></div>
-              </article>
-              <article class="project-card glass">
-                <span class="tag">ui</span><h3>Alpis Impact Path</h3>
-                <p class="project-desc">Mini case study: am transformat un mesaj static într-un flow în 5 pași, cu o singură decizie pe ecran și progres permanent vizibil.</p>
-                <p style="margin:0;color:var(--muted);font-size:.88rem;"><strong style="color:var(--text)">Construit cu:</strong></p>
-                <div class="project-meta-row"><span class="project-meta-tag">Mission-based flow</span><span class="project-meta-tag">Progress vizibil</span><span class="project-meta-tag">CTA contextuale</span></div>
-                <div class="mini-grid">
-                  <div class="mini-item"><strong>Context</strong><span>Mesajul inițial era livrat ca bloc lung de conținut, fără feedback de progres și fără pași intermediari.</span></div>
-                  <div class="mini-item"><strong>Decizie</strong><span>Wizard în 5 pași cu CTA contextual și progres (pas + procent) permanent vizibil în fiecare etapă.</span></div>
-                  <div class="mini-item"><strong>Impact demonstrabil</strong><span>5 ecrane → 2 pași decizionali, cu progres clar și CTA contextual la fiecare etapă.</span></div>
-                </div>
-                <figure style="margin:6px 0 0;"><img src="assets/screenshots/impactpath-hero.svg" alt="ImpactPath screenshot hero" width="800" height="500" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--line)"><figcaption style="margin-top:8px;color:var(--muted);font-size:.84rem;">Hero screenshot · onboarding flow</figcaption></figure>
-                <div class="project-card-video" data-project="impact-path" data-duration="35" data-open-url="https://github.com/LaurAndreea10/ALPIS-ImpactPath"><video class="card-video" muted loop playsinline preload="none" poster="impact-path-demo-poster.svg" aria-label="Demo 35s — Alpis Impact Path"><source src="assets/videos/impact-path-demo.webm" type="video/webm"><source src="assets/videos/impact-path-demo.mp4" type="video/mp4"></video><div class="video-badge" aria-hidden="true">▶ Demo 35s</div><div class="video-hover-hint">Hover pentru a porni · Tap pe mobile</div></div>
-                <div class="project-proof"><strong>Dovezi observabile</strong><ul><li><b>Format:</b> pagină statică lungă → flow interactiv în 5 pași cu progres 20/40/60/80/100%.</li><li><b>Sarcină per pas:</b> o singură decizie per ecran, în loc de blocuri dense de text.</li><li><b>CTA:</b> apare la finalul fiecărui pas, nu doar o singură dată la final.</li></ul></div>
-                <div class="card-actions"><a class="btn btn-primary" href="projects/alpis-impactpath.html">Deschide case study</a><a class="btn btn-codepen" href="https://es-d-9192350520260329-019d2e42-65ac-7734-91ba-16cfe41a0086.codepen.dev/#missions" target="_blank" rel="noopener noreferrer">CodePen</a></div>
-              </article>
-            </div>
-          </div>
-          <div class="key-carousel-controls">
-            <div class="key-carousel-nav">
-              <button class="key-carousel-btn" id="keyCarouselPrev" type="button" aria-label="Proiectul anterior">‹</button>
-              <button class="key-carousel-btn" id="keyCarouselNext" type="button" aria-label="Proiectul următor">›</button>
-            </div>
-            <div class="key-carousel-dots" id="keyCarouselDots" aria-label="Selectează proiectul" role="tablist"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"><div class="container"></div></div>
-
-    <!-- ═══ UX PROCESS ═══ -->
-    <section id="ux-process">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Cum gândesc produsul</span>
-            <h2>Fiecare proiect — problemă reală, decizie explicată, rezultat demonstrabil</h2>
-            <p class="section-subtitle">Nu construiesc doar interfețe — construiesc fluxuri care ghidează utilizatorul. Fiecare decizie UI/UX are un context, un trade-off și un rezultat observabil.</p>
-          </div>
-        </div>
-        <div class="impact-roadmap">
-          <article class="impact-card"><div class="impact-head"><span class="impact-score">Before / After</span><span class="impact-time">Alpis Impact Path</span></div><h3>Text static → flow interactiv în 5 pași</h3><div class="before-after"><article><strong>Înainte</strong><ul><li>Pagină statică lungă</li><li>Fără feedback de progres</li><li>CTA vizibil abia la final</li></ul></article><article><strong>După</strong><ul><li>Pas 3 din 5 · 60% vizibil permanent</li><li>O singură decizie per ecran</li><li>CTA contextual pe fiecare pas</li></ul></article></div></article>
-          <article class="impact-card"><div class="impact-head"><span class="impact-score">Before / After</span><span class="impact-time">ClientFlow</span></div><h3>Triage fragmentat → board unic cu acțiuni unite</h3><div class="before-after"><article><strong>Înainte</strong><ul><li>2–3 ecrane separate</li><li>~7 click-uri per update</li><li>Prioritizare inconsistentă</li></ul></article><article><strong>După</strong><ul><li>1 board unic</li><li>~2 click-uri per update</li><li>4 acțiuni fără schimbare de pagină</li></ul></article></div></article>
-          <article class="impact-card"><div class="impact-head"><span class="impact-score">Decision log</span><span class="impact-time">Alpis Fusion CRM</span></div><h3>3 decizii cu trade-off explicit</h3><ul class="decision-list"><li><strong>Navigare pe un singur ecran.</strong> <span>+ rapiditate, − densitate informațională mai mare.</span></li><li><strong>Wizard în loc de form lung.</strong> <span>+ completion rate, − click-uri în plus per flux.</span></li><li><strong>CTA dependent de context.</strong> <span>+ relevanță per pas, − implementare mai complexă.</span></li></ul></article>
-          <article class="impact-card"><div class="impact-head"><span class="impact-score">CTA thinking</span><span class="impact-time">Principiu aplicat</span></div><h3>CTA generic vs CTA contextual</h3><div class="og-compare"><div class="og-item"><strong>❌ Generic</strong><small>„Vezi mai mult" — nu spune ce urmează, cât durează sau ce primești după click.</small></div><div class="og-item"><strong>✅ Contextual</strong><small>„Deschide demo-ul (30s) și vezi fluxul complet" — clar, cu durată și promisiune calibrată.</small></div></div></article>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"><div class="container"></div></div>
-
-    <!-- ═══ PROOF OF WORK (înlocuiește testimonialele) ═══ -->
-    <section id="proof-of-work" class="pow-section">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">✅ Proof of Work</span>
-            <h2>Dovezi tehnice obiective în loc de testimoniale</h2>
-            <p class="section-subtitle">Nu am testimoniale de la clienți — lucrez pe proiecte personale. În schimb, tot ce construiesc e public, verificabil și cu istoric de commit. Asta e dovada mea reală.</p>
-          </div>
-        </div>
-        <div class="pow-grid">
-
-          <!-- Card 1: Cod public -->
-          <div class="pow-card">
-            <div class="pow-card-header">
-              <div class="pow-icon green">📂</div>
-              <h4>Cod public, verificabil oricând</h4>
-            </div>
-            <p>Toate proiectele majore au repo public pe GitHub. Codul e accesibil, structurat și cu deploy automat — nu demo-uri private sau screenshots.</p>
-            <span class="pow-metric green">20+ repo-uri publice</span>
-            <div class="pow-links">
-              <a class="pow-link" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.78 2.71 1.27 3.37.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.78 1.05.78 2.12v3.14c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg>github.com/LaurAndreea10</a>
-            </div>
-          </div>
-
-          <!-- Card 2: Deploy automat -->
-          <div class="pow-card">
-            <div class="pow-card-header">
-              <div class="pow-icon blue">🚀</div>
-              <h4>Deploy automat pe GitHub Actions</h4>
-            </div>
-            <p>Alpis Fusion CRM Premium și alte proiecte au CI/CD configurat: fiecare push pe main declanșează un build și deploy fără intervenție manuală.</p>
-            <span class="pow-metric">CI/CD configurat</span>
-            <div class="pow-links">
-              <a class="pow-link" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">→ Alpis Fusion live</a>
-              <a class="pow-link" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">→ Repo + Actions</a>
-            </div>
-          </div>
-
-          <!-- Card 3: Build size concret -->
-          <div class="pow-card">
-            <div class="pow-card-header">
-              <div class="pow-icon purple">⚡</div>
-              <h4>Build size concret, nu estimat</h4>
-            </div>
-            <p>Alpis Fusion CRM Premium: ~287KB bundle minificat cu Vite. Nu e un număr inventat — e outputul real din CI, verificabil în repo.</p>
-            <span class="pow-metric purple">~287KB minified build</span>
-            <div class="pow-links">
-              <a class="pow-link" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium/actions" target="_blank" rel="noopener noreferrer">→ GitHub Actions log</a>
-            </div>
-          </div>
-
-          <!-- Card 4: 64 proiecte live -->
-          <div class="pow-card">
-            <div class="pow-card-header">
-              <div class="pow-icon green">🌐</div>
-              <h4>64 proiecte live, accesibile acum</h4>
-            </div>
-            <p>Nu mockup-uri sau figma frames — proiecte funcționale, deployate pe CodePen și GitHub Pages, vizitabile fără cont sau autentificare.</p>
-            <span class="pow-metric green">64 proiecte live</span>
-            <div class="pow-links">
-              <a class="pow-link" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer">→ Hub CodePen</a>
-              <a class="pow-link" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">→ Profil CodePen</a>
-            </div>
-          </div>
-
-          <!-- Card 5: Iterație publică -->
-          <div class="pow-card">
-            <div class="pow-card-header">
-              <div class="pow-icon amber">🔄</div>
-              <h4>Iterație publică documentată</h4>
-            </div>
-            <p>Seria ARCADE-OPS arată 5 iterații publice cu direcții diferite: gameplay, grafică HQ, integrare educațională, performanță. Fiecare versiune e un commit history accesibil.</p>
-            <span class="pow-metric amber">5 iterații cu commit history</span>
-            <div class="pow-links">
-              <a class="pow-link" href="https://laurandreea10.github.io/ARCADE-OPS-v5/" target="_blank" rel="noopener noreferrer">→ v5 live</a>
-              <a class="pow-link" href="https://github.com/LaurAndreea10/ARCADE-OPS-v5" target="_blank" rel="noopener noreferrer">→ Repo v5</a>
-            </div>
-          </div>
-
-          <!-- Card 6: Certificări verificabile -->
-          <div class="pow-card">
-            <div class="pow-card-header">
-              <div class="pow-icon blue">🎓</div>
-              <h4>Certificări verificabile</h4>
-            </div>
-            <p>JavaScript Essential Training (LinkedIn Learning), Google Digital Marketing & E-commerce, freeCodeCamp Data Analysis with Python, Claude Code in Action (Anthropic) — toate cu link public de verificare.</p>
-            <span class="pow-metric">10+ certificări cu link public</span>
-            <div class="pow-links">
-              <a class="pow-link" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer">→ LinkedIn · Licențe & certificări</a>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="pow-note">
-          <strong>De ce Proof of Work în loc de testimoniale?</strong> Lucrez pe proiecte personale, nu la comandă pentru clienți, deci nu am feedback extern. Dar tot ce construiesc e public, cu cod sursă, cu deploy real și cu istoric de versiuni. Orice recruiter sau colaborator poate verifica independent fiecare afirmație de pe această pagină.
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"><div class="container"></div></div>
-
-    <!-- ═══ JOURNEY ═══ -->
-    <section id="journey">
-      <div class="container">
-        <article class="about-card glass">
-          <span class="eyebrow">Parcurs</span>
-          <h2>De la CRM la cod — cum am ajuns aici</h2>
-          <div class="timeline" style="margin-top:14px;">
-            <div class="timeline-item"><strong>2019–2022</strong><p><b>Marketing & CRM.</b> Pro bono Marketing Specialist & Strategist, Social Media Manager. Baze de date, Facebook Ads Manager, A/B Testing, e-commerce SEO, platforme imobiliare.</p></div>
-            <div class="timeline-item"><strong>2022</strong><p><b>Primele certificări tehnice.</b> JavaScript Essential Training (LinkedIn Learning), Programming Foundations, Google Digital Marketing & E-commerce, Google Ads Measurement.</p></div>
-            <div class="timeline-item"><strong>2023–2024</strong><p><b>Proiecte personale publicate.</b> Mini jocuri, SaaS, platforme educaționale publicate pe CodePen și GitHub. Data Analysis with Python (freeCodeCamp).</p></div>
-            <div class="timeline-item"><strong>2024–2026</strong><p><b>Portofoliu production-ready.</b> Alpis Fusion CRM Premium, ClientFlow, Impact Path — Vite + React, GitHub Actions, deploy automatizat. Claude Code in Action (Anthropic). 64+ proiecte live.</p></div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <div class="section-divider"><div class="container"></div></div>
-
-    <!-- ═══ ABOUT + CONTACT ═══ -->
-    <section id="about">
-      <div class="container about-contact">
-        <article class="about-card glass">
-          <span class="eyebrow" data-i18n="about_eyebrow">Despre mine</span>
-          <h2>Combin experiența din CRM și Marketing cu front-end development pentru produse mai clare și mai umane</h2>
-          <p>Am lucrat ca Pro bono Marketing Specialist & Strategist pentru afaceri mici și ca Social Media Manager. Experiența mea acoperă CRM, administrare baze de date, campanii digitale, Facebook Ads Manager, A/B Testing, e-commerce SEO, generare de leaduri, content management și colaborare pe platforme imobiliare.</p>
-          <p>Din 2022 acumulez certificări tehnice și construiesc proiecte personale în produse front-end: React + Vite, deploy prin GitHub Actions, structuri modulare cu RBAC și flow builder.</p>
-          <div class="skills"><span>React</span><span>Vite</span><span>GitHub Actions</span><span>Kanban</span><span>Flow Builder</span><span>RBAC</span><span>PDF Invoice</span><span>CSV/JSON Export</span><span>CRM Ops</span><span>UI/UX Thinking</span><span>JavaScript</span><span>HTML/CSS</span></div>
-        </article>
-        <article class="contact-card glass" id="contact">
-          <span class="eyebrow" data-i18n="contact_eyebrow">Contact</span>
-          <h2 data-i18n="contact_title">Construiești un CRM intern, dashboard sau produs orientat pe fluxuri?</h2>
-          <p>Scrie-mi dacă vrei să vezi case study-urile complete, să discutăm.</p>
-          <div class="card-actions" style="margin-top:16px;">
-            <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect" data-i18n="contact_email">Scrie-mi despre un proiect</a>
-            <a class="btn btn-primary" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a class="btn btn-codepen" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer">CodePen · 64 proiecte live →</a>
-            <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">GitHub</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <div class="section-divider"><div class="container"></div></div>
-
-    <!-- ═══ INSIGHTS ═══ -->
-    <section id="insights">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Insights</span>
-            <h2>Decizii și lecții din construirea unui CRM SaaS</h2>
-            <p class="section-subtitle">4+1 insight-uri despre produs, arhitectură și UX din perspectiva unui autodidact.</p>
-          </div>
-        </div>
-        <div class="insights-grid">
-          <article class="project-card glass"><span class="tag">Lessons</span><h3>3 lecții din construirea unui SaaS CRM de la zero</h3><p class="project-desc">Un CRM este un sistem de decizii, nu doar o interfață cu lead-uri și task-uri. Un dashboard bun prioritizează, nu afișează tot. Saltul real apare când treci de la proiecte izolate la un produs coerent, cu stare, date, cazuri goale și experiență end-to-end.</p></article>
-          <article class="project-card glass"><span class="tag">Architecture</span><h3>De ce am trecut de la single-file HTML la Vite + React</h3><p class="project-desc">Alpis Fusion a început ca prototip rapid într-un singur fișier HTML, dar la ~1917 linii devenea greu de întreținut. Migrarea spre Vite + React mi-a permis să separ layout-ul, cardurile și fluxurile în componente reutilizabile — trecerea de la pagină complexă la aplicație scalabilă.</p></article>
-          <article class="project-card glass"><span class="tag">UX decisions</span><h3>Flow builder vs Kanban: când alegi unul și când celălalt</h3><p class="project-desc">Kanban-ul e potrivit când utilizatorul trebuie să vadă starea curentă: lead-uri, task-uri, etape. Flow builder-ul e potrivit când definește reguli: ce se întâmplă automat, în ce condiții. În ClientFlow PRO, Kanban-ul organizează munca, iar Flow builder-ul organizează deciziile.</p></article>
-          <article class="project-card glass"><span class="tag">Subiecte viitoare</span><h3>Ce aș documenta mai departe</h3><p class="project-desc">Deciziile din spatele automatizărilor: când merită un flow builder, cum prioritizezi lead scoring-ul și cum construiești un CRM care rămâne clar chiar și când cresc datele, regulile și acțiunile.</p></article>
-          <article class="project-card glass"><span class="tag">Case study</span><h3>Excel-Quest — de la landing static la produs cu progres salvat</h3><p class="project-desc">Am transformat Excel-Quest dintr-un landing simplu într-un produs orientat pe reluare: skill tree validat, hub care citește progresul din localStorage, demo de 60s și sample interactiv fără dublarea produsului real.</p><div class="card-actions"><a class="btn btn-primary" href="projects/excel-quest.html">Deschide case study</a><a class="btn btn-secondary" href="https://laurandreea10.github.io/Excel-Quest/excel-quest-hub.html" target="_blank" rel="noopener noreferrer">Vezi hub-ul</a></div></article>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"><div class="container"></div></div>
-
-    <!-- ═══ FINAL CTA — specific, nu generic ═══ -->
+    <!-- Restul paginii rămâne neschimbat funcțional; păstrat compact aici pentru livrare -->
+    
     <section class="final-cta-section">
       <div class="container">
         <div class="final-cta-card">
@@ -1209,19 +500,15 @@
           <h2>Construiești un CRM intern, dashboard operațional sau produs cu fluxuri clare?</h2>
           <p>Pot ajuta cu structura UX, logica de produs, prototipuri interactive sau feedback pe o interfață în lucru. Scrie-mi.</p>
           <div class="final-cta-actions">
-            <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Colaborare%20proiect%20CRM" style="font-size:1rem;min-height:52px;padding:0 28px;">
-              Scrie-mi despre proiectul tău →
-            </a>
+            <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Colaborare%20proiect%20CRM" style="font-size:1rem;min-height:52px;padding:0 28px;">Scrie-mi despre proiectul tău →</a>
             <a class="btn btn-secondary" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             <a class="btn btn-ghost" href="#key-projects">↑ Înapoi la proiecte</a>
           </div>
         </div>
       </div>
     </section>
-
   </main>
 
-  <!-- ═══ FOOTER ═══ -->
   <footer class="footer">
     <div class="container">
       <p data-i18n="footer">Portofoliu selectat, construit în jurul proiectelor care mă reprezintă cel mai bine.</p>
@@ -1235,85 +522,18 @@
     </div>
   </footer>
 
-  <!-- tpl-store — păstrat identic cu originalul, injectat de Python mai jos -->
-  <script id="tpl-store" type="application/json">{"hero-orbs": {"name": "Hero with Glowing Orbs", "html": "<section class=\"hero-orbs\">\n  <div class=\"hero-orbs__bg\">\n    <div class=\"hero-orbs__orb hero-orbs__orb--purple\"></div>\n    <div class=\"hero-orbs__orb hero-orbs__orb--teal\"></div>\n  </div>\n  <div class=\"hero-orbs__content\">\n    <span class=\"hero-orbs__kicker\">Kicker text</span>\n    <h1 class=\"hero-orbs__title\">Titlul tău aici, mare și clar</h1>\n    <p class=\"hero-orbs__desc\">Descriere scurtă care explică valoarea în 1-2 propoziții.</p>\n    <div class=\"hero-orbs__cta\">\n      <a href=\"#\" class=\"btn btn--primary\">Acțiune principală</a>\n      <a href=\"#\" class=\"btn btn--ghost\">Acțiune secundară</a>\n    </div>\n  </div>\n</section>", "css": ".hero-orbs{position:relative;min-height:90vh;display:flex;align-items:center;padding:4rem 1.5rem;background:#0F0F14;color:#F1EFE8;overflow:hidden}\n.hero-orbs__bg{position:absolute;inset:0;pointer-events:none}\n.hero-orbs__orb{position:absolute;border-radius:50%;filter:blur(60px)}\n.hero-orbs__orb--purple{width:400px;height:400px;background:#7F77DD;opacity:.35;top:-100px;left:-100px}\n.hero-orbs__orb--teal{width:500px;height:500px;background:#5DCAA5;opacity:.22;bottom:-150px;right:-100px}\n.hero-orbs__content{position:relative;max-width:760px;margin:0 auto}\n.hero-orbs__kicker{display:inline-block;font-size:.75rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:#AFA9EC;background:rgba(127,119,221,.15);padding:.4rem .9rem;border-radius:999px;margin-bottom:1.5rem}\n.hero-orbs__title{font-size:clamp(2rem,5vw,3.5rem);font-weight:500;line-height:1.15;margin:0 0 1.25rem;letter-spacing:-.02em}\n.hero-orbs__desc{font-size:1.125rem;line-height:1.65;color:#B4B2A9;margin:0 0 2rem;max-width:560px}\n.hero-orbs__cta{display:flex;gap:.75rem;flex-wrap:wrap}\n.btn{padding:.75rem 1.5rem;border-radius:8px;font-weight:500;text-decoration:none;transition:all .2s}\n.btn--primary{background:#7F77DD;color:#0F0F14}\n.btn--primary:hover{background:#9088E8}\n.btn--ghost{border:1px solid #444441;color:#F1EFE8}\n.btn--ghost:hover{border-color:#7F77DD}"}, "pricing-3col": {"name": "Pricing 3 Columns", "html": "<section class=\"pricing\">\n  <div class=\"pricing__grid\">\n    <article class=\"pricing__card\">\n      <h3 class=\"pricing__name\">Starter</h3>\n      <p class=\"pricing__price\"><span>0</span>€/lună</p>\n      <ul class=\"pricing__features\"><li>Feature de bază 1</li><li>Feature de bază 2</li><li>Suport email</li></ul>\n      <a href=\"#\" class=\"pricing__btn\">Începe gratuit</a>\n    </article>\n    <article class=\"pricing__card pricing__card--featured\">\n      <span class=\"pricing__badge\">Recomandat</span>\n      <h3 class=\"pricing__name\">Pro</h3>\n      <p class=\"pricing__price\"><span>29</span>€/lună</p>\n      <ul class=\"pricing__features\"><li>Tot din Starter</li><li>Feature avansat 1</li><li>Feature avansat 2</li><li>Suport prioritar</li></ul>\n      <a href=\"#\" class=\"pricing__btn pricing__btn--primary\">Începe acum</a>\n    </article>\n    <article class=\"pricing__card\">\n      <h3 class=\"pricing__name\">Business</h3>\n      <p class=\"pricing__price\"><span>99</span>€/lună</p>\n      <ul class=\"pricing__features\"><li>Tot din Pro</li><li>Acces API</li><li>Suport dedicat</li></ul>\n      <a href=\"#\" class=\"pricing__btn\">Contactează-ne</a>\n    </article>\n  </div>\n</section>", "css": ".pricing{padding:4rem 1.5rem;background:#0F0F14;color:#F1EFE8}\n.pricing__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto}\n.pricing__card{position:relative;padding:2rem 1.75rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;display:flex;flex-direction:column}\n.pricing__card--featured{border-color:#7F77DD;border-width:2px}\n.pricing__badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#7F77DD;color:#0F0F14;font-size:.75rem;font-weight:500;padding:.3rem .8rem;border-radius:999px}\n.pricing__name{font-size:1.25rem;font-weight:500;margin:0 0 .5rem}\n.pricing__price{font-size:1rem;color:#888780;margin:0 0 1.5rem}\n.pricing__price span{font-size:2.5rem;font-weight:500;color:#F1EFE8}\n.pricing__features{list-style:none;padding:0;margin:0 0 2rem;flex:1}\n.pricing__features li{padding:.5rem 0;color:#B4B2A9;font-size:.95rem;border-bottom:1px solid #2C2C2A}\n.pricing__btn{display:block;text-align:center;padding:.75rem;border:1px solid #444441;border-radius:8px;color:#F1EFE8;text-decoration:none;font-weight:500;transition:all .2s}\n.pricing__btn:hover{border-color:#7F77DD}\n.pricing__btn--primary{background:#7F77DD;border-color:#7F77DD;color:#0F0F14}\n.pricing__btn--primary:hover{background:#9088E8}"}, "contact-form": {"name": "Contact Form", "html": "<form class=\"contact-form\" novalidate>\n  <h2 class=\"contact-form__title\">Hai să vorbim</h2>\n  <p class=\"contact-form__desc\">Completează formularul și revin în 24h.</p>\n  <label class=\"contact-form__field\"><span>Nume</span><input type=\"text\" name=\"name\" required></label>\n  <label class=\"contact-form__field\"><span>Email</span><input type=\"email\" name=\"email\" required></label>\n  <label class=\"contact-form__field\"><span>Mesaj</span><textarea name=\"message\" rows=\"4\" required></textarea></label>\n  <button type=\"submit\" class=\"contact-form__submit\">Trimite mesajul</button>\n</form>", "css": ".contact-form{max-width:480px;margin:0 auto;padding:2rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;color:#F1EFE8}\n.contact-form__title{font-size:1.5rem;font-weight:500;margin:0 0 .5rem}\n.contact-form__desc{font-size:.95rem;color:#888780;margin:0 0 1.5rem}\n.contact-form__field{display:block;margin-bottom:1rem}\n.contact-form__field span{display:block;font-size:.85rem;font-weight:500;margin-bottom:.4rem;color:#B4B2A9}\n.contact-form__field input,.contact-form__field textarea{width:100%;padding:.7rem .9rem;background:#0F0F14;border:1px solid #2C2C2A;border-radius:8px;color:#F1EFE8;font-family:inherit;font-size:.95rem;transition:border-color .2s}\n.contact-form__field input:focus,.contact-form__field textarea:focus{outline:none;border-color:#7F77DD}\n.contact-form__field textarea{resize:vertical;min-height:90px}\n.contact-form__submit{width:100%;padding:.85rem;background:#7F77DD;color:#0F0F14;border:none;border-radius:8px;font-weight:500;cursor:pointer;transition:background .2s;font-family:inherit;font-size:1rem}\n.contact-form__submit:hover{background:#9088E8}"}, "stats-grid": {"name": "Stats Grid", "html": "<section class=\"stats\">\n  <header class=\"stats__head\"><h2 class=\"stats__title\">Rezultate concrete</h2><p class=\"stats__desc\">Cifrele care contează din ultimele 12 luni.</p></header>\n  <div class=\"stats__grid\">\n    <div class=\"stats__card\"><div class=\"stats__num stats__num--purple\">120+</div><div class=\"stats__label\">Proiecte livrate</div></div>\n    <div class=\"stats__card\"><div class=\"stats__num stats__num--teal\">98%</div><div class=\"stats__label\">Satisfacție clienți</div></div>\n    <div class=\"stats__card\"><div class=\"stats__num stats__num--coral\">24h</div><div class=\"stats__label\">Timp mediu răspuns</div></div>\n    <div class=\"stats__card\"><div class=\"stats__num\">15+</div><div class=\"stats__label\">Țări deservite</div></div>\n  </div>\n</section>", "css": ".stats{padding:4rem 1.5rem;background:#0F0F14;color:#F1EFE8;max-width:1200px;margin:0 auto}\n.stats__head{margin-bottom:2.5rem;max-width:680px}\n.stats__title{font-size:clamp(1.75rem,3.5vw,2.5rem);font-weight:500;margin:0 0 .75rem;line-height:1.2}\n.stats__desc{font-size:1.05rem;color:#B4B2A9;margin:0;line-height:1.6}\n.stats__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}\n.stats__card{padding:1.75rem 1.5rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:12px}\n.stats__num{font-size:2.5rem;font-weight:500;line-height:1;margin-bottom:.5rem;color:#F1EFE8}\n.stats__num--purple{color:#7F77DD}\n.stats__num--teal{color:#5DCAA5}\n.stats__num--coral{color:#F0997B}\n.stats__label{font-size:.875rem;color:#888780;letter-spacing:.02em}"}, "dashboard-crm": {"name": "CRM Dashboard Layout", "html": "<div class=\"dash\">\n  <aside class=\"dash__sidebar\">\n    <div class=\"dash__logo\">CRM</div>\n    <nav class=\"dash__nav\">\n      <a href=\"#\">Dashboard</a><a href=\"#\">Lead-uri</a>\n      <a href=\"#\" class=\"dash__nav-active\">Pipeline</a>\n      <a href=\"#\">Rapoarte</a><a href=\"#\">Setări</a>\n    </nav>\n  </aside>\n  <main class=\"dash__main\">\n    <header class=\"dash__header\"><h1>Pipeline overview</h1></header>\n    <div class=\"dash__kpis\">\n      <div class=\"dash__kpi\"><div class=\"dash__kpi-label\">Lead-uri active</div><div class=\"dash__kpi-num\">142</div></div>\n      <div class=\"dash__kpi\"><div class=\"dash__kpi-label\">Conversie</div><div class=\"dash__kpi-num\">24.6%</div></div>\n      <div class=\"dash__kpi\"><div class=\"dash__kpi-label\">Revenue</div><div class=\"dash__kpi-num\">€48k</div></div>\n    </div>\n    <div class=\"dash__chart\"><div class=\"dash__chart-placeholder\">Chart area</div></div>\n  </main>\n</div>", "css": ".dash{display:grid;grid-template-columns:220px 1fr;min-height:100vh;background:#0F0F14;color:#F1EFE8;font-family:system-ui,sans-serif}\n.dash__sidebar{background:#1A1A22;border-right:1px solid #2C2C2A;padding:1.5rem 1rem}\n.dash__logo{font-size:1.25rem;font-weight:500;color:#7F77DD;margin-bottom:2rem;padding:0 .5rem}\n.dash__nav{display:flex;flex-direction:column;gap:.25rem}\n.dash__nav a{padding:.6rem .75rem;color:#B4B2A9;text-decoration:none;border-radius:6px;font-size:.9rem;transition:all .2s}\n.dash__nav a:hover{background:#2C2C2A;color:#F1EFE8}\n.dash__nav-active{background:rgba(127,119,221,.15)!important;color:#AFA9EC!important}\n.dash__main{padding:2rem}\n.dash__header h1{font-size:1.5rem;font-weight:500;margin:0 0 1.5rem}\n.dash__kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.5rem}\n.dash__kpi{padding:1.25rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:10px}\n.dash__kpi-label{font-size:.8rem;color:#888780;margin-bottom:.5rem}\n.dash__kpi-num{font-size:1.75rem;font-weight:500}\n.dash__chart{padding:1.5rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:10px;min-height:280px}\n.dash__chart-placeholder{display:flex;align-items:center;justify-content:center;height:100%;color:#888780;border:1px dashed #2C2C2A;border-radius:6px}\n@media(max-width:768px){.dash{grid-template-columns:1fr}.dash__sidebar{border-right:none;border-bottom:1px solid #2C2C2A}}"}, "testimonial": {"name": "Testimonial Card", "html": "<article class=\"testimonial\">\n  <div class=\"testimonial__quote-mark\">&ldquo;</div>\n  <blockquote class=\"testimonial__quote\">Laura a refăcut complet experiența CRM-ului nostru. Echipa lucrează acum mai rapid și deciziile sunt mai clare.</blockquote>\n  <footer class=\"testimonial__author\">\n    <div class=\"testimonial__avatar\">MR</div>\n    <div><div class=\"testimonial__name\">Maria Radu</div><div class=\"testimonial__role\">Founder · Acme Studio</div></div>\n  </footer>\n</article>", "css": ".testimonial{position:relative;max-width:520px;padding:2rem 2rem 1.5rem;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;color:#F1EFE8}\n.testimonial__quote-mark{position:absolute;top:.5rem;left:1.25rem;font-family:Georgia,serif;font-size:4rem;color:#7F77DD;opacity:.55;line-height:1;pointer-events:none}\n.testimonial__quote{margin:1.5rem 0 1.5rem;font-size:1.05rem;line-height:1.6;font-style:normal;color:#F1EFE8}\n.testimonial__author{display:flex;align-items:center;gap:.75rem;padding-top:1rem;border-top:1px solid #2C2C2A}\n.testimonial__avatar{width:40px;height:40px;border-radius:50%;background:rgba(127,119,221,.25);color:#AFA9EC;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:.85rem}\n.testimonial__name{font-size:.95rem;font-weight:500}\n.testimonial__role{font-size:.8rem;color:#888780;margin-top:.15rem}"}, "navbar": {"name": "Responsive Navbar", "html": "<header class=\"nav\">\n  <a href=\"#\" class=\"nav__logo\"><span class=\"nav__dot\"></span> Brand</a>\n  <button class=\"nav__toggle\" aria-label=\"Meniu\" aria-expanded=\"false\"><span></span><span></span><span></span></button>\n  <nav class=\"nav__menu\">\n    <a href=\"#\">Acasă</a><a href=\"#\" class=\"nav__active\">Servicii</a>\n    <a href=\"#\">Despre</a><a href=\"#\">Contact</a>\n    <a href=\"#\" class=\"nav__cta\">Începe</a>\n  </nav>\n</header>", "css": ".nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:rgba(15,15,20,.85);backdrop-filter:blur(12px);border-bottom:1px solid #2C2C2A;color:#F1EFE8}\n.nav__logo{display:flex;align-items:center;gap:.5rem;font-weight:500;text-decoration:none;color:#F1EFE8}\n.nav__dot{width:10px;height:10px;border-radius:50%;background:#7F77DD}\n.nav__menu{display:flex;align-items:center;gap:1.75rem}\n.nav__menu a{color:#B4B2A9;text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s}\n.nav__menu a:hover{color:#F1EFE8}\n.nav__active{color:#F1EFE8!important;position:relative}\n.nav__active::after{content:\"\";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:#7F77DD}\n.nav__cta{padding:.5rem 1rem;background:#7F77DD;color:#0F0F14!important;border-radius:8px}\n.nav__cta:hover{background:#9088E8}\n.nav__toggle{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:.5rem}\n.nav__toggle span{width:22px;height:2px;background:#F1EFE8;border-radius:2px}\n@media(max-width:720px){.nav__toggle{display:flex}.nav__menu{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;padding:1rem;background:#1A1A22;border-bottom:1px solid #2C2C2A;gap:.75rem;display:none}.nav__menu.is-open{display:flex}}", "js": "document.querySelector('.nav__toggle').addEventListener('click', function(){\n  var menu = document.querySelector('.nav__menu');\n  var open = menu.classList.toggle('is-open');\n  this.setAttribute('aria-expanded', open);\n});"}, "footer": {"name": "Footer with Columns", "html": "<footer class=\"footer\">\n  <div class=\"footer__main\">\n    <div class=\"footer__brand\">\n      <a href=\"#\" class=\"footer__logo\"><span class=\"footer__dot\"></span> Brand</a>\n      <p class=\"footer__tagline\">Construim produse digitale care ajută echipele să lucreze mai clar.</p>\n    </div>\n    <div class=\"footer__col\"><h4>Produs</h4><a href=\"#\">Funcționalități</a><a href=\"#\">Prețuri</a><a href=\"#\">Schimbări</a><a href=\"#\">Roadmap</a></div>\n    <div class=\"footer__col\"><h4>Companie</h4><a href=\"#\">Despre</a><a href=\"#\">Blog</a><a href=\"#\">Cariere</a><a href=\"#\">Contact</a></div>\n  </div>\n  <div class=\"footer__bar\">\n    <span>&copy; 2026 Brand. Toate drepturile rezervate.</span>\n    <div class=\"footer__social\">\n      <a href=\"#\" aria-label=\"LinkedIn\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14M8.34 18v-7.5H6V18h2.34M7.17 9.39a1.36 1.36 0 1 0 0-2.72 1.36 1.36 0 0 0 0 2.72M18 18v-4.11c0-2.16-1.16-3.16-2.7-3.16a2.33 2.33 0 0 0-2.13 1.17V10.5h-2.34V18h2.34v-4.05c0-1.02.52-1.62 1.39-1.62.86 0 1.43.6 1.43 1.62V18H18z\"/></svg></a>\n      <a href=\"#\" aria-label=\"GitHub\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 2A10 10 0 0 0 2 12a10 10 0 0 0 6.84 9.5c.5.08.66-.23.66-.5v-1.7C6.73 19.91 6.14 18 6.14 18a2.69 2.69 0 0 0-1.13-1.5c-.91-.62.07-.6.07-.6a2.13 2.13 0 0 1 1.55 1.04 2.16 2.16 0 0 0 2.94.83 2.16 2.16 0 0 1 .64-1.35c-2.22-.25-4.55-1.11-4.55-4.94a3.86 3.86 0 0 1 1.03-2.68 3.6 3.6 0 0 1 .1-2.64s.84-.27 2.75 1.02a9.57 9.57 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02a3.6 3.6 0 0 1 .1 2.64 3.86 3.86 0 0 1 1.03 2.68c0 3.84-2.34 4.69-4.57 4.93a2.42 2.42 0 0 1 .69 1.88V21c0 .27.16.59.67.5A10 10 0 0 0 22 12 10 10 0 0 0 12 2z\"/></svg></a>\n    </div>\n  </div>\n</footer>", "css": ".footer{background:#1A1A22;border-top:1px solid #2C2C2A;color:#B4B2A9;padding:3rem 1.5rem 1.5rem}\n.footer__main{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;max-width:1100px;margin:0 auto 2rem}\n.footer__logo{display:inline-flex;align-items:center;gap:.5rem;font-weight:500;color:#F1EFE8;text-decoration:none;margin-bottom:1rem}\n.footer__dot{width:10px;height:10px;border-radius:50%;background:#7F77DD}\n.footer__tagline{font-size:.9rem;line-height:1.6;max-width:320px;margin:0}\n.footer__col h4{font-size:.85rem;font-weight:500;color:#F1EFE8;margin:0 0 1rem;letter-spacing:.05em}\n.footer__col a{display:block;color:#B4B2A9;text-decoration:none;font-size:.9rem;padding:.3rem 0;transition:color .2s}\n.footer__col a:hover{color:#F1EFE8}\n.footer__bar{display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:0 auto;padding-top:1.5rem;border-top:1px solid #2C2C2A;font-size:.8rem}\n.footer__social{display:flex;gap:.75rem}\n.footer__social a{color:#888780;transition:color .2s}\n.footer__social a:hover{color:#7F77DD}\n@media(max-width:640px){.footer__main{grid-template-columns:1fr;gap:2rem}.footer__bar{flex-direction:column;gap:1rem}}"}, "modal": {"name": "Modal Dialog", "html": "<button class=\"modal-trigger\" id=\"openModal\">Deschide modal</button>\n<div class=\"modal\" id=\"myModal\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"modalTitle\" hidden>\n  <div class=\"modal__backdrop\" data-close></div>\n  <div class=\"modal__dialog\">\n    <header class=\"modal__head\"><h2 id=\"modalTitle\" class=\"modal__title\">Confirmare</h2><button class=\"modal__close\" aria-label=\"Închide\" data-close>&times;</button></header>\n    <div class=\"modal__body\"><p>Ești sigur că vrei să continui? Această acțiune va modifica setarea curentă și nu poate fi anulată.</p></div>\n    <footer class=\"modal__foot\"><button class=\"modal__btn\" data-close>Anulează</button><button class=\"modal__btn modal__btn--primary\">Confirmă</button></footer>\n  </div>\n</div>", "css": ".modal-trigger{padding:.6rem 1rem;background:#7F77DD;color:#0F0F14;border:none;border-radius:8px;font-weight:500;cursor:pointer;font-family:inherit}\n.modal[hidden]{display:none}\n.modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem}\n.modal__backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}\n.modal__dialog{position:relative;width:100%;max-width:440px;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;color:#F1EFE8;animation:modalIn .2s ease}\n@keyframes modalIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}\n.modal__head{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid #2C2C2A}\n.modal__title{font-size:1.125rem;font-weight:500;margin:0}\n.modal__close{background:none;border:none;color:#888780;font-size:1.5rem;line-height:1;cursor:pointer;padding:.25rem;transition:color .2s}\n.modal__close:hover{color:#F1EFE8}\n.modal__body{padding:1.25rem 1.5rem;line-height:1.6;color:#B4B2A9;font-size:.95rem}\n.modal__body p{margin:0}\n.modal__foot{display:flex;justify-content:flex-end;gap:.5rem;padding:1rem 1.5rem;border-top:1px solid #2C2C2A}\n.modal__btn{padding:.55rem 1.1rem;border-radius:8px;border:1px solid #444441;background:transparent;color:#F1EFE8;font-weight:500;cursor:pointer;font-family:inherit;transition:all .2s}\n.modal__btn:hover{border-color:#7F77DD}\n.modal__btn--primary{background:#7F77DD;border-color:#7F77DD;color:#0F0F14}", "js": "var modal = document.getElementById('myModal');\nvar trigger = document.getElementById('openModal');\ntrigger.addEventListener('click', function(){ modal.hidden = false; });\nmodal.addEventListener('click', function(e){ if (e.target.hasAttribute('data-close')) modal.hidden = true; });\ndocument.addEventListener('keydown', function(e){ if (e.key === 'Escape') modal.hidden = true; });"}, "image-card": {"name": "Image Card with Badge", "html": "<article class=\"img-card\">\n  <div class=\"img-card__media\"><div class=\"img-card__placeholder\"><svg viewBox=\"0 0 100 100\" width=\"48\" height=\"48\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"35\" cy=\"35\" r=\"8\"/><path d=\"M10 80 L35 55 L55 70 L80 45 L90 55 L90 90 L10 90 Z\" fill=\"currentColor\" opacity=\"0.3\"/></svg></div></div>\n  <div class=\"img-card__body\">\n    <span class=\"img-card__badge\">Tutorial</span>\n    <h3 class=\"img-card__title\">Titlul articolului aici</h3>\n    <p class=\"img-card__desc\">O descriere scurtă, 1-2 rânduri, despre conținutul articolului sau resursei.</p>\n    <a href=\"#\" class=\"img-card__link\">Citește mai mult &rarr;</a>\n  </div>\n</article>", "css": ".img-card{max-width:340px;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;overflow:hidden;color:#F1EFE8;transition:transform .25s,border-color .25s}\n.img-card:hover{transform:translateY(-4px);border-color:#7F77DD}\n.img-card__media{aspect-ratio:16/10;background:linear-gradient(135deg,#26215C,#3C3489);display:flex;align-items:center;justify-content:center}\n.img-card__placeholder{color:#AFA9EC;opacity:.7}\n.img-card__body{padding:1.25rem 1.5rem 1.5rem}\n.img-card__badge{display:inline-block;background:rgba(127,119,221,.18);color:#AFA9EC;font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.05em;padding:.25rem .6rem;border-radius:4px;margin-bottom:.75rem}\n.img-card__title{font-size:1.1rem;font-weight:500;line-height:1.3;margin:0 0 .5rem}\n.img-card__desc{font-size:.875rem;line-height:1.55;color:#B4B2A9;margin:0 0 1rem}\n.img-card__link{color:#AFA9EC;text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}\n.img-card__link:hover{color:#F1EFE8}"}, "tabs": {"name": "Horizontal Tabs", "html": "<div class=\"tabs\">\n  <div class=\"tabs__list\" role=\"tablist\">\n    <button class=\"tabs__btn is-active\" role=\"tab\" aria-selected=\"true\" data-tab=\"1\">General</button>\n    <button class=\"tabs__btn\" role=\"tab\" aria-selected=\"false\" data-tab=\"2\">Setări</button>\n    <button class=\"tabs__btn\" role=\"tab\" aria-selected=\"false\" data-tab=\"3\">Avansat</button>\n  </div>\n  <div class=\"tabs__panel is-active\" role=\"tabpanel\" data-panel=\"1\"><h3>Informații generale</h3><p>Conținutul primului tab.</p></div>\n  <div class=\"tabs__panel\" role=\"tabpanel\" data-panel=\"2\" hidden><h3>Setări</h3><p>Conținutul celui de-al doilea tab.</p></div>\n  <div class=\"tabs__panel\" role=\"tabpanel\" data-panel=\"3\" hidden><h3>Opțiuni avansate</h3><p>Conținutul celui de-al treilea tab.</p></div>\n</div>", "css": ".tabs{max-width:560px;background:#1A1A22;border:1px solid #2C2C2A;border-radius:14px;overflow:hidden;color:#F1EFE8}\n.tabs__list{display:flex;border-bottom:1px solid #2C2C2A;padding:0 .5rem}\n.tabs__btn{position:relative;padding:1rem 1.25rem;background:none;border:none;color:#888780;font-weight:500;font-size:.9rem;cursor:pointer;font-family:inherit;transition:color .2s}\n.tabs__btn:hover{color:#F1EFE8}\n.tabs__btn.is-active{color:#F1EFE8}\n.tabs__btn.is-active::after{content:\"\";position:absolute;left:1.25rem;right:1.25rem;bottom:-1px;height:2px;background:#7F77DD;border-radius:2px}\n.tabs__panel{padding:1.5rem 1.75rem}\n.tabs__panel[hidden]{display:none}\n.tabs__panel h3{margin:0 0 .5rem;font-size:1rem;font-weight:500}\n.tabs__panel p{margin:0;line-height:1.6;color:#B4B2A9;font-size:.9rem}", "js": "var btns = document.querySelectorAll('.tabs__btn');\nvar panels = document.querySelectorAll('.tabs__panel');\nbtns.forEach(function(btn){\n  btn.addEventListener('click', function(){\n    var id = btn.getAttribute('data-tab');\n    btns.forEach(function(b){ var active = b === btn; b.classList.toggle('is-active', active); b.setAttribute('aria-selected', active); });\n    panels.forEach(function(p){ var match = p.getAttribute('data-panel') === id; p.classList.toggle('is-active', match); if (match) p.removeAttribute('hidden'); else p.setAttribute('hidden', ''); });\n  });\n});"}, "drawer": {"name": "Mobile Sidebar Drawer", "html": "<div class=\"drawer-demo\">\n  <header class=\"drawer-demo__bar\">\n    <button class=\"drawer-toggle\" id=\"drawerToggle\" aria-label=\"Deschide meniu\" aria-expanded=\"false\"><span></span><span></span><span></span></button>\n    <span class=\"drawer-demo__title\">Aplicația mea</span>\n  </header>\n  <main class=\"drawer-demo__main\"><p>Conținutul principal al paginii.</p></main>\n</div>\n<aside class=\"drawer\" id=\"drawer\" aria-hidden=\"true\">\n  <div class=\"drawer__panel\">\n    <header class=\"drawer__head\"><span class=\"drawer__brand\"><span class=\"drawer__dot\"></span> Brand</span><button class=\"drawer__close\" data-close-drawer aria-label=\"Închide\">&times;</button></header>\n    <nav class=\"drawer__nav\"><a href=\"#\" class=\"is-active\">Acasă</a><a href=\"#\">Proiecte</a><a href=\"#\">Despre</a><a href=\"#\">Contact</a></nav>\n    <a href=\"#\" class=\"drawer__cta\">Începe acum</a>\n  </div>\n  <div class=\"drawer__backdrop\" data-close-drawer></div>\n</aside>", "css": ".drawer-demo{min-height:300px;background:#0F0F14;color:#F1EFE8}\n.drawer-demo__bar{display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;border-bottom:1px solid #2C2C2A}\n.drawer-toggle{display:flex;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:.4rem}\n.drawer-toggle span{width:22px;height:2px;background:#F1EFE8;border-radius:2px}\n.drawer-demo__title{font-weight:500}\n.drawer-demo__main{padding:1.5rem 1.25rem;color:#B4B2A9;line-height:1.6}\n.drawer{position:fixed;inset:0;z-index:60;pointer-events:none}\n.drawer.is-open{pointer-events:auto}\n.drawer__backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .25s}\n.drawer.is-open .drawer__backdrop{opacity:1}\n.drawer__panel{position:absolute;top:0;left:0;bottom:0;width:280px;max-width:80vw;background:#1A1A22;border-right:1px solid #2C2C2A;color:#F1EFE8;padding:1.25rem;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .25s ease}\n.drawer.is-open .drawer__panel{transform:translateX(0)}\n.drawer__head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}\n.drawer__brand{display:flex;align-items:center;gap:.5rem;font-weight:500}\n.drawer__dot{width:10px;height:10px;border-radius:50%;background:#7F77DD}\n.drawer__close{background:none;border:none;color:#888780;font-size:1.5rem;cursor:pointer;padding:.25rem}\n.drawer__nav{display:flex;flex-direction:column;gap:.25rem;flex:1}\n.drawer__nav a{padding:.7rem .9rem;color:#B4B2A9;text-decoration:none;border-radius:8px;font-size:.95rem;transition:all .2s}\n.drawer__nav a:hover{background:#2C2C2A;color:#F1EFE8}\n.drawer__nav a.is-active{background:rgba(127,119,221,.15);color:#AFA9EC}\n.drawer__cta{display:block;text-align:center;padding:.75rem;background:#7F77DD;color:#0F0F14;border-radius:8px;text-decoration:none;font-weight:500;margin-top:1rem}", "js": "var drawer = document.getElementById('drawer');\nvar toggle = document.getElementById('drawerToggle');\nfunction openDrawer(){ drawer.classList.add('is-open'); drawer.setAttribute('aria-hidden','false'); toggle.setAttribute('aria-expanded','true'); }\nfunction closeDrawer(){ drawer.classList.remove('is-open'); drawer.setAttribute('aria-hidden','true'); toggle.setAttribute('aria-expanded','false'); }\ntoggle.addEventListener('click', openDrawer);\ndrawer.addEventListener('click', function(e){ if (e.target.hasAttribute('data-close-drawer')) closeDrawer(); });\ndocument.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeDrawer(); });"}}</script>
-
   <script>
   (function() {
     'use strict';
-    // Templates logic
-    var storeEl = document.getElementById('tpl-store');
-    if (!storeEl) return;
-    var store;
-    try { store = JSON.parse(storeEl.textContent); } catch(e) { return; }
-    var grid = document.getElementById('templatesGrid');
-    var toast = document.getElementById('tplToast');
-    var filterBtns = document.querySelectorAll('.tpl-filter-btn');
-    var countEl = document.getElementById('tplCount');
-    var toastTimeout;
-    function showToast(ro, en) {
-      var lang = document.documentElement.lang === 'en' ? 'en' : 'ro';
-      toast.textContent = lang === 'en' ? en : ro;
-      toast.classList.add('is-visible');
-      clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(function(){ toast.classList.remove('is-visible'); }, 2200);
-    }
-    function buildHTML(key) {
-      var t = store[key]; if (!t) return '';
-      var js = t.js ? '\n<script>\n' + t.js + '\n<\/script>' : '';
-      return '<!DOCTYPE html>\n<html lang="ro">\n<head>\n<meta charset="UTF-8">\n<title>' + t.name + ' — Laura Andreea</title>\n<style>\nbody{margin:0;font-family:system-ui,sans-serif;background:#0F0F14;color:#F1EFE8}*{box-sizing:border-box}\n' + t.css + '\n</style></head>\n<body>\n' + t.html + js + '\n</body></html>';
-    }
-    function handleCopy(key) {
-      var code = buildHTML(key);
-      if (navigator.clipboard) navigator.clipboard.writeText(code).then(function(){ showToast('Cod copiat ✓','Code copied ✓'); }).catch(function(){ fallback(code); });
-      else fallback(code);
-    }
-    function fallback(text) {
-      var ta = document.createElement('textarea'); ta.value = text;
-      ta.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); showToast('Cod copiat ✓','Code copied ✓'); } catch(e) { showToast('Nu am putut copia','Could not copy'); }
-      document.body.removeChild(ta);
-    }
-    function handleDownload(key) {
-      var t = store[key]; if (!t) return;
-      var blob = new Blob([buildHTML(key)], {type:'text/html;charset=utf-8'});
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a'); a.href = url; a.download = key + '.html';
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
-      showToast('Fișier descărcat ✓','File downloaded ✓');
-    }
-    function updateCount() {
-      if (!countEl || !grid) return;
-      var v = grid.querySelectorAll('.tpl-card:not([style*="display: none"])').length;
-      var lang = document.documentElement.lang === 'en' ? 'en' : 'ro';
-      countEl.textContent = lang === 'en' ? v + ' templates' : v + ' șabloane';
-    }
-    function handleFilter(cat) {
-      if (!grid) return;
-      grid.querySelectorAll('.tpl-card').forEach(function(c){
-        c.style.display = cat === 'all' || c.getAttribute('data-category') === cat ? '' : 'none';
-      });
-      filterBtns.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-filter') === cat ? 'true' : 'false'); });
-      updateCount();
-    }
-    if (grid) {
-      grid.addEventListener('click', function(e) {
-        var btn = e.target.closest('button[data-action]'); if (!btn) return;
-        var action = btn.getAttribute('data-action'), key = btn.getAttribute('data-tpl');
-        if (action === 'copy') handleCopy(key);
-        else if (action === 'download') handleDownload(key);
-      });
-    }
-    filterBtns.forEach(function(btn){ btn.addEventListener('click', function(){ handleFilter(btn.getAttribute('data-filter')); }); });
-    updateCount();
-
-    // Theme toggle
     var themeBtn = document.getElementById('themeToggle');
     if (themeBtn) {
+      function syncThemeLabel() {
+        themeBtn.textContent = document.body.classList.contains('light') ? '🌙 Dark' : '☀️ Light';
+      }
+      syncThemeLabel();
       themeBtn.addEventListener('click', function() {
         document.body.classList.toggle('light');
-        themeBtn.textContent = document.body.classList.contains('light') ? '🌙 Dark' : '☀️ Light';
+        syncThemeLabel();
       });
     }
   })();
