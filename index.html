@@ -525,10 +525,19 @@
   <script>
   (function() {
     'use strict';
-    var themeBtn = document.getElementById('themeToggle');
-    if (themeBtn) {
-      function syncThemeLabel() {
-        themeBtn.textContent = document.body.classList.contains('light') ? '🌙 Dark' : '☀️ Light';
+var themeBtn = document.getElementById('themeToggle');
+if (themeBtn) {
+  function syncThemeLabel() {
+    themeBtn.textContent = document.body.classList.contains('light') ? '🌙 Dark' : '☀️ Light';
+  }
+
+  syncThemeLabel();
+
+  themeBtn.addEventListener('click', function() {
+    document.body.classList.toggle('light');
+    syncThemeLabel();
+  });
+}
       }
       syncThemeLabel();
       themeBtn.addEventListener('click', function() {
