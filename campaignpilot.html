@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampaignPilot — Marketing Campaign Planner | Laura Andreea</title>
+  <meta name="description" content="Șablon marketing-tech premium pentru planificare campanii, KPI tracking, funnel și content calendar." />
+  <meta name="theme-color" content="#07111f" />
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/campaignpilot.html" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="CampaignPilot — Marketing Campaign Planner" />
+  <meta property="og:description" content="Workspace unificat: KPI, funnel, calendar editorial, brief creativ și channel scorecards." />
+  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/campaignpilot.html" />
+  <meta property="og:locale" content="ro_RO" />
+  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/alpis-fusion-demo-poster.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CampaignPilot — Marketing Campaign Planner" />
+  <meta name="twitter:description" content="Workspace unificat: KPI, funnel, calendar, brief creativ. Marketing-tech template." />
+
+  <style>
+    :root{
+      --bg:#07111f;--bg-soft:#0d1a2e;--panel:#0f1f37;--panel-2:#132846;
+      --line:rgba(255,255,255,.09);--line-strong:rgba(255,255,255,.16);
+      --text:#ecf3ff;--muted:#95a6c6;--primary:#7c9cff;--primary-2:#60d4ff;
+      --success:#39d98a;--warning:#ffbc5c;--danger:#ff6b81;--violet:#b48cff;
+      --shadow:0 24px 60px rgba(0,0,0,.35);
+      --radius-xl:28px;--radius-lg:20px;--radius-md:16px;--radius-sm:12px;
+      --max:1440px;--sidebar:280px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top left, rgba(124,156,255,.18), transparent 28%),
+        radial-gradient(circle at 100% 20%, rgba(96,212,255,.12), transparent 24%),
+        linear-gradient(180deg, #07111f 0%, #081526 100%);
+      color:var(--text);min-height:100vh;}
+    a{color:inherit;text-decoration:none}
+    button,input,select,textarea{font:inherit}
+    img{max-width:100%;display:block}
+
+    .skip-link{position:absolute;left:12px;top:-200px;z-index:100;
+      background:var(--primary);color:#08111f;padding:10px 14px;border-radius:10px;font-weight:700}
+    .skip-link:focus{top:12px}
+    .back-bar{max-width:var(--max);margin:0 auto;padding:14px 24px 0;
+      display:flex;justify-content:space-between;align-items:center;gap:12px;}
+    .back-link{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;
+      border-radius:999px;background:rgba(255,255,255,.04);
+      border:1px solid var(--line);color:var(--text);font-size:.88rem;transition:.2s ease;}
+    .back-link:hover{border-color:var(--primary);background:rgba(124,156,255,.08)}
+
+    .shell{max-width:var(--max);margin:0 auto;padding:24px;
+      display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);gap:24px;}
+
+    .sidebar,.panel,.hero,.table-card,.calendar,.composer,.channel-card,
+    .mini-card,.funnel-card,.budget-card{
+      background:linear-gradient(180deg, rgba(19,40,70,.92), rgba(10,23,42,.96));
+      border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(16px);}
+
+    .sidebar{position:sticky;top:24px;height:calc(100vh - 48px);
+      border-radius:30px;padding:22px;display:flex;flex-direction:column;gap:22px;overflow:auto;}
+
+    .brand{display:flex;align-items:center;gap:14px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+    .logo{width:52px;height:52px;border-radius:18px;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      display:grid;place-items:center;font-weight:800;color:#08111f;letter-spacing:.04em;
+      box-shadow:0 14px 30px rgba(124,156,255,.28);}
+    .brand h1{font-size:1rem;margin:0 0 4px}
+    .brand p{margin:0;color:var(--muted);font-size:.92rem}
+
+    .nav-group{display:grid;gap:10px}
+    .nav-title{font-size:.76rem;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);margin:0 0 4px;}
+
+    .nav-link{display:flex;align-items:center;justify-content:space-between;
+      gap:12px;padding:12px 14px;border-radius:14px;
+      color:#dce8ff;background:rgba(255,255,255,.02);border:1px solid transparent;transition:.25s ease;}
+    .nav-link:hover,.nav-link.active{transform:translateY(-1px);
+      border-color:rgba(124,156,255,.26);
+      background:linear-gradient(180deg, rgba(124,156,255,.14), rgba(96,212,255,.06));}
+
+    .sidebar-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .mini-card{border-radius:18px;padding:14px;}
+    .mini-label{color:var(--muted);font-size:.78rem;margin-bottom:8px}
+    .mini-value{font-size:1.4rem;font-weight:800}
+
+    .status-box{margin-top:auto;padding:16px;border-radius:18px;
+      background:linear-gradient(135deg, rgba(57,217,138,.12), rgba(124,156,255,.1));
+      border:1px solid rgba(255,255,255,.08);}
+    .status-box strong{display:block;margin-bottom:8px}
+    .status-box p{margin:0;color:var(--muted);line-height:1.6;font-size:.94rem}
+
+    .main{display:grid;gap:24px}
+    .hero{border-radius:32px;padding:28px;display:grid;
+      grid-template-columns:1.15fr .85fr;gap:24px;position:relative;overflow:hidden;}
+    .hero::after{content:"";position:absolute;inset:auto -10% -30% auto;
+      width:300px;height:300px;border-radius:50%;
+      background:radial-gradient(circle, rgba(124,156,255,.22), transparent 64%);pointer-events:none;}
+
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);
+      color:#dfe9ff;font-size:.82rem;font-weight:700;letter-spacing:.04em;}
+
+    .hero h2{font-size:clamp(2rem,4vw,3.4rem);line-height:1.04;margin:16px 0 12px;max-width:12ch;}
+    .hero p{margin:0;color:var(--muted);line-height:1.75;max-width:62ch;font-size:1rem;}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:22px}
+
+    .btn{border:none;cursor:pointer;padding:14px 18px;border-radius:16px;font-weight:700;transition:.25s ease;}
+    .btn-primary{color:#08111f;background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      box-shadow:0 16px 30px rgba(124,156,255,.22);}
+    .btn-secondary{background:rgba(255,255,255,.04);color:var(--text);border:1px solid var(--line-strong);}
+    .btn:hover{transform:translateY(-2px)}
+    .btn:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+
+    .hero-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-content:start;}
+    .metric{padding:18px;border-radius:18px;background:rgba(255,255,255,.035);border:1px solid var(--line);}
+    .metric-label{font-size:.82rem;color:var(--muted);margin-bottom:10px}
+    .metric-value{font-size:1.9rem;font-weight:800;margin-bottom:6px}
+    .metric-trend{font-size:.9rem}
+    .up{color:var(--success)} .down{color:var(--danger)} .flat{color:var(--warning)}
+
+    .top-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;}
+    .section-title{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px;}
+    .section-title h3{margin:0;font-size:1.2rem}
+    .section-title p{margin:0;color:var(--muted);font-size:.92rem}
+
+    .funnel-card,.budget-card,.table-card,.calendar,.composer{border-radius:26px;padding:22px;}
+
+    .funnel-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
+    .funnel-step{padding:18px;border-radius:18px;
+      background:rgba(255,255,255,.03);border:1px solid var(--line);position:relative;overflow:hidden;}
+    .funnel-step::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+      background:linear-gradient(180deg,var(--primary),var(--primary-2));}
+    .step-label{color:var(--muted);font-size:.82rem;margin-bottom:8px}
+    .step-value{font-size:1.8rem;font-weight:800;margin-bottom:10px}
+    .progress{height:8px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;}
+    .progress > span{display:block;height:100%;border-radius:999px;background:linear-gradient(135deg,var(--primary),var(--primary-2))}
+    .step-note{margin-top:10px;color:var(--muted);font-size:.86rem}
+
+    .budget-list{display:grid;gap:14px}
+    .budget-row{display:grid;grid-template-columns:120px 1fr auto;gap:14px;align-items:center;}
+    .budget-row strong{font-size:.95rem}
+    .bar{height:10px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden}
+    .bar span{display:block;height:100%;border-radius:999px}
+    .b1{background:linear-gradient(135deg,#7c9cff,#60d4ff)}
+    .b2{background:linear-gradient(135deg,#b48cff,#7c9cff)}
+    .b3{background:linear-gradient(135deg,#39d98a,#60d4ff)}
+    .b4{background:linear-gradient(135deg,#ffbc5c,#ff7c7c)}
+    .budget-row em{font-style:normal;color:var(--muted);font-size:.9rem}
+
+    .table-wrap{overflow:auto}
+    table{width:100%;border-collapse:collapse;min-width:760px}
+    th,td{padding:14px 12px;text-align:left;border-bottom:1px solid var(--line)}
+    th{font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    td{color:#e7f0ff}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+      font-size:.82rem;font-weight:700;background:rgba(255,255,255,.05);border:1px solid var(--line);}
+    .pill.live{color:#aee8ff}
+    .pill.review{color:#ffd48c}
+    .pill.ready{color:#8ef0b6}
+    .pill.draft{color:#cab7ff}
+
+    .calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;}
+    .day{min-height:140px;padding:12px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(255,255,255,.025);display:flex;flex-direction:column;gap:10px;}
+    .day strong{font-size:.95rem}
+    .day span{color:var(--muted);font-size:.82rem}
+    .tag{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;
+      font-size:.78rem;font-weight:700;line-height:1.3;
+      background:rgba(124,156,255,.13);border:1px solid rgba(124,156,255,.2);color:#dce7ff;}
+    .tag.secondary{background:rgba(57,217,138,.12);border-color:rgba(57,217,138,.2)}
+    .tag.warning{background:rgba(255,188,92,.12);border-color:rgba(255,188,92,.22)}
+
+    .bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+
+    .composer form{display:grid;gap:16px}
+    .field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    label{display:grid;gap:8px;font-size:.9rem;color:#dfe8fb}
+    input,select,textarea{width:100%;border-radius:15px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--text);
+      padding:14px 14px;outline:none;transition:.25s ease;}
+    textarea{min-height:120px;resize:vertical}
+    input:focus,select:focus,textarea:focus{border-color:rgba(124,156,255,.5);box-shadow:0 0 0 4px rgba(124,156,255,.12)}
+
+    .composer-footer{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+    .helper{color:var(--muted);font-size:.88rem;line-height:1.6}
+
+    .channels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+    .channel-card{border-radius:22px;padding:18px;display:grid;gap:12px;}
+    .channel-card h4{margin:0;font-size:1rem}
+    .channel-card p{margin:0;color:var(--muted);line-height:1.6;font-size:.92rem}
+    .channel-head{display:flex;justify-content:space-between;gap:14px;align-items:center}
+    .score{font-weight:800;font-size:1.25rem}
+
+    .footer-note{padding:18px 22px;border-radius:24px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);line-height:1.75;}
+
+    .mobile-topbar{display:none}
+
+    @media (prefers-reduced-motion: reduce){
+      *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+    }
+
+    @media (max-width: 1200px){
+      .shell{grid-template-columns:1fr}
+      .sidebar{display:none}
+      .mobile-topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;
+        position:sticky;top:0;z-index:20;margin:0 0 8px;
+        background:rgba(7,17,31,.82);backdrop-filter:blur(16px);padding:14px 4px 8px;}
+      .hero,.top-grid,.bottom-grid{grid-template-columns:1fr}
+    }
+    @media (max-width: 900px){
+      .hero-grid,.funnel-grid,.channels,.field-grid{grid-template-columns:1fr}
+      .calendar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width: 620px){
+      .shell{padding:14px}
+      .hero,.funnel-card,.budget-card,.table-card,.calendar,.composer{padding:18px}
+      .calendar-grid{grid-template-columns:1fr}
+      .budget-row{grid-template-columns:1fr;gap:8px}
+      .hero h2{max-width:none}
+      .back-bar{padding:12px 14px 0;flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#overview">Sari la conținut</a>
+
+  <div class="back-bar">
+    <a class="back-link" href="./">← Portofoliu Laura Andreea</a>
+    <span class="eyebrow">Marketing-Tech Template</span>
+  </div>
+
+  <div class="shell">
+    <aside class="sidebar" aria-label="Navigare dashboard marketing">
+      <div class="brand">
+        <div class="logo">CP</div>
+        <div>
+          <h1>CampaignPilot</h1>
+          <p>Marketing planner · funnel · KPI hub</p>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-title">Workspace</p>
+        <a class="nav-link active" href="#overview"><span>Overview</span><strong>01</strong></a>
+        <a class="nav-link" href="#funnel"><span>Funnel</span><strong>02</strong></a>
+        <a class="nav-link" href="#campaigns"><span>Campaigns</span><strong>03</strong></a>
+        <a class="nav-link" href="#calendar"><span>Content Calendar</span><strong>04</strong></a>
+        <a class="nav-link" href="#brief"><span>Creative Brief</span><strong>05</strong></a>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-title">Campaign Pulse</p>
+        <div class="sidebar-stats">
+          <article class="mini-card"><div class="mini-label">ROI</div><div class="mini-value" data-count="4.8">0</div></article>
+          <article class="mini-card"><div class="mini-label">CPL</div><div class="mini-value" data-count="12.4">0</div></article>
+          <article class="mini-card"><div class="mini-label">CTR</div><div class="mini-value" data-count="3.9">0</div></article>
+          <article class="mini-card"><div class="mini-label">MQL</div><div class="mini-value" data-count="186">0</div></article>
+        </div>
+      </div>
+
+      <div class="status-box">
+        <strong>Focus this week</strong>
+        <p>Launch sprint pentru un lead magnet B2B: paid social, nurture email flow, webinar CTA și recap KPI în același workspace.</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="mobile-topbar">
+        <div class="eyebrow">Marketing-tech template</div>
+        <button class="btn btn-secondary" type="button" id="themeToggle">Glow mode</button>
+      </div>
+
+      <section class="hero" id="overview">
+        <div>
+          <div class="eyebrow">Marketing · CRM · Conversion UI</div>
+          <h2>Template premium pentru planificarea unei campanii de la idee la rezultate.</h2>
+          <p>Gândit ca un workspace unificat: KPI-uri, funnel, calendar editorial, canale active și brief creativ. Este un șablon potrivit pentru portofoliul tău fiindcă leagă marketingul de claritatea de produs și logica dashboard-urilor.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" type="button" id="demoFill">Generează brief demo</button>
+            <a class="btn btn-secondary" href="#brief">Editează campania</a>
+          </div>
+        </div>
+
+        <div class="hero-grid" aria-label="KPI overview">
+          <article class="metric">
+            <div class="metric-label">Attributed Revenue</div>
+            <div class="metric-value">€24.6K</div>
+            <div class="metric-trend up">↑ +18.4% vs luna trecută</div>
+          </article>
+          <article class="metric">
+            <div class="metric-label">Conversion Rate</div>
+            <div class="metric-value">6.8%</div>
+            <div class="metric-trend up">↑ +1.2 pp after nurture</div>
+          </article>
+          <article class="metric">
+            <div class="metric-label">Qualified Leads</div>
+            <div class="metric-value">186</div>
+            <div class="metric-trend up">↑ 42 din webinar funnel</div>
+          </article>
+          <article class="metric">
+            <div class="metric-label">Bounce Risk</div>
+            <div class="metric-value">12%</div>
+            <div class="metric-trend flat">Need refresh pe paid ad set B</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="top-grid" id="funnel">
+        <article class="funnel-card">
+          <div class="section-title">
+            <div><h3>Campaign funnel</h3><p>Un overview clar pentru awareness → lead → demo → conversion.</p></div>
+            <span class="pill live">Live sprint</span>
+          </div>
+          <div class="funnel-grid">
+            <div class="funnel-step"><div class="step-label">Awareness</div><div class="step-value">48.2K</div><div class="progress"><span style="width:88%"></span></div><div class="step-note">Paid social + organic reach</div></div>
+            <div class="funnel-step"><div class="step-label">Clicks</div><div class="step-value">3,914</div><div class="progress"><span style="width:64%"></span></div><div class="step-note">Landing CTR 3.9%</div></div>
+            <div class="funnel-step"><div class="step-label">Leads</div><div class="step-value">742</div><div class="progress"><span style="width:46%"></span></div><div class="step-note">Lead magnet + webinar opt-in</div></div>
+            <div class="funnel-step"><div class="step-label">Booked demos</div><div class="step-value">126</div><div class="progress"><span style="width:29%"></span></div><div class="step-note">SQL route din nurture email</div></div>
+          </div>
+        </article>
+
+        <article class="budget-card">
+          <div class="section-title">
+            <div><h3>Budget allocation</h3><p>Mix media + content + retention, gândit pentru o campanie full funnel.</p></div>
+            <span class="pill ready">On track</span>
+          </div>
+          <div class="budget-list">
+            <div class="budget-row"><strong>Paid Social</strong><div class="bar"><span class="b1" style="width:42%"></span></div><em>42%</em></div>
+            <div class="budget-row"><strong>Email Flow</strong><div class="bar"><span class="b2" style="width:18%"></span></div><em>18%</em></div>
+            <div class="budget-row"><strong>Content / UGC</strong><div class="bar"><span class="b3" style="width:24%"></span></div><em>24%</em></div>
+            <div class="budget-row"><strong>Retargeting</strong><div class="bar"><span class="b4" style="width:16%"></span></div><em>16%</em></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="table-card" id="campaigns">
+        <div class="section-title">
+          <div><h3>Active campaigns</h3><p>Un view util pentru marketing manager, freelancer sau echipă growth.</p></div>
+          <span class="pill review">3 need review</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Campaign</th><th>Goal</th><th>Channel</th><th>Status</th><th>Budget</th><th>CVR</th><th>Owner</th></tr></thead>
+            <tbody>
+              <tr><td>Lead Magnet Sprint Q2</td><td>Lead capture</td><td>Meta Ads + Landing</td><td><span class="pill live">Live</span></td><td>€4,200</td><td>8.1%</td><td>Laura</td></tr>
+              <tr><td>Webinar Conversion Push</td><td>Booked demos</td><td>Email + Remarketing</td><td><span class="pill review">Review</span></td><td>€2,180</td><td>6.4%</td><td>Andrei</td></tr>
+              <tr><td>UGC Story Ads Pack</td><td>Awareness</td><td>Instagram / TikTok</td><td><span class="pill ready">Ready</span></td><td>€1,320</td><td>4.3%</td><td>Bianca</td></tr>
+              <tr><td>Retention Winback Flow</td><td>Reactivation</td><td>Email CRM</td><td><span class="pill draft">Draft</span></td><td>€760</td><td>5.1%</td><td>Daria</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="calendar" id="calendar">
+        <div class="section-title">
+          <div><h3>Content calendar</h3><p>Programare săptămânală pentru asset-uri, CTA-uri și follow-up.</p></div>
+          <span class="pill live">Week 20</span>
+        </div>
+        <div class="calendar-grid">
+          <article class="day"><strong>Luni</strong><span>Awareness</span><div class="tag">UGC hook variations</div><div class="tag secondary">Email teaser</div></article>
+          <article class="day"><strong>Marți</strong><span>Lead capture</span><div class="tag">Landing hero A/B</div><div class="tag warning">QA form flow</div></article>
+          <article class="day"><strong>Miercuri</strong><span>Nurture</span><div class="tag secondary">Case study email</div><div class="tag">Short-form video</div></article>
+          <article class="day"><strong>Joi</strong><span>Event push</span><div class="tag">Webinar reminder</div><div class="tag warning">Retargeting refresh</div></article>
+          <article class="day"><strong>Vineri</strong><span>Conversion</span><div class="tag secondary">Offer breakdown</div><div class="tag">Demo CTA cutdown</div></article>
+          <article class="day"><strong>Sâmbătă</strong><span>Community</span><div class="tag">Founder POV reel</div></article>
+          <article class="day"><strong>Duminică</strong><span>Review</span><div class="tag warning">KPI recap & insights</div></article>
+        </div>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="composer" id="brief">
+          <div class="section-title">
+            <div><h3>Creative brief generator</h3><p>Mic modul interactiv ca să arăți că template-ul are și logică de produs.</p></div>
+            <span class="pill ready">Interactive</span>
+          </div>
+          <form id="briefForm">
+            <div class="field-grid">
+              <label>Campaign name<input type="text" id="campaignName" placeholder="Ex: Growth Sprint Q2" /></label>
+              <label>Primary goal
+                <select id="campaignGoal">
+                  <option>Lead generation</option>
+                  <option>Webinar registrations</option>
+                  <option>Booked demos</option>
+                  <option>Product launch awareness</option>
+                </select>
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>Core audience<input type="text" id="campaignAudience" placeholder="Ex: small business owners / ops managers" /></label>
+              <label>Main channel
+                <select id="campaignChannel">
+                  <option>Meta Ads</option>
+                  <option>Email CRM</option>
+                  <option>LinkedIn</option>
+                  <option>TikTok / Reels</option>
+                </select>
+              </label>
+            </div>
+            <label>Key message<textarea id="campaignMessage" placeholder="Ex: Transformă task-urile fragmentate într-un workflow clar, cu vizibilitate completă și timp de reacție mai mic."></textarea></label>
+            <div class="composer-footer">
+              <p class="helper" id="briefOutput">Completează câmpurile sau apasă pe „Generează brief demo" pentru un exemplu populat automat.</p>
+              <button class="btn btn-primary" type="submit">Generează rezumat</button>
+            </div>
+          </form>
+        </article>
+
+        <article class="composer">
+          <div class="section-title">
+            <div><h3>Channel scorecards</h3><p>Modular, ușor de extins în portofoliu cu filtre, tooltips și state-uri reale.</p></div>
+            <span class="pill live">4 channels</span>
+          </div>
+          <div class="channels">
+            <article class="channel-card"><div class="channel-head"><h4>Meta Ads</h4><div class="score">8.7</div></div><p>Performanță bună pe hook-uri comparative și asset-uri statice cu promisiune clară + CTA de audit.</p><div class="progress"><span style="width:87%"></span></div></article>
+            <article class="channel-card"><div class="channel-head"><h4>Email CRM</h4><div class="score">9.2</div></div><p>Cel mai bun raport cost / conversie. Ideal pentru nurture și winback cu secvențe pe use cases.</p><div class="progress"><span style="width:92%"></span></div></article>
+            <article class="channel-card"><div class="channel-head"><h4>LinkedIn</h4><div class="score">7.4</div></div><p>Puternic pentru proof și thought leadership, mai ales pe carusel educațional + case study clips.</p><div class="progress"><span style="width:74%"></span></div></article>
+            <article class="channel-card"><div class="channel-head"><h4>Short-form Video</h4><div class="score">8.1</div></div><p>Bun pentru top-of-funnel. Cele mai bune rezultate vin din demo-uri scurte cu problem-solution framing.</p><div class="progress"><span style="width:81%"></span></div></article>
+          </div>
+        </article>
+      </section>
+
+      <div class="footer-note">
+        Acest template este gândit pentru a completa direcția existentă din portofoliu: interfețe CRM, dashboard-uri, onboarding și flow-uri clare.
+        Poți să-l folosești ca proiect standalone sau ca bază pentru încă 3 variante: <strong>Lead Magnet Landing</strong>, <strong>Webinar Registration Funnel</strong> și <strong>Campaign ROI Dashboard</strong>.
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const counters = document.querySelectorAll('[data-count]');
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
+
+    function animateCounter(el){
+      const target = Number(el.dataset.count);
+      const duration = 1200;
+      const start = performance.now();
+      function frame(now){
+        const progress = Math.min((now - start) / duration, 1);
+        const value = target * easeOut(progress);
+        el.textContent = target % 1 === 0 ? Math.round(value) : value.toFixed(1);
+        if(progress < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.35 });
+
+    counters.forEach(counter => observer.observe(counter));
+
+    const form = document.getElementById('briefForm');
+    const output = document.getElementById('briefOutput');
+    const demoFill = document.getElementById('demoFill');
+
+    function buildSummary(){
+      const name = document.getElementById('campaignName').value.trim() || 'Untitled campaign';
+      const goal = document.getElementById('campaignGoal').value;
+      const audience = document.getElementById('campaignAudience').value.trim() || 'a relevant B2B audience';
+      const channel = document.getElementById('campaignChannel').value;
+      const message = document.getElementById('campaignMessage').value.trim() || 'Deliver one strong promise backed by clear UX and visible proof.';
+      return `Rezumat: ${name} urmărește ${goal.toLowerCase()} pentru ${audience}, cu focus principal pe ${channel}. Mesaj-cheie: "${message}".`;
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      output.textContent = buildSummary();
+    });
+
+    demoFill.addEventListener('click', () => {
+      document.getElementById('campaignName').value = 'Campaign ROI Calculator Launch';
+      document.getElementById('campaignGoal').value = 'Lead generation';
+      document.getElementById('campaignAudience').value = 'marketing managers, founders și small business teams';
+      document.getElementById('campaignChannel').value = 'LinkedIn';
+      document.getElementById('campaignMessage').value = 'Vezi imediat dacă o campanie merită scalată, printr-un calculator clar de cost, lead quality și ROI estimat.';
+      output.textContent = buildSummary();
+      document.getElementById('brief').scrollIntoView({ behavior:'smooth', block:'start' });
+    });
+
+    const themeToggle = document.getElementById('themeToggle');
+    let glowOn = false;
+    if(themeToggle){
+      themeToggle.addEventListener('click', () => {
+        glowOn = !glowOn;
+        document.body.style.background = glowOn
+          ? 'radial-gradient(circle at top left, rgba(180,140,255,.22), transparent 28%), radial-gradient(circle at 100% 20%, rgba(96,212,255,.18), transparent 24%), linear-gradient(180deg, #081021 0%, #0b1630 100%)'
+          : 'radial-gradient(circle at top left, rgba(124,156,255,.18), transparent 28%), radial-gradient(circle at 100% 20%, rgba(96,212,255,.12), transparent 24%), linear-gradient(180deg, #07111f 0%, #081526 100%)';
+        themeToggle.textContent = glowOn ? 'Default mode' : 'Glow mode';
+      });
+    }
+  </script>
+</body>
+</html>
