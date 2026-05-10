@@ -17,8 +17,6 @@
       heroEyebrow: 'CRM • Marketing • Front-end autodidact',
       heroTitle: 'Construiesc interfețe CRM și dashboard-uri care transformă procese complicate în fluxuri clare',
       heroText: 'Vin din CRM și marketing, iar în front-end mă concentrez pe produse unde structura, prioritizarea și feedback-ul vizual ajută utilizatorii să înțeleagă mai repede ce au de făcut și să acționeze fără fricțiune.',
-      heroPrimary: 'Scrie-mi despre un proiect',
-      heroSecondary: 'Deschide Alpis Fusion →',
       previewLabel: 'Preview live',
       previewOpen: 'Deschide proiectul',
       previewCaseStudy: 'Deschide case study',
@@ -35,8 +33,6 @@
       heroEyebrow: 'CRM • Marketing • Self-taught front-end',
       heroTitle: 'I build CRM interfaces and dashboards that turn complex processes into clear flows',
       heroText: 'My background is in CRM and marketing, and in front-end I focus on products where structure, prioritization and visual feedback help users understand faster what to do and act with less friction.',
-      heroPrimary: 'Write me about a project',
-      heroSecondary: 'Open Alpis Fusion →',
       previewLabel: 'Live preview',
       previewOpen: 'Open project',
       previewCaseStudy: 'Open case study',
@@ -293,12 +289,6 @@
 
   function setupAriaCurrent() {
     if (!('IntersectionObserver' in window) || !els.sections.length || !els.navLinks.length) return;
-
-    const sectionMap = new Map();
-    els.navLinks.forEach(link => {
-      const id = link.getAttribute('href');
-      if (id) sectionMap.set(id, link);
-    });
 
     const observer = new IntersectionObserver((entries) => {
       const visible = entries
