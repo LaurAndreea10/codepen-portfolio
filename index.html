@@ -88,7 +88,7 @@
   </script>
 
   <style>
-    :root {
+    :root{
       --bg:#050d1f;
       --bg2:#08142b;
       --panel:rgba(10,22,46,.88);
@@ -99,18 +99,17 @@
       --accent2:#8b5cf6;
       --green:#4ade80;
       --amber:#f59e0b;
+      --focus:#ffd166;
       --shadow:0 20px 48px rgba(0,0,0,.32);
       --container:1120px;
       --r-card:22px;
       --r-pill:999px;
-      --focus:#ffd166;
-      --focus-ring:0 0 0 6px rgba(255,209,102,.18);
     }
 
-    body.light {
+    body.light{
       --bg:#f5f8fd;
       --bg2:#edf3fb;
-      --panel:rgba(255,255,255,.94);
+      --panel:rgba(255,255,255,.92);
       --line:rgba(16,24,40,.16);
       --text:#16213e;
       --muted:#3f5478;
@@ -119,22 +118,21 @@
       --shadow:0 14px 30px rgba(15,23,42,.12);
     }
 
-    body.high-contrast {
+    body.high-contrast{
       --bg:#000;
       --bg2:#000;
       --panel:#0b0b0b;
-      --line:rgba(255,255,255,.35);
       --text:#fff;
       --muted:#f2f2f2;
+      --line:rgba(255,255,255,.35);
       --accent:#00e5ff;
       --accent2:#ffd400;
+      --focus:#ffd400;
       --shadow:none;
-      --focus:#00e5ff;
-      --focus-ring:0 0 0 6px rgba(0,229,255,.22);
     }
 
     *{box-sizing:border-box}
-    html:focus-within{scroll-behavior:smooth}
+    html{scroll-behavior:smooth}
     body{
       margin:0;
       font-family:Inter,system-ui,sans-serif;
@@ -142,6 +140,7 @@
       background:linear-gradient(180deg,var(--bg2),var(--bg));
       min-height:100vh;
     }
+
     a{text-decoration:none;color:inherit}
     h1,h2,h3,h4,p{margin:0}
     img{max-width:100%}
@@ -151,7 +150,7 @@
       background:var(--panel);
       border:1px solid var(--line);
       box-shadow:var(--shadow);
-      backdrop-filter:blur(14px)
+      backdrop-filter:blur(14px);
     }
 
     .skip-links{
@@ -160,6 +159,7 @@
       left:0;
       z-index:1000;
     }
+
     .skip-link{
       position:absolute;
       left:12px;
@@ -169,80 +169,250 @@
       padding:10px 14px;
       border-radius:10px;
       font-weight:700;
-      box-shadow:var(--shadow);
+      border:2px solid transparent;
     }
+
+    .skip-link:nth-child(2){left:12px}
+    .skip-link:nth-child(3){left:12px}
+    .skip-link:nth-child(4){left:12px}
+
     .skip-link:focus{top:12px}
     .skip-link:nth-child(2):focus{top:56px}
     .skip-link:nth-child(3):focus{top:100px}
     .skip-link:nth-child(4):focus{top:144px}
 
-    .topbar{position:sticky;top:0;z-index:20;padding:12px 0;
-      background:linear-gradient(to bottom,rgba(0,0,0,.28),transparent)}
-    .nav{border-radius:999px;padding:12px 16px;display:flex;
-      justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-    .brand{font-weight:800;display:flex;align-items:center;gap:10px}
-    .badge{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;
-      color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));font-weight:800}
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      padding:12px 0;
+      background:linear-gradient(to bottom,rgba(0,0,0,.28),transparent);
+    }
+
+    .nav{
+      border-radius:999px;
+      padding:12px 16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      font-weight:800;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .badge{
+      width:36px;
+      height:36px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      font-weight:800;
+    }
+
     .nav-links{display:flex;gap:8px;flex-wrap:wrap}
-    .pill{border:1px solid var(--line);background:rgba(255,255,255,.04);
-      border-radius:999px;padding:9px 14px;color:var(--text);cursor:pointer;
-      font-size:.9rem;transition:border-color .2s}
+
+    .pill{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      border-radius:999px;
+      padding:9px 14px;
+      color:var(--text);
+      cursor:pointer;
+      font-size:.9rem;
+      transition:border-color .2s, background .2s, transform .2s;
+      font-family:inherit;
+    }
+
     .pill:hover{border-color:var(--accent)}
+    .pill[aria-current="true"]{
+      border-color:var(--accent);
+      background:linear-gradient(135deg,rgba(79,140,255,.20),rgba(139,92,246,.18));
+    }
 
     .hero{padding:34px 0 20px}
     .hero-card{border-radius:24px;padding:30px}
-    .eyebrow{font-size:.78rem;font-weight:800;text-transform:uppercase;
-      letter-spacing:.1em;color:var(--accent);display:inline-flex;
-      align-items:center;gap:6px}
-    .hero-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
-      gap:24px;align-items:stretch}
-    .hero-main{display:flex;flex-direction:column;justify-content:center}
-    h1{margin-top:14px;font-size:clamp(2rem,5vw,3.8rem);line-height:.96;
-      max-width:15ch;letter-spacing:-.04em}
-    .hero-text{margin-top:14px;color:var(--muted);line-height:1.75;max-width:72ch}
+
+    .eyebrow{
+      font-size:.78rem;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      color:var(--accent);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .hero-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+      gap:24px;
+      align-items:stretch;
+    }
+
+    .hero-main{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    h1{
+      margin-top:14px;
+      font-size:clamp(2rem,5vw,3.8rem);
+      line-height:.96;
+      max-width:15ch;
+      letter-spacing:-.04em;
+    }
+
+    .hero-text,
+    .project-desc,
+    .section-subtitle,
+    .about-card p,
+    .contact-card p,
+    .mini-item span,
+    .final-cta-card p,
+    .timeline-item p,
+    .pow-card p,
+    .impact-card p{
+      color:var(--muted);
+      line-height:1.75;
+    }
+
     .hero-actions{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
 
-    .btn{display:inline-flex;align-items:center;justify-content:center;
-      min-height:48px;padding:0 20px;border-radius:999px;border:1px solid transparent;
-      font-weight:700;font-size:.95rem;transition:all .2s;cursor:pointer;
-      font-family:inherit;gap:8px}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:48px;
+      padding:0 20px;
+      border-radius:999px;
+      border:1px solid transparent;
+      font-weight:700;
+      font-size:.95rem;
+      transition:all .2s;
+      cursor:pointer;
+      font-family:inherit;
+      gap:8px;
+    }
+
     .btn-primary{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}
-    .btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+    .btn-primary:hover{opacity:.92;transform:translateY(-1px)}
     .btn-secondary{border-color:var(--line);background:rgba(255,255,255,.04)}
     .btn-secondary:hover{border-color:var(--accent);background:rgba(79,140,255,.06)}
-    .btn-codepen{color:#fff;border-color:rgba(139,92,246,.45);
-      background:linear-gradient(135deg,rgba(79,140,255,.34),rgba(139,92,246,.34))}
+    .btn-codepen{
+      color:#fff;
+      border-color:rgba(139,92,246,.45);
+      background:linear-gradient(135deg,rgba(79,140,255,.34),rgba(139,92,246,.34));
+    }
     .btn-codepen:hover{border-color:rgba(196,181,253,.8)}
-    .btn-ghost{border:1px solid var(--line);background:transparent;
-      color:var(--muted);font-size:.88rem;min-height:40px;padding:0 14px}
+    .btn-ghost{
+      border:1px solid var(--line);
+      background:transparent;
+      color:var(--muted);
+      font-size:.88rem;
+      min-height:40px;
+      padding:0 14px;
+    }
+
     .btn-ghost:hover{color:var(--text);border-color:var(--accent)}
 
-    .hero-preview{display:flex;flex-direction:column;gap:12px;min-height:540px;
-      padding:12px;border-radius:18px;border:1px solid var(--line);
-      background:rgba(255,255,255,.03)}
-    .hero-preview-wrap{position:relative;flex:1;min-height:460px;border-radius:14px;
-      overflow:hidden;border:1px solid rgba(255,255,255,.08);
+    .hero-preview{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height:540px;
+      padding:12px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+    }
+
+    .hero-preview-wrap{
+      position:relative;
+      flex:1;
+      min-height:460px;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
       background:radial-gradient(circle at 10% 10%,rgba(79,140,255,.28),transparent 45%),
-        radial-gradient(circle at 90% 90%,rgba(139,92,246,.24),transparent 48%),#081326}
-    .hero-preview-fallback{position:absolute;inset:0;width:100%;height:100%;
-      object-fit:cover;opacity:0;transition:opacity .25s ease}
-    .hero-preview-hint{position:absolute;inset:auto 12px 12px 12px;z-index:2;
-      padding:10px 12px;border-radius:12px;border:1px solid var(--line);
-      background:rgba(7,18,38,.72);font-size:.84rem;color:var(--muted);
-      pointer-events:none;opacity:0;transition:opacity .25s ease}
-    .hero-preview-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+      radial-gradient(circle at 90% 90%,rgba(139,92,246,.24),transparent 48%),#081326;
+    }
+
+    .hero-preview-fallback{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:0;
+      transition:opacity .25s ease;
+    }
+
+    .hero-preview-hint{
+      position:absolute;
+      inset:auto 12px 12px 12px;
+      z-index:2;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(7,18,38,.72);
+      font-size:.84rem;
+      color:var(--muted);
+      pointer-events:none;
+      opacity:0;
+      transition:opacity .25s ease;
+    }
+
+    .hero-preview-top{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+    }
+
     .hero-preview-top p{font-size:.9rem;color:var(--muted)}
-    .hero-preview-frame{width:100%;height:100%;min-height:460px;border:0;
-      border-radius:14px;background:#081326}
-    .hero-preview-links{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;
-      scrollbar-width:none;-ms-overflow-style:none;padding-bottom:2px}
+    .hero-preview-frame{width:100%;height:100%;min-height:460px;border:0;border-radius:14px;background:#081326}
+
+    .hero-preview-links{
+      display:flex;
+      gap:8px;
+      flex-wrap:nowrap;
+      overflow-x:auto;
+      scrollbar-width:none;
+      -ms-overflow-style:none;
+      padding-bottom:2px;
+    }
     .hero-preview-links::-webkit-scrollbar{display:none}
-    .hero-preview-links .chip{font-size:.82rem;padding:8px 12px;
-      white-space:nowrap;flex:0 0 auto}
+
+    .hero-preview-links .chip{
+      font-size:.82rem;
+      padding:8px 12px;
+      white-space:nowrap;
+      flex:0 0 auto;
+    }
+
     .hero-preview-links .chip.active{color:#fff}
-    .hero-preview-stage{position:absolute;inset:0;display:flex;flex-direction:column;
-      justify-content:flex-end;gap:12px;padding:22px;
-      background:linear-gradient(180deg,rgba(8,19,38,.18),rgba(8,19,38,.95))}
+
+    .hero-preview-stage{
+      position:absolute;
+      inset:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      gap:12px;
+      padding:22px;
+      background:linear-gradient(180deg,rgba(8,19,38,.18),rgba(8,19,38,.95));
+    }
+
     .hero-preview-stage h3{font-size:1.45rem;line-height:1.2;margin:0}
     .hero-preview-stage p{margin:0;color:var(--muted);line-height:1.6}
     .hero-preview-stage .meta-line{font-size:.86rem;color:#c9dcff}
@@ -250,310 +420,425 @@
     .hero-preview-actions{display:flex;gap:8px;flex-wrap:wrap}
 
     .cred-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-    .cred-item{border:1px solid var(--line);border-radius:16px;padding:14px;
-      background:rgba(255,255,255,.03);transition:border-color .2s}
+    .cred-item{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+      background:rgba(255,255,255,.03);
+      transition:border-color .2s;
+    }
+
     .cred-item:hover{border-color:var(--accent)}
-    .cred-item:first-child{background:linear-gradient(135deg,rgba(79,140,255,.2),rgba(139,92,246,.15));
-      border-color:rgba(139,92,246,.45)}
+    .cred-item:first-child{
+      background:linear-gradient(135deg,rgba(79,140,255,.2),rgba(139,92,246,.15));
+      border-color:rgba(139,92,246,.45);
+    }
+
     .cred-item strong{display:block;font-size:1.5rem}
     .cred-item p{margin-top:6px;color:var(--muted);line-height:1.45;font-size:.9rem}
 
     section{padding:28px 0}
-    .section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);
-      margin:8px 0}
-    .section-head{display:flex;justify-content:space-between;gap:12px;
-      align-items:flex-end;flex-wrap:wrap;margin-bottom:18px}
-    .section-subtitle{margin-top:8px;color:var(--muted);line-height:1.65;max-width:72ch}
+    .section-divider{
+      height:1px;
+      background:linear-gradient(90deg,transparent,var(--line),transparent);
+      margin:8px 0;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-end;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
 
     .gh-section{padding:24px 0 10px}
     .gh-section .eyebrow{color:#c084fc}
     body.light .gh-section .eyebrow{color:#7c3aed}
-    .gh-meta{display:inline-flex;align-items:center;gap:8px;margin-top:10px;
-      padding:7px 12px;border-radius:999px;background:rgba(139,92,246,.10);
-      border:1px solid rgba(139,92,246,.24);font-size:.86rem;color:var(--muted)}
-    .gh-meta svg{width:14px;height:14px;fill:currentColor;opacity:.85}
 
-    #crm-projects .eyebrow{color:var(--green)}
-    #crm-projects .gh-meta{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.22)}
-    #challenges-projects .eyebrow{color:var(--amber)}
-    #challenges-projects .gh-meta{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.22)}
+    .gh-meta{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:10px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:rgba(139,92,246,.10);
+      border:1px solid rgba(139,92,246,.24);
+      font-size:.86rem;
+      color:var(--muted);
+    }
 
-    .tag{display:inline-flex;padding:6px 10px;border-radius:999px;
-      border:1px solid var(--line);font-size:.78rem;color:var(--muted);text-transform:capitalize}
+    .tag{
+      display:inline-flex;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      font-size:.78rem;
+      color:var(--muted);
+      text-transform:capitalize;
+    }
+
     .tag.github{color:#e0d4ff;background:rgba(139,92,246,.16);border-color:rgba(139,92,246,.30)}
     .tag.challenge{color:#fde68a;background:rgba(245,158,11,.14);border-color:rgba(245,158,11,.28)}
     .tag.crm,.tag.saas,.tag.ops,.tag.premium,.tag.v2,.tag.v5,.tag.hq,.tag.arcade{
-      color:#86efac;background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.26)}
-    body.light .tag.github{color:#5b21b6}
-    body.light .tag.challenge{color:#92400e}
+      color:#86efac;background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.26)
+    }
 
-    .badge-new{position:absolute;top:14px;right:14px;left:auto;z-index:2;
-      display:inline-flex;align-items:center;gap:6px;padding:5px 10px;
-      border-radius:999px;font-size:.68rem;font-weight:800;letter-spacing:.12em;
-      text-transform:uppercase;color:#fff;
+    .badge-new{
+      position:absolute;
+      top:14px;
+      right:14px;
+      z-index:2;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:.68rem;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#fff;
       background:linear-gradient(135deg,#8b5cf6,#ec4899);
       border:1px solid rgba(255,255,255,.2);
       box-shadow:0 4px 14px rgba(139,92,246,.4);
-      animation:pulse-new 2.4s ease-in-out infinite}
-    .badge-new::before{content:"";width:5px;height:5px;border-radius:50%;
-      background:#fff;box-shadow:0 0 8px rgba(255,255,255,.9)}
-    @keyframes pulse-new{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-    .badge-github{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;
-      border-radius:999px;font-size:.74rem;font-weight:700;color:#e0d4ff;
-      background:rgba(139,92,246,.14);border:1px solid rgba(139,92,246,.28)}
-    body.light .badge-github{color:#5b21b6;background:rgba(139,92,246,.10)}
-    .badge-github svg{width:14px;height:14px;fill:currentColor}
+      animation:pulse-new 2.4s ease-in-out infinite;
+    }
+
+    .badge-new::before{
+      content:"";
+      width:5px;
+      height:5px;
+      border-radius:50%;
+      background:#fff;
+      box-shadow:0 0 8px rgba(255,255,255,.9);
+    }
+
+    @keyframes pulse-new{
+      0%,100%{transform:scale(1)}
+      50%{transform:scale(1.04)}
+    }
+
+    .badge-github{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:.74rem;
+      font-weight:700;
+      color:#e0d4ff;
+      background:rgba(139,92,246,.14);
+      border:1px solid rgba(139,92,246,.28);
+    }
 
     .projects-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-    .project-card{border-radius:var(--r-card);padding:18px;display:flex;
-      flex-direction:column;gap:12px;position:relative;
-      transition:transform .2s,box-shadow .2s}
-    .project-card:hover{transform:translateY(-2px);
-      box-shadow:0 24px 52px rgba(0,0,0,.4)}
+    .project-card{
+      border-radius:var(--r-card);
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      position:relative;
+      transition:transform .2s,box-shadow .2s;
+    }
+
+    .project-card:hover{transform:translateY(-2px);box-shadow:0 24px 52px rgba(0,0,0,.4)}
     .project-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-    .project-desc{color:var(--muted);line-height:1.7;font-size:.95rem}
     .card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
 
     .mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:6px}
-    .mini-item{border:1px solid var(--line);border-radius:14px;padding:10px;
-      background:rgba(255,255,255,.03)}
-    .mini-item strong{display:block;font-size:.75rem;text-transform:uppercase;
-      color:var(--accent);margin-bottom:5px;letter-spacing:.04em}
-    .mini-item span{font-size:.88rem;line-height:1.5;color:var(--muted)}
-    .project-proof{margin-top:6px;padding:12px;border:1px solid var(--line);
-      border-radius:14px;background:rgba(79,140,255,.08)}
-    .project-proof strong{display:block;font-size:.75rem;text-transform:uppercase;
-      color:var(--accent);margin-bottom:6px;letter-spacing:.04em}
+    .mini-item{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+      background:rgba(255,255,255,.03);
+    }
+
+    .mini-item strong{
+      display:block;
+      font-size:.75rem;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:5px;
+      letter-spacing:.04em;
+    }
+
+    .project-proof{
+      margin-top:6px;
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(79,140,255,.08);
+    }
+
+    .project-proof strong{
+      display:block;
+      font-size:.75rem;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:6px;
+      letter-spacing:.04em;
+    }
+
     .project-proof ul{margin:0;padding-left:18px;color:var(--text);line-height:1.55}
     .project-proof li+li{margin-top:4px}
     .project-meta-row{display:flex;flex-wrap:wrap;gap:8px}
-    .project-meta-tag{font-size:.76rem;padding:4px 10px;border-radius:999px;
-      border:1px solid rgba(129,140,248,.34);background:rgba(79,140,255,.14);color:#c9d8ff}
+    .project-meta-tag{
+      font-size:.76rem;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(129,140,248,.34);
+      background:rgba(79,140,255,.14);
+      color:#c9d8ff;
+    }
 
-    .key-carousel{position:relative}
-    .key-carousel-viewport{overflow:hidden;border-radius:24px}
-    .key-carousel-track{display:flex;transition:transform .4s ease}
-    .key-carousel-track .project-card{min-width:100%}
-    .key-carousel-controls{display:flex;justify-content:space-between;
-      align-items:center;gap:12px;margin-top:14px}
-    .key-carousel-nav{display:flex;gap:8px}
-    .key-carousel-btn{width:44px;height:44px;border-radius:999px;
-      border:1px solid var(--line);background:rgba(255,255,255,.04);
-      color:var(--text);cursor:pointer;font-size:1.2rem;line-height:1;
-      transition:border-color .2s}
-    .key-carousel-btn:hover:not(:disabled){border-color:var(--accent)}
-    .key-carousel-btn:disabled{opacity:.45;cursor:not-allowed}
-    .key-carousel-dots{display:flex;gap:8px;flex-wrap:wrap}
-    .key-carousel-dot{width:10px;height:10px;border-radius:999px;border:0;
-      background:rgba(157,176,212,.5);cursor:pointer;transition:all .3s}
-    .key-carousel-dot.active{width:26px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+    .project-lineage{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 18px;
+      padding:16px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+    }
 
-    .project-lineage{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-      margin:14px 0 18px;padding:16px;border-radius:16px;
-      border:1px solid var(--line);background:rgba(255,255,255,.02)}
-    .lineage-step{flex:1 1 160px;padding:12px;border-radius:12px;
-      border:1px solid var(--line);background:rgba(255,255,255,.03)}
+    .lineage-step{
+      flex:1 1 160px;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+    }
+
     .lineage-step strong{display:block;font-size:.83rem;color:var(--accent);margin-bottom:6px}
     .lineage-step p{font-size:.82rem;color:var(--muted);line-height:1.5}
     .lineage-arrow{font-size:1.4rem;color:var(--muted);flex:0 0 auto}
-    .lineage-target{flex:1 1 160px;padding:12px;border-radius:12px;
-      border:1px solid rgba(139,92,246,.4);background:rgba(139,92,246,.08)}
+
+    .lineage-target{
+      flex:1 1 160px;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid rgba(139,92,246,.4);
+      background:rgba(139,92,246,.08);
+    }
+
     .lineage-target strong{display:block;font-size:.83rem;color:#c084fc;margin-bottom:6px}
     .lineage-target p{font-size:.82rem;color:var(--muted);line-height:1.5}
 
-    .series-callout{margin-bottom:16px;padding:14px 18px;border-radius:14px;
+    .series-callout{
+      margin-bottom:16px;
+      padding:14px 18px;
+      border-radius:14px;
       border:1px solid rgba(245,158,11,.25);
       background:rgba(245,158,11,.06);
-      display:flex;align-items:flex-start;gap:12px}
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+    }
+
     .series-callout-icon{font-size:1.2rem;flex:0 0 auto;margin-top:2px}
     .series-callout p{font-size:.88rem;color:var(--muted);line-height:1.6;margin:0}
-    .series-callout strong{color:var(--text)}
 
-    .pow-section{padding:28px 0}
-    .pow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;
-      margin-top:16px}
-    .pow-card{border-radius:18px;padding:20px;border:1px solid var(--line);
-      background:rgba(255,255,255,.03);transition:border-color .2s}
+    .pow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}
+    .pow-card{
+      border-radius:18px;
+      padding:20px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      transition:border-color .2s;
+    }
+
     .pow-card:hover{border-color:rgba(79,140,255,.35)}
     .pow-card-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-    .pow-icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
-      font-size:1rem;flex:0 0 auto}
+    .pow-icon{
+      width:36px;
+      height:36px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      font-size:1rem;
+      flex:0 0 auto;
+    }
+
     .pow-icon.green{background:rgba(74,222,128,.12);color:var(--green)}
     .pow-icon.blue{background:rgba(79,140,255,.12);color:var(--accent)}
     .pow-icon.purple{background:rgba(139,92,246,.12);color:#c084fc}
     .pow-icon.amber{background:rgba(245,158,11,.12);color:var(--amber)}
     .pow-card h4{font-size:.9rem;font-weight:700;margin:0}
-    .pow-card p{font-size:.86rem;color:var(--muted);line-height:1.6;margin:0}
-    .pow-metric{display:inline-flex;align-items:center;gap:6px;margin-top:10px;
-      padding:6px 10px;border-radius:8px;background:rgba(79,140,255,.08);
-      border:1px solid rgba(79,140,255,.18);font-size:.82rem;font-weight:700;
-      color:var(--accent)}
-    .pow-metric.green{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.18);
-      color:var(--green)}
-    .pow-metric.purple{background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.18);
-      color:#c084fc}
-    .pow-metric.amber{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.18);
-      color:var(--amber)}
+
+    .pow-metric{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-top:10px;
+      padding:6px 10px;
+      border-radius:8px;
+      background:rgba(79,140,255,.08);
+      border:1px solid rgba(79,140,255,.18);
+      font-size:.82rem;
+      font-weight:700;
+      color:var(--accent);
+    }
+
+    .pow-metric.green{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.18);color:var(--green)}
+    .pow-metric.purple{background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.18);color:#c084fc}
+    .pow-metric.amber{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.18);color:var(--amber)}
+
     .pow-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-    .pow-link{display:inline-flex;align-items:center;gap:5px;font-size:.8rem;
-      color:var(--muted);border:1px solid var(--line);padding:5px 10px;
-      border-radius:8px;transition:all .2s}
+    .pow-link{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      font-size:.8rem;
+      color:var(--muted);
+      border:1px solid var(--line);
+      padding:5px 10px;
+      border-radius:8px;
+      transition:all .2s;
+    }
+
     .pow-link:hover{color:var(--text);border-color:var(--accent)}
-    .pow-note{margin-top:12px;padding:12px 16px;border-radius:12px;
-      border:1px dashed rgba(79,140,255,.2);background:rgba(79,140,255,.04);
-      font-size:.84rem;color:var(--muted);line-height:1.6}
-    .pow-note strong{color:var(--text)}
+    .pow-note{
+      margin-top:12px;
+      padding:12px 16px;
+      border-radius:12px;
+      border:1px dashed rgba(79,140,255,.2);
+      background:rgba(79,140,255,.04);
+      font-size:.84rem;
+      color:var(--muted);
+      line-height:1.6;
+    }
 
     .impact-roadmap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-    .impact-card{border-radius:18px;padding:18px;border:1px solid var(--line);
-      background:rgba(255,255,255,.03)}
-    .impact-head{display:flex;justify-content:space-between;gap:10px;
-      align-items:flex-start;flex-wrap:wrap}
-    .impact-score{display:inline-flex;padding:4px 10px;border-radius:999px;
-      font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
-      border:1px solid rgba(129,140,248,.34);background:rgba(79,140,255,.14);color:#c9d8ff}
+    .impact-card{
+      border-radius:18px;
+      padding:18px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+    }
+
+    .impact-head{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+    }
+
+    .impact-score{
+      display:inline-flex;
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:.72rem;
+      font-weight:800;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      border:1px solid rgba(129,140,248,.34);
+      background:rgba(79,140,255,.14);
+      color:#c9d8ff;
+    }
+
     .impact-time{color:var(--muted);font-size:.85rem}
     .impact-card h3{margin-top:10px;font-size:1.05rem}
-    .impact-card p{margin-top:8px;line-height:1.65;color:var(--muted)}
+
     .before-after{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-    .before-after article{padding:12px;border-radius:12px;border:1px solid var(--line);
-      background:rgba(255,255,255,.03)}
-    .before-after strong{display:block;margin-bottom:8px;font-size:.84rem;
-      text-transform:uppercase;letter-spacing:.04em}
+    .before-after article{
+      padding:12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+    }
+
+    .before-after strong{
+      display:block;
+      margin-bottom:8px;
+      font-size:.84rem;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+
     .before-after ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.5}
     .decision-list{margin-top:10px;padding-left:18px;color:var(--text);line-height:1.55}
     .decision-list li+li{margin-top:6px}
     .decision-list span{color:var(--muted)}
+
     .og-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
     .og-item{padding:12px;border:1px solid var(--line);border-radius:12px}
     .og-item strong{display:block}
     .og-item small{display:block;margin-top:6px;color:var(--muted);line-height:1.5}
 
     .timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-    .timeline-item{padding:14px;border:1px solid var(--line);border-radius:14px;
-      background:rgba(255,255,255,.03)}
-    .timeline-item strong{display:block;color:var(--accent);margin-bottom:8px;font-size:.9rem}
+    .timeline-item{
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,.03);
+    }
 
+    .timeline-item strong{display:block;color:var(--accent);margin-bottom:8px;font-size:.9rem}
     .about-contact{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .about-card,.contact-card{border-radius:var(--r-card);padding:22px}
-    .about-card p,.contact-card p{color:var(--muted);line-height:1.7;margin-top:10px}
-    .skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-    .skills span{padding:7px 10px;border:1px solid var(--line);border-radius:999px;
-      font-size:.85rem;background:rgba(255,255,255,.04)}
 
-    .controls{display:grid;gap:10px;margin:14px 0}
-    .search{width:100%;min-height:50px;border-radius:14px;border:1px solid var(--line);
-      background:rgba(255,255,255,.04);padding:0 14px;color:var(--text);
-      font-family:inherit;font-size:.95rem}
-    .search:focus{outline:none;border-color:var(--accent)}
-    .chip-row{display:flex;gap:8px;flex-wrap:wrap}
-    .chip{padding:9px 14px;border-radius:999px;border:1px solid var(--line);
-      background:rgba(255,255,255,.04);cursor:pointer;color:var(--text);
-      transition:all .2s;font-family:inherit}
-    .chip.active{background:linear-gradient(135deg,rgba(79,140,255,.2),rgba(139,92,246,.18));
-      border-color:rgba(79,140,255,.35)}
-    .status{font-size:.92rem;color:var(--muted)}
-    .library-fallback{display:none;margin-top:12px;padding:16px;
-      border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.03)}
-    .library-fallback.show{display:block}
-    .library-fallback p{color:var(--muted);line-height:1.65;margin-bottom:10px}
+    .skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+    .skills span{
+      padding:7px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      font-size:.85rem;
+      background:rgba(255,255,255,.04);
+    }
 
     .insights-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 
     .final-cta-section{padding:36px 0 48px}
-    .final-cta-card{border-radius:24px;padding:36px;text-align:center;
+    .final-cta-card{
+      border-radius:24px;
+      padding:36px;
+      text-align:center;
       background:linear-gradient(135deg,rgba(79,140,255,.12),rgba(139,92,246,.10));
-      border:1px solid rgba(139,92,246,.3)}
-    .final-cta-card .eyebrow{justify-content:center;margin-bottom:12px}
-    .final-cta-card h2{font-size:clamp(1.6rem,3.5vw,2.4rem);letter-spacing:-.03em;
-      max-width:20ch;margin:0 auto}
-    .final-cta-card p{color:var(--muted);line-height:1.7;max-width:56ch;
-      margin:14px auto 0}
-    .final-cta-actions{display:flex;gap:12px;flex-wrap:wrap;
-      justify-content:center;margin-top:24px}
+      border:1px solid rgba(139,92,246,.3);
+    }
 
+    .final-cta-card .eyebrow{justify-content:center;margin-bottom:12px}
+    .final-cta-card h2{
+      font-size:clamp(1.6rem,3.5vw,2.4rem);
+      letter-spacing:-.03em;
+      max-width:20ch;
+      margin:0 auto;
+    }
+
+    .final-cta-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:24px}
     .footer{padding:20px 0 36px;text-align:center;color:var(--muted)}
 
-    .project-desc,
-    .section-subtitle,
-    .about-card p,
-    .contact-card p,
-    .mini-item span,
-    .cred-item p,
-    .impact-card p,
-    .timeline-item p,
-    .final-cta-card p,
-    .pow-card p,
-    .series-callout p {
-      color:var(--muted);
-    }
-
-    .pill,
-    .btn,
-    .chip,
-    .search,
-    a,
-    button,
-    input,
-    textarea,
-    select {
-      min-height:44px;
-    }
-
-    .pill:focus-visible,.btn:focus-visible,.chip:focus-visible,
-    .search:focus-visible,a:focus-visible,button:focus-visible,
-    input:focus-visible,textarea:focus-visible,select:focus-visible{
+    .pill:focus-visible,
+    .btn:focus-visible,
+    .chip:focus-visible,
+    .search:focus-visible,
+    a:focus-visible,
+    button:focus-visible,
+    iframe:focus-visible{
       outline:3px solid var(--focus);
       outline-offset:3px;
-      box-shadow:var(--focus-ring);
-    }
-
-    body.high-contrast .btn-primary,
-    body.high-contrast .badge,
-    body.high-contrast .key-carousel-dot.active {
-      background:var(--accent);
-      color:#000;
-    }
-
-    body.high-contrast .btn-secondary,
-    body.high-contrast .btn-ghost,
-    body.high-contrast .pill,
-    body.high-contrast .chip,
-    body.high-contrast .search,
-    body.high-contrast .project-card,
-    body.high-contrast .about-card,
-    body.high-contrast .contact-card,
-    body.high-contrast .pow-card,
-    body.high-contrast .impact-card,
-    body.high-contrast .cred-item,
-    body.high-contrast .mini-item,
-    body.high-contrast .timeline-item {
-      background:#111;
-      color:var(--text);
-      border-color:var(--line);
-    }
-
-    body.high-contrast a {
-      text-decoration:underline;
-    }
-
-    body.high-contrast .tag,
-    body.high-contrast .badge-github,
-    body.high-contrast .project-meta-tag,
-    body.high-contrast .gh-meta {
-      background:#111;
-      color:var(--text);
-      border-color:var(--line);
+      box-shadow:0 0 0 6px rgba(255,209,102,.18);
     }
 
     @media (prefers-reduced-motion: reduce){
-      html:focus-within{scroll-behavior:auto}
-      *,*::before,*::after{
+      html{scroll-behavior:auto}
+      *,
+      *::before,
+      *::after{
         animation:none !important;
         transition:none !important;
-        scroll-behavior:auto !important;
       }
-      .project-card:hover,.btn:hover,.cred-item:hover,.pow-card:hover,.pill:hover,.chip:hover{
+
+      .project-card:hover,
+      .btn:hover,
+      .pill:hover{
         transform:none !important;
       }
     }
@@ -569,17 +854,17 @@
       .project-lineage{flex-direction:column}
       .lineage-arrow{transform:rotate(90deg)}
     }
+
     @media(max-width:700px){
       .container{width:min(var(--container),calc(100% - 20px))}
       .nav{border-radius:20px}
       .projects-grid,.mini-grid,.cred-strip,.timeline{grid-template-columns:1fr}
-      .pow-grid{grid-template-columns:1fr}
       .final-cta-card{padding:24px 16px}
     }
   </style>
 </head>
 <body>
-  <div class="skip-links" aria-label="Scurtături de navigare">
+  <div class="skip-links" aria-label="Linkuri rapide">
     <a class="skip-link" href="#home">Sari la început</a>
     <a class="skip-link" href="#key-projects">Sari la proiectele recomandate</a>
     <a class="skip-link" href="#marketing-tech">Sari la Marketing-Tech</a>
@@ -587,7 +872,9 @@
   </div>
 
   <noscript>
-    <div style="padding:12px 16px;text-align:center;background:#1e3a8a;color:#fff;font-weight:700;">Pentru experiența completă recomand activarea JavaScript.</div>
+    <div style="padding:12px 16px;text-align:center;background:#1e3a8a;color:#fff;font-weight:700;">
+      Pentru experiența completă recomand activarea JavaScript.
+    </div>
     <div style="padding:12px 16px;background:#071226;color:#fff;">
       <strong>Proiecte-cheie:</strong>
       <ul>
@@ -601,8 +888,12 @@
   <div class="topbar">
     <div class="container">
       <nav class="nav glass" aria-label="Navigare principală">
-        <a class="brand" href="#home"><span class="badge">CP</span><span>Portofoliu CodePen</span></a>
-        <div class="nav-links" aria-label="Linkuri și controale principale">
+        <a class="brand" href="#home" aria-label="Mergi la începutul paginii">
+          <span class="badge" aria-hidden="true">CP</span>
+          <span>Portofoliu CodePen</span>
+        </a>
+
+        <div class="nav-links" aria-label="Secțiuni principale">
           <a class="pill" href="#key-projects">Top proiecte</a>
           <a class="pill" href="#proof-of-work">Dovezi</a>
           <a class="pill" href="#marketing-tech">Marketing-Tech</a>
@@ -618,79 +909,76 @@
     </div>
   </div>
 
-  <header class="hero" id="home">
+  <header class="hero" id="home" aria-labelledby="hero-title">
     <div class="container">
       <article class="hero-card glass">
         <div class="hero-layout">
           <div class="hero-main">
-            <span class="eyebrow">CRM • Marketing • Front-end autodidact</span>
-            <h1>Construiesc interfețe CRM și dashboard-uri care transformă procese complicate în fluxuri clare</h1>
-            <p class="hero-text">Vin din CRM și marketing, iar în front-end mă concentrez pe produse unde structura, prioritizarea și feedback-ul vizual ajută utilizatorii să înțeleagă mai repede ce au de făcut și să acționeze fără fricțiune.</p>
+            <span class="eyebrow" id="hero-eyebrow">CRM • Marketing • Front-end autodidact</span>
+            <h1 id="hero-title">Construiesc interfețe CRM și dashboard-uri care transformă procese complicate în fluxuri clare</h1>
+            <p class="hero-text" id="hero-text">
+              Vin din CRM și marketing, iar în front-end mă concentrez pe produse unde structura, prioritizarea și feedback-ul vizual ajută utilizatorii să înțeleagă mai repede ce au de făcut și să acționeze fără fricțiune.
+            </p>
             <div class="hero-actions">
-              <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect" aria-label="Trimite un email despre un proiect">Scrie-mi despre un proiect</a>
-              <a class="btn btn-secondary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo-ul Alpis Fusion CRM Premium">Deschide Alpis Fusion →</a>
+              <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect" aria-label="Trimite email despre un proiect">Scrie-mi despre un proiect</a>
+              <a class="btn btn-secondary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer" aria-label="Deschide proiectul Alpis Fusion CRM Premium">Deschide Alpis Fusion →</a>
             </div>
           </div>
 
-          <aside class="hero-preview glass" id="heroPreviewSection" aria-labelledby="hero-preview-title">
+          <aside class="hero-preview glass" aria-label="Preview carusel proiecte" id="heroPreviewSection">
             <div class="hero-preview-top">
               <div>
-                <span class="eyebrow">Preview live</span>
-                <p id="hero-preview-title">Alpis Fusion CRM Premium</p>
+                <span class="eyebrow" id="heroPreviewLabel">Preview live</span>
+                <p id="heroPreviewTitle">Alpis Fusion CRM Premium</p>
               </div>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer" aria-label="Deschide proiectul Alpis Fusion CRM Premium pe GitHub">Deschide proiectul</a>
+              <a class="btn btn-secondary" id="heroPreviewOpenSecondary" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer" aria-label="Deschide proiectul curent din preview">Deschide proiectul</a>
             </div>
 
+            <div class="hero-preview-links" id="heroPreviewLinks" aria-label="Selectează preview proiect"></div>
+
             <div class="hero-preview-wrap">
-              <img
-                id="heroPreviewFallback"
-                class="hero-preview-fallback"
-                src="alpis-fusion-demo-poster.svg"
-                alt="Poster fallback pentru preview-ul proiectului"
-              />
-              <div id="heroPreviewHint" class="hero-preview-hint" aria-hidden="true">
-                Preview indisponibil momentan. Poți deschide proiectul direct din linkurile de mai jos.
-              </div>
+              <img class="hero-preview-fallback" id="heroPreviewFallback" src="alpis-fusion-demo-poster.svg" alt="Imagine fallback pentru preview proiect" />
+              <div class="hero-preview-hint" id="heroPreviewHint">Preview-ul live nu s-a încărcat. Poți folosi butoanele de mai jos pentru a deschide proiectul direct.</div>
 
               <iframe
-                id="heroPreviewFrame"
                 class="hero-preview-frame"
+                id="heroPreviewFrame"
                 title="Preview live proiect"
                 loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-              ></iframe>
+                referrerpolicy="strict-origin-when-cross-origin"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups">
+              </iframe>
 
               <div class="hero-preview-stage">
-                <span id="heroPreviewType" class="tag">Repository</span>
+                <span class="tag" id="heroPreviewType">Repository</span>
                 <h3 id="heroPreviewHeading">Alpis Fusion CRM Premium</h3>
-                <p id="heroPreviewMeta" class="meta-line">Vite + React · ~287KB build · Deploy automatizat</p>
+                <p class="meta-line" id="heroPreviewMeta">Vite + React · ~287KB build · Deploy automatizat</p>
                 <p id="heroPreviewDescription">Colecție de module CRM premium pentru lead pipeline, task management și automatizări.</p>
                 <div class="hero-preview-actions">
-                  <a id="heroPreviewOpenSecondary" class="btn btn-primary" href="projects/alpis-fusion-crm.html" aria-label="Deschide studiul de caz al proiectului selectat">Deschide case study</a>
-                  <a id="heroPreviewCode" class="btn btn-codepen" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer" aria-label="Deschide proiectul selectat într-o versiune externă">CodePen →</a>
+                  <a class="btn btn-primary" id="heroPreviewOpen" href="projects/alpis-fusion-crm.html" aria-label="Deschide proiectul curent din preview">Deschide case study</a>
+                  <a class="btn btn-codepen" id="heroPreviewCode" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer" aria-label="Deschide varianta live a proiectului curent">CodePen →</a>
                 </div>
                 <a id="heroPreviewUrl" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">github.com/LaurAndreea10/Alpis-Fusion-CRM-premium</a>
               </div>
             </div>
-
-            <div class="hero-preview-links" id="heroPreviewLinks" aria-label="Selectează proiect pentru preview"></div>
           </aside>
         </div>
       </article>
     </div>
   </header>
 
-  <main>
-    <section id="hero-proof" aria-label="Credibilitate">
+  <main id="main-content">
+    <section id="hero-proof" aria-labelledby="hero-proof-title">
       <div class="container">
+        <h2 id="hero-proof-title" class="sr-only" style="position:absolute;left:-9999px;">Credibilitate</h2>
         <div class="cred-strip">
-          <a class="cred-item" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer" aria-label="Deschide hub-ul CodePen cu proiecte live">
+          <a class="cred-item" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer" aria-label="Deschide hubul CodePen cu 64 proiecte live">
             <strong>64</strong>
-            <p>proiecte live pe CodePen<br><span style="opacity:.7;font-size:.82rem;">25 selectate pe acest site →</span></p>
+            <p>proiecte live pe CodePen<br><span style="opacity:.8;font-size:.82rem;">25 selectate pe acest site →</span></p>
           </a>
           <div class="cred-item">
             <strong>10+</strong>
-            <p>certificări: JavaScript Essential Training · Google Digital Marketing · freeCodeCamp Data Analysis · Claude Code in Action (Anthropic)</p>
+            <p>certificări: JavaScript Essential Training · Google Digital Marketing · freeCodeCamp Data Analysis · Claude Code in Action</p>
           </div>
           <div class="cred-item">
             <strong>6</strong>
@@ -704,7 +992,7 @@
       </div>
     </section>
 
-    <div class="section-divider"><div class="container"></div></div>
+    <div class="section-divider"></div>
 
     <section id="latest-github" class="gh-section" aria-labelledby="latest-github-title">
       <div class="container">
@@ -716,14 +1004,64 @@
               <span>Cod public • Deploy automat • Open source</span>
             </div>
           </div>
-          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Deschide toate repository-urile GitHub">Toate repo-urile →</a>
+          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Vezi toate repo-urile GitHub ale Laurei Andreea">Toate repo-urile →</a>
         </div>
 
-        <div id="gh-projects-static" class="projects-grid" aria-label="Proiecte GitHub recente"></div>
+        <div class="projects-grid" aria-label="Proiecte GitHub recente">
+          <article class="project-card glass" aria-labelledby="excel-quest-title">
+            <span class="badge-new">NEW</span>
+            <div class="project-top">
+              <div>
+                <h3 id="excel-quest-title">Excel-Quest</h3>
+                <span class="badge-github">GitHub</span>
+              </div>
+              <span class="tag github">github</span>
+            </div>
+            <p class="project-desc">Aplicație educațională gamificată pentru învățarea Excel. Structură de quest, progres vizibil și deploy GitHub Pages.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="projects/excel-quest.html" aria-label="Deschide case study Excel-Quest">Case study</a>
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/Excel-Quest/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo live Excel-Quest">Live Demo</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Excel-Quest" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub Excel-Quest">GitHub →</a>
+            </div>
+          </article>
+
+          <article class="project-card glass" aria-labelledby="basket-title">
+            <span class="badge-new">NEW</span>
+            <div class="project-top">
+              <div>
+                <h3 id="basket-title">BASKET VS AI</h3>
+                <span class="badge-github">GitHub</span>
+              </div>
+              <span class="tag github">github</span>
+            </div>
+            <p class="project-desc">Joc arcade cu două variante live: Main și Enhanced Pro. Repo public, deploy automat și două experiențe distincte.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/BASKET-VS-AI/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo live BASKET VS AI">Live Demo</a>
+              <a class="btn btn-secondary" href="https://laurandreea10.github.io/BASKET-VS-AI/enhanced.html" target="_blank" rel="noopener noreferrer" aria-label="Deschide varianta Enhanced Pro BASKET VS AI">Enhanced Pro</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/BASKET-VS-AI" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub BASKET VS AI">GitHub →</a>
+            </div>
+          </article>
+
+          <article class="project-card glass" aria-labelledby="link-video-title">
+            <span class="badge-new">NEW</span>
+            <div class="project-top">
+              <div>
+                <h3 id="link-video-title">Link Video Editor Studio</h3>
+                <span class="badge-github">GitHub</span>
+              </div>
+              <span class="tag github">github</span>
+            </div>
+            <p class="project-desc">Studio front-end pentru planuri de producție video. Structură de produs cu zone funcționale clare.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/Link-Video-Editor-Studio/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo live Link Video Editor Studio">Live Demo</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Link-Video-Editor-Studio" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub Link Video Editor Studio">GitHub →</a>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <div class="section-divider"><div class="container"></div></div>
+    <div class="section-divider"></div>
 
     <section id="now" aria-labelledby="now-title">
       <div class="container">
@@ -738,9 +1076,9 @@
             </p>
           </div>
           <ul style="margin-top:18px;padding-left:18px;color:var(--text);line-height:1.85;">
-            <li>Iterez pe <strong>Link Video Editor Studio</strong> — adaug Automation Pack export.</li>
+            <li>Iterez pe <strong>Link Video Editor Studio</strong> și adaug Automation Pack export.</li>
             <li>Pregătesc studiu de caz lung pentru <strong>Alpis Fusion CRM Premium</strong>.</li>
-            <li>Audit Lighthouse CI pe portofoliu și extrag CSS-ul inline pentru -300ms LCP.</li>
+            <li>Audit Lighthouse CI pe portofoliu și extrag CSS-ul inline pentru LCP mai bun.</li>
             <li>Extind verticala <strong>marketing-tech</strong> după publicarea <strong>Campaign ROI Calculator</strong>.</li>
           </ul>
           <p style="margin-top:14px;font-size:.85rem;color:var(--muted);font-style:italic;">
@@ -750,7 +1088,7 @@
       </div>
     </section>
 
-    <div class="section-divider"><div class="container"></div></div>
+    <div class="section-divider"></div>
 
     <section id="marketing-tech" class="gh-section" aria-labelledby="marketing-tech-title">
       <div class="container">
@@ -758,19 +1096,21 @@
           <div>
             <span class="eyebrow" style="color:#c084fc;">📊 Marketing-Tech</span>
             <h2 id="marketing-tech-title">Templates pentru marketing manager și echipe growth</h2>
-            <p class="section-subtitle">Combin background-ul meu CRM &amp; marketing cu logica de produs front-end. Workspace-uri unificate pentru planificare campanii, KPI tracking și conversion UI.</p>
+            <p class="section-subtitle">
+              Combin background-ul meu CRM și marketing cu logica de produs front-end. Workspace-uri unificate pentru planificare campanii, KPI tracking și conversion UI.
+            </p>
             <div class="gh-meta" style="background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.24);">
-              <span>2 published · 2 planificate · Open source</span>
+              <span>2 publicate · 2 planificate · Open source</span>
             </div>
           </div>
-          <div class="card-actions" style="margin-top:0;" aria-label="Linkuri Marketing-Tech">
+          <div class="card-actions" style="margin-top:0;">
             <a class="btn btn-secondary" href="./campaignpilot.html" aria-label="Deschide proiectul CampaignPilot">CampaignPilot</a>
             <a class="btn btn-secondary" href="./Campaign%20ROI%20Calculator.html" aria-label="Deschide proiectul Campaign ROI Calculator">ROI Calculator</a>
           </div>
         </div>
 
         <div class="projects-grid">
-          <article class="project-card glass" style="position:relative;" aria-labelledby="campaignpilot-title">
+          <article class="project-card glass" aria-labelledby="campaignpilot-title">
             <span class="badge-new">NEW</span>
             <div class="project-top">
               <div>
@@ -780,7 +1120,9 @@
               <span class="tag" style="color:#e9d5ff;background:rgba(192,132,252,.16);border-color:rgba(192,132,252,.30);">marketing-tech</span>
             </div>
 
-            <p class="project-desc">Workspace unificat pentru planificarea unei campanii. Include KPI overview, funnel, buget, calendar de conținut și brief generator interactiv.</p>
+            <p class="project-desc">
+              Workspace unificat pentru planificarea unei campanii. Are KPI overview, funnel, budget allocation, calendar și generator de brief.
+            </p>
 
             <div class="project-meta-row">
               <span class="project-meta-tag">Vanilla JS</span>
@@ -793,49 +1135,51 @@
             <div class="mini-grid">
               <div class="mini-item">
                 <strong>Context</strong>
-                <span>Marketing manageri trec între tool-uri diferite pentru funnel, calendar, brief și raportare.</span>
+                <span>Marketing managerii sar între multe tool-uri. Asta fragmentează decizia și încetinește munca.</span>
               </div>
               <div class="mini-item">
                 <strong>Decizie</strong>
-                <span>Un single-page workspace cu 5 module conectate vizual: Overview, Funnel, Campaigns, Calendar, Brief.</span>
+                <span>Un workspace single-page cu 5 module conectate vizual și navigare rapidă.</span>
               </div>
               <div class="mini-item">
                 <strong>Modul interactiv</strong>
-                <span>Creative Brief generator cu form live și exemplu auto-populat.</span>
+                <span>Creative Brief generator cu input live și demo precompletat.</span>
               </div>
               <div class="mini-item">
                 <strong>Roadmap</strong>
-                <span>2 variante planificate: Lead Magnet Landing și Webinar Registration Funnel.</span>
+                <span>Lead Magnet Landing și Webinar Registration Funnel. ROI Calculator este deja public.</span>
               </div>
             </div>
 
             <div class="project-proof">
               <strong>Dovezi observabile</strong>
               <ul>
-                <li><b>Funnel vizibil:</b> 4 etape cu progress bars + note contextuale.</li>
-                <li><b>Active campaigns table:</b> campanii cu status pills, CVR și owner per row.</li>
-                <li><b>Channel scorecards:</b> scoruri comparative pe canale.</li>
-                <li><b>Theme toggle:</b> Default ↔ Glow mode pentru variabilitate vizuală în portofoliu.</li>
+                <li>Funnel vizibil cu 4 etape și progress bars.</li>
+                <li>Tabel de campanii active cu status și CVR.</li>
+                <li>Channel scorecards comparative.</li>
+                <li>Theme toggle: Default ↔ Glow mode.</li>
               </ul>
             </div>
 
-            <div class="card-actions" aria-label="Acțiuni CampaignPilot">
-              <a class="btn btn-primary" href="./campaignpilot.html" aria-label="Deschide proiectul CampaignPilot">Deschide Live</a>
-              <a class="btn btn-secondary" href="./campaignpilot.html#brief" aria-label="Deschide generatorul de brief din CampaignPilot">Vezi Brief Generator</a>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="./campaignpilot.html" aria-label="Deschide proiectul CampaignPilot live">Deschide Live</a>
+              <a class="btn btn-secondary" href="./campaignpilot.html#brief" aria-label="Deschide secțiunea Brief Generator din CampaignPilot">Vezi Brief Generator</a>
             </div>
           </article>
 
-          <article class="project-card glass" style="position:relative;" aria-labelledby="campaign-roi-title">
+          <article class="project-card glass" aria-labelledby="roi-title">
             <span class="badge-new">NEW</span>
             <div class="project-top">
               <div>
-                <h3 id="campaign-roi-title">Campaign ROI Calculator</h3>
+                <h3 id="roi-title">Campaign ROI Calculator</h3>
                 <span class="badge-github" style="background:rgba(192,132,252,.16);border-color:rgba(192,132,252,.30);color:#e9d5ff;">Marketing analytics · ROI tool</span>
               </div>
               <span class="tag" style="color:#e9d5ff;background:rgba(192,132,252,.16);border-color:rgba(192,132,252,.30);">marketing-tech</span>
             </div>
 
-            <p class="project-desc">Calculator interactiv pentru evaluarea performanței campaniilor. Arată rapid ROI, ROAS, CAC, cost per lead și profitabilitate estimată.</p>
+            <p class="project-desc">
+              Calculator interactiv pentru evaluarea performanței campaniilor. Arată ROI, ROAS, CAC, cost per lead, revenue estimat și profitabilitate.
+            </p>
 
             <div class="project-meta-row">
               <span class="project-meta-tag">Vanilla JS</span>
@@ -848,7 +1192,7 @@
             <div class="mini-grid">
               <div class="mini-item">
                 <strong>Problemă</strong>
-                <span>Multe dashboard-uri arată metrici, dar nu ajută rapid la estimarea rentabilității unei campanii.</span>
+                <span>Multe dashboard-uri afișează metrici, dar nu ajută rapid la estimarea rentabilității.</span>
               </div>
               <div class="mini-item">
                 <strong>Decizie</strong>
@@ -860,21 +1204,21 @@
               </div>
               <div class="mini-item">
                 <strong>Poziționare</strong>
-                <span>Leagă marketing thinking, KPI logic și UI de produs clar.</span>
+                <span>Leagă marketing thinking, KPI logic și UI de produs orientat pe acțiune.</span>
               </div>
             </div>
 
             <div class="project-proof">
               <strong>Dovezi observabile</strong>
               <ul>
-                <li><b>Input-driven UI:</b> utilizatorul introduce datele principale și primește imediat rezultat.</li>
-                <li><b>Metrici utile:</b> ROI, ROAS, CAC, cost per lead și estimare de profitabilitate.</li>
-                <li><b>Use case clar:</b> instrument practic pentru validare rapidă de campanii.</li>
-                <li><b>Fit pentru portofoliu:</b> combină CRM/marketing și front-end utility UI.</li>
+                <li>Input-driven UI cu feedback imediat.</li>
+                <li>Metrici utile: ROI, ROAS, CAC și cost per lead.</li>
+                <li>Use case clar pentru validare rapidă de campanii.</li>
+                <li>Arată legătura dintre CRM/marketing și front-end utility UI.</li>
               </ul>
             </div>
 
-            <div class="card-actions" aria-label="Acțiuni Campaign ROI Calculator">
+            <div class="card-actions">
               <a class="btn btn-primary" href="./Campaign%20ROI%20Calculator.html" aria-label="Deschide proiectul Campaign ROI Calculator">Deschide Live</a>
             </div>
           </article>
@@ -884,27 +1228,27 @@
               <div><h3 id="lead-magnet-title">Lead Magnet Landing</h3></div>
               <span class="tag" style="background:rgba(255,255,255,.04);">soon</span>
             </div>
-            <p class="project-desc">Landing page modular pentru ebooks, white papers și resource downloads. Hero hook + social proof + email gate + thank-you flow.</p>
-            <div class="card-actions" aria-label="Status Lead Magnet Landing">
-              <span class="btn btn-secondary" style="opacity:.7;cursor:not-allowed;">În roadmap</span>
+            <p class="project-desc">Landing page modular pentru ebooks, white papers și resource downloads.</p>
+            <div class="card-actions">
+              <span class="btn btn-secondary" style="opacity:.7;cursor:not-allowed;" aria-hidden="true">În roadmap</span>
             </div>
           </article>
 
-          <article class="project-card glass" style="opacity:.65;border-style:dashed;" aria-labelledby="webinar-registration-title">
+          <article class="project-card glass" style="opacity:.65;border-style:dashed;" aria-labelledby="webinar-title">
             <div class="project-top">
-              <div><h3 id="webinar-registration-title">Webinar Registration Funnel</h3></div>
+              <div><h3 id="webinar-title">Webinar Registration Funnel</h3></div>
               <span class="tag" style="background:rgba(255,255,255,.04);">soon</span>
             </div>
             <p class="project-desc">Flow complet pentru webinar: registration page, calendar invite, reminder email simulator și post-event follow-up.</p>
-            <div class="card-actions" aria-label="Status Webinar Registration Funnel">
-              <span class="btn btn-secondary" style="opacity:.7;cursor:not-allowed;">În roadmap</span>
+            <div class="card-actions">
+              <span class="btn btn-secondary" style="opacity:.7;cursor:not-allowed;" aria-hidden="true">În roadmap</span>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <div class="section-divider"><div class="container"></div></div>
+    <div class="section-divider"></div>
 
     <section id="crm-projects" class="gh-section" aria-labelledby="crm-projects-title">
       <div class="container">
@@ -916,78 +1260,107 @@
               <span>Cod public · Deploy automat · Open source</span>
             </div>
           </div>
-          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Deschide toate repository-urile GitHub">Toate repo-urile →</a>
+          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Vezi toate repo-urile CRM pe GitHub">Toate repo-urile →</a>
         </div>
 
         <div class="projects-grid">
-          <article class="project-card glass" aria-labelledby="alpis-fusion-premium-title">
-            <div class="project-top"><div><h3 id="alpis-fusion-premium-title">Alpis Fusion CRM Premium</h3><span class="badge-github">GitHub</span></div><span class="tag crm">crm</span></div>
-            <p class="project-desc">CRM modular cu kanban, flow builder, RBAC și billing. Vite + React, ~287KB build, deploy GitHub Actions.</p>
-            <div class="card-actions" aria-label="Acțiuni Alpis Fusion CRM Premium"><a class="btn btn-primary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo-ul live pentru Alpis Fusion CRM Premium">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer" aria-label="Deschide repository-ul GitHub pentru Alpis Fusion CRM Premium">GitHub →</a></div>
+          <article class="project-card glass" aria-labelledby="alpis-title">
+            <div class="project-top">
+              <div><h3 id="alpis-title">Alpis Fusion CRM Premium</h3><span class="badge-github">GitHub</span></div>
+              <span class="tag crm">crm</span>
+            </div>
+            <p class="project-desc">CRM modular cu kanban, flow builder, RBAC și billing. Vite + React, build optimizat și deploy GitHub Actions.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo live Alpis Fusion CRM Premium">Live Demo</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub Alpis Fusion CRM Premium">GitHub →</a>
+            </div>
           </article>
 
-          <article class="project-card glass" style="position:relative;" aria-labelledby="brief-studio-title">
+          <article class="project-card glass" aria-labelledby="brief-studio-title">
             <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3 id="brief-studio-title">Brief Studio</h3><span class="badge-github">GitHub</span></div><span class="tag saas">saas</span></div>
+            <div class="project-top">
+              <div><h3 id="brief-studio-title">Brief Studio</h3><span class="badge-github">GitHub</span></div>
+              <span class="tag saas">saas</span>
+            </div>
             <p class="project-desc">Platformă SaaS bilingvă RO/EN pentru gestionarea brief-urilor și comunicarea cu clienții.</p>
-            <div class="card-actions" aria-label="Acțiuni Brief Studio"><a class="btn btn-primary" href="https://laurandreea10.github.io/brief-studio/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo-ul live pentru Brief Studio">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/brief-studio" target="_blank" rel="noopener noreferrer" aria-label="Deschide repository-ul GitHub pentru Brief Studio">GitHub →</a></div>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/brief-studio/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo live Brief Studio">Live Demo</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/brief-studio" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub Brief Studio">GitHub →</a>
+            </div>
           </article>
 
-          <article class="project-card glass" style="position:relative;" aria-labelledby="clientops-suite-title">
+          <article class="project-card glass" aria-labelledby="clientops-suite-title">
             <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3 id="clientops-suite-title">ClientOps Suite Premium</h3><span class="badge-github">GitHub</span></div><span class="tag premium">premium</span></div>
-            <p class="project-desc">Suită CRM premium cu fluxuri operaționale avansate, automatizări și dashboard unificat. Repo public.</p>
-            <div class="card-actions" aria-label="Acțiuni ClientOps Suite Premium"><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/clientops-suite-app-premium" target="_blank" rel="noopener noreferrer" aria-label="Deschide repository-ul GitHub pentru ClientOps Suite Premium">GitHub →</a></div>
+            <div class="project-top">
+              <div><h3 id="clientops-suite-title">ClientOps Suite Premium</h3><span class="badge-github">GitHub</span></div>
+              <span class="tag premium">premium</span>
+            </div>
+            <p class="project-desc">Suită CRM premium cu fluxuri operaționale avansate, automatizări și dashboard unificat.</p>
+            <div class="card-actions">
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/clientops-suite-app-premium" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub ClientOps Suite Premium">GitHub →</a>
+            </div>
           </article>
 
-          <article class="project-card glass" aria-labelledby="clientflow-saas-title">
-            <div class="project-top"><div><h3 id="clientflow-saas-title">ClientFlow SaaS CRM</h3><span class="badge-github">GitHub</span></div><span class="tag crm">crm</span></div>
+          <article class="project-card glass" aria-labelledby="clientflow-title">
+            <div class="project-top">
+              <div><h3 id="clientflow-title">ClientFlow SaaS CRM</h3><span class="badge-github">GitHub</span></div>
+              <span class="tag crm">crm</span>
+            </div>
             <p class="project-desc">Dashboard CRM cu kanban, task triage și shortcut-uri de tastatură. Prioritizare vizuală clară pe un singur ecran.</p>
-            <div class="card-actions" aria-label="Acțiuni ClientFlow SaaS CRM"><a class="btn btn-primary" href="https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo-ul live pentru ClientFlow SaaS CRM">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ClientFlow-PRO" target="_blank" rel="noopener noreferrer" aria-label="Deschide repository-ul GitHub pentru ClientFlow SaaS CRM">GitHub →</a></div>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo live ClientFlow SaaS CRM">Live Demo</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ClientFlow-PRO" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub ClientFlow SaaS CRM">GitHub →</a>
+            </div>
           </article>
 
-          <article class="project-card glass" style="position:relative;" aria-labelledby="clientops-title">
+          <article class="project-card glass" aria-labelledby="clientops-title">
             <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3 id="clientops-title">ClientOps</h3><span class="badge-github">GitHub</span></div><span class="tag ops">ops</span></div>
+            <div class="project-top">
+              <div><h3 id="clientops-title">ClientOps</h3><span class="badge-github">GitHub</span></div>
+              <span class="tag ops">ops</span>
+            </div>
             <p class="project-desc">Dashboard CRM operațional cu flux clar pentru gestionarea clienților și task-urilor zilnice.</p>
-            <div class="card-actions" aria-label="Acțiuni ClientOps"><a class="btn btn-primary" href="https://laurandreea10.github.io/clientops/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo-ul live pentru ClientOps">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/clientops" target="_blank" rel="noopener noreferrer" aria-label="Deschide repository-ul GitHub pentru ClientOps">GitHub →</a></div>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/clientops/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo live ClientOps">Live Demo</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/clientops" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub ClientOps">GitHub →</a>
+            </div>
           </article>
         </div>
       </div>
     </section>
 
-    <div class="section-divider"><div class="container"></div></div>
+    <div class="section-divider"></div>
 
-    <section id="challenges-projects" class="gh-section" aria-labelledby="challenges-projects-title">
+    <section id="challenges-projects" class="gh-section" aria-labelledby="challenges-title">
       <div class="container">
         <div class="series-callout" aria-label="Context serie">
           <div class="series-callout-icon">⚡</div>
-          <p><strong>Seria ARCADE-OPS în 5 iterații publice:</strong> fiecare versiune documentează o direcție diferită — gameplay, grafică HQ, integrare Excel Quest, performanță maximă.</p>
+          <p><strong>Seria ARCADE-OPS în 5 iterații publice:</strong> fiecare versiune documentează o direcție diferită — gameplay, grafică HQ, integrare Excel Quest și performanță maximă.</p>
         </div>
 
         <div class="section-head">
           <div>
             <span class="eyebrow" style="color:var(--amber)">⚡ Challenges</span>
-            <h2 id="challenges-projects-title">LUMA + seria ARCADE-OPS — 6 iterații cu deploy automat</h2>
+            <h2 id="challenges-title">LUMA + seria ARCADE-OPS — 6 iterații cu deploy automat</h2>
             <div class="gh-meta" style="background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.22);">
               <span>Iterații publice · Evoluție vizibilă · GitHub Pages</span>
             </div>
           </div>
-          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Deschide toate repository-urile GitHub">Toate repo-urile →</a>
+          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Vezi toate challenge-urile pe GitHub">Toate repo-urile →</a>
         </div>
 
         <div class="projects-grid">
-          <article class="project-card glass" style="position:relative;" aria-labelledby="luma-title"><span class="badge-new">NEW</span><div class="project-top"><div><h3 id="luma-title">LUMA</h3><span class="badge-github">GitHub</span></div><span class="tag challenge">challenge</span></div><p class="project-desc">Challenge front-end cu estetică vizuală distinctă și interacțiuni fluide. Deploy public GitHub Pages.</p><div class="card-actions" aria-label="Acțiuni LUMA"><a class="btn btn-primary" href="https://laurandreea10.github.io/LUMA/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo-ul live pentru LUMA">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/LUMA" target="_blank" rel="noopener noreferrer" aria-label="Deschide repository-ul GitHub pentru LUMA">GitHub →</a></div></article>
-          <article class="project-card glass" style="position:relative;" aria-labelledby="arcade-ops-excel-title"><span class="badge-new">NEW</span><div class="project-top"><div><h3 id="arcade-ops-excel-title">ARCADE-OPS Excel Quest</h3><span class="badge-github">GitHub</span></div><span class="tag challenge">arcade · iter.1</span></div><p class="project-desc">Iterația 1: variantă arcade a Excel Quest cu gameplay ops-oriented și mecanici progresive.</p><div class="card-actions" aria-label="Acțiuni ARCADE-OPS Excel Quest"><a class="btn btn-primary" href="https://laurandreea10.github.io/ARCADE-OPS-EXCEL-QUEST/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo-ul live pentru ARCADE-OPS Excel Quest">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ARCADE-OPS-EXCEL-QUEST" target="_blank" rel="noopener noreferrer" aria-label="Deschide repository-ul GitHub pentru ARCADE-OPS Excel Quest">GitHub →</a></div></article>
-          <article class="project-card glass" style="position:relative;" aria-labelledby="arcade-ops-v2-title"><span class="badge-new">NEW</span><div class="project-top"><div><h3 id="arcade-ops-v2-title">Arcade-Ops Excel Quest v2</h3><span class="badge-github">GitHub</span></div><span class="tag v2">arcade · iter.2</span></div><p class="project-desc">Iterația 2: gameplay îmbunătățit, interfață actualizată, feedback loop mai rapid față de v1.</p><div class="card-actions" aria-label="Acțiuni Arcade-Ops Excel Quest v2"><a class="btn btn-primary" href="https://laurandreea10.github.io/Arcade-Ops-EXCEL-QUEST-v2/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo-ul live pentru Arcade-Ops Excel Quest v2">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Arcade-Ops-EXCEL-QUEST-v2" target="_blank" rel="noopener noreferrer" aria-label="Deschide repository-ul GitHub pentru Arcade-Ops Excel Quest v2">GitHub →</a></div></article>
-          <article class="project-card glass" style="position:relative;" aria-labelledby="arcade-ops-hq-excel-title"><span class="badge-new">NEW</span><div class="project-top"><div><h3 id="arcade-ops-hq-excel-title">ARCADE-OPS Excel Quest HQ</h3><span class="badge-github">GitHub</span></div><span class="tag hq">arcade · HQ</span></div><p class="project-desc">Ediție HQ: grafică upscaled, animații îmbunătățite, experiență de joc rafinată față de seria anterioară.</p><div class="card-actions" aria-label="Acțiuni ARCADE-OPS Excel Quest HQ"><a class="btn btn-primary" href="https://laurandreea10.github.io/ARCADE-OPS-EXCEL-QUEST-HQ/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo-ul live pentru ARCADE-OPS Excel Quest HQ">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ARCADE-OPS-EXCEL-QUEST-HQ" target="_blank" rel="noopener noreferrer" aria-label="Deschide repository-ul GitHub pentru ARCADE-OPS Excel Quest HQ">GitHub →</a></div></article>
-          <article class="project-card glass" style="position:relative;" aria-labelledby="arcade-ops-hq-title"><span class="badge-new">NEW</span><div class="project-top"><div><h3 id="arcade-ops-hq-title">ARCADE-OPS HQ</h3><span class="badge-github">GitHub</span></div><span class="tag hq">standalone · HQ</span></div><p class="project-desc">Standalone HQ fără dependințe Excel Quest. Focus pe gameplay arcade curat și performanță maximă.</p><div class="card-actions" aria-label="Acțiuni ARCADE-OPS HQ"><a class="btn btn-primary" href="https://laurandreea10.github.io/ARCADE-OPS-HQ/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo-ul live pentru ARCADE-OPS HQ">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ARCADE-OPS-HQ" target="_blank" rel="noopener noreferrer" aria-label="Deschide repository-ul GitHub pentru ARCADE-OPS HQ">GitHub →</a></div></article>
-          <article class="project-card glass" style="position:relative;" aria-labelledby="arcade-ops-v5-title"><span class="badge-new">NEW</span><div class="project-top"><div><h3 id="arcade-ops-v5-title">ARCADE-OPS v5</h3><span class="badge-github">GitHub</span></div><span class="tag v5">iter.5 · current</span></div><p class="project-desc">Iterația curentă v5 cu design sistem evoluat, mecanici noi și arhitectură mai clară față de seria inițială.</p><div class="card-actions" aria-label="Acțiuni ARCADE-OPS v5"><a class="btn btn-primary" href="https://laurandreea10.github.io/ARCADE-OPS-v5/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo-ul live pentru ARCADE-OPS v5">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ARCADE-OPS-v5" target="_blank" rel="noopener noreferrer" aria-label="Deschide repository-ul GitHub pentru ARCADE-OPS v5">GitHub →</a></div></article>
+          <article class="project-card glass" aria-labelledby="luma-title"><span class="badge-new">NEW</span><div class="project-top"><div><h3 id="luma-title">LUMA</h3><span class="badge-github">GitHub</span></div><span class="tag challenge">challenge</span></div><p class="project-desc">Challenge front-end cu estetică vizuală distinctă și interacțiuni fluide.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/LUMA/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo live LUMA">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/LUMA" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub LUMA">GitHub →</a></div></article>
+          <article class="project-card glass" aria-labelledby="ops1-title"><span class="badge-new">NEW</span><div class="project-top"><div><h3 id="ops1-title">ARCADE-OPS Excel Quest</h3><span class="badge-github">GitHub</span></div><span class="tag challenge">arcade · iter.1</span></div><p class="project-desc">Iterația 1: variantă arcade a Excel Quest cu gameplay ops-oriented și mecanici progresive.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/ARCADE-OPS-EXCEL-QUEST/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo live ARCADE-OPS Excel Quest">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ARCADE-OPS-EXCEL-QUEST" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub ARCADE-OPS Excel Quest">GitHub →</a></div></article>
+          <article class="project-card glass" aria-labelledby="ops2-title"><span class="badge-new">NEW</span><div class="project-top"><div><h3 id="ops2-title">Arcade-Ops Excel Quest v2</h3><span class="badge-github">GitHub</span></div><span class="tag v2">arcade · iter.2</span></div><p class="project-desc">Iterația 2: gameplay îmbunătățit, interfață actualizată și feedback loop mai rapid.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/Arcade-Ops-EXCEL-QUEST-v2/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo live Arcade-Ops Excel Quest v2">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Arcade-Ops-EXCEL-QUEST-v2" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub Arcade-Ops Excel Quest v2">GitHub →</a></div></article>
+          <article class="project-card glass" aria-labelledby="ops-hq-title"><span class="badge-new">NEW</span><div class="project-top"><div><h3 id="ops-hq-title">ARCADE-OPS Excel Quest HQ</h3><span class="badge-github">GitHub</span></div><span class="tag hq">arcade · HQ</span></div><p class="project-desc">Ediție HQ: grafică upscaled, animații îmbunătățite și experiență rafinată.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/ARCADE-OPS-EXCEL-QUEST-HQ/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo live ARCADE-OPS Excel Quest HQ">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ARCADE-OPS-EXCEL-QUEST-HQ" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub ARCADE-OPS Excel Quest HQ">GitHub →</a></div></article>
+          <article class="project-card glass" aria-labelledby="ops-hq2-title"><span class="badge-new">NEW</span><div class="project-top"><div><h3 id="ops-hq2-title">ARCADE-OPS HQ</h3><span class="badge-github">GitHub</span></div><span class="tag hq">standalone · HQ</span></div><p class="project-desc">Standalone HQ fără dependințe Excel Quest. Focus pe gameplay arcade curat și performanță.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/ARCADE-OPS-HQ/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo live ARCADE-OPS HQ">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ARCADE-OPS-HQ" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub ARCADE-OPS HQ">GitHub →</a></div></article>
+          <article class="project-card glass" aria-labelledby="ops-v5-title"><span class="badge-new">NEW</span><div class="project-top"><div><h3 id="ops-v5-title">ARCADE-OPS v5</h3><span class="badge-github">GitHub</span></div><span class="tag v5">iter.5 · current</span></div><p class="project-desc">Iterația curentă v5 cu design sistem evoluat, mecanici noi și arhitectură mai clară.</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/ARCADE-OPS-v5/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo live ARCADE-OPS v5">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ARCADE-OPS-v5" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo GitHub ARCADE-OPS v5">GitHub →</a></div></article>
         </div>
       </div>
     </section>
 
-    <div class="section-divider"><div class="container"></div></div>
+    <div class="section-divider"></div>
 
     <section id="key-projects" aria-labelledby="key-projects-title">
       <div class="container">
@@ -995,37 +1368,82 @@
           <div>
             <span class="eyebrow">Proiecte-cheie</span>
             <h2 id="key-projects-title">3 proiecte care arată cel mai clar cum gândesc produsul și interfața</h2>
-            <p class="section-subtitle">Am ales 3 proiecte care mă reprezintă cel mai bine: structură clară, logică de produs, interfețe construite pentru acțiune și decizii UI/UX pe care le pot explica — exact fundația care a dus la ClientFlow PRO.</p>
+            <p class="section-subtitle">
+              Am ales 3 proiecte care mă reprezintă cel mai bine: structură clară, logică de produs și interfețe construite pentru acțiune.
+            </p>
           </div>
-          <a class="btn btn-primary" href="https://github.com/LaurAndreea10/ClientFlow-PRO" target="_blank" rel="noopener noreferrer" aria-label="Deschide ClientFlow PRO pe GitHub">Vezi ClientFlow PRO pe GitHub →</a>
+          <a class="btn btn-primary" href="https://github.com/LaurAndreea10/ClientFlow-PRO" target="_blank" rel="noopener noreferrer" aria-label="Vezi ClientFlow PRO pe GitHub">Vezi ClientFlow PRO pe GitHub →</a>
         </div>
 
         <div class="project-lineage" aria-label="Evoluție spre ClientFlow PRO">
-          <div class="lineage-step"><strong>01 · Alpis Fusion CRM Premium</strong><p>Arhitectură modulară și fluxuri critice unificate într-un singur workspace.</p></div>
+          <div class="lineage-step"><strong>01 · Alpis Fusion CRM Premium</strong><p>Arhitectură modulară și fluxuri critice într-un singur workspace.</p></div>
           <span class="lineage-arrow" aria-hidden="true">→</span>
-          <div class="lineage-step"><strong>02 · ClientFlow</strong><p>Triage operațional: semnale vizuale, shortcut-uri și decizii rapide pe același ecran.</p></div>
+          <div class="lineage-step"><strong>02 · ClientFlow</strong><p>Triage operațional cu semnale vizuale și decizii rapide.</p></div>
           <span class="lineage-arrow" aria-hidden="true">→</span>
-          <div class="lineage-step"><strong>03 · Alpis Impact Path</strong><p>Onboarding ghidat în pași mici, cu progres și CTA-uri contextuale.</p></div>
+          <div class="lineage-step"><strong>03 · Alpis Impact Path</strong><p>Onboarding ghidat în pași mici, cu progres vizibil.</p></div>
           <span class="lineage-arrow" aria-hidden="true">→</span>
           <div class="lineage-target"><strong>ClientFlow PRO</strong><p>Sinteză produs + interfață: workflow complet, clar și scalabil.</p></div>
         </div>
 
-        <div class="key-carousel">
-          <div class="key-carousel-viewport">
-            <div class="key-carousel-track" id="keyProjectsGrid"></div>
-          </div>
-          <div class="key-carousel-controls">
-            <div class="key-carousel-nav">
-              <button class="key-carousel-btn" id="keyCarouselPrev" type="button" aria-label="Proiectul anterior">‹</button>
-              <button class="key-carousel-btn" id="keyCarouselNext" type="button" aria-label="Proiectul următor">›</button>
+        <div class="projects-grid">
+          <article class="project-card glass" aria-labelledby="key-alpis-title">
+            <span class="tag">crm</span>
+            <h3 id="key-alpis-title">Alpis Fusion CRM Premium</h3>
+            <p class="project-desc">Am unificat lead pipeline, task-uri și billing într-un singur workspace, pentru un flux critic fără schimbări de context.</p>
+            <div class="project-proof">
+              <strong>Dovezi observabile</strong>
+              <ul>
+                <li>3 arii separate → 1 workspace unic.</li>
+                <li>Lead, status, follow-up, booking și factură fără schimbare de pagină.</li>
+                <li>Tehnic: Vite + React și GitHub Actions CI/CD.</li>
+              </ul>
             </div>
-            <div class="key-carousel-dots" id="keyCarouselDots" aria-label="Navigare proiecte cheie"></div>
-          </div>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="projects/alpis-fusion-crm.html" aria-label="Deschide case study Alpis Fusion CRM Premium">Deschide case study</a>
+              <a class="btn btn-codepen" href="https://es-d-4029897220260413-019d7cd3-34b4-7538-a067-51b147dd0f7b.codepen.dev/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo CodePen Alpis Fusion CRM Premium">CodePen</a>
+            </div>
+          </article>
+
+          <article class="project-card glass" aria-labelledby="key-clientflow-title">
+            <span class="tag">utility</span>
+            <h3 id="key-clientflow-title">ClientFlow</h3>
+            <p class="project-desc">Am redus trierea zilnică la un ecran unic, cu semnale vizuale și shortcut-uri pentru decizii rapide.</p>
+            <div class="project-proof">
+              <strong>Dovezi observabile</strong>
+              <ul>
+                <li>~7 click-uri/update → ~2 click-uri/update.</li>
+                <li>Triage, reasignare, status și prioritizare în același loc.</li>
+                <li>Urgența este susținută de culoare, icon și poziție.</li>
+              </ul>
+            </div>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="projects/clientflow.html" aria-label="Deschide case study ClientFlow">Deschide case study</a>
+              <a class="btn btn-codepen" href="https://es-d-1647531020260404-019d4e21-afd1-7808-abf5-d9c88b726df2.codepen.dev/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo CodePen ClientFlow">CodePen</a>
+            </div>
+          </article>
+
+          <article class="project-card glass" aria-labelledby="key-impact-title">
+            <span class="tag">ui</span>
+            <h3 id="key-impact-title">Alpis Impact Path</h3>
+            <p class="project-desc">Am transformat un mesaj static într-un flow în 5 pași, cu o singură decizie pe ecran și progres permanent vizibil.</p>
+            <div class="project-proof">
+              <strong>Dovezi observabile</strong>
+              <ul>
+                <li>Pagină statică lungă → flow interactiv în 5 pași.</li>
+                <li>O singură decizie per ecran.</li>
+                <li>CTA contextual la finalul fiecărui pas.</li>
+              </ul>
+            </div>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="projects/alpis-impactpath.html" aria-label="Deschide case study Alpis Impact Path">Deschide case study</a>
+              <a class="btn btn-codepen" href="https://es-d-9192350520260329-019d2e42-65ac-7734-91ba-16cfe41a0086.codepen.dev/#missions" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo CodePen Alpis Impact Path">CodePen</a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <div class="section-divider"><div class="container"></div></div>
+    <div class="section-divider"></div>
 
     <section id="ux-process" aria-labelledby="ux-process-title">
       <div class="container">
@@ -1033,7 +1451,7 @@
           <div>
             <span class="eyebrow">Cum gândesc produsul</span>
             <h2 id="ux-process-title">Fiecare proiect — problemă reală, decizie explicată, rezultat demonstrabil</h2>
-            <p class="section-subtitle">Nu construiesc doar interfețe — construiesc fluxuri care ghidează utilizatorul. Fiecare decizie UI/UX are un context, un trade-off și un rezultat observabil.</p>
+            <p class="section-subtitle">Nu construiesc doar interfețe — construiesc fluxuri care ghidează utilizatorul.</p>
           </div>
         </div>
 
@@ -1041,83 +1459,83 @@
           <article class="impact-card"><div class="impact-head"><span class="impact-score">Before / After</span><span class="impact-time">Alpis Impact Path</span></div><h3>Text static → flow interactiv în 5 pași</h3><div class="before-after"><article><strong>Înainte</strong><ul><li>Pagină statică lungă</li><li>Fără feedback de progres</li><li>CTA vizibil abia la final</li></ul></article><article><strong>După</strong><ul><li>Pas 3 din 5 · 60% vizibil permanent</li><li>O singură decizie per ecran</li><li>CTA contextual pe fiecare pas</li></ul></article></div></article>
           <article class="impact-card"><div class="impact-head"><span class="impact-score">Before / After</span><span class="impact-time">ClientFlow</span></div><h3>Triage fragmentat → board unic cu acțiuni unite</h3><div class="before-after"><article><strong>Înainte</strong><ul><li>2–3 ecrane separate</li><li>~7 click-uri per update</li><li>Prioritizare inconsistentă</li></ul></article><article><strong>După</strong><ul><li>1 board unic</li><li>~2 click-uri per update</li><li>4 acțiuni fără schimbare de pagină</li></ul></article></div></article>
           <article class="impact-card"><div class="impact-head"><span class="impact-score">Decision log</span><span class="impact-time">Alpis Fusion CRM</span></div><h3>3 decizii cu trade-off explicit</h3><ul class="decision-list"><li><strong>Navigare pe un singur ecran.</strong> <span>+ rapiditate, − densitate informațională mai mare.</span></li><li><strong>Wizard în loc de form lung.</strong> <span>+ completion rate, − click-uri în plus per flux.</span></li><li><strong>CTA dependent de context.</strong> <span>+ relevanță per pas, − implementare mai complexă.</span></li></ul></article>
-          <article class="impact-card"><div class="impact-head"><span class="impact-score">CTA thinking</span><span class="impact-time">Principiu aplicat</span></div><h3>CTA generic vs CTA contextual</h3><div class="og-compare"><div class="og-item"><strong>❌ Generic</strong><small>„Vezi mai mult” — nu spune ce urmează, cât durează sau ce primești după click.</small></div><div class="og-item"><strong>✅ Contextual</strong><small>„Deschide demo-ul (30s) și vezi fluxul complet” — clar, cu durată și promisiune calibrată.</small></div></div></article>
+          <article class="impact-card"><div class="impact-head"><span class="impact-score">CTA thinking</span><span class="impact-time">Principiu aplicat</span></div><h3>CTA generic vs CTA contextual</h3><div class="og-compare"><div class="og-item"><strong>❌ Generic</strong><small>„Vezi mai mult” nu spune ce urmează sau ce primești după click.</small></div><div class="og-item"><strong>✅ Contextual</strong><small>„Deschide demo-ul (30s) și vezi fluxul complet” este clar și concret.</small></div></div></article>
         </div>
       </div>
     </section>
 
-    <div class="section-divider"><div class="container"></div></div>
+    <div class="section-divider"></div>
 
-    <section id="proof-of-work" class="pow-section" aria-labelledby="proof-of-work-title">
+    <section id="proof-of-work" class="pow-section" aria-labelledby="proof-title">
       <div class="container">
         <div class="section-head">
           <div>
             <span class="eyebrow">✅ Proof of Work</span>
-            <h2 id="proof-of-work-title">Dovezi tehnice obiective în loc de testimoniale</h2>
-            <p class="section-subtitle">Nu am testimoniale de la clienți — lucrez pe proiecte personale. În schimb, tot ce construiesc e public, verificabil și cu istoric de commit.</p>
+            <h2 id="proof-title">Dovezi tehnice obiective în loc de testimoniale</h2>
+            <p class="section-subtitle">Tot ce construiesc este public, verificabil și are istoric de versiuni.</p>
           </div>
         </div>
 
         <div class="pow-grid">
           <div class="pow-card">
             <div class="pow-card-header"><div class="pow-icon green">📂</div><h4>Cod public, verificabil oricând</h4></div>
-            <p>Toate proiectele majore au repo public pe GitHub. Codul e accesibil, structurat și cu deploy automat.</p>
+            <p>Toate proiectele majore au repo public pe GitHub.</p>
             <span class="pow-metric green">20+ repo-uri publice</span>
-            <div class="pow-links"><a class="pow-link" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Deschide profilul GitHub al Laurei Andreea">github.com/LaurAndreea10</a></div>
+            <div class="pow-links"><a class="pow-link" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">github.com/LaurAndreea10</a></div>
           </div>
 
           <div class="pow-card">
             <div class="pow-card-header"><div class="pow-icon blue">🚀</div><h4>Deploy automat pe GitHub Actions</h4></div>
-            <p>Alpis Fusion CRM Premium și alte proiecte au CI/CD configurat: fiecare push pe main declanșează un build și deploy.</p>
+            <p>Proiectele majore au CI/CD configurat pentru build și deploy automat.</p>
             <span class="pow-metric">CI/CD configurat</span>
             <div class="pow-links">
-              <a class="pow-link" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer" aria-label="Deschide Alpis Fusion CRM Premium live">→ Alpis Fusion live</a>
-              <a class="pow-link" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer" aria-label="Deschide repo și Actions pentru Alpis Fusion CRM Premium">→ Repo + Actions</a>
+              <a class="pow-link" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">→ Alpis Fusion live</a>
+              <a class="pow-link" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">→ Repo + Actions</a>
             </div>
           </div>
 
           <div class="pow-card">
-            <div class="pow-card-header"><div class="pow-icon purple">⚡</div><h4>Build size concret, nu estimat</h4></div>
-            <p>Alpis Fusion CRM Premium: ~287KB bundle minificat cu Vite. Număr verificabil în repo.</p>
-            <span class="pow-metric purple">~287KB minified build</span>
-            <div class="pow-links"><a class="pow-link" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium/actions" target="_blank" rel="noopener noreferrer" aria-label="Deschide logurile GitHub Actions pentru Alpis Fusion CRM Premium">→ GitHub Actions log</a></div>
+            <div class="pow-card-header"><div class="pow-icon purple">⚡</div><h4>Build size concret</h4></div>
+            <p>Alpis Fusion CRM Premium: bundle optimizat, măsurabil și verificabil.</p>
+            <span class="pow-metric purple">Build verificabil</span>
+            <div class="pow-links"><a class="pow-link" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium/actions" target="_blank" rel="noopener noreferrer">→ GitHub Actions log</a></div>
           </div>
 
           <div class="pow-card">
-            <div class="pow-card-header"><div class="pow-icon green">🌐</div><h4>64 proiecte live, accesibile acum</h4></div>
-            <p>Nu mockup-uri sau figma frames — proiecte funcționale, deployate pe CodePen și GitHub Pages.</p>
+            <div class="pow-card-header"><div class="pow-icon green">🌐</div><h4>64 proiecte live</h4></div>
+            <p>Nu sunt mockup-uri. Sunt proiecte funcționale, deployate pe CodePen și GitHub Pages.</p>
             <span class="pow-metric green">64 proiecte live</span>
             <div class="pow-links">
-              <a class="pow-link" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer" aria-label="Deschide hub-ul CodePen cu proiecte live">→ Hub CodePen</a>
-              <a class="pow-link" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer" aria-label="Deschide profilul CodePen al Laurei Andreea">→ Profil CodePen</a>
+              <a class="pow-link" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer">→ Hub CodePen</a>
+              <a class="pow-link" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">→ Profil CodePen</a>
             </div>
           </div>
 
           <div class="pow-card">
             <div class="pow-card-header"><div class="pow-icon amber">🔄</div><h4>Iterație publică documentată</h4></div>
-            <p>Seria ARCADE-OPS arată 5 iterații publice cu direcții diferite: gameplay, grafică HQ, integrare educațională, performanță.</p>
-            <span class="pow-metric amber">5 iterații cu commit history</span>
+            <p>Seria ARCADE-OPS arată iterații publice cu direcții diferite și commit history accesibil.</p>
+            <span class="pow-metric amber">5 iterații</span>
             <div class="pow-links">
-              <a class="pow-link" href="https://laurandreea10.github.io/ARCADE-OPS-v5/" target="_blank" rel="noopener noreferrer" aria-label="Deschide demo-ul live pentru ARCADE-OPS v5">→ v5 live</a>
-              <a class="pow-link" href="https://github.com/LaurAndreea10/ARCADE-OPS-v5" target="_blank" rel="noopener noreferrer" aria-label="Deschide repository-ul GitHub pentru ARCADE-OPS v5">→ Repo v5</a>
+              <a class="pow-link" href="https://laurandreea10.github.io/ARCADE-OPS-v5/" target="_blank" rel="noopener noreferrer">→ v5 live</a>
+              <a class="pow-link" href="https://github.com/LaurAndreea10/ARCADE-OPS-v5" target="_blank" rel="noopener noreferrer">→ Repo v5</a>
             </div>
           </div>
 
           <div class="pow-card">
             <div class="pow-card-header"><div class="pow-icon blue">🎓</div><h4>Certificări verificabile</h4></div>
-            <p>JavaScript Essential Training, Google Digital Marketing & E-commerce, freeCodeCamp Data Analysis with Python, Claude Code in Action — toate cu link public.</p>
-            <span class="pow-metric">10+ certificări cu link public</span>
-            <div class="pow-links"><a class="pow-link" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer" aria-label="Deschide profilul LinkedIn cu licențe și certificări">→ LinkedIn · Licențe & certificări</a></div>
+            <p>JavaScript, Google Digital Marketing, Data Analysis cu Python și altele, cu link public.</p>
+            <span class="pow-metric">10+ certificări</span>
+            <div class="pow-links"><a class="pow-link" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer">→ LinkedIn · Licențe & certificări</a></div>
           </div>
         </div>
 
         <div class="pow-note">
-          <strong>De ce Proof of Work în loc de testimoniale?</strong> Lucrez pe proiecte personale, nu la comandă pentru clienți, deci nu am feedback extern. Dar tot ce construiesc e public, cu cod sursă, cu deploy real și cu istoric de versiuni.
+          <strong>De ce Proof of Work?</strong> Lucrez pe proiecte personale. Dovada mea este codul public, deploy-ul real și istoricul vizibil de versiuni.
         </div>
       </div>
     </section>
 
-    <div class="section-divider"><div class="container"></div></div>
+    <div class="section-divider"></div>
 
     <section id="journey" aria-labelledby="journey-title">
       <div class="container">
@@ -1125,42 +1543,42 @@
           <span class="eyebrow">Parcurs</span>
           <h2 id="journey-title">De la CRM la cod — cum am ajuns aici</h2>
           <div class="timeline" style="margin-top:14px;">
-            <div class="timeline-item"><strong>2019–2022</strong><p><b>Marketing & CRM.</b> Pro bono Marketing Specialist & Strategist, Social Media Manager. Baze de date, Facebook Ads Manager, A/B Testing, e-commerce SEO, platforme imobiliare.</p></div>
-            <div class="timeline-item"><strong>2022</strong><p><b>Primele certificări tehnice.</b> JavaScript Essential Training, Programming Foundations, Google Digital Marketing & E-commerce, Google Ads Measurement.</p></div>
-            <div class="timeline-item"><strong>2023–2024</strong><p><b>Proiecte personale publicate.</b> Mini jocuri, SaaS, platforme educaționale publicate pe CodePen și GitHub. Data Analysis with Python.</p></div>
-            <div class="timeline-item"><strong>2024–2026</strong><p><b>Portofoliu production-ready.</b> Alpis Fusion CRM Premium, ClientFlow, Impact Path — Vite + React, GitHub Actions, deploy automatizat. 64+ proiecte live.</p></div>
+            <div class="timeline-item"><strong>2019–2022</strong><p><b>Marketing & CRM.</b> Baze de date, Facebook Ads Manager, A/B Testing, e-commerce SEO și lucru operațional.</p></div>
+            <div class="timeline-item"><strong>2022</strong><p><b>Primele certificări tehnice.</b> JavaScript Essential Training, Programming Foundations și Google Digital Marketing.</p></div>
+            <div class="timeline-item"><strong>2023–2024</strong><p><b>Proiecte personale publicate.</b> Mini jocuri, SaaS și platforme educaționale pe CodePen și GitHub.</p></div>
+            <div class="timeline-item"><strong>2024–2026</strong><p><b>Portofoliu production-ready.</b> Alpis Fusion, ClientFlow și Impact Path cu deploy automatizat.</p></div>
           </div>
         </article>
       </div>
     </section>
 
-    <div class="section-divider"><div class="container"></div></div>
+    <div class="section-divider"></div>
 
     <section id="about" aria-labelledby="about-title">
       <div class="container about-contact">
         <article class="about-card glass">
           <span class="eyebrow">Despre mine</span>
           <h2 id="about-title">Combin experiența din CRM și Marketing cu front-end development pentru produse mai clare și mai umane</h2>
-          <p>Am lucrat ca Pro bono Marketing Specialist & Strategist pentru afaceri mici și ca Social Media Manager. Experiența mea acoperă CRM, administrare baze de date, campanii digitale, Facebook Ads Manager, A/B Testing, e-commerce SEO, generare de leaduri, content management și colaborare pe platforme imobiliare.</p>
-          <p>Din 2022 acumulez certificări tehnice și construiesc proiecte personale în produse front-end: React + Vite, deploy prin GitHub Actions, structuri modulare cu RBAC și flow builder.</p>
+          <p>Am lucrat în marketing, CRM, baze de date, campanii digitale și lead generation.</p>
+          <p>Din 2022 construiesc proiecte personale în React, Vite și HTML/CSS/JS, cu focus pe claritate, flux și UX.</p>
           <div class="skills"><span>React</span><span>Vite</span><span>GitHub Actions</span><span>Kanban</span><span>Flow Builder</span><span>RBAC</span><span>PDF Invoice</span><span>CSV/JSON Export</span><span>CRM Ops</span><span>UI/UX Thinking</span><span>JavaScript</span><span>HTML/CSS</span></div>
         </article>
 
         <article class="contact-card glass" id="contact" aria-labelledby="contact-title">
           <span class="eyebrow">Contact</span>
           <h2 id="contact-title">Construiești un CRM intern, dashboard sau produs orientat pe fluxuri?</h2>
-          <p>Scrie-mi dacă vrei să vezi case study-urile complete, să discutăm.</p>
-          <div class="card-actions" style="margin-top:16px;" aria-label="Linkuri de contact și profil">
-            <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect" aria-label="Trimite un email despre un proiect">Scrie-mi despre un proiect</a>
-            <a class="btn btn-primary" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer" aria-label="Deschide profilul LinkedIn al Laurei Andreea">LinkedIn</a>
-            <a class="btn btn-codepen" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer" aria-label="Deschide hub-ul CodePen cu 64 de proiecte live">CodePen · 64 proiecte live →</a>
-            <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Deschide profilul GitHub al Laurei Andreea">GitHub</a>
+          <p>Scrie-mi dacă vrei să vezi case study-urile complete sau să discutăm.</p>
+          <div class="card-actions" aria-label="Linkuri externe de contact și profil" style="margin-top:16px;">
+            <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect" aria-label="Trimite email despre un proiect">Scrie-mi despre un proiect</a>
+            <a class="btn btn-primary" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer" aria-label="Deschide profilul LinkedIn Laura Andreea">LinkedIn</a>
+            <a class="btn btn-codepen" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer" aria-label="Deschide CodePen cu 64 proiecte live">CodePen · 64 proiecte live →</a>
+            <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Deschide profilul GitHub Laura Andreea">GitHub</a>
           </div>
         </article>
       </div>
     </section>
 
-    <div class="section-divider"><div class="container"></div></div>
+    <div class="section-divider"></div>
 
     <section id="insights" aria-labelledby="insights-title">
       <div class="container">
@@ -1168,32 +1586,32 @@
           <div>
             <span class="eyebrow">Insights</span>
             <h2 id="insights-title">Decizii și lecții din construirea unui CRM SaaS</h2>
-            <p class="section-subtitle">4+1 insight-uri despre produs, arhitectură și UX din perspectiva unui autodidact.</p>
+            <p class="section-subtitle">Câteva insight-uri despre produs, arhitectură și UX.</p>
           </div>
         </div>
 
         <div class="insights-grid">
-          <article class="project-card glass" aria-labelledby="insight-1"><span class="tag">Lessons</span><h3 id="insight-1">3 lecții din construirea unui SaaS CRM de la zero</h3><p class="project-desc">Un CRM este un sistem de decizii, nu doar o interfață cu lead-uri și task-uri. Un dashboard bun prioritizează, nu afișează tot.</p></article>
-          <article class="project-card glass" aria-labelledby="insight-2"><span class="tag">Architecture</span><h3 id="insight-2">De ce am trecut de la single-file HTML la Vite + React</h3><p class="project-desc">Migrarea spre Vite + React mi-a permis să separ layout-ul, cardurile și fluxurile în componente reutilizabile.</p></article>
-          <article class="project-card glass" aria-labelledby="insight-3"><span class="tag">UX decisions</span><h3 id="insight-3">Flow builder vs Kanban: când alegi unul și când celălalt</h3><p class="project-desc">Kanban-ul organizează munca, iar Flow builder-ul organizează deciziile.</p></article>
-          <article class="project-card glass" aria-labelledby="insight-4"><span class="tag">Subiecte viitoare</span><h3 id="insight-4">Ce aș documenta mai departe</h3><p class="project-desc">Deciziile din spatele automatizărilor: când merită un flow builder și cum construiești un CRM care rămâne clar când cresc datele și regulile.</p></article>
-          <article class="project-card glass" aria-labelledby="insight-5"><span class="tag">Case study</span><h3 id="insight-5">Excel-Quest — de la landing static la produs cu progres salvat</h3><p class="project-desc">Am transformat Excel-Quest dintr-un landing simplu într-un produs orientat pe reluare.</p><div class="card-actions" aria-label="Acțiuni insight Excel-Quest"><a class="btn btn-primary" href="projects/excel-quest.html" aria-label="Deschide studiul de caz Excel-Quest">Deschide case study</a><a class="btn btn-secondary" href="https://laurandreea10.github.io/Excel-Quest/excel-quest-hub.html" target="_blank" rel="noopener noreferrer" aria-label="Deschide hub-ul Excel-Quest">Vezi hub-ul</a></div></article>
+          <article class="project-card glass" aria-labelledby="insight-1"><span class="tag">Lessons</span><h3 id="insight-1">3 lecții din construirea unui SaaS CRM de la zero</h3><p class="project-desc">Un CRM este un sistem de decizii, nu doar o interfață cu lead-uri și task-uri.</p></article>
+          <article class="project-card glass" aria-labelledby="insight-2"><span class="tag">Architecture</span><h3 id="insight-2">De ce am trecut de la single-file HTML la Vite + React</h3><p class="project-desc">Vite + React mi-au permis să separ layout-ul, cardurile și fluxurile în componente reutilizabile.</p></article>
+          <article class="project-card glass" aria-labelledby="insight-3"><span class="tag">UX decisions</span><h3 id="insight-3">Flow builder vs Kanban</h3><p class="project-desc">Kanban-ul organizează munca, iar Flow builder-ul organizează deciziile.</p></article>
+          <article class="project-card glass" aria-labelledby="insight-4"><span class="tag">Subiecte viitoare</span><h3 id="insight-4">Ce aș documenta mai departe</h3><p class="project-desc">Deciziile din spatele automatizărilor și claritatea pe măsură ce cresc datele și regulile.</p></article>
+          <article class="project-card glass" aria-labelledby="insight-5"><span class="tag">Case study</span><h3 id="insight-5">Excel-Quest — de la landing static la produs cu progres salvat</h3><p class="project-desc">Am transformat Excel-Quest dintr-un landing simplu într-un produs orientat pe reluare.</p><div class="card-actions"><a class="btn btn-primary" href="projects/excel-quest.html" aria-label="Deschide case study Excel-Quest">Deschide case study</a><a class="btn btn-secondary" href="https://laurandreea10.github.io/Excel-Quest/excel-quest-hub.html" target="_blank" rel="noopener noreferrer" aria-label="Deschide hub-ul Excel-Quest">Vezi hub-ul</a></div></article>
         </div>
       </div>
     </section>
 
-    <div class="section-divider"><div class="container"></div></div>
+    <div class="section-divider"></div>
 
     <section class="final-cta-section" aria-labelledby="final-cta-title">
       <div class="container">
         <div class="final-cta-card">
           <span class="eyebrow">Hai să lucrăm</span>
           <h2 id="final-cta-title">Construiești un CRM intern, dashboard operațional sau produs cu fluxuri clare?</h2>
-          <p>Pot ajuta cu structura UX, logica de produs, prototipuri interactive sau feedback pe o interfață în lucru. Scrie-mi.</p>
-          <div class="final-cta-actions" aria-label="Acțiuni finale de contact">
-            <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Colaborare%20proiect%20CRM" style="font-size:1rem;min-height:52px;padding:0 28px;" aria-label="Trimite un email despre un proiect CRM">Scrie-mi despre proiectul tău →</a>
-            <a class="btn btn-secondary" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer" aria-label="Deschide profilul LinkedIn al Laurei Andreea">LinkedIn</a>
-            <a class="btn btn-ghost" href="#key-projects" aria-label="Înapoi la proiectele recomandate">↑ Înapoi la proiecte</a>
+          <p>Pot ajuta cu structura UX, logica de produs, prototipuri interactive sau feedback pe o interfață în lucru.</p>
+          <div class="final-cta-actions">
+            <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Colaborare%20proiect%20CRM" style="font-size:1rem;min-height:52px;padding:0 28px;" aria-label="Trimite email pentru colaborare pe un proiect CRM">Scrie-mi despre proiectul tău →</a>
+            <a class="btn btn-secondary" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer" aria-label="Deschide profilul LinkedIn Laura Andreea">LinkedIn</a>
+            <a class="btn btn-ghost" href="#key-projects" aria-label="Revino la secțiunea Top proiecte">↑ Înapoi la proiecte</a>
           </div>
         </div>
       </div>
@@ -1203,72 +1621,15 @@
   <footer class="footer">
     <div class="container">
       <p>Portofoliu selectat, construit în jurul proiectelor care mă reprezintă cel mai bine.</p>
-      <div class="card-actions" style="justify-content:center;margin-top:12px;flex-wrap:wrap;gap:8px;" aria-label="Linkuri externe de contact și profil">
-        <a class="btn btn-secondary" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer" aria-label="Deschide hub-ul CodePen cu proiecte live">CodePen · 64 proiecte live</a>
-        <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Deschide profilul GitHub al Laurei Andreea">GitHub</a>
-        <a class="btn btn-secondary" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer" aria-label="Deschide profilul LinkedIn al Laurei Andreea">LinkedIn</a>
-        <a class="btn btn-secondary" href="mailto:andreealaurap@gmail.com?subject=Salut%20Laura" aria-label="Trimite un email Laurei Andreea">Email</a>
+      <div class="card-actions" aria-label="Linkuri externe de contact și profil" style="justify-content:center;margin-top:12px;flex-wrap:wrap;gap:8px;">
+        <a class="btn btn-secondary" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer" aria-label="Deschide CodePen cu 64 proiecte live">CodePen · 64 proiecte live</a>
+        <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Deschide profilul GitHub Laura Andreea">GitHub</a>
+        <a class="btn btn-secondary" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer" aria-label="Deschide profilul LinkedIn Laura Andreea">LinkedIn</a>
+        <a class="btn btn-secondary" href="mailto:andreealaurap@gmail.com?subject=Salut%20Laura" aria-label="Trimite email Laurei Andreea">Email</a>
       </div>
-      <p style="margin-top:16px;font-size:.8rem;color:var(--muted);opacity:.6;">© 2026 Laura Andreea · laurandreea10.github.io</p>
+      <p style="margin-top:16px;font-size:.8rem;color:var(--muted);opacity:.75;">© 2026 Laura Andreea · laurandreea10.github.io</p>
     </div>
   </footer>
-
-  <script>
-    (function () {
-      const themeBtn = document.getElementById('themeToggle');
-      const contrastBtn = document.getElementById('contrastToggle');
-      const langBtn = document.getElementById('langToggle');
-
-      const savedTheme = localStorage.getItem('portfolio-theme');
-      const savedContrast = localStorage.getItem('portfolio-contrast');
-      const savedLang = localStorage.getItem('portfolio-lang');
-
-      if (savedTheme === 'light') document.body.classList.add('light');
-      if (savedContrast === 'high') document.body.classList.add('high-contrast');
-      if (savedLang === 'en' || savedLang === 'ro') document.documentElement.lang = savedLang;
-
-      function syncThemeLabel() {
-        if (!themeBtn) return;
-        themeBtn.textContent = document.body.classList.contains('light') ? '🌙 Dark' : '☀️ Light';
-        themeBtn.setAttribute('aria-label', document.body.classList.contains('light') ? 'Activează tema întunecată' : 'Activează tema luminoasă');
-      }
-
-      function syncContrastLabel() {
-        if (!contrastBtn) return;
-        const active = document.body.classList.contains('high-contrast');
-        contrastBtn.setAttribute('aria-pressed', String(active));
-        contrastBtn.textContent = active ? 'Contrast standard' : 'Contrast ridicat';
-        contrastBtn.setAttribute('aria-label', active ? 'Dezactivează contrastul ridicat' : 'Activează contrast ridicat');
-      }
-
-      function syncLangLabel() {
-        if (!langBtn) return;
-        const lang = localStorage.getItem('portfolio-lang') || document.documentElement.lang || 'ro';
-        langBtn.textContent = lang === 'ro' ? 'RO | EN' : 'EN | RO';
-        langBtn.setAttribute('aria-label', lang === 'ro'
-          ? 'Schimbă limba între română și engleză'
-          : 'Switch language between English and Romanian'
-        );
-        document.documentElement.lang = lang;
-      }
-
-      syncThemeLabel();
-      syncContrastLabel();
-      syncLangLabel();
-
-      themeBtn?.addEventListener('click', function () {
-        document.body.classList.toggle('light');
-        localStorage.setItem('portfolio-theme', document.body.classList.contains('light') ? 'light' : 'dark');
-        syncThemeLabel();
-      });
-
-      contrastBtn?.addEventListener('click', function () {
-        document.body.classList.toggle('high-contrast');
-        localStorage.setItem('portfolio-contrast', document.body.classList.contains('high-contrast') ? 'high' : 'normal');
-        syncContrastLabel();
-      });
-    })();
-  </script>
 
   <script src="main.js" defer></script>
 </body>
