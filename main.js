@@ -24,7 +24,6 @@
       heroPrimary: 'Scrie-mi despre un proiect',
       heroSecondary: 'Deschide Alpis Fusion →'
     },
-
     en: {
       documentTitle: 'Laura Andreea — Front-end CRM & Dashboard Developer',
       langButton: 'EN | RO',
@@ -207,20 +206,24 @@
     if (els.heroPreviewMeta) els.heroPreviewMeta.textContent = slide.meta;
     if (els.heroPreviewDescription) els.heroPreviewDescription.textContent = slide.description[currentLang];
     if (els.heroPreviewType) els.heroPreviewType.textContent = slide.label;
+
     if (els.heroPreviewUrl) {
       els.heroPreviewUrl.href = slide.secondaryUrl;
       els.heroPreviewUrl.textContent = slide.secondaryUrl.replace(/^https?:\/\//, '');
     }
+
     if (els.heroPreviewOpen) {
       els.heroPreviewOpen.href = slide.primaryUrl;
       els.heroPreviewOpen.textContent = translations[currentLang].previewCaseStudy;
       els.heroPreviewOpen.setAttribute('aria-label', `${currentLang === 'ro' ? 'Deschide proiectul' : 'Open project'} ${slide.title}`);
     }
+
     if (els.heroPreviewOpenSecondary) {
       els.heroPreviewOpenSecondary.href = slide.secondaryUrl;
       els.heroPreviewOpenSecondary.textContent = translations[currentLang].previewOpen;
       els.heroPreviewOpenSecondary.setAttribute('aria-label', `${currentLang === 'ro' ? 'Deschide proiectul' : 'Open project'} ${slide.title}`);
     }
+
     if (els.heroPreviewCode) {
       els.heroPreviewCode.href = slide.codeUrl;
       els.heroPreviewCode.textContent = translations[currentLang].previewCode;
