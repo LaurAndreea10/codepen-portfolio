@@ -159,14 +159,29 @@
     els.themeToggle.setAttribute('aria-label', currentLang === 'ro' ? 'Schimbă tema vizuală' : 'Change visual theme');
   }
 
+  function normalizeImplementationState(value) {
+    if (!value) return null;
+    const normalized = String(value).trim().toLowerCase();
+    if (['implemented', 'implementat', 'done', 'live'].includes(normalized)) return 'implemented';
+    if (['progress', 'in-progress', 'in_progress', 'dev', 'draft', 'wip', 'dezvoltare'].includes(normalized)) return 'progress';
+    if (['roadmap', 'soon', 'planned', 'planificat'].includes(normalized)) return 'roadmap';
+    return null;
+  }
+
   function inferImplementationState(card) {
     if (!card) return 'progress';
+
+    const explicitState = normalizeImplementationState(card.dataset.status || card.dataset.implementation);
+    if (explicitState) return explicitState;
+
     if (card.classList.contains('project-card-soon')) return 'roadmap';
+
     const links = [...card.querySelectorAll('a[href]')];
     const hasLive = links.some(link => {
       const href = (link.getAttribute('href') || '').toLowerCase();
       return href.includes('github.io') || href.startsWith('./') || href.startsWith('projects/') || href.endsWith('.html');
     });
+
     if (hasLive) return 'implemented';
     if (links.some(link => (link.getAttribute('href') || '').includes('github.com'))) return 'progress';
     return 'progress';
@@ -184,6 +199,7 @@
     cards.forEach(card => {
       const state = inferImplementationState(card);
       card.dataset.implementation = state;
+
       let badge = card.querySelector('.implementation-badge');
       if (!badge) {
         badge = document.createElement('span');
@@ -191,6 +207,7 @@
         badge.setAttribute('aria-label', currentLang === 'ro' ? 'Stare implementare' : 'Implementation status');
         card.appendChild(badge);
       }
+
       badge.textContent = getImplementationLabel(state);
     });
   }
