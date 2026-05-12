@@ -22,7 +22,11 @@
       previewCaseStudy: 'Deschide case study',
       previewCode: 'CodePen →',
       heroPrimary: 'Scrie-mi despre un proiect',
-      heroSecondary: 'Deschide Alpis Fusion →'
+      heroSecondary: 'Deschide Alpis Fusion →',
+      implementationImplemented: 'Implementat',
+      implementationProgress: 'În dezvoltare',
+      implementationRoadmap: 'Roadmap',
+      nowEditHint: 'Structură fixă • actualizezi săptămânal doar data și task-urile de mai jos.'
     },
     en: {
       documentTitle: 'Laura Andreea — Front-end CRM & Dashboard Developer',
@@ -40,7 +44,11 @@
       previewCaseStudy: 'Open case study',
       previewCode: 'CodePen →',
       heroPrimary: 'Email me about a project',
-      heroSecondary: 'Open Alpis Fusion →'
+      heroSecondary: 'Open Alpis Fusion →',
+      implementationImplemented: 'Implemented',
+      implementationProgress: 'In progress',
+      implementationRoadmap: 'Roadmap',
+      nowEditHint: 'Fixed structure • update only the date and the tasks below each week.'
     }
   };
 
@@ -113,7 +121,8 @@
     heroPreviewFallback: document.getElementById('heroPreviewFallback'),
     heroPreviewHint: document.getElementById('heroPreviewHint'),
     heroCtaPrimary: document.getElementById('heroCtaPrimary'),
-    heroCtaSecondary: document.getElementById('heroCtaSecondary')
+    heroCtaSecondary: document.getElementById('heroCtaSecondary'),
+    nowSection: document.getElementById('now')
   };
 
   let currentLang = new URLSearchParams(window.location.search).get('lang') || localStorage.getItem(STORAGE_KEYS.lang) || 'ro';
@@ -150,6 +159,60 @@
     els.themeToggle.setAttribute('aria-label', currentLang === 'ro' ? 'Schimbă tema vizuală' : 'Change visual theme');
   }
 
+  function inferImplementationState(card) {
+    if (!card) return 'progress';
+    if (card.classList.contains('project-card-soon')) return 'roadmap';
+    const links = [...card.querySelectorAll('a[href]')];
+    const hasLive = links.some(link => {
+      const href = (link.getAttribute('href') || '').toLowerCase();
+      return href.includes('github.io') || href.startsWith('./') || href.startsWith('projects/') || href.endsWith('.html');
+    });
+    if (hasLive) return 'implemented';
+    if (links.some(link => (link.getAttribute('href') || '').includes('github.com'))) return 'progress';
+    return 'progress';
+  }
+
+  function getImplementationLabel(state) {
+    const copy = translations[currentLang];
+    if (state === 'implemented') return copy.implementationImplemented;
+    if (state === 'roadmap') return copy.implementationRoadmap;
+    return copy.implementationProgress;
+  }
+
+  function decorateImplementationCards() {
+    const cards = [...document.querySelectorAll('.projects-grid .project-card')];
+    cards.forEach(card => {
+      const state = inferImplementationState(card);
+      card.dataset.implementation = state;
+      let badge = card.querySelector('.implementation-badge');
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'implementation-badge';
+        badge.setAttribute('aria-label', currentLang === 'ro' ? 'Stare implementare' : 'Implementation status');
+        card.appendChild(badge);
+      }
+      badge.textContent = getImplementationLabel(state);
+    });
+  }
+
+  function setupNowSection() {
+    if (!els.nowSection) return;
+    const time = els.nowSection.querySelector('.now-badge time');
+    const note = els.nowSection.querySelector('.now-note');
+    const listItems = [...els.nowSection.querySelectorAll('.now-list li')];
+
+    listItems.forEach(item => item.classList.add('now-list-item'));
+    if (time) time.title = translations[currentLang].nowEditHint;
+
+    let helper = els.nowSection.querySelector('.now-helper');
+    if (!helper && note) {
+      helper = document.createElement('p');
+      helper.className = 'now-helper';
+      note.insertAdjacentElement('afterend', helper);
+    }
+    if (helper) helper.textContent = translations[currentLang].nowEditHint;
+  }
+
   function applyLanguage(lang) {
     currentLang = translations[lang] ? lang : 'ro';
     localStorage.setItem(STORAGE_KEYS.lang, currentLang);
@@ -169,12 +232,13 @@
     applyContrastFromStorage();
     renderPreviewChips();
     setPreview(previewIndex);
+    decorateImplementationCards();
+    setupNowSection();
   }
 
   function renderPreviewChips() {
     if (!els.heroPreviewLinks) return;
     els.heroPreviewLinks.innerHTML = '';
-
     previewSlides.forEach((slide, index) => {
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -200,50 +264,41 @@
   function setPreview(index) {
     previewIndex = (index + previewSlides.length) % previewSlides.length;
     const slide = previewSlides[previewIndex];
-
     if (els.heroPreviewTitle) els.heroPreviewTitle.textContent = slide.title;
     if (els.heroPreviewHeading) els.heroPreviewHeading.textContent = slide.title;
     if (els.heroPreviewMeta) els.heroPreviewMeta.textContent = slide.meta;
     if (els.heroPreviewDescription) els.heroPreviewDescription.textContent = slide.description[currentLang];
     if (els.heroPreviewType) els.heroPreviewType.textContent = slide.label;
-
     if (els.heroPreviewUrl) {
       els.heroPreviewUrl.href = slide.secondaryUrl;
       els.heroPreviewUrl.textContent = slide.secondaryUrl.replace(/^https?:\/\//, '');
     }
-
     if (els.heroPreviewOpen) {
       els.heroPreviewOpen.href = slide.primaryUrl;
       els.heroPreviewOpen.textContent = translations[currentLang].previewCaseStudy;
       els.heroPreviewOpen.setAttribute('aria-label', `${currentLang === 'ro' ? 'Deschide proiectul' : 'Open project'} ${slide.title}`);
     }
-
     if (els.heroPreviewOpenSecondary) {
       els.heroPreviewOpenSecondary.href = slide.secondaryUrl;
       els.heroPreviewOpenSecondary.textContent = translations[currentLang].previewOpen;
       els.heroPreviewOpenSecondary.setAttribute('aria-label', `${currentLang === 'ro' ? 'Deschide proiectul' : 'Open project'} ${slide.title}`);
     }
-
     if (els.heroPreviewCode) {
       els.heroPreviewCode.href = slide.codeUrl;
       els.heroPreviewCode.textContent = translations[currentLang].previewCode;
       els.heroPreviewCode.setAttribute('aria-label', `${currentLang === 'ro' ? 'Deschide demo live pentru' : 'Open live demo for'} ${slide.title}`);
     }
-
     if (els.heroPreviewFrame) {
       showPreviewFallback(false);
       els.heroPreviewFrame.src = slide.frameUrl;
     }
-
     renderPreviewChips();
   }
 
   function startAutoplay() {
     if (prefersReducedMotion.matches || previewSlides.length < 2) return;
     stopAutoplay();
-    autoplayId = window.setInterval(() => {
-      setPreview(previewIndex + 1);
-    }, 5000);
+    autoplayId = window.setInterval(() => setPreview(previewIndex + 1), 5000);
   }
 
   function stopAutoplay() {
@@ -285,30 +340,18 @@
 
   function setupPreviewFrame() {
     if (!els.heroPreviewFrame) return;
-
-    els.heroPreviewFrame.addEventListener('load', () => {
-      showPreviewFallback(false);
-    });
-
-    els.heroPreviewFrame.addEventListener('error', () => {
-      showPreviewFallback(true);
-    });
-
+    els.heroPreviewFrame.addEventListener('load', () => showPreviewFallback(false));
+    els.heroPreviewFrame.addEventListener('error', () => showPreviewFallback(true));
     els.heroPreviewFrame.addEventListener('mouseenter', stopAutoplay);
     els.heroPreviewFrame.addEventListener('mouseleave', startAutoplay);
   }
 
   function setupAriaCurrent() {
     if (!('IntersectionObserver' in window) || !els.sections.length || !els.navLinks.length) return;
-
     const observer = new IntersectionObserver((entries) => {
-      const visible = entries
-        .filter(entry => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
       if (!visible.length) return;
       const currentId = `#${visible[0].target.id}`;
-
       els.navLinks.forEach(link => {
         if (link.getAttribute('href') === currentId) {
           link.setAttribute('aria-current', 'true');
@@ -320,18 +363,14 @@
       rootMargin: '-20% 0px -60% 0px',
       threshold: [0.2, 0.35, 0.55]
     });
-
     els.sections.forEach(section => observer.observe(section));
   }
 
   function setupReducedMotionWatcher() {
     if (typeof prefersReducedMotion.addEventListener === 'function') {
       prefersReducedMotion.addEventListener('change', () => {
-        if (prefersReducedMotion.matches) {
-          stopAutoplay();
-        } else {
-          startAutoplay();
-        }
+        if (prefersReducedMotion.matches) stopAutoplay();
+        else startAutoplay();
       });
     }
   }
@@ -347,20 +386,15 @@
     setupAriaCurrent();
     setupReducedMotionWatcher();
     setPreview(0);
+    decorateImplementationCards();
+    setupNowSection();
     startAutoplay();
   }
 
-  function init() {
-    initPortfolioCore();
-  }
-
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      stopAutoplay();
-    } else {
-      startAutoplay();
-    }
+    if (document.hidden) stopAutoplay();
+    else startAutoplay();
   });
 
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', initPortfolioCore);
 })();
