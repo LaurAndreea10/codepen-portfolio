@@ -52,6 +52,23 @@
     }
   };
 
+  const explicitCardStatuses = {
+    'Excel-Quest': 'implemented',
+    'BASKET VS AI': 'implemented',
+    'Link Video Editor Studio': 'implemented',
+    'CampaignPilot': 'implemented',
+    'Campaign ROI Calculator': 'implemented',
+    'Lead Magnet Landing': 'roadmap',
+    'Alpis Fusion CRM Premium': 'implemented',
+    'Brief Studio': 'implemented',
+    'ClientOps Suite Premium': 'progress',
+    'ClientFlow SaaS CRM': 'implemented',
+    'ClientOps': 'implemented',
+    'ClientFlow': 'implemented',
+    'ARCADE WORLD': 'implemented',
+    'Coaching AI': 'progress'
+  };
+
   const previewSlides = [
     {
       title: 'Alpis Fusion CRM Premium',
@@ -168,11 +185,19 @@
     return null;
   }
 
+  function getCardTitle(card) {
+    const titleEl = card.querySelector('h3');
+    return titleEl ? titleEl.textContent.trim() : '';
+  }
+
   function inferImplementationState(card) {
     if (!card) return 'progress';
 
     const explicitState = normalizeImplementationState(card.dataset.status || card.dataset.implementation);
     if (explicitState) return explicitState;
+
+    const titleState = normalizeImplementationState(explicitCardStatuses[getCardTitle(card)]);
+    if (titleState) return titleState;
 
     if (card.classList.contains('project-card-soon')) return 'roadmap';
 
