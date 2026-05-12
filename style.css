@@ -494,6 +494,53 @@ body.light .gh-section .eyebrow{color:#7c3aed}
 .card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
 .no-auto-margin{margin-top:0}
 
+.implementation-badge{
+  position:absolute;
+  top:14px;
+  left:14px;
+  z-index:2;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 11px;
+  border-radius:999px;
+  font-size:.68rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  backdrop-filter:blur(10px);
+}
+
+.implementation-badge::before{
+  content:"";
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:currentColor;
+  box-shadow:0 0 10px currentColor;
+}
+
+.project-card[data-implementation="implemented"] .implementation-badge{
+  color:#7CFFB2;
+  background:rgba(74,222,128,.14);
+  border-color:rgba(74,222,128,.34);
+}
+
+.project-card[data-implementation="progress"] .implementation-badge{
+  color:#FFD166;
+  background:rgba(245,158,11,.14);
+  border-color:rgba(245,158,11,.34);
+}
+
+.project-card[data-implementation="roadmap"] .implementation-badge{
+  color:#C7B8FF;
+  background:rgba(139,92,246,.14);
+  border-color:rgba(139,92,246,.34);
+}
+
 .project-proof{
   margin-top:6px;
   padding:12px;
@@ -547,11 +594,23 @@ body.light .gh-section .eyebrow{color:#7c3aed}
   line-height:1.85;
 }
 
+.now-list-item::marker{color:var(--green)}
+
 .now-note{
   margin-top:14px;
   font-size:.85rem;
   color:var(--muted);
   font-style:italic;
+}
+
+.now-helper{
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px dashed rgba(74,222,128,.28);
+  background:rgba(74,222,128,.06);
+  font-size:.82rem;
+  color:var(--muted);
 }
 
 .pow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}
@@ -698,4 +757,5 @@ input:focus-visible{
   .nav{border-radius:20px}
   .cred-strip,.projects-grid,.about-contact,.pow-grid,.insights-grid{grid-template-columns:1fr}
   .final-cta-card{padding:24px 16px}
+  .implementation-badge{position:static;align-self:flex-start;margin-bottom:2px}
 }
