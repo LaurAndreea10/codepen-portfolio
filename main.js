@@ -26,7 +26,10 @@
       implementationImplemented: 'Implementat',
       implementationProgress: 'În dezvoltare',
       implementationRoadmap: 'Roadmap',
-      nowEditHint: 'Structură fixă • actualizezi săptămânal doar data și task-urile de mai jos.'
+      nowEditHint: 'Actualizezi săptămânal doar obiectul nowContent din main.js.',
+      nowUpdatedPrefix: 'Actualizat:',
+      nowLabel: '⚡ Now',
+      nowTitle: 'La ce lucrez săptămâna asta'
     },
     en: {
       documentTitle: 'Laura Andreea — Front-end CRM & Dashboard Developer',
@@ -48,7 +51,10 @@
       implementationImplemented: 'Implemented',
       implementationProgress: 'In progress',
       implementationRoadmap: 'Roadmap',
-      nowEditHint: 'Fixed structure • update only the date and the tasks below each week.'
+      nowEditHint: 'Update only the nowContent object in main.js each week.',
+      nowUpdatedPrefix: 'Updated:',
+      nowLabel: '⚡ Now',
+      nowTitle: 'What I am working on this week'
     }
   };
 
@@ -67,6 +73,31 @@
     'ClientFlow': 'implemented',
     'ARCADE WORLD': 'implemented',
     'Coaching AI': 'progress'
+  };
+
+  const nowContent = {
+    ro: {
+      datetime: '2026-05',
+      label: 'Mai 2026',
+      items: [
+        'Iterez pe <strong>Link Video Editor Studio</strong> — adaug Automation Pack export.',
+        'Pregătesc un studiu de caz extins pentru <strong>Alpis Fusion CRM Premium</strong> — decision log cu alegeri de produs și UX.',
+        'Fac audit Lighthouse CI pe portofoliu și extrag CSS-ul non-critic pentru LCP mai bun.',
+        'Extind zona <strong>marketing-tech</strong> după <strong>Campaign ROI Calculator</strong> cu noi template-uri orientate pe conversie și growth workflows.'
+      ],
+      note: 'Actualizat manual, ca secțiune de tip now page, pentru a arăta clar ce prioritizez în perioada curentă.'
+    },
+    en: {
+      datetime: '2026-05',
+      label: 'May 2026',
+      items: [
+        'Iterating on <strong>Link Video Editor Studio</strong> — adding Automation Pack export.',
+        'Preparing an extended case study for <strong>Alpis Fusion CRM Premium</strong> — a decision log with product and UX choices.',
+        'Running a Lighthouse CI audit on the portfolio and extracting non-critical CSS for better LCP.',
+        'Expanding the <strong>marketing-tech</strong> area after <strong>Campaign ROI Calculator</strong> with new conversion-oriented templates and growth workflows.'
+      ],
+      note: 'Updated manually as a now-page style section to show clearly what I am prioritizing in the current period.'
+    }
   };
 
   const previewSlides = [
@@ -239,12 +270,34 @@
 
   function setupNowSection() {
     if (!els.nowSection) return;
-    const time = els.nowSection.querySelector('.now-badge time');
-    const note = els.nowSection.querySelector('.now-note');
-    const listItems = [...els.nowSection.querySelectorAll('.now-list li')];
 
-    listItems.forEach(item => item.classList.add('now-list-item'));
-    if (time) time.title = translations[currentLang].nowEditHint;
+    const copy = nowContent[currentLang] || nowContent.ro;
+    const eyebrow = els.nowSection.querySelector('.eyebrow');
+    const title = els.nowSection.querySelector('.now-title');
+    const badge = els.nowSection.querySelector('.now-badge');
+    const time = els.nowSection.querySelector('.now-badge time');
+    const list = els.nowSection.querySelector('.now-list');
+    const note = els.nowSection.querySelector('.now-note');
+
+    if (eyebrow) eyebrow.textContent = translations[currentLang].nowLabel;
+    if (title) title.textContent = translations[currentLang].nowTitle;
+    if (badge && time) {
+      badge.innerHTML = `${translations[currentLang].nowUpdatedPrefix} <time datetime="${copy.datetime}">${copy.label}</time>`;
+      const updatedTime = badge.querySelector('time');
+      if (updatedTime) updatedTime.title = translations[currentLang].nowEditHint;
+    }
+
+    if (list) {
+      list.innerHTML = '';
+      copy.items.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'now-list-item';
+        li.innerHTML = item;
+        list.appendChild(li);
+      });
+    }
+
+    if (note) note.textContent = copy.note;
 
     let helper = els.nowSection.querySelector('.now-helper');
     if (!helper && note) {
