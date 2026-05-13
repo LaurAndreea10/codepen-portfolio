@@ -27,6 +27,7 @@
       implementationProgress: 'În dezvoltare',
       implementationRoadmap: 'Roadmap',
       nowEditHint: 'Actualizezi săptămânal doar obiectul nowContent din main.js.',
+      statusEditHint: 'Actualizezi statusurile cardurilor doar din obiectul cardStatusContent din main.js.',
       nowUpdatedPrefix: 'Actualizat:',
       nowLabel: '⚡ Now',
       nowTitle: 'La ce lucrez săptămâna asta'
@@ -52,13 +53,14 @@
       implementationProgress: 'In progress',
       implementationRoadmap: 'Roadmap',
       nowEditHint: 'Update only the nowContent object in main.js each week.',
+      statusEditHint: 'Update card statuses only from the cardStatusContent object in main.js.',
       nowUpdatedPrefix: 'Updated:',
       nowLabel: '⚡ Now',
       nowTitle: 'What I am working on this week'
     }
   };
 
-  const explicitCardStatuses = {
+  const cardStatusContent = {
     'Excel-Quest': 'implemented',
     'BASKET VS AI': 'implemented',
     'Link Video Editor Studio': 'implemented',
@@ -227,7 +229,7 @@
     const explicitState = normalizeImplementationState(card.dataset.status || card.dataset.implementation);
     if (explicitState) return explicitState;
 
-    const titleState = normalizeImplementationState(explicitCardStatuses[getCardTitle(card)]);
+    const titleState = normalizeImplementationState(cardStatusContent[getCardTitle(card)]);
     if (titleState) return titleState;
 
     if (card.classList.contains('project-card-soon')) return 'roadmap';
@@ -255,6 +257,7 @@
     cards.forEach(card => {
       const state = inferImplementationState(card);
       card.dataset.implementation = state;
+      card.title = translations[currentLang].statusEditHint;
 
       let badge = card.querySelector('.implementation-badge');
       if (!badge) {
