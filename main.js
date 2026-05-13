@@ -82,10 +82,10 @@
       datetime: '2026-05',
       label: 'Mai 2026',
       items: [
-        'Iterez pe <strong>Link Video Editor Studio</strong> — adaug Automation Pack export.',
-        'Pregătesc un studiu de caz extins pentru <strong>Alpis Fusion CRM Premium</strong> — decision log cu alegeri de produs și UX.',
-        'Fac audit Lighthouse CI pe portofoliu și extrag CSS-ul non-critic pentru LCP mai bun.',
-        'Extind zona <strong>marketing-tech</strong> după <strong>Campaign ROI Calculator</strong> cu noi template-uri orientate pe conversie și growth workflows.'
+        'Iterez pe <a href="https://laurandreea10.github.io/Link-Video-Editor-Studio/" target="_blank" rel="noopener noreferrer"><strong>Link Video Editor Studio</strong></a> — adaug Automation Pack export.',
+        'Pregătesc un studiu de caz extins pentru <a href="projects/alpis-fusion-crm.html"><strong>Alpis Fusion CRM Premium</strong></a> — decision log cu alegeri de produs și UX.',
+        'Fac audit Lighthouse CI pe <a href="./index.html" aria-label="Deschide homepage-ul portofoliului"><strong>portofoliu</strong></a> și extrag CSS-ul non-critic pentru LCP mai bun.',
+        'Extind zona <a href="./index.html#marketing-tech"><strong>marketing-tech</strong></a> după <a href="./Campaign%20ROI%20Calculator.html"><strong>Campaign ROI Calculator</strong></a> cu noi template-uri orientate pe conversie și growth workflows.'
       ],
       note: 'Actualizat manual, ca secțiune de tip now page, pentru a arăta clar ce prioritizez în perioada curentă.'
     },
@@ -93,10 +93,10 @@
       datetime: '2026-05',
       label: 'May 2026',
       items: [
-        'Iterating on <strong>Link Video Editor Studio</strong> — adding Automation Pack export.',
-        'Preparing an extended case study for <strong>Alpis Fusion CRM Premium</strong> — a decision log with product and UX choices.',
-        'Running a Lighthouse CI audit on the portfolio and extracting non-critical CSS for better LCP.',
-        'Expanding the <strong>marketing-tech</strong> area after <strong>Campaign ROI Calculator</strong> with new conversion-oriented templates and growth workflows.'
+        'Iterating on <a href="https://laurandreea10.github.io/Link-Video-Editor-Studio/" target="_blank" rel="noopener noreferrer"><strong>Link Video Editor Studio</strong></a> — adding Automation Pack export.',
+        'Preparing an extended case study for <a href="projects/alpis-fusion-crm.html"><strong>Alpis Fusion CRM Premium</strong></a> — a decision log with product and UX choices.',
+        'Running a Lighthouse CI audit on the <a href="./index.html" aria-label="Open the portfolio homepage"><strong>portfolio</strong></a> and extracting non-critical CSS for better LCP.',
+        'Expanding the <a href="./index.html#marketing-tech"><strong>marketing-tech</strong></a> area after <a href="./Campaign%20ROI%20Calculator.html"><strong>Campaign ROI Calculator</strong></a> with new conversion-oriented templates and growth workflows.'
       ],
       note: 'Updated manually as a now-page style section to show clearly what I am prioritizing in the current period.'
     }
