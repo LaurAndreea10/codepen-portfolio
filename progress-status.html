@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weekly Progress Status — Laura Andreea</title>
+  <meta name="description" content="Status page pentru lucrul din săptămâna curentă: proiecte active, focus, milestone-uri și următorii pași." />
+  <meta name="theme-color" content="#071226" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/progress-status.html" />
+  <style>
+    :root{
+      --bg:#071226;
+      --bg2:#0b1731;
+      --panel:rgba(10,22,46,.88);
+      --line:rgba(255,255,255,.14);
+      --text:#eef4ff;
+      --muted:#bfd0ee;
+      --accent:#4f8cff;
+      --accent2:#8b5cf6;
+      --green:#4ade80;
+      --amber:#f59e0b;
+      --blue-soft:rgba(79,140,255,.12);
+      --radius:24px;
+      --shadow:0 18px 44px rgba(0,0,0,.28);
+      --container:1120px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Inter,system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(79,140,255,.18), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(139,92,246,.16), transparent 28%),
+        linear-gradient(180deg,var(--bg2),var(--bg));
+    }
+
+    a{text-decoration:none;color:inherit}
+    h1,h2,h3,p{margin:0}
+    .container{width:min(var(--container),calc(100% - 28px));margin:0 auto}
+
+    .skip-link{
+      position:absolute;
+      left:12px;
+      top:-80px;
+      z-index:30;
+      padding:10px 14px;
+      border-radius:12px;
+      background:#fff;
+      color:#071226;
+      font-weight:800;
+    }
+    .skip-link:focus{top:12px}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      backdrop-filter:blur(12px);
+      background:rgba(7,18,38,.52);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .topbar-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 0;
+      flex-wrap:wrap;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+    }
+    .brand-badge{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:var(--shadow);
+    }
+    .nav-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      padding:0 16px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-weight:700;
+    }
+
+    .hero{padding:34px 0 18px}
+    .hero-card,
+    .panel,
+    .stream-card,
+    .timeline-card,
+    .note-card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(14px);
+    }
+
+    .hero-card{
+      border-radius:32px;
+      padding:28px;
+      display:grid;
+      grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);
+      gap:18px;
+    }
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(79,140,255,.25);
+      background:rgba(79,140,255,.08);
+      color:#dbe8ff;
+      font-size:.8rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    h1{
+      margin-top:14px;
+      font-size:clamp(2rem,4vw,3.6rem);
+      line-height:.96;
+      letter-spacing:-.04em;
+      max-width:12ch;
+    }
+    .hero-text{
+      margin-top:14px;
+      color:var(--muted);
+      line-height:1.75;
+      max-width:62ch;
+    }
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:48px;
+      padding:0 18px;
+      border-radius:999px;
+      border:1px solid transparent;
+      font-weight:800;
+    }
+    .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+    .btn-secondary{border-color:var(--line);background:rgba(255,255,255,.04)}
+
+    .status-panel{
+      border-radius:26px;
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .status-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+    .status-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(74,222,128,.10);
+      border:1px solid rgba(74,222,128,.22);
+      color:#c6ffd9;
+      font-weight:800;
+      font-size:.82rem;
+    }
+    .status-chip::before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--green);
+      box-shadow:0 0 10px var(--green);
+    }
+    .mini-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+    }
+    .mini-card{
+      padding:14px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+    }
+    .mini-card strong{display:block;font-size:1.35rem}
+    .mini-card span{display:block;margin-top:6px;color:var(--muted);line-height:1.5;font-size:.9rem}
+
+    .section{padding:18px 0}
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-end;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .section-head p{color:var(--muted);line-height:1.7;max-width:70ch}
+
+    .streams-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+    .stream-card{
+      border-radius:24px;
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .stream-top{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+    }
+    .stream-top h3{font-size:1.12rem;line-height:1.3;max-width:24ch}
+    .stream-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 11px;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.04);
+      color:#fff;
+      white-space:nowrap;
+    }
+    .stream-badge.active{
+      background:rgba(74,222,128,.12);
+      border-color:rgba(74,222,128,.26);
+      color:#c9ffd9;
+    }
+    .stream-badge.review{
+      background:rgba(245,158,11,.12);
+      border-color:rgba(245,158,11,.28);
+      color:#ffe0a5;
+    }
+    .stream-badge.expand{
+      background:rgba(79,140,255,.12);
+      border-color:rgba(79,140,255,.28);
+      color:#dbe8ff;
+    }
+    .stream-copy{color:var(--muted);line-height:1.75}
+
+    .stage-track{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:8px;
+    }
+    .stage{
+      padding:10px 8px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      text-align:center;
+      font-size:.78rem;
+      color:var(--muted);
+      font-weight:700;
+    }
+    .stage.active{
+      color:#fff;
+      border-color:rgba(79,140,255,.38);
+      background:linear-gradient(135deg,rgba(79,140,255,.16),rgba(139,92,246,.14));
+    }
+
+    .stream-meta{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+    }
+    .stream-meta div{
+      padding:12px;
+      border-radius:16px;
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+    }
+    .stream-meta strong{
+      display:block;
+      font-size:.76rem;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#dbe8ff;
+      margin-bottom:6px;
+    }
+    .stream-meta p{color:var(--muted);line-height:1.6;font-size:.92rem}
+
+    .timeline-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+    .timeline-card,
+    .note-card{
+      border-radius:24px;
+      padding:20px;
+    }
+    .timeline-list,
+    .note-list{
+      margin:14px 0 0;
+      padding-left:18px;
+      color:var(--text);
+      line-height:1.9;
+    }
+    .timeline-list li::marker,
+    .note-list li::marker{color:var(--accent)}
+    .muted{color:var(--muted);line-height:1.75}
+
+    .footer{
+      padding:16px 0 34px;
+      text-align:center;
+      color:var(--muted);
+    }
+
+    .btn:focus-visible,
+    .pill:focus-visible,
+    a:focus-visible{
+      outline:3px solid #ffd166;
+      outline-offset:3px;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{animation:none !important;transition:none !important}
+    }
+
+    @media(max-width:980px){
+      .hero-card,
+      .streams-grid,
+      .timeline-grid{grid-template-columns:1fr}
+    }
+
+    @media(max-width:640px){
+      .mini-grid,
+      .stream-meta,
+      .stage-track{grid-template-columns:1fr}
+      .hero-card,.status-panel,.stream-card,.timeline-card,.note-card{padding:18px}
+      .container{width:min(var(--container),calc(100% - 20px))}
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Sari la conținut</a>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="./index.html" aria-label="Înapoi la portofoliu">
+        <span class="brand-badge">LA</span>
+        <span>Portfolio Status</span>
+      </a>
+      <div class="nav-actions">
+        <a class="pill" href="./index.html">Înapoi la homepage</a>
+        <a class="pill" href="#streams">Vezi stream-urile active</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="container">
+      <article class="hero-card">
+        <div>
+          <span class="eyebrow">Weekly status page</span>
+          <h1>Status săptămânal pentru proiectele active</h1>
+          <p class="hero-text">
+            O pagină clară de progres pentru ce lucrezi acum: focus activ, stadiu curent, următorii pași și stream-uri care pot fi actualizate rapid în fiecare săptămână.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#streams">Deschide status board</a>
+            <a class="btn btn-secondary" href="./index.html#now">Înapoi la secțiunea Now</a>
+          </div>
+        </div>
+
+        <aside class="status-panel">
+          <div class="status-head">
+            <div>
+              <span class="eyebrow">Snapshot</span>
+              <h2>Ce este activ acum</h2>
+            </div>
+            <span class="status-chip">4 stream-uri active</span>
+          </div>
+
+          <div class="mini-grid">
+            <article class="mini-card">
+              <strong>4</strong>
+              <span>direcții active în săptămâna curentă</span>
+            </article>
+            <article class="mini-card">
+              <strong>1</strong>
+              <span>proiect video iterat direct pe produs</span>
+            </article>
+            <article class="mini-card">
+              <strong>1</strong>
+              <span>studiu de caz CRM în pregătire</span>
+            </article>
+            <article class="mini-card">
+              <strong>2</strong>
+              <span>optimizări de portofoliu și expansiune marketing-tech</span>
+            </article>
+          </div>
+        </aside>
+      </article>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="section" id="streams">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Active streams</span>
+            <h2>La ce lucrez săptămâna asta</h2>
+          </div>
+          <p>Am structurat totul ca status page: fiecare direcție are un stadiu, următorul pas și un rezultat clar urmărit.</p>
+        </div>
+
+        <div class="streams-grid">
+          <article class="stream-card">
+            <div class="stream-top">
+              <div>
+                <h3>Link Video Editor Studio</h3>
+                <p class="stream-copy">Iterez pe produs și extind workflow-ul de export cu Automation Pack.</p>
+              </div>
+              <span class="stream-badge active">Activ</span>
+            </div>
+            <div class="stage-track" aria-label="Stadiu curent">
+              <span class="stage">Plan</span>
+              <span class="stage active">Iterare</span>
+              <span class="stage">Review</span>
+              <span class="stage">Publish</span>
+            </div>
+            <div class="stream-meta">
+              <div>
+                <strong>Focus curent</strong>
+                <p>Automation Pack export și claritate mai bună în output flow.</p>
+              </div>
+              <div>
+                <strong>Următorul pas</strong>
+                <p>Definirea pachetului de export și a stărilor vizuale pentru livrare.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="stream-card">
+            <div class="stream-top">
+              <div>
+                <h3>Alpis Fusion CRM Premium</h3>
+                <p class="stream-copy">Pregătești un studiu de caz extins, cu accent pe decizii de produs și UX.</p>
+              </div>
+              <span class="stream-badge review">În pregătire</span>
+            </div>
+            <div class="stage-track" aria-label="Stadiu curent">
+              <span class="stage">Outline</span>
+              <span class="stage active">Decision log</span>
+              <span class="stage">Structurare</span>
+              <span class="stage">Publish</span>
+            </div>
+            <div class="stream-meta">
+              <div>
+                <strong>Focus curent</strong>
+                <p>Log de decizii: de ce ai ales anumite fluxuri, componente și pattern-uri UX.</p>
+              </div>
+              <div>
+                <strong>Următorul pas</strong>
+                <p>Transformarea notițelor într-o narațiune clară de tip problemă → decizie → rezultat.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="stream-card">
+            <div class="stream-top">
+              <div>
+                <h3>Portfolio performance audit</h3>
+                <p class="stream-copy">Faci audit Lighthouse CI și extragi CSS-ul non-critic pentru LCP mai bun.</p>
+              </div>
+              <span class="stream-badge active">Audit activ</span>
+            </div>
+            <div class="stage-track" aria-label="Stadiu curent">
+              <span class="stage">Audit</span>
+              <span class="stage active">Extract</span>
+              <span class="stage">Test</span>
+              <span class="stage">Validate</span>
+            </div>
+            <div class="stream-meta">
+              <div>
+                <strong>Focus curent</strong>
+                <p>Reducerea costului de randare și optimizarea percepției de viteză pe homepage.</p>
+              </div>
+              <div>
+                <strong>Următorul pas</strong>
+                <p>Separarea clară a stilurilor critice de cele decorative și rerulare audit.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="stream-card">
+            <div class="stream-top">
+              <div>
+                <h3>Marketing-Tech expansion</h3>
+                <p class="stream-copy">Extinzi zona după Campaign ROI Calculator cu noi template-uri orientate pe conversie.</p>
+              </div>
+              <span class="stream-badge expand">Extindere</span>
+            </div>
+            <div class="stage-track" aria-label="Stadiu curent">
+              <span class="stage">Research</span>
+              <span class="stage active">Expand</span>
+              <span class="stage">Connect</span>
+              <span class="stage">Showcase</span>
+            </div>
+            <div class="stream-meta">
+              <div>
+                <strong>Focus curent</strong>
+                <p>Template-uri noi pentru conversie, growth workflows și prezentare mai clară în portofoliu.</p>
+              </div>
+              <div>
+                <strong>Următorul pas</strong>
+                <p>Definirea următorului template după ROI Calculator și integrarea în zona Marketing-Tech.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container timeline-grid">
+        <article class="timeline-card">
+          <span class="eyebrow">Status logic</span>
+          <h2>Cum poate fi citită pagina</h2>
+          <p class="muted">Am gândit această pagină ca un board editorial: ce este activ, ce intră în review și ce urmează să fie publicat.</p>
+          <ul class="timeline-list">
+            <li><strong>Activ</strong> = task la care lucrezi direct în produs.</li>
+            <li><strong>În pregătire</strong> = material sau studiu de caz în curs de structurare.</li>
+            <li><strong>Audit activ</strong> = optimizare tehnică cu impact în performanță.</li>
+            <li><strong>Extindere</strong> = zonă nouă care crește ecosistemul existent.</li>
+          </ul>
+        </article>
+
+        <article class="note-card">
+          <span class="eyebrow">Next update</span>
+          <h2>Ce poți actualiza ușor săptămâna viitoare</h2>
+          <ul class="note-list">
+            <li>schimbi doar titlurile stream-urilor active</li>
+            <li>actualizezi badge-ul de status pentru fiecare card</li>
+            <li>rescrii focusul curent și următorul pas</li>
+            <li>păstrezi structura paginii neschimbată</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      Status page pentru progres săptămânal · Laura Andreea
+    </div>
+  </footer>
+</body>
+</html>
