@@ -89,8 +89,58 @@
 
   <link rel="preload" href="style.css" as="style" />
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ── SCROLL PROGRESS BAR ── */
+    #scroll-progress{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--accent,#4f8cff),var(--accent-2,#8b5cf6));z-index:9999;transition:width .1s linear;pointer-events:none}
+
+    /* ── BACK TO TOP ── */
+    #back-to-top{position:fixed;bottom:28px;right:28px;width:42px;height:42px;border-radius:50%;border:1px solid var(--line,rgba(255,255,255,.1));background:var(--panel,rgba(13,24,46,.78));backdrop-filter:blur(12px);color:var(--text,#eef4ff);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .25s,transform .25s;z-index:900;text-decoration:none}
+    #back-to-top.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+    #back-to-top:hover{border-color:var(--accent,#4f8cff);color:var(--accent,#4f8cff)}
+
+    /* ── STACK PILLS ── */
+    .stack-pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;margin-bottom:4px}
+    .stack-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;border:1px solid var(--line,rgba(255,255,255,.1));background:var(--panel-2,rgba(255,255,255,.06));font-size:.79rem;font-weight:600;color:var(--muted,#9db0d4);white-space:nowrap;transition:border-color .2s,color .2s,background .2s}
+    .stack-pill:hover{border-color:rgba(79,140,255,.4);color:var(--text,#eef4ff);background:rgba(79,140,255,.08)}
+    .sp-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block}
+
+    /* ── NOW: dot pulsant + tags ── */
+    .now-pulse-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#34d399;flex-shrink:0;box-shadow:0 0 0 0 rgba(52,211,153,.4);animation:_pulse-now 2.2s ease-in-out infinite;vertical-align:middle;margin-right:6px}
+    @keyframes _pulse-now{0%{box-shadow:0 0 0 0 rgba(52,211,153,.4)}70%{box-shadow:0 0 0 7px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+    .now-tags-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+    .now-tag-pill{padding:4px 10px;border-radius:6px;font-size:.75rem;font-weight:600;background:rgba(79,140,255,.1);border:1px solid rgba(79,140,255,.2);color:var(--accent,#4f8cff)}
+
+    /* ── CARD METRICS ── */
+    .card-metrics-strip{display:flex;gap:0;margin:10px 0 8px;border:1px solid var(--line,rgba(255,255,255,.1));border-radius:12px;overflow:hidden}
+    .card-metric-cell{flex:1;padding:9px 10px;text-align:center;border-right:1px solid var(--line,rgba(255,255,255,.1));background:var(--panel-2,rgba(255,255,255,.04))}
+    .card-metric-cell:last-child{border-right:none}
+    .cmc-num{display:block;font-size:1rem;font-weight:800;color:var(--accent,#4f8cff);line-height:1}
+    .cmc-lbl{display:block;font-size:.66rem;color:var(--muted,#9db0d4);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+
+    /* ── GITHUB STATS ── */
+    .gh-stats-section{padding:22px 0}
+    .gh-stats-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+    .gh-stat-card{border-radius:18px;padding:20px 18px}
+    .gh-stat-num{font-size:2rem;font-weight:800;color:var(--accent,#4f8cff);line-height:1;margin:8px 0 4px;display:block}
+    .gh-stat-label{font-size:.8rem;font-weight:700;color:var(--muted,#9db0d4);text-transform:uppercase;letter-spacing:.07em;display:block}
+    .gh-stat-sub{font-size:.82rem;color:var(--muted,#9db0d4);margin-top:4px;display:block}
+    .gh-lang-card{border-radius:18px;padding:20px 22px}
+    .gh-lang-bars{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+    .gh-lang-row{display:flex;flex-direction:column;gap:4px}
+    .gh-lang-head{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted,#9db0d4)}
+    .gh-bar-bg{height:4px;border-radius:2px;overflow:hidden;background:rgba(255,255,255,.07)}
+    .gh-bar-fill{height:100%;border-radius:2px;width:0%;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+    @media(max-width:640px){.gh-stats-cards{grid-template-columns:1fr 1fr}}
+
+    /* ── CASE STUDY READ TIME ── */
+    .cs-read-time{display:inline-flex;align-items:center;gap:5px;font-size:.74rem;color:var(--muted,#9db0d4);margin-bottom:6px;font-style:italic}
+  </style>
 </head>
 <body>
+  <div id="scroll-progress" role="progressbar" aria-label="Progres scroll pagină" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+  <a id="back-to-top" href="#home" aria-label="Înapoi sus">↑</a>
+
   <div class="skip-links" aria-label="Linkuri rapide">
     <a class="skip-link" href="#home">Sari la început</a>
     <a class="skip-link" href="#key-projects">Sari la proiectele recomandate</a>
@@ -147,6 +197,16 @@
             <p class="hero-text" id="hero-text">
               Vin din CRM și marketing, iar în front-end mă concentrez pe produse unde structura, prioritizarea și feedback-ul vizual ajută utilizatorii să înțeleagă mai repede ce au de făcut și să acționeze fără fricțiune.
             </p>
+            <div class="stack-pills" aria-label="Stack tehnic">
+              <span class="stack-pill"><span class="sp-dot" style="background:#61dafb"></span>React</span>
+              <span class="stack-pill"><span class="sp-dot" style="background:#646cff"></span>Vite</span>
+              <span class="stack-pill"><span class="sp-dot" style="background:#3178c6"></span>TypeScript</span>
+              <span class="stack-pill"><span class="sp-dot" style="background:#f7df1e"></span>JavaScript</span>
+              <span class="stack-pill"><span class="sp-dot" style="background:#38bdf8"></span>Tailwind</span>
+              <span class="stack-pill"><span class="sp-dot" style="background:#6e5494"></span>GitHub Actions</span>
+              <span class="stack-pill"><span class="sp-dot" style="background:#e34f26"></span>HTML/CSS</span>
+              <span class="stack-pill"><span class="sp-dot" style="background:#9db0d4"></span>Web Audio API</span>
+            </div>
             <div class="hero-actions">
               <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect" aria-label="Trimite email despre un proiect" id="heroCtaPrimary">Scrie-mi despre un proiect</a>
               <a class="btn btn-secondary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer" aria-label="Deschide proiectul Alpis Fusion CRM Premium" id="heroCtaSecondary">Deschide Alpis Fusion →</a>
@@ -296,7 +356,7 @@
         <article class="about-card glass">
           <div class="now-head">
             <div>
-              <span class="eyebrow eyebrow-green">⚡ Now</span>
+              <span class="eyebrow eyebrow-green"><span class="now-pulse-dot" aria-hidden="true"></span>⚡ Now</span>
               <h2 id="now-title" class="now-title">La ce lucrez săptămâna asta</h2>
             </div>
             <p class="now-badge">
@@ -310,6 +370,15 @@
             <li>Fac audit Lighthouse CI pe portofoliu și extrag CSS-ul non-critic pentru LCP mai bun.</li>
             <li>Extind zona <strong>marketing-tech</strong> după <strong>Campaign ROI Calculator</strong> cu noi template-uri orientate pe conversie și growth workflows.</li>
           </ul>
+
+          <div class="now-tags-row" aria-label="Tehnologii active acum">
+            <span class="now-tag-pill">React 18</span>
+            <span class="now-tag-pill">Vite</span>
+            <span class="now-tag-pill">GitHub Actions</span>
+            <span class="now-tag-pill">Tailwind CSS</span>
+            <span class="now-tag-pill">Lighthouse CI</span>
+            <span class="now-tag-pill">Vanilla JS</span>
+          </div>
 
           <p class="now-note">
             Actualizat manual, ca secțiune de tip now page, pentru a arăta clar ce prioritizez în perioada curentă.
@@ -480,6 +549,11 @@
           <article class="project-card glass" aria-labelledby="key-alpis-title">
             <span class="tag">crm</span>
             <h3 id="key-alpis-title">Alpis Fusion CRM Premium</h3>
+            <div class="card-metrics-strip" aria-label="Metrici proiect">
+              <div class="card-metric-cell"><span class="cmc-num">6</span><span class="cmc-lbl">Module SaaS</span></div>
+              <div class="card-metric-cell"><span class="cmc-num">Vite</span><span class="cmc-lbl">+ React</span></div>
+              <div class="card-metric-cell"><span class="cmc-num">CI/CD</span><span class="cmc-lbl">Actions</span></div>
+            </div>
             <p class="project-desc">Am unificat lead pipeline, task-uri și billing într-un singur workspace, pentru un flux critic fără schimbări de context.</p>
             <div class="project-proof">
               <strong>Dovezi observabile</strong>
@@ -490,7 +564,7 @@
               </ul>
             </div>
             <div class="card-actions">
-              <a class="btn btn-primary" href="projects/alpis-fusion-crm.html">Deschide case study</a>
+              <a class="btn btn-primary" href="projects/alpis-fusion-crm.html"><span class="cs-read-time" aria-label="Timp de citire estimat">⏱ ~4 min</span> Deschide case study</a>
               <a class="btn btn-codepen" href="https://es-d-4029897220260413-019d7cd3-34b4-7538-a067-51b147dd0f7b.codepen.dev/" target="_blank" rel="noopener noreferrer">CodePen</a>
             </div>
           </article>
@@ -498,6 +572,11 @@
           <article class="project-card glass" aria-labelledby="key-clientflow-title">
             <span class="tag">utility</span>
             <h3 id="key-clientflow-title">ClientFlow</h3>
+            <div class="card-metrics-strip" aria-label="Metrici proiect">
+              <div class="card-metric-cell"><span class="cmc-num">~2</span><span class="cmc-lbl">click/update</span></div>
+              <div class="card-metric-cell"><span class="cmc-num">1</span><span class="cmc-lbl">Ecran unic</span></div>
+              <div class="card-metric-cell"><span class="cmc-num">0€</span><span class="cmc-lbl">Backend</span></div>
+            </div>
             <p class="project-desc">Am redus trierea zilnică la un ecran unic, cu semnale vizuale și shortcut-uri pentru decizii rapide.</p>
             <div class="project-proof">
               <strong>Dovezi observabile</strong>
@@ -508,7 +587,7 @@
               </ul>
             </div>
             <div class="card-actions">
-              <a class="btn btn-primary" href="projects/clientflow.html">Deschide case study</a>
+              <a class="btn btn-primary" href="projects/clientflow.html"><span class="cs-read-time" aria-label="Timp de citire estimat">⏱ ~3 min</span> Deschide case study</a>
               <a class="btn btn-codepen" href="https://es-d-1647531020260404-019d4e21-afd1-7808-abf5-d9c88b726df2.codepen.dev/" target="_blank" rel="noopener noreferrer">CodePen</a>
             </div>
           </article>
@@ -516,6 +595,11 @@
           <article class="project-card glass" aria-labelledby="key-impact-title">
             <span class="tag">ui</span>
             <h3 id="key-impact-title">Alpis Impact Path</h3>
+            <div class="card-metrics-strip" aria-label="Metrici proiect">
+              <div class="card-metric-cell"><span class="cmc-num">5</span><span class="cmc-lbl">Pași flow</span></div>
+              <div class="card-metric-cell"><span class="cmc-num">1</span><span class="cmc-lbl">Decizie/ecran</span></div>
+              <div class="card-metric-cell"><span class="cmc-num">CTA</span><span class="cmc-lbl">Contextual</span></div>
+            </div>
             <p class="project-desc">Am transformat un mesaj static într-un flow în 5 pași, cu o singură decizie pe ecran și progres permanent vizibil.</p>
             <div class="project-proof">
               <strong>Dovezi observabile</strong>
@@ -526,7 +610,7 @@
               </ul>
             </div>
             <div class="card-actions">
-              <a class="btn btn-primary" href="projects/alpis-impactpath.html">Deschide case study</a>
+              <a class="btn btn-primary" href="projects/alpis-impactpath.html"><span class="cs-read-time" aria-label="Timp de citire estimat">⏱ ~3 min</span> Deschide case study</a>
               <a class="btn btn-codepen" href="https://es-d-9192350520260329-019d2e42-65ac-7734-91ba-16cfe41a0086.codepen.dev/#missions" target="_blank" rel="noopener noreferrer">CodePen</a>
             </div>
           </article>
@@ -577,6 +661,59 @@
 
         <div class="pow-note">
           <strong>De ce Proof of Work?</strong> Lucrez pe proiecte personale. Dovada mea este codul public, deploy-ul real și istoricul vizibil de versiuni.
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section id="github-stats" class="gh-stats-section" aria-labelledby="gh-stats-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">📈 GitHub Stats</span>
+            <h2 id="gh-stats-title">Activitate și distribuție tehnică</h2>
+            <p class="section-subtitle">Date live din API-ul public GitHub — actualizate la fiecare vizită.</p>
+          </div>
+          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">github.com/LaurAndreea10 →</a>
+        </div>
+        <div class="gh-stats-cards">
+          <div class="gh-stat-card glass">
+            <span class="gh-stat-label">Repos publice</span>
+            <span class="gh-stat-num" id="ghStatRepos">—</span>
+            <span class="gh-stat-sub">Proiecte open pe GitHub</span>
+          </div>
+          <div class="gh-stat-card glass">
+            <span class="gh-stat-label">GitHub Actions</span>
+            <span class="gh-stat-num">8+</span>
+            <span class="gh-stat-sub">Deploy automat · push → build → live</span>
+          </div>
+          <div class="gh-stat-card glass">
+            <span class="gh-stat-label">Limbaj principal</span>
+            <span class="gh-stat-num">JS</span>
+            <span class="gh-stat-sub">HTML · CSS · TypeScript · React</span>
+          </div>
+        </div>
+        <div class="gh-lang-card glass">
+          <h4 style="font-size:.88rem;font-weight:700;margin-bottom:4px">Distribuție limbaje</h4>
+          <div class="gh-lang-bars">
+            <div class="gh-lang-row">
+              <div class="gh-lang-head"><span>JavaScript</span><span>52%</span></div>
+              <div class="gh-bar-bg"><div class="gh-bar-fill" style="background:#f7df1e" data-target="52"></div></div>
+            </div>
+            <div class="gh-lang-row">
+              <div class="gh-lang-head"><span>HTML</span><span>26%</span></div>
+              <div class="gh-bar-bg"><div class="gh-bar-fill" style="background:#e34f26" data-target="26"></div></div>
+            </div>
+            <div class="gh-lang-row">
+              <div class="gh-lang-head"><span>TypeScript</span><span>14%</span></div>
+              <div class="gh-bar-bg"><div class="gh-bar-fill" style="background:#3178c6" data-target="14"></div></div>
+            </div>
+            <div class="gh-lang-row">
+              <div class="gh-lang-head"><span>CSS</span><span>8%</span></div>
+              <div class="gh-bar-bg"><div class="gh-bar-fill" style="background:#264de4" data-target="8"></div></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -660,6 +797,40 @@
     </div>
   </footer>
 
+  <script>
+    /* ── SCROLL PROGRESS + BACK TO TOP ── */
+    (function(){
+      const bar = document.getElementById('scroll-progress');
+      const btn = document.getElementById('back-to-top');
+      window.addEventListener('scroll', function(){
+        const s = document.documentElement;
+        const pct = (s.scrollTop / (s.scrollHeight - s.clientHeight)) * 100;
+        if(bar){ bar.style.width = pct + '%'; bar.setAttribute('aria-valuenow', Math.round(pct)); }
+        if(btn){ btn.classList.toggle('visible', s.scrollTop > 400); }
+      }, {passive: true});
+    })();
+
+    /* ── GITHUB STATS LIVE ── */
+    fetch('https://api.github.com/users/LaurAndreea10')
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ if(d){ var el=document.getElementById('ghStatRepos'); if(el) el.textContent=d.public_repos; } })
+      .catch(function(){});
+
+    /* ── LANG BARS ANIMATE ON SCROLL ── */
+    (function(){
+      var bars = document.querySelectorAll('.gh-bar-fill');
+      if(!bars.length) return;
+      var obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            e.target.style.width = (e.target.dataset.target || 0) + '%';
+            obs.unobserve(e.target);
+          }
+        });
+      }, {threshold: 0.3});
+      bars.forEach(function(b){ obs.observe(b); });
+    })();
+  </script>
   <script src="main.js" defer></script>
 </body>
 </html>
