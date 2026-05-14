@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Event Planner — Studiu de caz | Laura Andreea</title>
+<meta name="description" content="Aplicație de planificare care transformă organizarea evenimentelor într-un flow simplu, clar și ușor de urmărit — fără fricțiune și fără aglomerare vizuală."/>
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/projects/event-planner.html"/>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+<style>
+:root{--bg:#071226;--bg-2:#0b1730;--panel:rgba(13,24,46,.78);--panel-2:rgba(255,255,255,.06);--text:#eef4ff;--muted:#9db0d4;--line:rgba(255,255,255,.1);--accent:#4f8cff;--shadow:0 20px 50px rgba(0,0,0,.35);--container:860px}
+body.light{--bg:#f5f8fd;--bg-2:#edf3fb;--panel:rgba(255,255,255,.88);--panel-2:rgba(16,24,40,.05);--text:#13203d;--muted:#4f6283;--line:rgba(16,24,40,.08);--accent:#2563eb}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:radial-gradient(circle at top left,rgba(20,184,166,.18),transparent 26%),radial-gradient(circle at bottom right,rgba(59,130,246,.1),transparent 24%),linear-gradient(180deg,var(--bg-2),var(--bg));color:var(--text);min-height:100vh;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}a:hover{opacity:.8}
+.container{width:min(var(--container),calc(100% - 32px));margin:0 auto;padding:40px 0 80px}
+.glass{background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(16px)}
+.topbar{position:sticky;top:0;z-index:50;padding:12px 16px;background:rgba(7,18,38,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);font-size:.9rem;font-weight:600;transition:.2s ease}
+.back-btn:hover{border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.08);color:var(--accent)}
+.topbar-right{display:flex;gap:8px}
+.pill-sm{padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);font-size:.84rem;font-weight:600;cursor:pointer;transition:.2s ease}
+.cs-hero{border-radius:24px;padding:40px 40px 32px;margin-bottom:28px;background:radial-gradient(circle at top left,rgba(20,184,166,.18),transparent 40%),linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid var(--line);box-shadow:var(--shadow)}
+.eyebrow{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:12px;display:block}
+.cs-title{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-.04em;line-height:1}
+.cs-subtitle{margin-top:10px;color:var(--muted);font-size:1.05rem;line-height:1.6}
+.cs-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.meta-pill{padding:6px 14px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);font-size:.82rem;color:var(--muted)}
+.meta-pill.highlight{background:rgba(79,140,255,.12);border-color:rgba(79,140,255,.3);color:#cfe2ff}
+.cs-cta{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
+.btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0 20px;border-radius:999px;font-weight:700;font-size:.92rem;transition:.22s ease;border:1px solid transparent;cursor:pointer;text-decoration:none;color:inherit}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{color:#fff;background:linear-gradient(135deg,#14b8a6,#14b8a6aa)}
+.btn-secondary{background:var(--panel-2);color:var(--text);border-color:var(--line)}
+.metrics-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border-radius:20px;overflow:hidden;border:1px solid var(--line);margin-bottom:28px}
+.metric-box{background:var(--panel);padding:22px 18px;text-align:center}
+.metric-num{font-size:1.8rem;font-weight:800;color:var(--accent);line-height:1}
+.metric-lbl{font-size:.76rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:5px}
+.cs-section{border-radius:20px;padding:28px;margin-bottom:20px}
+.cs-section h2{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.icon{width:32px;height:32px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.cs-section p{color:var(--muted);line-height:1.8;font-size:.97rem;margin-bottom:12px}
+.cs-section p strong{color:var(--text)}
+.cs-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.cs-list li{display:flex;align-items:flex-start;gap:12px;color:var(--muted);font-size:.96rem;line-height:1.7}
+.cs-list li::before{content:"→";color:var(--accent);font-weight:700;flex-shrink:0;margin-top:2px}
+.cs-list li strong{color:var(--text)}
+.learned-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.learned-item{background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:16px}
+.l-label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:6px}
+.learned-item p{color:var(--muted);font-size:.88rem;line-height:1.6;margin:0}
+.nav-projects{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px}
+.nav-card{border-radius:18px;padding:20px;border:1px solid var(--line);background:var(--panel-2);transition:.2s ease;display:flex;flex-direction:column;gap:6px;color:var(--text)}
+.nav-card:hover{border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.06);transform:translateY(-2px)}
+.nav-dir{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.nav-title{font-size:1rem;font-weight:700}
+@media(max-width:640px){.metrics-strip{grid-template-columns:1fr 1fr}.learned-grid{grid-template-columns:1fr}.nav-projects{grid-template-columns:1fr}.cs-hero{padding:28px 22px}.cs-section{padding:22px 18px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="../index.html" class="back-btn">← Înapoi la portofoliu</a>
+  <div class="topbar-right">
+    <button class="pill-sm" id="langBtn" onclick="toggleLang()">EN</button>
+    <button class="pill-sm" id="themeBtn" onclick="toggleTheme()">☀️</button>
+  </div>
+</div>
+<div class="container">
+  <header class="cs-hero glass">
+    <span class="eyebrow" id="eyebrow">Studiu de caz · Utility · Planning App · 2025</span>
+    <h1 class="cs-title" style="color:#14b8a6">Event Planner</h1>
+    <p class="cs-subtitle" id="subtitle">Aplicație de planificare care transformă organizarea evenimentelor într-un flow simplu, clar și ușor de urmărit — fără fricțiune și fără aglomerare vizuală.</p>
+    <div class="cs-meta"><span class="meta-pill highlight">Planner</span>
+<span class="meta-pill">Events</span>
+<span class="meta-pill">UI</span>
+<span class="meta-pill">Vanilla JS</span>
+<span class="meta-pill">localStorage</span></div>
+    <div class="cs-cta">
+      <a href="https://es-d-9192350520260329-019d2ebf-cf4f-7615-b85e-da92ef38af41.codepen.dev/" target="_blank" rel="noopener" class="btn btn-primary" id="btn-live">Deschide proiectul live ↗</a>
+      <a href="../index.html#projects" class="btn btn-secondary" id="btn-back2">← Toate proiectele</a>
+    </div>
+  </header>
+  <div class="metrics-strip"><div class="metric-box"><div class="metric-num">Flow</div><div class="metric-lbl">Planificare</div></div>
+<div class="metric-box"><div class="metric-num">UX</div><div class="metric-lbl">Fără fricțiune</div></div>
+<div class="metric-box"><div class="metric-num">0€</div><div class="metric-lbl">Backend</div></div>
+<div class="metric-box"><div class="metric-num">Live</div><div class="metric-lbl">Actualizări</div></div></div>
+  <section class="cs-section glass">
+    <h2><span class="icon">❓</span><span id="s1-title">Problema</span></h2>
+    <p id="s1-text">Am vrut să construiesc o aplicație de organizare care transformă planificarea evenimentelor într-un flow <strong>simplu și clar</strong>. Problema cu tool-urile de planificare e că devin rapid copleșitoare — prea multe câmpuri, prea mulți pași.</p>
+  </section>
+  <section class="cs-section glass">
+    <h2><span class="icon">💡</span><span id="s2-title">Soluția</span></h2>
+    <p id="s2-text">Am structurat informațiile și acțiunile astfel încât utilizatorul să poată planifica fără fricțiune și fără aglomerare vizuală. Pașii sunt logici, câmpurile sunt minime, feedback-ul e instant.</p>
+    <ul class="cs-list" id="s2-list"><li><strong>Flow liniar de planificare</strong> — pași clari, în ordine logică</li>
+<li><strong>Câmpuri minime</strong> — doar ce e necesar pentru a crea un eveniment</li>
+<li><strong>Feedback instant</strong> — confirmări vizuale la fiecare acțiune</li>
+<li><strong>Persistență localStorage</strong> — evenimentele sunt salvate automat</li>
+<li><strong>Liste filtrabile</strong> — upcoming, past, all events</li></ul>
+  </section>
+  <section class="cs-section glass">
+    <h2><span class="icon">⚙️</span><span id="s3-title">Decizii tehnice</span></h2>
+    <ul class="cs-list" id="s3-list"><li><strong>UX flow mai întâi</strong> — am proiectat pașii utilizatorului înainte să scriu vreun CSS</li>
+<li><strong>Progressive disclosure</strong> — detalii avansate ascunse până sunt necesare</li>
+<li><strong>Validare în timp real</strong> — erori afișate instant, nu la submit</li>
+<li><strong>localStorage ca bază de date</strong> — simplu, eficient, fără server</li></ul>
+  </section>
+  <section class="cs-section glass">
+    <h2><span class="icon">🧠</span><span id="s4-title">Ce am învățat</span></h2>
+    <div class="learned-grid" id="learned-grid"><div class="learned-item"><div class="l-label">Flow vs features</div><p>O aplicație cu 5 funcționalități bine gândite e mai bună decât una cu 20 mediocre. Fiecare câmp adăugat crește fricțiunea.</p></div>
+<div class="learned-item"><div class="l-label">Progressive disclosure</div><p>Nu arăta tot dintr-o dată. Opțiunile avansate pot fi ascunse până când utilizatorul semnalează că le vrea.</p></div>
+<div class="learned-item"><div class="l-label">Validare live</div><p>Validarea la submit e frustrantă. Validarea în timp real e naturală — ca un prieten care te corectează ușor în timp ce vorbești.</p></div>
+<div class="learned-item"><div class="l-label">Minimalism funcțional</div><p>Minimalism nu înseamnă să scoți funcționalitate — înseamnă să prezinți funcționalitatea existentă cât mai clar posibil.</p></div></div>
+  </section>
+  <section class="cs-section glass">
+    <h2><span class="icon">🔄</span><span id="s5-title">Iterații</span></h2>
+    <ul class="cs-list" id="s5-list"><li><strong>v1</strong> — formular simplu, listing basic</li>
+<li><strong>v2</strong> — categorii, filtre, feedback vizual îmbunătățit</li>
+<li><strong>v3 actual</strong> — flow complet, persistență, UI polish</li></ul>
+    <p style="margin-top:14px" id="s5-note">Event Planner a fost testul meu pentru UX-first development — unde deciziile de interfață conduc arhitectura tehnică, nu invers.</p>
+  </section>
+  <div class="nav-projects">
+    <a href="alpis-impactpath.html" class="nav-card">
+      <div class="nav-dir" id="nav-prev-dir">← Proiectul anterior</div>
+      <div class="nav-title" id="nav-prev-title">ALPIS ImpactPath</div>
+    </a>
+    <a href="basket-vs-ai.html" class="nav-card">
+      <div class="nav-dir" id="nav-next-dir">Următorul →</div>
+      <div class="nav-title" id="nav-next-title">BASKET VS AI</div>
+    </a>
+  </div>
+</div>
+<script>
+let lang='ro';
+const T={
+  ro:{eyebrow:'Studiu de caz · Utility · Planning App · 2025',subtitle:"Aplica\u021bie de planificare care transform\u0103 organizarea evenimentelor \u00eentr-un flow simplu, clar \u0219i u\u0219or de urm\u0103rit \u2014 f\u0103r\u0103 fric\u021biune \u0219i f\u0103r\u0103 aglomerare vizual\u0103.",'btn-live':'Deschide proiectul live ↗','btn-back2':'← Toate proiectele','s1-title':'Problema','s1-text':"Am vrut s\u0103 construiesc o aplica\u021bie de organizare care transform\u0103 planificarea evenimentelor \u00eentr-un flow <strong>simplu \u0219i clar</strong>. Problema cu tool-urile de planificare e c\u0103 devin rapid cople\u0219itoare \u2014 prea multe c\u00e2mpuri, prea mul\u021bi pa\u0219i.",'s2-title':'Soluția','s2-text':"Am structurat informa\u021biile \u0219i ac\u021biunile astfel \u00eenc\u00e2t utilizatorul s\u0103 poat\u0103 planifica f\u0103r\u0103 fric\u021biune \u0219i f\u0103r\u0103 aglomerare vizual\u0103. Pa\u0219ii sunt logici, c\u00e2mpurile sunt minime, feedback-ul e instant.",'s3-title':'Decizii tehnice','s4-title':'Ce am învățat','s5-title':'Iterații','s5-note':"Event Planner a fost testul meu pentru UX-first development \u2014 unde deciziile de interfa\u021b\u0103 conduc arhitectura tehnic\u0103, nu invers.",'nav-prev-dir':'← Proiectul anterior','nav-prev-title':"ALPIS ImpactPath",'nav-next-dir':'Următorul →','nav-next-title':"BASKET VS AI"},
+  en:{eyebrow:'Case Study · Utility · Planning App · 2025',subtitle:"Planning app that turns event organization into a simple, clear and easy-to-follow flow \u2014 without friction and without visual overload.",'btn-live':'Open live project ↗','btn-back2':'← All projects','s1-title':'The Problem','s1-text':"I wanted to build an organization app that turns event planning into a <strong>simple and clear</strong> flow. The problem with planning tools is they quickly become overwhelming \u2014 too many fields, too many steps.",'s2-title':'The Solution','s2-text':"I structured information and actions so users can plan without friction or visual overload. The steps are logical, fields are minimal, feedback is instant.",'s3-title':'Technical decisions','s4-title':'What I learned','s5-title':'Iterations','s5-note':"Event Planner was my test for UX-first development \u2014 where interface decisions drive the technical architecture, not the other way around.",'nav-prev-dir':'← Previous','nav-prev-title':"ALPIS ImpactPath",'nav-next-dir':'Next →','nav-next-title':"BASKET VS AI"}
+};
+const lists={ro:{s2:["<strong>Flow liniar de planificare</strong> \u2014 pa\u0219i clari, \u00een ordine logic\u0103", "<strong>C\u00e2mpuri minime</strong> \u2014 doar ce e necesar pentru a crea un eveniment", "<strong>Feedback instant</strong> \u2014 confirm\u0103ri vizuale la fiecare ac\u021biune", "<strong>Persisten\u021b\u0103 localStorage</strong> \u2014 evenimentele sunt salvate automat", "<strong>Liste filtrabile</strong> \u2014 upcoming, past, all events"],s3:["<strong>UX flow mai \u00eent\u00e2i</strong> \u2014 am proiectat pa\u0219ii utilizatorului \u00eenainte s\u0103 scriu vreun CSS", "<strong>Progressive disclosure</strong> \u2014 detalii avansate ascunse p\u00e2n\u0103 sunt necesare", "<strong>Validare \u00een timp real</strong> \u2014 erori afi\u0219ate instant, nu la submit", "<strong>localStorage ca baz\u0103 de date</strong> \u2014 simplu, eficient, f\u0103r\u0103 server"],s5:["<strong>v1</strong> \u2014 formular simplu, listing basic", "<strong>v2</strong> \u2014 categorii, filtre, feedback vizual \u00eembun\u0103t\u0103\u021bit", "<strong>v3 actual</strong> \u2014 flow complet, persisten\u021b\u0103, UI polish"]},en:{s2:["<strong>Linear planning flow</strong> \u2014 clear steps in logical order", "<strong>Minimal fields</strong> \u2014 only what is necessary to create an event", "<strong>Instant feedback</strong> \u2014 visual confirmations on every action", "<strong>localStorage persistence</strong> \u2014 events are automatically saved", "<strong>Filterable lists</strong> \u2014 upcoming, past, all events"],s3:["<strong>UX flow first</strong> \u2014 I designed the user steps before writing any CSS", "<strong>Progressive disclosure</strong> \u2014 advanced details hidden until needed", "<strong>Real-time validation</strong> \u2014 errors shown instantly, not at submit", "<strong>localStorage as database</strong> \u2014 simple, efficient, no server"],s5:["<strong>v1</strong> \u2014 simple form, basic listing", "<strong>v2</strong> \u2014 categories, filters, improved visual feedback", "<strong>v3 current</strong> \u2014 complete flow, persistence, UI polish"]}};
+const learned={ro:[["Flow vs features", "O aplica\u021bie cu 5 func\u021bionalit\u0103\u021bi bine g\u00e2ndite e mai bun\u0103 dec\u00e2t una cu 20 mediocre. Fiecare c\u00e2mp ad\u0103ugat cre\u0219te fric\u021biunea."], ["Progressive disclosure", "Nu ar\u0103ta tot dintr-o dat\u0103. Op\u021biunile avansate pot fi ascunse p\u00e2n\u0103 c\u00e2nd utilizatorul semnaleaz\u0103 c\u0103 le vrea."], ["Validare live", "Validarea la submit e frustrant\u0103. Validarea \u00een timp real e natural\u0103 \u2014 ca un prieten care te corecteaz\u0103 u\u0219or \u00een timp ce vorbe\u0219ti."], ["Minimalism func\u021bional", "Minimalism nu \u00eenseamn\u0103 s\u0103 sco\u021bi func\u021bionalitate \u2014 \u00eenseamn\u0103 s\u0103 prezin\u021bi func\u021bionalitatea existent\u0103 c\u00e2t mai clar posibil."]],en:[["Flow vs features", "An app with 5 well-thought features is better than one with 20 mediocre ones. Every added field increases friction."], ["Progressive disclosure", "Do not show everything at once. Advanced options can be hidden until the user signals they want them."], ["Live validation", "Submit validation is frustrating. Real-time validation is natural \u2014 like a friend gently correcting you as you speak."], ["Functional minimalism", "Minimalism does not mean removing functionality \u2014 it means presenting existing functionality as clearly as possible."]]};
+const IDS=['eyebrow','subtitle','btn-live','btn-back2','s1-title','s1-text','s2-title','s2-text','s3-title','s4-title','s5-title','s5-note','nav-prev-dir','nav-prev-title','nav-next-dir','nav-next-title'];
+function applyLang(){
+  IDS.forEach(id=>{const el=document.getElementById(id);if(el&&T[lang][id]!==undefined)el.innerHTML=T[lang][id];});
+  Object.entries(lists[lang]).forEach(([k,v])=>{const el=document.getElementById(k+'-list');if(el)el.innerHTML=v.map(i=>`<li>${i}</li>`).join('');});
+  const lg=document.getElementById('learned-grid');
+  if(lg)lg.innerHTML=learned[lang].map(([l,t])=>`<div class="learned-item"><div class="l-label">${l}</div><p>${t}</p></div>`).join('');
+  document.getElementById('langBtn').textContent=lang==='ro'?'EN':'RO';
+  document.documentElement.lang=lang;
+}
+function toggleLang(){lang=lang==='ro'?'en':'ro';applyLang();}
+function toggleTheme(){document.body.classList.toggle('light');document.getElementById('themeBtn').textContent=document.body.classList.contains('light')?'🌙':'☀️';}
+applyLang();
+</script>
+</body>
+</html>

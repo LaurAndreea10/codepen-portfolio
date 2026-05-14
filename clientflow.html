@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ClientFlow — Studiu de caz | Laura Andreea</title>
+<meta name="description" content="Mini portal SaaS cu zone editabile, layout de dashboard și arhitectură modulară — demonstrând că pot construi interfețe de produs, nu doar pagini de prezentare."/>
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/projects/clientflow.html"/>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+<style>
+:root{--bg:#071226;--bg-2:#0b1730;--panel:rgba(13,24,46,.78);--panel-2:rgba(255,255,255,.06);--text:#eef4ff;--muted:#9db0d4;--line:rgba(255,255,255,.1);--accent:#4f8cff;--shadow:0 20px 50px rgba(0,0,0,.35);--container:860px}
+body.light{--bg:#f5f8fd;--bg-2:#edf3fb;--panel:rgba(255,255,255,.88);--panel-2:rgba(16,24,40,.05);--text:#13203d;--muted:#4f6283;--line:rgba(16,24,40,.08);--accent:#2563eb}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:radial-gradient(circle at top left,rgba(52,211,153,.18),transparent 26%),radial-gradient(circle at bottom right,rgba(59,130,246,.1),transparent 24%),linear-gradient(180deg,var(--bg-2),var(--bg));color:var(--text);min-height:100vh;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}a:hover{opacity:.8}
+.container{width:min(var(--container),calc(100% - 32px));margin:0 auto;padding:40px 0 80px}
+.glass{background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(16px)}
+.topbar{position:sticky;top:0;z-index:50;padding:12px 16px;background:rgba(7,18,38,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);font-size:.9rem;font-weight:600;transition:.2s ease}
+.back-btn:hover{border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.08);color:var(--accent)}
+.topbar-right{display:flex;gap:8px}
+.pill-sm{padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);font-size:.84rem;font-weight:600;cursor:pointer;transition:.2s ease}
+.cs-hero{border-radius:24px;padding:40px 40px 32px;margin-bottom:28px;background:radial-gradient(circle at top left,rgba(52,211,153,.18),transparent 40%),linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid var(--line);box-shadow:var(--shadow)}
+.eyebrow{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:12px;display:block}
+.cs-title{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-.04em;line-height:1}
+.cs-subtitle{margin-top:10px;color:var(--muted);font-size:1.05rem;line-height:1.6}
+.cs-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.meta-pill{padding:6px 14px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);font-size:.82rem;color:var(--muted)}
+.meta-pill.highlight{background:rgba(79,140,255,.12);border-color:rgba(79,140,255,.3);color:#cfe2ff}
+.cs-cta{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
+.btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0 20px;border-radius:999px;font-weight:700;font-size:.92rem;transition:.22s ease;border:1px solid transparent;cursor:pointer;text-decoration:none;color:inherit}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{color:#fff;background:linear-gradient(135deg,#34d399,#34d399aa)}
+.btn-secondary{background:var(--panel-2);color:var(--text);border-color:var(--line)}
+.metrics-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border-radius:20px;overflow:hidden;border:1px solid var(--line);margin-bottom:28px}
+.metric-box{background:var(--panel);padding:22px 18px;text-align:center}
+.metric-num{font-size:1.8rem;font-weight:800;color:var(--accent);line-height:1}
+.metric-lbl{font-size:.76rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:5px}
+.cs-section{border-radius:20px;padding:28px;margin-bottom:20px}
+.cs-section h2{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.icon{width:32px;height:32px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.cs-section p{color:var(--muted);line-height:1.8;font-size:.97rem;margin-bottom:12px}
+.cs-section p strong{color:var(--text)}
+.cs-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.cs-list li{display:flex;align-items:flex-start;gap:12px;color:var(--muted);font-size:.96rem;line-height:1.7}
+.cs-list li::before{content:"→";color:var(--accent);font-weight:700;flex-shrink:0;margin-top:2px}
+.cs-list li strong{color:var(--text)}
+.learned-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.learned-item{background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:16px}
+.l-label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:6px}
+.learned-item p{color:var(--muted);font-size:.88rem;line-height:1.6;margin:0}
+.nav-projects{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px}
+.nav-card{border-radius:18px;padding:20px;border:1px solid var(--line);background:var(--panel-2);transition:.2s ease;display:flex;flex-direction:column;gap:6px;color:var(--text)}
+.nav-card:hover{border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.06);transform:translateY(-2px)}
+.nav-dir{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.nav-title{font-size:1rem;font-weight:700}
+@media(max-width:640px){.metrics-strip{grid-template-columns:1fr 1fr}.learned-grid{grid-template-columns:1fr}.nav-projects{grid-template-columns:1fr}.cs-hero{padding:28px 22px}.cs-section{padding:22px 18px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="../index.html" class="back-btn">← Înapoi la portofoliu</a>
+  <div class="topbar-right">
+    <button class="pill-sm" id="langBtn" onclick="toggleLang()">EN</button>
+    <button class="pill-sm" id="themeBtn" onclick="toggleTheme()">☀️</button>
+  </div>
+</div>
+<div class="container">
+  <header class="cs-hero glass">
+    <span class="eyebrow" id="eyebrow">Studiu de caz · Utility · SaaS · 2025</span>
+    <h1 class="cs-title" style="color:#34d399">ClientFlow</h1>
+    <p class="cs-subtitle" id="subtitle">Mini portal SaaS cu zone editabile, layout de dashboard și arhitectură modulară — demonstrând că pot construi interfețe de produs, nu doar pagini de prezentare.</p>
+    <div class="cs-meta"><span class="meta-pill highlight">SaaS</span>
+<span class="meta-pill">Portal</span>
+<span class="meta-pill">Editable</span>
+<span class="meta-pill">Vanilla JS</span>
+<span class="meta-pill">0€ backend</span></div>
+    <div class="cs-cta">
+      <a href="https://es-d-5697283320260328-019d248d-5848-7531-8d9d-23699aa47d61.codepen.dev/" target="_blank" rel="noopener" class="btn btn-primary" id="btn-live">Deschide proiectul live ↗</a>
+      <a href="../index.html#projects" class="btn btn-secondary" id="btn-back2">← Toate proiectele</a>
+    </div>
+  </header>
+  <div class="metrics-strip"><div class="metric-box"><div class="metric-num">SaaS</div><div class="metric-lbl">Arhitectură</div></div>
+<div class="metric-box"><div class="metric-num">Edit</div><div class="metric-lbl">Zone editabile</div></div>
+<div class="metric-box"><div class="metric-num">0€</div><div class="metric-lbl">Backend</div></div>
+<div class="metric-box"><div class="metric-num">∞</div><div class="metric-lbl">Extensibilitate</div></div></div>
+  <section class="cs-section glass">
+    <h2><span class="icon">❓</span><span id="s1-title">Problema</span></h2>
+    <p id="s1-text">Am vrut să construiesc un mini portal de tip SaaS care să organizeze informația într-o structură <strong>clară, editabilă și ușor de extins</strong>. Scopul era să demonstrez gândire de produs, nu doar coding.</p>
+  </section>
+  <section class="cs-section glass">
+    <h2><span class="icon">💡</span><span id="s2-title">Soluția</span></h2>
+    <p id="s2-text">Am creat un layout de dashboard cu zone editabile, navigație laterală și o arhitectură modulară care susține claritatea și controlul. Datele sunt gestionate local, fără backend.</p>
+    <ul class="cs-list" id="s2-list"><li><strong>Layout de dashboard</strong> cu sidebar, header și zone de conținut separate</li>
+<li><strong>Zone editabile inline</strong> — click pe text pentru a edita, fără modal</li>
+<li><strong>State management simplu</strong> cu JS vanilla — fără Redux sau librării externe</li>
+<li><strong>Separare logică / prezentare</strong> — funcțiile de date și UI-ul nu se amestecă</li>
+<li><strong>Design system consistent</strong> — variabile CSS, spațiere uniformă, ierarhie clară</li></ul>
+  </section>
+  <section class="cs-section glass">
+    <h2><span class="icon">⚙️</span><span id="s3-title">Decizii tehnice</span></h2>
+    <ul class="cs-list" id="s3-list"><li><strong>Vanilla JS pur</strong> — am evitat React pentru a demonstra că înțeleg DOM-ul și state-ul fără abstractizări</li>
+<li><strong>CSS custom properties</strong> pentru theming consistent și ușor de extins</li>
+<li><strong>Inline editing</strong> în loc de formulare separate — reduce fricțiunea utilizatorului</li>
+<li><strong>Arhitectură modulară</strong> — fiecare componentă funcționează independent</li></ul>
+  </section>
+  <section class="cs-section glass">
+    <h2><span class="icon">🧠</span><span id="s4-title">Ce am învățat</span></h2>
+    <div class="learned-grid" id="learned-grid"><div class="learned-item"><div class="l-label">Gândire de produs</div><p>O interfață bună pornește de la întrebarea ce vrea să facă utilizatorul, nu de la ce pot eu să construiesc.</p></div>
+<div class="learned-item"><div class="l-label">State simplu</div><p>State management nu înseamnă neapărat Redux. Un obiect JS și funcții clare pot face același lucru pentru 80% din cazuri.</p></div>
+<div class="learned-item"><div class="l-label">Inline editing</div><p>Editarea inline e mai naturală decât un form separat. Dar are nevoie de feedback clar — ce e editabil, ce s-a salvat.</p></div>
+<div class="learned-item"><div class="l-label">Extensibilitate</div><p>Codul scris cu extensibilitatea în minte arată diferit față de codul care funcționează și atât. Separarea responsabilităților contează.</p></div></div>
+  </section>
+  <section class="cs-section glass">
+    <h2><span class="icon">🔄</span><span id="s5-title">Iterații</span></h2>
+    <ul class="cs-list" id="s5-list"><li><strong>v1</strong> — layout de bază, navigație, zone statice</li>
+<li><strong>v2</strong> — zone editabile inline, persistență cu localStorage</li>
+<li><strong>v3 (planificat)</strong> — filtru clienți, export CSV</li></ul>
+    <p style="margin-top:14px" id="s5-note">ClientFlow a evoluat direct spre ClientOps Suite — un dashboard CRM complet cu React 18 + Tailwind.</p>
+  </section>
+  <div class="nav-projects">
+    <a href="basket-vs-ai.html" class="nav-card">
+      <div class="nav-dir" id="nav-prev-dir">← Proiectul anterior</div>
+      <div class="nav-title" id="nav-prev-title">BASKET VS AI</div>
+    </a>
+    <a href="budgetflow-pro-x.html" class="nav-card">
+      <div class="nav-dir" id="nav-next-dir">Următorul →</div>
+      <div class="nav-title" id="nav-next-title">BudgetFlow Pro X</div>
+    </a>
+  </div>
+</div>
+<script>
+let lang='ro';
+const T={
+  ro:{eyebrow:'Studiu de caz · Utility · SaaS · 2025',subtitle:"Mini portal SaaS cu zone editabile, layout de dashboard \u0219i arhitectur\u0103 modular\u0103 \u2014 demonstr\u00e2nd c\u0103 pot construi interfe\u021be de produs, nu doar pagini de prezentare.",'btn-live':'Deschide proiectul live ↗','btn-back2':'← Toate proiectele','s1-title':'Problema','s1-text':"Am vrut s\u0103 construiesc un mini portal de tip SaaS care s\u0103 organizeze informa\u021bia \u00eentr-o structur\u0103 <strong>clar\u0103, editabil\u0103 \u0219i u\u0219or de extins</strong>. Scopul era s\u0103 demonstrez g\u00e2ndire de produs, nu doar coding.",'s2-title':'Soluția','s2-text':"Am creat un layout de dashboard cu zone editabile, naviga\u021bie lateral\u0103 \u0219i o arhitectur\u0103 modular\u0103 care sus\u021bine claritatea \u0219i controlul. Datele sunt gestionate local, f\u0103r\u0103 backend.",'s3-title':'Decizii tehnice','s4-title':'Ce am învățat','s5-title':'Iterații','s5-note':"ClientFlow a evoluat direct spre ClientOps Suite \u2014 un dashboard CRM complet cu React 18 + Tailwind.",'nav-prev-dir':'← Proiectul anterior','nav-prev-title':"BASKET VS AI",'nav-next-dir':'Următorul →','nav-next-title':"BudgetFlow Pro X"},
+  en:{eyebrow:'Case Study · Utility · SaaS · 2025',subtitle:"Mini SaaS portal with editable zones, dashboard layout and modular architecture \u2014 proving I can build product interfaces, not just showcase pages.",'btn-live':'Open live project ↗','btn-back2':'← All projects','s1-title':'The Problem','s1-text':"I wanted to build a mini SaaS-style portal that organizes information in a <strong>clear, editable and extensible structure</strong>. The goal was to demonstrate product thinking, not just coding.",'s2-title':'The Solution','s2-text':"I created a dashboard layout with editable zones, side navigation and a modular architecture that supports clarity and control. Data is managed locally, no backend.",'s3-title':'Technical decisions','s4-title':'What I learned','s5-title':'Iterations','s5-note':"ClientFlow evolved directly into ClientOps Suite \u2014 a full CRM dashboard with React 18 + Tailwind.",'nav-prev-dir':'← Previous','nav-prev-title':"BASKET VS AI",'nav-next-dir':'Next →','nav-next-title':"BudgetFlow Pro X"}
+};
+const lists={ro:{s2:["<strong>Layout de dashboard</strong> cu sidebar, header \u0219i zone de con\u021binut separate", "<strong>Zone editabile inline</strong> \u2014 click pe text pentru a edita, f\u0103r\u0103 modal", "<strong>State management simplu</strong> cu JS vanilla \u2014 f\u0103r\u0103 Redux sau libr\u0103rii externe", "<strong>Separare logic\u0103 / prezentare</strong> \u2014 func\u021biile de date \u0219i UI-ul nu se amestec\u0103", "<strong>Design system consistent</strong> \u2014 variabile CSS, spa\u021biere uniform\u0103, ierarhie clar\u0103"],s3:["<strong>Vanilla JS pur</strong> \u2014 am evitat React pentru a demonstra c\u0103 \u00een\u021beleg DOM-ul \u0219i state-ul f\u0103r\u0103 abstractiz\u0103ri", "<strong>CSS custom properties</strong> pentru theming consistent \u0219i u\u0219or de extins", "<strong>Inline editing</strong> \u00een loc de formulare separate \u2014 reduce fric\u021biunea utilizatorului", "<strong>Arhitectur\u0103 modular\u0103</strong> \u2014 fiecare component\u0103 func\u021bioneaz\u0103 independent"],s5:["<strong>v1</strong> \u2014 layout de baz\u0103, naviga\u021bie, zone statice", "<strong>v2</strong> \u2014 zone editabile inline, persisten\u021b\u0103 cu localStorage", "<strong>v3 (planificat)</strong> \u2014 filtru clien\u021bi, export CSV"]},en:{s2:["<strong>Dashboard layout</strong> with sidebar, header and separate content zones", "<strong>Inline editable zones</strong> \u2014 click on text to edit, no modal", "<strong>Simple state management</strong> with vanilla JS \u2014 no Redux or external libraries", "<strong>Logic/presentation separation</strong> \u2014 data functions and UI don't mix", "<strong>Consistent design system</strong> \u2014 CSS variables, uniform spacing, clear hierarchy"],s3:["<strong>Pure Vanilla JS</strong> \u2014 avoided React to prove I understand the DOM and state without abstractions", "<strong>CSS custom properties</strong> for consistent and extensible theming", "<strong>Inline editing</strong> instead of separate forms \u2014 reduces user friction", "<strong>Modular architecture</strong> \u2014 each component works independently"],s5:["<strong>v1</strong> \u2014 basic layout, navigation, static zones", "<strong>v2</strong> \u2014 inline editable zones, localStorage persistence", "<strong>v3 (planned)</strong> \u2014 client filter, CSV export"]}};
+const learned={ro:[["G\u00e2ndire de produs", "O interfa\u021b\u0103 bun\u0103 porne\u0219te de la \u00eentrebarea ce vrea s\u0103 fac\u0103 utilizatorul, nu de la ce pot eu s\u0103 construiesc."], ["State simplu", "State management nu \u00eenseamn\u0103 neap\u0103rat Redux. Un obiect JS \u0219i func\u021bii clare pot face acela\u0219i lucru pentru 80% din cazuri."], ["Inline editing", "Editarea inline e mai natural\u0103 dec\u00e2t un form separat. Dar are nevoie de feedback clar \u2014 ce e editabil, ce s-a salvat."], ["Extensibilitate", "Codul scris cu extensibilitatea \u00een minte arat\u0103 diferit fa\u021b\u0103 de codul care func\u021bioneaz\u0103 \u0219i at\u00e2t. Separarea responsabilit\u0103\u021bilor conteaz\u0103."]],en:[["Product thinking", "A good interface starts with 'what does the user want to do?' not 'what can I build?'"], ["Simple state", "State management doesn't require Redux. A JS object and clear functions cover 80% of cases."], ["Inline editing", "Inline editing is more natural than a separate form. But it needs clear feedback \u2014 what's editable, what's saved."], ["Extensibility", "Code written with extensibility in mind looks different from code that just works. Separation of concerns matters."]]};
+const IDS=['eyebrow','subtitle','btn-live','btn-back2','s1-title','s1-text','s2-title','s2-text','s3-title','s4-title','s5-title','s5-note','nav-prev-dir','nav-prev-title','nav-next-dir','nav-next-title'];
+function applyLang(){
+  IDS.forEach(id=>{const el=document.getElementById(id);if(el&&T[lang][id]!==undefined)el.innerHTML=T[lang][id];});
+  Object.entries(lists[lang]).forEach(([k,v])=>{const el=document.getElementById(k+'-list');if(el)el.innerHTML=v.map(i=>`<li>${i}</li>`).join('');});
+  const lg=document.getElementById('learned-grid');
+  if(lg)lg.innerHTML=learned[lang].map(([l,t])=>`<div class="learned-item"><div class="l-label">${l}</div><p>${t}</p></div>`).join('');
+  document.getElementById('langBtn').textContent=lang==='ro'?'EN':'RO';
+  document.documentElement.lang=lang;
+}
+function toggleLang(){lang=lang==='ro'?'en':'ro';applyLang();}
+function toggleTheme(){document.body.classList.toggle('light');document.getElementById('themeBtn').textContent=document.body.classList.contains('light')?'🌙':'☀️';}
+applyLang();
+</script>
+</body>
+</html>

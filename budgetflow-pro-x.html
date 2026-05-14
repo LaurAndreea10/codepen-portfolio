@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BudgetFlow Pro X — Studiu de caz | Laura Andreea</title>
+<meta name="description" content="Aplicație financiară care transformă datele de buget într-o experiență clară, ușor de scanat și de înțeles — cu vizualizare live și 0 backend."/>
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/projects/budgetflow-pro-x.html"/>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+<style>
+:root{--bg:#071226;--bg-2:#0b1730;--panel:rgba(13,24,46,.78);--panel-2:rgba(255,255,255,.06);--text:#eef4ff;--muted:#9db0d4;--line:rgba(255,255,255,.1);--accent:#4f8cff;--shadow:0 20px 50px rgba(0,0,0,.35);--container:860px}
+body.light{--bg:#f5f8fd;--bg-2:#edf3fb;--panel:rgba(255,255,255,.88);--panel-2:rgba(16,24,40,.05);--text:#13203d;--muted:#4f6283;--line:rgba(16,24,40,.08);--accent:#2563eb}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:radial-gradient(circle at top left,rgba(34,197,94,.18),transparent 26%),radial-gradient(circle at bottom right,rgba(16,185,129,.1),transparent 24%),linear-gradient(180deg,var(--bg-2),var(--bg));color:var(--text);min-height:100vh;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}a:hover{opacity:.8}
+.container{width:min(var(--container),calc(100% - 32px));margin:0 auto;padding:40px 0 80px}
+.glass{background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(16px)}
+.topbar{position:sticky;top:0;z-index:50;padding:12px 16px;background:rgba(7,18,38,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);font-size:.9rem;font-weight:600;transition:.2s ease}
+.back-btn:hover{border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.08);color:var(--accent)}
+.topbar-right{display:flex;gap:8px}
+.pill-sm{padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);font-size:.84rem;font-weight:600;cursor:pointer;transition:.2s ease}
+.cs-hero{border-radius:24px;padding:40px 40px 32px;margin-bottom:28px;background:radial-gradient(circle at top left,rgba(34,197,94,.18),transparent 40%),linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid var(--line);box-shadow:var(--shadow)}
+.eyebrow{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:12px;display:block}
+.cs-title{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-.04em;line-height:1}
+.cs-subtitle{margin-top:10px;color:var(--muted);font-size:1.05rem;line-height:1.6}
+.cs-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.meta-pill{padding:6px 14px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);font-size:.82rem;color:var(--muted)}
+.meta-pill.highlight{background:rgba(79,140,255,.12);border-color:rgba(79,140,255,.3);color:#cfe2ff}
+.cs-cta{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
+.btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0 20px;border-radius:999px;font-weight:700;font-size:.92rem;transition:.22s ease;border:1px solid transparent;cursor:pointer;text-decoration:none;color:inherit}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{color:#fff;background:linear-gradient(135deg,#22c55e,#22c55eaa)}
+.btn-secondary{background:var(--panel-2);color:var(--text);border-color:var(--line)}
+.metrics-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border-radius:20px;overflow:hidden;border:1px solid var(--line);margin-bottom:28px}
+.metric-box{background:var(--panel);padding:22px 18px;text-align:center}
+.metric-num{font-size:1.8rem;font-weight:800;color:var(--accent);line-height:1}
+.metric-lbl{font-size:.76rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:5px}
+.cs-section{border-radius:20px;padding:28px;margin-bottom:20px}
+.cs-section h2{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.icon{width:32px;height:32px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.cs-section p{color:var(--muted);line-height:1.8;font-size:.97rem;margin-bottom:12px}
+.cs-section p strong{color:var(--text)}
+.cs-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.cs-list li{display:flex;align-items:flex-start;gap:12px;color:var(--muted);font-size:.96rem;line-height:1.7}
+.cs-list li::before{content:"→";color:var(--accent);font-weight:700;flex-shrink:0;margin-top:2px}
+.cs-list li strong{color:var(--text)}
+.learned-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.learned-item{background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:16px}
+.l-label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:6px}
+.learned-item p{color:var(--muted);font-size:.88rem;line-height:1.6;margin:0}
+.nav-projects{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px}
+.nav-card{border-radius:18px;padding:20px;border:1px solid var(--line);background:var(--panel-2);transition:.2s ease;display:flex;flex-direction:column;gap:6px;color:var(--text)}
+.nav-card:hover{border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.06);transform:translateY(-2px)}
+.nav-dir{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.nav-title{font-size:1rem;font-weight:700}
+@media(max-width:640px){.metrics-strip{grid-template-columns:1fr 1fr}.learned-grid{grid-template-columns:1fr}.nav-projects{grid-template-columns:1fr}.cs-hero{padding:28px 22px}.cs-section{padding:22px 18px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="../index.html" class="back-btn">← Înapoi la portofoliu</a>
+  <div class="topbar-right">
+    <button class="pill-sm" id="langBtn" onclick="toggleLang()">EN</button>
+    <button class="pill-sm" id="themeBtn" onclick="toggleTheme()">☀️</button>
+  </div>
+</div>
+<div class="container">
+  <header class="cs-hero glass">
+    <span class="eyebrow" id="eyebrow">Studiu de caz · Utility · Finance · 2025</span>
+    <h1 class="cs-title" style="color:#22c55e">BudgetFlow Pro X</h1>
+    <p class="cs-subtitle" id="subtitle">Aplicație financiară care transformă datele de buget într-o experiență clară, ușor de scanat și de înțeles — cu vizualizare live și 0 backend.</p>
+    <div class="cs-meta"><span class="meta-pill highlight">Finance</span>
+<span class="meta-pill">App</span>
+<span class="meta-pill">Vanilla JS</span>
+<span class="meta-pill">Data viz</span>
+<span class="meta-pill">localStorage</span></div>
+    <div class="cs-cta">
+      <a href="https://es-d-9192350520260329-019cf25e-1ee9-7655-ae8c-9d6b150b25e0.codepen.dev/" target="_blank" rel="noopener" class="btn btn-primary" id="btn-live">Deschide proiectul live ↗</a>
+      <a href="../index.html#projects" class="btn btn-secondary" id="btn-back2">← Toate proiectele</a>
+    </div>
+  </header>
+  <div class="metrics-strip"><div class="metric-box"><div class="metric-num">Budget</div><div class="metric-lbl">Categorii</div></div>
+<div class="metric-box"><div class="metric-num">Chart</div><div class="metric-lbl">Vizualizare</div></div>
+<div class="metric-box"><div class="metric-num">0€</div><div class="metric-lbl">Backend</div></div>
+<div class="metric-box"><div class="metric-num">Live</div><div class="metric-lbl">Calcul instant</div></div></div>
+  <section class="cs-section glass">
+    <h2><span class="icon">❓</span><span id="s1-title">Problema</span></h2>
+    <p id="s1-text">Am vrut să creez o aplicație financiară care să transforme datele de buget într-o experiență <strong>ușor de urmărit și înțeles</strong>. Datele financiare sunt aride — scopul era să le fac accesibile vizual fără să le simplifice excesiv.</p>
+  </section>
+  <section class="cs-section glass">
+    <h2><span class="icon">💡</span><span id="s2-title">Soluția</span></h2>
+    <p id="s2-text">Am organizat informația în jurul categoriilor de cheltuieli, valorilor vizualizate grafic și unui sistem de calcul instant care actualizează totul în timp real pe măsură ce utilizatorul introduce date.</p>
+    <ul class="cs-list" id="s2-list"><li><strong>Categorii de buget</strong> cu alocare și urmărire vizuală</li>
+<li><strong>Grafic live</strong> actualizat instant la orice modificare</li>
+<li><strong>Calcul automat</strong> — sold, procente, depășiri</li>
+<li><strong>Persistență localStorage</strong> — datele supraviețuiesc refresh-ului</li>
+<li><strong>Design curat</strong> — spațiu, culoare și ierarhie pentru lizibilitate maximă</li></ul>
+  </section>
+  <section class="cs-section glass">
+    <h2><span class="icon">⚙️</span><span id="s3-title">Decizii tehnice</span></h2>
+    <ul class="cs-list" id="s3-list"><li><strong>Date ca nucleu</strong> — UI-ul a fost construit în jurul structurii de date, nu invers</li>
+<li><strong>Reactive updates</strong> fără framework — ascultători pe inputuri care triggerează recalcul complet</li>
+<li><strong>CSS variables</strong> pentru codificare cromatică consistentă a categoriilor</li>
+<li><strong>localStorage</strong> pentru persistență simplă, fără server</li></ul>
+  </section>
+  <section class="cs-section glass">
+    <h2><span class="icon">🧠</span><span id="s4-title">Ce am învățat</span></h2>
+    <div class="learned-grid" id="learned-grid"><div class="learned-item"><div class="l-label">Date + UI</div><p>Cele mai bune interfețe de date pornesc de la structura datelor, nu de la cum arată. Schema vine primul.</p></div>
+<div class="learned-item"><div class="l-label">Reactive simplu</div><p>Poți obține comportament reactiv fără React. Event listeners plus o funcție de render care reconstruiește tot e suficient pentru complexitate medie.</p></div>
+<div class="learned-item"><div class="l-label">Vizualizare</div><p>Un chart simplu spune mai mult decât un tabel cu 20 de rânduri. Alegerea formei potrivite de vizualizare e o decizie de UX, nu de estetică.</p></div>
+<div class="learned-item"><div class="l-label">Culoare semantică</div><p>Culorile nu sunt decorație în aplicații de date — codifică informație. Roșu = depășit, verde = ok, galben = aproape.</p></div></div>
+  </section>
+  <section class="cs-section glass">
+    <h2><span class="icon">🔄</span><span id="s5-title">Iterații</span></h2>
+    <ul class="cs-list" id="s5-list"><li><strong>v1</strong> — inputuri simple, calcul total</li>
+<li><strong>v2</strong> — categorii, procente, grafic simplu</li>
+<li><strong>v3 Pro X</strong> — vizualizare extinsă, persistență, design premium</li></ul>
+    <p style="margin-top:14px" id="s5-note">Pro X marchează punctul în care proiectul a trecut de la funcțional la produs complet.</p>
+  </section>
+  <div class="nav-projects">
+    <a href="clientflow.html" class="nav-card">
+      <div class="nav-dir" id="nav-prev-dir">← Proiectul anterior</div>
+      <div class="nav-title" id="nav-prev-title">ClientFlow</div>
+    </a>
+    <a href="alpis-impactpath.html" class="nav-card">
+      <div class="nav-dir" id="nav-next-dir">Următorul →</div>
+      <div class="nav-title" id="nav-next-title">ALPIS ImpactPath</div>
+    </a>
+  </div>
+</div>
+<script>
+let lang='ro';
+const T={
+  ro:{eyebrow:'Studiu de caz · Utility · Finance · 2025',subtitle:"Aplica\u021bie financiar\u0103 care transform\u0103 datele de buget \u00eentr-o experien\u021b\u0103 clar\u0103, u\u0219or de scanat \u0219i de \u00een\u021beles \u2014 cu vizualizare live \u0219i 0 backend.",'btn-live':'Deschide proiectul live ↗','btn-back2':'← Toate proiectele','s1-title':'Problema','s1-text':"Am vrut s\u0103 creez o aplica\u021bie financiar\u0103 care s\u0103 transforme datele de buget \u00eentr-o experien\u021b\u0103 <strong>u\u0219or de urm\u0103rit \u0219i \u00een\u021beles</strong>. Datele financiare sunt aride \u2014 scopul era s\u0103 le fac accesibile vizual f\u0103r\u0103 s\u0103 le simplifice excesiv.",'s2-title':'Soluția','s2-text':"Am organizat informa\u021bia \u00een jurul categoriilor de cheltuieli, valorilor vizualizate grafic \u0219i unui sistem de calcul instant care actualizeaz\u0103 totul \u00een timp real pe m\u0103sur\u0103 ce utilizatorul introduce date.",'s3-title':'Decizii tehnice','s4-title':'Ce am învățat','s5-title':'Iterații','s5-note':"Pro X marcheaz\u0103 punctul \u00een care proiectul a trecut de la func\u021bional la produs complet.",'nav-prev-dir':'← Proiectul anterior','nav-prev-title':"ClientFlow",'nav-next-dir':'Următorul →','nav-next-title':"ALPIS ImpactPath"},
+  en:{eyebrow:'Case Study · Utility · Finance · 2025',subtitle:"Financial app that turns budget data into a clear, easy-to-scan experience \u2014 with live visualization and 0 backend.",'btn-live':'Open live project ↗','btn-back2':'← All projects','s1-title':'The Problem','s1-text':"I wanted to create a financial app that turns budget data into an <strong>easy-to-follow and understand</strong> experience. Financial data is dry \u2014 the goal was to make it visually accessible without oversimplifying.",'s2-title':'The Solution','s2-text':"I organized information around expense categories, graphically visualized values and a live calculation system that updates everything in real time as the user enters data.",'s3-title':'Technical decisions','s4-title':'What I learned','s5-title':'Iterations','s5-note':"Pro X marks the point where the project moved from functional to complete product.",'nav-prev-dir':'← Previous','nav-prev-title':"ClientFlow",'nav-next-dir':'Next →','nav-next-title':"ALPIS ImpactPath"}
+};
+const lists={ro:{s2:["<strong>Categorii de buget</strong> cu alocare \u0219i urm\u0103rire vizual\u0103", "<strong>Grafic live</strong> actualizat instant la orice modificare", "<strong>Calcul automat</strong> \u2014 sold, procente, dep\u0103\u0219iri", "<strong>Persisten\u021b\u0103 localStorage</strong> \u2014 datele supravie\u021buiesc refresh-ului", "<strong>Design curat</strong> \u2014 spa\u021biu, culoare \u0219i ierarhie pentru lizibilitate maxim\u0103"],s3:["<strong>Date ca nucleu</strong> \u2014 UI-ul a fost construit \u00een jurul structurii de date, nu invers", "<strong>Reactive updates</strong> f\u0103r\u0103 framework \u2014 ascult\u0103tori pe inputuri care triggereaz\u0103 recalcul complet", "<strong>CSS variables</strong> pentru codificare cromatic\u0103 consistent\u0103 a categoriilor", "<strong>localStorage</strong> pentru persisten\u021b\u0103 simpl\u0103, f\u0103r\u0103 server"],s5:["<strong>v1</strong> \u2014 inputuri simple, calcul total", "<strong>v2</strong> \u2014 categorii, procente, grafic simplu", "<strong>v3 Pro X</strong> \u2014 vizualizare extins\u0103, persisten\u021b\u0103, design premium"]},en:{s2:["<strong>Budget categories</strong> with allocation and visual tracking", "<strong>Live chart</strong> updated instantly on any change", "<strong>Auto calculation</strong> \u2014 balance, percentages, overruns", "<strong>localStorage persistence</strong> \u2014 data survives refresh", "<strong>Clean design</strong> \u2014 space, color and hierarchy for maximum readability"],s3:["<strong>Data as core</strong> \u2014 the UI was built around the data structure, not the other way around", "<strong>Reactive updates</strong> without framework \u2014 input listeners triggering full recalculation", "<strong>CSS variables</strong> for consistent chromatic coding of categories", "<strong>localStorage</strong> for simple persistence, no server"],s5:["<strong>v1</strong> \u2014 simple inputs, total calculation", "<strong>v2</strong> \u2014 categories, percentages, simple chart", "<strong>v3 Pro X</strong> \u2014 extended visualization, persistence, premium design"]}};
+const learned={ro:[["Date + UI", "Cele mai bune interfe\u021be de date pornesc de la structura datelor, nu de la cum arat\u0103. Schema vine primul."], ["Reactive simplu", "Po\u021bi ob\u021bine comportament reactiv f\u0103r\u0103 React. Event listeners plus o func\u021bie de render care reconstruie\u0219te tot e suficient pentru complexitate medie."], ["Vizualizare", "Un chart simplu spune mai mult dec\u00e2t un tabel cu 20 de r\u00e2nduri. Alegerea formei potrivite de vizualizare e o decizie de UX, nu de estetic\u0103."], ["Culoare semantic\u0103", "Culorile nu sunt decora\u021bie \u00een aplica\u021bii de date \u2014 codific\u0103 informa\u021bie. Ro\u0219u = dep\u0103\u0219it, verde = ok, galben = aproape."]],en:[["Data + UI", "The best data interfaces start from the data structure, not from how it looks. Schema first."], ["Simple reactive", "You can get reactive behavior without React. Event listeners plus a render function that rebuilds everything is enough for medium complexity."], ["Visualization", "A simple chart says more than a table with 20 rows. Choosing the right visualization form is a UX decision, not an aesthetic one."], ["Semantic color", "Colors are not decoration in data apps \u2014 they encode information. Red = overrun, green = ok, yellow = approaching limit."]]};
+const IDS=['eyebrow','subtitle','btn-live','btn-back2','s1-title','s1-text','s2-title','s2-text','s3-title','s4-title','s5-title','s5-note','nav-prev-dir','nav-prev-title','nav-next-dir','nav-next-title'];
+function applyLang(){
+  IDS.forEach(id=>{const el=document.getElementById(id);if(el&&T[lang][id]!==undefined)el.innerHTML=T[lang][id];});
+  Object.entries(lists[lang]).forEach(([k,v])=>{const el=document.getElementById(k+'-list');if(el)el.innerHTML=v.map(i=>`<li>${i}</li>`).join('');});
+  const lg=document.getElementById('learned-grid');
+  if(lg)lg.innerHTML=learned[lang].map(([l,t])=>`<div class="learned-item"><div class="l-label">${l}</div><p>${t}</p></div>`).join('');
+  document.getElementById('langBtn').textContent=lang==='ro'?'EN':'RO';
+  document.documentElement.lang=lang;
+}
+function toggleLang(){lang=lang==='ro'?'en':'ro';applyLang();}
+function toggleTheme(){document.body.classList.toggle('light');document.getElementById('themeBtn').textContent=document.body.classList.contains('light')?'🌙':'☀️';}
+applyLang();
+</script>
+</body>
+</html>
