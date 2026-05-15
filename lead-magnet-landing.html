@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lead Magnet Landing — Template | Laura Andreea</title>
+  <meta name="description" content="Template modular pentru lead magnet landing pages: ebook, white paper, resource download. Hero hook + social proof + email gate + thank-you flow. Fără backend."/>
+  <meta name="author" content="Laura Andreea"/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/lead-magnet-landing.html"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <meta property="og:title" content="Lead Magnet Landing Template"/>
+  <meta property="og:description" content="Template modular pentru lead magnet: hook + social proof + email gate + thank-you flow. Bilingv RO/EN, fără backend."/>
+  <meta property="og:type" content="website"/>
+  <meta name="theme-color" content="#071226"/>
+  <link rel="preload" href="style.css" as="style"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── LAYOUT ── */
+    .lm-page { max-width: 680px; margin: 0 auto; padding: 60px 24px 80px; }
+    /* ── HERO HOOK ── */
+    .hook-card { border-radius: 24px; padding: 40px 40px 36px; text-align: center; position: relative; overflow: hidden; }
+    .hook-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(79,140,255,.18), transparent 60%); pointer-events: none; }
+    .hook-eyebrow { font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--accent, #4f8cff); margin-bottom: 14px; display: block; }
+    .hook-title { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.05; margin-bottom: 14px; }
+    .hook-sub { color: var(--muted, #9db0d4); line-height: 1.7; font-size: .97rem; max-width: 480px; margin: 0 auto 24px; }
+    .hook-resource { display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 12px; border: 1px solid var(--line, rgba(255,255,255,.1)); background: var(--panel-2, rgba(255,255,255,.06)); font-size: .85rem; color: var(--muted, #9db0d4); margin-bottom: 28px; }
+    .hook-resource strong { color: var(--text, #eef4ff); }
+    /* ── SOCIAL PROOF ── */
+    .proof-strip { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin: 20px 0 32px; }
+    .proof-item { text-align: center; }
+    .proof-num { font-size: 1.5rem; font-weight: 800; color: var(--text, #eef4ff); line-height: 1; }
+    .proof-lbl { font-size: .74rem; color: var(--muted, #9db0d4); margin-top: 3px; text-transform: uppercase; letter-spacing: .06em; }
+    /* ── EMAIL GATE ── */
+    .gate-card { border-radius: 20px; padding: 32px 36px; margin: 24px 0; }
+    .gate-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .gate-sub { font-size: .88rem; color: var(--muted, #9db0d4); margin-bottom: 20px; line-height: 1.6; }
+    .gate-form { display: flex; flex-direction: column; gap: 12px; }
+    .gate-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .gate-input { width: 100%; min-height: 48px; border-radius: 12px; border: 1px solid var(--line, rgba(255,255,255,.1)); background: var(--panel-2, rgba(255,255,255,.04)); color: var(--text, #eef4ff); padding: 0 16px; font-size: .92rem; font-family: inherit; outline: none; transition: border-color .2s; }
+    .gate-input:focus { border-color: rgba(79,140,255,.4); box-shadow: 0 0 0 3px rgba(79,140,255,.1); }
+    .gate-input::placeholder { color: var(--muted, #9db0d4); opacity: .7; }
+    .gate-submit { width: 100%; min-height: 52px; border-radius: 12px; border: none; background: linear-gradient(135deg, var(--accent, #4f8cff), #8b5cf6); color: #fff; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: opacity .2s, transform .15s; }
+    .gate-submit:hover { opacity: .92; transform: translateY(-1px); }
+    .gate-submit:active { transform: translateY(0); }
+    .gate-privacy { font-size: .75rem; color: var(--muted, #9db0d4); text-align: center; margin-top: 4px; line-height: 1.5; }
+    .gate-privacy a { color: var(--accent, #4f8cff); }
+    /* ── WHAT YOU GET ── */
+    .wyg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 28px 0; }
+    .wyg-item { border-radius: 14px; padding: 16px 18px; display: flex; gap: 12px; align-items: flex-start; }
+    .wyg-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; background: var(--panel-2, rgba(255,255,255,.06)); border: 1px solid var(--line, rgba(255,255,255,.1)); }
+    .wyg-title { font-size: .88rem; font-weight: 700; margin-bottom: 3px; }
+    .wyg-desc { font-size: .8rem; color: var(--muted, #9db0d4); line-height: 1.5; }
+    /* ── THANK YOU STATE ── */
+    .ty-card { border-radius: 20px; padding: 40px 36px; text-align: center; display: none; }
+    .ty-card.visible { display: block; }
+    .ty-icon { font-size: 40px; margin-bottom: 14px; }
+    .ty-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: 10px; }
+    .ty-sub { color: var(--muted, #9db0d4); line-height: 1.7; font-size: .95rem; margin-bottom: 24px; }
+    .ty-download { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 12px; background: linear-gradient(135deg, var(--accent, #4f8cff), #8b5cf6); color: #fff; font-weight: 700; text-decoration: none; font-size: .95rem; transition: opacity .2s; }
+    .ty-download:hover { opacity: .9; }
+    .ty-next { margin-top: 20px; font-size: .85rem; color: var(--muted, #9db0d4); }
+    .ty-next a { color: var(--accent, #4f8cff); }
+    /* ── TOGGLE ── */
+    #gate-section { transition: opacity .3s; }
+    #gate-section.hidden { opacity: 0; pointer-events: none; height: 0; overflow: hidden; }
+    /* ── TABS (conținut preview) ── */
+    .preview-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .ptab { padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line, rgba(255,255,255,.1)); background: var(--panel-2, rgba(255,255,255,.06)); color: var(--muted, #9db0d4); font-size: .82rem; font-weight: 600; cursor: pointer; transition: .15s; }
+    .ptab.active { border-color: rgba(79,140,255,.3); background: rgba(79,140,255,.08); color: var(--accent, #4f8cff); }
+    .preview-panel { display: none; padding: 18px 20px; border-radius: 14px; border: 1px solid var(--line, rgba(255,255,255,.1)); background: var(--panel-2, rgba(255,255,255,.04)); }
+    .preview-panel.active { display: block; }
+    .preview-panel h4 { font-size: .88rem; font-weight: 700; margin-bottom: 10px; color: var(--text, #eef4ff); }
+    .preview-panel ul { color: var(--muted, #9db0d4); font-size: .84rem; line-height: 1.7; padding-left: 16px; margin: 0; }
+    /* ── DEMO BADGE ── */
+    .demo-banner { border-radius: 10px; padding: 10px 16px; background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.2); color: #f59e0b; font-size: .8rem; font-weight: 600; text-align: center; margin-bottom: 24px; }
+    @media (max-width: 560px) { .gate-row { grid-template-columns: 1fr; } .wyg-grid { grid-template-columns: 1fr; } .hook-card { padding: 28px 22px; } .gate-card { padding: 24px 20px; } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <nav class="nav glass" aria-label="Navigare">
+        <div style="display:flex;gap:10px;align-items:center">
+          <a class="pill" href="index.html">← Portofoliu</a>
+          <a class="pill" href="index.html#marketing-tech">Marketing-Tech</a>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="pill" id="langBtn" onclick="toggleLang()">EN</button>
+          <button class="pill" onclick="document.body.classList.toggle('light');this.textContent=document.body.classList.contains('light')?'🌙 Dark':'☀️ Light'">☀️ Light</button>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main id="main-content" class="lm-page">
+
+    <div class="demo-banner" id="demo-banner">
+      🎭 Template demonstrativ — datele din formular nu sunt trimise nicăieri. Codul sursă e public pe GitHub.
+    </div>
+
+    <!-- HERO HOOK -->
+    <article class="hook-card glass" aria-labelledby="hook-title">
+      <span class="hook-eyebrow" id="hook-eyebrow">Ghid gratuit · Marketing-Tech</span>
+      <h1 class="hook-title" id="hook-title">5 fluxuri CRM care dublează rata de conversie a lead-urilor</h1>
+      <p class="hook-sub" id="hook-sub">Descarcă ghidul practic cu template-uri gata de implementat, exemple reale și checklist per canal. Fără teorie, direct aplicabil.</p>
+
+      <div class="hook-resource">
+        <span>📄</span>
+        <span id="hook-resource-text"><strong>PDF · 28 pagini</strong> · Actualizat Mai 2026 · Gratuit, fără cont</span>
+      </div>
+
+      <!-- SOCIAL PROOF -->
+      <div class="proof-strip" role="list" aria-label="Statistici">
+        <div class="proof-item" role="listitem">
+          <div class="proof-num">2.4k</div>
+          <div class="proof-lbl" id="proof1-lbl">descărcări</div>
+        </div>
+        <div class="proof-item" role="listitem">
+          <div class="proof-num">4.8★</div>
+          <div class="proof-lbl" id="proof2-lbl">rating mediu</div>
+        </div>
+        <div class="proof-item" role="listitem">
+          <div class="proof-num">28</div>
+          <div class="proof-lbl" id="proof3-lbl">pagini</div>
+        </div>
+        <div class="proof-item" role="listitem">
+          <div class="proof-num">0€</div>
+          <div class="proof-lbl" id="proof4-lbl">cost</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- CE PRIMEȘTI -->
+    <section aria-labelledby="wyg-title" style="margin-top:28px">
+      <h2 id="wyg-title" style="font-size:1.1rem;margin-bottom:16px" class="eyebrow">Ce conține ghidul</h2>
+      <div class="wyg-grid">
+        <div class="wyg-item glass">
+          <div class="wyg-icon">📊</div>
+          <div>
+            <div class="wyg-title" id="wyg1-t">5 fluxuri CRM annotate</div>
+            <div class="wyg-desc" id="wyg1-d">Lead calificat → follow-up → ofertă → win/loss. Fiecare pas cu trigger, acțiune și timp optim.</div>
+          </div>
+        </div>
+        <div class="wyg-item glass">
+          <div class="wyg-icon">✅</div>
+          <div>
+            <div class="wyg-title" id="wyg2-t">Checklist per canal</div>
+            <div class="wyg-desc" id="wyg2-d">Email, LinkedIn, telefon, event. Ce să faci în primele 24h după un contact nou.</div>
+          </div>
+        </div>
+        <div class="wyg-item glass">
+          <div class="wyg-icon">📋</div>
+          <div>
+            <div class="wyg-title" id="wyg3-t">Template-uri copy-paste</div>
+            <div class="wyg-desc" id="wyg3-d">Emailuri de follow-up, SMS-uri de reminder, mesaje LinkedIn pentru reactivare lead rece.</div>
+          </div>
+        </div>
+        <div class="wyg-item glass">
+          <div class="wyg-icon">📈</div>
+          <div>
+            <div class="wyg-title" id="wyg4-t">Metrici și KPI de urmărit</div>
+            <div class="wyg-desc" id="wyg4-d">Ce să măsori, cum să interpretezi și când să ajustezi fluxul bazat pe date reale.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREVIEW CONȚINUT -->
+    <section style="margin-top:8px" aria-labelledby="preview-title">
+      <h2 id="preview-title" style="font-size:.88rem;margin-bottom:12px" class="eyebrow" id="preview-label">Preview conținut</h2>
+      <div class="preview-tabs" role="tablist">
+        <button class="ptab active" role="tab" aria-selected="true" aria-controls="tab1" onclick="switchTab(this,'tab1')" id="tab1-btn">Flux 1: Lead nou</button>
+        <button class="ptab" role="tab" aria-selected="false" aria-controls="tab2" onclick="switchTab(this,'tab2')" id="tab2-btn">Flux 2: Follow-up</button>
+        <button class="ptab" role="tab" aria-selected="false" aria-controls="tab3" onclick="switchTab(this,'tab3')" id="tab3-btn">Checklist email</button>
+      </div>
+      <div class="preview-panel active" id="tab1" role="tabpanel" aria-labelledby="tab1-btn">
+        <h4 id="tab1-title">Flux 1 — Lead nou calificat (primele 2 ore)</h4>
+        <ul id="tab1-list">
+          <li>Minute 0–5: confirmare automată de primire (email trigger)</li>
+          <li>Oră 1: apel de descoperire sau voicemail structurat (30 sec)</li>
+          <li>Oră 2: email personalizat cu 1 insight relevant pentru industria lor</li>
+          <li>Zi 1, EOD: actualizare status în CRM + notă internă cu calificarea</li>
+          <li>Zi 2: dacă fără răspuns → LinkedIn connection request + mesaj scurt</li>
+        </ul>
+      </div>
+      <div class="preview-panel" id="tab2" role="tabpanel" aria-labelledby="tab2-btn">
+        <h4 id="tab2-title">Flux 2 — Follow-up după demo (72h)</h4>
+        <ul id="tab2-list">
+          <li>Imediat după demo: email cu recap și next steps clari (nu PDF-uri grele)</li>
+          <li>Zi 1: link la case study relevant pentru problema lor specifică</li>
+          <li>Zi 2: dacă fără răspuns → sms/WhatsApp scurt, direct, cu întrebare</li>
+          <li>Zi 3: email cu deadline soft ("oferta e valabilă până vineri")</li>
+          <li>Zi 5: dacă tăcere → mutare în „nurture" cu touch lunar</li>
+        </ul>
+      </div>
+      <div class="preview-panel" id="tab3" role="tabpanel" aria-labelledby="tab3-btn">
+        <h4 id="tab3-title">Checklist email de follow-up eficient</h4>
+        <ul id="tab3-list">
+          <li>Subject line: max 7 cuvinte, fără „Follow-up" sau „Checking in"</li>
+          <li>Primul paragraf: referință la conversația anterioară (specifică, nu generic)</li>
+          <li>Un singur CTA clar: întrebare, link, sau propunere de timp</li>
+          <li>Semnătură cu număr de telefon vizibil (reduce un pas de fricțiune)</li>
+          <li>P.S. opțional cu un insight sau resurse relevante</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- EMAIL GATE -->
+    <section id="gate-section" style="margin-top:28px" aria-labelledby="gate-title">
+      <div class="gate-card glass">
+        <h2 class="gate-title" id="gate-title">Descarcă ghidul gratuit</h2>
+        <p class="gate-sub" id="gate-sub">Introdu email-ul și primești accesul instant. Fără newsletter forțat — dezabonare cu 1 click dacă nu e util.</p>
+        <form class="gate-form" onsubmit="handleSubmit(event)" novalidate aria-label="Formular descărcare ghid">
+          <div class="gate-row">
+            <input class="gate-input" type="text" id="field-name" placeholder="Prenume" autocomplete="given-name" aria-label="Prenume" required />
+            <input class="gate-input" type="text" id="field-company" placeholder="Companie (opțional)" autocomplete="organization" aria-label="Companie" />
+          </div>
+          <input class="gate-input" type="email" id="field-email" placeholder="Email profesional" autocomplete="email" aria-label="Email" required />
+          <div style="display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:var(--muted)">
+            <input type="checkbox" id="consent" style="margin-top:2px;flex-shrink:0;width:16px;height:16px;accent-color:var(--accent,#4f8cff)" required aria-label="Acord primire conținut"/>
+            <label for="consent" id="consent-label">Sunt de acord să primesc ghidul și ocazional conținut relevant despre CRM și marketing. Niciun spam, dezabonare oricând.</label>
+          </div>
+          <button class="gate-submit" type="submit" id="submit-btn">📄 Descarcă ghidul gratuit →</button>
+        </form>
+        <p class="gate-privacy" id="gate-privacy">Datele rămân în browser · Nu sunt trimise nicăieri · <a href="https://github.com/LaurAndreea10/codepen-portfolio" target="_blank" rel="noopener noreferrer">Cod sursă open</a></p>
+      </div>
+    </section>
+
+    <!-- THANK YOU STATE -->
+    <div class="ty-card glass" id="ty-card" aria-live="polite">
+      <div class="ty-icon">🎉</div>
+      <h2 class="ty-title" id="ty-title">Accesul tău e gata!</h2>
+      <p class="ty-sub" id="ty-sub">Ghidul cu cele 5 fluxuri CRM e disponibil pentru descărcare. Îți recomand să începi cu Fluxul 1 — implementabil în aceeași zi.</p>
+      <a class="ty-download" href="#" id="ty-download-btn" onclick="simulateDownload(event)">📥 Descarcă ghidul PDF (2.4 MB)</a>
+      <p class="ty-next" id="ty-next">
+        Vrei mai mult? <a href="campaignpilot.html">CampaignPilot</a> te ajută să planifici campaniile end-to-end. <a href="Campaign%20ROI%20Calculator.html">ROI Calculator</a> calculează eficiența per canal.
+      </p>
+    </div>
+
+    <!-- FOOTER NAV -->
+    <div style="margin-top:40px;padding-top:24px;border-top:1px solid var(--line,rgba(255,255,255,.08));display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+      <a class="btn btn-secondary" href="campaignpilot.html">CampaignPilot</a>
+      <a class="btn btn-secondary" href="Campaign%20ROI%20Calculator.html">ROI Calculator</a>
+      <a class="btn btn-secondary" href="index.html#marketing-tech">Toate template-urile</a>
+      <a class="btn btn-secondary" href="index.html">← Portofoliu</a>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Laura Andreea · <a href="index.html">laurandreea10.github.io</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script>
+    /* Tab switcher */
+    function switchTab(btn, panelId) {
+      document.querySelectorAll('.ptab').forEach(function(t) { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      document.querySelectorAll('.preview-panel').forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected','true');
+      document.getElementById(panelId).classList.add('active');
+    }
+
+    /* Form submit */
+    function handleSubmit(e) {
+      e.preventDefault();
+      var name = document.getElementById('field-name').value.trim();
+      var email = document.getElementById('field-email').value.trim();
+      var consent = document.getElementById('consent').checked;
+      if (!name || !email || !consent) {
+        var btn = document.getElementById('submit-btn');
+        btn.textContent = '⚠ Completează câmpurile obligatorii';
+        setTimeout(function() { btn.textContent = '📄 Descarcă ghidul gratuit →'; }, 2000);
+        return;
+      }
+      // Simulate processing
+      var btn = document.getElementById('submit-btn');
+      btn.textContent = '⏳ Se procesează...';
+      btn.disabled = true;
+      setTimeout(function() {
+        document.getElementById('gate-section').classList.add('hidden');
+        var ty = document.getElementById('ty-card');
+        ty.classList.add('visible');
+        ty.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 900);
+    }
+
+    /* Simulate download */
+    function simulateDownload(e) {
+      e.preventDefault();
+      var btn = document.getElementById('ty-download-btn');
+      btn.textContent = '✅ Descărcat! (simulat — template demo)';
+      btn.style.background = 'rgba(52,211,153,.2)';
+      btn.style.color = '#34d399';
+    }
+
+    /* Lang toggle */
+    var lang = 'ro';
+    var strings = {
+      ro: {
+        'demo-banner': '🎭 Template demonstrativ — datele din formular nu sunt trimise nicăieri. Codul sursă e public pe GitHub.',
+        'hook-eyebrow': 'Ghid gratuit · Marketing-Tech',
+        'hook-title': '5 fluxuri CRM care dublează rata de conversie a lead-urilor',
+        'hook-sub': 'Descarcă ghidul practic cu template-uri gata de implementat, exemple reale și checklist per canal. Fără teorie, direct aplicabil.',
+        'hook-resource-text': '28 pagini · Actualizat Mai 2026 · Gratuit, fără cont',
+        'proof1-lbl': 'descărcări', 'proof2-lbl': 'rating mediu', 'proof3-lbl': 'pagini', 'proof4-lbl': 'cost',
+        'wyg1-t': '5 fluxuri CRM annotate', 'wyg1-d': 'Lead calificat → follow-up → ofertă → win/loss. Fiecare pas cu trigger, acțiune și timp optim.',
+        'wyg2-t': 'Checklist per canal', 'wyg2-d': 'Email, LinkedIn, telefon, event. Ce să faci în primele 24h după un contact nou.',
+        'wyg3-t': 'Template-uri copy-paste', 'wyg3-d': 'Emailuri de follow-up, SMS-uri de reminder, mesaje LinkedIn pentru reactivare lead rece.',
+        'wyg4-t': 'Metrici și KPI de urmărit', 'wyg4-d': 'Ce să măsori, cum să interpretezi și când să ajustezi fluxul bazat pe date reale.',
+        'gate-title': 'Descarcă ghidul gratuit', 'gate-sub': 'Introdu email-ul și primești accesul instant. Fără newsletter forțat — dezabonare cu 1 click dacă nu e util.',
+        'submit-btn': '📄 Descarcă ghidul gratuit →',
+        'gate-privacy': 'Datele rămân în browser · Nu sunt trimise nicăieri · Cod sursă open',
+        'ty-title': 'Accesul tău e gata!',
+        'ty-sub': 'Ghidul cu cele 5 fluxuri CRM e disponibil pentru descărcare. Îți recomand să începi cu Fluxul 1 — implementabil în aceeași zi.',
+        'consent-label': 'Sunt de acord să primesc ghidul și ocazional conținut relevant despre CRM și marketing. Niciun spam, dezabonare oricând.'
+      },
+      en: {
+        'demo-banner': '🎭 Demo template — form data is not sent anywhere. Source code is open on GitHub.',
+        'hook-eyebrow': 'Free guide · Marketing-Tech',
+        'hook-title': '5 CRM flows that double your lead conversion rate',
+        'hook-sub': 'Download the practical guide with ready-to-implement templates, real examples and per-channel checklists. No theory, directly applicable.',
+        'hook-resource-text': '28 pages · Updated May 2026 · Free, no account',
+        'proof1-lbl': 'downloads', 'proof2-lbl': 'avg rating', 'proof3-lbl': 'pages', 'proof4-lbl': 'cost',
+        'wyg1-t': '5 annotated CRM flows', 'wyg1-d': 'Qualified lead → follow-up → offer → win/loss. Each step with trigger, action and optimal timing.',
+        'wyg2-t': 'Per-channel checklists', 'wyg2-d': 'Email, LinkedIn, phone, event. What to do in the first 24h after a new contact.',
+        'wyg3-t': 'Copy-paste templates', 'wyg3-d': 'Follow-up emails, reminder SMS, LinkedIn messages for cold lead reactivation.',
+        'wyg4-t': 'Metrics and KPIs to track', 'wyg4-d': 'What to measure, how to interpret and when to adjust the flow based on real data.',
+        'gate-title': 'Download the free guide', 'gate-sub': 'Enter your email and get instant access. No forced newsletter — 1-click unsubscribe if not useful.',
+        'submit-btn': '📄 Download free guide →',
+        'gate-privacy': 'Data stays in browser · Not sent anywhere · Open source code',
+        'ty-title': 'Your access is ready!',
+        'ty-sub': 'The guide with 5 CRM flows is available for download. I recommend starting with Flow 1 — implementable the same day.',
+        'consent-label': 'I agree to receive the guide and occasionally relevant content about CRM and marketing. No spam, unsubscribe anytime.'
+      }
+    };
+    function toggleLang() {
+      lang = lang === 'ro' ? 'en' : 'ro';
+      document.getElementById('langBtn').textContent = lang === 'ro' ? 'EN' : 'RO';
+      document.documentElement.lang = lang;
+      Object.keys(strings[lang]).forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.innerHTML = strings[lang][id];
+      });
+    }
+  </script>
+</body>
+</html>

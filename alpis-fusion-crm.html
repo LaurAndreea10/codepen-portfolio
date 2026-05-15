@@ -3,396 +3,451 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alpis Fusion CRM Premium — Studiu de caz | Laura Andreea</title>
-  <meta name="description" content="Cum am construit un CRM modular SaaS-grade de la prototip single-file la Vite + React production-ready. Decision log, trade-offs, lessons learned." />
-  <meta name="theme-color" content="#071226" />
+  <title>Alpis Fusion CRM Premium | Laura Andreea</title>
+  <meta name="description" content="Case study complet Alpis Fusion CRM: Problemă → Decizie → Rezultat, decision log cu rațional tehnic, before/after vizual și walkthrough dashboard." />
+  <meta name="author" content="Laura Andreea" />
+  <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/projects/alpis-fusion-crm.html" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-
   <meta property="og:type" content="article" />
-  <meta property="og:title" content="Alpis Fusion CRM Premium — Studiu de caz complet" />
-  <meta property="og:description" content="De la prototip ~400 linii la SaaS-grade CRM cu kanban, flow builder, RBAC și billing. 4 luni de iterații documentate." />
+  <meta property="og:title" content="Alpis Fusion CRM Premium — Case Study" />
+  <meta property="og:description" content="De la flux fragmentat la workspace unic: lead, task și billing în același dashboard, cu decision log complet și dovezi before/after." />
   <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/projects/alpis-fusion-crm.html" />
   <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/alpis-fusion-demo-poster.svg" />
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "Alpis Fusion CRM Premium — Studiu de caz",
-    "description": "Cum am construit un CRM modular SaaS-grade de la prototip single-file la Vite + React production-ready.",
-    "datePublished": "2026-05-09",
-    "dateModified": "2026-05-09",
-    "author": {
-      "@type": "Person",
-      "name": "Laura Andreea",
-      "url": "https://laurandreea10.github.io/codepen-portfolio/"
-    },
-    "publisher": {
-      "@type": "Person",
-      "name": "Laura Andreea"
-    },
-    "mainEntityOfPage": "https://laurandreea10.github.io/codepen-portfolio/projects/alpis-fusion-crm.html"
-  }
-  </script>
-
+  <meta property="og:locale" content="ro_RO" />
+  <meta property="og:site_name" content="CodePen Portfolio" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Alpis Fusion CRM Premium — Case Study" />
+  <meta name="twitter:description" content="Case study CRM cu Problemă → Decizie → Rezultat, decision log și embed CodePen direct în pagină." />
+  <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/alpis-fusion-demo-poster.svg" />
+  <meta name="theme-color" content="#071226" />
+  <link rel="preload" href="../style.css" as="style" />
+  <link rel="stylesheet" href="../style.css" />
   <style>
-    :root {
-      --bg:#050d1f;--bg2:#08142b;--panel:rgba(10,22,46,.8);--line:rgba(255,255,255,.1);
-      --text:#eef4ff;--muted:#9db0d4;--accent:#4f8cff;--accent2:#8b5cf6;
-      --green:#4ade80;--amber:#f59e0b;--red:#ef4444;
-      --shadow:0 20px 48px rgba(0,0,0,.32);--container:820px;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--text);
-      background:linear-gradient(180deg,var(--bg2),var(--bg));min-height:100vh;line-height:1.75}
-    a{color:var(--accent);text-decoration:none}
-    a:hover{text-decoration:underline}
-    h1,h2,h3,h4,p,ul,ol{margin:0}
-    code{background:rgba(139,92,246,.15);color:#c084fc;padding:2px 8px;
-      border-radius:6px;font-size:.92em;font-family:'JetBrains Mono',Consolas,monospace}
-    pre{background:rgba(10,22,46,.6);border:1px solid var(--line);
-      padding:14px 18px;border-radius:10px;overflow-x:auto;font-size:.88rem;line-height:1.6}
-    pre code{background:transparent;padding:0;color:var(--muted)}
-    
-    .container{width:min(var(--container),calc(100% - 32px));margin:0 auto;padding:32px 0}
-    .glass{background:var(--panel);border:1px solid var(--line);
-      box-shadow:var(--shadow);backdrop-filter:blur(14px);border-radius:22px;padding:32px}
-    .topbar{padding:20px 0;border-bottom:1px solid var(--line)}
-    .topbar .container{padding:0;display:flex;justify-content:space-between;align-items:center}
-    .brand{font-weight:800;color:var(--text)}
-    .back-link{color:var(--muted);font-size:.9rem}
-    
-    .eyebrow{font-size:.78rem;font-weight:800;text-transform:uppercase;
-      letter-spacing:.1em;color:var(--accent)}
-    h1{font-size:clamp(2rem,4.5vw,3rem);line-height:1.05;letter-spacing:-.03em;margin-top:14px}
-    .lead{margin-top:20px;color:var(--muted);font-size:1.15rem;line-height:1.7}
-    
-    .meta-bar{display:flex;flex-wrap:wrap;gap:14px;margin-top:24px;
-      padding:18px;border:1px solid var(--line);border-radius:14px;
-      background:rgba(255,255,255,.02)}
-    .meta-bar div{flex:1;min-width:140px}
-    .meta-bar strong{display:block;font-size:.72rem;text-transform:uppercase;
-      letter-spacing:.06em;color:var(--accent);margin-bottom:6px}
-    .meta-bar span{color:var(--muted);font-size:.92rem}
-    
-    .toc{margin-top:28px;padding:22px;border:1px solid var(--line);
-      border-radius:14px;background:rgba(255,255,255,.02)}
-    .toc h2{font-size:.92rem;color:var(--accent);text-transform:uppercase;
-      letter-spacing:.06em;margin-bottom:14px}
-    .toc ol{list-style:decimal;padding-left:22px;color:var(--muted);line-height:2}
-    .toc a{color:var(--text)}
-    
-    section.case{margin-top:48px}
-    section.case h2{font-size:1.6rem;letter-spacing:-.02em;line-height:1.2;margin-bottom:18px}
-    section.case h3{font-size:1.15rem;color:var(--accent);margin-top:24px;margin-bottom:10px}
-    section.case p{color:var(--muted);margin-bottom:14px}
-    section.case p strong{color:var(--text)}
-    section.case ul,section.case ol{padding-left:22px;color:var(--muted);line-height:1.85;margin-bottom:14px}
-    section.case ul li+li,section.case ol li+li{margin-top:6px}
-    section.case ul li strong,section.case ol li strong{color:var(--text)}
-    
-    .decision-card{margin-top:18px;padding:22px;border:1px solid var(--line);
-      border-radius:16px;background:rgba(255,255,255,.03)}
-    .decision-card .deck{display:inline-block;padding:4px 10px;border-radius:999px;
-      font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
-      background:rgba(79,140,255,.15);color:var(--accent);margin-bottom:10px}
-    .decision-card h4{font-size:1.05rem;margin-bottom:10px}
-    .decision-card .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
-    .decision-card .row > div{padding:12px;border:1px solid var(--line);
-      border-radius:10px;background:rgba(0,0,0,.2)}
-    .decision-card .row strong{display:block;font-size:.78rem;text-transform:uppercase;
-      letter-spacing:.05em;margin-bottom:6px}
-    .decision-card .row .pos{color:var(--green)}
-    .decision-card .row .neg{color:var(--amber)}
-    
-    .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
-    .metric{padding:18px;border:1px solid var(--line);border-radius:14px;
-      background:rgba(255,255,255,.03);text-align:center}
-    .metric strong{display:block;font-size:1.8rem;color:var(--accent);margin-bottom:6px;
-      letter-spacing:-.02em}
-    .metric span{color:var(--muted);font-size:.86rem}
-    
-    .lessons-card{margin-top:32px;padding:26px;
-      border:1px solid rgba(245,158,11,.3);border-radius:18px;
-      background:rgba(245,158,11,.06)}
-    .lessons-card h2{color:var(--amber)}
-    
-    .footer-cta{margin-top:48px;text-align:center;padding:32px;
-      border:1px solid rgba(139,92,246,.3);border-radius:22px;
-      background:linear-gradient(135deg,rgba(79,140,255,.12),rgba(139,92,246,.10))}
-    .btn{display:inline-flex;align-items:center;justify-content:center;
-      min-height:48px;padding:0 24px;border-radius:999px;
-      font-weight:700;font-size:.95rem;color:#fff;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));margin-top:16px}
-    .btn:hover{opacity:.9;text-decoration:none}
-    .btn-secondary{background:transparent;border:1px solid var(--line);
-      color:var(--text);margin-left:10px}
-    
-    @media(max-width:680px){
-      .decision-card .row{grid-template-columns:1fr}
-      .metrics-grid{grid-template-columns:1fr}
-    }
+    /* Decision Log */
+    .decision-log { margin-top: 48px; }
+    .dl-intro { color: var(--muted); line-height: 1.7; margin-bottom: 28px; font-size: .97rem; }
+    .dl-grid { display: flex; flex-direction: column; gap: 16px; }
+    .dl-card { border-radius: 18px; padding: 24px 26px; position: relative; overflow: hidden; }
+    .dl-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 3px 0 0 3px; }
+    .dl-card.decided::before { background: var(--accent, #4f8cff); }
+    .dl-card.rejected::before { background: var(--muted, #9db0d4); opacity: .4; }
+    .dl-card.tradeoff::before { background: #f59e0b; }
+    .dl-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+    .dl-title { font-size: 1rem; font-weight: 700; line-height: 1.3; color: var(--text, #eef4ff); }
+    .dl-badge { padding: 4px 10px; border-radius: 6px; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; flex-shrink: 0; }
+    .badge-decided { background: rgba(79,140,255,.14); color: var(--accent, #4f8cff); border: 1px solid rgba(79,140,255,.24); }
+    .badge-rejected { background: rgba(255,255,255,.06); color: var(--muted, #9db0d4); border: 1px solid rgba(255,255,255,.1); }
+    .badge-tradeoff { background: rgba(245,158,11,.12); color: #f59e0b; border: 1px solid rgba(245,158,11,.2); }
+    .dl-context { font-size: .88rem; color: var(--muted, #9db0d4); line-height: 1.65; margin-bottom: 12px; }
+    .dl-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .dl-option { padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line, rgba(255,255,255,.1)); background: var(--panel-2, rgba(255,255,255,.04)); }
+    .dl-option.chosen { border-color: rgba(79,140,255,.3); background: rgba(79,140,255,.06); }
+    .dl-option-label { font-size: .69rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted, #9db0d4); margin-bottom: 4px; }
+    .dl-option.chosen .dl-option-label { color: var(--accent, #4f8cff); }
+    .dl-option-text { font-size: .84rem; color: var(--text, #eef4ff); line-height: 1.5; }
+    .dl-rationale { font-size: .85rem; color: var(--muted, #9db0d4); line-height: 1.65; padding: 10px 14px; border-radius: 10px; background: var(--panel-2, rgba(255,255,255,.04)); border-left: 2px solid rgba(79,140,255,.3); }
+    .dl-rationale strong { color: var(--text, #eef4ff); }
+    .dl-impact { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .dl-impact-pill { padding: 3px 10px; border-radius: 20px; font-size: .72rem; font-weight: 600; background: var(--panel-2, rgba(255,255,255,.04)); border: 1px solid var(--line, rgba(255,255,255,.1)); color: var(--muted, #9db0d4); }
+    /* Metrics strip */
+    .cs-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line, rgba(255,255,255,.1)); margin: 32px 0; }
+    .cs-metric { background: var(--panel, rgba(13,24,46,.78)); padding: 20px 16px; text-align: center; }
+    .cs-metric-num { font-size: 1.8rem; font-weight: 800; color: var(--accent, #4f8cff); line-height: 1; display: block; }
+    .cs-metric-lbl { font-size: .72rem; color: var(--muted, #9db0d4); text-transform: uppercase; letter-spacing: .06em; margin-top: 5px; display: block; }
+    /* Stack */
+    .stack-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .stack-pill { padding: 5px 12px; border-radius: 8px; border: 1px solid var(--line, rgba(255,255,255,.1)); background: var(--panel-2, rgba(255,255,255,.06)); font-size: .8rem; font-weight: 600; color: var(--muted, #9db0d4); }
+    /* Read progress */
+    #read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: linear-gradient(90deg, var(--accent, #4f8cff), #8b5cf6); z-index: 9999; pointer-events: none; transition: width .08s linear; }
+    @media (max-width: 640px) { .dl-options { grid-template-columns: 1fr; } .cs-metrics { grid-template-columns: 1fr 1fr; } }
   </style>
 </head>
 <body>
-  <header class="topbar">
+  <div id="read-progress"></div>
+
+  <div class="topbar">
     <div class="container">
-      <a class="brand" href="../">← Laura Andreea</a>
-      <a class="back-link" href="../#key-projects">Top proiecte</a>
-    </div>
-  </header>
-
-  <main class="container">
-    <article class="glass">
-      <span class="eyebrow">Studiu de caz · CRM SaaS</span>
-      <h1>Alpis Fusion CRM Premium</h1>
-      <p class="lead">De la prototip single-file de ~400 linii la SaaS-grade CRM modular cu kanban, flow builder, RBAC și billing. 4 luni de iterații documentate, cu decision log explicit și lessons learned reale.</p>
-
-      <div class="meta-bar">
-        <div><strong>Stack</strong><span>Vite + React + TypeScript</span></div>
-        <div><strong>Bundle</strong><span>~287KB minified</span></div>
-        <div><strong>Deploy</strong><span>GitHub Actions → Pages</span></div>
-        <div><strong>Status</strong><span>Live, iterativ</span></div>
-      </div>
-
-      <nav class="toc" aria-label="Cuprins">
-        <h2>Cuprins</h2>
-        <ol>
-          <li><a href="#context">Contextul și motivația</a></li>
-          <li><a href="#constraints">Constrângeri reale</a></li>
-          <li><a href="#decisions">Decision Log — 8 alegeri majore</a></li>
-          <li><a href="#deepdive">Deep-dive tehnic — 3 features</a></li>
-          <li><a href="#problems">Probleme reale &amp; cum le-am rezolvat</a></li>
-          <li><a href="#metrics">Metrici concrete</a></li>
-          <li><a href="#lessons">Ce aș face altfel</a></li>
-          <li><a href="#next">Roadmap public</a></li>
-        </ol>
+      <nav class="nav glass" aria-label="Navigare">
+        <div style="display:flex;gap:10px;align-items:center">
+          <a class="pill" href="../index.html">← Portofoliu CodePen</a>
+          <a class="pill" href="../index.html#key-projects">Toate proiectele-cheie</a>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="pill" id="langBtn" onclick="toggleLang()">EN</button>
+          <button class="pill" id="themeBtn" onclick="document.body.classList.toggle('light');this.textContent=document.body.classList.contains('light')?'🌙 Dark':'☀️ Light'">☀️ Light</button>
+        </div>
       </nav>
+    </div>
+  </div>
 
-      <section class="case" id="context">
-        <h2>1. Contextul și motivația</h2>
-        <p>Alpis a pornit dintr-o întrebare simplă: <strong>cum arată un CRM care nu cere training de 2 ore?</strong> Majoritatea CRM-urilor pe care le-am întâlnit în 5+ ani de marketing și CRM ops aveau aceeași problemă — utilizatorul trecea între 3-4 suprafețe diferite pentru un singur flux comercial. Lead aici, task acolo, factură în alt tab, calendar într-al patrulea.</p>
-        <p>Am ales să construiesc nu un clone Salesforce, ci un CRM <strong>opinionated</strong>: cu o singură cale clară prin fluxul comercial, optimizat pentru cei care vând și operează în paralel.</p>
-        <h3>User story principal</h3>
-        <p><em>„Ca operator comercial, vreau să închid un flux complet — de la lead la factură — fără să-mi schimb tool-ul sau să pierd context."</em></p>
-        <p>Am ignorat conștient 4 user stories care păreau importante (raportare avansată, integrări terțe, mobile-first, multi-tenant). Trade-off: <strong>mai bine un produs care rezolvă o problemă bine decât 5 jumătate</strong>.</p>
-      </section>
+  <main id="main-content">
+    <div class="container" style="max-width:860px;padding-top:48px;padding-bottom:80px">
 
-      <section class="case" id="constraints">
-        <h2>2. Constrângeri reale</h2>
-        <ul>
-          <li><strong>Solo dev.</strong> Eu, weekend hours, ~6-8 ore/săptămână efectiv pe cod.</li>
-          <li><strong>Zero buget hosting.</strong> GitHub Pages = static hosting, fără backend, fără DB.</li>
-          <li><strong>Zero buget servicii.</strong> Nu folosesc Auth0, Stripe API live, nimic plătit. Toate features simulate frontend-only cu localStorage.</li>
-          <li><strong>Audience target:</strong> recruiteri tech și PM-i din SaaS B2B. Nu utilizatori reali — deci UX trebuie să fie credibil ca demo SaaS, nu funcțional ca produs comercial.</li>
-          <li><strong>Bilingv obligatoriu.</strong> Toate texte RO + EN, schimbate dinamic.</li>
-        </ul>
-        <p>Aceste constrângeri au format în mod fundamental deciziile tehnice. Fără backend înseamnă <strong>state management agresiv în client</strong>. Fără DB înseamnă <strong>localStorage cu schemă disciplinată</strong>. Audience demo înseamnă <strong>polish UI ridicat, nu acoperire de edge cases</strong>.</p>
-      </section>
-
-      <section class="case" id="decisions">
-        <h2>3. Decision Log — 8 alegeri majore</h2>
-        <p>Pentru fiecare alegere notez: <strong>ce am ales</strong>, <strong>ce am respins</strong>, <strong>de ce</strong>, și trade-off-ul acceptat.</p>
-
-        <div class="decision-card">
-          <span class="deck">Decision 01</span>
-          <h4>Vite + React, nu Create React App sau Next.js</h4>
-          <p><strong>Ales:</strong> Vite 5 + React 18 + TypeScript 5.</p>
-          <p><strong>Respins:</strong> CRA (abandonat oficial 2023), Next.js (overkill pentru static, plus complexitate App Router).</p>
-          <p><strong>De ce:</strong> dev server pornește în ~50ms vs 5-10s la CRA. Build cu esbuild + Rollup. Plugin ecosystem matur.</p>
-          <div class="row">
-            <div><strong class="pos">+ Câștig</strong>DX excelentă, build rapid, comunitate activă, hot reload instant</div>
-            <div><strong class="neg">− Cost</strong>Curve de învățare puțin diferită vs Webpack tradițional</div>
-          </div>
+      <!-- HERO -->
+      <article class="about-card glass" style="margin-bottom:28px">
+        <span class="eyebrow">Case Study · CRM · 2025</span>
+        <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-.03em;line-height:1.05;margin-bottom:12px" id="cs-title">Alpis Fusion CRM Premium</h1>
+        <p style="color:var(--muted);line-height:1.7;font-size:1rem;margin-bottom:20px" id="cs-sub">CRM modular pentru lead pipeline, task orchestration și billing în același workspace — construit cu Vite + React și deploy automat prin GitHub Actions.</p>
+        <div class="card-actions">
+          <a class="btn btn-primary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer" id="btn-live">Deschide proiectul live</a>
+          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">GitHub →</a>
+          <a class="btn btn-secondary" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">CodePen →</a>
         </div>
-
-        <div class="decision-card">
-          <span class="deck">Decision 02</span>
-          <h4>Single-file prototip până la ~1917 linii</h4>
-          <p><strong>Ales:</strong> tot codul într-un singur component până când durerea > beneficiul.</p>
-          <p><strong>Respins:</strong> feature folders din ziua 1, atomic design, Storybook setup early.</p>
-          <p><strong>De ce:</strong> exploratory phase. Refactoring prematur îngheață forme care încă nu sunt corecte. La 200 linii nu știi care va fi structura finală.</p>
-          <div class="row">
-            <div><strong class="pos">+ Câștig</strong>Iterație ultra-rapidă pe UX, descoperire reală a formei produsului</div>
-            <div><strong class="neg">− Cost</strong>Refactor mare la final (3-4 zile), risc de bug-uri în transition</div>
-          </div>
+        <div class="stack-pills" aria-label="Stack tehnic">
+          <span class="stack-pill">React 18</span>
+          <span class="stack-pill">Vite</span>
+          <span class="stack-pill">GitHub Actions</span>
+          <span class="stack-pill">RBAC</span>
+          <span class="stack-pill">Flow Builder</span>
+          <span class="stack-pill">PDF Invoice</span>
+          <span class="stack-pill">CSV/JSON Export</span>
+          <span class="stack-pill">Kanban</span>
         </div>
+      </article>
 
-        <div class="decision-card">
-          <span class="deck">Decision 03</span>
-          <h4>localStorage ca DB, nu IndexedDB sau Supabase</h4>
-          <p><strong>Ales:</strong> localStorage cu schemă strictă (`alpis:leads:v1`, `alpis:tasks:v1`).</p>
-          <p><strong>Respins:</strong> IndexedDB (overkill pentru &lt;5MB date), Supabase (cont, networking, complexitate).</p>
-          <p><strong>De ce:</strong> demo offline-first, zero networking, instant rendering. Plus versionare în cheie pentru migrații (`v1` → `v2`).</p>
-          <div class="row">
-            <div><strong class="pos">+ Câștig</strong>Zero latency, zero cost, demo funcțional offline</div>
-            <div><strong class="neg">− Cost</strong>Limită ~5MB, fără sync între device-uri, fără backup automat</div>
-          </div>
-        </div>
-
-        <div class="decision-card">
-          <span class="deck">Decision 04</span>
-          <h4>Command Palette ⌘K ca primary navigation</h4>
-          <p><strong>Ales:</strong> ⌘K (sau Ctrl+K) deschide command palette cu fuzzy search, acțiuni și navigare rapidă.</p>
-          <p><strong>Respins:</strong> sidebar permanent extins, top nav cu mega-menu.</p>
-          <p><strong>De ce:</strong> demonstrează că target audience (power users SaaS) preferă tastatura. Plus oferă feature memorabil care diferențiază demo-ul.</p>
-          <div class="row">
-            <div><strong class="pos">+ Câștig</strong>Diferențiator vizibil, target audience înțelege imediat valoarea</div>
-            <div><strong class="neg">− Cost</strong>Useri necunoscători nu descoperă feature-ul fără hint vizual</div>
-          </div>
-        </div>
-
-        <div class="decision-card">
-          <span class="deck">Decision 05</span>
-          <h4>Wizard pentru lead creation, nu form lung</h4>
-          <p><strong>Ales:</strong> creation flow în 4 pași cu progres permanent vizibil.</p>
-          <p><strong>Respins:</strong> form clasic cu 12+ câmpuri scrollabile.</p>
-          <p><strong>De ce:</strong> form abandon rate cunoscut scade dramatic la 3-5 pași calibrați. Plus permite validare contextuală pe pas.</p>
-          <div class="row">
-            <div><strong class="pos">+ Câștig</strong>Completion rate ridicat, validare clară, mai puțin overwhelming</div>
-            <div><strong class="neg">− Cost</strong>Mai multe click-uri pentru utilizatori avansați care vor totul deodată</div>
-          </div>
-        </div>
-
-        <div class="decision-card">
-          <span class="deck">Decision 06</span>
-          <h4>RBAC simplificat — 3 roluri, nu permission matrix complexă</h4>
-          <p><strong>Ales:</strong> Owner, Manager, Operator. Permisiuni hardcoded per rol.</p>
-          <p><strong>Respins:</strong> permission matrix granulară (read/write/delete per resource).</p>
-          <p><strong>De ce:</strong> 80% din casurile reale CRM SMB se mapează pe 3 roluri. Permission matrix introduce complexitate UI și mental load fără ROI clar.</p>
-          <div class="row">
-            <div><strong class="pos">+ Câștig</strong>UI simplă pentru rol assignment, mental model clar</div>
-            <div><strong class="neg">− Cost</strong>Cazurile edge (custom permissions) cer cod special</div>
-          </div>
-        </div>
-
-        <div class="decision-card">
-          <span class="deck">Decision 07</span>
-          <h4>Flow Builder vizual, nu YAML config</h4>
-          <p><strong>Ales:</strong> drag-and-drop nodes (trigger → condition → action) cu connect lines.</p>
-          <p><strong>Respins:</strong> YAML/JSON config files (Zapier-style API config).</p>
-          <p><strong>De ce:</strong> diferențiator vizibil în demo. Plus target audience non-technical.</p>
-          <div class="row">
-            <div><strong class="pos">+ Câștig</strong>Wow factor în demo, accesibil non-tech</div>
-            <div><strong class="neg">− Cost</strong>Implementare canvas/SVG complexă (~3 zile)</div>
-          </div>
-        </div>
-
-        <div class="decision-card">
-          <span class="deck">Decision 08</span>
-          <h4>Deploy ca prima feature, nu ultima</h4>
-          <p><strong>Ales:</strong> GitHub Actions configurat de la commit-ul #1, push pe main → deploy live.</p>
-          <p><strong>Respins:</strong> deploy la final după "lansare", manual rsync, drag-drop la Netlify.</p>
-          <p><strong>De ce:</strong> dacă nu pot vedea ce am construit live, nu construiesc. Plus prinde devreme problemele de build (path-uri, env vars, lock files).</p>
-          <div class="row">
-            <div><strong class="pos">+ Câștig</strong>Feedback loop instant, demo permanent updated, încredere la stakeholders</div>
-            <div><strong class="neg">− Cost</strong>~4h setup inițial pentru workflow, secrets, permissions</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="case" id="deepdive">
-        <h2>4. Deep-dive tehnic — 3 features</h2>
-
-        <h3>4.1 Command Palette ⌘K</h3>
-        <p>Implementat ca portal React cu fuzzy search peste 4 colecții: navigation, leads, tasks, settings.</p>
-        <pre><code>// Pseudo-code structure
-function useCommandPalette() {
-  const [query, setQuery] = useState('');
-  const [open, setOpen] = useState(false);
-  
-  useHotkey('cmd+k', () => setOpen(o => !o));
-  
-  const items = useMemo(() => fuzzy(query, [
-    ...navigationItems,
-    ...leadsAsCommands,
-    ...tasksAsCommands,
-    ...settingsItems
-  ]), [query]);
-  
-  return { open, items, setQuery };
-}</code></pre>
-        <p>Trade-off: fuzzy match folosește algoritm simplu (substring scoring), nu Fuse.js. Bundle: 0KB suplimentar față de ~12KB cu Fuse. Calitatea match-ului: 80% suficientă pentru &lt;500 items.</p>
-
-        <h3>4.2 Booking Conflict Detection</h3>
-        <p>Pentru calendar booking-uri, detectez conflicte cu interval tree implementat manual:</p>
-        <pre><code>function detectConflicts(newBooking, existingBookings) {
-  return existingBookings.filter(b =>
-    b.userId === newBooking.userId &amp;&amp;
-    !(newBooking.end &lt;= b.start || newBooking.start &gt;= b.end)
-  );
-}</code></pre>
-        <p>Pentru &lt;1000 booking-uri, O(n) e suficient. Pentru scaling, ar trebui interval tree real (O(log n)). Dar acela e overengineering la nivelul actual.</p>
-
-        <h3>4.3 Flow Builder cu drag-and-drop</h3>
-        <p>Folosesc HTML5 Drag and Drop API native, fără react-dnd. Connections desenate cu SVG paths cubice. State sincronizat cu localStorage la fiecare schimbare.</p>
-        <p>Probleme rezolvate: drag preview ghost (custom cu cloneNode + setDragImage), drop zones invalide (validare în onDragOver), undo/redo cu stack de snapshots.</p>
-      </section>
-
-      <section class="case" id="problems">
-        <h2>5. Probleme reale &amp; cum le-am rezolvat</h2>
-
-        <h3>5.1 GitHub Actions deploy fail — workflow file placement</h3>
-        <p>Prima încercare am pus workflow-ul în <code>workflows/deploy.yml</code> în loc de <code>.github/workflows/deploy.yml</code>. Build a rulat doar pe push, nu pe PR. Pierdere de 2 ore.</p>
-        <p><strong>Lecția:</strong> documentația GitHub e foarte specifică pe path-uri. Read carefully.</p>
-
-        <h3>5.2 npm ci vs npm install</h3>
-        <p>Workflow-ul rula <code>npm install</code> care actualiza <code>package-lock.json</code> în CI, lock-ul nu era commit-at, build-ul devenea non-reproducibil.</p>
-        <p><strong>Soluție:</strong> commit `package-lock.json`, folosesc `npm ci` în workflow (mai rapid, strict mode).</p>
-
-        <h3>5.3 Vite base path pentru GitHub Pages</h3>
-        <p>Pe GitHub Pages, app-ul e la <code>/codepen-portfolio/</code>, nu la root. Default Vite build folosește root absolute paths — toate asset-urile dau 404.</p>
-        <p><strong>Soluție:</strong> în <code>vite.config.ts</code>: <code>base: '/codepen-portfolio/'</code>. Plus folosesc <code>import.meta.env.BASE_URL</code> pentru asset-uri dinamice.</p>
-
-        <h3>5.4 localStorage quota exceeded</h3>
-        <p>La ~50 lead-uri cu attachments base64, am atins limita de 5MB localStorage. Browser arunca <code>QuotaExceededError</code> tăcut.</p>
-        <p><strong>Soluție:</strong> wrapper around localStorage cu try/catch, plus strategie de pruning (oldest-first) când quota se apropie. În prod aș folosi IndexedDB.</p>
-      </section>
-
-      <section class="case" id="metrics">
-        <h2>6. Metrici concrete</h2>
-        <div class="metrics-grid">
-          <div class="metric"><strong>~287KB</strong><span>Bundle minified gzip</span></div>
-          <div class="metric"><strong>1917</strong><span>Linii la peak single-file</span></div>
-          <div class="metric"><strong>4 luni</strong><span>De la commit #1 la live demo</span></div>
-          <div class="metric"><strong>6</strong><span>Module SaaS funcționale</span></div>
-          <div class="metric"><strong>~50ms</strong><span>Vite dev server cold start</span></div>
-          <div class="metric"><strong>0</strong><span>Dependencies cu vulnerabilități critice</span></div>
-        </div>
-        <p style="margin-top:18px;">Lighthouse score (production build, simulate desktop): Performance 92, Accessibility 96, Best Practices 95, SEO 100.</p>
-      </section>
-
-      <section class="case lessons-card" id="lessons">
-        <h2>7. Ce aș face altfel</h2>
-        <ul>
-          <li><strong>Aș scrie teste mai devreme.</strong> Nu TDD strict, dar 5-10 teste pe paths critice (booking conflict, RBAC enforcement, flow validation) ar fi prins bug-uri pe care le-am descoperit manual la 6 săptămâni.</li>
-          <li><strong>Aș folosi Tailwind de la început.</strong> Am pierdut ~3 zile cumulativ pe naming conventions CSS modules. Tailwind ar fi rezolvat 80% din nevoie cu zero gândire.</li>
-          <li><strong>Aș face deploy preview pentru fiecare PR.</strong> Vercel sau Netlify Deploy Previews. Reviewing static screenshots e nerealistic.</li>
-          <li><strong>Aș extrage tipurile TypeScript în <code>types.ts</code> din ziua 1.</strong> Le aveam împrăștiate, refactor-ul a durat o zi întreagă doar pentru asta.</li>
-          <li><strong>Aș documenta decision log în repo, nu în Notion.</strong> Linking-ul e mai natural cu fișiere markdown în <code>docs/</code> decât cu URL-uri externe care se schimbă.</li>
-          <li><strong>Aș face accessibility audit săptămânal, nu la final.</strong> Am avut probleme cu focus management în Command Palette pe care un quick axe scan le-ar fi prins instant.</li>
-        </ul>
-      </section>
-
-      <section class="case" id="next">
-        <h2>8. Roadmap public — ce urmează</h2>
-        <ul>
-          <li><strong>Q2 2026:</strong> Real backend cu Supabase pentru persistență cross-device. Auth real (email magic link).</li>
-          <li><strong>Q3 2026:</strong> Mobile-first redesign. Acum e desktop-optimal.</li>
-          <li><strong>Q4 2026:</strong> Public API pentru integrări (Zapier-style webhooks).</li>
-          <li><strong>Continuu:</strong> AI-powered lead scoring cu Claude API. Smart task suggestions bazate pe context.</li>
-        </ul>
-      </section>
-
-      <div class="footer-cta">
-        <span class="eyebrow">Hai să lucrăm</span>
-        <h2 style="margin-top:12px;font-size:1.6rem;">Construiești ceva similar?</h2>
-        <p style="margin-top:12px;color:var(--muted);">Pot ajuta cu structura UX, decizii tehnice, sau feedback pe un produs în lucru. Răspund în 24h.</p>
-        <a class="btn" href="mailto:andreealaurap@gmail.com?subject=Feedback%20Alpis%20Fusion%20studiu%20de%20caz">Scrie-mi despre proiectul tău →</a>
-        <a class="btn btn-secondary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Deschide demo-ul live</a>
+      <!-- METRICS -->
+      <div class="cs-metrics" aria-label="Metrici proiect">
+        <div class="cs-metric"><span class="cs-metric-num">6</span><span class="cs-metric-lbl">Module SaaS</span></div>
+        <div class="cs-metric"><span class="cs-metric-num">~2</span><span class="cs-metric-lbl">click/update</span></div>
+        <div class="cs-metric"><span class="cs-metric-num">CI/CD</span><span class="cs-metric-lbl">GitHub Actions</span></div>
+        <div class="cs-metric"><span class="cs-metric-num">0€</span><span class="cs-metric-lbl">Backend cost</span></div>
       </div>
-    </article>
+
+      <!-- PROBLEMA → DECIZIE → REZULTAT -->
+      <section aria-labelledby="s-problem">
+        <div class="section-head" style="margin-bottom:16px">
+          <div><span class="eyebrow" id="eyebrow-problem">Problemă → Decizie → Rezultat</span>
+          <h2 id="s-problem" style="font-size:1.5rem">Case study — fluxul comercial fragmentat</h2></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:28px" class="cs-flow-grid">
+          <div class="about-card glass" style="padding:18px 20px">
+            <div class="eyebrow" style="font-size:.72rem;margin-bottom:8px" id="l-problem">Problemă</div>
+            <p style="color:var(--muted);font-size:.9rem;line-height:1.65" id="t-problem">Echipa schimba 3 suprafețe diferite pentru același flux comercial (lead, follow-up, billing), ceea ce adăuga fricțiune și întârzia actualizările recurente.</p>
+          </div>
+          <div class="about-card glass" style="padding:18px 20px">
+            <div class="eyebrow" style="font-size:.72rem;margin-bottom:8px" id="l-decision">Decizie</div>
+            <p style="color:var(--muted);font-size:.9rem;line-height:1.65" id="t-decision">Am unificat interacțiunile într-un dashboard modular, cu acțiuni contextuale și blocuri RBAC: utilizatorii văd doar pașii relevanți rolului lor.</p>
+          </div>
+          <div class="about-card glass" style="padding:18px 20px">
+            <div class="eyebrow" style="font-size:.72rem;margin-bottom:8px;color:#34d399" id="l-result">Rezultat</div>
+            <p style="color:var(--muted);font-size:.9rem;line-height:1.65" id="t-result">De la ~7 click-uri la 2 pentru update-uri recurente. Fluxul principal rulează într-un ecran unic, fără salturi între pagini pentru task-uri dependente.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- DECISION LOG -->
+      <section class="decision-log" aria-labelledby="s-decision-log">
+        <div class="section-head" style="margin-bottom:8px">
+          <div>
+            <span class="eyebrow" id="eyebrow-dl">Decision Log</span>
+            <h2 id="s-decision-log" style="font-size:1.5rem" id="dl-title">Decizii tehnice și de produs — cu rațional complet</h2>
+          </div>
+        </div>
+        <p class="dl-intro" id="dl-intro">Fiecare decizie majoră din construirea Alpis Fusion a implicat un trade-off real. Am documentat alternativele considerate, ce am ales și de ce — inclusiv unde aș decide diferit azi.</p>
+
+        <div class="dl-grid">
+
+          <!-- DECIZIE 1 -->
+          <div class="dl-card glass decided">
+            <div class="dl-header">
+              <div class="dl-title" id="dl1-title">Arhitectură: single-file HTML vs Vite + React</div>
+              <span class="dl-badge badge-decided" id="dl1-badge">Ales: Vite + React</span>
+            </div>
+            <p class="dl-context" id="dl1-ctx">Alpis Fusion v1 era un fișier HTML de ~1900 linii. Funcționa, dar orice modificare minoră risca să rupă altceva. Nu existau componente reutilizabile — carduri similare erau copy-paste cu variații.</p>
+            <div class="dl-options">
+              <div class="dl-option">
+                <div class="dl-option-label" id="dl1-opt1l">Alternativă</div>
+                <div class="dl-option-text" id="dl1-opt1t">Continui cu single-file HTML/CSS/JS, mai simplu de deploy, fără build step.</div>
+              </div>
+              <div class="dl-option chosen">
+                <div class="dl-option-label" id="dl1-opt2l">✓ Ales</div>
+                <div class="dl-option-text" id="dl1-opt2t">Migrez la Vite + React: componente reutilizabile, HMR în dev, build optimizat, GitHub Actions CI/CD.</div>
+              </div>
+            </div>
+            <div class="dl-rationale" id="dl1-rationale">
+              <strong>De ce:</strong> La ~600 linii de JS inline am ajuns la primul moment de „nu mai știu ce rupe ce". Separarea componentelor a rezolvat asta structural, nu cosmetic. GitHub Actions a adăugat deploy automat fără FTP. <strong>Azi aș face la fel</strong>, dar aș migra mai devreme — la ~300 linii, nu la 1900.
+            </div>
+            <div class="dl-impact">
+              <span class="dl-impact-pill">🔧 Tehnic</span>
+              <span class="dl-impact-pill">📦 Build optimizat</span>
+              <span class="dl-impact-pill">🚀 CI/CD</span>
+            </div>
+          </div>
+
+          <!-- DECIZIE 2 -->
+          <div class="dl-card glass decided">
+            <div class="dl-header">
+              <div class="dl-title" id="dl2-title">UX: densitate mare vs wizard pas cu pas</div>
+              <span class="dl-badge badge-decided" id="dl2-badge">Ales: densitate mare</span>
+            </div>
+            <p class="dl-context" id="dl2-ctx">Pentru un CRM operațional există două filosofii opuse: arată tot pe un ecran (densitate) sau ghidează utilizatorul pas cu pas (wizard). Trade-off-ul e real: scanare rapidă vs onboarding mai ușor.</p>
+            <div class="dl-options">
+              <div class="dl-option">
+                <div class="dl-option-label" id="dl2-opt1l">Alternativă</div>
+                <div class="dl-option-text" id="dl2-opt1t">Wizard: un pas pe ecran, progres vizibil, mai puțin copleșitor pentru utilizatori noi.</div>
+              </div>
+              <div class="dl-option chosen">
+                <div class="dl-option-label" id="dl2-opt2l">✓ Ales</div>
+                <div class="dl-option-text" id="dl2-opt2t">Dashboard dens: toate informațiile relevante vizibile simultan, cu priorități susținute de culoare și poziție.</div>
+              </div>
+            </div>
+            <div class="dl-rationale" id="dl2-rationale">
+              <strong>De ce:</strong> CRM-urile sunt folosite de operatori experți, nu de vizitatori ocazionali. Scanarea rapidă a 20 de lead-uri e mai valoroasă decât un onboarding lin pentru cineva care deschide dashboard-ul de 10 ori pe zi. Am compensat cu semnale vizuale clare (badge de status, culori de urgență, acțiuni contextuale). <strong>Trade-off acceptat conștient:</strong> curba de onboarding e mai abruptă pentru utilizatori noi.
+            </div>
+            <div class="dl-impact">
+              <span class="dl-impact-pill">🎯 UX</span>
+              <span class="dl-impact-pill">⚡ Eficiență operațională</span>
+            </div>
+          </div>
+
+          <!-- DECIZIE 3 -->
+          <div class="dl-card glass decided">
+            <div class="dl-header">
+              <div class="dl-title" id="dl3-title">State management: Context API vs Zustand vs Redux</div>
+              <span class="dl-badge badge-decided" id="dl3-badge">Ales: Context API + useReducer</span>
+            </div>
+            <p class="dl-context" id="dl3-ctx">Cu 6 module care partajează stare (lead selectat, filtru activ, status kanban, date factură), state management-ul era o decizie critică de arhitectură.</p>
+            <div class="dl-options">
+              <div class="dl-option">
+                <div class="dl-option-label" id="dl3-opt1l">Alternativă</div>
+                <div class="dl-option-text" id="dl3-opt1t">Zustand sau Redux Toolkit: mai predictibil pentru stare complexă, DevTools mai bune, mai ușor de testat.</div>
+              </div>
+              <div class="dl-option chosen">
+                <div class="dl-option-label" id="dl3-opt2l">✓ Ales</div>
+                <div class="dl-option-text" id="dl3-opt2t">Context API + useReducer: zero dependențe externe, suficient pentru complexitatea actuală, mai simplu de înțeles la revenire.</div>
+              </div>
+            </div>
+            <div class="dl-rationale" id="dl3-rationale">
+              <strong>De ce:</strong> La scara actuală (un singur developer, proiect personal), dependența de Zustand sau Redux adăuga complexitate fără beneficiu real. Context API cu un reducer centralizat a acoperit toate nevoile. <strong>Azi aș reconsidera</strong> dacă proiectul crește: Zustand e mai puțin verbos decât useReducer pentru stare complexă.
+            </div>
+            <div class="dl-impact">
+              <span class="dl-impact-pill">🏗️ Arhitectură</span>
+              <span class="dl-impact-pill">📦 Bundle size</span>
+            </div>
+          </div>
+
+          <!-- DECIZIE 4 -->
+          <div class="dl-card glass tradeoff">
+            <div class="dl-header">
+              <div class="dl-title" id="dl4-title">Autosave: la fiecare keystroke vs buton explicit Save</div>
+              <span class="dl-badge badge-tradeoff" id="dl4-badge">Trade-off acceptat</span>
+            </div>
+            <p class="dl-context" id="dl4-ctx">Autosave schimbă fundamental comportamentul utilizatorului. Fără buton Save, oamenii testează mai mult și editează mai liber. Dar introduce riscul de salvări accidentale.</p>
+            <div class="dl-options">
+              <div class="dl-option">
+                <div class="dl-option-label" id="dl4-opt1l">Buton Save explicit</div>
+                <div class="dl-option-text" id="dl4-opt1t">Utilizatorul controlează când se salvează. Mai sigur, mai familiar, dar adaugă un click în fiecare interacțiune.</div>
+              </div>
+              <div class="dl-option chosen">
+                <div class="dl-option-label" id="dl4-opt2l">✓ Ales: Autosave</div>
+                <div class="dl-option-text" id="dl4-opt2t">Salvare automată cu debounce de 800ms + indicator vizibil „Salvat" + posibilitate de undo pe 30 secunde.</div>
+              </div>
+            </div>
+            <div class="dl-rationale" id="dl4-rationale">
+              <strong>De ce:</strong> A fost decizia de UX cu cel mai mare impact și a costat ~15 linii de cod. Autosave + undo e superior butonului Save în context operațional — reduce fricțiunea fără să elimine siguranța. <strong>Trade-off:</strong> dacă un utilizator editează greșit și nu observă indicatorul de salvare, nu poate da „Cancel". Undo rezolvă parțial asta, dar nu complet.
+            </div>
+            <div class="dl-impact">
+              <span class="dl-impact-pill">🎯 UX</span>
+              <span class="dl-impact-pill">⚡ Eficiență</span>
+              <span class="dl-impact-pill">⚠️ Risc: edit accidental</span>
+            </div>
+          </div>
+
+          <!-- DECIZIE 5 -->
+          <div class="dl-card glass rejected">
+            <div class="dl-header">
+              <div class="dl-title" id="dl5-title">Backend real vs date simulate (localStorage)</div>
+              <span class="dl-badge badge-rejected" id="dl5-badge">Respins: backend real</span>
+            </div>
+            <p class="dl-context" id="dl5-ctx">Un CRM real are nevoie de un backend pentru date persistente multi-utilizator. Alegerea a fost între a simula totul în localStorage sau a construi un API.</p>
+            <div class="dl-options">
+              <div class="dl-option">
+                <div class="dl-option-label" id="dl5-opt1l">Respins</div>
+                <div class="dl-option-text" id="dl5-opt1t">Backend real (Node.js + PostgreSQL sau Supabase): date persistente, multi-utilizator, sincronizare în timp real.</div>
+              </div>
+              <div class="dl-option chosen">
+                <div class="dl-option-label" id="dl5-opt2l">✓ Ales</div>
+                <div class="dl-option-text" id="dl5-opt2t">Date simulate complet în JavaScript + localStorage: 0€ hosting, deploy instant pe GitHub Pages, focus pe UI/UX nu pe infra.</div>
+              </div>
+            </div>
+            <div class="dl-rationale" id="dl5-rationale">
+              <strong>De ce:</strong> Scopul proiectului este demonstrarea logicii de produs și a abilităților front-end, nu construirea de infra. Un backend real ar fi adăugat 3-4 săptămâni de lucru pentru ceva ce un recruitor nu vede. <strong>Limitare conștientă:</strong> datele nu persistă între sesiuni diferite (browser diferit sau after clear). Documentat explicit în README.
+            </div>
+            <div class="dl-impact">
+              <span class="dl-impact-pill">💰 0€ hosting</span>
+              <span class="dl-impact-pill">🚀 Deploy instant</span>
+              <span class="dl-impact-pill">⚠️ Limitare: sesiune single-browser</span>
+            </div>
+          </div>
+
+          <!-- DECIZIE 6 -->
+          <div class="dl-card glass decided">
+            <div class="dl-header">
+              <div class="dl-title" id="dl6-title">RBAC: rol hardcodat vs selector de rol în UI</div>
+              <span class="dl-badge badge-decided" id="dl6-badge">Ales: selector de rol în UI</span>
+            </div>
+            <p class="dl-context" id="dl6-ctx">Role-Based Access Control presupune că fiecare utilizator are un rol. Într-un demo fără backend, cum demonstrezi RBAC convingător?</p>
+            <div class="dl-options">
+              <div class="dl-option">
+                <div class="dl-option-label" id="dl6-opt1l">Alternativă</div>
+                <div class="dl-option-text" id="dl6-opt1t">Hardcodez un rol implicit (Admin) și arăt toate permisiunile — mai simplu, dar nu demonstrează RBAC real.</div>
+              </div>
+              <div class="dl-option chosen">
+                <div class="dl-option-label" id="dl6-opt2l">✓ Ales</div>
+                <div class="dl-option-text" id="dl6-opt2t">Selector vizibil în UI: Admin, Manager, Agent. Schimbarea rolului ascunde/arată secțiuni instant, fără reload.</div>
+              </div>
+            </div>
+            <div class="dl-rationale" id="dl6-rationale">
+              <strong>De ce:</strong> Un demo de RBAC care nu demonstrează schimbarea de rol nu demonstrează nimic. Selectorul vizibil permite unui recruitor sau evaluator să vadă imediat cum se comportă UI-ul pentru fiecare rol — asta e valoarea reală a feature-ului. Implementarea e simplă (obiect cu permisiuni per rol + re-render condițional), dar impactul de comunicare e mare.
+            </div>
+            <div class="dl-impact">
+              <span class="dl-impact-pill">🔐 Security UX</span>
+              <span class="dl-impact-pill">🎯 Demo clarity</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- BEFORE / AFTER -->
+      <section style="margin-top:48px" aria-labelledby="s-ba">
+        <span class="eyebrow">Before / After</span>
+        <h2 id="s-ba" style="font-size:1.5rem;margin-bottom:20px" id="ba-title">Flux fragmentat → workspace unic</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" class="ba-grid">
+          <div class="about-card glass" style="padding:20px 22px">
+            <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px" id="l-before">Înainte</div>
+            <ul style="color:var(--muted);font-size:.9rem;line-height:1.7;padding-left:16px;margin:0">
+              <li id="ba1-before">3 tab-uri deschise simultan: CRM, task manager, factură</li>
+              <li id="ba2-before">~7 click-uri pentru un update de status + follow-up</li>
+              <li id="ba3-before">Date nesincronizate: statusul din CRM nu se reflecta în task</li>
+              <li id="ba4-before">Zero automatizare: fiecare tranziție manuală</li>
+            </ul>
+          </div>
+          <div class="about-card glass" style="padding:20px 22px;border-color:rgba(79,140,255,.2)">
+            <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--accent,#4f8cff);margin-bottom:10px" id="l-after">După</div>
+            <ul style="color:var(--muted);font-size:.9rem;line-height:1.7;padding-left:16px;margin:0">
+              <li id="ba1-after">1 ecran: lead, task, invoice în același context</li>
+              <li id="ba2-after">~2 click-uri pentru același update</li>
+              <li id="ba3-after">Stare sincronizată: statusul se propagă în toate modulele</li>
+              <li id="ba4-after">Flow builder: tranziții automate configurabile</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREENSHOTS -->
+      <section style="margin-top:48px" aria-labelledby="s-screens">
+        <span class="eyebrow">Screenshot-uri proiect</span>
+        <h2 id="s-screens" style="font-size:1.5rem;margin-bottom:20px">3 stări ale dashboard-ului</h2>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <figure style="margin:0">
+            <img src="../assets/screenshots/alpis-fusion-hero.svg" alt="Alpis Fusion hero dashboard — overview cu pipeline și KPI cards" style="width:100%;border-radius:14px;border:1px solid var(--line,rgba(255,255,255,.1))" loading="lazy" />
+            <figcaption style="font-size:.82rem;color:var(--muted);margin-top:8px;font-style:italic" id="cap1">Hero state: overview cu pipeline + KPI cards.</figcaption>
+          </figure>
+          <figure style="margin:0">
+            <img src="../assets/screenshots/alpis-fusion-flow.svg" alt="Alpis Fusion flow complet — lead, task și invoice fără schimbare de pagină" style="width:100%;border-radius:14px;border:1px solid var(--line,rgba(255,255,255,.1))" loading="lazy" />
+            <figcaption style="font-size:.82rem;color:var(--muted);margin-top:8px;font-style:italic" id="cap2">Flow complet: lead → task → invoice fără schimbare de pagină.</figcaption>
+          </figure>
+          <figure style="margin:0">
+            <img src="../assets/screenshots/alpis-fusion-ui-detail.svg" alt="Alpis Fusion UI detail — badge de status și acțiuni rapide pe card" style="width:100%;border-radius:14px;border:1px solid var(--line,rgba(255,255,255,.1))" loading="lazy" />
+            <figcaption style="font-size:.82rem;color:var(--muted);margin-top:8px;font-style:italic" id="cap3">Detaliu UI: badge de status + acțiuni rapide pe card.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- EMBED -->
+      <section style="margin-top:48px" aria-labelledby="s-embed">
+        <span class="eyebrow">Demo live</span>
+        <h2 id="s-embed" style="font-size:1.5rem;margin-bottom:16px">CodePen embed</h2>
+        <iframe src="https://codepen.io/Laura-Andreea-the-typescripter/embed/preview?default-tab=result" title="Alpis Fusion CRM Premium — CodePen embed" loading="lazy" style="width:100%;height:500px;border:0;border-radius:18px;border:1px solid var(--line,rgba(255,255,255,.1))"></iframe>
+      </section>
+
+      <!-- FOOTER NAV -->
+      <div style="margin-top:48px;display:flex;gap:12px;flex-wrap:wrap">
+        <a class="btn btn-primary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer" id="btn-live2">Deschide proiectul live</a>
+        <a class="btn btn-secondary" href="mailto:andreealaurap@gmail.com?subject=Feedback%20Alpis%20Fusion%20CRM">Email</a>
+        <a class="btn btn-secondary" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="btn btn-secondary" href="../index.html">← Portofoliu</a>
+      </div>
+
+    </div>
   </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Laura Andreea · <a href="../index.html">laurandreea10.github.io</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Read progress bar
+    window.addEventListener('scroll', function() {
+      var s = document.documentElement;
+      var pct = (s.scrollTop / (s.scrollHeight - s.clientHeight)) * 100;
+      document.getElementById('read-progress').style.width = pct + '%';
+    }, { passive: true });
+
+    // Lang toggle
+    var lang = 'ro';
+    var strings = {
+      ro: {
+        'cs-sub': 'CRM modular pentru lead pipeline, task orchestration și billing în același workspace — construit cu Vite + React și deploy automat prin GitHub Actions.',
+        'btn-live': 'Deschide proiectul live', 'btn-live2': 'Deschide proiectul live',
+        'eyebrow-problem': 'Problemă → Decizie → Rezultat',
+        'l-problem': 'Problemă', 'l-decision': 'Decizie', 'l-result': 'Rezultat',
+        't-problem': 'Echipa schimba 3 suprafețe diferite pentru același flux comercial (lead, follow-up, billing), ceea ce adăuga fricțiune și întârzia actualizările recurente.',
+        't-decision': 'Am unificat interacțiunile într-un dashboard modular, cu acțiuni contextuale și blocuri RBAC: utilizatorii văd doar pașii relevanți rolului lor.',
+        't-result': 'De la ~7 click-uri la 2 pentru update-uri recurente. Fluxul principal rulează într-un ecran unic, fără salturi între pagini pentru task-uri dependente.',
+        'eyebrow-dl': 'Decision Log', 'dl-title': 'Decizii tehnice și de produs — cu rațional complet',
+        'dl-intro': 'Fiecare decizie majoră din construirea Alpis Fusion a implicat un trade-off real. Am documentat alternativele considerate, ce am ales și de ce — inclusiv unde aș decide diferit azi.',
+        'l-before': 'Înainte', 'l-after': 'După',
+        'ba1-before': '3 tab-uri deschise simultan: CRM, task manager, factură',
+        'ba2-before': '~7 click-uri pentru un update de status + follow-up',
+        'ba3-before': 'Date nesincronizate: statusul din CRM nu se reflecta în task',
+        'ba4-before': 'Zero automatizare: fiecare tranziție manuală',
+        'ba1-after': '1 ecran: lead, task, invoice în același context',
+        'ba2-after': '~2 click-uri pentru același update',
+        'ba3-after': 'Stare sincronizată: statusul se propagă în toate modulele',
+        'ba4-after': 'Flow builder: tranziții automate configurabile',
+        'cap1': 'Hero state: overview cu pipeline + KPI cards.',
+        'cap2': 'Flow complet: lead → task → invoice fără schimbare de pagină.',
+        'cap3': 'Detaliu UI: badge de status + acțiuni rapide pe card.'
+      },
+      en: {
+        'cs-sub': 'Modular CRM for lead pipeline, task orchestration and billing in one workspace — built with Vite + React and automatic deploy via GitHub Actions.',
+        'btn-live': 'Open live project', 'btn-live2': 'Open live project',
+        'eyebrow-problem': 'Problem → Decision → Result',
+        'l-problem': 'Problem', 'l-decision': 'Decision', 'l-result': 'Result',
+        't-problem': 'The team was switching between 3 different surfaces for the same commercial flow (lead, follow-up, billing), adding friction and delaying recurring updates.',
+        't-decision': 'I unified interactions into a modular dashboard with contextual actions and RBAC blocks: users only see steps relevant to their role.',
+        't-result': 'From ~7 clicks to 2 for recurring updates. The main flow runs in one screen, with no page jumps for dependent tasks.',
+        'eyebrow-dl': 'Decision Log', 'dl-title': 'Technical and product decisions — with full rationale',
+        'dl-intro': 'Every major decision in building Alpis Fusion involved a real trade-off. I\'ve documented the alternatives considered, what I chose and why — including where I\'d decide differently today.',
+        'l-before': 'Before', 'l-after': 'After',
+        'ba1-before': '3 tabs open simultaneously: CRM, task manager, invoice',
+        'ba2-before': '~7 clicks for a status + follow-up update',
+        'ba3-before': 'Unsynced data: CRM status didn\'t reflect in tasks',
+        'ba4-before': 'Zero automation: every transition manual',
+        'ba1-after': '1 screen: lead, task, invoice in the same context',
+        'ba2-after': '~2 clicks for the same update',
+        'ba3-after': 'Synced state: status propagates across all modules',
+        'ba4-after': 'Flow builder: configurable automatic transitions',
+        'cap1': 'Hero state: pipeline overview + KPI cards.',
+        'cap2': 'Full flow: lead → task → invoice without page changes.',
+        'cap3': 'UI detail: status badge + quick actions on card.'
+      }
+    };
+    function toggleLang() {
+      lang = lang === 'ro' ? 'en' : 'ro';
+      document.getElementById('langBtn').textContent = lang === 'ro' ? 'EN' : 'RO';
+      document.documentElement.lang = lang;
+      Object.keys(strings[lang]).forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = strings[lang][id];
+      });
+    }
+  </script>
 </body>
 </html>
