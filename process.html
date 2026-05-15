@@ -1,134 +1,391 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Procesul meu de lucru — Laura Andreea</title>
-  <meta name="description" content="De la idee la deploy: cum construiesc un proiect front-end în 6 pași, cu studiu de caz Alpis Fusion CRM Premium." />
-  <meta name="theme-color" content="#071226" />
-  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/process.html" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-
-  <meta property="og:type" content="article" />
-  <meta property="og:title" content="Procesul meu de lucru — de la idee la deploy" />
-  <meta property="og:description" content="6 pași concreți, cu trade-off-uri explicite, pe baza Alpis Fusion CRM Premium." />
-  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/process.html" />
-
+  <meta name="description" content="De la idee la deploy: cum construiesc un proiect front-end în 6 pași, cu studiu de caz Alpis Fusion CRM Premium. Trade-off-uri explicite, decizii documentate."/>
+  <meta name="author" content="Laura Andreea"/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/process.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Procesul meu de lucru — de la idee la deploy"/>
+  <meta property="og:description" content="6 pași concreți, cu trade-off-uri explicite, pe baza Alpis Fusion CRM Premium."/>
+  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/process.html"/>
+  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/alpis-fusion-demo-poster.svg"/>
+  <meta property="og:locale" content="ro_RO"/>
+  <meta property="og:site_name" content="CodePen Portfolio — Laura Andreea"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Procesul meu de lucru — Laura Andreea"/>
+  <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/alpis-fusion-demo-poster.svg"/>
+  <meta name="theme-color" content="#071226"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="preload" href="style.css" as="style"/>
+  <link rel="stylesheet" href="style.css"/>
   <style>
-    :root {
-      --bg:#050d1f;--bg2:#08142b;--panel:rgba(10,22,46,.8);--line:rgba(255,255,255,.1);
-      --text:#eef4ff;--muted:#9db0d4;--accent:#4f8cff;--accent2:#8b5cf6;
-      --green:#4ade80;--amber:#f59e0b;
-      --shadow:0 20px 48px rgba(0,0,0,.32);--container:880px;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--text);
-      background:linear-gradient(180deg,var(--bg2),var(--bg));min-height:100vh;
-      line-height:1.7}
-    a{color:var(--accent);text-decoration:none}
-    a:hover{text-decoration:underline}
-    h1,h2,h3,p,ul,ol{margin:0}
-    .container{width:min(var(--container),calc(100% - 32px));margin:0 auto;padding:32px 0}
-    .glass{background:var(--panel);border:1px solid var(--line);
-      box-shadow:var(--shadow);backdrop-filter:blur(14px);border-radius:22px;padding:28px}
-    .topbar{padding:20px 0;border-bottom:1px solid var(--line)}
-    .topbar .container{padding:0;display:flex;justify-content:space-between;align-items:center}
-    .brand{font-weight:800;color:var(--text)}
-    .back-link{color:var(--muted);font-size:.9rem}
-    .eyebrow{font-size:.78rem;font-weight:800;text-transform:uppercase;
-      letter-spacing:.1em;color:var(--accent)}
-    h1{font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.1;letter-spacing:-.03em;margin-top:14px}
-    .lead{margin-top:18px;color:var(--muted);font-size:1.1rem}
-    .process-steps{margin-top:32px;list-style:none;padding:0;display:flex;flex-direction:column;gap:18px}
-    .step{padding:22px;border:1px solid var(--line);border-radius:18px;
-      background:rgba(255,255,255,.03)}
-    .step h2{font-size:1.2rem;color:var(--accent);margin-bottom:10px}
-    .step p{color:var(--muted)}
-    .step p+p{margin-top:10px}
-    .step strong{color:var(--text)}
-    .lessons{margin-top:32px;padding:22px;border:1px solid rgba(245,158,11,.25);
-      border-radius:18px;background:rgba(245,158,11,.06)}
-    .lessons h2{font-size:1.2rem;color:var(--amber);margin-bottom:14px}
-    .lessons ul{margin:0;padding-left:22px;color:var(--muted)}
-    .lessons li+li{margin-top:8px}
-    .footer-cta{margin-top:32px;text-align:center;padding:28px;
-      border:1px solid rgba(139,92,246,.3);border-radius:22px;
-      background:linear-gradient(135deg,rgba(79,140,255,.12),rgba(139,92,246,.10))}
-    .btn{display:inline-flex;align-items:center;justify-content:center;
-      min-height:48px;padding:0 24px;border-radius:999px;border:1px solid transparent;
-      font-weight:700;font-size:.95rem;color:#fff;
-      background:linear-gradient(135deg,var(--accent),var(--accent2))}
-    .btn:hover{opacity:.9;text-decoration:none}
+    #read-bar{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--accent,#4f8cff),#8b5cf6);z-index:9999;pointer-events:none;transition:width .08s linear}
+    .process-wrap{max-width:760px;margin:0 auto;padding:48px 0 80px}
+    .step-card{border-radius:20px;padding:28px 30px;margin-bottom:16px;position:relative;overflow:hidden}
+    .step-num{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--accent,#4f8cff);margin-bottom:8px;display:flex;align-items:center;gap:10px}
+    .step-num::after{content:'';flex:1;height:1px;background:var(--line,rgba(255,255,255,.08))}
+    .step-title{font-size:1.15rem;font-weight:700;margin-bottom:12px;letter-spacing:-.02em}
+    .step-body{color:var(--muted,#9db0d4);line-height:1.78;font-size:.95rem}
+    .step-body strong{color:var(--text,#eef4ff)}
+    .step-body p{margin-bottom:10px}
+    .step-body p:last-child{margin-bottom:0}
+    .tradeoff{display:flex;gap:10px;margin-top:14px;padding:12px 14px;border-radius:12px;background:rgba(79,140,255,.06);border:1px solid rgba(79,140,255,.14);font-size:.86rem;color:var(--muted,#9db0d4);line-height:1.6}
+    .tradeoff-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+    .tradeoff strong{color:var(--text,#eef4ff)}
+    .step-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:12px}
+    .badge-learned{background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.2);color:#34d399}
+    .metrics-row{display:flex;gap:0;border:1px solid var(--line,rgba(255,255,255,.1));border-radius:12px;overflow:hidden;margin:20px 0 0}
+    .metric{flex:1;padding:12px 14px;text-align:center;border-right:1px solid var(--line,rgba(255,255,255,.1))}
+    .metric:last-child{border-right:none}
+    .metric-n{display:block;font-size:1.1rem;font-weight:800;color:var(--accent,#4f8cff);line-height:1}
+    .metric-l{display:block;font-size:.67rem;color:var(--muted,#9db0d4);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+    .altfel-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+    .altfel-item{border-radius:13px;padding:14px 16px;background:rgba(255,255,255,.03);border:1px solid var(--line,rgba(255,255,255,.08))}
+    .altfel-item strong{font-size:.85rem;color:var(--text,#eef4ff);display:block;margin-bottom:4px}
+    .altfel-item span{font-size:.82rem;color:var(--muted,#9db0d4);line-height:1.55}
+    .timeline{display:flex;flex-direction:column;gap:0;margin:20px 0}
+    .tl-item{display:flex;gap:16px;align-items:flex-start;padding-bottom:20px;position:relative}
+    .tl-item:last-child{padding-bottom:0}
+    .tl-dot{width:28px;height:28px;border-radius:50%;background:var(--accent,#4f8cff);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75rem;font-weight:800;flex-shrink:0;margin-top:2px;position:relative;z-index:1}
+    .tl-line{position:absolute;left:14px;top:28px;bottom:0;width:1px;background:var(--line,rgba(255,255,255,.1))}
+    .tl-item:last-child .tl-line{display:none}
+    .tl-content h4{font-size:.95rem;font-weight:700;margin-bottom:5px}
+    .tl-content p{font-size:.86rem;color:var(--muted,#9db0d4);line-height:1.65;margin:0}
+    @media(max-width:600px){.altfel-grid{grid-template-columns:1fr}.step-card{padding:22px 18px}}
   </style>
 </head>
 <body>
-  <header class="topbar">
+  <div id="read-bar"></div>
+
+  <div class="topbar">
     <div class="container">
-      <a class="brand" href="/codepen-portfolio/">← Laura Andreea</a>
-      <a class="back-link" href="/codepen-portfolio/#key-projects">Top proiecte</a>
+      <nav class="nav glass" aria-label="Navigare">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <a class="pill" href="index.html" id="nav-back">← Portofoliu</a>
+          <a class="pill" href="index.html#key-projects" id="nav-projects">Top proiecte</a>
+          <a class="pill" href="uses.html" id="nav-uses">Uses →</a>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="pill" id="langBtn" onclick="toggleLang()">EN</button>
+          <button class="pill" id="themeBtn" onclick="document.body.classList.toggle('light');this.textContent=document.body.classList.contains('light')?'🌙 Dark':'☀️ Light'">☀️ Light</button>
+        </div>
+      </nav>
     </div>
-  </header>
+  </div>
 
-  <main class="container">
-    <article class="glass">
-      <span class="eyebrow">Process</span>
-      <h1>De la idee la deploy — în 6 pași</h1>
-      <p class="lead">Procesul meu nu e linear. E iterativ, cu pași înapoi când o decizie nu se mai justifică. Mai jos — exemplu real cu Alpis Fusion CRM Premium.</p>
+  <main id="main-content">
+    <div class="container process-wrap">
 
-      <ol class="process-steps">
-        <li class="step">
-          <h2>1. Problema, înainte de cod</h2>
-          <p>Pentru Alpis am pornit de la o întrebare: <strong>cum arată un CRM care nu cere training de 2 ore?</strong> Am scris pe hârtie 5 user stories și am ales cel mai dureros: „vreau să închid un flux comercial fără să-mi schimb tool-ul".</p>
-          <p>Trade-off acceptat: am ignorat 4 user stories care păreau importante, dar nu erau urgente. <strong>Mai bine un produs care rezolvă o problemă bine decât 5 jumătate.</strong></p>
-        </li>
+      <!-- HERO -->
+      <article class="about-card glass" style="margin-bottom:28px">
+        <span class="eyebrow" id="hero-eyebrow">Process · De la idee la deploy</span>
+        <h1 style="font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.04em;line-height:1.05;margin-bottom:12px" id="hero-title">Cum construiesc un proiect — 6 pași cu trade-off-uri reale</h1>
+        <p style="color:var(--muted);line-height:1.75;font-size:.97rem;margin-bottom:20px" id="hero-sub">Procesul meu nu e linear. E iterativ, cu pași înapoi când o decizie nu se mai justifică. Exemplu real: Alpis Fusion CRM Premium — de la primele 400 linii la un SaaS modular cu 6 module, CI/CD și deploy automat.</p>
+        <div class="metrics-row" style="margin:0">
+          <div class="metric"><span class="metric-n">6</span><span class="metric-l" id="m1">Pași documentați</span></div>
+          <div class="metric"><span class="metric-n">~1917</span><span class="metric-l" id="m2">Linii la refactor</span></div>
+          <div class="metric"><span class="metric-n">CI/CD</span><span class="metric-l" id="m3">Din prima zi</span></div>
+          <div class="metric"><span class="metric-n">6</span><span class="metric-l" id="m4">Module finale</span></div>
+        </div>
+      </article>
 
-        <li class="step">
-          <h2>2. Wireframe înainte de stack</h2>
-          <p>Am desenat în Excalidraw layout-ul principal. Fără culori, fără fonturi — doar ierarhie. Sidebar fix vs top nav, kanban vs list, comand palette vs menu.</p>
-          <p>Apoi am decis stack-ul: <strong>Vite + React + TypeScript</strong>. Vite pentru DX (dev server ~50ms), React pentru componente reutilizabile, TS pentru refactor safe la 1000+ linii.</p>
-        </li>
-
-        <li class="step">
-          <h2>3. Prototip într-un singur fișier</h2>
-          <p>Primul commit Alpis a fost ~400 linii într-un component. Antipattern? Nu pentru exploratory phase. Am ajuns la <strong>~1917 linii</strong> înainte să refactorez. Asta mi-a permis să iterez foarte rapid pe UX fără overhead de structură.</p>
-          <p>Lecția: <strong>nu refactora prea devreme.</strong> Codul „prea simplu" la început îți permite să descoperi forma reală a produsului.</p>
-        </li>
-
-        <li class="step">
-          <h2>4. Refactor când durerea > beneficiul</h2>
-          <p>La 1917 linii nu mai puteam adăuga features fără să sparg ceva. Am extras: feature folders (lead, task, billing, automation), custom hooks (`useKanban`, `useFlowBuilder`), types într-un fișier dedicat.</p>
-          <p>Aici am învățat că <strong>refactorul e o decizie de timing, nu o regulă.</strong> A face refactor la 200 linii e overengineering. La 2000 linii e supraviețuire.</p>
-        </li>
-
-        <li class="step">
-          <h2>5. Deploy ca prima feature, nu ultima</h2>
-          <p>GitHub Actions cu Vite deploy de la primul commit. <strong>Dacă nu pot vedea ce am construit live, nu construiesc.</strong></p>
-          <p>Troubleshooting-ul cu workflow file placement și `npm ci` vs `npm install` m-a învățat mai mult decât 10 tutoriale. Lock file lipsă → fail. Workflow în loc greșit → fail tăcut. <strong>Deploy-ul e o feature care merită prioritizată.</strong></p>
-        </li>
-
-        <li class="step">
-          <h2>6. Decizii documentate</h2>
-          <p>Pentru fiecare alegere majoră am notat: ce am ales, ce am respins, de ce. Vezi Decision Log în studiul de caz Alpis. <strong>Recruiter-ul tehnic citește asta, nu README-ul.</strong></p>
-          <p>3 decizii din Alpis: navigare pe un singur ecran (+ rapiditate, − densitate), wizard în loc de form lung (+ completion rate, − click-uri în plus), CTA contextual (+ relevanță, − implementare complexă).</p>
-        </li>
-      </ol>
-
-      <section class="lessons">
-        <h2>⚡ Ce aș face altfel</h2>
-        <ul>
-          <li>Aș scrie teste mai devreme — am ajuns la bug-uri în Kanban drag &amp; drop pe care un test simplu le-ar fi prins.</li>
-          <li>Aș alege Tailwind de la început, nu CSS modules — am pierdut timp pe naming conventions.</li>
-          <li>Aș face deploy preview pentru fiecare PR, nu doar pe main.</li>
-          <li>Aș extrage tipurile TypeScript în `types.ts` din prima zi, nu la refactor.</li>
-        </ul>
-      </section>
-
-      <div class="footer-cta">
-        <span class="eyebrow">Hai să lucrăm</span>
-        <p style="margin-top:10px;color:var(--muted);">Construiești un CRM intern, dashboard sau produs cu fluxuri clare?</p>
-        <a class="btn" href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect" style="margin-top:16px;">Scrie-mi despre proiectul tău →</a>
+      <!-- TIMELINE OVERVIEW -->
+      <div class="about-card glass" style="margin-bottom:24px;padding:24px 28px">
+        <div class="eyebrow" id="tl-eyebrow" style="margin-bottom:14px">Overview rapid</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot">1</div>
+            <div class="tl-line"></div>
+            <div class="tl-content"><h4 id="tl1-t">Problema, înainte de cod</h4><p id="tl1-d">User stories pe hârtie. O problemă clară, restul ignorate deliberat.</p></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot">2</div>
+            <div class="tl-line"></div>
+            <div class="tl-content"><h4 id="tl2-t">Wireframe înainte de stack</h4><p id="tl2-d">Excalidraw fără culori. Ierarhie, navigare, layout. Apoi: Vite + React + TypeScript.</p></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot">3</div>
+            <div class="tl-line"></div>
+            <div class="tl-content"><h4 id="tl3-t">Prototip rapid, un singur fișier</h4><p id="tl3-d">~400 linii în primul commit. Iterez pe UX fără overhead de structură.</p></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot">4</div>
+            <div class="tl-line"></div>
+            <div class="tl-content"><h4 id="tl4-t">Refactor la momentul potrivit</h4><p id="tl4-d">La ~1917 linii: feature folders, custom hooks, types separate.</p></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot">5</div>
+            <div class="tl-line"></div>
+            <div class="tl-content"><h4 id="tl5-t">Deploy — prima feature, nu ultima</h4><p id="tl5-d">GitHub Actions din primul commit. Văd live înainte să adaug orice feature nouă.</p></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot">6</div>
+            <div class="tl-content"><h4 id="tl6-t">Decizii documentate</h4><p id="tl6-d">Ce am ales, ce am respins, de ce. Decision Log public pe fiecare proiect major.</p></div>
+          </div>
+        </div>
       </div>
-    </article>
+
+      <!-- PAS 1 -->
+      <div class="step-card glass">
+        <div class="step-num" id="s1-num">Pasul 1</div>
+        <h2 class="step-title" id="s1-title">Problema, înainte de cod</h2>
+        <div class="step-body">
+          <p id="s1-p1">Pentru Alpis am pornit de la o întrebare: <strong>cum arată un CRM care nu cere training de 2 ore?</strong> Am scris pe hârtie 5 user stories și am ales cel mai dureros: „vreau să închid un flux comercial fără să-mi schimb tool-ul".</p>
+          <p id="s1-p2">Am ignorat deliberat celelalte 4 stories care păreau importante. Asta e decizia cea mai grea la început — nu ce adaugi, ci ce refuzi să adaugi.</p>
+        </div>
+        <div class="tradeoff">
+          <span class="tradeoff-icon">⚖️</span>
+          <div id="s1-to"><strong>Trade-off acceptat:</strong> am ignorat 4 user stories care păreau importante, dar nu erau urgente. Mai bine un produs care rezolvă o problemă bine decât 5 pe jumătate.</div>
+        </div>
+        <span class="step-badge badge-learned" id="s1-badge">💡 Lecție: focus beats scope</span>
+      </div>
+
+      <!-- PAS 2 -->
+      <div class="step-card glass">
+        <div class="step-num" id="s2-num">Pasul 2</div>
+        <h2 class="step-title" id="s2-title">Wireframe înainte de stack</h2>
+        <div class="step-body">
+          <p id="s2-p1">Am desenat în Excalidraw layout-ul principal. <strong>Fără culori, fără fonturi — doar ierarhie.</strong> Sidebar fix vs top nav, kanban vs list, command palette vs menu.</p>
+          <p id="s2-p2">Abia după ce am înțeles forma produsului am ales stack-ul: <strong>Vite + React + TypeScript.</strong> Vite pentru DX (~50ms dev server), React pentru componente reutilizabile, TypeScript pentru refactor safe la 1000+ linii.</p>
+        </div>
+        <div class="tradeoff">
+          <span class="tradeoff-icon">⚖️</span>
+          <div id="s2-to"><strong>De ce TypeScript de la început:</strong> primele 400 linii funcționau și fără TS. Dar la refactor, tipurile au salvat ~3h de debugging. Costul de setup: ~20 minute.</div>
+        </div>
+        <span class="step-badge badge-learned" id="s2-badge">💡 Lecție: structura înainte de stil</span>
+      </div>
+
+      <!-- PAS 3 -->
+      <div class="step-card glass">
+        <div class="step-num" id="s3-num">Pasul 3</div>
+        <h2 class="step-title" id="s3-title">Prototip rapid, un singur fișier</h2>
+        <div class="step-body">
+          <p id="s3-p1">Primul commit Alpis: ~400 linii într-un singur component. Antipattern? <strong>Nu pentru exploratory phase.</strong> Am ajuns la ~1917 linii înainte de refactor — și asta mi-a permis să iterez rapid pe UX fără overhead de structură.</p>
+          <p id="s3-p2">Forma reală a produsului apare la 800-1000 linii, nu la 100. Înainte să extragi componente, trebuie să știi ce extragi. Un fișier mare e un draft, nu un produs.</p>
+        </div>
+        <div class="tradeoff">
+          <span class="tradeoff-icon">⚖️</span>
+          <div id="s3-to"><strong>Trade-off conștient:</strong> codul la 1000 linii era greu de citit. Avantajul: am descoperit pattern-urile reale ale produsului — pe care le-am extras corect la refactor, nu prematur.</div>
+        </div>
+        <span class="step-badge badge-learned" id="s3-badge">💡 Lecție: nu refactora prea devreme</span>
+      </div>
+
+      <!-- PAS 4 -->
+      <div class="step-card glass">
+        <div class="step-num" id="s4-num">Pasul 4</div>
+        <h2 class="step-title" id="s4-title">Refactor când durerea depășește beneficiul</h2>
+        <div class="step-body">
+          <p id="s4-p1">La 1917 linii nu mai puteam adăuga features fără să sparg ceva. Am extras: <strong>feature folders</strong> (lead, task, billing, automation), <strong>custom hooks</strong> (<code>useKanban</code>, <code>useFlowBuilder</code>), types într-un fișier dedicat.</p>
+          <p id="s4-p2">Refactorul e o decizie de timing, nu o regulă. Refactor la 200 linii = overengineering. Refactor la 2000 linii = supraviețuire. Am simțit exact momentul — când adăugarea unui feature nou durea mai mult decât refactorizarea.</p>
+        </div>
+        <div class="tradeoff">
+          <span class="tradeoff-icon">⚖️</span>
+          <div id="s4-to"><strong>Ce am extras și ce nu:</strong> am extras doar ce se repeta de 3+ ori sau ce se schimba independent. Componentele rare au rămas inline. Overabstraction e la fel de rău ca no abstraction.</div>
+        </div>
+        <span class="step-badge badge-learned" id="s4-badge">💡 Lecție: timing beats discipline</span>
+      </div>
+
+      <!-- PAS 5 -->
+      <div class="step-card glass">
+        <div class="step-num" id="s5-num">Pasul 5</div>
+        <h2 class="step-title" id="s5-title">Deploy — prima feature, nu ultima</h2>
+        <div class="step-body">
+          <p id="s5-p1">GitHub Actions cu Vite deploy de la primul commit. <strong>Dacă nu pot vedea ce am construit live, nu construiesc.</strong> Deploy-ul forțează claritate: ce rulează în dev dar nu în prod îți arată exact unde ai făcut assumptions false.</p>
+          <p id="s5-p2">Troubleshooting-ul real: workflow file placement greșit → fail tăcut. <code>npm ci</code> fără lock file → fail. Dotfiles pe Windows cu Git → fail. Fiecare fail m-a învățat mai mult decât 10 tutoriale despre CI/CD.</p>
+        </div>
+        <div class="tradeoff">
+          <span class="tradeoff-icon">⚖️</span>
+          <div id="s5-to"><strong>Costul real al deploy-ului din prima zi:</strong> ~45 minute de setup la primul proiect, ~10 minute la al doilea. Beneficiul: zero surprize la final + URL public care demonstrează că funcționează.</div>
+        </div>
+        <span class="step-badge badge-learned" id="s5-badge">💡 Lecție: deploy e o feature, nu un pas final</span>
+      </div>
+
+      <!-- PAS 6 -->
+      <div class="step-card glass">
+        <div class="step-num" id="s6-num">Pasul 6</div>
+        <h2 class="step-title" id="s6-title">Decizii documentate</h2>
+        <div class="step-body">
+          <p id="s6-p1">Pentru fiecare alegere majoră am notat: <strong>ce am ales, ce am respins, de ce.</strong> Nu în README — în Decision Log, accesibil direct din case study. Recruiter-ul tehnic citește asta, nu README-ul.</p>
+          <p id="s6-p2">3 exemple din Alpis: navigare pe un singur ecran (+ rapiditate, − densitate), autosave vs buton Save (+ fluență, − risc edit accidental), RBAC cu selector vizibil (+ demo clar, − implementare complexă).</p>
+        </div>
+        <div class="tradeoff">
+          <span class="tradeoff-icon">⚖️</span>
+          <div id="s6-to"><strong>De ce merită efortul:</strong> documentarea unei decizii durează 10 minute. Valoarea ei — când un evaluator vede că știi nu doar ce ai construit ci și de ce — e disproporționat de mare față de efort.</div>
+        </div>
+        <span class="step-badge badge-learned" id="s6-badge">💡 Lecție: documentează deciziile, nu codul</span>
+      </div>
+
+      <!-- CE AȘ FACE ALTFEL -->
+      <div class="about-card glass" style="margin-top:8px;padding:26px 28px">
+        <span class="eyebrow" id="altfel-eyebrow" style="margin-bottom:14px">Ce aș face altfel</span>
+        <h2 style="font-size:1.2rem;margin-bottom:16px" id="altfel-title">4 lucruri pe care le-am învățat prea târziu</h2>
+        <div class="altfel-grid">
+          <div class="altfel-item">
+            <strong id="a1-t">Teste mai devreme</strong>
+            <span id="a1-d">Am ajuns la bug-uri în Kanban drag &amp; drop pe care un test simplu le-ar fi prins. Acum: măcar smoke tests pe funcțiile critice.</span>
+          </div>
+          <div class="altfel-item">
+            <strong id="a2-t">Tailwind de la început</strong>
+            <span id="a2-d">Am pierdut timp pe naming conventions CSS. Tailwind elimină asta și îți dă consistență fără efort de design system propriu.</span>
+          </div>
+          <div class="altfel-item">
+            <strong id="a3-t">Deploy preview pe fiecare PR</strong>
+            <span id="a3-d">Deploy-ul pe main e bun. Deploy preview pe branch e mai bun — poți vedea diferența înainte să mergi în producție.</span>
+          </div>
+          <div class="altfel-item">
+            <strong id="a4-t">types.ts din prima zi</strong>
+            <span id="a4-d">Am extras tipurile TypeScript la refactor. Ar fi trebuit să fie primul fișier creat — tipurile sunt documentație care nu poate fi falsă.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="contact-card glass" style="margin-top:16px;text-align:center;padding:32px">
+        <span class="eyebrow" id="cta-eyebrow">Hai să lucrăm</span>
+        <h2 style="font-size:1.3rem;margin-bottom:10px" id="cta-title">Construiești un CRM intern, dashboard sau produs cu fluxuri clare?</h2>
+        <p style="color:var(--muted);margin-bottom:20px;font-size:.94rem" id="cta-sub">Pot ajuta cu structura UX, logica de produs, prototipuri interactive sau feedback pe o interfață în lucru.</p>
+        <div class="card-actions" style="justify-content:center;flex-wrap:wrap">
+          <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect" id="cta-email">Scrie-mi despre proiectul tău →</a>
+          <a class="btn btn-secondary" href="projects/alpis-fusion-crm.html" id="cta-cs">Decision Log Alpis Fusion →</a>
+          <a class="btn btn-secondary" href="uses.html" id="cta-uses">Stack-ul meu →</a>
+        </div>
+      </div>
+
+    </div>
   </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Laura Andreea · <a href="index.html">laurandreea10.github.io</a></p>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', function() {
+      var s = document.documentElement;
+      document.getElementById('read-bar').style.width = (s.scrollTop / (s.scrollHeight - s.clientHeight) * 100) + '%';
+    }, { passive: true });
+
+    var lang = 'ro';
+    var T = {
+      ro: {
+        'nav-back': '← Portofoliu', 'nav-projects': 'Top proiecte', 'nav-uses': 'Uses →',
+        'hero-eyebrow': 'Process · De la idee la deploy',
+        'hero-title': 'Cum construiesc un proiect — 6 pași cu trade-off-uri reale',
+        'hero-sub': 'Procesul meu nu e linear. E iterativ, cu pași înapoi când o decizie nu se mai justifică. Exemplu real: Alpis Fusion CRM Premium — de la primele 400 linii la un SaaS modular cu 6 module, CI/CD și deploy automat.',
+        'm1': 'Pași documentați', 'm2': 'Linii la refactor', 'm3': 'Din prima zi', 'm4': 'Module finale',
+        'tl-eyebrow': 'Overview rapid',
+        'tl1-t': 'Problema, înainte de cod', 'tl1-d': 'User stories pe hârtie. O problemă clară, restul ignorate deliberat.',
+        'tl2-t': 'Wireframe înainte de stack', 'tl2-d': 'Excalidraw fără culori. Ierarhie, navigare, layout. Apoi: Vite + React + TypeScript.',
+        'tl3-t': 'Prototip rapid, un singur fișier', 'tl3-d': '~400 linii în primul commit. Iterez pe UX fără overhead de structură.',
+        'tl4-t': 'Refactor la momentul potrivit', 'tl4-d': 'La ~1917 linii: feature folders, custom hooks, types separate.',
+        'tl5-t': 'Deploy — prima feature, nu ultima', 'tl5-d': 'GitHub Actions din primul commit. Văd live înainte să adaug orice feature nouă.',
+        'tl6-t': 'Decizii documentate', 'tl6-d': 'Ce am ales, ce am respins, de ce. Decision Log public pe fiecare proiect major.',
+        's1-num': 'Pasul 1', 's1-title': 'Problema, înainte de cod',
+        's1-p1': 'Pentru Alpis am pornit de la o întrebare: <strong>cum arată un CRM care nu cere training de 2 ore?</strong> Am scris pe hârtie 5 user stories și am ales cel mai dureros: „vreau să închid un flux comercial fără să-mi schimb tool-ul".',
+        's1-p2': 'Am ignorat deliberat celelalte 4 stories care păreau importante. Asta e decizia cea mai grea la început — nu ce adaugi, ci ce refuzi să adaugi.',
+        's1-to': '<strong>Trade-off acceptat:</strong> am ignorat 4 user stories care păreau importante, dar nu erau urgente. Mai bine un produs care rezolvă o problemă bine decât 5 pe jumătate.',
+        's1-badge': '💡 Lecție: focus beats scope',
+        's2-num': 'Pasul 2', 's2-title': 'Wireframe înainte de stack',
+        's2-p1': 'Am desenat în Excalidraw layout-ul principal. <strong>Fără culori, fără fonturi — doar ierarhie.</strong> Sidebar fix vs top nav, kanban vs list, command palette vs menu.',
+        's2-p2': 'Abia după ce am înțeles forma produsului am ales stack-ul: <strong>Vite + React + TypeScript.</strong> Vite pentru DX (~50ms dev server), React pentru componente reutilizabile, TypeScript pentru refactor safe la 1000+ linii.',
+        's2-to': '<strong>De ce TypeScript de la început:</strong> primele 400 linii funcționau și fără TS. Dar la refactor, tipurile au salvat ~3h de debugging. Costul de setup: ~20 minute.',
+        's2-badge': '💡 Lecție: structura înainte de stil',
+        's3-num': 'Pasul 3', 's3-title': 'Prototip rapid, un singur fișier',
+        's3-p1': 'Primul commit Alpis: ~400 linii într-un singur component. Antipattern? <strong>Nu pentru exploratory phase.</strong> Am ajuns la ~1917 linii înainte de refactor — și asta mi-a permis să iterez rapid pe UX fără overhead de structură.',
+        's3-p2': 'Forma reală a produsului apare la 800-1000 linii, nu la 100. Înainte să extragi componente, trebuie să știi ce extragi.',
+        's3-to': '<strong>Trade-off conștient:</strong> codul la 1000 linii era greu de citit. Avantajul: am descoperit pattern-urile reale ale produsului — pe care le-am extras corect la refactor, nu prematur.',
+        's3-badge': '💡 Lecție: nu refactora prea devreme',
+        's4-num': 'Pasul 4', 's4-title': 'Refactor când durerea depășește beneficiul',
+        's4-p1': 'La 1917 linii nu mai puteam adăuga features fără să sparg ceva. Am extras: <strong>feature folders</strong> (lead, task, billing, automation), <strong>custom hooks</strong> (<code>useKanban</code>, <code>useFlowBuilder</code>), types într-un fișier dedicat.',
+        's4-p2': 'Refactorul e o decizie de timing, nu o regulă. Refactor la 200 linii = overengineering. Refactor la 2000 linii = supraviețuire.',
+        's4-to': '<strong>Ce am extras și ce nu:</strong> am extras doar ce se repeta de 3+ ori sau ce se schimba independent. Componentele rare au rămas inline.',
+        's4-badge': '💡 Lecție: timing beats discipline',
+        's5-num': 'Pasul 5', 's5-title': 'Deploy — prima feature, nu ultima',
+        's5-p1': 'GitHub Actions cu Vite deploy de la primul commit. <strong>Dacă nu pot vedea ce am construit live, nu construiesc.</strong> Deploy-ul forțează claritate: ce rulează în dev dar nu în prod îți arată exact unde ai făcut assumptions false.',
+        's5-p2': 'Troubleshooting-ul real: workflow file placement greșit → fail tăcut. <code>npm ci</code> fără lock file → fail. Dotfiles pe Windows cu Git → fail. Fiecare fail m-a învățat mai mult decât 10 tutoriale.',
+        's5-to': '<strong>Costul real:</strong> ~45 minute de setup la primul proiect, ~10 minute la al doilea. Beneficiul: zero surprize la final + URL public care demonstrează că funcționează.',
+        's5-badge': '💡 Lecție: deploy e o feature, nu un pas final',
+        's6-num': 'Pasul 6', 's6-title': 'Decizii documentate',
+        's6-p1': 'Pentru fiecare alegere majoră am notat: <strong>ce am ales, ce am respins, de ce.</strong> Nu în README — în Decision Log, accesibil direct din case study.',
+        's6-p2': '3 exemple din Alpis: navigare pe un singur ecran (+ rapiditate, − densitate), autosave vs buton Save (+ fluență, − risc edit accidental), RBAC cu selector vizibil (+ demo clar, − implementare complexă).',
+        's6-to': '<strong>De ce merită:</strong> documentarea unei decizii durează 10 minute. Valoarea — când un evaluator vede că știi nu doar ce ai construit ci și de ce — e disproporționat de mare.',
+        's6-badge': '💡 Lecție: documentează deciziile, nu codul',
+        'altfel-eyebrow': 'Ce aș face altfel', 'altfel-title': '4 lucruri pe care le-am învățat prea târziu',
+        'a1-t': 'Teste mai devreme', 'a1-d': 'Am ajuns la bug-uri în Kanban drag & drop pe care un test simplu le-ar fi prins. Acum: măcar smoke tests pe funcțiile critice.',
+        'a2-t': 'Tailwind de la început', 'a2-d': 'Am pierdut timp pe naming conventions CSS. Tailwind elimină asta și îți dă consistență fără efort de design system propriu.',
+        'a3-t': 'Deploy preview pe fiecare PR', 'a3-d': 'Deploy-ul pe main e bun. Deploy preview pe branch e mai bun — poți vedea diferența înainte să mergi în producție.',
+        'a4-t': 'types.ts din prima zi', 'a4-d': 'Am extras tipurile TypeScript la refactor. Ar fi trebuit să fie primul fișier creat — tipurile sunt documentație care nu poate fi falsă.',
+        'cta-eyebrow': 'Hai să lucrăm', 'cta-title': 'Construiești un CRM intern, dashboard sau produs cu fluxuri clare?',
+        'cta-sub': 'Pot ajuta cu structura UX, logica de produs, prototipuri interactive sau feedback pe o interfață în lucru.',
+        'cta-email': 'Scrie-mi despre proiectul tău →', 'cta-cs': 'Decision Log Alpis Fusion →', 'cta-uses': 'Stack-ul meu →'
+      },
+      en: {
+        'nav-back': '← Portfolio', 'nav-projects': 'Top projects', 'nav-uses': 'Uses →',
+        'hero-eyebrow': 'Process · From idea to deploy',
+        'hero-title': 'How I build a project — 6 steps with real trade-offs',
+        'hero-sub': 'My process isn\'t linear. It\'s iterative, with steps back when a decision stops making sense. Real example: Alpis Fusion CRM Premium — from the first 400 lines to a modular SaaS with 6 modules, CI/CD and auto deploy.',
+        'm1': 'Documented steps', 'm2': 'Lines at refactor', 'm3': 'From day one', 'm4': 'Final modules',
+        'tl-eyebrow': 'Quick overview',
+        'tl1-t': 'Problem, before code', 'tl1-d': 'User stories on paper. One clear problem, the rest deliberately ignored.',
+        'tl2-t': 'Wireframe before stack', 'tl2-d': 'Excalidraw, no colors. Hierarchy, navigation, layout. Then: Vite + React + TypeScript.',
+        'tl3-t': 'Fast prototype, one file', 'tl3-d': '~400 lines in the first commit. Iterate on UX without structural overhead.',
+        'tl4-t': 'Refactor at the right time', 'tl4-d': 'At ~1917 lines: feature folders, custom hooks, separate types.',
+        'tl5-t': 'Deploy — first feature, not last', 'tl5-d': 'GitHub Actions from the first commit. See it live before adding any new feature.',
+        'tl6-t': 'Decisions documented', 'tl6-d': 'What I chose, what I rejected, why. Public Decision Log on every major project.',
+        's1-num': 'Step 1', 's1-title': 'Problem, before code',
+        's1-p1': 'For Alpis I started with a question: <strong>what does a CRM look like that doesn\'t need 2 hours of training?</strong> I wrote 5 user stories on paper and chose the most painful one: "I want to close a commercial flow without switching tools".',
+        's1-p2': 'I deliberately ignored the other 4 stories that seemed important. That\'s the hardest decision at the start — not what you add, but what you refuse to add.',
+        's1-to': '<strong>Accepted trade-off:</strong> ignored 4 user stories that seemed important but weren\'t urgent. Better to solve one problem well than five halfway.',
+        's1-badge': '💡 Lesson: focus beats scope',
+        's2-num': 'Step 2', 's2-title': 'Wireframe before stack',
+        's2-p1': 'I sketched the main layout in Excalidraw. <strong>No colors, no fonts — just hierarchy.</strong> Fixed sidebar vs top nav, kanban vs list, command palette vs menu.',
+        's2-p2': 'Only after I understood the product\'s shape did I choose the stack: <strong>Vite + React + TypeScript.</strong> Vite for DX (~50ms dev server), React for reusable components, TypeScript for safe refactoring at 1000+ lines.',
+        's2-to': '<strong>Why TypeScript from the start:</strong> the first 400 lines worked fine without it. But at refactor, types saved ~3h of debugging. Setup cost: ~20 minutes.',
+        's2-badge': '💡 Lesson: structure before style',
+        's3-num': 'Step 3', 's3-title': 'Fast prototype, one file',
+        's3-p1': 'First Alpis commit: ~400 lines in one component. An antipattern? <strong>Not for the exploratory phase.</strong> I reached ~1917 lines before refactoring — which let me iterate on UX very fast without structural overhead.',
+        's3-p2': 'The real shape of the product emerges at 800-1000 lines, not at 100. Before extracting components, you need to know what to extract.',
+        's3-to': '<strong>Conscious trade-off:</strong> code at 1000 lines was hard to read. The upside: I discovered the product\'s real patterns — and extracted them correctly at refactor, not prematurely.',
+        's3-badge': '💡 Lesson: don\'t refactor too early',
+        's4-num': 'Step 4', 's4-title': 'Refactor when pain exceeds benefit',
+        's4-p1': 'At 1917 lines I couldn\'t add features without breaking something. I extracted: <strong>feature folders</strong> (lead, task, billing, automation), <strong>custom hooks</strong> (<code>useKanban</code>, <code>useFlowBuilder</code>), types in a dedicated file.',
+        's4-p2': 'Refactoring is a timing decision, not a rule. Refactoring at 200 lines = overengineering. At 2000 lines = survival.',
+        's4-to': '<strong>What I extracted and what I didn\'t:</strong> only what repeated 3+ times or changed independently. Rare components stayed inline.',
+        's4-badge': '💡 Lesson: timing beats discipline',
+        's5-num': 'Step 5', 's5-title': 'Deploy — first feature, not last',
+        's5-p1': 'GitHub Actions with Vite deploy from the first commit. <strong>If I can\'t see what I built live, I\'m not building.</strong> Deploy forces clarity: what runs in dev but not in prod shows exactly where you made false assumptions.',
+        's5-p2': 'Real troubleshooting: wrong workflow file placement → silent fail. <code>npm ci</code> without lock file → fail. Dotfiles on Windows with Git → fail. Each fail taught me more than 10 tutorials.',
+        's5-to': '<strong>Real cost:</strong> ~45 minutes of setup on the first project, ~10 minutes on the second. Benefit: zero end-of-project surprises + a public URL that proves it works.',
+        's5-badge': '💡 Lesson: deploy is a feature, not a final step',
+        's6-num': 'Step 6', 's6-title': 'Decisions documented',
+        's6-p1': 'For every major choice I noted: <strong>what I chose, what I rejected, why.</strong> Not in the README — in the Decision Log, accessible directly from the case study.',
+        's6-p2': '3 examples from Alpis: single-screen navigation (+ speed, − density), autosave vs Save button (+ fluency, − accidental edit risk), visible RBAC selector (+ clear demo, − complex implementation).',
+        's6-to': '<strong>Why it\'s worth it:</strong> documenting a decision takes 10 minutes. The value — when an evaluator sees that you know not just what you built but why — is disproportionately large.',
+        's6-badge': '💡 Lesson: document decisions, not code',
+        'altfel-eyebrow': 'What I\'d do differently', 'altfel-title': '4 things I learned too late',
+        'a1-t': 'Tests earlier', 'a1-d': 'I ran into Kanban drag & drop bugs that a simple test would have caught. Now: at least smoke tests on critical functions.',
+        'a2-t': 'Tailwind from the start', 'a2-d': 'I wasted time on CSS naming conventions. Tailwind eliminates that and gives you consistency without building your own design system.',
+        'a3-t': 'Deploy preview on every PR', 'a3-d': 'Deploying to main is good. Deploy preview on branch is better — you can see the difference before going to production.',
+        'a4-t': 'types.ts from day one', 'a4-d': 'I extracted TypeScript types at refactor. They should have been the first file created — types are documentation that can\'t be wrong.',
+        'cta-eyebrow': 'Let\'s work together', 'cta-title': 'Building an internal CRM, operational dashboard or product with clear flows?',
+        'cta-sub': 'I can help with UX structure, product logic, interactive prototypes or feedback on an interface in progress.',
+        'cta-email': 'Write to me about your project →', 'cta-cs': 'Alpis Fusion Decision Log →', 'cta-uses': 'My stack →'
+      }
+    };
+    function toggleLang() {
+      lang = lang === 'ro' ? 'en' : 'ro';
+      document.getElementById('langBtn').textContent = lang === 'ro' ? 'EN' : 'RO';
+      document.documentElement.lang = lang;
+      Object.keys(T[lang]).forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.innerHTML = T[lang][id];
+      });
+    }
+  </script>
 </body>
 </html>
