@@ -1,139 +1,428 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Uses — Stack-ul meu de zi cu zi | Laura Andreea</title>
-  <meta name="description" content="Tools, hardware, software și config-uri pe care le folosesc zilnic pentru front-end development." />
-  <meta name="theme-color" content="#071226" />
-  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/uses.html" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-
+  <meta name="description" content="Tools, hardware, software și config-uri pe care le folosesc zilnic pentru front-end development. VS Code, Vite, React, Tailwind, GitHub Actions și mai mult."/>
+  <meta name="author" content="Laura Andreea"/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/uses.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Uses — Stack-ul meu de zi cu zi"/>
+  <meta property="og:description" content="Tools, software și config-uri folosite zilnic pentru front-end development. Actualizat la fiecare schimbare reală."/>
+  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/uses.html"/>
+  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/alpis-fusion-demo-poster.svg"/>
+  <meta property="og:locale" content="ro_RO"/>
+  <meta property="og:site_name" content="CodePen Portfolio — Laura Andreea"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Uses — Stack-ul meu de zi cu zi"/>
+  <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/alpis-fusion-demo-poster.svg"/>
+  <meta name="theme-color" content="#071226"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="preload" href="style.css" as="style"/>
+  <link rel="stylesheet" href="style.css"/>
   <style>
-    :root {
-      --bg:#050d1f;--bg2:#08142b;--panel:rgba(10,22,46,.8);--line:rgba(255,255,255,.1);
-      --text:#eef4ff;--muted:#9db0d4;--accent:#4f8cff;--accent2:#8b5cf6;
-      --shadow:0 20px 48px rgba(0,0,0,.32);--container:880px;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--text);
-      background:linear-gradient(180deg,var(--bg2),var(--bg));min-height:100vh;
-      line-height:1.7}
-    a{color:var(--accent);text-decoration:none}
-    a:hover{text-decoration:underline}
-    h1,h2,h3,p,ul{margin:0}
-    .container{width:min(var(--container),calc(100% - 32px));margin:0 auto;padding:32px 0}
-    .glass{background:var(--panel);border:1px solid var(--line);
-      box-shadow:var(--shadow);backdrop-filter:blur(14px);border-radius:22px;padding:28px}
-    .topbar{padding:20px 0;border-bottom:1px solid var(--line)}
-    .topbar .container{padding:0;display:flex;justify-content:space-between;align-items:center}
-    .brand{font-weight:800;color:var(--text)}
-    .back-link{color:var(--muted);font-size:.9rem}
-    .eyebrow{font-size:.78rem;font-weight:800;text-transform:uppercase;
-      letter-spacing:.1em;color:var(--accent)}
-    h1{font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.1;letter-spacing:-.03em;margin-top:14px}
-    .lead{margin-top:18px;color:var(--muted);font-size:1.05rem}
-    .uses-section{margin-top:28px}
-    .uses-section h2{font-size:1.15rem;color:var(--accent);
-      padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:16px}
-    .uses-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:12px}
-    .uses-list li{padding:14px 16px;border:1px solid var(--line);border-radius:12px;
-      background:rgba(255,255,255,.03)}
-    .uses-list strong{color:var(--text);display:block;margin-bottom:4px}
-    .uses-list span{color:var(--muted);font-size:.92rem}
-    .footer-note{margin-top:32px;padding:18px;border:1px dashed var(--line);
-      border-radius:14px;background:rgba(255,255,255,.02);
-      color:var(--muted);font-size:.88rem;text-align:center}
+    #read-bar{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--accent,#4f8cff),#8b5cf6);z-index:9999;pointer-events:none;transition:width .08s linear}
+    .uses-wrap{max-width:760px;margin:0 auto;padding:48px 0 80px}
+    .uses-section{margin-bottom:8px}
+    .uses-section-title{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--accent,#4f8cff);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+    .uses-section-title::after{content:'';flex:1;height:1px;background:var(--line,rgba(255,255,255,.08))}
+    .uses-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+    .use-card{border-radius:16px;padding:16px 18px}
+    .use-card-icon{font-size:20px;margin-bottom:8px;display:block}
+    .use-card-title{font-size:.9rem;font-weight:700;color:var(--text,#eef4ff);margin-bottom:5px}
+    .use-card-desc{font-size:.82rem;color:var(--muted,#9db0d4);line-height:1.6}
+    .use-card-desc strong{color:var(--text,#eef4ff)}
+    .use-card-desc code{font-size:.78rem;padding:1px 5px;border-radius:4px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .use-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:8px;background:rgba(79,140,255,.1);border:1px solid rgba(79,140,255,.18);color:var(--accent,#4f8cff)}
+    .use-tag.green{background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.2);color:#34d399}
+    .use-tag.amber{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.2);color:#f59e0b}
+    .use-card-wide{grid-column:1/-1;border-radius:16px;padding:16px 18px}
+    .ext-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+    .ext-pill{padding:4px 10px;border-radius:6px;font-size:.76rem;font-weight:600;background:rgba(255,255,255,.05);border:1px solid var(--line,rgba(255,255,255,.1));color:var(--muted,#9db0d4)}
+    .why-note{margin-top:20px;padding:14px 18px;border-radius:12px;background:rgba(79,140,255,.05);border:1px solid rgba(79,140,255,.12);font-size:.84rem;color:var(--muted,#9db0d4);line-height:1.65}
+    .why-note strong{color:var(--text,#eef4ff)}
+    @media(max-width:560px){.uses-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <header class="topbar">
+  <div id="read-bar"></div>
+
+  <div class="topbar">
     <div class="container">
-      <a class="brand" href="/codepen-portfolio/">← Laura Andreea</a>
-      <a class="back-link" href="/codepen-portfolio/#key-projects">Top proiecte</a>
+      <nav class="nav glass" aria-label="Navigare">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <a class="pill" href="index.html" id="nav-back">← Portofoliu</a>
+          <a class="pill" href="index.html#key-projects" id="nav-projects">Top proiecte</a>
+          <a class="pill" href="process.html" id="nav-process">Process →</a>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="pill" id="langBtn" onclick="toggleLang()">EN</button>
+          <button class="pill" id="themeBtn" onclick="document.body.classList.toggle('light');this.textContent=document.body.classList.contains('light')?'🌙 Dark':'☀️ Light'">☀️ Light</button>
+        </div>
+      </nav>
     </div>
-  </header>
+  </div>
 
-  <main class="container">
-    <article class="glass">
-      <span class="eyebrow">Uses</span>
-      <h1>Stack-ul meu de zi cu zi</h1>
-      <p class="lead">Inspirat de <a href="https://uses.tech" target="_blank" rel="noopener noreferrer">uses.tech</a>. Lista celor mai folosite tools, software și config-uri în proiectele mele front-end. Actualizat la fiecare schimbare reală, nu la modă.</p>
+  <main id="main-content">
+    <div class="container uses-wrap">
 
-      <section class="uses-section">
-        <h2>💻 Editor &amp; Terminal</h2>
-        <ul class="uses-list">
-          <li><strong>VS Code</strong><span>Editor principal. Tema: One Dark Pro. Font: Fira Code cu ligatures.</span></li>
-          <li><strong>Extensii esențiale</strong><span>ES7+ React snippets, Prettier, ESLint, GitLens, Live Server, Tailwind IntelliSense, Error Lens, Path Intellisense, Auto Rename Tag.</span></li>
-          <li><strong>Terminal</strong><span>Windows Terminal cu PowerShell 7. Oh My Posh pentru prompt customizat.</span></li>
-        </ul>
+      <!-- HERO -->
+      <article class="about-card glass" style="margin-bottom:28px">
+        <span class="eyebrow" id="hero-eyebrow">Uses · Stack de zi cu zi</span>
+        <h1 style="font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.04em;line-height:1.05;margin-bottom:12px" id="hero-title">Tot ce folosesc pentru a construi proiecte front-end</h1>
+        <p style="color:var(--muted);line-height:1.75;font-size:.97rem;margin-bottom:0" id="hero-sub">Inspirat de <a href="https://uses.tech" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">uses.tech</a>. Lista celor mai folosite tools, software și config-uri. Actualizat la fiecare schimbare reală, nu la modă — adaug ceva nou doar dacă l-am folosit consistent 2+ săptămâni și înlocuiește ceva mai puțin bun.</p>
+      </article>
+
+      <!-- EDITOR & TERMINAL -->
+      <section class="uses-section" aria-labelledby="s-editor">
+        <div class="uses-section-title" id="s-editor">💻 Editor &amp; Terminal</div>
+        <div class="uses-grid">
+          <div class="use-card glass">
+            <span class="use-card-icon">🖊️</span>
+            <div class="use-card-title" id="u-vscode-t">VS Code</div>
+            <div class="use-card-desc" id="u-vscode-d">Editor principal. Temă: <strong>One Dark Pro.</strong> Font: <strong>Fira Code</strong> cu ligatures activate. Settings sync pe GitHub pentru backup automat.</div>
+            <span class="use-tag green" id="u-vscode-tag">Editor principal</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">⬛</span>
+            <div class="use-card-title" id="u-terminal-t">Terminal</div>
+            <div class="use-card-desc" id="u-terminal-d"><strong>Windows Terminal</strong> cu PowerShell 7. <strong>Oh My Posh</strong> pentru prompt customizat cu branch Git, timp de execuție și status cod de ieșire.</div>
+            <span class="use-tag" id="u-terminal-tag">Daily driver</span>
+          </div>
+          <div class="use-card-wide glass">
+            <div class="use-card-title" id="u-ext-t">Extensii VS Code esențiale</div>
+            <div class="ext-list">
+              <span class="ext-pill">ES7+ React Snippets</span>
+              <span class="ext-pill">Prettier</span>
+              <span class="ext-pill">ESLint</span>
+              <span class="ext-pill">GitLens</span>
+              <span class="ext-pill">Live Server</span>
+              <span class="ext-pill">Tailwind IntelliSense</span>
+              <span class="ext-pill">Error Lens</span>
+              <span class="ext-pill">Path Intellisense</span>
+              <span class="ext-pill">Auto Rename Tag</span>
+              <span class="ext-pill">Thunder Client</span>
+              <span class="ext-pill">Peacock</span>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section class="uses-section">
-        <h2>🛠 Stack tehnic</h2>
-        <ul class="uses-list">
-          <li><strong>Front-end framework</strong><span>React 18 cu Vite 5. TypeScript pentru proiecte cu 3+ componente.</span></li>
-          <li><strong>Styling</strong><span>CSS variables + Tailwind pentru proiecte noi. CSS modules pentru cele moștenite.</span></li>
-          <li><strong>Charts</strong><span>Recharts pentru proiecte React (declarativ, TS-friendly). Chart.js pentru HTML pure.</span></li>
-          <li><strong>Build &amp; deploy</strong><span>Vite + GitHub Actions → GitHub Pages. CI/CD configurat de la primul commit.</span></li>
-          <li><strong>Bundling</strong><span>esbuild via Vite pentru dev. Rollup pentru production. Bundle target ~50KB pentru proiecte simple, ~300KB pentru SaaS.</span></li>
-        </ul>
+      <!-- STACK TEHNIC -->
+      <section class="uses-section" aria-labelledby="s-stack">
+        <div class="uses-section-title" id="s-stack">🛠 Stack tehnic</div>
+        <div class="uses-grid">
+          <div class="use-card glass">
+            <span class="use-card-icon">⚛️</span>
+            <div class="use-card-title" id="u-react-t">React 18 + Vite 5</div>
+            <div class="use-card-desc" id="u-react-d">Framework principal pentru proiecte cu 3+ componente. <strong>Vite</strong> pentru dev server ~50ms și HMR instant. <code>create-vite</code> ca punct de start standard.</div>
+            <span class="use-tag green" id="u-react-tag">Stack principal</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">🔷</span>
+            <div class="use-card-title" id="u-ts-t">TypeScript</div>
+            <div class="use-card-desc" id="u-ts-d">Pe orice proiect cu 3+ componente sau 300+ linii. Nu pentru strictness de dragul strictness-ului — pentru <strong>refactor safe</strong> și autocomplete real în IDE.</div>
+            <span class="use-tag" id="u-ts-tag">Type safety</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">🌊</span>
+            <div class="use-card-title" id="u-tailwind-t">Tailwind CSS</div>
+            <div class="use-card-desc" id="u-tailwind-d">Pe proiecte noi. Elimină overhead-ul de naming conventions și îți dă consistență fără să construiești design system propriu. Cu <strong>Prettier plugin</strong> pentru sortare clase.</div>
+            <span class="use-tag green" id="u-tailwind-tag">Styling preferat</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">📊</span>
+            <div class="use-card-title" id="u-charts-t">Charts</div>
+            <div class="use-card-desc" id="u-charts-d"><strong>Recharts</strong> pentru proiecte React (declarativ, TS-friendly, compose-able). <strong>Chart.js</strong> pentru HTML pur. Nu amestec niciodată ambele în același proiect.</div>
+            <span class="use-tag" id="u-charts-tag">Data viz</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">🔊</span>
+            <div class="use-card-title" id="u-audio-t">Web Audio API</div>
+            <div class="use-card-desc" id="u-audio-d">Pentru proiecte cu sunet procedural (BASKET VS AI, Excel-Quest). Prefer <strong>native API</strong> față de librării — mai mult control, zero dependențe, bundle mai mic.</div>
+            <span class="use-tag amber" id="u-audio-tag">Nativă, fără librării</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">🚀</span>
+            <div class="use-card-title" id="u-cicd-t">GitHub Actions + Pages</div>
+            <div class="use-card-desc" id="u-cicd-d">CI/CD de la primul commit pe orice proiect major. Workflow standard: <code>npm ci</code> → <code>npm run build</code> → deploy pe <code>gh-pages</code> branch. Zero costuri.</div>
+            <span class="use-tag green" id="u-cicd-tag">0€ hosting</span>
+          </div>
+        </div>
+        <div class="why-note" id="stack-why">
+          <strong>De ce acest stack și nu altul:</strong> Vite + React + TypeScript + Tailwind acoperă 90% din nevoile unui proiect front-end personal, cu cel mai bun DX disponibil acum. GitHub Actions elimină complet costurile de hosting și CI. Combinația funcționează de la un prototip de o zi la un SaaS modular de 6 module.
+        </div>
       </section>
 
-      <section class="uses-section">
-        <h2>🎨 Design &amp; UX</h2>
-        <ul class="uses-list">
-          <li><strong>Wireframing</strong><span>Excalidraw pentru schițe rapide. Fără culori, doar ierarhie.</span></li>
-          <li><strong>Design</strong><span>Figma (free tier) pentru mockup-uri detaliate când e nevoie.</span></li>
-          <li><strong>Culori</strong><span>Coolors pentru palete. Realtime Colors pentru testare contrast.</span></li>
-          <li><strong>Iconițe</strong><span>Lucide (open source, consistent). Heroicons pentru proiecte cu Tailwind.</span></li>
-          <li><strong>Fonturi</strong><span>Inter pentru UI. JetBrains Mono pentru cod. Fluid typography cu `clamp()`.</span></li>
-        </ul>
+      <!-- DESIGN & UX -->
+      <section class="uses-section" aria-labelledby="s-design">
+        <div class="uses-section-title" id="s-design">🎨 Design &amp; UX</div>
+        <div class="uses-grid">
+          <div class="use-card glass">
+            <span class="use-card-icon">✏️</span>
+            <div class="use-card-title" id="u-excali-t">Excalidraw</div>
+            <div class="use-card-desc" id="u-excali-d">Wireframing rapid. <strong>Fără culori, fără fonturi</strong> — doar ierarhie și structură. Dacă wireframe-ul nu e clar în Excalidraw, nu va fi clar nici în browser.</div>
+            <span class="use-tag" id="u-excali-tag">Wireframing</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">🎭</span>
+            <div class="use-card-title" id="u-figma-t">Figma (free tier)</div>
+            <div class="use-card-desc" id="u-figma-d">Pentru mockup-uri detaliate când proiectul merită. Free tier e suficient pentru proiecte personale — 3 proiecte active simultan e mai mult decât am nevoie.</div>
+            <span class="use-tag" id="u-figma-tag">Mockup-uri</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">🎨</span>
+            <div class="use-card-title" id="u-color-t">Culori &amp; contrast</div>
+            <div class="use-card-desc" id="u-color-d"><strong>Coolors</strong> pentru palete. <strong>Realtime Colors</strong> pentru testare contrast live. <strong>WCAG</strong> minimum AA pe toate proiectele publice.</div>
+            <span class="use-tag" id="u-color-tag">Accesibilitate</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">🔤</span>
+            <div class="use-card-title" id="u-fonts-t">Fonturi</div>
+            <div class="use-card-desc" id="u-fonts-d"><strong>Inter</strong> pentru UI (cel mai bun pentru densitate mare de text). <strong>JetBrains Mono</strong> sau <strong>Fira Code</strong> pentru cod. Fluid typography cu <code>clamp()</code> peste tot.</div>
+            <span class="use-tag" id="u-fonts-tag">Typography</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">🔣</span>
+            <div class="use-card-title" id="u-icons-t">Iconițe</div>
+            <div class="use-card-desc" id="u-icons-d"><strong>Lucide</strong> pentru proiecte standalone (open source, consistent, tree-shakeable). <strong>Heroicons</strong> pentru proiecte cu Tailwind. Nu amestec librării de iconițe.</div>
+            <span class="use-tag" id="u-icons-tag">Open source</span>
+          </div>
+        </div>
       </section>
 
-      <section class="uses-section">
-        <h2>🌐 Browser &amp; testing</h2>
-        <ul class="uses-list">
-          <li><strong>Browser principal</strong><span>Chrome cu profil dedicat dev. Firefox pentru testare cross-browser.</span></li>
-          <li><strong>DevTools extensii</strong><span>React DevTools, axe DevTools (a11y), Lighthouse, Wave, ColorZilla.</span></li>
-          <li><strong>Performance</strong><span>Lighthouse CI pe GitHub Actions. Web Vitals extension pentru monitoring local.</span></li>
-        </ul>
+      <!-- BROWSER & TESTING -->
+      <section class="uses-section" aria-labelledby="s-browser">
+        <div class="uses-section-title" id="s-browser">🌐 Browser &amp; Testing</div>
+        <div class="uses-grid">
+          <div class="use-card glass">
+            <span class="use-card-icon">🔵</span>
+            <div class="use-card-title" id="u-chrome-t">Chrome DevTools</div>
+            <div class="use-card-desc" id="u-chrome-d">Profil dedicat dev. Extensii: <strong>React DevTools</strong>, <strong>axe DevTools</strong> (a11y), <strong>Lighthouse</strong>, <strong>Web Vitals</strong>, <strong>ColorZilla</strong>. Firefox pentru cross-browser final check.</div>
+            <span class="use-tag green" id="u-chrome-tag">Browser principal</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">⚡</span>
+            <div class="use-card-title" id="u-lighthouse-t">Lighthouse CI</div>
+            <div class="use-card-desc" id="u-lighthouse-d">Pe GitHub Actions — rulează automat pe fiecare push. Target: Performance 90+, Accessibility 95+, SEO 90+. Alerte dacă scade sub threshold.</div>
+            <span class="use-tag" id="u-lighthouse-tag">Performance</span>
+          </div>
+        </div>
       </section>
 
-      <section class="uses-section">
-        <h2>🚀 Hosting &amp; servicii</h2>
-        <ul class="uses-list">
-          <li><strong>Static hosting</strong><span>GitHub Pages pentru proiecte personale. Gratuit, deploy automat, custom domain support.</span></li>
-          <li><strong>Cu backend</strong><span>Vercel pentru proiecte cu API routes (free tier).</span></li>
-          <li><strong>Storage</strong><span>localStorage pentru proiecte personale. Supabase pentru proiecte care au nevoie de DB real.</span></li>
-          <li><strong>CDN</strong><span>cdnjs.cloudflare.com pentru biblioteci externe în CodePen pens.</span></li>
-        </ul>
+      <!-- HOSTING & SERVICII -->
+      <section class="uses-section" aria-labelledby="s-hosting">
+        <div class="uses-section-title" id="s-hosting">🚀 Hosting &amp; Servicii</div>
+        <div class="uses-grid">
+          <div class="use-card glass">
+            <span class="use-card-icon">🐙</span>
+            <div class="use-card-title" id="u-ghpages-t">GitHub Pages</div>
+            <div class="use-card-desc" id="u-ghpages-d">Static hosting pentru toate proiectele personale. <strong>Gratuit, deploy automat, custom domain support.</strong> 20+ proiecte live pe același cont, 0€/lună.</div>
+            <span class="use-tag green" id="u-ghpages-tag">0€/lună</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">▲</span>
+            <div class="use-card-title" id="u-vercel-t">Vercel</div>
+            <div class="use-card-desc" id="u-vercel-d">Pentru proiecte care au nevoie de API routes sau environment variables. Free tier acoperă orice proiect personal. Preview deployments pe fiecare PR.</div>
+            <span class="use-tag" id="u-vercel-tag">Cu API routes</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">💾</span>
+            <div class="use-card-title" id="u-storage-t">Storage</div>
+            <div class="use-card-desc" id="u-storage-d"><strong>localStorage</strong> pentru proiecte personale (simplu, 0 setup). <strong>Supabase</strong> când am nevoie de DB real și auth — free tier suficient. <strong>Nu IndexedDB</strong> — prea verbos pentru complexitatea mea.</div>
+            <span class="use-tag" id="u-storage-tag">Local-first</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">🤖</span>
+            <div class="use-card-title" id="u-ai-t">Claude (Anthropic API)</div>
+            <div class="use-card-desc" id="u-ai-d">Pair programming, debugging, code review. Integrat direct în proiecte AI-native (Link Video Editor Studio). Certificare <strong>Claude Code in Action</strong> completată.</div>
+            <span class="use-tag amber" id="u-ai-tag">AI-native dev</span>
+          </div>
+        </div>
       </section>
 
-      <section class="uses-section">
-        <h2>📚 Learning &amp; reference</h2>
-        <ul class="uses-list">
-          <li><strong>Docs</strong><span>MDN pentru standards. React docs (cele noi). web.dev pentru performance + a11y.</span></li>
-          <li><strong>Curses</strong><span>freeCodeCamp, LinkedIn Learning, Anthropic Academy.</span></li>
-          <li><strong>YouTube</strong><span>Theo, Web Dev Simplified, Fireship pentru news rapide.</span></li>
-          <li><strong>AI</strong><span>Claude pentru pair programming, debugging, code review. Folosesc API-ul în proiecte AI-native.</span></li>
-        </ul>
+      <!-- LEARNING -->
+      <section class="uses-section" aria-labelledby="s-learning">
+        <div class="uses-section-title" id="s-learning">📚 Learning &amp; Reference</div>
+        <div class="uses-grid">
+          <div class="use-card glass">
+            <span class="use-card-icon">📖</span>
+            <div class="use-card-title" id="u-docs-t">Documentație</div>
+            <div class="use-card-desc" id="u-docs-d"><strong>MDN</strong> pentru standards (singurul adevăr). <strong>React docs</strong> noi (nu cele vechi). <strong>web.dev</strong> pentru performance și a11y. <strong>TypeScript Handbook</strong> pentru tipuri avansate.</div>
+            <span class="use-tag" id="u-docs-tag">Source of truth</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">🎓</span>
+            <div class="use-card-title" id="u-courses-t">Cursuri &amp; certificări</div>
+            <div class="use-card-desc" id="u-courses-d"><strong>freeCodeCamp</strong> (Responsive Web Design, Data Analysis). <strong>LinkedIn Learning</strong> (JavaScript Essential Training). <strong>Google</strong> (Digital Marketing & E-commerce). <strong>Anthropic Academy</strong> (Claude Code in Action).</div>
+            <span class="use-tag green" id="u-courses-tag">4 certificări active</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">▶️</span>
+            <div class="use-card-title" id="u-yt-t">YouTube</div>
+            <div class="use-card-desc" id="u-yt-d"><strong>Theo</strong> pentru React ecosystem. <strong>Web Dev Simplified</strong> pentru fundamentals clare. <strong>Fireship</strong> pentru news rapide. Nu urmăresc canale motivaționale — doar tehnic.</div>
+            <span class="use-tag" id="u-yt-tag">Tehnic, nu motivational</span>
+          </div>
+        </div>
       </section>
 
-      <section class="uses-section">
-        <h2>📝 Productivity</h2>
-        <ul class="uses-list">
-          <li><strong>Roadmap proiecte</strong><span>Notion pentru planning, ideas backlog, decision log.</span></li>
-          <li><strong>Time tracking</strong><span>Toggl pentru a vedea unde se duc orele.</span></li>
-          <li><strong>Focus</strong><span>Spotify (instrumental playlists). Pomodoro technique pentru sesiuni lungi.</span></li>
-        </ul>
+      <!-- PRODUCTIVITY -->
+      <section class="uses-section" aria-labelledby="s-productivity">
+        <div class="uses-section-title" id="s-productivity">📝 Productivity</div>
+        <div class="uses-grid">
+          <div class="use-card glass">
+            <span class="use-card-icon">📋</span>
+            <div class="use-card-title" id="u-notion-t">Notion</div>
+            <div class="use-card-desc" id="u-notion-d">Roadmap proiecte, ideas backlog, decision log offline, note de learning. Nu îl folosesc ca todo list — am GitHub Projects pentru asta.</div>
+            <span class="use-tag" id="u-notion-tag">Planning</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">⏱️</span>
+            <div class="use-card-title" id="u-toggl-t">Toggl Track</div>
+            <div class="use-card-desc" id="u-toggl-d">Time tracking pe sesiuni de dev. Nu pentru productivitate performativă — pentru a vedea <strong>unde se duc orele reale</strong> vs. estimările mele (de obicei: debugging ia 3× mai mult decât anticipez).</div>
+            <span class="use-tag" id="u-toggl-tag">Self-awareness</span>
+          </div>
+          <div class="use-card glass">
+            <span class="use-card-icon">🎵</span>
+            <div class="use-card-title" id="u-focus-t">Focus</div>
+            <div class="use-card-desc" id="u-focus-d"><strong>Spotify</strong> cu playlists instrumentale (lo-fi sau clasic pentru coding, nu hip-hop). <strong>Pomodoro 50/10</strong> pentru sesiuni lungi — nu 25/5, prea scurt pentru a intra în flow real.</div>
+            <span class="use-tag" id="u-focus-tag">Flow state</span>
+          </div>
+        </div>
+        <div class="why-note" id="productivity-why">
+          <strong>Principiu:</strong> lista se schimbă rar. Nu urmăresc trends de tools — adaug ceva nou doar dacă l-am folosit consistent 2+ săptămâni și înlocuiește ceva mai puțin bun, nu dacă e „popular". Simplitatea setup-ului e o feature în sine.
+        </div>
       </section>
 
-      <p class="footer-note">
-        Lista se schimbă rar. Adaug ceva nou doar dacă l-am folosit consistent 2+ săptămâni și înlocuiește ceva mai puțin bun.<br>
-        <a href="/codepen-portfolio/">← Înapoi la portofoliu</a>
-      </p>
-    </article>
+      <!-- CTA -->
+      <div class="contact-card glass" style="margin-top:8px;text-align:center;padding:32px">
+        <span class="eyebrow" id="cta-eyebrow">Hai să lucrăm</span>
+        <h2 style="font-size:1.3rem;margin-bottom:10px" id="cta-title">Construiești ceva cu un stack similar?</h2>
+        <p style="color:var(--muted);margin-bottom:20px;font-size:.94rem" id="cta-sub">Scrie-mi — pot oferi feedback pe arhitectură, stack choices sau UX pentru proiecte front-end.</p>
+        <div class="card-actions" style="justify-content:center;flex-wrap:wrap">
+          <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Intrebare%20stack" id="cta-email">Scrie-mi →</a>
+          <a class="btn btn-secondary" href="process.html" id="cta-process">Cum construiesc →</a>
+          <a class="btn btn-secondary" href="index.html" id="cta-back">← Portofoliu</a>
+        </div>
+      </div>
+
+    </div>
   </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Laura Andreea · <a href="index.html">laurandreea10.github.io</a> · Inspirat de <a href="https://uses.tech" target="_blank" rel="noopener noreferrer">uses.tech</a></p>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', function() {
+      var s = document.documentElement;
+      document.getElementById('read-bar').style.width = (s.scrollTop / (s.scrollHeight - s.clientHeight) * 100) + '%';
+    }, { passive: true });
+
+    var lang = 'ro';
+    var T = {
+      ro: {
+        'nav-back': '← Portofoliu', 'nav-projects': 'Top proiecte', 'nav-process': 'Process →',
+        'hero-eyebrow': 'Uses · Stack de zi cu zi',
+        'hero-title': 'Tot ce folosesc pentru a construi proiecte front-end',
+        'hero-sub': 'Inspirat de <a href="https://uses.tech" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">uses.tech</a>. Lista celor mai folosite tools, software și config-uri. Actualizat la fiecare schimbare reală, nu la modă.',
+        's-editor': '💻 Editor & Terminal',
+        'u-vscode-t': 'VS Code', 'u-vscode-d': 'Editor principal. Temă: <strong>One Dark Pro.</strong> Font: <strong>Fira Code</strong> cu ligatures activate. Settings sync pe GitHub pentru backup automat.', 'u-vscode-tag': 'Editor principal',
+        'u-terminal-t': 'Terminal', 'u-terminal-d': '<strong>Windows Terminal</strong> cu PowerShell 7. <strong>Oh My Posh</strong> pentru prompt customizat cu branch Git, timp de execuție și status cod de ieșire.', 'u-terminal-tag': 'Daily driver',
+        'u-ext-t': 'Extensii VS Code esențiale',
+        's-stack': '🛠 Stack tehnic',
+        'u-react-t': 'React 18 + Vite 5', 'u-react-d': 'Framework principal pentru proiecte cu 3+ componente. <strong>Vite</strong> pentru dev server ~50ms și HMR instant. <code>create-vite</code> ca punct de start standard.', 'u-react-tag': 'Stack principal',
+        'u-ts-t': 'TypeScript', 'u-ts-d': 'Pe orice proiect cu 3+ componente sau 300+ linii. Nu pentru strictness de dragul strictness-ului — pentru <strong>refactor safe</strong> și autocomplete real în IDE.', 'u-ts-tag': 'Type safety',
+        'u-tailwind-t': 'Tailwind CSS', 'u-tailwind-d': 'Pe proiecte noi. Elimină overhead-ul de naming conventions și îți dă consistență fără să construiești design system propriu. Cu <strong>Prettier plugin</strong> pentru sortare clase.', 'u-tailwind-tag': 'Styling preferat',
+        'u-charts-t': 'Charts', 'u-charts-d': '<strong>Recharts</strong> pentru proiecte React (declarativ, TS-friendly, compose-able). <strong>Chart.js</strong> pentru HTML pur. Nu amestec niciodată ambele în același proiect.', 'u-charts-tag': 'Data viz',
+        'u-audio-t': 'Web Audio API', 'u-audio-d': 'Pentru proiecte cu sunet procedural (BASKET VS AI, Excel-Quest). Prefer <strong>native API</strong> față de librării — mai mult control, zero dependențe, bundle mai mic.', 'u-audio-tag': 'Nativă, fără librării',
+        'u-cicd-t': 'GitHub Actions + Pages', 'u-cicd-d': 'CI/CD de la primul commit pe orice proiect major. Workflow standard: <code>npm ci</code> → <code>npm run build</code> → deploy pe <code>gh-pages</code> branch. Zero costuri.', 'u-cicd-tag': '0€ hosting',
+        'stack-why': '<strong>De ce acest stack și nu altul:</strong> Vite + React + TypeScript + Tailwind acoperă 90% din nevoile unui proiect front-end personal, cu cel mai bun DX disponibil acum. GitHub Actions elimină complet costurile de hosting și CI.',
+        's-design': '🎨 Design & UX',
+        'u-excali-t': 'Excalidraw', 'u-excali-d': 'Wireframing rapid. <strong>Fără culori, fără fonturi</strong> — doar ierarhie și structură. Dacă wireframe-ul nu e clar în Excalidraw, nu va fi clar nici în browser.', 'u-excali-tag': 'Wireframing',
+        'u-figma-t': 'Figma (free tier)', 'u-figma-d': 'Pentru mockup-uri detaliate când proiectul merită. Free tier e suficient pentru proiecte personale — 3 proiecte active simultan e mai mult decât am nevoie.', 'u-figma-tag': 'Mockup-uri',
+        'u-color-t': 'Culori & contrast', 'u-color-d': '<strong>Coolors</strong> pentru palete. <strong>Realtime Colors</strong> pentru testare contrast live. <strong>WCAG</strong> minimum AA pe toate proiectele publice.', 'u-color-tag': 'Accesibilitate',
+        'u-fonts-t': 'Fonturi', 'u-fonts-d': '<strong>Inter</strong> pentru UI (cel mai bun pentru densitate mare de text). <strong>JetBrains Mono</strong> sau <strong>Fira Code</strong> pentru cod. Fluid typography cu <code>clamp()</code> peste tot.', 'u-fonts-tag': 'Typography',
+        'u-icons-t': 'Iconițe', 'u-icons-d': '<strong>Lucide</strong> pentru proiecte standalone (open source, consistent, tree-shakeable). <strong>Heroicons</strong> pentru proiecte cu Tailwind. Nu amestec librării de iconițe.', 'u-icons-tag': 'Open source',
+        's-browser': '🌐 Browser & Testing',
+        'u-chrome-t': 'Chrome DevTools', 'u-chrome-d': 'Profil dedicat dev. Extensii: <strong>React DevTools</strong>, <strong>axe DevTools</strong> (a11y), <strong>Lighthouse</strong>, <strong>Web Vitals</strong>, <strong>ColorZilla</strong>. Firefox pentru cross-browser final check.', 'u-chrome-tag': 'Browser principal',
+        'u-lighthouse-t': 'Lighthouse CI', 'u-lighthouse-d': 'Pe GitHub Actions — rulează automat pe fiecare push. Target: Performance 90+, Accessibility 95+, SEO 90+. Alerte dacă scade sub threshold.', 'u-lighthouse-tag': 'Performance',
+        's-hosting': '🚀 Hosting & Servicii',
+        'u-ghpages-t': 'GitHub Pages', 'u-ghpages-d': 'Static hosting pentru toate proiectele personale. <strong>Gratuit, deploy automat, custom domain support.</strong> 20+ proiecte live pe același cont, 0€/lună.', 'u-ghpages-tag': '0€/lună',
+        'u-vercel-t': 'Vercel', 'u-vercel-d': 'Pentru proiecte care au nevoie de API routes sau environment variables. Free tier acoperă orice proiect personal. Preview deployments pe fiecare PR.', 'u-vercel-tag': 'Cu API routes',
+        'u-storage-t': 'Storage', 'u-storage-d': '<strong>localStorage</strong> pentru proiecte personale (simplu, 0 setup). <strong>Supabase</strong> când am nevoie de DB real și auth — free tier suficient. <strong>Nu IndexedDB</strong> — prea verbos pentru complexitatea mea.', 'u-storage-tag': 'Local-first',
+        'u-ai-t': 'Claude (Anthropic API)', 'u-ai-d': 'Pair programming, debugging, code review. Integrat direct în proiecte AI-native (Link Video Editor Studio). Certificare <strong>Claude Code in Action</strong> completată.', 'u-ai-tag': 'AI-native dev',
+        's-learning': '📚 Learning & Reference',
+        'u-docs-t': 'Documentație', 'u-docs-d': '<strong>MDN</strong> pentru standards (singurul adevăr). <strong>React docs</strong> noi (nu cele vechi). <strong>web.dev</strong> pentru performance și a11y. <strong>TypeScript Handbook</strong> pentru tipuri avansate.', 'u-docs-tag': 'Source of truth',
+        'u-courses-t': 'Cursuri & certificări', 'u-courses-d': '<strong>freeCodeCamp</strong> (Responsive Web Design, Data Analysis). <strong>LinkedIn Learning</strong> (JavaScript Essential Training). <strong>Google</strong> (Digital Marketing & E-commerce). <strong>Anthropic Academy</strong> (Claude Code in Action).', 'u-courses-tag': '4 certificări active',
+        'u-yt-t': 'YouTube', 'u-yt-d': '<strong>Theo</strong> pentru React ecosystem. <strong>Web Dev Simplified</strong> pentru fundamentals clare. <strong>Fireship</strong> pentru news rapide. Nu urmăresc canale motivaționale — doar tehnic.', 'u-yt-tag': 'Tehnic, nu motivational',
+        's-productivity': '📝 Productivity',
+        'u-notion-t': 'Notion', 'u-notion-d': 'Roadmap proiecte, ideas backlog, decision log offline, note de learning. Nu îl folosesc ca todo list — am GitHub Projects pentru asta.', 'u-notion-tag': 'Planning',
+        'u-toggl-t': 'Toggl Track', 'u-toggl-d': 'Time tracking pe sesiuni de dev. Nu pentru productivitate performativă — pentru a vedea <strong>unde se duc orele reale</strong> vs. estimările mele (de obicei: debugging ia 3× mai mult decât anticipez).', 'u-toggl-tag': 'Self-awareness',
+        'u-focus-t': 'Focus', 'u-focus-d': '<strong>Spotify</strong> cu playlists instrumentale. <strong>Pomodoro 50/10</strong> pentru sesiuni lungi — nu 25/5, prea scurt pentru a intra în flow real.', 'u-focus-tag': 'Flow state',
+        'productivity-why': '<strong>Principiu:</strong> lista se schimbă rar. Adaug ceva nou doar dacă l-am folosit consistent 2+ săptămâni și înlocuiește ceva mai puțin bun, nu dacă e „popular".',
+        'cta-eyebrow': 'Hai să lucrăm', 'cta-title': 'Construiești ceva cu un stack similar?',
+        'cta-sub': 'Scrie-mi — pot oferi feedback pe arhitectură, stack choices sau UX pentru proiecte front-end.',
+        'cta-email': 'Scrie-mi →', 'cta-process': 'Cum construiesc →', 'cta-back': '← Portofoliu'
+      },
+      en: {
+        'nav-back': '← Portfolio', 'nav-projects': 'Top projects', 'nav-process': 'Process →',
+        'hero-eyebrow': 'Uses · My daily stack',
+        'hero-title': 'Everything I use to build front-end projects',
+        'hero-sub': 'Inspired by <a href="https://uses.tech" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">uses.tech</a>. A list of my most used tools, software and configs. Updated on real changes, not trends.',
+        's-editor': '💻 Editor & Terminal',
+        'u-vscode-t': 'VS Code', 'u-vscode-d': 'Main editor. Theme: <strong>One Dark Pro.</strong> Font: <strong>Fira Code</strong> with ligatures. Settings sync to GitHub for automatic backup.', 'u-vscode-tag': 'Main editor',
+        'u-terminal-t': 'Terminal', 'u-terminal-d': '<strong>Windows Terminal</strong> with PowerShell 7. <strong>Oh My Posh</strong> for customized prompt showing Git branch, execution time and exit code.', 'u-terminal-tag': 'Daily driver',
+        'u-ext-t': 'Essential VS Code extensions',
+        's-stack': '🛠 Tech stack',
+        'u-react-t': 'React 18 + Vite 5', 'u-react-d': 'Main framework for projects with 3+ components. <strong>Vite</strong> for ~50ms dev server and instant HMR. <code>create-vite</code> as the standard starting point.', 'u-react-tag': 'Main stack',
+        'u-ts-t': 'TypeScript', 'u-ts-d': 'On any project with 3+ components or 300+ lines. Not for strictness as a goal — for <strong>safe refactoring</strong> and real IDE autocomplete.', 'u-ts-tag': 'Type safety',
+        'u-tailwind-t': 'Tailwind CSS', 'u-tailwind-d': 'On new projects. Eliminates the overhead of naming conventions and gives you consistency without building your own design system. With <strong>Prettier plugin</strong> for class sorting.', 'u-tailwind-tag': 'Preferred styling',
+        'u-charts-t': 'Charts', 'u-charts-d': '<strong>Recharts</strong> for React projects (declarative, TS-friendly, composable). <strong>Chart.js</strong> for pure HTML. I never mix both in the same project.', 'u-charts-tag': 'Data viz',
+        'u-audio-t': 'Web Audio API', 'u-audio-d': 'For projects with procedural sound (BASKET VS AI, Excel-Quest). I prefer <strong>native API</strong> over libraries — more control, zero dependencies, smaller bundle.', 'u-audio-tag': 'Native, no libraries',
+        'u-cicd-t': 'GitHub Actions + Pages', 'u-cicd-d': 'CI/CD from the first commit on every major project. Standard workflow: <code>npm ci</code> → <code>npm run build</code> → deploy to <code>gh-pages</code> branch. Zero costs.', 'u-cicd-tag': '0€ hosting',
+        'stack-why': '<strong>Why this stack and not another:</strong> Vite + React + TypeScript + Tailwind covers 90% of personal front-end project needs, with the best DX available now. GitHub Actions completely eliminates hosting and CI costs.',
+        's-design': '🎨 Design & UX',
+        'u-excali-t': 'Excalidraw', 'u-excali-d': 'Fast wireframing. <strong>No colors, no fonts</strong> — just hierarchy and structure. If the wireframe isn\'t clear in Excalidraw, it won\'t be clear in the browser.', 'u-excali-tag': 'Wireframing',
+        'u-figma-t': 'Figma (free tier)', 'u-figma-d': 'For detailed mockups when the project warrants it. Free tier is enough for personal projects — 3 active projects at once is more than I need.', 'u-figma-tag': 'Mockups',
+        'u-color-t': 'Colors & contrast', 'u-color-d': '<strong>Coolors</strong> for palettes. <strong>Realtime Colors</strong> for live contrast testing. <strong>WCAG</strong> minimum AA on all public projects.', 'u-color-tag': 'Accessibility',
+        'u-fonts-t': 'Fonts', 'u-fonts-d': '<strong>Inter</strong> for UI (best for high text density). <strong>JetBrains Mono</strong> or <strong>Fira Code</strong> for code. Fluid typography with <code>clamp()</code> everywhere.', 'u-fonts-tag': 'Typography',
+        'u-icons-t': 'Icons', 'u-icons-d': '<strong>Lucide</strong> for standalone projects (open source, consistent, tree-shakeable). <strong>Heroicons</strong> for Tailwind projects. I never mix icon libraries.', 'u-icons-tag': 'Open source',
+        's-browser': '🌐 Browser & Testing',
+        'u-chrome-t': 'Chrome DevTools', 'u-chrome-d': 'Dedicated dev profile. Extensions: <strong>React DevTools</strong>, <strong>axe DevTools</strong> (a11y), <strong>Lighthouse</strong>, <strong>Web Vitals</strong>, <strong>ColorZilla</strong>. Firefox for final cross-browser check.', 'u-chrome-tag': 'Main browser',
+        'u-lighthouse-t': 'Lighthouse CI', 'u-lighthouse-d': 'On GitHub Actions — runs automatically on every push. Target: Performance 90+, Accessibility 95+, SEO 90+. Alerts if it drops below threshold.', 'u-lighthouse-tag': 'Performance',
+        's-hosting': '🚀 Hosting & Services',
+        'u-ghpages-t': 'GitHub Pages', 'u-ghpages-d': 'Static hosting for all personal projects. <strong>Free, auto deploy, custom domain support.</strong> 20+ live projects on the same account, 0€/month.', 'u-ghpages-tag': '0€/month',
+        'u-vercel-t': 'Vercel', 'u-vercel-d': 'For projects that need API routes or environment variables. Free tier covers any personal project. Preview deployments on every PR.', 'u-vercel-tag': 'With API routes',
+        'u-storage-t': 'Storage', 'u-storage-d': '<strong>localStorage</strong> for personal projects (simple, 0 setup). <strong>Supabase</strong> when I need a real DB and auth — free tier is enough. <strong>Not IndexedDB</strong> — too verbose for my complexity level.', 'u-storage-tag': 'Local-first',
+        'u-ai-t': 'Claude (Anthropic API)', 'u-ai-d': 'Pair programming, debugging, code review. Integrated directly into AI-native projects (Link Video Editor Studio). <strong>Claude Code in Action</strong> certification completed.', 'u-ai-tag': 'AI-native dev',
+        's-learning': '📚 Learning & Reference',
+        'u-docs-t': 'Documentation', 'u-docs-d': '<strong>MDN</strong> for standards (the only truth). <strong>New React docs</strong> (not the old ones). <strong>web.dev</strong> for performance and a11y. <strong>TypeScript Handbook</strong> for advanced types.', 'u-docs-tag': 'Source of truth',
+        'u-courses-t': 'Courses & certifications', 'u-courses-d': '<strong>freeCodeCamp</strong> (Responsive Web Design, Data Analysis). <strong>LinkedIn Learning</strong> (JavaScript Essential Training). <strong>Google</strong> (Digital Marketing & E-commerce). <strong>Anthropic Academy</strong> (Claude Code in Action).', 'u-courses-tag': '4 active certifications',
+        'u-yt-t': 'YouTube', 'u-yt-d': '<strong>Theo</strong> for React ecosystem. <strong>Web Dev Simplified</strong> for clear fundamentals. <strong>Fireship</strong> for quick news. I don\'t follow motivational channels — technical only.', 'u-yt-tag': 'Technical, not motivational',
+        's-productivity': '📝 Productivity',
+        'u-notion-t': 'Notion', 'u-notion-d': 'Project roadmap, ideas backlog, offline decision log, learning notes. I don\'t use it as a todo list — I have GitHub Projects for that.', 'u-notion-tag': 'Planning',
+        'u-toggl-t': 'Toggl Track', 'u-toggl-d': 'Time tracking on dev sessions. Not for performative productivity — to see <strong>where real hours go</strong> vs. my estimates (usually: debugging takes 3× longer than I anticipate).', 'u-toggl-tag': 'Self-awareness',
+        'u-focus-t': 'Focus', 'u-focus-d': '<strong>Spotify</strong> with instrumental playlists. <strong>Pomodoro 50/10</strong> for long sessions — not 25/5, too short to enter real flow state.', 'u-focus-tag': 'Flow state',
+        'productivity-why': '<strong>Principle:</strong> the list changes rarely. I add something new only if I\'ve used it consistently for 2+ weeks and it replaces something worse, not because it\'s "popular".',
+        'cta-eyebrow': 'Let\'s work together', 'cta-title': 'Building something with a similar stack?',
+        'cta-sub': 'Write to me — I can offer feedback on architecture, stack choices or UX for front-end projects.',
+        'cta-email': 'Write to me →', 'cta-process': 'How I build →', 'cta-back': '← Portfolio'
+      }
+    };
+    function toggleLang() {
+      lang = lang === 'ro' ? 'en' : 'ro';
+      document.getElementById('langBtn').textContent = lang === 'ro' ? 'EN' : 'RO';
+      document.documentElement.lang = lang;
+      Object.keys(T[lang]).forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.innerHTML = T[lang][id];
+      });
+    }
+  </script>
 </body>
 </html>
