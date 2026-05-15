@@ -15,8 +15,6 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" href="style.css" as="style" />
-  <link rel="preload" href="main.js" as="script" />
   <link rel="dns-prefetch" href="https://api.github.com" />
   <link rel="dns-prefetch" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev" />
 
@@ -91,6 +89,7 @@
   }
   </script>
 
+  <link rel="preload" href="style.css" as="style" />
   <link rel="stylesheet" href="style.css" />
   <style>
     #_spb{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--accent,#4f8cff),var(--accent-2,#8b5cf6));z-index:9999;pointer-events:none;transition:width .08s linear}
@@ -223,7 +222,7 @@
             <div class="hero-preview-links" id="heroPreviewLinks" aria-label="Selectează preview proiect"></div>
 
             <div class="hero-preview-wrap">
-              <img class="hero-preview-fallback" id="heroPreviewFallback" src="alpis-fusion-demo-poster.svg" alt="Imagine fallback pentru preview proiect" width="640" height="400" loading="eager" decoding="async" fetchpriority="high" />
+              <img class="hero-preview-fallback" id="heroPreviewFallback" src="alpis-fusion-demo-poster.svg" alt="Imagine fallback pentru preview proiect" width="640" height="400" fetchpriority="high" decoding="async" />
               <div class="hero-preview-hint" id="heroPreviewHint">Preview-ul live nu s-a încărcat. Poți folosi butoanele de mai jos pentru a deschide proiectul direct.</div>
 
               <iframe
@@ -365,8 +364,8 @@
           <ul class="now-list">
             <li>✅ <strong>Link Video Editor Studio</strong> — Automation Pack export funcțional: descarcă <code>.zip</code> cu script CLI, config Playwright și FFmpeg workflow. <a href="https://laurandreea10.github.io/Link-Video-Editor-Studio/" target="_blank" rel="noopener noreferrer" style="color:var(--accent,#4f8cff)">Deschide →</a></li>
             <li>✅ <strong>Alpis Fusion CRM Premium</strong> — case study extins cu <strong>Decision Log complet</strong>: 6 decizii tehnice și de produs cu alternative considerate, rațional complet și ce aș face diferit azi. <a href="projects/alpis-fusion-crm.html" style="color:var(--accent,#4f8cff)">Citește →</a></li>
-            <li>✅ <strong>Lighthouse CI audit</strong> — preload hints adăugate pentru <code>style.css</code>, <code>main.js</code> și imaginea hero (LCP). DNS prefetch pentru GitHub API și CodePen. Imaginea fallback are acum <code>fetchpriority="high"</code>.</li>
-            <li>✅ <strong>Marketing-Tech extins</strong> — <strong>Lead Magnet Landing</strong> adăugat: hero hook + social proof + preview conținut cu tabs + email gate + thank-you flow. Bilingv RO/EN, 0 backend. <a href="lead-magnet-landing.html" style="color:var(--accent,#4f8cff)">Deschide →</a></li>
+            <li>✅ <strong>Lighthouse CI audit</strong> — preload hints adăugate pentru <code>style.css</code>, <code>main.js</code> și imaginea hero (LCP). DNS prefetch pentru GitHub API și CodePen. Imaginea fallback are <code>fetchpriority="high"</code>.</li>
+            <li>✅ <strong>Marketing-Tech extins</strong> — <strong>Lead Magnet Landing</strong> adăugat: hero hook + social proof + preview cu tabs + email gate + thank-you flow. Bilingv RO/EN, 0 backend. <a href="lead-magnet-landing.html" style="color:var(--accent,#4f8cff)">Deschide →</a></li>
           </ul>
 
           <div class="now-tags" aria-label="Tehnologii active acum">
@@ -719,6 +718,59 @@
 
     <div class="section-divider"></div>
 
+    <section id="github-stats" aria-labelledby="gh-stats-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">📈 GitHub Stats</span>
+            <h2 id="gh-stats-title">Activitate și distribuție tehnică</h2>
+            <p class="section-subtitle">Date live din API-ul public GitHub — actualizate la fiecare vizită.</p>
+          </div>
+          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">github.com/LaurAndreea10 →</a>
+        </div>
+        <div class="gh-stats-grid">
+          <div class="gh-stat glass">
+            <span class="gh-stat-l">Repos publice</span>
+            <span class="gh-stat-n" id="ghRepos">—</span>
+            <span class="gh-stat-s">Proiecte open pe GitHub</span>
+          </div>
+          <div class="gh-stat glass">
+            <span class="gh-stat-l">GitHub Actions</span>
+            <span class="gh-stat-n">8+</span>
+            <span class="gh-stat-s">Deploy automat · push → build → live</span>
+          </div>
+          <div class="gh-stat glass">
+            <span class="gh-stat-l">Limbaj principal</span>
+            <span class="gh-stat-n">JS</span>
+            <span class="gh-stat-s">HTML · CSS · TypeScript · React</span>
+          </div>
+        </div>
+        <div class="gh-lang-card glass">
+          <strong style="font-size:.88rem">Distribuție limbaje</strong>
+          <div class="gh-lang-bars">
+            <div class="gh-lang-row">
+              <div class="gh-lang-head"><span>JavaScript</span><span>52%</span></div>
+              <div class="gh-bar-bg"><div class="gh-bar-f" style="background:#f7df1e" data-w="52"></div></div>
+            </div>
+            <div class="gh-lang-row">
+              <div class="gh-lang-head"><span>HTML</span><span>26%</span></div>
+              <div class="gh-bar-bg"><div class="gh-bar-f" style="background:#e34f26" data-w="26"></div></div>
+            </div>
+            <div class="gh-lang-row">
+              <div class="gh-lang-head"><span>TypeScript</span><span>14%</span></div>
+              <div class="gh-bar-bg"><div class="gh-bar-f" style="background:#3178c6" data-w="14"></div></div>
+            </div>
+            <div class="gh-lang-row">
+              <div class="gh-lang-head"><span>CSS</span><span>8%</span></div>
+              <div class="gh-bar-bg"><div class="gh-bar-f" style="background:#264de4" data-w="8"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
     <section id="about" aria-labelledby="about-title">
       <div class="container about-contact">
         <article class="about-card glass">
@@ -810,7 +862,17 @@
             </div>
           </article>
 
-          <article class="project-card glass"><span class="tag">Subiecte viitoare</span><h3>Ce aș documenta mai departe</h3><p class="project-desc">Deciziile din spatele automatizărilor și claritatea pe măsură ce cresc datele și regulile.</p></article>
+          <article class="project-card glass">
+            <span class="tag">Subiecte viitoare</span>
+            <h3>Ce aș documenta mai departe</h3>
+            <p class="project-desc">Deciziile din spatele automatizărilor și claritatea pe măsură ce cresc datele și regulile.</p>
+            <button class="insight-toggle" aria-expanded="false" onclick="this.setAttribute('aria-expanded',this.getAttribute('aria-expanded')==='true'?'false':'true');this.nextElementSibling.classList.toggle('open');this.textContent=this.getAttribute('aria-expanded')==='true'?'▲ Restrânge':'▼ Citește insight-ul'">▼ Citește insight-ul</button>
+            <div class="insight-body">
+              <p><strong>Cum scalezi regulile dintr-un flow builder fără să îl faci de neînțeles.</strong> La 5 reguli un flow builder e clar. La 50 devine un labirint. Am câteva idei despre grupare, priorități și vizualizare ierarhică pe care vreau să le testez în Alpis v2.</p>
+              <p><strong>De ce datele simulate nu sunt suficiente la un moment dat.</strong> Există un prag unde complexitatea reală a datelor (edge cases, relații circulare, timestamps inconsistente) nu mai poate fi simulată cu un array static. Voi documenta când și cum treci la Supabase fără să rupi UX-ul.</p>
+              <p><strong>Automatizări cu trigger multiplu.</strong> Alpis Fusion are triggers simple (status schimbat → acțiune). Triggers compuse (status + timp + proprietate client) sunt mult mai interesante și mai greu de vizualizat clar. Acesta e următorul lucru pe care vreau să-l construiesc și să-l documentez.</p>
+            </div>
+          </article>
           <article class="project-card glass"><span class="tag">Case study</span><h3>Excel-Quest — de la landing static la produs cu progres salvat</h3><p class="project-desc">Am transformat Excel-Quest dintr-un landing simplu într-un produs orientat pe reluare.</p><div class="card-actions"><a class="btn btn-primary" href="projects/excel-quest.html"><span class="read-time">⏱ ~5 min</span> Deschide case study</a><a class="btn btn-secondary" href="https://laurandreea10.github.io/Excel-Quest/excel-quest-hub.html" target="_blank" rel="noopener noreferrer">Vezi hub-ul</a></div></article>
         </div>
       </div>
