@@ -24,6 +24,7 @@ jobs:
         run: |
           from pathlib import Path
 
+          PATCH_VERSION = '2026-05-16-apply-all'
           index_path = Path('index.html')
           main_path = Path('main.js')
           index = index_path.read_text(encoding='utf-8')
@@ -80,15 +81,14 @@ jobs:
           if 'id="key-nexus-title"' not in index:
               index = index.replace('3 proiecte care arată cel mai clar cum gândesc produsul și interfața', '4 proiecte care arată cel mai clar cum gândesc produsul și interfața', 1)
               index = index.replace('Am ales 3 proiecte care mă reprezintă cel mai bine:', 'Am ales 4 proiecte care mă reprezintă cel mai bine:', 1)
-              impact_end = '''          <article class="project-card glass" aria-labelledby="key-impact-title">'''
-              start = index.find(impact_end)
+              impact_marker = '''          <article class="project-card glass" aria-labelledby="key-impact-title">'''
+              start = index.find(impact_marker)
               if start != -1:
                   next_close = index.find('          </article>', start)
                   if next_close != -1:
                       insert_at = next_close + len('          </article>')
                       index = index[:insert_at] + nexus_key_card + index[insert_at:]
 
-          # Count updates for consistency across meta, OG, visible proof and footer.
           replacements = {
               '64 proiecte live': '65 proiecte live',
               '64+ proiecte live': '65+ proiecte live',
@@ -100,7 +100,6 @@ jobs:
           for old, new in replacements.items():
               index = index.replace(old, new)
 
-          # Static Now fallback in index.html.
           now_item = '''            <li>✅ <strong>NEXUS PROTOCOL launched</strong> — Single-file game (74KB) care fuzionează endless runner neon, CRM tycoon (8 module cu efecte permanente) și code breaker (12 challenges JS/CSS/regex). Vocabular CRM identic cu Alpis Fusion — același limbaj, alt mediu. <a href="https://laurandreea10.github.io/nexus-protocol/" target="_blank" rel="noopener noreferrer" style="color:var(--accent,#4f8cff)">Joacă →</a></li>'''
           now_anchor = '''            <li>✅ <strong>Marketing-Tech extins</strong> — <strong>Lead Magnet Landing</strong> adăugat: hero hook + social proof + preview cu tabs + email gate + thank-you flow. Bilingv RO/EN, 0 backend. <a href="lead-magnet-landing.html" style="color:var(--accent,#4f8cff)">Deschide →</a></li>'''
           if 'NEXUS PROTOCOL launched' not in index and now_anchor in index:
