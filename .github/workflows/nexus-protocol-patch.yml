@@ -1,0 +1,137 @@
+name: Apply NEXUS PROTOCOL portfolio patches
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nexus-protocol-patch.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Apply patches
+        shell: python
+        run: |
+          from pathlib import Path
+
+          index_path = Path('index.html')
+          main_path = Path('main.js')
+          index = index_path.read_text(encoding='utf-8')
+          main = main_path.read_text(encoding='utf-8') if main_path.exists() else ''
+
+          nexus_latest_card = '''          <article class="project-card glass" aria-labelledby="nexus-protocol-title">
+            <span class="badge-new">NEW</span>
+            <div class="project-top">
+              <div>
+                <h3 id="nexus-protocol-title">NEXUS PROTOCOL</h3>
+                <span class="badge-github">GitHub</span>
+              </div>
+              <span class="tag github">github</span>
+            </div>
+            <p class="project-desc">Endless runner neon × CRM tycoon × code breaker. Trei genuri într-un singur joc single-file. Bilingv RO/EN, 8 module CRM cu efecte permanente, 12 challenges JS/CSS/regex.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="projects/nexus-protocol.html">Case study</a>
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/nexus-protocol/" target="_blank" rel="noopener noreferrer">Live Demo</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/nexus-protocol" target="_blank" rel="noopener noreferrer">GitHub →</a>
+            </div>
+          </article>
+
+'''
+
+          excel_marker = '          <article class="project-card glass" aria-labelledby="excel-quest-title">'
+          if 'id="nexus-protocol-title"' not in index and excel_marker in index:
+              index = index.replace(excel_marker, nexus_latest_card + excel_marker, 1)
+
+          nexus_key_card = '''
+
+          <article class="project-card glass" aria-labelledby="key-nexus-title">
+            <span class="tag">game</span>
+            <h3 id="key-nexus-title">NEXUS PROTOCOL</h3>
+            <div class="card-metrics" aria-label="Metrici proiect">
+              <div class="cm"><span class="cm-n">3</span><span class="cm-l">Layere</span></div>
+              <div class="cm"><span class="cm-n">8</span><span class="cm-l">Module CRM</span></div>
+              <div class="cm"><span class="cm-n">12</span><span class="cm-l">Challenges</span></div>
+            </div>
+            <p class="project-desc">Am construit un game single-file care leagă explicit zona mea CRM (Alpis Fusion) de zona arcade (ARCADE OPS), folosind același vocabular: KANBAN, RBAC, BILLING, FLOW BUILDER ca module cu efect mecanic.</p>
+            <div class="project-proof">
+              <strong>Dovezi observabile</strong>
+              <ul>
+                <li>Trei layere distincte într-un singur fișier (74KB).</li>
+                <li>8 module CRM cu efecte permanente între run-uri.</li>
+                <li>12 challenges reale JavaScript / CSS / regex la checkpoint-uri.</li>
+              </ul>
+            </div>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="projects/nexus-protocol.html"><span class="read-time">⏱ ~4 min</span> Deschide case study</a>
+              <a class="btn btn-codepen" href="https://laurandreea10.github.io/nexus-protocol/" target="_blank" rel="noopener noreferrer">Live Demo</a>
+            </div>
+          </article>'''
+
+          if 'id="key-nexus-title"' not in index:
+              index = index.replace('3 proiecte care arată cel mai clar cum gândesc produsul și interfața', '4 proiecte care arată cel mai clar cum gândesc produsul și interfața', 1)
+              index = index.replace('Am ales 3 proiecte care mă reprezintă cel mai bine:', 'Am ales 4 proiecte care mă reprezintă cel mai bine:', 1)
+              impact_end = '''          <article class="project-card glass" aria-labelledby="key-impact-title">'''
+              start = index.find(impact_end)
+              if start != -1:
+                  next_close = index.find('          </article>', start)
+                  if next_close != -1:
+                      insert_at = next_close + len('          </article>')
+                      index = index[:insert_at] + nexus_key_card + index[insert_at:]
+
+          # Count updates for consistency across meta, OG, visible proof and footer.
+          replacements = {
+              '64 proiecte live': '65 proiecte live',
+              '64+ proiecte live': '65+ proiecte live',
+              '64 proiecte live pe CodePen': '65 proiecte live pe CodePen',
+              'CodePen · 64 proiecte live': 'CodePen · 65 proiecte live',
+              '64 proiecte live · Vite + React': '65 proiecte live · Vite + React',
+              '64 proiecte live, focus': '65 proiecte live, focus'
+          }
+          for old, new in replacements.items():
+              index = index.replace(old, new)
+
+          # Static Now fallback in index.html.
+          now_item = '''            <li>✅ <strong>NEXUS PROTOCOL launched</strong> — Single-file game (74KB) care fuzionează endless runner neon, CRM tycoon (8 module cu efecte permanente) și code breaker (12 challenges JS/CSS/regex). Vocabular CRM identic cu Alpis Fusion — același limbaj, alt mediu. <a href="https://laurandreea10.github.io/nexus-protocol/" target="_blank" rel="noopener noreferrer" style="color:var(--accent,#4f8cff)">Joacă →</a></li>'''
+          now_anchor = '''            <li>✅ <strong>Marketing-Tech extins</strong> — <strong>Lead Magnet Landing</strong> adăugat: hero hook + social proof + preview cu tabs + email gate + thank-you flow. Bilingv RO/EN, 0 backend. <a href="lead-magnet-landing.html" style="color:var(--accent,#4f8cff)">Deschide →</a></li>'''
+          if 'NEXUS PROTOCOL launched' not in index and now_anchor in index:
+              index = index.replace(now_anchor, now_anchor + '\n' + now_item, 1)
+
+          index_path.write_text(index, encoding='utf-8')
+
+          if main:
+              if "'NEXUS PROTOCOL': 'implemented'" not in main:
+                  main = main.replace("    'Link Video Editor Studio': 'implemented',", "    'Link Video Editor Studio': 'implemented',\n    'NEXUS PROTOCOL': 'implemented',", 1)
+
+              ro_new = "        'Lansez <a href=\"https://laurandreea10.github.io/nexus-protocol/\" target=\"_blank\" rel=\"noopener noreferrer\"><strong>NEXUS PROTOCOL</strong></a> — single-file game (74KB) care fuzionează endless runner neon, CRM tycoon și code breaker, cu 8 module CRM și 12 challenges JS/CSS/regex.'"
+              en_new = "        'Launching <a href=\"https://laurandreea10.github.io/nexus-protocol/\" target=\"_blank\" rel=\"noopener noreferrer\"><strong>NEXUS PROTOCOL</strong></a> — a 74KB single-file game combining neon endless runner, CRM tycoon and code breaker, with 8 CRM modules and 12 JS/CSS/regex challenges.'"
+
+              if 'NEXUS PROTOCOL</strong>' not in main:
+                  ro_anchor = "        'Extind zona <a href=\"./index.html#marketing-tech\"><strong>marketing-tech</strong></a> după <a href=\"./Campaign%20ROI%20Calculator.html\"><strong>Campaign ROI Calculator</strong></a> cu noi template-uri orientate pe conversie și growth workflows.'"
+                  en_anchor = "        'Expanding the <a href=\"./index.html#marketing-tech\"><strong>marketing-tech</strong></a> area after <a href=\"./Campaign%20ROI%20Calculator.html\"><strong>Campaign ROI Calculator</strong></a> with new conversion-oriented templates and growth workflows.'"
+                  main = main.replace(ro_anchor, ro_anchor + ',\n' + ro_new, 1)
+                  main = main.replace(en_anchor, en_anchor + ',\n' + en_new, 1)
+
+              main_path.write_text(main, encoding='utf-8')
+
+      - name: Commit patched portfolio files
+        shell: bash
+        run: |
+          if git diff --quiet index.html main.js; then
+            echo "No portfolio changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html main.js
+          git commit -m "feat: add NEXUS PROTOCOL case study + portfolio cards"
+          git push
