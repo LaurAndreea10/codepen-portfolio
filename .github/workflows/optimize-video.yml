@@ -1,0 +1,93 @@
+name: Optimize demo video
+
+on:
+  workflow_dispatch:
+    inputs:
+      input_file:
+        description: "Raw video path inside the repo"
+        required: true
+        default: "media/raw/alpis-fusion-demo-raw.mp4"
+      output_name:
+        description: "Output basename without extension"
+        required: true
+        default: "alpis-fusion-demo"
+  push:
+    paths:
+      - "media/raw/**.mp4"
+      - "media/raw/**.mov"
+      - "media/raw/**.webm"
+
+permissions:
+  contents: write
+
+jobs:
+  optimize-video:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Resolve input file
+        id: vars
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            INPUT_FILE="${{ github.event.inputs.input_file }}"
+            OUTPUT_NAME="${{ github.event.inputs.output_name }}"
+          else
+            INPUT_FILE="$(find media/raw -maxdepth 1 -type f \( -name '*.mp4' -o -name '*.mov' -o -name '*.webm' \) | sort | tail -n 1)"
+            OUTPUT_NAME="alpis-fusion-demo"
+          fi
+
+          if [ ! -f "$INPUT_FILE" ]; then
+            echo "Input file not found: $INPUT_FILE"
+            exit 1
+          fi
+
+          mkdir -p media
+          echo "input_file=$INPUT_FILE" >> "$GITHUB_OUTPUT"
+          echo "output_name=$OUTPUT_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Create optimized MP4
+        run: |
+          ffmpeg -y -i "${{ steps.vars.outputs.input_file }}" \
+            -vcodec libx264 -crf 28 -preset slow \
+            -vf "scale=1280:-2,fps=24" \
+            -an -movflags +faststart \
+            "media/${{ steps.vars.outputs.output_name }}.mp4"
+
+      - name: Create optimized WebM
+        run: |
+          ffmpeg -y -i "${{ steps.vars.outputs.input_file }}" \
+            -c:v libvpx-vp9 -crf 35 -b:v 0 \
+            -vf "scale=1280:-2,fps=24" \
+            -an \
+            "media/${{ steps.vars.outputs.output_name }}.webm"
+
+      - name: Show final file sizes
+        run: |
+          ls -lh "media/${{ steps.vars.outputs.output_name }}.mp4" "media/${{ steps.vars.outputs.output_name }}.webm"
+
+      - name: Commit optimized videos
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "media/${{ steps.vars.outputs.output_name }}.mp4" "media/${{ steps.vars.outputs.output_name }}.webm"
+
+          if git diff --cached --quiet; then
+            echo "No optimized video changes to commit."
+            exit 0
+          fi
+
+          git commit -m "feat(media): optimize Alpis Fusion demo video"
+          git push
