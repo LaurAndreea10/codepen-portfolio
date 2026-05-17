@@ -1,8 +1,8 @@
-/* Now section: JSON + weekly archive
-   Reads data/now.json and upgrades the existing #now block without touching the page structure. */
+/* Now section: JSON + weekly archive. Loads the newest weekly snapshot first, then falls back to data/now.json. */
 (function(){
   'use strict';
 
+  const DATA_SOURCES = ['data/now-2026-05-17.json', 'data/now.json'];
   const STYLE_ID = 'now-section-json-styles';
   const ICONS = { done: '✓', 'in-progress': '◐', next: '→' };
   const LABELS = {
@@ -10,27 +10,15 @@
     en: { done: 'Done', 'in-progress': 'In progress', next: 'Next', current: 'Current week', archive: 'Archive', title: 'What I am working on this week', note: 'Updated weekly from data/now.json. Older weeks stay in the Archive.' }
   };
 
-  function lang(){
-    return document.documentElement.lang === 'en' ? 'en' : 'ro';
-  }
-
-  function copy(){
-    return LABELS[lang()] || LABELS.ro;
-  }
-
+  function lang(){ return document.documentElement.lang === 'en' ? 'en' : 'ro'; }
+  function copy(){ return LABELS[lang()] || LABELS.ro; }
   function escapeHtml(value){
-    return String(value || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+    return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
   }
-
   function safeHref(value){
     const href = String(value || '').trim();
     if (!href) return '';
-    if (/^(https?:\/\/|mailto:|\.\/|\.\.\/|\/|projects\/|[a-z0-9-]+\.html)/i.test(href)) return href;
+    if (/^(https?:\/\/|mailto:|#|\.\/|\.\.\/|\/|projects\/|[a-z0-9-]+\.html)/i.test(href)) return href;
     return '';
   }
 
@@ -68,7 +56,6 @@
       #now .archive-week__label{font-size:.75rem;color:var(--muted);font-weight:600}
       #now .archive-week__count{padding:2px 9px;border-radius:999px;font-size:.72rem;font-weight:800;background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.24)}
       #now .archive-week__body{padding:12px 16px 14px}
-      #now .now-note code{padding:1px 6px;border-radius:6px;background:rgba(255,255,255,.08);color:var(--text)}
       @media(max-width:700px){#now .now-tabs{width:100%;justify-content:space-between}#now .now-tab{flex:1}}
     `;
     document.head.appendChild(style);
@@ -79,29 +66,14 @@
     const status = ICONS[item.status] ? item.status : 'next';
     const text = escapeHtml(item.text);
     const href = safeHref(item.link);
-    const body = href ? `<a href="${escapeHtml(href)}" target="${href.startsWith('http') ? '_blank' : '_self'}" rel="noopener noreferrer">${text} →</a>` : text;
-    return `
-      <li class="now-item now-item--${status}">
-        <span class="now-item__icon" title="${c[status]}" aria-label="${c[status]}">${ICONS[status]}</span>
-        <span class="now-item__text">${body}</span>
-      </li>`;
+    const target = href.startsWith('http') ? '_blank' : '_self';
+    const body = href ? `<a href="${escapeHtml(href)}" target="${target}" rel="noopener noreferrer">${text} →</a>` : text;
+    return `<li class="now-item now-item--${status}"><span class="now-item__icon" title="${c[status]}" aria-label="${c[status]}">${ICONS[status]}</span><span class="now-item__text">${body}</span></li>`;
   }
 
   function renderArchive(archive){
     if (!Array.isArray(archive) || !archive.length) return '';
-    return archive.map((week, index) => `
-      <details class="archive-week" ${index === 0 ? 'open' : ''}>
-        <summary>
-          <span class="archive-week__title">
-            <strong>${escapeHtml(week.week)}</strong>
-            <span class="archive-week__label">${escapeHtml(week.label)}</span>
-          </span>
-          <span class="archive-week__count">${Array.isArray(week.items) ? week.items.length : 0}</span>
-        </summary>
-        <div class="archive-week__body">
-          <ul class="now-list">${(week.items || []).map(renderItem).join('')}</ul>
-        </div>
-      </details>`).join('');
+    return archive.map((week, index) => `<details class="archive-week" ${index === 0 ? 'open' : ''}><summary><span class="archive-week__title"><strong>${escapeHtml(week.week)}</strong><span class="archive-week__label">${escapeHtml(week.label)}</span></span><span class="archive-week__count">${Array.isArray(week.items) ? week.items.length : 0}</span></summary><div class="archive-week__body"><ul class="now-list">${(week.items || []).map(renderItem).join('')}</ul></div></details>`).join('');
   }
 
   function render(data){
@@ -109,68 +81,30 @@
     if (!section || !data || !data.current) return;
     const c = copy();
     injectStyles();
-    section.innerHTML = `
-      <div class="container">
-        <article class="about-card glass">
-          <div class="now-head">
-            <div style="flex:1;min-width:240px">
-              <span class="eyebrow eyebrow-green"><span class="now-pulse" aria-hidden="true"></span>⚡ Now</span>
-              <h2 id="now-title" class="now-title">${c.title}</h2>
-            </div>
-            <div class="now-tabs" role="tablist" aria-label="Now section views">
-              <button class="now-tab active" type="button" role="tab" aria-selected="true" data-view="current">${c.current}</button>
-              <button class="now-tab" type="button" role="tab" aria-selected="false" data-view="archive">${c.archive} <span class="now-tab__badge">${(data.archive || []).length}</span></button>
-            </div>
-          </div>
-
-          <div class="now-current" id="viewCurrent">
-            <div class="now-week-meta">
-              📅 <strong>${escapeHtml(data.current.week)}</strong>
-              <span>·</span>
-              <time datetime="${escapeHtml(data.current.datetime)}">${escapeHtml(data.current.label)}</time>
-            </div>
-            <ul class="now-list">${(data.current.items || []).map(renderItem).join('')}</ul>
-          </div>
-
-          <div class="now-archive" id="viewArchive" hidden>${renderArchive(data.archive || [])}</div>
-
-          <div class="now-tags" aria-label="Tehnologii active acum">
-            <span class="now-tag">React 18</span>
-            <span class="now-tag">Vite</span>
-            <span class="now-tag">GitHub Actions</span>
-            <span class="now-tag">Tailwind CSS</span>
-            <span class="now-tag">Lighthouse CI</span>
-            <span class="now-tag">Vanilla JS</span>
-          </div>
-
-          <p class="now-note">${c.note}</p>
-        </article>
-      </div>`;
-
+    section.innerHTML = `<div class="container"><article class="about-card glass"><div class="now-head"><div style="flex:1;min-width:240px"><span class="eyebrow eyebrow-green"><span class="now-pulse" aria-hidden="true"></span>⚡ Now</span><h2 id="now-title" class="now-title">${c.title}</h2></div><div class="now-tabs" role="tablist" aria-label="Now section views"><button class="now-tab active" type="button" role="tab" aria-selected="true" data-view="current">${c.current}</button><button class="now-tab" type="button" role="tab" aria-selected="false" data-view="archive">${c.archive} <span class="now-tab__badge">${(data.archive || []).length}</span></button></div></div><div class="now-current" id="viewCurrent"><div class="now-week-meta">📅 <strong>${escapeHtml(data.current.week)}</strong><span>·</span><time datetime="${escapeHtml(data.current.datetime)}">${escapeHtml(data.current.label)}</time></div><ul class="now-list">${(data.current.items || []).map(renderItem).join('')}</ul></div><div class="now-archive" id="viewArchive" hidden>${renderArchive(data.archive || [])}</div><div class="now-tags" aria-label="Tehnologii active acum"><span class="now-tag">React 18</span><span class="now-tag">Vite</span><span class="now-tag">GitHub Actions</span><span class="now-tag">Tailwind CSS</span><span class="now-tag">Lighthouse CI</span><span class="now-tag">Vanilla JS</span></div><p class="now-note">${c.note}</p></article></div>`;
     const tabs = section.querySelectorAll('.now-tab');
     const currentView = section.querySelector('#viewCurrent');
     const archiveView = section.querySelector('#viewArchive');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => {
-          t.classList.remove('active');
-          t.setAttribute('aria-selected', 'false');
-        });
-        tab.classList.add('active');
-        tab.setAttribute('aria-selected', 'true');
-        const showArchive = tab.dataset.view === 'archive';
-        currentView.style.display = showArchive ? 'none' : 'block';
-        archiveView.toggleAttribute('hidden', !showArchive);
-      });
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      const showArchive = tab.dataset.view === 'archive';
+      currentView.style.display = showArchive ? 'none' : 'block';
+      archiveView.toggleAttribute('hidden', !showArchive);
+    }));
+  }
+
+  function fetchFirstAvailable(sources){
+    return sources.reduce((chain, source) => chain.catch(() => fetch(source, { cache: 'no-cache' }).then(r => r.ok ? r.json() : Promise.reject(new Error(source + ' not found')))), Promise.reject()).catch(error => {
+      console.warn('Now section could not load any data source:', error);
+      return null;
     });
   }
 
   function init(){
     if (!document.getElementById('now')) return;
-    fetch('data/now.json', { cache: 'no-cache' })
-      .then(response => response.ok ? response.json() : Promise.reject(new Error('now.json not found')))
-      .then(render)
-      .catch(error => console.warn('Now section could not load data/now.json:', error));
+    fetchFirstAvailable(DATA_SOURCES).then(data => { if (data) render(data); });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
