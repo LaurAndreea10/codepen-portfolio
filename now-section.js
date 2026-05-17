@@ -1,8 +1,8 @@
-/* Now section: JSON + weekly archive. Loads the newest weekly snapshot first, then falls back to data/now.json. */
+/* Now section: JSON + weekly archive. Uses data/now.json as the main source, with the dated snapshot only as fallback. */
 (function(){
   'use strict';
 
-  const DATA_SOURCES = ['data/now-2026-05-17.json', 'data/now.json'];
+  const DATA_SOURCES = ['data/now.json', 'data/now-2026-05-17.json'];
   const STYLE_ID = 'now-section-json-styles';
   const ICONS = { done: '✓', 'in-progress': '◐', next: '→' };
   const LABELS = {
