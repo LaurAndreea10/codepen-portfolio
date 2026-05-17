@@ -5,6 +5,7 @@
 
   const STYLE_ID = 'alpis-video-card-styles';
   const VIDEO_ID = 'alpisFusionCardVideo';
+  const MEDIA_VERSION = 'real-demo-2026-05-17-v2';
 
   function injectStyles(){
     if (document.getElementById(STYLE_ID)) return;
@@ -29,6 +30,10 @@
     document.head.appendChild(style);
   }
 
+  function mediaUrl(path){
+    return path + '?v=' + encodeURIComponent(MEDIA_VERSION);
+  }
+
   function createMedia(){
     const media = document.createElement('div');
     media.className = 'card-media';
@@ -39,8 +44,8 @@
         <span class="card-media__label-text">Demo live · 48s</span>
       </span>
       <video class="card-media__video" autoplay muted loop playsinline preload="metadata" poster="alpis-fusion-demo-poster.svg" aria-label="Demo Alpis Fusion CRM: kanban, flow builder și dashboard în acțiune">
-        <source src="media/alpis-fusion-demo.webm" type="video/webm">
-        <source src="media/alpis-fusion-demo.mp4" type="video/mp4">
+        <source src="${mediaUrl('media/alpis-fusion-demo.mp4')}" type="video/mp4">
+        <source src="${mediaUrl('media/alpis-fusion-demo.webm')}" type="video/webm">
       </video>
       <div class="card-media__fallback" aria-hidden="true">
         <img src="alpis-fusion-demo-poster.svg" alt="" loading="lazy">
