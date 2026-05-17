@@ -1,0 +1,50 @@
+name: Fix iframe sandbox warning
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fix-iframe-sandbox-warning.yml'
+      - '.github/now-run-iframe-fix.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Remove allow-same-origin from preview iframe sandbox
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          html = p.read_text(encoding='utf-8')
+          before = 'sandbox="allow-scripts allow-same-origin allow-forms allow-popups"'
+          after = 'sandbox="allow-scripts allow-forms allow-popups"'
+          if before in html:
+              html = html.replace(before, after, 1)
+              p.write_text(html, encoding='utf-8')
+              print('Updated iframe sandbox attribute.')
+          else:
+              print('No allow-same-origin sandbox combo found.')
+          PY
+
+      - name: Commit fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "fix(security): remove allow-same-origin from preview iframe"
+          git push
