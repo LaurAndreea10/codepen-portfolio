@@ -1,0 +1,67 @@
+name: Integrate Now section script
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "now-section.js"
+      - "data/now.json"
+      - ".github/workflows/integrate-now-section.yml"
+      - ".github/now-section-trigger.txt"
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Inject now-section.js in index.html
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if grep -q 'now-section.js' index.html; then
+            echo "now-section.js is already referenced in index.html"
+            exit 0
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          script_tag = '  <script src="now-section.js" defer></script>\n'
+
+          if '<script src="main.js" defer></script>' in html:
+              html = html.replace(
+                  '  <script src="main.js" defer></script>\n',
+                  '  <script src="main.js" defer></script>\n' + script_tag,
+                  1
+              )
+          elif '</body>' in html:
+              html = html.replace('</body>', script_tag + '</body>', 1)
+          else:
+              raise SystemExit('Could not find a safe insertion point in index.html')
+
+          path.write_text(html, encoding='utf-8')
+          PY
+
+      - name: Commit integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "feat(now): load JSON powered Now section"
+          git push
