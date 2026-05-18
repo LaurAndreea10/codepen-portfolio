@@ -72,3 +72,34 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
+
+/* Enhancement layer loader: loads enhance.css + enhance.js without changing the existing HTML structure. */
+(function(){
+  'use strict';
+
+  const VERSION = 'portfolio-enhancement-v2-2026-05-18';
+
+  function loadCss(){
+    if (document.querySelector('link[href^="enhance.css"]')) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'enhance.css?v=' + encodeURIComponent(VERSION);
+    document.head.appendChild(link);
+  }
+
+  function loadJs(){
+    if (document.querySelector('script[src^="enhance.js"]')) return;
+    const script = document.createElement('script');
+    script.src = 'enhance.js?v=' + encodeURIComponent(VERSION);
+    script.defer = true;
+    document.body.appendChild(script);
+  }
+
+  function boot(){
+    loadCss();
+    loadJs();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
