@@ -1,0 +1,57 @@
+name: Fix Alpis carousel preview
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fix-alpis-carousel-preview.yml'
+      - '.github/run-fix-alpis-carousel-preview.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Remove sandbox from trusted hero preview iframe
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          variants = [
+              '                sandbox="allow-scripts allow-forms allow-popups">\n',
+              '                sandbox="allow-scripts allow-same-origin allow-forms allow-popups">\n'
+          ]
+          changed = False
+          for old in variants:
+              if old in html:
+                  html = html.replace(old, '                >\n', 1)
+                  changed = True
+                  break
+          if not changed:
+              print('No sandbox attribute line found on hero preview iframe.')
+          else:
+              path.write_text(html, encoding='utf-8')
+              print('Removed sandbox from trusted GitHub Pages preview iframe.')
+          PY
+
+      - name: Commit fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "fix(preview): allow Alpis iframe carousel to render"
+          git push
