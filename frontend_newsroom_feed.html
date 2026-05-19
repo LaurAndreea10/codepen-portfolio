@@ -1,0 +1,374 @@
+
+<style>
+  :root {
+    --bg: #080b13;
+    --bg-soft: #101624;
+    --card: rgba(255,255,255,0.07);
+    --card-strong: rgba(255,255,255,0.12);
+    --text: #f7f9ff;
+    --muted: #aab4c8;
+    --line: rgba(255,255,255,0.14);
+    --accent: #7dd3fc;
+    --accent-2: #c084fc;
+    --accent-3: #facc15;
+    --danger: #fb7185;
+    --shadow: 0 24px 80px rgba(0,0,0,0.35);
+    --radius-xl: 32px;
+    --radius-lg: 22px;
+    --radius-md: 16px;
+    --max: 1180px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { color-scheme: dark; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--text);
+    background: radial-gradient(circle at top left, rgba(125,211,252,0.24), transparent 34rem),
+      radial-gradient(circle at 80% 20%, rgba(192,132,252,0.22), transparent 30rem),
+      linear-gradient(135deg, #060812, #101827 48%, #070912);
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: linear-gradient(to bottom, black, transparent 80%);
+  }
+  a { color: inherit; text-decoration: none; }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 3px solid var(--accent-3); outline-offset: 4px;
+  }
+  .news-shell {
+    width: min(var(--max), calc(100% - 32px));
+    margin: 0 auto;
+    padding: 56px 0;
+  }
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(28px, 5vw, 64px);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04)), rgba(255,255,255,0.04);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(24px);
+  }
+  .hero::after {
+    content: "NEWS";
+    position: absolute;
+    right: -0.08em;
+    bottom: -0.28em;
+    font-size: clamp(5rem, 18vw, 15rem);
+    font-weight: 950;
+    letter-spacing: -0.08em;
+    color: rgba(255,255,255,0.035);
+    pointer-events: none;
+  }
+  .eyebrow {
+    width: fit-content;
+    margin: 0 0 16px;
+    padding: 8px 12px;
+    border: 1px solid rgba(125,211,252,0.32);
+    border-radius: 999px;
+    color: var(--accent);
+    background: rgba(125,211,252,0.08);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    max-width: 820px;
+    margin: 0;
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.9;
+    letter-spacing: -0.08em;
+  }
+  .hero > p:not(.eyebrow) {
+    max-width: 680px;
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.75;
+  }
+  .hero-actions {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 14px;
+    margin-top: 30px;
+  }
+  .search-wrap, select {
+    min-height: 54px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(0,0,0,0.22);
+  }
+  .search-wrap {
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+  }
+  .search-wrap::before {
+    content: "⌕";
+    margin-right: 10px;
+    color: var(--accent);
+    font-size: 1.15rem;
+  }
+  input, select { width: 100%; border: 0; color: var(--text); background: transparent; font: inherit; }
+  input::placeholder { color: rgba(255,255,255,0.46); }
+  select { padding: 0 18px; cursor: pointer; }
+  .feed-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 18px 0;
+  }
+  .feed-meta article {
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: rgba(255,255,255,0.055);
+    backdrop-filter: blur(18px);
+  }
+  .feed-meta strong { display: block; font-size: clamp(1.4rem, 3vw, 2.3rem); line-height: 1; }
+  .feed-meta span { display: block; margin-top: 6px; color: var(--muted); font-size: 0.9rem; }
+  .feed-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 18px;
+    align-items: stretch;
+  }
+  .feed-item {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    min-height: 310px;
+    grid-column: span 4;
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(145deg, rgba(255,255,255,0.105), rgba(255,255,255,0.035)), var(--card);
+    box-shadow: 0 18px 60px rgba(0,0,0,0.22);
+    backdrop-filter: blur(22px);
+    transition: transform 220ms ease, border-color 220ms ease, background 220ms ease, box-shadow 220ms ease;
+  }
+  .feed-item:nth-child(1), .feed-item:nth-child(5) { grid-column: span 6; }
+  .feed-item:nth-child(8) { grid-column: span 8; }
+  .feed-item:nth-child(11), .feed-item:nth-child(12) { grid-column: span 6; }
+  .feed-item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(circle at 20% 0%, rgba(125,211,252,0.2), transparent 36%),
+      radial-gradient(circle at 100% 100%, rgba(192,132,252,0.18), transparent 38%);
+    opacity: 0;
+    transition: opacity 220ms ease;
+  }
+  .feed-item::after {
+    content: "";
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 22px var(--accent);
+    opacity: 0.7;
+  }
+  .feed-item:hover { transform: translateY(-8px); border-color: rgba(125,211,252,0.42); background: linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05)), var(--card-strong); box-shadow: 0 28px 90px rgba(0,0,0,0.34); }
+  .feed-item:hover::before { opacity: 1; }
+  .feed-item h3 { margin: 0; padding-right: 22px; font-size: clamp(1.28rem, 2.2vw, 2rem); line-height: 1.08; letter-spacing: -0.04em; }
+  .feed-item h3 a { background-image: linear-gradient(90deg, var(--text), var(--accent)); background-size: 0% 2px; background-position: left bottom; background-repeat: no-repeat; transition: background-size 200ms ease, color 200ms ease; }
+  .feed-item h3 a:hover { color: var(--accent); background-size: 100% 2px; }
+  .feed-source { order: -1; width: fit-content; margin: 0 0 18px; padding: 7px 11px; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; color: var(--accent-3); background: rgba(250,204,21,0.08); font-size: 0.78rem; font-weight: 850; letter-spacing: 0.06em; text-transform: uppercase; }
+  .pub-date { display: inline-flex; width: fit-content; margin-top: 18px; padding: 8px 10px; border-radius: 999px; color: var(--muted); background: rgba(255,255,255,0.07); font-size: 0.84rem; font-weight: 700; }
+  .feed-item p { margin: 18px 0 0; color: var(--muted); line-height: 1.72; }
+  .feed-item code { padding: 0.16em 0.4em; border: 1px solid rgba(125,211,252,0.24); border-radius: 8px; color: #bae6fd; background: rgba(125,211,252,0.08); }
+  .feed-item.is-hidden { display: none; }
+  .empty-state { grid-column: 1 / -1; padding: 32px; border: 1px dashed rgba(255,255,255,0.22); border-radius: var(--radius-xl); color: var(--muted); text-align: center; background: rgba(255,255,255,0.045); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  @media (max-width: 940px) {
+    .hero-actions { grid-template-columns: 1fr; }
+    .feed-meta { grid-template-columns: 1fr; }
+    .feed-item, .feed-item:nth-child(1), .feed-item:nth-child(5), .feed-item:nth-child(8), .feed-item:nth-child(11), .feed-item:nth-child(12) { grid-column: span 6; }
+  }
+  @media (max-width: 680px) {
+    .news-shell { width: min(100% - 20px, var(--max)); padding: 24px 0; }
+    .hero { padding: 26px; border-radius: 24px; }
+    .feed-grid { gap: 14px; }
+    .feed-item, .feed-item:nth-child(1), .feed-item:nth-child(5), .feed-item:nth-child(8), .feed-item:nth-child(11), .feed-item:nth-child(12) { grid-column: 1 / -1; min-height: auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+  }
+</style>
+
+<main class="news-shell">
+  <section class="hero">
+    <p class="eyebrow">May 2026 CodePen Challenge · Layouts</p>
+    <h1>Frontend Newsroom</h1>
+    <p>A curated editorial feed with CSS, layout experiments, design systems, anchor positioning, animation and modern front-end ideas.</p>
+    <div class="hero-actions" aria-label="Feed controls">
+      <label class="search-wrap">
+        <span class="sr-only">Search articles</span>
+        <input id="searchInput" type="search" placeholder="Search by title, source or topic…" />
+      </label>
+      <select id="sourceFilter" aria-label="Filter by source">
+        <option value="all">All sources</option>
+      </select>
+    </div>
+  </section>
+
+  <section class="feed-meta" aria-label="Feed summary">
+    <article>
+      <strong id="articleCount">12</strong>
+      <span>articles</span>
+    </article>
+    <article>
+      <strong>2026</strong>
+      <span>modern CSS</span>
+    </article>
+    <article>
+      <strong>Layout</strong>
+      <span>challenge</span>
+    </article>
+  </section>
+
+  <section class="feed-grid" id="feedGrid" aria-label="Frontend news feed">
+
+    <article class="feed-item">
+      <span class="feed-source">CSS Tricks</span>
+      <h3><a href="#">CSS Anchor Positioning Is Here and It Changes Everything</a></h3>
+      <p>After years of JavaScript-powered tooltips and dropdown hacks, native <code>anchor-name</code> and <code>position-anchor</code> let you tether any element to any other — no scripts needed.</p>
+      <time class="pub-date" datetime="2026-05-12">May 12, 2026</time>
+    </article>
+
+    <article class="feed-item">
+      <span class="feed-source">Smashing Magazine</span>
+      <h3><a href="#">Masonry Layout Lands in Chrome 128</a></h3>
+      <p>Native CSS masonry is finally shipping behind a flag. We benchmark it against JavaScript grid libraries and explore the <code>grid-template-rows: masonry</code> syntax.</p>
+      <time class="pub-date" datetime="2026-05-09">May 9, 2026</time>
+    </article>
+
+    <article class="feed-item">
+      <span class="feed-source">Web.dev</span>
+      <h3><a href="#">Container Style Queries: The Missing Piece</a></h3>
+      <p>Size queries got the spotlight, but style queries let components respond to custom property values on their container — enabling true design-system-aware components.</p>
+      <time class="pub-date" datetime="2026-05-07">May 7, 2026</time>
+    </article>
+
+    <article class="feed-item">
+      <span class="feed-source">CSS Tricks</span>
+      <h3><a href="#">Subgrid Is the Layout Hero We've Been Waiting For</a></h3>
+      <p>With full cross-browser support finally locked in, <code>grid-column: subgrid</code> solves the nested alignment problem that has plagued card components for a decade.</p>
+      <time class="pub-date" datetime="2026-05-05">May 5, 2026</time>
+    </article>
+
+    <article class="feed-item">
+      <span class="feed-source">Josh W. Comeau</span>
+      <h3><a href="#">An Interactive Guide to CSS Grid</a></h3>
+      <p>A deep visual walkthrough of every grid property — from <code>fr</code> units and implicit tracks to <code>auto-fill</code> vs <code>auto-fit</code>. Essential reading for 2026.</p>
+      <time class="pub-date" datetime="2026-04-30">April 30, 2026</time>
+    </article>
+
+    <article class="feed-item">
+      <span class="feed-source">Smashing Magazine</span>
+      <h3><a href="#">Scroll-Driven Animations Without a Line of JavaScript</a></h3>
+      <p>The <code>animation-timeline</code> spec has matured. Parallax, progress bars, and reveal effects are now pure CSS — here's everything you need to know.</p>
+      <time class="pub-date" datetime="2026-04-28">April 28, 2026</time>
+    </article>
+
+    <article class="feed-item">
+      <span class="feed-source">Web.dev</span>
+      <h3><a href="#">View Transitions API: Multi-Page Support Arrives</a></h3>
+      <p>The API began as a single-page trick. Now cross-document view transitions — silky page-to-page morphs with zero JavaScript routing — land in stable Chrome.</p>
+      <time class="pub-date" datetime="2026-04-22">April 22, 2026</time>
+    </article>
+
+    <article class="feed-item">
+      <span class="feed-source">Lea Verou</span>
+      <h3><a href="#">Inline Conditionals in CSS Are Coming — Here's the Full Spec</a></h3>
+      <p>The long-awaited <code>if()</code> function in CSS opens the door to inline conditional logic without custom properties tricks. Lea breaks down what the specification actually allows, and what it doesn't, with real-world component examples.</p>
+      <time class="pub-date" datetime="2026-04-18">April 18, 2026</time>
+    </article>
+
+    <article class="feed-item">
+      <span class="feed-source">CSS Tricks</span>
+      <h3><a href="#">The New Shape() Function for clip-path</a></h3>
+      <p>Forget SVG paths in your CSS. The new <code>shape()</code> function brings a human-readable syntax for custom clip paths, from simple chamfers to complex morphs.</p>
+      <time class="pub-date" datetime="2026-04-15">April 15, 2026</time>
+    </article>
+
+    <article class="feed-item">
+      <span class="feed-source">Josh W. Comeau</span>
+      <h3><a href="#">Why I Stopped Using Flexbox for Everything</a></h3>
+      <p>A practical breakdown of when Grid outperforms Flexbox — and vice versa. With interactive playground examples, this guide reframes how you think about one-dimensional vs two-dimensional layout.</p>
+      <time class="pub-date" datetime="2026-04-10">April 10, 2026</time>
+    </article>
+
+    <article class="feed-item">
+      <span class="feed-source">Web.dev</span>
+      <h3><a href="#">Color Spaces and Wide-Gamut CSS in 2026</a></h3>
+      <p>From <code>oklch()</code> to <code>display-p3</code>, modern CSS color is richer than ever. This primer covers gamut mapping, interpolation, and how to ship vivid color safely.</p>
+      <time class="pub-date" datetime="2026-04-06">April 6, 2026</time>
+    </article>
+
+    <article class="feed-item">
+      <span class="feed-source">Lea Verou</span>
+      <h3><a href="#">Nesting Is Officially Baseline — Now Use It Right</a></h3>
+      <p>CSS nesting is now supported across all major engines. Lea walks through the gotchas — specificity changes, the <code>&</code> selector edge cases — so you can adopt it confidently today.</p>
+      <time class="pub-date" datetime="2026-04-02">April 2, 2026</time>
+    </article>
+
+  </section>
+</main>
+
+<script>
+const feedGrid = document.querySelector("#feedGrid");
+const items = [...document.querySelectorAll(".feed-item")];
+const searchInput = document.querySelector("#searchInput");
+const sourceFilter = document.querySelector("#sourceFilter");
+const articleCount = document.querySelector("#articleCount");
+const emptyState = document.createElement("div");
+emptyState.className = "empty-state";
+emptyState.textContent = "No articles match your search yet.";
+emptyState.hidden = true;
+feedGrid.appendChild(emptyState);
+const sources = [...new Set(items.map(item => item.querySelector(".feed-source")?.textContent.trim()).filter(Boolean))].sort();
+sources.forEach(source => {
+  const option = document.createElement("option");
+  option.value = source.toLowerCase();
+  option.textContent = source;
+  sourceFilter.appendChild(option);
+});
+function normalize(v) { return v.toLowerCase().trim(); }
+function filterFeed() {
+  const query = normalize(searchInput.value);
+  const selectedSource = sourceFilter.value;
+  let visibleCount = 0;
+  items.forEach(item => {
+    const source = item.querySelector(".feed-source")?.textContent || "";
+    const matchesSearch = normalize(item.textContent).includes(query);
+    const matchesSource = selectedSource === "all" || normalize(source) === selectedSource;
+    const isVisible = matchesSearch && matchesSource;
+    item.classList.toggle("is-hidden", !isVisible);
+    if (isVisible) visibleCount++;
+  });
+  articleCount.textContent = visibleCount;
+  emptyState.hidden = visibleCount !== 0;
+}
+searchInput.addEventListener("input", filterFeed);
+sourceFilter.addEventListener("change", filterFeed);
+filterFeed();
+</script>
