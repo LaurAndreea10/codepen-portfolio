@@ -28,6 +28,16 @@ Calculator interactiv pentru ROI, ROAS, CAC și profitability — cu interpretar
 
 ---
 
+### 🧪 [A/B Test Simulator](./AB-Test-Simulator/README.md)
+
+Simulator rapid pentru headline, CTA, landing copy și email subject — uplift, winner confidence, revenue impact și recomandări next-step.
+
+[Live Demo](https://laurandreea10.github.io/codepen-portfolio/ab-test-simulator.html) · [Docs](./AB-Test-Simulator/README.md) · [Changelog](./AB-Test-Simulator/CHANGELOG.md)
+
+![A/B Test Simulator](./AB-Test-Simulator/screenshot.svg)
+
+---
+
 ### 📧 Lead Magnet Landing
 
 Template modular pentru lead magnet pages — hero hook, social proof, preview cu tabs, email gate, thank-you flow.
@@ -52,7 +62,7 @@ Template modular pentru lead magnet pages — hero hook, social proof, preview c
 
 ## Roadmap unificat
 
-- [ ] A/B Test Simulator — copy variants + estimare uplift
+- [x] A/B Test Simulator — copy variants + estimare uplift
 - [ ] Email Subject Line Tester — analiză cuvinte, lungime, emoji impact
 - [ ] UTM Builder — construiește link-uri tracked cu validare
 - [ ] Conversion Funnel Visualizer — funnel customizabil cu drop-off rates
