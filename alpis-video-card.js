@@ -79,6 +79,7 @@
 
   const VERSION_V2 = 'portfolio-enhancement-v2-2026-05-18';
   const VERSION_V3 = 'portfolio-enhancement-v3-2026-05-18';
+  const VERSION_INTEGRATED = 'portfolio-enhancement-v3-integrated-2026-05-18';
 
   function loadCssFile(href){
     if (document.querySelector('link[href^="' + href + '"]')) return;
@@ -101,6 +102,7 @@
     loadJsFile('enhance.js?v=' + encodeURIComponent(VERSION_V2));
     loadCssFile('enhance-v3.css?v=' + encodeURIComponent(VERSION_V3));
     loadJsFile('enhance-v3.js?v=' + encodeURIComponent(VERSION_V3));
+    loadJsFile('enhance-v3-integrated.js?v=' + encodeURIComponent(VERSION_INTEGRATED));
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
