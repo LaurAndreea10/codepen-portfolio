@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frontend Newsroom · Enhanced Feed</title>
+  <meta name="description" content="Enhanced CodePen Challenge layout: frontend newsroom cu search, filtre, sortare, bookmarks, RO/EN, light/dark/high-contrast și cards responsive." />
+  <meta name="theme-color" content="#080b13" />
+  <style>
+    :root{
+      --bg:#080b13;
+      --bg-soft:#101624;
+      --panel:rgba(255,255,255,.075);
+      --panel-strong:rgba(255,255,255,.12);
+      --card:rgba(255,255,255,.078);
+      --card-strong:rgba(255,255,255,.13);
+      --text:#f7f9ff;
+      --muted:#aab4c8;
+      --line:rgba(255,255,255,.14);
+      --accent:#7dd3fc;
+      --accent-2:#c084fc;
+      --accent-3:#facc15;
+      --ok:#4ade80;
+      --danger:#fb7185;
+      --shadow:0 24px 80px rgba(0,0,0,.35);
+      --radius-xl:32px;
+      --radius-lg:22px;
+      --radius-md:16px;
+      --max:1180px;
+    }
+
+    html[data-theme="light"]{
+      --bg:#f5f8ff;
+      --bg-soft:#eaf0fb;
+      --panel:rgba(255,255,255,.84);
+      --panel-strong:rgba(255,255,255,.94);
+      --card:rgba(255,255,255,.86);
+      --card-strong:rgba(255,255,255,.98);
+      --text:#111827;
+      --muted:#52627c;
+      --line:rgba(15,23,42,.14);
+      --accent:#2563eb;
+      --accent-2:#7c3aed;
+      --accent-3:#b45309;
+      --shadow:0 18px 55px rgba(15,23,42,.14);
+      color-scheme:light;
+    }
+
+    html[data-theme="contrast"]{
+      --bg:#000;
+      --bg-soft:#050505;
+      --panel:#080808;
+      --panel-strong:#111;
+      --card:#080808;
+      --card-strong:#111;
+      --text:#fff;
+      --muted:#f2f2f2;
+      --line:rgba(255,255,255,.45);
+      --accent:#00e5ff;
+      --accent-2:#ffd400;
+      --accent-3:#ffd400;
+      --shadow:none;
+      color-scheme:dark;
+    }
+
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth;color-scheme:dark}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left,rgba(125,211,252,.24),transparent 34rem),
+        radial-gradient(circle at 80% 20%,rgba(192,132,252,.22),transparent 30rem),
+        linear-gradient(135deg,#060812,#101827 48%,var(--bg));
+      overflow-x:hidden;
+    }
+
+    html[data-theme="light"] body{
+      background:
+        radial-gradient(circle at 10% 0%,rgba(37,99,235,.12),transparent 32rem),
+        radial-gradient(circle at 84% 14%,rgba(124,58,237,.12),transparent 30rem),
+        linear-gradient(135deg,#f7fbff,#edf3fc);
+    }
+
+    html[data-theme="contrast"] body{background:#000}
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+      background-size:42px 42px;
+      mask-image:linear-gradient(to bottom,black,transparent 80%);
+    }
+
+    a{color:inherit;text-decoration:none}
+    button,input,select{font:inherit}
+    a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{
+      outline:3px solid var(--accent-3);
+      outline-offset:4px;
+    }
+
+    .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      overflow:hidden;
+      clip-path:inset(50%);
+      white-space:nowrap;
+    }
+
+    .skip-link{
+      position:fixed;
+      top:12px;
+      left:12px;
+      z-index:999;
+      transform:translateY(-160%);
+      padding:10px 14px;
+      border-radius:999px;
+      background:var(--accent);
+      color:#00111d;
+      font-weight:900;
+      transition:transform .2s;
+    }
+    .skip-link:focus{transform:translateY(0)}
+
+    .scroll-progress{
+      position:fixed;
+      inset:0 auto auto 0;
+      z-index:999;
+      height:3px;
+      width:0%;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3));
+      box-shadow:0 0 18px rgba(125,211,252,.55);
+    }
+
+    .news-shell{
+      position:relative;
+      width:min(var(--max),calc(100% - 32px));
+      margin:0 auto;
+      padding:26px 0 56px;
+    }
+
+    .topbar{
+      position:sticky;
+      top:10px;
+      z-index:50;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
+      padding:10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(8,11,19,.62);
+      backdrop-filter:blur(24px);
+      box-shadow:0 16px 44px rgba(0,0,0,.18);
+    }
+
+    html[data-theme="light"] .topbar{background:rgba(255,255,255,.72)}
+    html[data-theme="contrast"] .topbar{border-width:2px;background:#000}
+
+    .brand{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+      padding-left:6px;
+      font-weight:950;
+      letter-spacing:-.02em;
+    }
+
+    .brand-mark{
+      display:grid;
+      place-items:center;
+      width:38px;
+      height:38px;
+      border-radius:14px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#03111f;
+      box-shadow:0 10px 30px rgba(125,211,252,.22);
+    }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .pill-btn{
+      min-height:40px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:0 14px;
+      color:var(--text);
+      background:rgba(255,255,255,.055);
+      cursor:pointer;
+      font-weight:800;
+      font-size:.86rem;
+      transition:transform .2s,border-color .2s,background .2s;
+    }
+
+    .pill-btn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(125,211,252,.45);
+      background:rgba(125,211,252,.08);
+    }
+
+    .pill-btn.is-active{
+      color:#06121e;
+      background:linear-gradient(135deg,var(--accent),var(--accent-3));
+      border-color:transparent;
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      padding:clamp(28px,5vw,64px);
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.04)),rgba(255,255,255,.04);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(24px);
+    }
+
+    .hero::after{
+      content:"NEWS";
+      position:absolute;
+      right:-.08em;
+      bottom:-.28em;
+      font-size:clamp(5rem,18vw,15rem);
+      font-weight:950;
+      letter-spacing:-.08em;
+      color:rgba(255,255,255,.04);
+      pointer-events:none;
+    }
+
+    html[data-theme="light"] .hero::after{color:rgba(15,23,42,.055)}
+    html[data-theme="contrast"] .hero{border-width:2px;background:#000}
+
+    .eyebrow{
+      width:fit-content;
+      margin:0 0 16px;
+      padding:8px 12px;
+      border:1px solid rgba(125,211,252,.32);
+      border-radius:999px;
+      color:var(--accent);
+      background:rgba(125,211,252,.08);
+      font-size:.82rem;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .hero h1{
+      max-width:860px;
+      margin:0;
+      font-size:clamp(3rem,8vw,7rem);
+      line-height:.9;
+      letter-spacing:-.08em;
+    }
+
+    .hero > p:not(.eyebrow){
+      max-width:700px;
+      margin:22px 0 0;
+      color:var(--muted);
+      font-size:clamp(1rem,2vw,1.2rem);
+      line-height:1.75;
+    }
+
+    .hero-kpis{
+      position:relative;
+      z-index:2;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      margin-top:28px;
+      max-width:780px;
+    }
+
+    .hero-kpis article{
+      min-height:82px;
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.055);
+    }
+
+    .hero-kpis strong{
+      display:block;
+      font-size:1.35rem;
+      line-height:1;
+      color:var(--accent);
+    }
+
+    .hero-kpis span{
+      display:block;
+      margin-top:7px;
+      color:var(--muted);
+      font-size:.8rem;
+      font-weight:750;
+    }
+
+    .hero-actions{
+      position:relative;
+      z-index:2;
+      display:grid;
+      grid-template-columns:1fr 210px 190px;
+      gap:14px;
+      margin-top:24px;
+    }
+
+    .search-wrap,.control-select{
+      min-height:54px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(0,0,0,.22);
+    }
+
+    html[data-theme="light"] .search-wrap,
+    html[data-theme="light"] .control-select{background:rgba(255,255,255,.65)}
+
+    .search-wrap{
+      display:flex;
+      align-items:center;
+      padding:0 18px;
+    }
+
+    .search-wrap::before{
+      content:"⌕";
+      margin-right:10px;
+      color:var(--accent);
+      font-size:1.15rem;
+    }
+
+    input,select{
+      width:100%;
+      border:0;
+      color:var(--text);
+      background:transparent;
+    }
+
+    input::placeholder{color:rgba(255,255,255,.46)}
+    html[data-theme="light"] input::placeholder{color:rgba(15,23,42,.45)}
+    select{height:54px;padding:0 18px;cursor:pointer}
+    option{color:#111827}
+
+    .topic-strip{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin:18px 0 0;
+      position:relative;
+      z-index:2;
+    }
+
+    .topic-chip{
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:9px 12px;
+      color:var(--muted);
+      background:rgba(255,255,255,.055);
+      cursor:pointer;
+      font-size:.84rem;
+      font-weight:850;
+    }
+
+    .topic-chip[aria-pressed="true"]{
+      color:#03111f;
+      background:linear-gradient(135deg,var(--accent),var(--accent-3));
+      border-color:transparent;
+    }
+
+    .ticker{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:18px 0;
+      padding:12px 14px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,.055);
+      overflow:hidden;
+    }
+
+    .ticker strong{
+      flex:0 0 auto;
+      color:var(--accent-3);
+      font-size:.75rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+
+    .ticker-track{
+      display:flex;
+      gap:18px;
+      min-width:max-content;
+      color:var(--muted);
+      font-weight:750;
+      animation:ticker 24s linear infinite;
+    }
+
+    @keyframes ticker{
+      to{transform:translateX(-50%)}
+    }
+
+    .feed-meta{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin:18px 0;
+    }
+
+    .feed-meta article{
+      padding:20px;
+      border:1px solid var(--line);
+      border-radius:var(--radius-lg);
+      background:rgba(255,255,255,.055);
+      backdrop-filter:blur(18px);
+    }
+
+    .feed-meta strong{
+      display:block;
+      font-size:clamp(1.4rem,3vw,2.3rem);
+      line-height:1;
+    }
+
+    .feed-meta span{
+      display:block;
+      margin-top:6px;
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .editorial-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 310px;
+      gap:18px;
+      align-items:start;
+    }
+
+    .feed-grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:18px;
+      align-items:stretch;
+    }
+
+    .feed-item{
+      position:relative;
+      isolation:isolate;
+      display:flex;
+      flex-direction:column;
+      min-height:310px;
+      grid-column:span 4;
+      padding:24px;
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.035)),var(--card);
+      box-shadow:0 18px 60px rgba(0,0,0,.22);
+      backdrop-filter:blur(22px);
+      transition:transform 220ms ease,border-color 220ms ease,background 220ms ease,box-shadow 220ms ease;
+    }
+
+    .feed-item:nth-child(1),.feed-item:nth-child(5){grid-column:span 6}
+    .feed-item:nth-child(8){grid-column:span 8}
+    .feed-item:nth-child(11),.feed-item:nth-child(12){grid-column:span 6}
+
+    .feed-item::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      border-radius:inherit;
+      background:
+        radial-gradient(circle at 20% 0%,rgba(125,211,252,.2),transparent 36%),
+        radial-gradient(circle at 100% 100%,rgba(192,132,252,.18),transparent 38%);
+      opacity:0;
+      transition:opacity 220ms ease;
+    }
+
+    .feed-item::after{
+      content:"";
+      position:absolute;
+      top:18px;
+      right:18px;
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      background:var(--accent);
+      box-shadow:0 0 22px var(--accent);
+      opacity:.7;
+    }
+
+    .feed-item:hover{
+      transform:translateY(-8px);
+      border-color:rgba(125,211,252,.42);
+      background:linear-gradient(145deg,rgba(255,255,255,.15),rgba(255,255,255,.05)),var(--card-strong);
+      box-shadow:0 28px 90px rgba(0,0,0,.34);
+    }
+
+    .feed-item:hover::before{opacity:1}
+
+    .feed-topline{
+      order:-1;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:18px;
+    }
+
+    .feed-source{
+      width:fit-content;
+      padding:7px 11px;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:999px;
+      color:var(--accent-3);
+      background:rgba(250,204,21,.08);
+      font-size:.78rem;
+      font-weight:900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    .topic-tag{
+      color:var(--accent);
+      font-size:.72rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .feed-item h3{
+      margin:0;
+      padding-right:22px;
+      font-size:clamp(1.28rem,2.2vw,2rem);
+      line-height:1.08;
+      letter-spacing:-.04em;
+    }
+
+    .feed-item h3 a{
+      background-image:linear-gradient(90deg,var(--text),var(--accent));
+      background-size:0% 2px;
+      background-position:left bottom;
+      background-repeat:no-repeat;
+      transition:background-size 200ms ease,color 200ms ease;
+    }
+
+    .feed-item h3 a:hover{
+      color:var(--accent);
+      background-size:100% 2px;
+    }
+
+    .feed-item p{
+      margin:18px 0 0;
+      color:var(--muted);
+      line-height:1.72;
+    }
+
+    .feed-item code{
+      padding:.16em .4em;
+      border:1px solid rgba(125,211,252,.24);
+      border-radius:8px;
+      color:#bae6fd;
+      background:rgba(125,211,252,.08);
+    }
+
+    html[data-theme="light"] .feed-item code{color:#075985}
+
+    .article-footer{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-top:auto;
+      padding-top:18px;
+    }
+
+    .pub-date,.read-time{
+      display:inline-flex;
+      width:fit-content;
+      padding:8px 10px;
+      border-radius:999px;
+      color:var(--muted);
+      background:rgba(255,255,255,.07);
+      font-size:.84rem;
+      font-weight:800;
+    }
+
+    .card-actions{
+      display:flex;
+      gap:7px;
+      align-items:center;
+    }
+
+    .icon-btn{
+      width:38px;
+      height:38px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      color:var(--text);
+      background:rgba(255,255,255,.055);
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+    }
+
+    .icon-btn:hover{border-color:var(--accent)}
+    .icon-btn.saved{
+      color:#03111f;
+      background:linear-gradient(135deg,var(--accent-3),var(--accent));
+      border-color:transparent;
+    }
+
+    .feed-item.is-hidden{display:none}
+
+    .empty-state{
+      grid-column:1 / -1;
+      padding:32px;
+      border:1px dashed rgba(255,255,255,.22);
+      border-radius:var(--radius-xl);
+      color:var(--muted);
+      text-align:center;
+      background:rgba(255,255,255,.045);
+    }
+
+    .sidebar{
+      position:sticky;
+      top:96px;
+      display:grid;
+      gap:14px;
+    }
+
+    .side-card{
+      padding:20px;
+      border:1px solid var(--line);
+      border-radius:var(--radius-lg);
+      background:rgba(255,255,255,.06);
+      backdrop-filter:blur(18px);
+    }
+
+    .side-card h2{
+      margin:0 0 10px;
+      font-size:1rem;
+      letter-spacing:-.02em;
+    }
+
+    .side-list{
+      display:grid;
+      gap:10px;
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+
+    .side-list a{
+      display:block;
+      padding:10px 0;
+      color:var(--muted);
+      border-top:1px solid var(--line);
+      line-height:1.45;
+      font-size:.92rem;
+    }
+
+    .side-list a:hover{color:var(--accent)}
+
+    .saved-list li{
+      display:flex;
+      gap:8px;
+      justify-content:space-between;
+      align-items:flex-start;
+      padding:9px 0;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:.86rem;
+      line-height:1.4;
+    }
+
+    .mini-link{
+      color:var(--accent);
+      font-weight:900;
+      white-space:nowrap;
+    }
+
+    .toast{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:90;
+      max-width:min(380px,calc(100% - 36px));
+      padding:13px 15px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      color:var(--text);
+      background:rgba(8,11,19,.86);
+      backdrop-filter:blur(18px);
+      box-shadow:0 18px 55px rgba(0,0,0,.32);
+      transform:translateY(140%);
+      transition:transform .25s;
+    }
+
+    html[data-theme="light"] .toast{background:rgba(255,255,255,.9)}
+    .toast.is-visible{transform:translateY(0)}
+
+    .btt{
+      position:fixed;
+      right:18px;
+      bottom:76px;
+      z-index:80;
+      width:44px;
+      height:44px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      color:var(--text);
+      background:rgba(255,255,255,.075);
+      backdrop-filter:blur(14px);
+      cursor:pointer;
+      opacity:0;
+      pointer-events:none;
+      transform:translateY(8px);
+      transition:opacity .2s,transform .2s;
+    }
+
+    .btt.show{
+      opacity:1;
+      pointer-events:auto;
+      transform:translateY(0);
+    }
+
+    @media(max-width:1040px){
+      .editorial-layout{grid-template-columns:1fr}
+      .sidebar{position:relative;top:auto;grid-template-columns:1fr 1fr}
+    }
+
+    @media(max-width:940px){
+      .hero-actions{grid-template-columns:1fr}
+      .feed-meta,.hero-kpis{grid-template-columns:repeat(2,1fr)}
+      .feed-item,
+      .feed-item:nth-child(1),
+      .feed-item:nth-child(5),
+      .feed-item:nth-child(8),
+      .feed-item:nth-child(11),
+      .feed-item:nth-child(12){grid-column:span 6}
+      .topbar{border-radius:24px;align-items:flex-start}
+    }
+
+    @media(max-width:680px){
+      .news-shell{width:min(100% - 20px,var(--max));padding:14px 0 40px}
+      .hero{padding:26px;border-radius:24px}
+      .feed-grid{gap:14px}
+      .feed-item,
+      .feed-item:nth-child(1),
+      .feed-item:nth-child(5),
+      .feed-item:nth-child(8),
+      .feed-item:nth-child(11),
+      .feed-item:nth-child(12){grid-column:1 / -1;min-height:auto}
+      .feed-meta,.hero-kpis,.sidebar{grid-template-columns:1fr}
+      .ticker{border-radius:20px;align-items:flex-start}
+      .topbar{position:relative;top:auto}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{
+        scroll-behavior:auto!important;
+        transition:none!important;
+        animation:none!important;
+      }
+      .ticker-track{animation:none}
+      .feed-item:hover{transform:none}
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#feedGrid">Sari la feed</a>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <main class="news-shell">
+    <nav class="topbar" aria-label="Newsroom controls">
+      <a class="brand" href="#top" aria-label="Frontend Newsroom home">
+        <span class="brand-mark" aria-hidden="true">FN</span>
+        <span>Frontend Newsroom</span>
+      </a>
+      <div class="nav-actions">
+        <button class="pill-btn" id="langToggle" type="button">RO | EN</button>
+        <button class="pill-btn" id="themeToggle" type="button">☀️ Light</button>
+        <button class="pill-btn" id="contrastToggle" type="button">Contrast</button>
+        <button class="pill-btn" id="savedOnlyToggle" type="button" aria-pressed="false">☆ Saved</button>
+      </div>
+    </nav>
+
+    <section class="hero" id="top" aria-labelledby="pageTitle">
+      <p class="eyebrow" data-i18n="eyebrow">May 2026 CodePen Challenge · Layouts</p>
+      <h1 id="pageTitle" data-i18n="title">Frontend Newsroom</h1>
+      <p data-i18n="subtitle">A curated editorial feed with CSS, layout experiments, design systems, anchor positioning, animation and modern front-end ideas.</p>
+
+      <div class="hero-kpis" aria-label="Newsroom highlights">
+        <article>
+          <strong id="totalCount">12</strong>
+          <span data-i18n="kpiArticles">articole curatoriate</span>
+        </article>
+        <article>
+          <strong id="sourceCount">—</strong>
+          <span data-i18n="kpiSources">surse editoriale</span>
+        </article>
+        <article>
+          <strong>2026</strong>
+          <span data-i18n="kpiModern">modern CSS focus</span>
+        </article>
+        <article>
+          <strong id="savedCount">0</strong>
+          <span data-i18n="kpiSaved">salvate local</span>
+        </article>
+      </div>
+
+      <div class="hero-actions" aria-label="Feed controls">
+        <label class="search-wrap">
+          <span class="sr-only" data-i18n="searchLabel">Search articles</span>
+          <input id="searchInput" type="search" placeholder="Search by title, source or topic…" />
+        </label>
+
+        <select class="control-select" id="sourceFilter" aria-label="Filter by source">
+          <option value="all" data-i18n="allSources">All sources</option>
+        </select>
+
+        <select class="control-select" id="sortSelect" aria-label="Sort articles">
+          <option value="newest" data-i18n="sortNewest">Newest first</option>
+          <option value="oldest" data-i18n="sortOldest">Oldest first</option>
+          <option value="short" data-i18n="sortShort">Quick reads</option>
+          <option value="long" data-i18n="sortLong">Deep reads</option>
+        </select>
+      </div>
+
+      <div class="topic-strip" id="topicStrip" aria-label="Topic filters"></div>
+    </section>
+
+    <section class="ticker" aria-label="Trending topics">
+      <strong data-i18n="trending">Trending</strong>
+      <div class="ticker-track" aria-hidden="true">
+        <span>CSS Anchor Positioning</span>
+        <span>Subgrid</span>
+        <span>Container Queries</span>
+        <span>View Transitions</span>
+        <span>Wide-gamut colors</span>
+        <span>Scroll-driven animations</span>
+        <span>CSS Anchor Positioning</span>
+        <span>Subgrid</span>
+        <span>Container Queries</span>
+      </div>
+    </section>
+
+    <section class="feed-meta" aria-label="Feed summary">
+      <article>
+        <strong id="articleCount">12</strong>
+        <span data-i18n="visibleArticles">visible articles</span>
+      </article>
+      <article>
+        <strong id="activeTopic">All</strong>
+        <span data-i18n="activeTopic">active topic</span>
+      </article>
+      <article>
+        <strong id="latestDate">—</strong>
+        <span data-i18n="latestStory">latest story</span>
+      </article>
+      <article>
+        <strong id="readMinutes">—</strong>
+        <span data-i18n="readMinutes">min total read</span>
+      </article>
+    </section>
+
+    <div class="editorial-layout">
+      <section class="feed-grid" id="feedGrid" aria-label="Frontend news feed">
+
+        <article class="feed-item" data-id="anchor-positioning" data-topic="CSS APIs" data-reading="4" data-date="2026-05-12">
+          <div class="feed-topline"><span class="feed-source">CSS Tricks</span><span class="topic-tag">CSS APIs</span></div>
+          <h3><a href="#">CSS Anchor Positioning Is Here and It Changes Everything</a></h3>
+          <p>After years of JavaScript-powered tooltips and dropdown hacks, native <code>anchor-name</code> and <code>position-anchor</code> let you tether any element to any other — no scripts needed.</p>
+          <div class="article-footer"><time class="pub-date" datetime="2026-05-12">May 12, 2026</time><span class="read-time">4 min</span><div class="card-actions"></div></div>
+        </article>
+
+        <article class="feed-item" data-id="masonry-layout" data-topic="Layout" data-reading="5" data-date="2026-05-09">
+          <div class="feed-topline"><span class="feed-source">Smashing Magazine</span><span class="topic-tag">Layout</span></div>
+          <h3><a href="#">Masonry Layout Lands in Chrome 128</a></h3>
+          <p>Native CSS masonry is finally shipping behind a flag. We benchmark it against JavaScript grid libraries and explore the <code>grid-template-rows: masonry</code> syntax.</p>
+          <div class="article-footer"><time class="pub-date" datetime="2026-05-09">May 9, 2026</time><span class="read-time">5 min</span><div class="card-actions"></div></div>
+        </article>
+
+        <article class="feed-item" data-id="container-style-queries" data-topic="Design Systems" data-reading="3" data-date="2026-05-07">
+          <div class="feed-topline"><span class="feed-source">Web.dev</span><span class="topic-tag">Design Systems</span></div>
+          <h3><a href="#">Container Style Queries: The Missing Piece</a></h3>
+          <p>Size queries got the spotlight, but style queries let components respond to custom property values on their container — enabling true design-system-aware components.</p>
+          <div class="article-footer"><time class="pub-date" datetime="2026-05-07">May 7, 2026</time><span class="read-time">3 min</span><div class="card-actions"></div></div>
+        </article>
+
+        <article class="feed-item" data-id="subgrid-hero" data-topic="Layout" data-reading="4" data-date="2026-05-05">
+          <div class="feed-topline"><span class="feed-source">CSS Tricks</span><span class="topic-tag">Layout</span></div>
+          <h3><a href="#">Subgrid Is the Layout Hero We've Been Waiting For</a></h3>
+          <p>With full cross-browser support finally locked in, <code>grid-column: subgrid</code> solves the nested alignment problem that has plagued card components for a decade.</p>
+          <div class="article-footer"><time class="pub-date" datetime="2026-05-05">May 5, 2026</time><span class="read-time">4 min</span><div class="card-actions"></div></div>
+        </article>
+
+        <article class="feed-item" data-id="grid-guide" data-topic="Layout" data-reading="8" data-date="2026-04-30">
+          <div class="feed-topline"><span class="feed-source">Josh W. Comeau</span><span class="topic-tag">Layout</span></div>
+          <h3><a href="#">An Interactive Guide to CSS Grid</a></h3>
+          <p>A deep visual walkthrough of every grid property — from <code>fr</code> units and implicit tracks to <code>auto-fill</code> vs <code>auto-fit</code>. Essential reading for 2026.</p>
+          <div class="article-footer"><time class="pub-date" datetime="2026-04-30">April 30, 2026</time><span class="read-time">8 min</span><div class="card-actions"></div></div>
+        </article>
+
+        <article class="feed-item" data-id="scroll-animations" data-topic="Animation" data-reading="6" data-date="2026-04-28">
+          <div class="feed-topline"><span class="feed-source">Smashing Magazine</span><span class="topic-tag">Animation</span></div>
+          <h3><a href="#">Scroll-Driven Animations Without a Line of JavaScript</a></h3>
+          <p>The <code>animation-timeline</code> spec has matured. Parallax, progress bars, and reveal effects are now pure CSS — here's everything you need to know.</p>
+          <div class="article-footer"><time class="pub-date" datetime="2026-04-28">April 28, 2026</time><span class="read-time">6 min</span><div class="card-actions"></div></div>
+        </article>
+
+        <article class="feed-item" data-id="view-transitions" data-topic="Animation" data-reading="5" data-date="2026-04-22">
+          <div class="feed-topline"><span class="feed-source">Web.dev</span><span class="topic-tag">Animation</span></div>
+          <h3><a href="#">View Transitions API: Multi-Page Support Arrives</a></h3>
+          <p>The API began as a single-page trick. Now cross-document view transitions — silky page-to-page morphs with zero JavaScript routing — land in stable Chrome.</p>
+          <div class="article-footer"><time class="pub-date" datetime="2026-04-22">April 22, 2026</time><span class="read-time">5 min</span><div class="card-actions"></div></div>
+        </article>
+
+        <article class="feed-item" data-id="css-if" data-topic="CSS APIs" data-reading="9" data-date="2026-04-18">
+          <div class="feed-topline"><span class="feed-source">Lea Verou</span><span class="topic-tag">CSS APIs</span></div>
+          <h3><a href="#">Inline Conditionals in CSS Are Coming — Here's the Full Spec</a></h3>
+          <p>The long-awaited <code>if()</code> function in CSS opens the door to inline conditional logic without custom properties tricks. Lea breaks down what the specification actually allows, and what it doesn't, with real-world component examples.</p>
+          <div class="article-footer"><time class="pub-date" datetime="2026-04-18">April 18, 2026</time><span class="read-time">9 min</span><div class="card-actions"></div></div>
+        </article>
+
+        <article class="feed-item" data-id="shape-function" data-topic="CSS APIs" data-reading="4" data-date="2026-04-15">
+          <div class="feed-topline"><span class="feed-source">CSS Tricks</span><span class="topic-tag">CSS APIs</span></div>
+          <h3><a href="#">The New Shape() Function for clip-path</a></h3>
+          <p>Forget SVG paths in your CSS. The new <code>shape()</code> function brings a human-readable syntax for custom clip paths, from simple chamfers to complex morphs.</p>
+          <div class="article-footer"><time class="pub-date" datetime="2026-04-15">April 15, 2026</time><span class="read-time">4 min</span><div class="card-actions"></div></div>
+        </article>
+
+        <article class="feed-item" data-id="grid-vs-flex" data-topic="Layout" data-reading="7" data-date="2026-04-10">
+          <div class="feed-topline"><span class="feed-source">Josh W. Comeau</span><span class="topic-tag">Layout</span></div>
+          <h3><a href="#">Why I Stopped Using Flexbox for Everything</a></h3>
+          <p>A practical breakdown of when Grid outperforms Flexbox — and vice versa. With interactive playground examples, this guide reframes how you think about one-dimensional vs two-dimensional layout.</p>
+          <div class="article-footer"><time class="pub-date" datetime="2026-04-10">April 10, 2026</time><span class="read-time">7 min</span><div class="card-actions"></div></div>
+        </article>
+
+        <article class="feed-item" data-id="wide-gamut" data-topic="Color" data-reading="5" data-date="2026-04-06">
+          <div class="feed-topline"><span class="feed-source">Web.dev</span><span class="topic-tag">Color</span></div>
+          <h3><a href="#">Color Spaces and Wide-Gamut CSS in 2026</a></h3>
+          <p>From <code>oklch()</code> to <code>display-p3</code>, modern CSS color is richer than ever. This primer covers gamut mapping, interpolation, and how to ship vivid color safely.</p>
+          <div class="article-footer"><time class="pub-date" datetime="2026-04-06">April 6, 2026</time><span class="read-time">5 min</span><div class="card-actions"></div></div>
+        </article>
+
+        <article class="feed-item" data-id="css-nesting" data-topic="CSS APIs" data-reading="6" data-date="2026-04-02">
+          <div class="feed-topline"><span class="feed-source">Lea Verou</span><span class="topic-tag">CSS APIs</span></div>
+          <h3><a href="#">Nesting Is Officially Baseline — Now Use It Right</a></h3>
+          <p>CSS nesting is now supported across all major engines. Lea walks through the gotchas — specificity changes, the <code>&</code> selector edge cases — so you can adopt it confidently today.</p>
+          <div class="article-footer"><time class="pub-date" datetime="2026-04-02">April 2, 2026</time><span class="read-time">6 min</span><div class="card-actions"></div></div>
+        </article>
+
+      </section>
+
+      <aside class="sidebar" aria-label="Newsroom sidebar">
+        <section class="side-card">
+          <h2 data-i18n="editorPick">Editor pick</h2>
+          <ul class="side-list" id="editorPick"></ul>
+        </section>
+
+        <section class="side-card">
+          <h2 data-i18n="savedReading">Saved reading</h2>
+          <ul class="saved-list" id="savedList"></ul>
+        </section>
+
+        <section class="side-card">
+          <h2 data-i18n="layoutNotes">Layout notes</h2>
+          <ul class="side-list">
+            <li><a href="#feedGrid">12-column editorial grid with feature cards</a></li>
+            <li><a href="#feedGrid">Local bookmarks with localStorage</a></li>
+            <li><a href="#top">RO/EN copy + theme and contrast modes</a></li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <button class="btt" id="backToTop" type="button" aria-label="Back to top">↑</button>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      const STORAGE = {
+        saved: "frontend-newsroom-saved-v2",
+        theme: "frontend-newsroom-theme-v2",
+        lang: "frontend-newsroom-lang-v2"
+      };
+
+      const copy = {
+        ro: {
+          eyebrow: "May 2026 CodePen Challenge · Layouts",
+          title: "Frontend Newsroom",
+          subtitle: "Un feed editorial curatoriat pentru CSS modern, experimente de layout, design systems, anchor positioning, animații și idei front-end.",
+          kpiArticles: "articole curatoriate",
+          kpiSources: "surse editoriale",
+          kpiModern: "modern CSS focus",
+          kpiSaved: "salvate local",
+          searchLabel: "Caută articole",
+          allSources: "Toate sursele",
+          sortNewest: "Cele mai noi",
+          sortOldest: "Cele mai vechi",
+          sortShort: "Lecturi rapide",
+          sortLong: "Lecturi lungi",
+          trending: "Trending",
+          visibleArticles: "articole vizibile",
+          activeTopic: "topic activ",
+          latestStory: "cea mai nouă știre",
+          readMinutes: "min total citire",
+          editorPick: "Alegerea editorului",
+          savedReading: "Salvate",
+          layoutNotes: "Note layout",
+          noResults: "Nu există articole pentru filtrul curent.",
+          noSaved: "Nu ai articole salvate încă.",
+          saved: "Salvat",
+          removed: "Eliminat din salvate",
+          copied: "Titlul a fost copiat.",
+          savedOnly: "☆ Saved",
+          allItems: "Toate",
+          backToTop: "Înapoi sus"
+        },
+        en: {
+          eyebrow: "May 2026 CodePen Challenge · Layouts",
+          title: "Frontend Newsroom",
+          subtitle: "A curated editorial feed with modern CSS, layout experiments, design systems, anchor positioning, animation and front-end ideas.",
+          kpiArticles: "curated articles",
+          kpiSources: "editorial sources",
+          kpiModern: "modern CSS focus",
+          kpiSaved: "saved locally",
+          searchLabel: "Search articles",
+          allSources: "All sources",
+          sortNewest: "Newest first",
+          sortOldest: "Oldest first",
+          sortShort: "Quick reads",
+          sortLong: "Deep reads",
+          trending: "Trending",
+          visibleArticles: "visible articles",
+          activeTopic: "active topic",
+          latestStory: "latest story",
+          readMinutes: "min total read",
+          editorPick: "Editor pick",
+          savedReading: "Saved reading",
+          layoutNotes: "Layout notes",
+          noResults: "No articles match the current filter.",
+          noSaved: "No saved articles yet.",
+          saved: "Saved",
+          removed: "Removed from saved",
+          copied: "Title copied.",
+          savedOnly: "☆ Saved",
+          allItems: "All",
+          backToTop: "Back to top"
+        }
+      };
+
+      const feedGrid = document.querySelector("#feedGrid");
+      const items = [...document.querySelectorAll(".feed-item")];
+      const searchInput = document.querySelector("#searchInput");
+      const sourceFilter = document.querySelector("#sourceFilter");
+      const sortSelect = document.querySelector("#sortSelect");
+      const articleCount = document.querySelector("#articleCount");
+      const totalCount = document.querySelector("#totalCount");
+      const sourceCount = document.querySelector("#sourceCount");
+      const savedCount = document.querySelector("#savedCount");
+      const activeTopicLabel = document.querySelector("#activeTopic");
+      const latestDate = document.querySelector("#latestDate");
+      const readMinutes = document.querySelector("#readMinutes");
+      const topicStrip = document.querySelector("#topicStrip");
+      const savedList = document.querySelector("#savedList");
+      const editorPick = document.querySelector("#editorPick");
+      const toast = document.querySelector("#toast");
+      const scrollProgress = document.querySelector("#scrollProgress");
+      const backToTop = document.querySelector("#backToTop");
+      const langToggle = document.querySelector("#langToggle");
+      const themeToggle = document.querySelector("#themeToggle");
+      const contrastToggle = document.querySelector("#contrastToggle");
+      const savedOnlyToggle = document.querySelector("#savedOnlyToggle");
+
+      const emptyState = document.createElement("div");
+      emptyState.className = "empty-state";
+      feedGrid.appendChild(emptyState);
+
+      let saved = new Set(JSON.parse(localStorage.getItem(STORAGE.saved) || "[]"));
+      let currentTopic = "all";
+      let savedOnly = false;
+      let lang = localStorage.getItem(STORAGE.lang) || "ro";
+      let theme = localStorage.getItem(STORAGE.theme) || "dark";
+
+      function normalize(v) {
+        return String(v || "").toLowerCase().trim();
+      }
+
+      function currentCopy() {
+        return copy[lang] || copy.ro;
+      }
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("is-visible");
+        window.clearTimeout(showToast.timer);
+        showToast.timer = window.setTimeout(() => toast.classList.remove("is-visible"), 1700);
+      }
+
+      function setupControls() {
+        const sources = [...new Set(items.map(item => item.querySelector(".feed-source")?.textContent.trim()).filter(Boolean))].sort();
+        sourceCount.textContent = sources.length;
+        totalCount.textContent = items.length;
+
+        sources.forEach(source => {
+          const option = document.createElement("option");
+          option.value = source.toLowerCase();
+          option.textContent = source;
+          sourceFilter.appendChild(option);
+        });
+
+        const topics = ["all", ...new Set(items.map(item => item.dataset.topic).filter(Boolean))].sort((a, b) => a === "all" ? -1 : b === "all" ? 1 : a.localeCompare(b));
+        topics.forEach(topic => {
+          const btn = document.createElement("button");
+          btn.className = "topic-chip";
+          btn.type = "button";
+          btn.dataset.topic = topic;
+          btn.setAttribute("aria-pressed", topic === currentTopic ? "true" : "false");
+          btn.textContent = topic === "all" ? currentCopy().allItems : topic;
+          btn.addEventListener("click", () => {
+            currentTopic = topic;
+            updateTopicButtons();
+            filterFeed();
+          });
+          topicStrip.appendChild(btn);
+        });
+
+        items.forEach(item => {
+          const actions = item.querySelector(".card-actions");
+          const id = item.dataset.id;
+          const title = item.querySelector("h3")?.textContent.trim() || "Article";
+
+          const saveBtn = document.createElement("button");
+          saveBtn.className = "icon-btn";
+          saveBtn.type = "button";
+          saveBtn.setAttribute("aria-label", "Save article");
+          saveBtn.dataset.action = "save";
+          saveBtn.innerHTML = "☆";
+          saveBtn.addEventListener("click", () => toggleSave(id));
+
+          const copyBtn = document.createElement("button");
+          copyBtn.className = "icon-btn";
+          copyBtn.type = "button";
+          copyBtn.setAttribute("aria-label", "Copy title");
+          copyBtn.innerHTML = "⧉";
+          copyBtn.addEventListener("click", async () => {
+            try {
+              await navigator.clipboard.writeText(title);
+              showToast(currentCopy().copied);
+            } catch (error) {
+              showToast(title);
+            }
+          });
+
+          actions.append(saveBtn, copyBtn);
+        });
+      }
+
+      function applyTheme() {
+        document.documentElement.dataset.theme = theme;
+        localStorage.setItem(STORAGE.theme, theme);
+        themeToggle.textContent = theme === "light" ? "🌙 Dark" : "☀️ Light";
+      }
+
+      function applyLanguage() {
+        const t = currentCopy();
+        document.documentElement.lang = lang;
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+          const key = el.dataset.i18n;
+          if (t[key]) el.textContent = t[key];
+        });
+
+        langToggle.textContent = lang === "ro" ? "RO | EN" : "EN | RO";
+        searchInput.placeholder = lang === "ro" ? "Caută după titlu, sursă sau topic…" : "Search by title, source or topic…";
+        savedOnlyToggle.textContent = t.savedOnly;
+        backToTop.setAttribute("aria-label", t.backToTop);
+
+        const allSourceOption = sourceFilter.querySelector('option[value="all"]');
+        if (allSourceOption) allSourceOption.textContent = t.allSources;
+
+        updateTopicButtons();
+        renderSaved();
+        filterFeed();
+      }
+
+      function updateTopicButtons() {
+        const t = currentCopy();
+        document.querySelectorAll(".topic-chip").forEach(btn => {
+          const topic = btn.dataset.topic;
+          btn.textContent = topic === "all" ? t.allItems : topic;
+          btn.setAttribute("aria-pressed", String(topic === currentTopic));
+        });
+      }
+
+      function updateSaveButtons() {
+        items.forEach(item => {
+          const btn = item.querySelector('[data-action="save"]');
+          const isSaved = saved.has(item.dataset.id);
+          if (!btn) return;
+          btn.classList.toggle("saved", isSaved);
+          btn.innerHTML = isSaved ? "★" : "☆";
+          btn.setAttribute("aria-pressed", String(isSaved));
+        });
+        savedCount.textContent = saved.size;
+        localStorage.setItem(STORAGE.saved, JSON.stringify([...saved]));
+      }
+
+      function toggleSave(id) {
+        if (saved.has(id)) {
+          saved.delete(id);
+          showToast(currentCopy().removed);
+        } else {
+          saved.add(id);
+          showToast(currentCopy().saved);
+        }
+        updateSaveButtons();
+        renderSaved();
+        filterFeed();
+      }
+
+      function renderSaved() {
+        const t = currentCopy();
+        savedList.innerHTML = "";
+        const savedItems = items.filter(item => saved.has(item.dataset.id));
+        if (!savedItems.length) {
+          const li = document.createElement("li");
+          li.textContent = t.noSaved;
+          savedList.appendChild(li);
+          return;
+        }
+        savedItems.slice(0, 6).forEach(item => {
+          const li = document.createElement("li");
+          const title = item.querySelector("h3")?.textContent.trim();
+          li.innerHTML = `<span>${title}</span><button class="mini-link" type="button" data-remove="${item.dataset.id}">×</button>`;
+          savedList.appendChild(li);
+        });
+        savedList.querySelectorAll("[data-remove]").forEach(btn => {
+          btn.addEventListener("click", () => toggleSave(btn.dataset.remove));
+        });
+      }
+
+      function renderEditorPick(visibleItems = items) {
+        editorPick.innerHTML = "";
+        const picks = [...visibleItems]
+          .sort((a, b) => Number(b.dataset.reading) - Number(a.dataset.reading))
+          .slice(0, 4);
+
+        picks.forEach(item => {
+          const li = document.createElement("li");
+          const title = item.querySelector("h3")?.textContent.trim();
+          const source = item.querySelector(".feed-source")?.textContent.trim();
+          li.innerHTML = `<a href="#${item.dataset.id}"><strong>${title}</strong><br><span>${source} · ${item.dataset.reading} min</span></a>`;
+          editorPick.appendChild(li);
+        });
+      }
+
+      function sortItems() {
+        const sorted = [...items].sort((a, b) => {
+          if (sortSelect.value === "oldest") return a.dataset.date.localeCompare(b.dataset.date);
+          if (sortSelect.value === "short") return Number(a.dataset.reading) - Number(b.dataset.reading);
+          if (sortSelect.value === "long") return Number(b.dataset.reading) - Number(a.dataset.reading);
+          return b.dataset.date.localeCompare(a.dataset.date);
+        });
+
+        sorted.forEach(item => feedGrid.insertBefore(item, emptyState));
+      }
+
+      function filterFeed() {
+        sortItems();
+        const query = normalize(searchInput.value);
+        const selectedSource = sourceFilter.value;
+        let visibleCount = 0;
+        let totalRead = 0;
+        const visibleItems = [];
+
+        items.forEach(item => {
+          const source = item.querySelector(".feed-source")?.textContent || "";
+          const topic = item.dataset.topic || "";
+          const matchesSearch = normalize(item.textContent).includes(query);
+          const matchesSource = selectedSource === "all" || normalize(source) === selectedSource;
+          const matchesTopic = currentTopic === "all" || topic === currentTopic;
+          const matchesSaved = !savedOnly || saved.has(item.dataset.id);
+          const isVisible = matchesSearch && matchesSource && matchesTopic && matchesSaved;
+          item.classList.toggle("is-hidden", !isVisible);
+
+          if (isVisible) {
+            visibleCount++;
+            totalRead += Number(item.dataset.reading || 0);
+            visibleItems.push(item);
+          }
+        });
+
+        articleCount.textContent = visibleCount;
+        activeTopicLabel.textContent = currentTopic === "all" ? currentCopy().allItems : currentTopic;
+        readMinutes.textContent = totalRead;
+        emptyState.textContent = currentCopy().noResults;
+        emptyState.hidden = visibleCount !== 0;
+
+        const newest = visibleItems.sort((a, b) => b.dataset.date.localeCompare(a.dataset.date))[0];
+        latestDate.textContent = newest ? newest.querySelector(".pub-date")?.textContent.replace(",", "") : "—";
+
+        renderEditorPick(visibleItems);
+      }
+
+      function onScroll() {
+        const root = document.documentElement;
+        const max = root.scrollHeight - root.clientHeight;
+        const pct = max > 0 ? (root.scrollTop / max) * 100 : 0;
+        scrollProgress.style.width = pct + "%";
+        backToTop.classList.toggle("show", root.scrollTop > 500);
+      }
+
+      setupControls();
+      applyTheme();
+      updateSaveButtons();
+      renderSaved();
+      applyLanguage();
+
+      searchInput.addEventListener("input", filterFeed);
+      sourceFilter.addEventListener("change", filterFeed);
+      sortSelect.addEventListener("change", filterFeed);
+
+      langToggle.addEventListener("click", () => {
+        lang = lang === "ro" ? "en" : "ro";
+        localStorage.setItem(STORAGE.lang, lang);
+        applyLanguage();
+      });
+
+      themeToggle.addEventListener("click", () => {
+        theme = theme === "light" ? "dark" : "light";
+        applyTheme();
+      });
+
+      contrastToggle.addEventListener("click", () => {
+        theme = theme === "contrast" ? "dark" : "contrast";
+        applyTheme();
+      });
+
+      savedOnlyToggle.addEventListener("click", () => {
+        savedOnly = !savedOnly;
+        savedOnlyToggle.classList.toggle("is-active", savedOnly);
+        savedOnlyToggle.setAttribute("aria-pressed", String(savedOnly));
+        filterFeed();
+      });
+
+      backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>
