@@ -20,11 +20,20 @@
     if(!section) return;
     const lang = getLang();
     const items = [...section.querySelectorAll('.now-item-progress')];
-    const target = items.find(item => item.textContent.includes('Marketing-Tech expansion'));
-    if(!target) return;
-    target.innerHTML = lang === 'en'
-      ? 'Building <a href="https://laurandreea10.github.io/codepen-portfolio/#marketing-tech"><strong>Marketing-Tech expansion</strong></a> — CampaignPilot and ROI Calculator are integrated directly in the public <strong>codepen-portfolio</strong> repo, with README docs prepared in <code>docs/</code>.'
-      : 'Construiesc <a href="https://laurandreea10.github.io/codepen-portfolio/#marketing-tech"><strong>Marketing-Tech expansion</strong></a> — CampaignPilot și ROI Calculator sunt integrate direct în repo-ul public <strong>codepen-portfolio</strong>, cu README-urile pregătite în <code>docs/</code>.';
+    const alpis = items.find(item => item.textContent.includes('Alpis Fusion v2'));
+    const marketing = items.find(item => item.textContent.includes('Marketing-Tech expansion'));
+
+    if(alpis){
+      alpis.innerHTML = lang === 'en'
+        ? 'Iterating on <a href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer"><strong>Alpis Fusion v2</strong></a> — flow builder with compound triggers (status + time + property), first attempt at business logic visualized as a graph.'
+        : 'Iterez pe <a href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer"><strong>Alpis Fusion v2</strong></a> — flow builder cu triggers compuse (status + timp + property), prima încercare de logică de business vizualizată ca graf.';
+    }
+
+    if(marketing){
+      marketing.innerHTML = lang === 'en'
+        ? 'Building <a href="https://laurandreea10.github.io/codepen-portfolio/#marketing-tech"><strong>Marketing-Tech expansion</strong></a> — CampaignPilot and ROI Calculator are integrated directly in the public <strong>codepen-portfolio</strong> repo, with README docs prepared in <code>docs/</code>.'
+        : 'Construiesc <a href="https://laurandreea10.github.io/codepen-portfolio/#marketing-tech"><strong>Marketing-Tech expansion</strong></a> — CampaignPilot și ROI Calculator sunt integrate direct în repo-ul public <strong>codepen-portfolio</strong>, cu README-urile pregătite în <code>docs/</code>.';
+    }
   }
 
   function fixMarketingTechLinks(){
