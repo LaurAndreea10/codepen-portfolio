@@ -38,6 +38,16 @@ Simulator rapid pentru headline, CTA, landing copy și email subject — uplift,
 
 ---
 
+### ✉️ [Email Subject Line Tester](./Email-Subject-Line-Tester/README.md)
+
+Micro-tool pentru testarea subiectelor de email: lungime, cuvinte de impact, emoji, clarity score și risc de spam.
+
+[Live Demo](https://laurandreea10.github.io/codepen-portfolio/email-subject-line-tester.html) · [Docs](./Email-Subject-Line-Tester/README.md) · [Changelog](./Email-Subject-Line-Tester/CHANGELOG.md)
+
+![Email Subject Line Tester](./Email-Subject-Line-Tester/screenshot.svg)
+
+---
+
 ### 📧 Lead Magnet Landing
 
 Template modular pentru lead magnet pages — hero hook, social proof, preview cu tabs, email gate, thank-you flow.
@@ -63,7 +73,7 @@ Template modular pentru lead magnet pages — hero hook, social proof, preview c
 ## Roadmap unificat
 
 - [x] A/B Test Simulator — copy variants + estimare uplift
-- [ ] Email Subject Line Tester — analiză cuvinte, lungime, emoji impact
+- [x] Email Subject Line Tester — analiză cuvinte, lungime, emoji impact
 - [ ] UTM Builder — construiește link-uri tracked cu validare
 - [ ] Conversion Funnel Visualizer — funnel customizabil cu drop-off rates
 - [ ] Industry Benchmarks Dashboard — date live din publicații marketing
