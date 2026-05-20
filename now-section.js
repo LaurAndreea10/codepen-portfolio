@@ -56,6 +56,8 @@
       #now .archive-week__label{font-size:.75rem;color:var(--muted);font-weight:600}
       #now .archive-week__count{padding:2px 9px;border-radius:999px;font-size:.72rem;font-weight:800;background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.24)}
       #now .archive-week__body{padding:12px 16px 14px}
+      #marketing-tech [data-tool="marketing-os-pro"]{border-color:rgba(212,255,58,.32);background:linear-gradient(135deg,rgba(212,255,58,.06),rgba(91,141,239,.04)),var(--panel,rgba(255,255,255,.03))}
+      #marketing-tech [data-tool="marketing-os-pro"] .badge-github{color:var(--accent,#4f8cff)}
       @media(max-width:700px){#now .now-tabs{width:100%;justify-content:space-between}#now .now-tab{flex:1}}
     `;
     document.head.appendChild(style);
@@ -95,6 +97,44 @@
     }));
   }
 
+  function injectMarketingOSPro(){
+    const section = document.getElementById('marketing-tech');
+    const grid = section && section.querySelector('.projects-grid');
+    if (!section || !grid || grid.querySelector('[data-tool="marketing-os-pro"]')) return;
+    injectStyles();
+    const isEn = lang() === 'en';
+    const title = section.querySelector('#marketing-tech-title');
+    if (title) title.textContent = isEn ? 'Marketing-Tech products, including Marketing OS Pro' : 'Produse Marketing-Tech, inclusiv Marketing OS Pro';
+    const quickActions = section.querySelector('.section-head .card-actions');
+    if (quickActions && !quickActions.querySelector('a[href="./marketing-os-pro.html"]')) {
+      const a = document.createElement('a');
+      a.className = 'btn btn-secondary';
+      a.href = './marketing-os-pro.html';
+      a.textContent = 'Marketing OS Pro';
+      quickActions.appendChild(a);
+    }
+    const card = document.createElement('article');
+    card.className = 'project-card glass';
+    card.dataset.tool = 'marketing-os-pro';
+    card.innerHTML = `
+      <span class="badge-new">NEW</span>
+      <div class="project-top">
+        <div>
+          <h3>Marketing OS Pro</h3>
+          <span class="badge-github">Command center · 4 marketing modules</span>
+        </div>
+        <span class="tag github">marketing-tech</span>
+      </div>
+      <p class="project-desc">${isEn ? 'All-in-one marketing operations platform: Campaign Studio, Content OS, Brand Kit and SEO/Funnel Analyzer. Single-file, bilingual RO/EN, zero backend.' : 'Platformă all-in-one pentru operațiuni marketing: Campaign Studio, Content OS, Brand Kit și SEO/Funnel Analyzer. Single-file, bilingv RO/EN, zero backend.'}</p>
+      <div class="card-actions">
+        <a class="btn btn-primary" href="./marketing-os-pro.html">${isEn ? 'Open Live' : 'Deschide Live'}</a>
+        <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/codepen-portfolio/blob/main/marketing-os-pro.html" target="_blank" rel="noopener noreferrer">${isEn ? 'Code in repo →' : 'Cod în repo →'}</a>
+        <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/docs/Marketing-OS-Pro" target="_blank" rel="noopener noreferrer">📖 Docs →</a>
+      </div>
+    `;
+    grid.insertBefore(card, grid.firstElementChild);
+  }
+
   function fetchFirstAvailable(sources){
     return sources.reduce((chain, source) => chain.catch(() => fetch(source, { cache: 'no-cache' }).then(r => r.ok ? r.json() : Promise.reject(new Error(source + ' not found')))), Promise.reject()).catch(error => {
       console.warn('Now section could not load any data source:', error);
@@ -103,10 +143,14 @@
   }
 
   function init(){
+    injectMarketingOSPro();
     if (!document.getElementById('now')) return;
     fetchFirstAvailable(DATA_SOURCES).then(data => { if (data) render(data); });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+  document.addEventListener('click', function(event){
+    if (event.target && event.target.id === 'langToggle') setTimeout(injectMarketingOSPro, 80);
+  });
 })();
