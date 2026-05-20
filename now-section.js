@@ -13,7 +13,7 @@
   function lang(){ return document.documentElement.lang === 'en' ? 'en' : 'ro'; }
   function copy(){ return LABELS[lang()] || LABELS.ro; }
   function escapeHtml(value){
-    return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;').replace(/'/g, '&#039;');
   }
   function safeHref(value){
     const href = String(value || '').trim();
@@ -56,8 +56,8 @@
       #now .archive-week__label{font-size:.75rem;color:var(--muted);font-weight:600}
       #now .archive-week__count{padding:2px 9px;border-radius:999px;font-size:.72rem;font-weight:800;background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.24)}
       #now .archive-week__body{padding:12px 16px 14px}
-      #marketing-tech [data-tool="marketing-os-pro"]{border-color:rgba(212,255,58,.32);background:linear-gradient(135deg,rgba(212,255,58,.06),rgba(91,141,239,.04)),var(--panel,rgba(255,255,255,.03))}
-      #marketing-tech [data-tool="marketing-os-pro"] .badge-github{color:var(--accent,#4f8cff)}
+      #marketing-tech [data-tool="marketing-os"]{border-color:rgba(34,211,238,.34);background:linear-gradient(135deg,rgba(6,182,212,.08),rgba(91,141,239,.05)),var(--panel,rgba(255,255,255,.03))}
+      #marketing-tech [data-tool="marketing-os"] .badge-github{color:var(--accent,#4f8cff)}
       @media(max-width:700px){#now .now-tabs{width:100%;justify-content:space-between}#now .now-tab{flex:1}}
     `;
     document.head.appendChild(style);
@@ -97,39 +97,60 @@
     }));
   }
 
-  function injectMarketingOSPro(){
+  function injectPortfolioLinks(){
+    const nav = document.querySelector('.nav-links');
+    if (!nav) return;
+    const about = nav.querySelector('a[href="#about"]');
+    const contact = nav.querySelector('a[href="#contact"]');
+    if (!nav.querySelector('a[href="work-with-me.html"]')) {
+      const work = document.createElement('a');
+      work.className = 'pill';
+      work.href = 'work-with-me.html';
+      work.textContent = lang() === 'en' ? 'Work with me' : 'Colaborări';
+      nav.insertBefore(work, about ? about.nextSibling : contact);
+    }
+    if (!nav.querySelector('a[href="changelog.html"]')) {
+      const changelog = document.createElement('a');
+      changelog.className = 'pill';
+      changelog.href = 'changelog.html';
+      changelog.textContent = 'Changelog';
+      nav.insertBefore(changelog, contact || nav.querySelector('#langToggle'));
+    }
+  }
+
+  function injectMarketingOS(){
     const section = document.getElementById('marketing-tech');
     const grid = section && section.querySelector('.projects-grid');
-    if (!section || !grid || grid.querySelector('[data-tool="marketing-os-pro"]')) return;
+    if (!section || !grid || grid.querySelector('[data-tool="marketing-os"]')) return;
     injectStyles();
     const isEn = lang() === 'en';
     const title = section.querySelector('#marketing-tech-title');
-    if (title) title.textContent = isEn ? 'Marketing-Tech products, including Marketing OS Pro' : 'Produse Marketing-Tech, inclusiv Marketing OS Pro';
+    if (title) title.textContent = isEn ? 'Marketing-Tech products, including Marketing OS' : 'Produse Marketing-Tech, inclusiv Marketing OS';
     const quickActions = section.querySelector('.section-head .card-actions');
-    if (quickActions && !quickActions.querySelector('a[href="./marketing-os-pro.html"]')) {
+    if (quickActions && !quickActions.querySelector('a[href="./marketing-os.html"]')) {
       const a = document.createElement('a');
       a.className = 'btn btn-secondary';
-      a.href = './marketing-os-pro.html';
-      a.textContent = 'Marketing OS Pro';
-      quickActions.appendChild(a);
+      a.href = './marketing-os.html';
+      a.textContent = 'Marketing OS';
+      quickActions.insertBefore(a, quickActions.firstChild);
     }
     const card = document.createElement('article');
     card.className = 'project-card glass';
-    card.dataset.tool = 'marketing-os-pro';
+    card.dataset.tool = 'marketing-os';
     card.innerHTML = `
-      <span class="badge-new">NEW</span>
+      <span class="badge-new">PRODUCT HUB</span>
       <div class="project-top">
         <div>
-          <h3>Marketing OS Pro</h3>
-          <span class="badge-github">Command center · 4 marketing modules</span>
+          <h3>Marketing OS</h3>
+          <span class="badge-github">Unified marketing workspace · 0 backend</span>
         </div>
         <span class="tag github">marketing-tech</span>
       </div>
-      <p class="project-desc">${isEn ? 'All-in-one marketing operations platform: Campaign Studio, Content OS, Brand Kit and SEO/Funnel Analyzer. Single-file, bilingual RO/EN, zero backend.' : 'Platformă all-in-one pentru operațiuni marketing: Campaign Studio, Content OS, Brand Kit și SEO/Funnel Analyzer. Single-file, bilingv RO/EN, zero backend.'}</p>
+      <p class="project-desc">${isEn ? 'Unified workspace for campaign planning, ROI tracking, lead magnet generation and structured campaign briefs. Bilingual RO/EN, zero backend, localStorage persistence.' : 'Workspace unificat: campaign planning, ROI tracking, lead magnet builder și brief generator. Bilingv RO/EN, 0 backend, persistență localStorage.'}</p>
       <div class="card-actions">
-        <a class="btn btn-primary" href="./marketing-os-pro.html">${isEn ? 'Open Live' : 'Deschide Live'}</a>
-        <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/codepen-portfolio/blob/main/marketing-os-pro.html" target="_blank" rel="noopener noreferrer">${isEn ? 'Code in repo →' : 'Cod în repo →'}</a>
-        <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/docs/Marketing-OS-Pro" target="_blank" rel="noopener noreferrer">📖 Docs →</a>
+        <a class="btn btn-primary" href="./marketing-os.html">${isEn ? 'Open Marketing OS' : 'Deschide Marketing OS'}</a>
+        <a class="btn btn-secondary" href="./changelog.html">Changelog</a>
+        <a class="btn btn-secondary" href="./work-with-me.html">${isEn ? 'Work with me →' : 'Colaborări →'}</a>
       </div>
     `;
     grid.insertBefore(card, grid.firstElementChild);
@@ -143,7 +164,8 @@
   }
 
   function init(){
-    injectMarketingOSPro();
+    injectPortfolioLinks();
+    injectMarketingOS();
     if (!document.getElementById('now')) return;
     fetchFirstAvailable(DATA_SOURCES).then(data => { if (data) render(data); });
   }
@@ -151,6 +173,6 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
   document.addEventListener('click', function(event){
-    if (event.target && event.target.id === 'langToggle') setTimeout(injectMarketingOSPro, 80);
+    if (event.target && event.target.id === 'langToggle') setTimeout(function(){ injectPortfolioLinks(); injectMarketingOS(); }, 80);
   });
 })();
