@@ -1,5 +1,5 @@
 /* Negociator Pro portfolio card
-   Adds the zero-cost simulator to the CRM Ecosystem section without changing the existing HTML structure. */
+   Adds the zero-cost simulator to a visible portfolio grid without changing the existing HTML structure. */
 (function(){
   'use strict';
 
@@ -52,15 +52,51 @@
     return article;
   }
 
+  function findBestGrid(){
+    const selectors = [
+      '#crm-projects .projects-grid',
+      '#marketing-tech .projects-grid',
+      '#latest-github .projects-grid',
+      '#key-projects .projects-grid',
+      'main .projects-grid'
+    ];
+    for (const selector of selectors) {
+      const grid = document.querySelector(selector);
+      if (grid) return grid;
+    }
+    return null;
+  }
+
+  function addHeaderLink(){
+    const marketingActions = document.querySelector('#marketing-tech .section-head .card-actions');
+    if (!marketingActions || document.getElementById('negociator-pro-header-link')) return;
+    const link = document.createElement('a');
+    link.id = 'negociator-pro-header-link';
+    link.className = 'btn btn-secondary';
+    link.href = './negociator-pro.html';
+    link.textContent = 'Negociator Pro 0€';
+    marketingActions.appendChild(link);
+  }
+
   function init(){
+    addHeaderLink();
     if (document.getElementById(CARD_ID)) return;
-    const crmSection = document.getElementById('crm-projects');
-    const grid = crmSection ? crmSection.querySelector('.projects-grid') : null;
+    const grid = findBestGrid();
     if (!grid) return;
     injectStyles();
-    grid.appendChild(createCard());
+    const card = createCard();
+    if (grid.firstElementChild) grid.insertBefore(card, grid.firstElementChild);
+    else grid.appendChild(card);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+
+  // main.js/enhance.js may re-render sections after language/theme changes.
+  window.addEventListener('load', init);
+  document.addEventListener('click', function(e){
+    if (e.target && (e.target.id === 'langToggle' || e.target.id === 'themeToggle' || e.target.id === 'contrastToggle')) {
+      setTimeout(init, 120);
+    }
+  });
 })();
