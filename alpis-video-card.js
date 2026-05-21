@@ -77,6 +77,7 @@
 (function(){
   'use strict';
 
+  const VERSION_INTRO = 'typed-particles-curtain-2026-05-21-v2';
   const VERSION_V2 = 'portfolio-enhancement-v2-2026-05-18';
   const VERSION_V3 = 'portfolio-enhancement-v3-2026-05-18';
   const VERSION_INTEGRATED = 'portfolio-enhancement-v3-integrated-2026-05-18';
@@ -99,6 +100,7 @@
   }
 
   function boot(){
+    loadJsFile('portfolio-intro.js?v=' + encodeURIComponent(VERSION_INTRO));
     loadCssFile('enhance.css?v=' + encodeURIComponent(VERSION_V2));
     loadJsFile('enhance.js?v=' + encodeURIComponent(VERSION_V2));
     loadCssFile('enhance-v3.css?v=' + encodeURIComponent(VERSION_V3));
