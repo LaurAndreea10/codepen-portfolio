@@ -110,3 +110,84 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   document.addEventListener('click', e => { if (e.target && e.target.id === 'langToggle') setTimeout(() => { portfolioTone(); marketingOS(); }, 80); });
 })();
+
+(function(){
+  'use strict';
+
+  function lang(){ return document.documentElement.lang === 'en' ? 'en' : 'ro'; }
+
+  function ensureStyles(){
+    if (document.getElementById('portfolio-quick-wins-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'portfolio-quick-wins-styles';
+    style.textContent = `
+      .not-section{margin-top:2rem;padding:1.5rem;border-left:3px solid var(--accent,#06b6d4);background:rgba(6,182,212,.05);border-radius:0 8px 8px 0}
+      .not-section h3{margin:0 0 .75rem 0;font-size:1rem;opacity:.9}
+      .not-section ul{margin:0;padding-left:1.2rem;line-height:1.7;opacity:.85}
+    `;
+    document.head.appendChild(style);
+  }
+
+  function applyMeta(){
+    const en = lang() === 'en';
+    const title = en
+      ? 'Laura Andreea — Front-end CRM, dashboards and Marketing-Tech tools'
+      : 'Laura Andreea — CRM-uri, dashboard-uri și Marketing-Tech front-end';
+    const descText = en
+      ? 'Front-end CRM & dashboard developer in continuous growth. 64 public experiments, 25 curated projects · Vite + React · product-minded UI/UX. RO/EN bilingual.'
+      : 'Front-end CRM & dashboard developer în dezvoltare continuă. 64 experimente publice, 25 proiecte selectate · Vite + React · UI/UX cu logică de produs. Bilingv RO/EN.';
+    document.title = title;
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.setAttribute('content', descText);
+    document.querySelectorAll('meta[property="og:title"],meta[name="twitter:title"]').forEach(m => m.setAttribute('content', title));
+    document.querySelectorAll('meta[property="og:description"],meta[name="twitter:description"]').forEach(m => m.setAttribute('content', descText));
+  }
+
+  function consolidateCounts(){
+    const en = lang() === 'en';
+    const cred = document.querySelector('#hero-proof .cred-item p');
+    if (cred) {
+      cred.innerHTML = en
+        ? 'public experiments, 25 curated on this site<br><span class="subtle-inline">The rest are public experiments on CodePen →</span>'
+        : 'proiecte live, 25 selectate pe acest site<br><span class="subtle-inline">Restul sunt experimente publice pe CodePen →</span>';
+    }
+    const credLink = document.querySelector('#hero-proof .cred-item[aria-label]');
+    if (credLink) credLink.setAttribute('aria-label', en ? 'Open the CodePen hub with 64 public experiments' : 'Deschide hubul CodePen cu 64 experimente publice');
+    document.querySelectorAll('a[href*="codepen.dev"],a[href*="codepen.io/Laura-Andreea-the-typescripter"]').forEach(a => {
+      const tx = a.textContent.trim();
+      if (/CodePen · 64 proiecte live|CodePen · 64 public projects|CodePen · 64 experimente publice|CodePen · 64 public experiments/i.test(tx)) {
+        a.textContent = en ? 'CodePen · 64 public experiments →' : 'CodePen · 64 experimente publice →';
+      }
+    });
+  }
+
+  function addNotSection(){
+    const en = lang() === 'en';
+    const about = document.getElementById('about');
+    if (!about) return;
+    let box = about.querySelector('.not-section');
+    if (!box) {
+      box = document.createElement('div');
+      box.className = 'not-section';
+      const trail = about.querySelector('.learning-trail');
+      const skills = about.querySelector('.skills');
+      const target = trail || skills || about.querySelector('article');
+      if (target) target.insertAdjacentElement(trail ? 'afterend' : 'beforebegin', box);
+    }
+    box.innerHTML = en
+      ? '<h3>What I do NOT do — transparency</h3><ul><li>I do not build scalable backend systems or cloud infrastructure from scratch.</li><li>I do not do complex DevOps such as Kubernetes or microservices.</li><li>I do not cover full graphic design, illustration or advanced motion design.</li><li>I specialize in <strong>front-end for CRM, dashboards and Marketing-Tech tools</strong> — products with clear product logic.</li></ul>'
+      : '<h3>Ce NU fac — transparență</h3><ul><li>Nu construiesc backend-uri scalabile sau infrastructură cloud de la zero.</li><li>Nu fac DevOps complex precum Kubernetes sau microservicii.</li><li>Nu acopăr design grafic complet, ilustrație sau motion design avansat.</li><li>Mă specializez pe <strong>front-end pentru CRM, dashboard-uri și Marketing-Tech tools</strong> — produse cu logică clară de produs.</li></ul>';
+  }
+
+  function applyQuickWins(){
+    ensureStyles();
+    applyMeta();
+    consolidateCounts();
+    addNotSection();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyQuickWins); else applyQuickWins();
+  document.addEventListener('click', e => {
+    if (e.target && e.target.id === 'langToggle') setTimeout(applyQuickWins, 100);
+  });
+})();
