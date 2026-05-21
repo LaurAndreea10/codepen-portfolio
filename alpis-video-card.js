@@ -82,6 +82,7 @@
   const VERSION_V3 = 'portfolio-enhancement-v3-2026-05-18';
   const VERSION_INTEGRATED = 'portfolio-enhancement-v3-integrated-2026-05-18';
   const VERSION_NEGOCIATOR = 'negociator-pro-card-2026-05-20';
+  const VERSION_MARKETING_TECH_NEXT = 'industry-benchmarks-utm-v12-2026-05-21';
 
   function loadCssFile(href){
     if (document.querySelector('link[href^="' + href + '"]')) return;
@@ -107,6 +108,7 @@
     loadJsFile('enhance-v3.js?v=' + encodeURIComponent(VERSION_V3));
     loadJsFile('enhance-v3-integrated.js?v=' + encodeURIComponent(VERSION_INTEGRATED));
     loadJsFile('negociator-card.js?v=' + encodeURIComponent(VERSION_NEGOCIATOR));
+    loadJsFile('marketing-tech-next.js?v=' + encodeURIComponent(VERSION_MARKETING_TECH_NEXT));
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
