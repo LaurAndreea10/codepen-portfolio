@@ -78,7 +78,16 @@
     marketingActions.appendChild(link);
   }
 
+  function loadIntro(){
+    if (document.querySelector('script[src^="portfolio-intro.js"]')) return;
+    const script = document.createElement('script');
+    script.src = 'portfolio-intro.js?v=2026-05-21-simple';
+    script.defer = true;
+    document.body.appendChild(script);
+  }
+
   function init(){
+    loadIntro();
     addHeaderLink();
     if (document.getElementById(CARD_ID)) return;
     const grid = findBestGrid();
