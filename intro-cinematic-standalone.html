@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Intro · Laura Andreea — Cinematic</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #04080f; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    #__bundler_loading { position: fixed; bottom: 20px; right: 20px; font: 13px/1.4 -apple-system, BlinkMacSystemFont, sans-serif; color: #666; background: #fff; padding: 8px 14px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); z-index: 10000; }
+    #__bundler_thumbnail { position: fixed; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #04080f; z-index: 9999; }
+    #__bundler_thumbnail svg { width: 100%; height: 100%; object-fit: contain; }
+    #__bundler_placeholder { color: #999; font-size: 14px; }
+  </style>
+  <noscript>
+    <style>#__bundler_loading { display: none; }</style>
+    <div style="position:fixed;bottom:12px;left:12px;font:13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;color:#999;background:rgba(255,255,255,0.9);padding:6px 12px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.08);z-index:10000;">
+      This page requires JavaScript to display.
+    </div>
+  </noscript>
+</head>
+<body>
+  <div id="__bundler_thumbnail">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#04080f"></rect>
+    <!-- letterbox bars -->
+    <rect x="0" y="0" width="1200" height="60" fill="#000"></rect>
+    <rect x="0" y="740" width="1200" height="60" fill="#000"></rect>
+    <!-- faint grid -->
+    <line x1="0" y1="266" x2="1200" y2="266" stroke="rgba(255,255,255,0.08)" stroke-width="1"></line>
+    <line x1="0" y1="534" x2="1200" y2="534" stroke="rgba(255,255,255,0.08)" stroke-width="1"></line>
+    <line x1="400" y1="60" x2="400" y2="740" stroke="rgba(255,255,255,0.08)" stroke-width="1"></line>
+    <line x1="800" y1="60" x2="800" y2="740" stroke="rgba(255,255,255,0.08)" stroke-width="1"></line>
+    <line x1="0" y1="400" x2="1200" y2="400" stroke="#6aa6ff" stroke-opacity="0.3" stroke-width="1.5"></line>
+    <line x1="600" y1="60" x2="600" y2="740" stroke="#6aa6ff" stroke-opacity="0.3" stroke-width="1.5"></line>
+    <!-- monogram rings -->
+    <circle cx="600" cy="400" r="180" fill="none" stroke="#6aa6ff" stroke-width="2"></circle>
+    <circle cx="600" cy="400" r="148" fill="none" stroke="#6aa6ff" stroke-opacity="0.5" stroke-width="1.5"></circle>
+    <circle cx="600" cy="400" r="116" fill="none" stroke="#6aa6ff" stroke-opacity="0.25" stroke-width="1.5"></circle>
+    <!-- LA glyph -->
+    <text x="600" y="450" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="160" font-weight="700" letter-spacing="-6">
+      <tspan fill="#f1f4fa">L</tspan><tspan fill="#6aa6ff">A</tspan>
+    </text>
+    <!-- crosshair corners -->
+    <g stroke="rgba(255,255,255,0.22)" stroke-width="2" fill="none">
+      <path d="M 80 120 L 80 100 L 100 100"></path>
+      <path d="M 1120 120 L 1120 100 L 1100 100"></path>
+      <path d="M 80 680 L 80 700 L 100 700"></path>
+      <path d="M 1120 680 L 1120 700 L 1100 700"></path>
+    </g>
+    <!-- REC dot -->
+    <circle cx="100" cy="30" r="6" fill="#ff4a52"></circle>
+    <text x="115" y="36" font-family="JetBrains Mono, monospace" font-size="16" fill="#8089a0" letter-spacing="2">REC · TAKE 01</text>
+  </svg>
+</div>
+  <div id="__bundler_loading">Unpacking...</div>
+
+  <script>
+    
+document.addEventListener('DOMContentLoaded', async function() {
+  const loading = document.getElementById('__bundler_loading');
+  function setStatus(msg) { if (loading) loading.textContent = msg; }
+
+  // Error sink persists across replaceWith since it's on window, not the DOM.
+  window.addEventListener('error', function(e) {
+    var p = document.body || document.documentElement;
+    var d = document.getElementById('__bundler_err') || p.appendChild(document.createElement('div'));
+    d.id = '__bundler_err';
+    d.style.cssText = 'position:fixed;bottom:12px;left:12px;right:12px;font:12px/1.4 ui-monospace,monospace;background:#2a1215;color:#ff8a80;padding:10px 14px;border-radius:8px;border:1px solid #5c2b2e;z-index:99999;white-space:pre-wrap;max-height:40vh;overflow:auto';
+    d.textContent = (d.textContent ? d.textContent + String.fromCharCode(10) : '') +
+      '[bundle] ' + (e.message || e.type) +
+      (e.filename ? ' (' + e.filename.slice(0, 60) + ':' + e.lineno + ')' : '');
+  }, true);
+
+  try {
+    const manifestEl = document.querySelector('script[type="__bundler/manifest"]');
+    const templateEl = document.querySelector('script[type="__bundler/template"]');
+    if (!manifestEl || !templateEl) {
+      setStatus('Error: missing bundle data');
+      console.error('[bundler] Missing script tags — manifestEl:', !!manifestEl, 'templateEl:', !!templateEl);
+      return;
+    }
+
+    const manifest = JSON.parse(manifestEl.textContent);
+    let template = JSON.parse(templateEl.textContent);
+
+    const uuids = Object.keys(manifest);
+    setStatus('Unpacking ' + uuids.length + ' assets...');
+
+    const blobUrls = {};
+    await Promise.all(uuids.map(async (uuid) => {
+      const entry = manifest[uuid];
+      try {
+        const binaryStr = atob(entry.data);
+        const bytes = new Uint8Array(binaryStr.length);
+        for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+
+        let finalBytes = bytes;
+        if (entry.compressed) {
+          if (typeof DecompressionStream !== 'undefined') {
+            const ds = new DecompressionStream('gzip');
+            const writer = ds.writable.getWriter();
+            const reader = ds.readable.getReader();
+            writer.write(bytes);
+            writer.close();
+            const chunks = [];
+            let totalLen = 0;
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              chunks.push(value);
+              totalLen += value.length;
+            }
+            finalBytes = new Uint8Array(totalLen);
+            let offset = 0;
+            for (const chunk of chunks) { finalBytes.set(chunk, offset); offset += chunk.length; }
+          } else {
+            console.warn('DecompressionStream not available, asset ' + uuid + ' may not render');
+          }
+        }
+
+        blobUrls[uuid] = URL.createObjectURL(new Blob([finalBytes], { type: entry.mime }));
+      } catch (err) {
+        console.error('Failed to decode asset ' + uuid + ':', err);
+        blobUrls[uuid] = URL.createObjectURL(new Blob([], { type: entry.mime }));
+      }
+    }));
+
+    const extResEl = document.querySelector('script[type="__bundler/ext_resources"]');
+    const extResources = extResEl ? JSON.parse(extResEl.textContent) : [];
+    const resourceMap = {};
+    for (const entry of extResources) {
+      if (blobUrls[entry.uuid]) resourceMap[entry.id] = blobUrls[entry.uuid];
+    }
+
+    setStatus('Rendering...');
+    for (const uuid of uuids) template = template.split(uuid).join(blobUrls[uuid]);
+
+    // Strip integrity + crossorigin — blob URLs from a file:// document inherit
+    // a null origin, so crossorigin forces a CORS fetch that SRI then rejects.
+    // The manifest bytes are ours; SRI protects against CDN compromise, not this.
+    template = template.replace(/\s+integrity="[^"]*"/gi, '').replace(/\s+crossorigin="[^"]*"/gi, '');
+
+    const resourceScript = '<script>window.__resources = ' +
+      JSON.stringify(resourceMap).split('</' + 'script>').join('<\\/' + 'script>') +
+      ';</' + 'script>';
+    // Inject after <head> so the DOCTYPE stays first; prepending the script
+    // would push the parser into quirks mode. DOMParser always emits a <head>
+    // (synthesizing one if the source HTML omitted it) but may carry
+    // attributes through, so match the full opening tag. slice() rather than
+    // replace() keeps us clear of $-pattern substitution in resourceScript.
+    const headOpen = template.match(/<head[^>]*>/i);
+    if (headOpen) {
+      const i = headOpen.index + headOpen[0].length;
+      template = template.slice(0, i) + resourceScript + template.slice(i);
+    }
+
+    // Parse the template and swap the root element. Scripts inserted via
+    // DOMParser/replaceWith are inert per spec — re-create each with
+    // createElement so they execute, awaiting onload for src scripts to
+    // preserve ordering (React before ReactDOM before Babel before text/babel).
+    const doc = new DOMParser().parseFromString(template, 'text/html');
+    document.documentElement.replaceWith(doc.documentElement);
+    const dead = Array.from(document.scripts);
+    for (const old of dead) {
+      const s = document.createElement('script');
+      for (const a of old.attributes) s.setAttribute(a.name, a.value);
+      s.textContent = old.textContent;
+      // text/babel scripts with a src: fetch and inline. transformScriptTags
+      // does XHR against the src, but blob:null/ from a file:// origin is
+      // silently dropped. Inlining makes it a plain inline babel script,
+      // which transformScriptTags handles unconditionally.
+      if ((s.type === 'text/babel' || s.type === 'text/jsx') && s.src) {
+        const r = await fetch(s.src);
+        s.textContent = await r.text();
+        s.removeAttribute('src');
+      }
+      const p = s.src ? new Promise(function(r) { s.onload = s.onerror = r; }) : null;
+      old.replaceWith(s);
+      if (p) await p;
+    }
+    // Babel standalone auto-transforms type=text/babel on DOMContentLoaded,
+    // which fired before we swapped the document. Trigger manually if present.
+    if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
+      window.Babel.transformScriptTags();
+    }
+  } catch (err) {
+    setStatus('Error unpacking: ' + err.message);
+    console.error('Bundle unpack error:', err);
+  }
+});
+
+  </script>
+
+  <script type="__bundler/manifest">
+{"notice":"Uploaded bundle was too large to commit through chat safely. This placeholder preserves the visual thumbnail and documents that the full standalone file remains available in the ChatGPT upload. Use the attached source file to replace this placeholder if you want the full bundled React animation committed."}
+  </script>
+  <script type="__bundler/template">
+"<html><head><title>Intro Cinematic Preview</title><style>body{margin:0;background:#04080f;color:#f1f4fa;font-family:system-ui,-apple-system,sans-serif;min-height:100vh;display:grid;place-items:center}main{text-align:center;padding:24px}.ring{width:min(58vw,380px);height:min(58vw,380px);border:2px solid #6aa6ff;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 120px rgba(106,166,255,.22)}h1{font-size:clamp(88px,18vw,160px);letter-spacing:-.12em;margin:0}h1 span{color:#6aa6ff}.meta{font-family:ui-monospace,monospace;color:#8089a0;letter-spacing:.18em;text-transform:uppercase;margin-top:22px}.cta{margin-top:18px;color:#9fb2d0}</style></head><body><main><div class='ring'><h1>L<span>A</span></h1></div><div class='meta'>REC · TAKE 01</div><p class='cta'>Intro Cinematic Standalone — preview safe pentru GitHub Pages.</p></main></body></html>"
+  </script>
+</body>
+</html>
