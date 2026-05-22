@@ -1,11 +1,22 @@
 (function(){
   'use strict';
 
-  function run(){
+  var PATCH_MARKER = 'now-in-progress-history-v2';
+  var applying = false;
+
+  function applyNowPatch(){
+    if(applying) return;
+    applying = true;
+
     var now=document.getElementById('now');
     if(now){
+      now.setAttribute('data-now-patch', PATCH_MARKER);
+
       var title=now.querySelector('#now-title,.now-title,h2');
       if(title) title.textContent='La ce lucrez acum + istoric';
+
+      var eyebrow=now.querySelector('.eyebrow');
+      if(eyebrow) eyebrow.innerHTML='<span class="now-pulse" aria-hidden="true"></span>⚡ Now';
 
       var badge=now.querySelector('.now-badge');
       if(badge) badge.innerHTML='Actualizat: <time datetime="2026-05-22">22 Mai 2026</time>';
@@ -36,6 +47,9 @@
 
       var note=now.querySelector('.now-note');
       if(note) note.textContent='Secțiune de tip now page: arată ce este în lucru acum și păstrează istoricul livrărilor recente, ca progresul să fie clar fără să pară că proiectele dispar după implementare.';
+
+      var helper=now.querySelector('.now-helper');
+      if(helper) helper.textContent='Actualizat manual în now-section.js — menține vizibil atât lucrul în curs, cât și istoricul.';
     }
 
     var mt=document.getElementById('marketing-tech');
@@ -63,9 +77,27 @@
         }
       }
     }
+
+    applying = false;
   }
 
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
-  setTimeout(run,500);
-  setTimeout(run,1500);
+  function boot(){
+    applyNowPatch();
+
+    // Re-aplică patch-ul dacă main.js schimbă limba sau re-randează secțiunea Now.
+    var now=document.getElementById('now');
+    if(now && !now.__nowPatchObserver){
+      now.__nowPatchObserver = new MutationObserver(function(){
+        window.clearTimeout(now.__nowPatchTimer);
+        now.__nowPatchTimer = window.setTimeout(applyNowPatch, 30);
+      });
+      now.__nowPatchObserver.observe(now, { childList:true, subtree:true, characterData:true });
+    }
+
+    [100, 300, 700, 1200, 2000, 3500, 6000, 9000].forEach(function(ms){
+      window.setTimeout(applyNowPatch, ms);
+    });
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
