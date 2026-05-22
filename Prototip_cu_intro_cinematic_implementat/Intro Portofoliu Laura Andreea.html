@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Intro · Laura Andreea — CRM & Dashboard Developer</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+  :root{
+    --bg:        #07101f;
+    --bg-2:      #0b1628;
+    --surface:   #0f1d35;
+    --line:      rgba(255,255,255,0.08);
+    --line-2:    rgba(255,255,255,0.18);
+    --fg:        #f1f4fa;
+    --fg-2:      #c4cbd9;
+    --muted:     #8089a0;
+    --dim:       #4a5470;
+    --accent:    #6aa6ff;                  /* clean azure */
+    --accent-2:  oklch(0.78 0.08 230);     /* steel blue */
+    --accent-3:  oklch(0.74 0.05 230);     /* desaturated steel */
+    --display:   'Space Grotesk', system-ui, sans-serif;
+    --serif:     'Space Grotesk', system-ui, sans-serif;
+    --body:      'Inter', system-ui, sans-serif;
+    --mono:      'JetBrains Mono', ui-monospace, monospace;
+  }
+  html,body{background:#000;color:var(--fg);font-family:var(--body);margin:0}
+  deck-stage{background:#000}
+
+  /* ---------- shared ---------- */
+  section.slide{
+    width:1920px;height:1080px;position:relative;overflow:hidden;
+    background:var(--bg);color:var(--fg);
+    font-family:var(--body);font-size:22px;line-height:1.5;
+  }
+  .grid-bg{position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:80px 80px;
+    mask-image:radial-gradient(ellipse 90% 70% at 50% 40%, #000 30%, transparent 85%);
+  }
+  .chrome{position:absolute;inset:60px 80px;display:flex;flex-direction:column;z-index:2}
+  .topbar{display:flex;justify-content:space-between;align-items:center;
+    font-family:var(--mono);font-size:14px;letter-spacing:0.06em;
+    color:var(--muted);text-transform:uppercase;}
+  .topbar .mark{display:flex;align-items:center;gap:14px;color:var(--fg-2)}
+  .topbar .mark .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(106,166,255,0.12)}
+  .topbar .meta{display:flex;gap:32px}
+  .topbar .meta span b{color:var(--fg);font-weight:500}
+  .bottombar{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;
+    font-family:var(--mono);font-size:14px;color:var(--muted);letter-spacing:0.04em}
+  .bottombar .left{display:flex;gap:48px;align-items:baseline}
+  .bottombar .num{font-size:13px;color:var(--dim)}
+
+  .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line-2);border-radius:999px;
+    font-family:var(--mono);font-size:13px;color:var(--fg-2);letter-spacing:0.05em;text-transform:uppercase}
+  .chip .pulse{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px rgba(106,166,255,0.55)}
+  .kbd{font-family:var(--mono);font-size:12px;color:var(--muted);padding:4px 8px;border:1px solid var(--line-2);border-radius:6px}
+
+  /* ============ Slide 1 — Hero ============ */
+  .s1 .stage{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin:60px 0 40px}
+  .s1 h1{font-family:var(--display);font-weight:600;font-size:108px;line-height:0.94;letter-spacing:-0.035em;margin:0;color:var(--fg)}
+  .s1 h1 em{font-style:normal;font-weight:600;color:var(--accent);letter-spacing:-0.035em}
+  .s1 .lede{margin-top:36px;font-size:26px;line-height:1.45;color:var(--fg-2);max-width:780px}
+  .s1 .lede b{color:var(--fg);font-weight:500}
+  .s1 .name-tag{display:flex;align-items:center;gap:18px;margin-top:48px;font-family:var(--mono);font-size:15px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em}
+  .s1 .name-tag .bar{width:48px;height:1px;background:var(--line-2)}
+
+  /* the right-hand card */
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    border:1px solid var(--line);border-radius:18px;padding:0;overflow:hidden;
+    box-shadow: 0 40px 80px -40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+  .device{aspect-ratio:4/3;background:var(--bg-2);border-bottom:1px solid var(--line);
+    display:flex;flex-direction:column}
+  .device .titlebar{padding:14px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line)}
+  .device .titlebar .d{width:11px;height:11px;border-radius:50%;background:var(--line-2)}
+  .device .titlebar .url{margin-left:14px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+  .device .body{flex:1;display:grid;grid-template-columns:200px 1fr;}
+  .device .nav{border-right:1px solid var(--line);padding:20px 16px;display:flex;flex-direction:column;gap:14px}
+  .device .nav .item{height:14px;background:rgba(255,255,255,0.05);border-radius:4px}
+  .device .nav .item.active{background:var(--accent);width:80%;height:16px;box-shadow:0 0 0 4px rgba(106,166,255,0.10)}
+  .device .main{padding:22px 24px;display:flex;flex-direction:column;gap:18px}
+  .device .row{display:flex;gap:14px}
+  .device .stat{flex:1;border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px}
+  .device .stat .lbl{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em}
+  .device .stat .v{font-family:var(--display);font-size:28px;font-weight:600;color:var(--fg)}
+  .device .stat .v.acc{color:var(--accent)}
+  .device .kanban{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .device .col{border:1px solid var(--line);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px}
+  .device .col .h{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em}
+  .device .col .ticket{background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:6px;padding:8px;display:flex;flex-direction:column;gap:6px}
+  .device .col .ticket .bar1{height:6px;background:rgba(255,255,255,0.12);border-radius:3px;width:80%}
+  .device .col .ticket .bar2{height:5px;background:rgba(255,255,255,0.06);border-radius:3px;width:60%}
+  .device .col .ticket.hl{border-color:var(--accent);background:rgba(106,166,255,0.10)}
+  .device .col .ticket.hl .bar1{background:var(--accent)}
+  .cardfoot{padding:18px 24px;display:flex;justify-content:space-between;align-items:center;
+    font-family:var(--mono);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+  .cardfoot b{color:var(--fg-2);font-weight:500}
+
+  /* big watermark numeral */
+  .num-wm{display:none}
+
+  /* ============ Slide 2 — Ce construiesc ============ */
+  .s2 .stage{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:64px;margin-top:40px}
+  .eyebrow{font-family:var(--mono);font-size:14px;color:var(--accent);letter-spacing:0.14em;text-transform:uppercase}
+  .s2 h2{font-family:var(--display);font-weight:500;font-size:96px;line-height:0.98;letter-spacing:-0.025em;margin:24px 0 0 0}
+  .s2 h2 em{font-style:normal;font-weight:600;color:var(--accent)}
+  .s2 .body p{font-size:25px;line-height:1.5;color:var(--fg-2);max-width:760px}
+  .s2 .body p + p{margin-top:24px}
+  .pillars{display:grid;grid-template-rows:repeat(3,1fr);gap:20px;align-content:start}
+  .pillar{display:grid;grid-template-columns:80px 1fr auto;align-items:center;gap:28px;
+    padding:28px 32px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,0.015)}
+  .pillar .ix{font-family:var(--mono);font-size:14px;color:var(--muted);letter-spacing:0.1em}
+  .pillar h3{font-family:var(--display);font-weight:500;font-size:32px;margin:0 0 4px;letter-spacing:-0.01em}
+  .pillar p{font-size:18px;color:var(--fg-2);margin:0;line-height:1.45}
+  .pillar .glyph{width:64px;height:64px;border:1px solid var(--line-2);border-radius:12px;display:grid;place-items:center;color:var(--accent);font-family:var(--mono);font-size:22px}
+
+  /* ============ Slide 3 — Cifre ============ */
+  .s3 h2{font-family:var(--display);font-weight:500;font-size:88px;line-height:1;letter-spacing:-0.025em;margin:36px 0 60px;max-width:1400px}
+  .s3 h2 em{font-style:normal;color:var(--accent);font-weight:600}
+  .figs{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+  .fig{padding:48px 36px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:14px;min-height:340px}
+  .fig:last-child{border-right:none}
+  .fig .big{font-family:var(--display);font-weight:600;font-size:140px;line-height:0.85;letter-spacing:-0.04em;color:var(--fg)}
+  .fig .big.acc{color:var(--accent)}
+  .fig .big .sm{font-size:48px;color:var(--muted);vertical-align:top;margin-left:2px}
+  .fig .lbl{font-family:var(--mono);font-size:13px;color:var(--accent);text-transform:uppercase;letter-spacing:0.12em;margin-top:auto}
+  .fig p{font-size:18px;color:var(--fg-2);line-height:1.45;margin:0}
+  .figs-foot{margin-top:40px;display:flex;justify-content:space-between;align-items:center;
+    font-family:var(--mono);font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em}
+  .figs-foot .tags{display:flex;gap:10px;flex-wrap:wrap}
+
+  /* ============ Slide 4 — Proiecte ============ */
+  .s4 h2{font-family:var(--display);font-weight:500;font-size:64px;line-height:1;letter-spacing:-0.025em;margin:18px 0 10px;max-width:1500px}
+  .s4 h2 em{font-style:normal;color:var(--accent);font-weight:600}
+  .s4 .sub{color:var(--muted);font-size:20px;max-width:1100px;margin-bottom:28px}
+  .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .proj{
+    border:1px solid var(--line);border-radius:16px;overflow:hidden;
+    background:linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.005));
+    display:flex;flex-direction:column;
+  }
+  .proj .preview{aspect-ratio:16/8;border-bottom:1px solid var(--line);position:relative;overflow:hidden;background:var(--bg-2)}
+  .proj .preview .tag{position:absolute;top:16px;left:16px;font-family:var(--mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.12em;
+    padding:5px 10px;border:1px solid var(--accent);border-radius:999px;background:rgba(0,0,0,0.4)}
+  .proj .preview .id{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:0.1em}
+  .proj .preview svg{position:absolute;inset:0;width:100%;height:100%}
+  .proj .body{padding:24px 26px;display:flex;flex-direction:column;gap:12px;flex:1}
+  .proj h3{font-family:var(--display);font-weight:500;font-size:28px;margin:0;letter-spacing:-0.01em}
+  .proj .desc{font-size:16px;color:var(--fg-2);line-height:1.45}
+  .proj .metrics{margin-top:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);padding-top:14px}
+  .proj .metric{display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--line);padding-right:10px}
+  .proj .metric:last-child{border-right:none;padding-left:14px}
+  .proj .metric:nth-child(2){padding-left:14px}
+  .proj .metric .v{font-family:var(--display);font-weight:600;font-size:22px;color:var(--fg)}
+  .proj .metric .v .u{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:4px}
+  .proj .metric .l{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em}
+
+  /* mini visuals inside preview */
+  .prev-flow path, .prev-bars rect, .prev-kanban rect{vector-effect:non-scaling-stroke}
+
+  /* ============ Slide 5 — Stack + Traseu ============ */
+  .s5 .stage{flex:1;display:grid;grid-template-columns:1.05fr 1fr;gap:80px;margin-top:40px}
+  .s5 h2{font-family:var(--display);font-weight:500;font-size:88px;line-height:0.98;letter-spacing:-0.025em;margin:0 0 32px}
+  .s5 h2 em{font-style:normal;color:var(--accent);font-weight:600}
+  .s5 .lede{font-size:23px;color:var(--fg-2);line-height:1.55;max-width:740px}
+  .timeline{margin-top:56px;display:flex;flex-direction:column;gap:0;border-left:1px dashed var(--line-2);padding-left:32px;position:relative}
+  .tl-row{padding:14px 0;display:grid;grid-template-columns:120px 1fr;align-items:baseline;gap:24px;position:relative}
+  .tl-row::before{content:"";position:absolute;left:-37px;top:24px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+  .tl-row .yr{font-family:var(--mono);font-size:14px;color:var(--accent);letter-spacing:0.06em}
+  .tl-row .step{font-family:var(--display);font-size:24px;color:var(--fg);font-weight:500}
+  .tl-row .step span{color:var(--muted);font-family:var(--mono);font-size:14px;margin-left:14px;letter-spacing:0.04em}
+
+  .stack-panel{align-self:start;border:1px solid var(--line);border-radius:18px;padding:40px;background:rgba(255,255,255,0.015)}
+  .stack-panel h3{font-family:var(--mono);font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:0.14em;margin:0 0 24px}
+  .stack-group + .stack-group{margin-top:30px;padding-top:30px;border-top:1px solid var(--line)}
+  .stack-group .gh{font-family:var(--mono);font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:16px}
+  .stack-tags{display:flex;flex-wrap:wrap;gap:10px}
+  .stack-tags .t{font-family:var(--mono);font-size:15px;color:var(--fg);padding:8px 14px;border:1px solid var(--line-2);border-radius:8px;background:rgba(255,255,255,0.02)}
+  .stack-tags .t.primary{background:var(--accent);color:#0a0a0a;border-color:var(--accent)}
+
+  .langs{margin-top:32px}
+  .lang-row{display:grid;grid-template-columns:120px 1fr 60px;align-items:center;gap:16px;padding:10px 0}
+  .lang-row .ln{font-family:var(--mono);font-size:14px;color:var(--fg-2)}
+  .lang-row .bar{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+  .lang-row .bar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+  .lang-row .pc{font-family:var(--mono);font-size:14px;color:var(--muted);text-align:right}
+
+  /* ============ Slide 6 — Contact ============ */
+  .s6{display:flex;flex-direction:column}
+  .s6 .stage{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;max-width:1500px}
+  .s6 .q{font-family:var(--display);font-style:normal;font-weight:500;font-size:80px;line-height:1.05;letter-spacing:-0.025em;margin:0;color:var(--fg);max-width:1700px}
+  .s6 .q b{font-family:var(--display);font-style:normal;font-weight:600;color:var(--accent);letter-spacing:-0.025em}
+  .s6 .sub{margin-top:56px;font-size:24px;color:var(--fg-2);max-width:1100px;line-height:1.45}
+  .s6 .contact{margin-top:56px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line-2);padding-top:28px;width:100%;max-width:1760px}
+  .s6 .contact .c{border-right:1px solid var(--line);padding:0 36px 0 0;display:flex;flex-direction:column;gap:10px}
+  .s6 .contact .c:first-child{padding-left:0}
+  .s6 .contact .c:last-child{border-right:none}
+  .s6 .contact .l{font-family:var(--mono);font-size:13px;color:var(--accent);text-transform:uppercase;letter-spacing:0.12em}
+  .s6 .contact .v{font-family:var(--display);font-size:22px;color:var(--fg);font-weight:500;letter-spacing:-0.005em;word-break:break-all;line-height:1.25}
+  .s6 .contact .h{font-family:var(--mono);font-size:13px;color:var(--muted)}
+  .s6 .signature{position:absolute;right:80px;top:80px;font-family:var(--serif);font-style:italic;font-size:72px;color:rgba(255,255,255,0.05);letter-spacing:-0.02em;pointer-events:none}
+
+  /* corner crosshair marks */
+  .crosshair{display:none}
+</style>
+</head>
+<body>
+
+<deck-stage>
+
+<!-- ============ SLIDE 1 — HERO ============ -->
+<section class="slide s1" data-screen-label="01 Hero">
+  <div class="grid-bg"></div>
+  <div class="crosshair tl"></div><div class="crosshair tr"></div>
+  <div class="crosshair bl"></div><div class="crosshair br"></div>
+
+  <div class="chrome">
+    <div class="topbar">
+      <div class="mark"><span class="dot"></span> Laura&nbsp;Andreea&nbsp;·&nbsp;Portofoliu</div>
+      <div class="meta">
+        <span>RO · ro_RO</span>
+        <span>Cap.&nbsp;<b>01&nbsp;/&nbsp;06</b></span>
+        <span>2026</span>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div>
+        <span class="chip"><span class="pulse"></span> CRM · Marketing · Front-end autodidact</span>
+        <h1>Construiesc<br>interfețe care<br><em>transformă</em><br>procese&nbsp;în<br>fluxuri clare.</h1>
+        <p class="lede">
+          Vin din CRM și marketing, iar în front-end mă concentrez pe produse unde
+          <b>structura, prioritizarea și feedback-ul vizual</b> ajută utilizatorii
+          să înțeleagă mai repede ce au de făcut — și să acționeze fără fricțiune.
+        </p>
+        <div class="name-tag"><span class="bar"></span> Laura Andreea P. · Front-end CRM &amp; Dashboard Developer</div>
+      </div>
+
+      <!-- mock product card -->
+      <div class="card">
+        <div class="device">
+          <div class="titlebar">
+            <span class="d"></span><span class="d"></span><span class="d"></span>
+            <span class="url">alpis-fusion-crm-premium · /pipeline</span>
+          </div>
+          <div class="body">
+            <div class="nav">
+              <div class="item active"></div>
+              <div class="item" style="width:60%"></div>
+              <div class="item" style="width:75%"></div>
+              <div class="item" style="width:50%"></div>
+              <div class="item" style="width:65%"></div>
+              <div class="item" style="width:55%"></div>
+            </div>
+            <div class="main">
+              <div class="row">
+                <div class="stat"><span class="lbl">Lead-uri active</span><span class="v">128</span></div>
+                <div class="stat"><span class="lbl">Conversie</span><span class="v acc">34<span style="font-size:18px;color:var(--muted)">%</span></span></div>
+                <div class="stat"><span class="lbl">Booking azi</span><span class="v">12</span></div>
+              </div>
+              <div class="kanban">
+                <div class="col"><span class="h">Triage</span>
+                  <div class="ticket"><div class="bar1"></div><div class="bar2"></div></div>
+                  <div class="ticket"><div class="bar1" style="width:60%"></div><div class="bar2"></div></div>
+                </div>
+                <div class="col"><span class="h">In progress</span>
+                  <div class="ticket hl"><div class="bar1"></div><div class="bar2"></div></div>
+                  <div class="ticket"><div class="bar1" style="width:70%"></div><div class="bar2"></div></div>
+                  <div class="ticket"><div class="bar1" style="width:50%"></div><div class="bar2"></div></div>
+                </div>
+                <div class="col"><span class="h">Closed</span>
+                  <div class="ticket"><div class="bar1" style="width:90%"></div><div class="bar2"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cardfoot">
+          <span>Preview live · <b>Alpis Fusion CRM Premium</b></span>
+          <span>Vite + React · CI/CD</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottombar">
+      <div class="left">
+        <span class="num">01</span>
+        <span>laurandreea10.github.io / codepen-portfolio</span>
+      </div>
+      <div>↪ Continuă · <span class="kbd">→</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ SLIDE 2 — Ce construiesc ============ -->
+<section class="slide s2" data-screen-label="02 Ce construiesc">
+  <div class="grid-bg"></div>
+  <div class="crosshair tl"></div><div class="crosshair tr"></div>
+  <div class="crosshair bl"></div><div class="crosshair br"></div>
+  <div class="num-wm">02</div>
+
+  <div class="chrome">
+    <div class="topbar">
+      <div class="mark"><span class="dot"></span> Laura Andreea · Portofoliu</div>
+      <div class="meta"><span>Cap. <b>02 / 06</b></span><span>Ce construiesc</span></div>
+    </div>
+
+    <div class="stage">
+      <div class="body">
+        <span class="eyebrow">— Practică</span>
+        <h2>Trei direcții,<br>un singur fir:<br><em>claritatea</em><br>de produs.</h2>
+        <p>
+          Nu fac landing pages decorative. Construiesc workspace-uri operaționale —
+          locuri unde un operator deschide aplicația dimineața și știe imediat
+          <b>ce trebuie făcut acum</b>, fără să sape prin meniuri.
+        </p>
+        <p style="color:var(--muted);font-size:20px">
+          Background: marketing, CRM, baze de date, lead generation.<br>
+          Tranziție activă în front-end din 2022.
+        </p>
+      </div>
+
+      <div class="pillars">
+        <div class="pillar">
+          <span class="glyph">◧</span>
+          <div>
+            <span class="ix">01 / CRM</span>
+            <h3>Sisteme CRM modulare</h3>
+            <p>Lead pipeline, kanban, flow builder, RBAC, billing, autosave — într-un workspace unic.</p>
+          </div>
+          <span class="chip">6 module</span>
+        </div>
+
+        <div class="pillar">
+          <span class="glyph">◰</span>
+          <div>
+            <span class="ix">02 / Dashboard</span>
+            <h3>Dashboard-uri operaționale</h3>
+            <p>Triage, prioritizare și shortcut-uri pentru decizii rapide pe un singur ecran.</p>
+          </div>
+          <span class="chip">~2 click/update</span>
+        </div>
+
+        <div class="pillar">
+          <span class="glyph">◳</span>
+          <div>
+            <span class="ix">03 / Marketing-Tech</span>
+            <h3>Templates pentru growth</h3>
+            <p>Workspace-uri pentru planificare campanii, KPI tracking și conversion UI.</p>
+          </div>
+          <span class="chip">3 templates</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottombar">
+      <div class="left"><span class="num">02</span><span>Ce construiesc · Trei direcții</span></div>
+      <div>CRM · Dashboard · Marketing-Tech</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ SLIDE 3 — Cifre / Credibilitate ============ -->
+<section class="slide s3" data-screen-label="03 Cifre">
+  <div class="grid-bg"></div>
+  <div class="crosshair tl"></div><div class="crosshair tr"></div>
+  <div class="crosshair bl"></div><div class="crosshair br"></div>
+
+  <div class="chrome">
+    <div class="topbar">
+      <div class="mark"><span class="dot"></span> Laura Andreea · Portofoliu</div>
+      <div class="meta"><span>Cap. <b>03 / 06</b></span><span>Credibilitate</span></div>
+    </div>
+
+    <span class="eyebrow" style="margin-top:48px">— Proof of work, nu testimoniale</span>
+    <h2>Tot ce construiesc este<br><em>public, verificabil</em> și are<br>istoric de versiuni.</h2>
+
+    <div class="figs">
+      <div class="fig">
+        <span class="big acc">64</span>
+        <span class="lbl">CodePen · Live</span>
+        <p>proiecte live pe CodePen, din care <b style="color:var(--fg)">25 selectate</b> pe portofoliu.</p>
+      </div>
+      <div class="fig">
+        <span class="big">20<span class="sm">+</span></span>
+        <span class="lbl">GitHub · Public</span>
+        <p>repo-uri publice cu cod, commit history și deploy automat configurat.</p>
+      </div>
+      <div class="fig">
+        <span class="big">6</span>
+        <span class="lbl">Alpis Fusion CRM</span>
+        <p>module SaaS într-un workspace unic: <b style="color:var(--fg)">kanban · flow builder · RBAC · billing · booking · autosave</b>.</p>
+      </div>
+      <div class="fig">
+        <span class="big">10<span class="sm">+</span></span>
+        <span class="lbl">Certificări</span>
+        <p>JavaScript Essentials · Google Digital Marketing · freeCodeCamp Data Analysis · Claude Code in Action.</p>
+      </div>
+    </div>
+
+    <div class="figs-foot">
+      <span>Actualizat: Mai 2026 · date live din API public GitHub</span>
+      <div class="tags">
+        <span class="chip">CI/CD · GitHub Actions</span>
+        <span class="chip">Open source</span>
+        <span class="chip">Deploy automat</span>
+      </div>
+    </div>
+
+    <div class="bottombar">
+      <div class="left"><span class="num">03</span><span>Credibilitate · Dovezi tehnice</span></div>
+      <div>github.com / LaurAndreea10</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ SLIDE 4 — Proiecte cheie ============ -->
+<section class="slide s4" data-screen-label="04 Proiecte cheie">
+  <div class="grid-bg"></div>
+  <div class="crosshair tl"></div><div class="crosshair tr"></div>
+  <div class="crosshair bl"></div><div class="crosshair br"></div>
+
+  <div class="chrome">
+    <div class="topbar">
+      <div class="mark"><span class="dot"></span> Laura Andreea · Portofoliu</div>
+      <div class="meta"><span>Cap. <b>04 / 06</b></span><span>Proiecte-cheie</span></div>
+    </div>
+
+    <span class="eyebrow" style="margin-top:40px">— 3 proiecte care mă reprezintă</span>
+    <h2>Cum gândesc <em>produsul</em><br>și interfața.</h2>
+    <p class="sub">Structură clară, logică de produs și interfețe construite pentru acțiune — nu pentru decor.</p>
+
+    <div class="projects">
+
+      <!-- Project 1 — Alpis Fusion -->
+      <div class="proj">
+        <div class="preview">
+          <span class="tag">CRM</span><span class="id">P01</span>
+          <svg viewBox="0 0 400 250" preserveAspectRatio="none" class="prev-kanban">
+            <defs>
+              <pattern id="dotsA" width="14" height="14" patternUnits="userSpaceOnUse">
+                <circle cx="1" cy="1" r="0.6" fill="rgba(255,255,255,0.08)"/>
+              </pattern>
+            </defs>
+            <rect width="400" height="250" fill="url(#dotsA)"/>
+            <!-- 3 kanban columns -->
+            <g transform="translate(20,30)">
+              <rect width="110" height="200" rx="6" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.1)"/>
+              <rect x="10" y="14" width="60" height="8" rx="2" fill="rgba(255,255,255,0.25)"/>
+              <rect x="10" y="36" width="90" height="36" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+              <rect x="18" y="46" width="50" height="5" rx="2" fill="rgba(255,255,255,0.5)"/>
+              <rect x="18" y="56" width="70" height="4" rx="2" fill="rgba(255,255,255,0.2)"/>
+              <rect x="10" y="80" width="90" height="36" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+              <rect x="18" y="90" width="60" height="5" rx="2" fill="rgba(255,255,255,0.5)"/>
+              <rect x="18" y="100" width="55" height="4" rx="2" fill="rgba(255,255,255,0.2)"/>
+            </g>
+            <g transform="translate(145,30)">
+              <rect width="110" height="200" rx="6" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.1)"/>
+              <rect x="10" y="14" width="80" height="8" rx="2" fill="rgba(255,255,255,0.25)"/>
+              <rect x="10" y="36" width="90" height="36" rx="4" fill="rgba(106,166,255,0.18)" stroke="#6aa6ff"/>
+              <rect x="18" y="46" width="60" height="5" rx="2" fill="#6aa6ff"/>
+              <rect x="18" y="56" width="70" height="4" rx="2" fill="rgba(255,255,255,0.25)"/>
+              <rect x="10" y="80" width="90" height="36" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+              <rect x="18" y="90" width="50" height="5" rx="2" fill="rgba(255,255,255,0.5)"/>
+              <rect x="18" y="100" width="65" height="4" rx="2" fill="rgba(255,255,255,0.2)"/>
+              <rect x="10" y="124" width="90" height="36" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+              <rect x="18" y="134" width="55" height="5" rx="2" fill="rgba(255,255,255,0.5)"/>
+              <rect x="18" y="144" width="60" height="4" rx="2" fill="rgba(255,255,255,0.2)"/>
+            </g>
+            <g transform="translate(270,30)">
+              <rect width="110" height="200" rx="6" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.1)"/>
+              <rect x="10" y="14" width="50" height="8" rx="2" fill="rgba(255,255,255,0.25)"/>
+              <rect x="10" y="36" width="90" height="36" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+              <rect x="18" y="46" width="70" height="5" rx="2" fill="rgba(255,255,255,0.5)"/>
+              <rect x="18" y="56" width="55" height="4" rx="2" fill="rgba(255,255,255,0.2)"/>
+            </g>
+          </svg>
+        </div>
+        <div class="body">
+          <h3>Alpis Fusion CRM Premium</h3>
+          <p class="desc">Lead pipeline, task-uri și billing unificate într-un singur workspace. Flux critic fără schimbări de context.</p>
+          <div class="metrics">
+            <div class="metric"><span class="v">6</span><span class="l">Module SaaS</span></div>
+            <div class="metric"><span class="v">Vite<span class="u">+React</span></span><span class="l">Stack</span></div>
+            <div class="metric"><span class="v">CI/CD</span><span class="l">Actions</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 — ClientFlow -->
+      <div class="proj">
+        <div class="preview">
+          <span class="tag">UTILITY</span><span class="id">P02</span>
+          <svg viewBox="0 0 400 250" preserveAspectRatio="none" class="prev-bars">
+            <defs>
+              <pattern id="dotsB" width="14" height="14" patternUnits="userSpaceOnUse">
+                <circle cx="1" cy="1" r="0.6" fill="rgba(255,255,255,0.08)"/>
+              </pattern>
+            </defs>
+            <rect width="400" height="250" fill="url(#dotsB)"/>
+            <!-- triage list -->
+            <g transform="translate(28,30)">
+              <rect width="344" height="44" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+              <circle cx="20" cy="22" r="6" fill="oklch(0.78 0.06 230)"/>
+              <rect x="40" y="14" width="120" height="6" rx="2" fill="rgba(255,255,255,0.6)"/>
+              <rect x="40" y="26" width="200" height="5" rx="2" fill="rgba(255,255,255,0.2)"/>
+              <rect x="290" y="14" width="40" height="18" rx="9" fill="rgba(255,255,255,0.08)"/>
+
+              <rect y="54" width="344" height="44" rx="6" fill="rgba(106,166,255,0.10)" stroke="#6aa6ff"/>
+              <circle cx="20" cy="76" r="6" fill="#6aa6ff"/>
+              <rect x="40" y="68" width="150" height="6" rx="2" fill="rgba(255,255,255,0.9)"/>
+              <rect x="40" y="80" width="180" height="5" rx="2" fill="rgba(255,255,255,0.4)"/>
+              <rect x="290" y="68" width="40" height="18" rx="9" fill="#6aa6ff"/>
+
+              <rect y="108" width="344" height="44" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+              <circle cx="20" cy="130" r="6" fill="oklch(0.80 0.10 230)"/>
+              <rect x="40" y="122" width="100" height="6" rx="2" fill="rgba(255,255,255,0.6)"/>
+              <rect x="40" y="134" width="220" height="5" rx="2" fill="rgba(255,255,255,0.2)"/>
+              <rect x="290" y="122" width="40" height="18" rx="9" fill="rgba(255,255,255,0.08)"/>
+
+              <rect y="162" width="344" height="44" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+              <circle cx="20" cy="184" r="6" fill="rgba(255,255,255,0.4)"/>
+              <rect x="40" y="176" width="140" height="6" rx="2" fill="rgba(255,255,255,0.5)"/>
+              <rect x="40" y="188" width="160" height="5" rx="2" fill="rgba(255,255,255,0.2)"/>
+              <rect x="290" y="176" width="40" height="18" rx="9" fill="rgba(255,255,255,0.08)"/>
+            </g>
+          </svg>
+        </div>
+        <div class="body">
+          <h3>ClientFlow</h3>
+          <p class="desc">Trierea zilnică redusă la un ecran unic — semnale vizuale și shortcut-uri pentru decizii rapide.</p>
+          <div class="metrics">
+            <div class="metric"><span class="v">~2<span class="u">click</span></span><span class="l">/ update</span></div>
+            <div class="metric"><span class="v">1</span><span class="l">Ecran unic</span></div>
+            <div class="metric"><span class="v">0€</span><span class="l">Backend</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3 — Alpis Impact Path -->
+      <div class="proj">
+        <div class="preview">
+          <span class="tag">UI / FLOW</span><span class="id">P03</span>
+          <svg viewBox="0 0 400 250" preserveAspectRatio="none" class="prev-flow">
+            <defs>
+              <pattern id="dotsC" width="14" height="14" patternUnits="userSpaceOnUse">
+                <circle cx="1" cy="1" r="0.6" fill="rgba(255,255,255,0.08)"/>
+              </pattern>
+            </defs>
+            <rect width="400" height="250" fill="url(#dotsC)"/>
+            <!-- 5 step flow -->
+            <g transform="translate(20,110)">
+              <line x1="20" y1="20" x2="360" y2="20" stroke="rgba(255,255,255,0.12)" stroke-width="2" stroke-dasharray="3 6"/>
+              <g>
+                <circle cx="20" cy="20" r="16" fill="rgba(255,255,255,0.06)" stroke="oklch(0.78 0.06 230)" stroke-width="2"/>
+                <text x="20" y="25" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="oklch(0.78 0.06 230)">1</text>
+              </g>
+              <g>
+                <circle cx="105" cy="20" r="16" fill="rgba(255,255,255,0.06)" stroke="oklch(0.78 0.06 230)" stroke-width="2"/>
+                <text x="105" y="25" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="oklch(0.78 0.06 230)">2</text>
+              </g>
+              <g>
+                <circle cx="190" cy="20" r="20" fill="#6aa6ff" stroke="#6aa6ff" stroke-width="2"/>
+                <text x="190" y="25" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#0a0a0a" font-weight="700">3</text>
+              </g>
+              <g>
+                <circle cx="275" cy="20" r="16" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+                <text x="275" y="25" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="rgba(255,255,255,0.5)">4</text>
+              </g>
+              <g>
+                <circle cx="360" cy="20" r="16" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+                <text x="360" y="25" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="rgba(255,255,255,0.5)">5</text>
+              </g>
+              <text x="190" y="62" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6aa6ff" letter-spacing="2">O DECIZIE / ECRAN</text>
+            </g>
+          </svg>
+        </div>
+        <div class="body">
+          <h3>Alpis Impact Path</h3>
+          <p class="desc">Pagină statică transformată într-un flow interactiv în 5 pași — o singură decizie per ecran, progres mereu vizibil.</p>
+          <div class="metrics">
+            <div class="metric"><span class="v">5</span><span class="l">Pași flow</span></div>
+            <div class="metric"><span class="v">1</span><span class="l">Decizie / ecran</span></div>
+            <div class="metric"><span class="v">CTA</span><span class="l">Contextual</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottombar" style="margin-top:36px">
+      <div class="left"><span class="num">04</span><span>Proiecte-cheie · case studies disponibile</span></div>
+      <div>~3–4 min / case study</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ SLIDE 5 — Stack + Traseu ============ -->
+<section class="slide s5" data-screen-label="05 Stack & traseu">
+  <div class="grid-bg"></div>
+  <div class="crosshair tl"></div><div class="crosshair tr"></div>
+  <div class="crosshair bl"></div><div class="crosshair br"></div>
+  <div class="num-wm">05</div>
+
+  <div class="chrome">
+    <div class="topbar">
+      <div class="mark"><span class="dot"></span> Laura Andreea · Portofoliu</div>
+      <div class="meta"><span>Cap. <b>05 / 06</b></span><span>Stack &amp; traseu</span></div>
+    </div>
+
+    <div class="stage">
+      <div>
+        <span class="eyebrow">— Traseu autodidact, 2022 → prezent</span>
+        <h2 style="margin-top:24px">De la HTML pur la<br><em>Vite + React</em> cu CI/CD.</h2>
+        <p class="lede">
+          Nu am sărit peste etape. Fiecare layer din stack a venit când proiectul
+          precedent a cerut-o — refactor după refactor, până la
+          <b style="color:var(--fg)">arhitectură componentă, build optimizat și deploy automat</b>.
+        </p>
+
+        <div class="timeline">
+          <div class="tl-row"><span class="yr">2022</span><span class="step">HTML &amp; CSS pure <span>· primele landing pages</span></span></div>
+          <div class="tl-row"><span class="yr">2023</span><span class="step">JavaScript ES6+ <span>· DOM &amp; Web APIs</span></span></div>
+          <div class="tl-row"><span class="yr">2024</span><span class="step">React 18 <span>· composition &amp; state</span></span></div>
+          <div class="tl-row"><span class="yr">2025</span><span class="step">TypeScript + Vite <span>· tooling modern</span></span></div>
+          <div class="tl-row"><span class="yr">2026</span><span class="step">CI/CD &amp; AI tooling <span>· GitHub Actions · Claude Code</span></span></div>
+        </div>
+      </div>
+
+      <div class="stack-panel">
+        <h3>// Stack curent</h3>
+
+        <div class="stack-group">
+          <div class="gh">Core front-end</div>
+          <div class="stack-tags">
+            <span class="t primary">React 18</span>
+            <span class="t primary">Vite</span>
+            <span class="t">TypeScript</span>
+            <span class="t">JavaScript ES6+</span>
+            <span class="t">HTML / CSS</span>
+            <span class="t">Tailwind</span>
+          </div>
+        </div>
+
+        <div class="stack-group">
+          <div class="gh">Build &amp; deploy</div>
+          <div class="stack-tags">
+            <span class="t">GitHub Actions</span>
+            <span class="t">Lighthouse CI</span>
+            <span class="t">GitHub Pages</span>
+            <span class="t">CodePen</span>
+          </div>
+        </div>
+
+        <div class="stack-group">
+          <div class="gh">Patterns CRM</div>
+          <div class="stack-tags">
+            <span class="t">Kanban</span>
+            <span class="t">Flow Builder</span>
+            <span class="t">RBAC</span>
+            <span class="t">Autosave</span>
+            <span class="t">PDF Invoice</span>
+            <span class="t">CSV / JSON Export</span>
+          </div>
+        </div>
+
+        <div class="stack-group">
+          <div class="gh">Distribuție limbaje · GitHub</div>
+          <div class="langs">
+            <div class="lang-row"><span class="ln">JavaScript</span><span class="bar"><i style="width:52%"></i></span><span class="pc">52%</span></div>
+            <div class="lang-row"><span class="ln">HTML</span><span class="bar"><i style="width:26%;background:var(--accent-2)"></i></span><span class="pc">26%</span></div>
+            <div class="lang-row"><span class="ln">TypeScript</span><span class="bar"><i style="width:14%;background:var(--accent-3)"></i></span><span class="pc">14%</span></div>
+            <div class="lang-row"><span class="ln">CSS</span><span class="bar"><i style="width:8%;background:var(--fg-2)"></i></span><span class="pc">8%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottombar">
+      <div class="left"><span class="num">05</span><span>Stack &amp; traseu autodidact</span></div>
+      <div>Date live · API public GitHub</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ SLIDE 6 — Contact ============ -->
+<section class="slide s6" data-screen-label="06 Contact">
+  <div class="grid-bg"></div>
+  <div class="crosshair tl"></div><div class="crosshair tr"></div>
+  <div class="crosshair bl"></div><div class="crosshair br"></div>
+
+  <div class="chrome">
+    <div class="topbar">
+      <div class="mark"><span class="dot"></span> Laura Andreea · Portofoliu</div>
+      <div class="meta"><span>Cap. <b>06 / 06</b></span><span>Contact</span></div>
+    </div>
+
+    <div class="stage">
+      <span class="eyebrow" style="margin-bottom:32px">— Hai să lucrăm</span>
+      <h2 class="q">
+        Construiești un <b>CRM intern</b>,<br>
+        <b>dashboard operațional</b><br>
+        sau produs cu fluxuri clare?
+      </h2>
+      <p class="sub">
+        Pot ajuta cu structura UX, logica de produs, prototipuri interactive
+        sau feedback pe o interfață în lucru.
+      </p>
+
+      <div class="contact">
+        <div class="c">
+          <span class="l">Email</span>
+          <span class="v">andreealaurap<br>@gmail.com</span>
+          <span class="h">↗ propunere proiect</span>
+        </div>
+        <div class="c">
+          <span class="l">LinkedIn</span>
+          <span class="v">/in/laura-andreea-p</span>
+          <span class="h">↗ profesional</span>
+        </div>
+        <div class="c">
+          <span class="l">GitHub</span>
+          <span class="v">/LaurAndreea10</span>
+          <span class="h">↗ 20+ repo-uri publice</span>
+        </div>
+        <div class="c">
+          <span class="l">CodePen</span>
+          <span class="v">/Laura-Andreea<br>-the-typescripter</span>
+          <span class="h">↗ 64 proiecte live</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottombar">
+      <div class="left">
+        <span class="num">06 / 06</span>
+        <span>laurandreea10.github.io / codepen-portfolio</span>
+      </div>
+      <div>© 2026 Laura Andreea</div>
+    </div>
+  </div>
+</section>
+
+</deck-stage>
+
+</body>
+</html>

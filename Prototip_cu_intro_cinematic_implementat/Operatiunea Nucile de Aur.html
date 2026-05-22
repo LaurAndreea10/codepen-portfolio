@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<title>Operațiunea: Nucile de Aur — Film</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Special+Elite&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #050505; height: 100%; overflow: hidden; font-family: 'Lora', serif; color: #F0E8D8; }
+  #root { position: fixed; inset: 0; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="animations.jsx"></script>
+<script type="text/babel" src="scenes.jsx"></script>
+<script type="text/babel" src="scenes2.jsx"></script>
+<script type="text/babel" src="scenes3.jsx"></script>
+
+<script type="text/babel">
+// ── Scene timing ──────────────────────────────────────────────────────────
+// Each scene: { start, duration, Comp }
+// Total film length: ~72 seconds
+
+const SCENES = [
+  { start:  0,  dur: 5,  Comp: SceneTitle },
+  { start:  5,  dur: 12, Comp: SceneAttic },
+  { start: 17,  dur: 11, Comp: ScenePlan },
+  { start: 28,  dur: 11, Comp: SceneTraining },
+  { start: 39,  dur: 11, Comp: SceneInfiltration },
+  { start: 50,  dur: 11, Comp: SceneShowdown },
+  { start: 61,  dur: 17, Comp: SceneEscape },
+  { start: 78,  dur: 9,  Comp: SceneCredits },
+];
+const TOTAL = 87;
+
+function Film() {
+  return (
+    <>
+      {SCENES.map(({ start, dur, Comp }, i) => (
+        <Sprite key={i} start={start} end={start + dur}>
+          <Comp />
+        </Sprite>
+      ))}
+      <ChapterMarker />
+    </>
+  );
+}
+
+// Bottom-left chapter indicator — always visible, tiny
+function ChapterMarker() {
+  const time = useTime();
+  const cur = SCENES.findIndex(s => time >= s.start && time < s.start + s.dur);
+  if (cur < 0) return null;
+  return (
+    <div style={{
+      position: 'absolute', top: 60, right: 80,
+      fontFamily: "'Special Elite', monospace",
+      color: 'rgba(212,168,67,0.5)',
+      fontSize: 18,
+      letterSpacing: '0.3em',
+      zIndex: 60,
+    }}>
+      {String(cur + 1).padStart(2,'0')} / {String(SCENES.length).padStart(2,'0')}
+    </div>
+  );
+}
+
+const App = () => (
+  <Stage width={1920} height={1080} duration={TOTAL} background="#050505" persistKey="operatiunea">
+    <Film />
+  </Stage>
+);
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+</body>
+</html>

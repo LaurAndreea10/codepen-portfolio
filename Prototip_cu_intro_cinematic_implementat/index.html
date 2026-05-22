@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Laura Andreea — Prototip cinematic</title>
+<meta name="description" content="Prototip cu intro cinematic integrat, demo reel și pagini video pentru portofoliul Laura Andreea.">
+<style>
+:root{
+  --bg:#04080f;--panel:rgba(255,255,255,.065);--panel2:rgba(255,255,255,.1);
+  --line:rgba(255,255,255,.14);--text:#f1f4fa;--muted:#9aa7bd;--accent:#6aa6ff;
+  --accent2:#9cc2ff;--good:#34d399;--shadow:0 24px 90px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:
+radial-gradient(circle at 20% 0%,rgba(106,166,255,.18),transparent 34%),
+radial-gradient(circle at 80% 10%,rgba(52,211,153,.12),transparent 30%),
+var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:inherit}
+.intro-shell{position:fixed;inset:0;z-index:50;background:#04080f;transition:opacity .75s ease,visibility .75s ease}
+.intro-shell.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+.intro-frame{width:100%;height:100%;border:0;display:block;background:#04080f}
+.skip-intro{position:fixed;right:18px;bottom:18px;z-index:60;border:1px solid rgba(255,255,255,.22);background:rgba(4,8,15,.72);backdrop-filter:blur(14px);color:var(--text);border-radius:999px;padding:.75rem 1rem;font-weight:800;cursor:pointer}
+.skip-intro:hover,.skip-intro:focus-visible{border-color:var(--accent);outline:3px solid rgba(106,166,255,.22);outline-offset:3px}
+.wrap{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:48px 0 56px}
+.hero{min-height:58vh;display:grid;align-items:center;padding:60px 0 30px}
+.kicker{display:inline-flex;gap:.5rem;align-items:center;padding:.4rem .7rem;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.055);color:var(--accent2);font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.kicker::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 0 6px rgba(52,211,153,.12)}
+h1{font-size:clamp(2.4rem,7vw,6.4rem);line-height:.92;letter-spacing:-.07em;margin:.9rem 0 1rem;max-width:920px}
+.lede{font-size:clamp(1rem,2vw,1.25rem);line-height:1.75;color:var(--muted);max-width:760px;margin:0 0 1.6rem}
+.actions{display:flex;flex-wrap:wrap;gap:.8rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;text-decoration:none;border-radius:14px;padding:.85rem 1rem;border:1px solid var(--line);background:var(--panel);font-weight:850;transition:.2s ease}
+.btn:hover{transform:translateY(-2px);border-color:rgba(106,166,255,.46);background:var(--panel2)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#071226;border-color:transparent}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:24px}
+.card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.04));border-radius:24px;padding:20px;box-shadow:var(--shadow);min-height:230px;display:flex;flex-direction:column}
+.card h3{font-size:1.08rem;line-height:1.25;margin:.75rem 0 .5rem}
+.card p{color:var(--muted);line-height:1.65;margin:0 0 1rem}
+.card .btn{margin-top:auto}
+.tag{align-self:flex-start;padding:.28rem .55rem;border-radius:999px;background:rgba(106,166,255,.14);border:1px solid rgba(106,166,255,.25);color:var(--accent2);font-size:.7rem;font-weight:900;letter-spacing:.08em}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:28px}
+.section-head h2{font-size:clamp(1.5rem,3vw,2.35rem);letter-spacing:-.04em;margin:0}
+.note{margin-top:24px;color:var(--muted);font-size:.95rem;line-height:1.7;border-left:3px solid var(--accent);padding:14px 16px;background:rgba(106,166,255,.06);border-radius:0 14px 14px 0}
+@media (prefers-reduced-motion: reduce){.intro-shell{display:none}.btn:hover{transform:none}}
+</style>
+</head>
+<body>
+<div class="intro-shell" id="introShell" aria-label="Intro cinematic">
+  <iframe class="intro-frame" src="intro-cinematic-standalone.html" title="Intro cinematic Laura Andreea"></iframe>
+  <button class="skip-intro" type="button" id="skipIntro">Skip intro →</button>
+</div>
+
+<main class="wrap" id="main">
+  <section class="hero" aria-labelledby="title">
+    <div>
+      <span class="kicker">Cinematic Prototype · Laura Andreea</span>
+      <h1 id="title">Intro cinematic integrat în prototip</h1>
+      <p class="lede">Am adăugat fișierul cinematic standalone ca experiență de intrare, cu opțiune de skip și hub pentru toate paginile demo incluse în arhivă.</p>
+      <div class="actions">
+        <a class="btn primary" href="intro-cinematic-standalone.html">Deschide intro standalone</a>
+        <a class="btn" href="#pages">Vezi toate paginile</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="pages" aria-labelledby="pages-title">
+    <div class="section-head">
+      <div>
+        <span class="kicker">Prototype files</span>
+        <h2 id="pages-title">Paginile incluse</h2>
+      </div>
+      <button class="btn" type="button" id="replayIntro">Replay intro</button>
+    </div>
+    <div class="grid">
+      
+        <article class="card">
+          <span class="tag">HTML</span>
+          <h3>Intro Cinematic Standalone — nou</h3>
+          <p>Cinematic loader integrat ca primă experiență, cu monogramă LA și atmosferă de demo reel.</p>
+          <a class="btn" href="intro-cinematic-standalone.html">Deschide</a>
+        </article>
+
+        <article class="card">
+          <span class="tag">HTML</span>
+          <h3>Intro Portofoliu Laura Andreea</h3>
+          <p>Intro pentru portofoliu CRM &amp; Dashboard Developer.</p>
+          <a class="btn" href="Intro Portofoliu Laura Andreea.html">Deschide</a>
+        </article>
+
+        <article class="card">
+          <span class="tag">HTML</span>
+          <h3>Alpis Fusion CRM Demo</h3>
+          <p>Demo reel pentru Alpis Fusion CRM.</p>
+          <a class="btn" href="Alpis Fusion CRM Demo.html">Deschide</a>
+        </article>
+
+        <article class="card">
+          <span class="tag">HTML</span>
+          <h3>Storyboard</h3>
+          <p>Storyboard 40s pentru prezentare video.</p>
+          <a class="btn" href="Storyboard.html">Deschide</a>
+        </article>
+
+        <article class="card">
+          <span class="tag">HTML</span>
+          <h3>Video</h3>
+          <p>Video demo principal.</p>
+          <a class="btn" href="Video.html">Deschide</a>
+        </article>
+
+        <article class="card">
+          <span class="tag">HTML</span>
+          <h3>Video ClientFlow</h3>
+          <p>Scenă video pentru ClientFlow.</p>
+          <a class="btn" href="Video-ClientFlow.html">Deschide</a>
+        </article>
+
+        <article class="card">
+          <span class="tag">HTML</span>
+          <h3>Video ImpactPath</h3>
+          <p>Scenă video pentru Impact Path.</p>
+          <a class="btn" href="Video-ImpactPath.html">Deschide</a>
+        </article>
+
+        <article class="card">
+          <span class="tag">HTML</span>
+          <h3>Intro · Laura Andreea — Cinematic</h3>
+          <p>Fișier HTML inclus în prototip.</p>
+          <a class="btn" href="Intro Cinematic v1.html">Deschide</a>
+        </article>
+
+        <article class="card">
+          <span class="tag">HTML</span>
+          <h3>Intro · Laura Andreea — Cinematic</h3>
+          <p>Fișier HTML inclus în prototip.</p>
+          <a class="btn" href="Intro Cinematic.bundle.html">Deschide</a>
+        </article>
+
+        <article class="card">
+          <span class="tag">HTML</span>
+          <h3>Intro · Laura Andreea — Cinematic</h3>
+          <p>Fișier HTML inclus în prototip.</p>
+          <a class="btn" href="Intro Cinematic.html">Deschide</a>
+        </article>
+
+        <article class="card">
+          <span class="tag">HTML</span>
+          <h3>Operațiunea: Nucile de Aur — Film</h3>
+          <p>Fișier HTML inclus în prototip.</p>
+          <a class="btn" href="Operatiunea Nucile de Aur.html">Deschide</a>
+        </article>
+
+        <article class="card">
+          <span class="tag">HTML</span>
+          <h3>Alpis Fusion CRM · Demo Reel 40s</h3>
+          <p>Fișier HTML inclus în prototip.</p>
+          <a class="btn" href="Video-standalone-src.html">Deschide</a>
+        </article>
+    </div>
+    <p class="note">Pentru GitHub Pages: urcă toate fișierele din arhivă în repo, iar pagina principală este <strong>index.html</strong>.</p>
+  </section>
+</main>
+
+<script>
+(function(){
+  const intro=document.getElementById('introShell');
+  const skip=document.getElementById('skipIntro');
+  const replay=document.getElementById('replayIntro');
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function hideIntro(){ intro.classList.add('is-hidden'); }
+  function showIntro(){ intro.classList.remove('is-hidden'); window.setTimeout(hideIntro, 13500); }
+  if(reduced) hideIntro(); else window.setTimeout(hideIntro, 13500);
+  skip.addEventListener('click', hideIntro);
+  replay.addEventListener('click', showIntro);
+})();
+</script>
+</body>
+</html>

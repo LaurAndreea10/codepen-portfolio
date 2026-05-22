@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Intro · Laura Andreea — Cinematic</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#040a14;
+  --bg-2:#07101f;
+  --fg:#f1f4fa;
+  --fg-2:#c4cbd9;
+  --muted:#8089a0;
+  --dim:#3a4256;
+  --accent:#6aa6ff;
+  --accent-2:#9cc2ff;
+  --line:rgba(255,255,255,0.10);
+  --line-2:rgba(255,255,255,0.22);
+  --mono:'JetBrains Mono', ui-monospace, monospace;
+  --display:'Space Grotesk', system-ui, sans-serif;
+  --body:'Inter', system-ui, sans-serif;
+  /* total loop duration */
+  --T:14s;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#000;color:var(--fg);overflow:hidden;height:100%;font-family:var(--body);user-select:none}
+
+/* ---------------- scalable stage ---------------- */
+.viewport{
+  position:fixed;inset:0;display:grid;place-items:center;background:#000;
+}
+.scaler{
+  width:1920px;height:1080px;position:relative;transform-origin:center center;
+}
+
+/* fit-to-viewport scaling */
+@media (max-aspect-ratio: 16/9){
+  .scaler{transform: scale(calc(100vw / 1920));}
+}
+@media (min-aspect-ratio: 16/9){
+  .scaler{transform: scale(calc(100vh / 1080));}
+}
+
+.stage{
+  position:absolute;inset:0;background:
+    radial-gradient(ellipse 70% 50% at 50% 45%, #0c1a30 0%, var(--bg) 60%, #020610 100%);
+  overflow:hidden;
+}
+
+/* ---------------- letterbox bars ---------------- */
+.lb{position:absolute;left:0;right:0;height:96px;background:#000;z-index:60}
+.lb.top{top:0;transform:translateY(-100%);animation:lbTop 1.0s cubic-bezier(.7,0,.3,1) forwards}
+.lb.bot{bottom:0;transform:translateY(100%);animation:lbBot 1.0s cubic-bezier(.7,0,.3,1) forwards}
+@keyframes lbTop{to{transform:translateY(0)}}
+@keyframes lbBot{to{transform:translateY(0)}}
+
+/* ---------------- film grain ---------------- */
+.grain{position:absolute;inset:0;pointer-events:none;z-index:55;opacity:0.06;mix-blend-mode:overlay}
+.grain svg{width:100%;height:100%}
+
+/* vignette */
+.vignette{position:absolute;inset:0;pointer-events:none;z-index:50;
+  background:radial-gradient(ellipse 80% 65% at 50% 50%, transparent 55%, rgba(0,0,0,0.6) 100%);}
+
+/* horizontal scan line */
+.scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg, transparent, rgba(106,166,255,0.45), transparent);z-index:45;
+  opacity:0;animation:scan var(--T) linear infinite}
+@keyframes scan{
+  0%   {top:-2%; opacity:0}
+  4%   {opacity:0.55}
+  45%  {top:103%; opacity:0.55}
+  46%  {opacity:0}
+  100% {opacity:0}
+}
+
+/* ---------------- HUD frame ---------------- */
+.hud{position:absolute;inset:140px 96px;z-index:20;color:var(--muted);font-family:var(--mono);font-size:14px;letter-spacing:0.12em;text-transform:uppercase;
+  opacity:0;animation:hudIn 0.6s 0.7s ease-out forwards}
+@keyframes hudIn{to{opacity:1}}
+
+.hud .crosshair{position:absolute;width:22px;height:22px;border:1px solid var(--line-2)}
+.hud .crosshair.tl{top:0;left:0;border-right:none;border-bottom:none}
+.hud .crosshair.tr{top:0;right:0;border-left:none;border-bottom:none}
+.hud .crosshair.bl{bottom:0;left:0;border-right:none;border-top:none}
+.hud .crosshair.br{bottom:0;right:0;border-left:none;border-top:none}
+
+/* corner labels */
+.hud .label{position:absolute;display:flex;align-items:center;gap:10px;color:var(--muted)}
+.hud .label .rec{width:8px;height:8px;border-radius:50%;background:#ff4a52;box-shadow:0 0 12px rgba(255,74,82,0.7);animation:blink 1.2s steps(2) infinite}
+@keyframes blink{50%{opacity:0.3}}
+.hud .label b{color:var(--fg-2);font-weight:500;letter-spacing:0.08em}
+
+.hud .l-tl{top:-30px;left:0}
+.hud .l-tr{top:-30px;right:0}
+.hud .l-bl{bottom:-30px;left:0}
+.hud .l-br{bottom:-30px;right:0}
+
+.hud .tick{display:inline-block;font-variant-numeric:tabular-nums;color:var(--fg-2)}
+
+/* ---------------- background grid (drawn) ---------------- */
+.gridwrap{position:absolute;inset:0;z-index:5;opacity:0}
+.gridwrap{animation:gridFade 1.2s 0.5s ease-out forwards}
+@keyframes gridFade{to{opacity:0.55}}
+.gridwrap svg{width:100%;height:100%;display:block}
+.gridline{stroke:rgba(255,255,255,0.05);stroke-width:1;fill:none;
+  stroke-dasharray:2400;stroke-dashoffset:2400;animation:draw 1.8s 0.6s cubic-bezier(.6,0,.3,1) forwards}
+.gridline.v{animation-duration:1.2s}
+.gridline.accent{stroke:rgba(106,166,255,0.30);stroke-width:1.2}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* ---------------- center scenes ---------------- */
+.scenes{position:absolute;inset:0;display:grid;place-items:center;z-index:25}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;text-align:center;padding:0 140px}
+
+/* helper: kill-shot fade in / out */
+@keyframes show{
+  0%{opacity:0;transform:translateY(20px)}
+  10%{opacity:1;transform:translateY(0)}
+  85%{opacity:1;transform:translateY(0)}
+  100%{opacity:0;transform:translateY(-12px)}
+}
+@keyframes showStill{
+  0%{opacity:0}
+  8%{opacity:1}
+  92%{opacity:1}
+  100%{opacity:0}
+}
+
+/* ---- Scene 1 — slate ---- */
+.s1{animation: showStill 2.2s 1.0s both;}
+.s1 .slate{
+  display:flex;flex-direction:column;align-items:center;gap:32px;
+  border:1px solid var(--line-2);padding:42px 70px 46px;border-radius:6px;
+  background:rgba(255,255,255,0.015);
+  position:relative;
+}
+.s1 .slate::before{
+  content:"";position:absolute;top:-1px;left:-1px;right:-1px;height:18px;
+  background:repeating-linear-gradient(135deg, var(--fg) 0 14px, #000 14px 28px);
+  opacity:0.85;
+}
+.s1 .slate::after{
+  content:"";position:absolute;bottom:-1px;left:-1px;right:-1px;height:18px;
+  background:repeating-linear-gradient(135deg, var(--fg) 0 14px, #000 14px 28px);
+  opacity:0.85;
+}
+.s1 .row{display:grid;grid-template-columns:auto auto;gap:24px 48px;font-family:var(--mono);font-size:15px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;align-items:center}
+.s1 .row .k{color:var(--muted);text-align:right}
+.s1 .row .v{color:var(--fg);font-weight:500;letter-spacing:0.08em;text-align:left}
+.s1 .row .v.acc{color:var(--accent)}
+.s1 h-take{font-family:var(--display);font-weight:600;font-size:96px;color:var(--fg);letter-spacing:-0.02em;line-height:1;display:block}
+.s1 .sub{font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:0.4em;text-transform:uppercase}
+
+/* ---- Scene 2 — Name reveal ---- */
+.s2{animation:showStill 2.8s 3.5s both;}
+.s2 .eyebrow{font-family:var(--mono);font-size:18px;letter-spacing:0.6em;color:var(--accent);text-transform:uppercase;margin-bottom:42px;opacity:0;animation:fadeUp 0.6s 3.9s forwards}
+.s2 .name{font-family:var(--display);font-weight:600;font-size:240px;line-height:0.9;letter-spacing:-0.045em;color:var(--fg);display:flex;flex-direction:column;align-items:center;gap:0;margin:0}
+.s2 .name span{display:block;overflow:hidden}
+.s2 .name span i{display:inline-block;font-style:normal;transform:translateY(110%);animation:slideUp 0.9s 4.1s cubic-bezier(.2,.8,.2,1) forwards}
+.s2 .name span:nth-child(2) i{animation-delay:4.35s;color:var(--accent)}
+@keyframes slideUp{to{transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.s2 .rule{width:0;height:1px;background:var(--line-2);margin:42px 0 30px;animation:ruleGrow 1.4s 4.9s cubic-bezier(.6,0,.3,1) forwards}
+@keyframes ruleGrow{to{width:520px}}
+
+.s2 .role{font-family:var(--mono);font-size:22px;color:var(--fg-2);letter-spacing:0.18em;text-transform:uppercase;opacity:0;animation:fadeUp 0.7s 5.4s forwards}
+.s2 .role b{color:var(--fg);font-weight:500}
+
+/* ---- Scene 3 — Stat tickers ---- */
+.s3{animation:showStill 2.6s 6.6s both;}
+.s3 .eyebrow{font-family:var(--mono);font-size:16px;letter-spacing:0.4em;color:var(--accent);text-transform:uppercase;margin-bottom:60px}
+.s3 .figs{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);width:100%;max-width:1500px}
+.s3 .fig{padding:50px 28px 50px;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.s3 .fig:last-child{border-right:none}
+.s3 .fig .big{font-family:var(--display);font-weight:600;font-size:160px;line-height:0.85;letter-spacing:-0.045em;color:var(--fg);font-variant-numeric:tabular-nums}
+.s3 .fig.acc .big{color:var(--accent)}
+.s3 .fig .big .plus{color:var(--muted);font-size:60px;vertical-align:top;margin-left:2px}
+.s3 .fig .lbl{font-family:var(--mono);font-size:13px;color:var(--accent);text-transform:uppercase;letter-spacing:0.14em}
+.s3 .fig .meta{font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase}
+
+/* number counters via @property */
+@property --c1 { syntax: '<integer>'; initial-value: 0; inherits: false; }
+@property --c2 { syntax: '<integer>'; initial-value: 0; inherits: false; }
+@property --c3 { syntax: '<integer>'; initial-value: 0; inherits: false; }
+@property --c4 { syntax: '<integer>'; initial-value: 0; inherits: false; }
+.s3 .num1{counter-reset:c1 var(--c1);animation:cnt1 1.8s 6.9s cubic-bezier(.2,.8,.2,1) forwards}
+.s3 .num1::before{content:counter(c1)}
+.s3 .num2{counter-reset:c2 var(--c2);animation:cnt2 1.8s 7.05s cubic-bezier(.2,.8,.2,1) forwards}
+.s3 .num2::before{content:counter(c2)}
+.s3 .num3{counter-reset:c3 var(--c3);animation:cnt3 1.4s 7.2s cubic-bezier(.2,.8,.2,1) forwards}
+.s3 .num3::before{content:counter(c3)}
+.s3 .num4{counter-reset:c4 var(--c4);animation:cnt4 1.6s 7.35s cubic-bezier(.2,.8,.2,1) forwards}
+.s3 .num4::before{content:counter(c4)}
+@keyframes cnt1{to{--c1:64}}
+@keyframes cnt2{to{--c2:20}}
+@keyframes cnt3{to{--c3:6}}
+@keyframes cnt4{to{--c4:10}}
+
+/* ---- Scene 4 — Tagline ---- */
+.s4{animation:showStill 2.6s 9.6s both;}
+.s4 .quote{position:absolute;top:0;left:140px;font-family:var(--display);font-size:200px;color:rgba(106,166,255,0.18);line-height:1;font-weight:600}
+.s4 h2{font-family:var(--display);font-weight:500;font-size:108px;line-height:1.05;letter-spacing:-0.025em;color:var(--fg);text-align:center;max-width:1500px;margin:0}
+.s4 h2 em{font-style:normal;color:var(--accent);font-weight:600}
+.s4 .sig{margin-top:46px;font-family:var(--mono);font-size:18px;color:var(--muted);letter-spacing:0.3em;text-transform:uppercase}
+
+/* ---- Scene 5 — URL outro ---- */
+.s5{animation:showStill 2.2s 12.2s both;}
+.s5 .mark{display:flex;align-items:center;gap:18px;font-family:var(--mono);font-size:14px;color:var(--accent);letter-spacing:0.4em;text-transform:uppercase;margin-bottom:34px}
+.s5 .mark .d{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+.s5 .url{font-family:var(--display);font-weight:500;font-size:78px;color:var(--fg);letter-spacing:-0.02em;line-height:1.1;text-align:center}
+.s5 .url span{color:var(--accent)}
+.s5 .cta{margin-top:54px;display:flex;gap:22px;align-items:center;font-family:var(--mono);font-size:14px;color:var(--muted);letter-spacing:0.3em;text-transform:uppercase}
+.s5 .cta a{color:var(--fg-2);text-decoration:none;border-bottom:1px solid var(--line-2);padding-bottom:6px;transition:color .2s, border-color .2s}
+.s5 .cta a:hover{color:var(--accent);border-color:var(--accent)}
+.s5 .cta .sep{opacity:0.5}
+
+/* ---------------- replay controls ---------------- */
+.controls{position:fixed;bottom:24px;right:24px;display:flex;gap:10px;z-index:200;font-family:var(--mono);font-size:12px}
+.controls button{background:rgba(0,0,0,0.55);border:1px solid var(--line-2);color:var(--fg-2);padding:10px 16px;border-radius:999px;cursor:pointer;letter-spacing:0.16em;text-transform:uppercase;transition:.2s}
+.controls button:hover{border-color:var(--accent);color:var(--accent)}
+
+/* When restart key is added to .stage, all animations reset via key remount */
+.stage.restart{animation:none}
+</style>
+</head>
+<body>
+
+<div class="viewport">
+<div class="scaler">
+<div class="stage" id="stage">
+
+  <!-- background grid lines (drawn) -->
+  <div class="gridwrap">
+    <svg viewBox="0 0 1920 1080" preserveAspectRatio="none">
+      <!-- thirds + center cross -->
+      <line class="gridline" x1="0" y1="360" x2="1920" y2="360"/>
+      <line class="gridline" x1="0" y1="720" x2="1920" y2="720" style="animation-delay:0.75s"/>
+      <line class="gridline v" x1="640" y1="0" x2="640" y2="1080" style="animation-delay:0.9s"/>
+      <line class="gridline v" x1="1280" y1="0" x2="1280" y2="1080" style="animation-delay:1.05s"/>
+      <line class="gridline accent" x1="0" y1="540" x2="1920" y2="540" style="animation-delay:1.3s;stroke-dasharray:2400;animation-duration:2.0s"/>
+      <line class="gridline accent v" x1="960" y1="0" x2="960" y2="1080" style="animation-delay:1.4s;animation-duration:1.4s"/>
+    </svg>
+  </div>
+
+  <!-- HUD chrome -->
+  <div class="hud">
+    <span class="crosshair tl"></span>
+    <span class="crosshair tr"></span>
+    <span class="crosshair bl"></span>
+    <span class="crosshair br"></span>
+
+    <div class="label l-tl">
+      <span class="rec"></span>
+      <span>REC&nbsp;·&nbsp;<b>TAKE&nbsp;01</b></span>
+      <span style="opacity:.5">/&nbsp;INTRO</span>
+    </div>
+
+    <div class="label l-tr">
+      <span>TC</span>
+      <b class="tick" id="tc">00:00:00:00</b>
+    </div>
+
+    <div class="label l-bl">
+      <span>16:9&nbsp;·&nbsp;1920×1080</span>
+      <span style="opacity:.5">·&nbsp;24 fps</span>
+    </div>
+
+    <div class="label l-br">
+      <span>ISO 400&nbsp;·&nbsp;f/2.8</span>
+      <span style="opacity:.5">·&nbsp;1/50</span>
+    </div>
+  </div>
+
+  <!-- scenes -->
+  <div class="scenes">
+
+    <!-- Scene 1: slate -->
+    <div class="scene s1">
+      <div class="slate">
+        <span class="sub">// portfolio intro reel</span>
+        <span style="font-family:var(--display);font-weight:600;font-size:96px;color:var(--fg);letter-spacing:-0.02em;line-height:1">TAKE&nbsp;01</span>
+        <div class="row">
+          <span class="k">production</span><span class="v">Laura Andreea P.</span>
+          <span class="k">role</span>           <span class="v">front-end · crm · dashboard</span>
+          <span class="k">date</span>           <span class="v acc">26.05.26</span>
+          <span class="k">scene</span>          <span class="v">01 / intro</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 2: name -->
+    <div class="scene s2">
+      <div class="eyebrow">// portfolio · 2026</div>
+      <div class="name">
+        <span><i>LAURA</i></span>
+        <span><i>ANDREEA</i></span>
+      </div>
+      <div class="rule"></div>
+      <div class="role">Front-end <b>CRM &amp; Dashboard</b> Developer</div>
+    </div>
+
+    <!-- Scene 3: stat tickers -->
+    <div class="scene s3">
+      <div class="eyebrow">// proof of work</div>
+      <div class="figs">
+        <div class="fig acc">
+          <span class="big"><span class="num1"></span></span>
+          <span class="lbl">CodePen · Live</span>
+          <span class="meta">proiecte funcționale</span>
+        </div>
+        <div class="fig">
+          <span class="big"><span class="num2"></span><span class="plus">+</span></span>
+          <span class="lbl">GitHub · Public</span>
+          <span class="meta">repo-uri publice</span>
+        </div>
+        <div class="fig">
+          <span class="big"><span class="num3"></span></span>
+          <span class="lbl">Alpis Fusion</span>
+          <span class="meta">module SaaS</span>
+        </div>
+        <div class="fig">
+          <span class="big"><span class="num4"></span><span class="plus">+</span></span>
+          <span class="lbl">Certificări</span>
+          <span class="meta">JS · marketing · data</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 4: tagline -->
+    <div class="scene s4">
+      <span class="quote">"</span>
+      <h2>Interfețe care<br><em>transformă</em> procese<br>în fluxuri clare.</h2>
+      <div class="sig">— Manifest de produs</div>
+    </div>
+
+    <!-- Scene 5: URL outro -->
+    <div class="scene s5">
+      <div class="mark"><span class="d"></span> Cut · End of Reel</div>
+      <div class="url">
+        laurandreea10<span>.</span>github<span>.</span>io<br>
+        <span>/</span>codepen-portfolio
+      </div>
+      <div class="cta">
+        <a href="Intro Portofoliu Laura Andreea.html">Vezi deck-ul →</a>
+        <span class="sep">·</span>
+        <a href="mailto:andreealaurap@gmail.com">Scrie-mi</a>
+        <span class="sep">·</span>
+        <a href="https://github.com/LaurAndreea10">GitHub</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- horizontal scan -->
+  <div class="scan"></div>
+
+  <!-- grain -->
+  <div class="grain">
+    <svg xmlns="http://www.w3.org/2000/svg">
+      <filter id="n">
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/>
+        <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0"/>
+      </filter>
+      <rect width="100%" height="100%" filter="url(#n)"/>
+    </svg>
+  </div>
+
+  <!-- vignette -->
+  <div class="vignette"></div>
+
+  <!-- letterbox bars -->
+  <div class="lb top"></div>
+  <div class="lb bot"></div>
+
+</div>
+</div>
+</div>
+
+<div class="controls">
+  <button id="replay">↻ Replay</button>
+  <a href="Intro Portofoliu Laura Andreea.html" style="text-decoration:none"><button>Skip → Deck</button></a>
+</div>
+
+<script>
+// timecode HUD — runs in loop tied to animation duration
+const TOTAL = 14; // seconds
+const tcEl = document.getElementById('tc');
+let startTime = performance.now();
+
+function pad(n, w=2){ return String(n).padStart(w,'0'); }
+function fmtTC(t){
+  // hh:mm:ss:ff (24fps)
+  const totalFrames = Math.floor(t * 24);
+  const ff = totalFrames % 24;
+  const ssTotal = Math.floor(totalFrames / 24);
+  const ss = ssTotal % 60;
+  const mm = Math.floor(ssTotal / 60) % 60;
+  const hh = Math.floor(ssTotal / 3600);
+  return pad(hh)+':'+pad(mm)+':'+pad(ss)+':'+pad(ff);
+}
+function loop(now){
+  const t = ((now - startTime) / 1000) % TOTAL;
+  tcEl.textContent = fmtTC(t);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+// Replay = nuke + recreate the stage so all CSS animations restart
+document.getElementById('replay').addEventListener('click', () => {
+  const stage = document.getElementById('stage');
+  const clone = stage.cloneNode(true);
+  stage.replaceWith(clone);
+  startTime = performance.now();
+});
+
+// Auto-loop the visual sequence (stage animations are short-lived CSS;
+// when each scene's animation completes it sits transparent until restart)
+setInterval(() => {
+  document.getElementById('replay').click();
+}, TOTAL * 1000);
+</script>
+
+</body>
+</html>
