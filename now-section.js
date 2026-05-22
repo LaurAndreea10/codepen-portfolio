@@ -1,19 +1,25 @@
 (function(){
   'use strict';
 
-  var PATCH_MARKER = 'now-marketing-tech-roadmap-v4-2026-05-22';
+  var PATCH_MARKER = 'now-marketing-tech-roadmap-v5-2026-05-22';
   var applying = false;
 
   var inProgressHTML = ''
-    + '<li>🔄 <strong>Industry Benchmarks Dashboard</strong> — următorul tool Marketing-Tech: dashboard cu benchmarks pe canal, industrie și funnel stage. <a href="marketing-os.html" style="color:var(--accent,#4f8cff)">Deschide Marketing OS →</a> <span class="now-tag">Benchmarks</span> <span class="now-tag">Funnel stage</span></li>'
-    + '<li>🔄 <strong>UTM Builder v1.2</strong> — naming convention profiles + saved campaign templates. <a href="marketing-os.html" style="color:var(--accent,#4f8cff)">Testează modulul →</a> <span class="now-tag">UTM</span> <span class="now-tag">Templates</span></li>'
-    + '<li>🧭 <strong>Direcție:</strong> Marketing OS rămâne hub-ul principal, iar micro-tool-urile noi intră ca module clare, nu ca proiecte separate pierdute.</li>';
+    + '<li>🔄 <strong>Industry Benchmarks Dashboard</strong> — în implementare în <strong>Marketing OS</strong>: benchmarks pe canal, industrie și funnel stage, cu comparație față de valorile campaniei tale. <a href="marketing-os.html#benchmarks" style="color:var(--accent,#4f8cff)">Deschide Marketing OS →</a> <span class="now-tag">Benchmarks</span> <span class="now-tag">Funnel stage</span></li>'
+    + '<li>🔄 <strong>UTM Builder v1.2</strong> — naming convention profiles + saved campaign templates, cu preview, validare și copy report. <a href="marketing-os.html#utm" style="color:var(--accent,#4f8cff)">Testează modulul →</a> <span class="now-tag">UTM</span> <span class="now-tag">Templates</span></li>'
+    + '<li>🧭 <strong>Direcție curentă:</strong> Marketing OS devine hub-ul principal Marketing-Tech; micro-tool-urile noi intră ca module în același workspace, nu ca pagini pierdute.</li>';
+
+  var originalVersionHTML = ''
+    + '<li>✅ <strong>Link Video Editor Studio</strong> — Automation Pack export funcțional: descarcă <code>.zip</code> cu script CLI, config Playwright și FFmpeg workflow. <a href="https://laurandreea10.github.io/Link-Video-Editor-Studio/" target="_blank" rel="noopener noreferrer" style="color:var(--accent,#4f8cff)">Deschide →</a></li>'
+    + '<li>✅ <strong>Alpis Fusion CRM Premium</strong> — case study extins cu <strong>Decision Log complet</strong>: 6 decizii tehnice și de produs cu alternative considerate, rațional complet și ce aș face diferit azi. <a href="projects/alpis-fusion-crm.html" style="color:var(--accent,#4f8cff)">Citește →</a></li>'
+    + '<li>✅ <strong>Lighthouse CI audit</strong> — preload hints adăugate pentru <code>style.css</code>, <code>main.js</code> și imaginea hero (LCP). DNS prefetch pentru GitHub API și CodePen. Imaginea fallback are <code>fetchpriority="high"</code>.</li>'
+    + '<li>✅ <strong>Marketing-Tech extins</strong> — <strong>Lead Magnet Landing</strong> adăugat: hero hook + social proof + preview cu tabs + email gate + thank-you flow. Bilingv RO/EN, 0 backend. <a href="lead-magnet-landing.html" style="color:var(--accent,#4f8cff)">Deschide →</a></li>';
 
   var historyHTML = ''
-    + '<li>✅ <strong>Marketing OS</strong> — workspace principal Marketing-Tech: ROI, funnel logic, UTM builder, benchmarks și tools de campanie.</li>'
-    + '<li>✅ <strong>Alpis Fusion CRM</strong> — case study rafinat cu trade-offs, metrici explicate, dovadă live și lecții învățate.</li>'
+    + '<li>✅ <strong>Marketing OS</strong> — workspace principal Marketing-Tech: ROI, funnel logic, UTM builder, benchmarks și tools de campanie. <a href="marketing-os.html" style="color:var(--accent,#4f8cff)">Deschide →</a></li>'
     + '<li>✅ <strong>ClientFlow</strong> — case study îmbunătățit cu protocol de test, fricțiuni reale și pași următori.</li>'
-    + '<li>✅ <strong>Link Video Editor Studio</strong> — Automation Pack export funcțional cu ZIP, CLI script și workflow video.</li>';
+    + '<li>✅ <strong>Alpis Fusion CRM</strong> — case study rafinat cu trade-offs, metrici explicate, dovadă live și lecții învățate.</li>'
+    + originalVersionHTML;
 
   function injectStyles(){
     if(document.getElementById('nowTabsPatchStyles')) return;
@@ -27,7 +33,8 @@
       + '.now-panel{display:none}.now-panel.is-active{display:block}.now-panel .now-list{margin-top:0}'
       + '.now-panel-head{margin:0 0 12px;color:var(--muted,#9db0d4);font-size:.9rem;line-height:1.7}.now-panel-head strong{color:var(--text,#eef4ff)}'
       + '.not-section{margin-top:2rem;padding:1.5rem;border-left:3px solid var(--accent,#06b6d4);background:rgba(6,182,212,.05);border-radius:0 8px 8px 0}.not-section h3{margin:0 0 .75rem;font-size:1rem;opacity:.95}.not-section ul{margin:0;padding-left:1.2rem;line-height:1.7;opacity:.88}'
-      + '.subtle-inline{color:var(--muted,#9db0d4);font-size:.9em}';
+      + '.subtle-inline{color:var(--muted,#9db0d4);font-size:.9em}'
+      + '.now-version-note{margin:.75rem 0 0;color:var(--muted,#9db0d4);font-size:.85rem;line-height:1.6}';
     document.head.appendChild(style);
   }
 
@@ -38,12 +45,13 @@
       + '<button class="now-tab" type="button" role="tab" aria-selected="false" aria-controls="now-panel-history" id="now-tab-history" data-now-tab="history">✅ Istoric</button>'
       + '</div>'
       + '<div class="now-panel is-active" id="now-panel-progress" role="tabpanel" aria-labelledby="now-tab-progress">'
-      + '<p class="now-panel-head"><strong>Focus curent:</strong> două module noi în Marketing OS, utile pentru marketing managers și echipe growth.</p>'
+      + '<p class="now-panel-head"><strong>Focus curent:</strong> Industry Benchmarks Dashboard + UTM Builder v1.2 în Marketing OS.</p>'
       + '<ul class="now-list">' + inProgressHTML + '</ul>'
       + '</div>'
       + '<div class="now-panel" id="now-panel-history" role="tabpanel" aria-labelledby="now-tab-history">'
-      + '<p class="now-panel-head"><strong>Istoric recent:</strong> livrări păstrate vizibil ca să se vadă progresul, nu doar statusul curent.</p>'
+      + '<p class="now-panel-head"><strong>Istoric recent:</strong> păstrez și versiunea inițială, ca să se vadă progresul fără să dispară livrările vechi.</p>'
       + '<ul class="now-list">' + historyHTML + '</ul>'
+      + '<p class="now-version-note">Versiunea inițială nu a fost eliminată — este inclusă aici ca istoric.</p>'
       + '</div>';
   }
 
@@ -156,7 +164,7 @@
     }
 
     var note=now.querySelector('.now-note');
-    if(note) note.textContent='Secțiune de tip now page: tabul „În curs” arată focusul curent, iar tabul „Istoric” păstrează livrările recente.';
+    if(note) note.textContent='Secțiune de tip now page: tabul „În curs” arată focusul curent, iar tabul „Istoric” păstrează livrările recente și versiunea inițială.';
 
     setupTabs(now);
   }
