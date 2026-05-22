@@ -69,7 +69,7 @@ python3 -m http.server 8080
 ## Contact
 
 📧 [andreealaurap@gmail.com](mailto:andreealaurap@gmail.com)  
-💼 [LinkedIn](https://www.linkedin.com/in/laura-andreea/)  
+💼 [LinkedIn](https://www.linkedin.com/in/laura-andreea-p-8b230014b/)  
 🐙 [GitHub](https://github.com/LaurAndreea10)  
 ✏️ [CodePen](https://codepen.io/Laura-Andreea-the-typescripter)
 
