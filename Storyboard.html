@@ -1,0 +1,1170 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Alpis Fusion CRM — Storyboard 40s</title>
+<meta name="viewport" content="width=1200">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0c;
+    --ink:#f4f1ea;
+    --ink-dim:#9a958b;
+    --ink-mute:#5a554d;
+    --rule:#201f1d;
+    --rule-2:#2c2a27;
+    --card:#111110;
+    --card-2:#17160f;
+    --paper:#f4f0e6;
+    --paper-ink:#1b1a17;
+    --paper-dim:#6b665c;
+    --paper-rule:#d9d2c0;
+    --accent:#e8c767;      /* slate chalk yellow */
+    --hot:#e86b4f;
+    --cool:#6fa8c4;
+    --grn:#7fa86a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{padding:40px 48px 120px}
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace;letter-spacing:-0.01em}
+  .serif{font-family:"Fraunces",serif;font-optical-sizing:auto}
+  /* ============ TOP BAR ============ */
+  header.bar{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    padding-bottom:18px;border-bottom:1px solid var(--rule);
+    gap:32px;
+  }
+  .slate{display:flex;gap:18px;align-items:baseline}
+  .slate .prod{
+    font-family:"Fraunces",serif;font-weight:500;font-size:28px;letter-spacing:-0.02em;
+  }
+  .slate .prod em{font-style:italic;color:var(--accent)}
+  .slate .dot{width:8px;height:8px;border-radius:999px;background:var(--hot);display:inline-block;margin-right:6px;vertical-align:middle;animation:pulse 1.6s infinite ease-in-out}
+  @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+  .meta{display:flex;gap:28px;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:0.08em}
+  .meta b{color:var(--ink);font-weight:500}
+  .lang{
+    display:inline-flex;border:1px solid var(--rule-2);border-radius:999px;overflow:hidden;
+    font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:0.08em;
+  }
+  .lang button{
+    appearance:none;background:transparent;color:var(--ink-dim);border:0;
+    padding:8px 14px;cursor:pointer;text-transform:uppercase;
+  }
+  .lang button.on{background:var(--ink);color:var(--bg)}
+  /* ============ HERO ============ */
+  .hero{
+    margin-top:32px;display:grid;grid-template-columns:1.3fr .9fr;gap:48px;
+  }
+  .hero h1{
+    font-family:"Fraunces",serif;font-weight:400;font-size:96px;line-height:.95;
+    letter-spacing:-0.035em;margin:0;
+  }
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero .lede{
+    margin-top:28px;max-width:620px;color:var(--ink-dim);font-size:16px;line-height:1.55;
+  }
+  .hero .lede strong{color:var(--ink);font-weight:500}
+  .hero .right{
+    border:1px solid var(--rule);padding:22px;border-radius:4px;background:var(--card);
+    align-self:start;
+  }
+  .hero .right h4{margin:0 0 12px;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:0.1em;font-weight:500}
+  .hero .right .url{
+    font-family:"JetBrains Mono",monospace;font-size:13px;word-break:break-all;color:var(--accent);
+    padding:10px 12px;background:#000;border:1px dashed var(--rule-2);border-radius:3px;display:block;
+  }
+  .hero .right ul{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+  .hero .right li{font-size:13px;color:var(--ink);display:grid;grid-template-columns:18px 1fr;gap:8px;align-items:start;line-height:1.45}
+  .hero .right li .mk{color:var(--accent);font-family:"JetBrains Mono",monospace;font-size:11px;padding-top:2px}
+
+  /* ============ SECTION LABELS ============ */
+  .seclabel{
+    margin:72px 0 20px;display:flex;align-items:center;gap:14px;
+    font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-dim);
+    text-transform:uppercase;letter-spacing:0.14em;
+  }
+  .seclabel .n{color:var(--accent)}
+  .seclabel .line{flex:1;height:1px;background:var(--rule)}
+
+  /* ============ TIMELINE RIBBON ============ */
+  .timeline{
+    position:relative;border:1px solid var(--rule);border-radius:4px;
+    background:linear-gradient(to bottom, #0f0f0e, #0a0a09);
+    padding:22px 22px 28px;
+  }
+  .tl-head{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px}
+  .tl-track{
+    position:relative;height:84px;
+    background:
+      linear-gradient(to right, var(--rule-2) 1px, transparent 1px) 0 0/calc(100%/40) 100%,
+      linear-gradient(to right, var(--rule) 1px, transparent 1px) 0 0/calc(100%/8) 100%;
+    border-top:1px solid var(--rule-2);border-bottom:1px solid var(--rule-2);
+  }
+  .tl-seg{
+    position:absolute;top:0;bottom:0;
+    border-left:1px solid var(--rule-2);
+    padding:10px 10px 0;
+    display:flex;flex-direction:column;gap:6px;
+    transition:background .18s;
+  }
+  .tl-seg:hover{background:rgba(232,199,103,0.08)}
+  .tl-seg .t{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--accent);letter-spacing:0.06em}
+  .tl-seg .ttl{font-size:11px;color:var(--ink);line-height:1.25;font-weight:500}
+  .tl-seg .bar{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--accent);opacity:.6}
+  .tl-seg:nth-child(odd) .bar{opacity:.85}
+  .tl-scale{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);margin-top:10px;letter-spacing:0.06em}
+
+  /* ============ SHOT PANELS ============ */
+  .shots{display:grid;grid-template-columns:1fr;gap:24px}
+  .shot{
+    display:grid;grid-template-columns:280px 1.15fr 0.95fr;gap:0;
+    border:1px solid var(--rule);border-radius:4px;overflow:hidden;
+    background:#0d0d0c;
+  }
+  .shot .scr{
+    background:var(--paper);color:var(--paper-ink);
+    aspect-ratio: 16/10;
+    position:relative;overflow:hidden;
+    border-right:1px solid var(--rule);
+  }
+  .shot .scr .frame-label{
+    position:absolute;top:8px;left:10px;
+    font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--paper-dim);
+    letter-spacing:0.12em;text-transform:uppercase;z-index:5;
+  }
+  .shot .meta-col{
+    padding:22px 22px;border-right:1px solid var(--rule);
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .shot .note-col{
+    padding:22px 22px;display:flex;flex-direction:column;gap:14px;background:#100f0d;
+  }
+  .tk{
+    display:flex;align-items:baseline;gap:14px;
+  }
+  .tk .num{
+    font-family:"Fraunces",serif;font-size:46px;line-height:1;font-weight:400;color:var(--ink);
+    letter-spacing:-0.03em;
+  }
+  .tk .code{
+    font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent);
+    text-transform:uppercase;letter-spacing:0.08em;
+  }
+  .tk .code .to{color:var(--ink-mute)}
+  .shot h3{margin:0;font-family:"Fraunces",serif;font-weight:500;font-size:22px;line-height:1.2;letter-spacing:-0.015em}
+  .shot .action{font-size:13.5px;line-height:1.55;color:var(--ink);margin:0}
+  .shot .action b{color:var(--accent);font-weight:500}
+  .kbd{display:inline-flex;align-items:center;gap:3px}
+  .kbd span{
+    display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10.5px;
+    background:#1e1d1a;border:1px solid var(--rule-2);border-bottom-width:2px;
+    border-radius:3px;padding:2px 6px;color:var(--ink);
+  }
+  .purpose{
+    border-top:1px dashed var(--rule-2);padding-top:12px;
+    font-family:"Fraunces",serif;font-style:italic;font-size:14.5px;line-height:1.45;color:var(--ink-dim);
+  }
+  .purpose::before{content:"“";color:var(--accent);margin-right:2px;font-size:20px;line-height:0;position:relative;top:2px}
+  .purpose::after{content:"”";color:var(--accent);margin-left:2px;font-size:20px;line-height:0;position:relative;top:2px}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-dim);border:1px solid var(--rule-2);padding:3px 7px;border-radius:999px}
+  .tag.hot{color:var(--hot);border-color:rgba(232,107,79,0.4)}
+  .tag.cool{color:var(--cool);border-color:rgba(111,168,196,0.4)}
+  .tag.acc{color:var(--accent);border-color:rgba(232,199,103,0.4)}
+  .dur{
+    font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);
+    display:flex;align-items:center;gap:8px;
+  }
+  .dur .bar{height:3px;background:var(--rule-2);flex:1;position:relative;overflow:hidden;border-radius:2px}
+  .dur .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);display:block}
+  /* ============ SIDEBARS (rules, avoid, shortcuts) ============ */
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:24px}
+  .panel{
+    border:1px solid var(--rule);border-radius:4px;padding:22px;background:var(--card);
+  }
+  .panel h4{
+    margin:0 0 14px;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-dim);
+    text-transform:uppercase;letter-spacing:0.12em;font-weight:500;
+    display:flex;align-items:center;gap:8px;
+  }
+  .panel h4 .pill{font-family:"Fraunces",serif;font-style:italic;color:var(--accent);font-size:12px;text-transform:none;letter-spacing:0}
+  .panel ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+  .panel li{font-size:13px;line-height:1.5;color:var(--ink);display:grid;grid-template-columns:24px 1fr;gap:8px}
+  .panel li .mk{color:var(--accent);font-family:"JetBrains Mono",monospace;font-size:11px}
+  .panel.avoid li .mk{color:var(--hot)}
+  .panel.avoid{border-color:rgba(232,107,79,0.25);background:linear-gradient(180deg, rgba(232,107,79,0.04), transparent 60%), var(--card)}
+  /* keyboard grid */
+  .keys{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .keyrow{display:flex;align-items:center;gap:10px;font-size:12.5px}
+  .keyrow .kbd{flex:0 0 auto}
+  .keyrow .lbl{color:var(--ink-dim);font-family:"JetBrains Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.06em}
+
+  /* ============ MOCK SCREEN INTERIORS ============ */
+  /* generic */
+  .app{position:absolute;inset:0;font-family:"Inter",sans-serif;font-size:8px;color:var(--paper-ink);display:flex}
+  .app .side{width:30%;background:#ebe4d0;border-right:1px solid var(--paper-rule);padding:8px 7px;display:flex;flex-direction:column;gap:6px}
+  .app .side .brand{font-family:"Fraunces",serif;font-size:11px;font-weight:600;letter-spacing:-0.02em;margin-bottom:4px}
+  .app .side .brand i{color:#a88a2a;font-style:italic}
+  .app .side .nav{display:grid;gap:3px}
+  .app .side .nav a{padding:3px 5px;border-radius:2px;color:var(--paper-dim);display:flex;align-items:center;gap:4px;font-size:7.5px}
+  .app .side .nav a.on{background:#1b1a17;color:var(--paper)}
+  .app .side .nav a .d{width:4px;height:4px;border-radius:1px;background:currentColor;opacity:.7}
+  .app .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .app .top{height:16px;border-bottom:1px solid var(--paper-rule);display:flex;align-items:center;padding:0 8px;gap:6px;background:#f7f2e3}
+  .app .top .crumb{font-family:"JetBrains Mono",monospace;font-size:7px;color:var(--paper-dim);letter-spacing:0.05em;text-transform:uppercase}
+  .app .top .spacer{flex:1}
+  .app .top .search{font-family:"JetBrains Mono",monospace;font-size:7px;color:var(--paper-dim);border:1px solid var(--paper-rule);padding:2px 6px;border-radius:2px;background:#fff}
+  .app .top .avatar{width:10px;height:10px;border-radius:999px;background:#1b1a17}
+  .app .body{flex:1;padding:8px;overflow:hidden;position:relative}
+
+  /* KPI dashboard — shot 1 */
+  .scr-01 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+  .scr-01 .k{border:1px solid var(--paper-rule);padding:5px 6px;border-radius:2px;background:#fff;min-height:32px;display:flex;flex-direction:column;gap:2px}
+  .scr-01 .k .lbl{font-family:"JetBrains Mono",monospace;font-size:6px;color:var(--paper-dim);text-transform:uppercase;letter-spacing:0.05em}
+  .scr-01 .k .v{font-family:"Fraunces",serif;font-size:13px;font-weight:500;letter-spacing:-0.02em}
+  .scr-01 .k .d{font-family:"JetBrains Mono",monospace;font-size:6px;color:var(--grn)}
+  .scr-01 .k .d.dn{color:var(--hot)}
+  .scr-01 .spark{height:8px;display:flex;align-items:flex-end;gap:1px;margin-top:2px}
+  .scr-01 .spark i{flex:1;background:#c8b37a;opacity:.7;border-radius:.5px}
+  .scr-01 .row2{display:grid;grid-template-columns:1.4fr 1fr;gap:6px;margin-top:6px;height:calc(100% - 50px)}
+  .scr-01 .chart{border:1px solid var(--paper-rule);background:#fff;padding:5px;border-radius:2px;position:relative;overflow:hidden}
+  .scr-01 .chart .ttl{font-family:"JetBrains Mono",monospace;font-size:6px;color:var(--paper-dim);text-transform:uppercase}
+  .scr-01 .chart svg{position:absolute;inset:12px 6px 6px;width:calc(100% - 12px);height:calc(100% - 18px)}
+  .scr-01 .ticker{border:1px solid var(--paper-rule);background:#fff;padding:5px;border-radius:2px;display:flex;flex-direction:column;gap:3px}
+  .scr-01 .ticker .t{font-family:"JetBrains Mono",monospace;font-size:6px;color:var(--paper-dim);text-transform:uppercase;margin-bottom:2px}
+  .scr-01 .ticker .e{font-size:7px;display:flex;gap:4px;align-items:baseline}
+  .scr-01 .ticker .e .tm{font-family:"JetBrains Mono",monospace;color:var(--paper-dim);font-size:6px}
+  .scr-01 .ticker .e .dt{width:4px;height:4px;border-radius:999px;background:var(--grn)}
+
+  /* hover KPI — shot 2 */
+  .scr-02 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;position:relative}
+  .scr-02 .k{border:1px solid var(--paper-rule);padding:5px 6px;border-radius:2px;background:#fff;min-height:32px;display:flex;flex-direction:column;gap:2px}
+  .scr-02 .k.hv{outline:2px solid var(--paper-ink);outline-offset:-1px;background:#fffbea;position:relative;z-index:2}
+  .scr-02 .k .lbl{font-family:"JetBrains Mono",monospace;font-size:6px;color:var(--paper-dim);text-transform:uppercase}
+  .scr-02 .k .v{font-family:"Fraunces",serif;font-size:13px;font-weight:500}
+  .scr-02 .cursor{position:absolute;top:18px;left:22%;width:8px;height:10px;z-index:5}
+  .scr-02 .cursor svg{width:100%;height:100%}
+  .scr-02 .tooltip{
+    position:absolute;left:8%;top:38%;width:46%;
+    background:#1b1a17;color:#f4f0e6;border-radius:3px;padding:6px 7px;
+    font-size:7px;line-height:1.3;z-index:4;
+    box-shadow:0 6px 20px rgba(0,0,0,0.2);
+  }
+  .scr-02 .tooltip b{display:block;font-family:"Fraunces",serif;font-weight:600;font-size:9px;margin-bottom:2px}
+  .scr-02 .tooltip .mini{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px;font-family:"JetBrains Mono",monospace;font-size:6px;color:#c8b37a}
+
+  /* Command palette — shot 3 */
+  .scr-03 .overlay{position:absolute;inset:0;background:rgba(27,26,23,0.35);backdrop-filter:blur(1px);display:flex;justify-content:center;padding-top:18%}
+  .scr-03 .palette{
+    width:66%;background:#fff;border:1px solid var(--paper-rule);border-radius:4px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.25);overflow:hidden;display:flex;flex-direction:column;
+  }
+  .scr-03 .palette .q{padding:6px 8px;border-bottom:1px solid var(--paper-rule);display:flex;align-items:center;gap:6px;font-size:9px}
+  .scr-03 .palette .q .caret{width:1px;height:9px;background:var(--paper-ink);animation:caret 1s step-end infinite}
+  @keyframes caret{50%{opacity:0}}
+  .scr-03 .palette .q .txt{font-family:"JetBrains Mono",monospace;font-size:8px}
+  .scr-03 .palette .q .k{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:6px;color:var(--paper-dim);border:1px solid var(--paper-rule);padding:1px 4px;border-radius:2px}
+  .scr-03 .palette .list{display:flex;flex-direction:column}
+  .scr-03 .palette .r{padding:5px 8px;border-bottom:1px solid #f0ead6;display:flex;align-items:center;gap:6px;font-size:7.5px}
+  .scr-03 .palette .r.on{background:#1b1a17;color:#f4f0e6;border-bottom-color:#1b1a17}
+  .scr-03 .palette .r .ic{width:10px;height:10px;background:#e8dcb5;border-radius:2px;display:inline-block}
+  .scr-03 .palette .r.on .ic{background:var(--accent)}
+  .scr-03 .palette .r .hint{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:6px;color:var(--paper-dim)}
+  .scr-03 .palette .r.on .hint{color:#c8b37a}
+
+  /* Clients list with hover card — shot 4 */
+  .scr-04 .col-l{display:grid;grid-template-columns:1fr 1fr;gap:0;height:100%;border:1px solid var(--paper-rule);border-radius:2px;overflow:hidden;background:#fff}
+  .scr-04 .list{border-right:1px solid var(--paper-rule);display:flex;flex-direction:column}
+  .scr-04 .list .hd{display:grid;grid-template-columns:1fr 40px 30px;padding:4px 6px;background:#f4efdf;font-family:"JetBrains Mono",monospace;font-size:6px;color:var(--paper-dim);text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--paper-rule)}
+  .scr-04 .list .r{display:grid;grid-template-columns:1fr 40px 30px;padding:5px 6px;border-bottom:1px solid #f0ead6;font-size:7.5px;align-items:center}
+  .scr-04 .list .r.hv{background:#fffbea}
+  .scr-04 .list .r .av{width:9px;height:9px;border-radius:999px;background:#c8b37a;display:inline-block;margin-right:4px;vertical-align:middle}
+  .scr-04 .list .r .sc{font-family:"JetBrains Mono",monospace;font-size:6px}
+  .scr-04 .list .r .st{width:5px;height:5px;border-radius:999px;background:var(--grn);display:inline-block}
+  .scr-04 .hover-card{
+    position:absolute;right:2%;top:24%;width:44%;
+    background:#fff;border:1px solid var(--paper-ink);border-radius:3px;padding:7px;
+    box-shadow:0 12px 28px rgba(0,0,0,0.18);z-index:5;display:flex;flex-direction:column;gap:5px;
+  }
+  .scr-04 .hover-card .hd{display:flex;gap:5px;align-items:center}
+  .scr-04 .hover-card .av{width:14px;height:14px;border-radius:999px;background:#1b1a17;color:var(--accent);font-family:"Fraunces",serif;font-size:8px;display:flex;align-items:center;justify-content:center;font-weight:600}
+  .scr-04 .hover-card .nm{font-family:"Fraunces",serif;font-size:9px;font-weight:600;letter-spacing:-0.01em}
+  .scr-04 .hover-card .sc{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:6px;background:var(--accent);color:#1b1a17;padding:1px 4px;border-radius:2px;font-weight:600}
+  .scr-04 .hover-card .ln{display:flex;justify-content:space-between;font-size:7px;color:var(--paper-dim)}
+  .scr-04 .hover-card .ln b{color:var(--paper-ink);font-weight:500;font-family:"JetBrains Mono",monospace;font-size:6.5px}
+
+  /* Detail panel — shot 5 */
+  .scr-05 .sheet{position:absolute;right:0;top:0;bottom:0;width:58%;background:#fff;border-left:1px solid var(--paper-ink);box-shadow:-8px 0 24px rgba(0,0,0,0.1);padding:8px;display:flex;flex-direction:column;gap:6px;z-index:3}
+  .scr-05 .sheet .hd{display:flex;gap:6px;align-items:center;padding-bottom:5px;border-bottom:1px solid var(--paper-rule)}
+  .scr-05 .sheet .av{width:18px;height:18px;border-radius:999px;background:#1b1a17;color:var(--accent);font-family:"Fraunces",serif;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:600}
+  .scr-05 .sheet .nm{font-family:"Fraunces",serif;font-size:11px;font-weight:600;letter-spacing:-0.01em}
+  .scr-05 .sheet .co{font-family:"JetBrains Mono",monospace;font-size:6.5px;color:var(--paper-dim);text-transform:uppercase;letter-spacing:0.05em}
+  .scr-05 .sheet .tabs{display:flex;gap:8px;font-family:"JetBrains Mono",monospace;font-size:6.5px;text-transform:uppercase;color:var(--paper-dim);letter-spacing:0.08em;border-bottom:1px solid var(--paper-rule);padding-bottom:4px}
+  .scr-05 .sheet .tabs .on{color:var(--paper-ink);border-bottom:1.5px solid var(--paper-ink);padding-bottom:3px;margin-bottom:-5px}
+  .scr-05 .sheet .tl{display:flex;flex-direction:column;gap:4px;padding-left:8px;border-left:1px dashed var(--paper-rule);margin-left:3px}
+  .scr-05 .sheet .tl .e{position:relative;font-size:7px;line-height:1.3}
+  .scr-05 .sheet .tl .e::before{content:"";position:absolute;left:-11px;top:3px;width:5px;height:5px;border-radius:999px;background:var(--accent);border:1px solid #1b1a17}
+  .scr-05 .sheet .tl .e .tm{font-family:"JetBrains Mono",monospace;font-size:6px;color:var(--paper-dim)}
+  .scr-05 .bg-list{opacity:.45}
+
+  /* Kanban — shot 6 */
+  .scr-06 .kb{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;height:100%}
+  .scr-06 .col{background:#f4efdf;border:1px solid var(--paper-rule);border-radius:2px;padding:4px;display:flex;flex-direction:column;gap:4px}
+  .scr-06 .col .hd{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:6px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper-dim)}
+  .scr-06 .col .hd b{color:var(--paper-ink)}
+  .scr-06 .card{background:#fff;border:1px solid var(--paper-rule);border-radius:2px;padding:4px;font-size:7px;display:flex;flex-direction:column;gap:2px}
+  .scr-06 .card .nm{font-weight:500}
+  .scr-06 .card .sub{font-family:"JetBrains Mono",monospace;font-size:6px;color:var(--paper-dim)}
+  .scr-06 .card.moving{box-shadow:0 6px 16px rgba(0,0,0,0.2);transform:rotate(-2deg) translateY(-3px);outline:1.5px solid var(--accent);z-index:4;position:relative}
+  .scr-06 .ghost{background:#e8dcb5;border:1px dashed var(--paper-ink);height:24px;border-radius:2px}
+  .scr-06 .arrow{
+    position:absolute;left:25%;top:48%;width:22%;height:2px;background:var(--paper-ink);
+  }
+  .scr-06 .arrow::after{content:"";position:absolute;right:-3px;top:-3px;width:0;height:0;border-left:6px solid var(--paper-ink);border-top:4px solid transparent;border-bottom:4px solid transparent}
+
+  /* Bookings conflict — shot 7 */
+  .scr-07 .form{background:#fff;border:1px solid var(--paper-rule);border-radius:2px;padding:8px;display:flex;flex-direction:column;gap:5px;height:100%}
+  .scr-07 .form .t{font-family:"Fraunces",serif;font-size:11px;font-weight:600}
+  .scr-07 .form .fld{display:flex;flex-direction:column;gap:1px}
+  .scr-07 .form .fld .lbl{font-family:"JetBrains Mono",monospace;font-size:6px;text-transform:uppercase;color:var(--paper-dim);letter-spacing:0.06em}
+  .scr-07 .form .fld .in{border:1px solid var(--paper-rule);border-radius:2px;padding:3px 4px;font-size:7.5px;background:#fafafa}
+  .scr-07 .row{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+  .scr-07 .conflict{
+    margin-top:auto;background:#fff1ec;border:1px solid var(--hot);border-radius:2px;
+    padding:4px 5px;display:flex;gap:5px;align-items:flex-start;
+    animation:flash 1.4s ease-in-out infinite;
+  }
+  @keyframes flash{0%,100%{box-shadow:0 0 0 0 rgba(232,107,79,0.0)}50%{box-shadow:0 0 0 3px rgba(232,107,79,0.18)}}
+  .scr-07 .conflict .warn{color:var(--hot);font-family:"Fraunces",serif;font-weight:700;font-size:10px}
+  .scr-07 .conflict .msg{font-size:7px;line-height:1.3;color:#7a2d1c}
+  .scr-07 .conflict .msg b{font-family:"JetBrains Mono",monospace;font-size:6.5px}
+  .scr-07 .btn{align-self:flex-end;background:#1b1a17;color:var(--paper);font-family:"JetBrains Mono",monospace;font-size:7px;padding:3px 6px;border-radius:2px;text-transform:uppercase;letter-spacing:0.06em}
+
+  /* Invoice — shot 8 */
+  .scr-08 .paper{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:64%;aspect-ratio:210/297;background:#fff;border:1px solid var(--paper-ink);
+    box-shadow:0 18px 32px rgba(0,0,0,0.2);padding:8px 8px 6px;display:flex;flex-direction:column;gap:4px;
+  }
+  .scr-08 .paper .hd{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--paper-rule);padding-bottom:4px}
+  .scr-08 .paper .hd .logo{font-family:"Fraunces",serif;font-weight:600;font-size:10px;letter-spacing:-0.02em}
+  .scr-08 .paper .hd .logo i{color:#a88a2a;font-style:italic}
+  .scr-08 .paper .hd .num{font-family:"JetBrains Mono",monospace;font-size:6.5px;text-align:right;color:var(--paper-dim)}
+  .scr-08 .paper .hd .num b{color:var(--paper-ink);font-size:8px;display:block}
+  .scr-08 .paper .to{font-size:7px;color:var(--paper-dim);line-height:1.35}
+  .scr-08 .paper .lines{display:flex;flex-direction:column;border-top:1px solid var(--paper-rule);margin-top:2px}
+  .scr-08 .paper .lines .r{display:grid;grid-template-columns:1.6fr 40px 40px;font-size:6.5px;padding:2px 0;border-bottom:1px dotted var(--paper-rule);gap:4px;font-family:"JetBrains Mono",monospace}
+  .scr-08 .paper .lines .r.h{color:var(--paper-dim);text-transform:uppercase;font-size:6px}
+  .scr-08 .paper .tot{margin-top:auto;display:flex;justify-content:space-between;border-top:1.5px solid var(--paper-ink);padding-top:3px;font-family:"Fraunces",serif;font-weight:600;font-size:10px}
+  .scr-08 .paper .tot .v{letter-spacing:-0.01em}
+  .scr-08 .print-chrome{
+    position:absolute;left:0;right:0;top:0;height:14px;background:#ddd7c4;border-bottom:1px solid var(--paper-rule);
+    display:flex;align-items:center;padding:0 6px;gap:5px;font-family:"JetBrains Mono",monospace;font-size:6px;color:var(--paper-dim);
+  }
+  .scr-08 .print-chrome .dots{display:flex;gap:3px}
+  .scr-08 .print-chrome .dots i{width:5px;height:5px;border-radius:999px;background:#b7aa82;display:inline-block}
+  .scr-08 .print-chrome .ttl{letter-spacing:0.06em;text-transform:uppercase}
+
+  /* Flow builder — shot 9 */
+  .scr-09 .canvas{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(27,26,23,0.15) 1px, transparent 1px) 0 0/8px 8px,
+      #faf6e8;
+  }
+  .scr-09 .node{
+    position:absolute;background:#fff;border:1px solid var(--paper-ink);border-radius:3px;
+    padding:3px 5px;font-size:6.5px;font-family:"JetBrains Mono",monospace;
+    text-transform:uppercase;letter-spacing:0.04em;
+    display:flex;align-items:center;gap:4px;
+    box-shadow:0 2px 0 0 var(--paper-ink);
+  }
+  .scr-09 .node .d{width:5px;height:5px;border-radius:1px;background:var(--accent)}
+  .scr-09 .node.trg .d{background:var(--cool)}
+  .scr-09 .node.out .d{background:var(--grn)}
+  .scr-09 svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .scr-09 .hd{position:absolute;top:6px;left:8px;font-family:"JetBrains Mono",monospace;font-size:7px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper-dim);z-index:2}
+  .scr-09 .hd b{color:var(--paper-ink)}
+
+  /* Back to dashboard — shot 10, uses shot 1 style but scrolled */
+  .scr-10 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;opacity:.65}
+  .scr-10 .k{border:1px solid var(--paper-rule);padding:5px 6px;border-radius:2px;background:#fff;min-height:32px;display:flex;flex-direction:column;gap:2px}
+  .scr-10 .k .lbl{font-family:"JetBrains Mono",monospace;font-size:6px;color:var(--paper-dim);text-transform:uppercase}
+  .scr-10 .k .v{font-family:"Fraunces",serif;font-size:13px;font-weight:500}
+  .scr-10 .end{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);font-family:"Fraunces",serif;font-style:italic;font-size:22px;color:var(--paper-ink);letter-spacing:-0.01em;text-align:center}
+  .scr-10 .end .sm{display:block;font-family:"JetBrains Mono",monospace;font-size:7px;font-style:normal;color:var(--paper-dim);text-transform:uppercase;letter-spacing:0.14em;margin-top:4px}
+
+  /* Pre-roll */
+  .checklist{
+    margin-top:24px;border:1px solid var(--rule);border-radius:4px;background:var(--card);
+    padding:22px 24px;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start;
+  }
+  .checklist .label{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:0.12em;padding-top:4px}
+  .checklist ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px 28px;counter-reset:pr}
+  .checklist li{counter-increment:pr;font-size:13px;line-height:1.5;display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:start}
+  .checklist li::before{content:counter(pr, decimal-leading-zero);font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent)}
+
+  /* footer */
+  footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);text-transform:uppercase;letter-spacing:0.1em}
+
+  /* bilingual helpers — hide inactive language (use !important to beat component selectors) */
+  [data-lang]{display:none !important}
+  html[lang="ro"] [data-lang="ro"]{display:revert !important}
+  html[lang="en"] [data-lang="en"]{display:revert !important}
+
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<header class="bar">
+  <div class="slate">
+    <div class="prod"><em>Alpis</em> Fusion CRM</div>
+    <div class="meta">
+      <div><span class="dot"></span><b data-lang="ro">STORYBOARD</b><b data-lang="en">STORYBOARD</b></div>
+      <div><span>CLIP 01</span></div>
+      <div><span data-lang="ro">Durată</span><span data-lang="en">Duration</span> <b>&nbsp;00:40</b></div>
+      <div><span data-lang="ro">Versiune</span><span data-lang="en">Version</span> <b>&nbsp;v1</b></div>
+    </div>
+  </div>
+  <div class="lang" role="tablist" aria-label="Language">
+    <button id="btn-ro" class="on" onclick="setLang('ro')">RO</button>
+    <button id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div>
+    <h1 data-lang="ro">Un demo de <em>patruzeci</em> de secunde.<br>Nimic scris pe dos.</h1>
+    <h1 data-lang="en">A <em>forty-second</em> demo.<br>Nothing left to chance.</h1>
+    <p class="lede" data-lang="ro">
+      Scop vizual: <strong>„Acest produs are profunzime.”</strong> Optsprezece module integrate,
+      command palette, flow builder, facturare completă — totul într-un singur ecran, fluid.
+      Acest document descrie fiecare cadru al înregistrării de 40s: timing, acțiune, scop, și ce
+      trebuie evitat. Recruiter-ul trebuie să „prindă” fiecare beat — deci ritm <strong>sub 3 acțiuni
+      pe secundă</strong>, pauze de <strong>0.5s</strong> după mișcări majore, și <strong>fără scroll rapid</strong>.
+    </p>
+    <p class="lede" data-lang="en">
+      Visual intent: <strong>“This product has depth.”</strong> Eighteen integrated modules, a
+      command palette, a flow builder, full invoicing — all fluid, inside a single screen.
+      This document maps every frame of the 40-second recording: timing, action, purpose, and what
+      to avoid. The viewer must catch each beat — so keep pace <strong>under 3 actions per second</strong>,
+      pause <strong>0.5s</strong> after major moves, and <strong>never fast-scroll</strong>.
+    </p>
+  </div>
+  <aside class="right">
+    <h4 data-lang="ro">URL înregistrare</h4>
+    <h4 data-lang="en">Recording URL</h4>
+    <code class="url">https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/</code>
+    <ul>
+      <li data-lang="ro"><span class="mk">AUD</span><span>Fără audio — mute complet. Nu adăuga surse.</span></li>
+      <li data-lang="en"><span class="mk">AUD</span><span>No audio — fully muted. Don't add sources.</span></li>
+      <li data-lang="ro"><span class="mk">FPS</span><span>Înregistrare 60fps, export 30fps pentru fluiditate.</span></li>
+      <li data-lang="en"><span class="mk">FPS</span><span>Record at 60fps, export 30fps for smoothness.</span></li>
+      <li data-lang="ro"><span class="mk">RES</span><span>1440 × 900 — fereastră, nu fullscreen.</span></li>
+      <li data-lang="en"><span class="mk">RES</span><span>1440 × 900 — windowed, not fullscreen.</span></li>
+      <li data-lang="ro"><span class="mk">TAKE</span><span>Refilmezi la ezitare. Nu edita — e mai rapid.</span></li>
+      <li data-lang="en"><span class="mk">TAKE</span><span>Re-shoot on hesitation. Don't edit — it's faster.</span></li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<div class="seclabel">
+  <span class="n">01</span>
+  <span data-lang="ro">Cronologie · patruzeci de secunde · zece cadre</span>
+  <span data-lang="en">Timeline · forty seconds · ten shots</span>
+  <span class="line"></span>
+  <span class="mono">00:00 → 00:40</span>
+</div>
+
+<div class="timeline">
+  <div class="tl-head">
+    <span data-lang="ro">Cadru</span><span data-lang="en">Shot</span>
+    <span data-lang="ro">Durată per beat</span><span data-lang="en">Duration per beat</span>
+  </div>
+  <div class="tl-track" id="tlTrack"></div>
+  <div class="tl-scale">
+    <span>00:00</span><span>00:05</span><span>00:10</span><span>00:15</span>
+    <span>00:20</span><span>00:25</span><span>00:30</span><span>00:35</span><span>00:40</span>
+  </div>
+</div>
+
+<!-- ============ SHOTS ============ -->
+<div class="seclabel">
+  <span class="n">02</span>
+  <span data-lang="ro">Cadru cu cadru</span>
+  <span data-lang="en">Shot by shot</span>
+  <span class="line"></span>
+  <span class="mono">10 SHOTS</span>
+</div>
+
+<div class="shots" id="shots"></div>
+
+<!-- ============ PRE-ROLL ============ -->
+<div class="seclabel">
+  <span class="n">03</span>
+  <span data-lang="ro">Pre-roll · înainte de REC</span>
+  <span data-lang="en">Pre-roll · before REC</span>
+  <span class="line"></span>
+</div>
+
+<div class="checklist">
+  <div class="label" data-lang="ro">CHECKLIST</div>
+  <div class="label" data-lang="en">CHECKLIST</div>
+  <ol data-lang="ro">
+    <li><span>Deschide URL-ul într-o fereastră clean (fără extensii vizibile, fără bookmarks bar).</span></li>
+    <li><span>Așteaptă hero screen-ul cu orbs animate să se încarce <em>complet</em>.</span></li>
+    <li><span>Dacă pornește tour-ul ghidat — <em>skip</em> sau oprește-l. Vrem dashboard-ul.</span></li>
+    <li><span>Generează date demo dacă aplicația pornește goală (nu filma gol).</span></li>
+    <li><span>Poziționează-te pe Dashboard cu KPI-uri vizibile.</span></li>
+    <li><span>Ascunde cursor până la primul cadru. Dezactivează notificări OS.</span></li>
+  </ol>
+  <ol data-lang="en">
+    <li><span>Open the URL in a clean window (no visible extensions, no bookmarks bar).</span></li>
+    <li><span>Wait for the hero screen with animated orbs to load <em>fully</em>.</span></li>
+    <li><span>If the guided tour starts — skip or dismiss it. We want the dashboard.</span></li>
+    <li><span>Seed demo data if the app launches empty (don't film an empty app).</span></li>
+    <li><span>Land on Dashboard with KPI cards visible.</span></li>
+    <li><span>Hide cursor until the first shot. Mute OS notifications.</span></li>
+  </ol>
+</div>
+
+<!-- ============ RULES + AVOID + KEYS ============ -->
+<div class="seclabel">
+  <span class="n">04</span>
+  <span data-lang="ro">Reguli de regie · de evitat · scurtături</span>
+  <span data-lang="en">Directing rules · to avoid · shortcuts</span>
+  <span class="line"></span>
+</div>
+
+<div class="grid-3">
+  <div class="panel">
+    <h4><span>RULES</span><span class="pill" data-lang="ro">regia</span><span class="pill" data-lang="en">direction</span></h4>
+    <ul data-lang="ro">
+      <li><span class="mk">01</span><span>Niciodată mai mult de <b>3 acțiuni / sec</b> — ochiul nu le prinde.</span></li>
+      <li><span class="mk">02</span><span>Pauză de <b>0.5s</b> după fiecare acțiune majoră.</span></li>
+      <li><span class="mk">03</span><span>Niciodată scroll rapid — <b>max. 200px/s</b>.</span></li>
+      <li><span class="mk">04</span><span>Nu închide modaluri imediat — stai <b>1–2s</b> pe ele.</span></li>
+      <li><span class="mk">05</span><span>Repetă înregistrarea la ezitare. <b>Refilmezi, nu editezi.</b></span></li>
+    </ul>
+    <ul data-lang="en">
+      <li><span class="mk">01</span><span>Never more than <b>3 actions / sec</b> — the eye won't catch them.</span></li>
+      <li><span class="mk">02</span><span><b>0.5s</b> pause after every major action.</span></li>
+      <li><span class="mk">03</span><span>No fast scrolling — <b>200px/s max</b>.</span></li>
+      <li><span class="mk">04</span><span>Don't dismiss modals instantly — dwell <b>1–2s</b>.</span></li>
+      <li><span class="mk">05</span><span>Re-shoot on hesitation. <b>Re-film, don't edit.</b></span></li>
+    </ul>
+  </div>
+
+  <div class="panel avoid">
+    <h4><span>AVOID</span><span class="pill" data-lang="ro">de evitat</span><span class="pill" data-lang="en">don't shoot</span></h4>
+    <ul data-lang="ro">
+      <li><span class="mk">×</span><span>Toggle dark/light — distrage atenția.</span></li>
+      <li><span class="mk">×</span><span>Settings, Export — plictisitor vizual.</span></li>
+      <li><span class="mk">×</span><span>Text lung tastat în formulare — pierzi secunde.</span></li>
+      <li><span class="mk">×</span><span>Mișcări inutile ale cursorului în pauze.</span></li>
+      <li><span class="mk">×</span><span>Zoom browser. Ferestre cu notificări. Chat apps.</span></li>
+    </ul>
+    <ul data-lang="en">
+      <li><span class="mk">×</span><span>Dark/light toggle — distracting.</span></li>
+      <li><span class="mk">×</span><span>Settings, Export — visually boring.</span></li>
+      <li><span class="mk">×</span><span>Long typed text — it burns seconds.</span></li>
+      <li><span class="mk">×</span><span>Idle cursor wiggling during pauses.</span></li>
+      <li><span class="mk">×</span><span>Browser zoom. Notification popovers. Chat apps.</span></li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h4><span>KEYS</span><span class="pill" data-lang="ro">scurtături</span><span class="pill" data-lang="en">shortcuts</span></h4>
+    <div class="keys">
+      <div class="keyrow"><span class="kbd"><span>⌘</span><span>K</span></span><span class="lbl" data-lang="ro">Command Palette</span><span class="lbl" data-lang="en">Command Palette</span></div>
+      <div class="keyrow"><span class="kbd"><span>P</span></span><span class="lbl" data-lang="ro">Pipeline</span><span class="lbl" data-lang="en">Pipeline</span></div>
+      <div class="keyrow"><span class="kbd"><span>B</span></span><span class="lbl" data-lang="ro">Bookings</span><span class="lbl" data-lang="en">Bookings</span></div>
+      <div class="keyrow"><span class="kbd"><span>A</span></span><span class="lbl" data-lang="ro">Automatizări</span><span class="lbl" data-lang="en">Automations</span></div>
+      <div class="keyrow"><span class="kbd"><span>C</span></span><span class="lbl" data-lang="ro">Clienți</span><span class="lbl" data-lang="en">Clients</span></div>
+      <div class="keyrow"><span class="kbd"><span>esc</span></span><span class="lbl" data-lang="ro">Închide panel</span><span class="lbl" data-lang="en">Close panel</span></div>
+      <div class="keyrow"><span class="kbd"><span>↵</span></span><span class="lbl" data-lang="ro">Confirmă</span><span class="lbl" data-lang="en">Confirm</span></div>
+      <div class="keyrow"><span class="kbd"><span>/</span></span><span class="lbl" data-lang="ro">Focus search</span><span class="lbl" data-lang="en">Focus search</span></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>Alpis Fusion CRM · Clip 01 · Storyboard v1</span>
+  <span data-lang="ro">Pregătit pentru înregistrare · 2026</span>
+  <span data-lang="en">Ready to record · 2026</span>
+</footer>
+
+<!-- ============ SCRIPT ============ -->
+<script>
+  // -------- data --------
+  const SHOTS = [
+    {
+      id: 1, start: 0, end: 4, dur: 4,
+      titleRO: "Prima respirație a produsului",
+      titleEN: "The product's first breath",
+      actionRO: `Stai pe <b>Dashboard</b>. Nu faci nimic. KPI cards, sparkline și <b>live ticker</b> se mișcă singure. Cursorul stă afară din cadru.`,
+      actionEN: `Sit on the <b>Dashboard</b>. Do nothing. KPI cards, sparkline and the <b>live ticker</b> animate on their own. Cursor parked off-frame.`,
+      purposeRO: "Prima impresie: produsul e viu.",
+      purposeEN: "First impression: the product breathes.",
+      tags: [["mono","idle"],["acc","dashboard"]],
+      frameLabel: "01 · DASHBOARD", mock: "01"
+    },
+    {
+      id: 2, start: 4, end: 6, dur: 2,
+      titleRO: "Hover pe un KPI",
+      titleEN: "Hover a KPI",
+      actionRO: `Mișcă cursorul lent spre <b>KPI „Venituri Q2”</b>. La <b>hover</b> apare un tooltip cu breakdown pe produse. Stai 1.5s.`,
+      actionEN: `Move cursor slowly onto <b>KPI "Revenue Q2"</b>. On <b>hover</b>, a tooltip pops with product-level breakdown. Dwell 1.5s.`,
+      purposeRO: "Interactiv, nu static.",
+      purposeEN: "Interactive, not static.",
+      tags: [["cool","hover"],["acc","tooltip"]],
+      frameLabel: "02 · HOVER", mock: "02"
+    },
+    {
+      id: 3, start: 6, end: 10, dur: 4,
+      titleRO: "Command palette",
+      titleEN: "Command palette",
+      actionRO: `Apasă <span class="kbd"><span>⌘</span><span>K</span></span>. Se deschide paleta. Tastează încet <b>„clien”</b>. Apar rezultate. <span class="kbd"><span>↵</span></span> pe <b>Clienți</b>.`,
+      actionEN: `Press <span class="kbd"><span>⌘</span><span>K</span></span>. The palette opens. Type slowly <b>"clien"</b>. Results appear. <span class="kbd"><span>↵</span></span> on <b>Clients</b>.`,
+      purposeRO: "Power-user features.",
+      purposeEN: "Power-user features.",
+      tags: [["acc","keyboard"],["mono","⌘K"]],
+      frameLabel: "03 · ⌘K", mock: "03"
+    },
+    {
+      id: 4, start: 10, end: 14, dur: 4,
+      titleRO: "Hover preview pe un client",
+      titleEN: "Hover preview on a client",
+      actionRO: `Ești pe lista <b>Clienți</b>. Hover pe <b>„Maria Popescu”</b>. Apare <b>hover card</b> cu scoring și programări.`,
+      actionEN: `On the <b>Clients</b> list. Hover <b>"Maria Popescu"</b>. A <b>hover card</b> shows scoring and upcoming bookings.`,
+      purposeRO: "UX atent la detalii.",
+      purposeEN: "Detail-oriented UX.",
+      tags: [["cool","hover"],["acc","scoring"]],
+      frameLabel: "04 · CLIENTS", mock: "04"
+    },
+    {
+      id: 5, start: 14, end: 18, dur: 4,
+      titleRO: "Detail panel lateral",
+      titleEN: "Side detail panel",
+      actionRO: `Click pe client → <b>panel lateral</b> cu timeline, deals, mesaje. <b>Stai 2s</b> — lasă-l să se citească.`,
+      actionEN: `Click the client → <b>side panel</b> with timeline, deals, messages. <b>Dwell 2s</b> — let it read.`,
+      purposeRO: "Structură bogată de date.",
+      purposeEN: "Rich data structure.",
+      tags: [["mono","dwell 2s"],["acc","panel"]],
+      frameLabel: "05 · DETAIL", mock: "05"
+    },
+    {
+      id: 6, start: 18, end: 20, dur: 2,
+      titleRO: "Tastatură fluidă",
+      titleEN: "Fluid keyboard",
+      actionRO: `<span class="kbd"><span>esc</span></span> închide panel-ul. <span class="kbd"><span>P</span></span> → <b>Pipeline</b>. Fără mouse.`,
+      actionEN: `<span class="kbd"><span>esc</span></span> closes panel. <span class="kbd"><span>P</span></span> → <b>Pipeline</b>. No mouse.`,
+      purposeRO: "Navigare keyboard impecabilă.",
+      purposeEN: "Flawless keyboard nav.",
+      tags: [["acc","keyboard"]],
+      frameLabel: "06 · KEYS", mock: "06"
+    },
+    {
+      id: 7, start: 20, end: 26, dur: 6,
+      titleRO: "Drag pe Kanban",
+      titleEN: "Drag on the Kanban",
+      actionRO: `Ești pe <b>Kanban pipeline</b>. <b>Drag</b> un deal: <b>Lead → Contacted</b>. Stai 1s pe animație.`,
+      actionEN: `On the <b>Kanban pipeline</b>. <b>Drag</b> a deal: <b>Lead → Contacted</b>. Hold 1s on the drop animation.`,
+      purposeRO: "Funcționalitate CRM de bază.",
+      purposeEN: "Core CRM functionality.",
+      tags: [["acc","drag"],["cool","pipeline"]],
+      frameLabel: "07 · KANBAN", mock: "06"
+    },
+    {
+      id: 8, start: 26, end: 30, dur: 4,
+      titleRO: "Booking cu conflict",
+      titleEN: "Booking with conflict",
+      actionRO: `<span class="kbd"><span>B</span></span> → <b>Bookings</b>. Click „Creează”. Completezi scurt. Apare <b>⚠ badge animat</b> — conflict de timp.`,
+      actionEN: `<span class="kbd"><span>B</span></span> → <b>Bookings</b>. Click "Create". Quick fill. An <b>animated ⚠ badge</b> flags a time conflict.`,
+      purposeRO: "Detecția conflictelor — diferențiator.",
+      purposeEN: "Conflict detection — differentiator.",
+      tags: [["hot","conflict"],["acc","badge"]],
+      frameLabel: "08 · BOOKING", mock: "07"
+    },
+    {
+      id: 9, start: 30, end: 34, dur: 4,
+      titleRO: "Factură end-to-end",
+      titleEN: "End-to-end invoice",
+      actionRO: `Click buton <b>⊡</b> pe booking → factura se generează. <b>„Print Invoice PDF”</b> → fereastră printabilă. Închizi.`,
+      actionEN: `Click the <b>⊡</b> button on the booking → invoice generates. <b>"Print Invoice PDF"</b> → printable view. Close it.`,
+      purposeRO: "Flow complet, cap-coadă.",
+      purposeEN: "Full end-to-end flow.",
+      tags: [["acc","invoice"],["mono","print"]],
+      frameLabel: "09 · INVOICE", mock: "08"
+    },
+    {
+      id: 10, start: 34, end: 38, dur: 4,
+      titleRO: "Flow builder vizual",
+      titleEN: "Visual flow builder",
+      actionRO: `<span class="kbd"><span>A</span></span> → <b>Automatizări</b>. Vezi flow-ul: <b>Client → Email → Booking → Reminder → Factură</b>. Stai 2s.`,
+      actionEN: `<span class="kbd"><span>A</span></span> → <b>Automations</b>. See the flow: <b>Client → Email → Booking → Reminder → Invoice</b>. Dwell 2s.`,
+      purposeRO: "Complexitate bine gândită.",
+      purposeEN: "Product complexity done right.",
+      tags: [["acc","automation"],["cool","flow"]],
+      frameLabel: "10 · FLOW", mock: "09"
+    },
+    {
+      id: 11, start: 38, end: 40, dur: 2,
+      titleRO: "Revenire pe Dashboard",
+      titleEN: "Return to Dashboard",
+      actionRO: `Scroll <b>lent</b> înapoi pe Dashboard (<b>≤ 200px/s</b>). Ultimul cadru: KPI-uri din start. Fade out la 40:00.`,
+      actionEN: `Scroll <b>slowly</b> back to Dashboard (<b>≤ 200px/s</b>). Last frame: opening KPIs. Fade out at 40:00.`,
+      purposeRO: "Ciclu complet — revenim la început.",
+      purposeEN: "Full circle — back to the start.",
+      tags: [["acc","loop"],["mono","fade"]],
+      frameLabel: "11 · LOOP", mock: "10"
+    }
+  ];
+
+  // -------- timeline build --------
+  (function(){
+    const track = document.getElementById('tlTrack');
+    const total = 40;
+    SHOTS.forEach((s, i)=>{
+      const seg = document.createElement('div');
+      seg.className = 'tl-seg';
+      seg.style.left = (s.start/total*100)+'%';
+      seg.style.width = ((s.end-s.start)/total*100)+'%';
+      seg.innerHTML = `
+        <span class="t">${fmt(s.start)}</span>
+        <span class="ttl" data-lang="ro">${s.titleRO}</span>
+        <span class="ttl" data-lang="en">${s.titleEN}</span>
+        <span class="bar"></span>`;
+      track.appendChild(seg);
+    });
+  })();
+
+  // -------- shots build --------
+  (function(){
+    const root = document.getElementById('shots');
+    SHOTS.forEach((s, i)=>{
+      const card = document.createElement('section');
+      card.className = 'shot';
+      card.innerHTML = `
+        <div class="scr scr-${s.mock}">
+          <span class="frame-label">${s.frameLabel}</span>
+          ${mockMarkup(s.mock)}
+        </div>
+        <div class="meta-col">
+          <div class="tk">
+            <div class="num">${String(s.id).padStart(2,'0')}</div>
+            <div class="code">${fmt(s.start)}<span class="to"> → </span>${fmt(s.end)} · ${s.dur}s</div>
+          </div>
+          <h3 data-lang="ro">${s.titleRO}</h3>
+          <h3 data-lang="en">${s.titleEN}</h3>
+          <p class="action" data-lang="ro">${s.actionRO}</p>
+          <p class="action" data-lang="en">${s.actionEN}</p>
+          <div class="dur"><span>0s</span><span class="bar"><i style="width:${s.dur/6*100}%"></i></span><span>${s.dur}s</span></div>
+        </div>
+        <div class="note-col">
+          <p class="purpose" data-lang="ro">${s.purposeRO}</p>
+          <p class="purpose" data-lang="en">${s.purposeEN}</p>
+          <div class="tags">
+            ${s.tags.map(t=>`<span class="tag ${t[0]}">${t[1]}</span>`).join('')}
+          </div>
+          <div style="margin-top:auto;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-mute);text-transform:uppercase;letter-spacing:0.08em">
+            <span data-lang="ro">Take notes</span><span data-lang="en">Take notes</span>
+            <div style="border:1px dashed var(--rule-2);border-radius:3px;height:44px;margin-top:6px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 14px,var(--rule-2) 14px,var(--rule-2) 15px)"></div>
+          </div>
+        </div>
+      `;
+      root.appendChild(card);
+    });
+  })();
+
+  function fmt(s){
+    const m = Math.floor(s/60), sec = Math.floor(s%60);
+    return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+  }
+
+  // -------- language toggle --------
+  function setLang(l){
+    document.documentElement.lang = l;
+    document.getElementById('btn-ro').classList.toggle('on', l==='ro');
+    document.getElementById('btn-en').classList.toggle('on', l==='en');
+    try { localStorage.setItem('alpis_storyboard_lang', l); } catch(e){}
+  }
+  try {
+    const saved = localStorage.getItem('alpis_storyboard_lang');
+    if (saved) setLang(saved);
+  } catch(e){}
+
+  // -------- mock markup --------
+  function mockMarkup(id){
+    const sideNav = `
+      <div class="side">
+        <div class="brand"><i>Alpis</i> Fusion</div>
+        <div class="nav">
+          <a${id==='01'||id==='02'||id==='10' ? ' class="on"' : ''}><span class="d"></span>Dashboard</a>
+          <a${id==='03'||id==='04' ? ' class="on"' : ''}><span class="d"></span>Clienți</a>
+          <a${id==='06' ? ' class="on"' : ''}><span class="d"></span>Pipeline</a>
+          <a${id==='07' ? ' class="on"' : ''}><span class="d"></span>Bookings</a>
+          <a${id==='08' ? ' class="on"' : ''}><span class="d"></span>Facturare</a>
+          <a${id==='09' ? ' class="on"' : ''}><span class="d"></span>Automatizări</a>
+          <a><span class="d"></span>Rapoarte</a>
+          <a><span class="d"></span>Setări</a>
+        </div>
+      </div>`;
+
+    const topBar = (crumb) => `
+      <div class="top">
+        <div class="crumb">${crumb}</div>
+        <div class="spacer"></div>
+        <div class="search">⌘K  Search…</div>
+        <div class="avatar"></div>
+      </div>`;
+
+    if (id === '01') {
+      return `
+        <div class="app">
+          ${sideNav}
+          <div class="main">
+            ${topBar('Dashboard / Q2 2026')}
+            <div class="body">
+              <div class="kpis">
+                ${kpi('Venit Q2','€284.5k','+12.4%','')}
+                ${kpi('Deals activ','47','+3',' ')}
+                ${kpi('Rata conv.','23.8%','+1.2%','')}
+                ${kpi('Booking/zi','18','−2','dn')}
+              </div>
+              <div class="row2">
+                <div class="chart">
+                  <div class="ttl">Revenue · 30d</div>
+                  ${lineChart()}
+                </div>
+                <div class="ticker">
+                  <div class="t">Live activity</div>
+                  <div class="e"><span class="dt"></span><span class="tm">11:02</span>Deal #482 won · €12.4k</div>
+                  <div class="e"><span class="dt"></span><span class="tm">10:58</span>Booking created · Popescu</div>
+                  <div class="e"><span class="dt"></span><span class="tm">10:51</span>Invoice sent · #INV-2041</div>
+                  <div class="e"><span class="dt"></span><span class="tm">10:47</span>Lead added · A. Dumitru</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+    if (id === '02') {
+      return `
+        <div class="app">
+          ${sideNav}
+          <div class="main">
+            ${topBar('Dashboard / Q2 2026')}
+            <div class="body">
+              <div class="kpis">
+                <div class="k hv">
+                  <span class="lbl">Venit Q2</span>
+                  <span class="v">€284.5k</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:6px;color:var(--grn)">+12.4%</span>
+                </div>
+                ${kpi('Deals activ','47','+3','')}
+                ${kpi('Rata conv.','23.8%','+1.2%','')}
+                ${kpi('Booking/zi','18','−2','dn')}
+              </div>
+              <div class="cursor">
+                <svg viewBox="0 0 12 14"><path d="M1 1 L1 11 L4 8 L7 13 L9 12 L6 7 L10 7 Z" fill="#1b1a17" stroke="#f4f0e6" stroke-width="0.5"/></svg>
+              </div>
+              <div class="tooltip">
+                <b>Venit Q2 — €284.5k</b>
+                <span>breakdown pe produse</span>
+                <div class="mini">
+                  <span>Fusion Pro</span><span style="text-align:right">€182k</span>
+                  <span>Fusion Lite</span><span style="text-align:right">€72k</span>
+                  <span>Add-ons</span><span style="text-align:right">€30k</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+    if (id === '03') {
+      return `
+        <div class="app">
+          ${sideNav}
+          <div class="main">
+            ${topBar('Dashboard / ⌘K')}
+            <div class="body" style="filter:brightness(.9)">
+              <div class="kpis" style="opacity:.5">
+                ${kpi('Venit Q2','€284.5k','+12.4%','')}
+                ${kpi('Deals','47','+3','')}
+                ${kpi('Conv.','23.8%','+1.2%','')}
+                ${kpi('Booking','18','−2','dn')}
+              </div>
+              <div class="overlay">
+                <div class="palette">
+                  <div class="q">
+                    <span class="txt">clien</span><span class="caret"></span>
+                    <span class="k">⌘K</span>
+                  </div>
+                  <div class="list">
+                    <div class="r on"><span class="ic"></span><span>Go to <b>Clienți</b></span><span class="hint">↵ enter</span></div>
+                    <div class="r"><span class="ic"></span><span>Creează <b>client</b> nou</span><span class="hint">⌘N</span></div>
+                    <div class="r"><span class="ic"></span><span>Filtru: <b>clienți</b> inactivi</span><span class="hint">F</span></div>
+                    <div class="r"><span class="ic"></span><span>Export: <b>clienți</b> .csv</span><span class="hint">⌘E</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+    if (id === '04') {
+      return `
+        <div class="app">
+          ${sideNav}
+          <div class="main">
+            ${topBar('Clienți · 1 247 înreg.')}
+            <div class="body">
+              <div class="col-l">
+                <div class="list">
+                  <div class="hd"><span>Nume</span><span>Scor</span><span>St.</span></div>
+                  <div class="r"><span><span class="av"></span>A. Dumitru</span><span class="sc">82</span><span><span class="st"></span></span></div>
+                  <div class="r hv"><span><span class="av"></span>Maria Popescu</span><span class="sc">94</span><span><span class="st"></span></span></div>
+                  <div class="r"><span><span class="av"></span>I. Stan</span><span class="sc">61</span><span><span class="st" style="background:#d6a84e"></span></span></div>
+                  <div class="r"><span><span class="av"></span>C. Ilie</span><span class="sc">44</span><span><span class="st" style="background:#d6a84e"></span></span></div>
+                  <div class="r"><span><span class="av"></span>R. Enache</span><span class="sc">78</span><span><span class="st"></span></span></div>
+                  <div class="r"><span><span class="av"></span>V. Munteanu</span><span class="sc">52</span><span><span class="st" style="background:#d6a84e"></span></span></div>
+                  <div class="r"><span><span class="av"></span>L. Georgescu</span><span class="sc">88</span><span><span class="st"></span></span></div>
+                </div>
+                <div class="list" style="opacity:.5">
+                  <div class="hd"><span>Preview</span><span></span><span></span></div>
+                  <div class="r"><span style="color:var(--paper-dim)">Selectează un client…</span><span></span><span></span></div>
+                </div>
+              </div>
+              <div class="hover-card">
+                <div class="hd">
+                  <div class="av">MP</div>
+                  <div class="nm">Maria Popescu</div>
+                  <div class="sc">94</div>
+                </div>
+                <div class="ln"><span>Ultimă interacțiune</span><b>Azi · 09:41</b></div>
+                <div class="ln"><span>Programări viitoare</span><b>3 · next Vi</b></div>
+                <div class="ln"><span>Deal pipeline</span><b>€18.2k · Negotiation</b></div>
+                <div class="ln"><span>NPS</span><b>9 / 10</b></div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+    if (id === '05') {
+      return `
+        <div class="app">
+          ${sideNav}
+          <div class="main">
+            ${topBar('Clienți / Maria Popescu')}
+            <div class="body">
+              <div class="bg-list">
+                <div class="col-l">
+                  <div class="list">
+                    <div class="hd"><span>Nume</span><span>Scor</span><span>St.</span></div>
+                    <div class="r"><span><span class="av"></span>A. Dumitru</span><span class="sc">82</span><span><span class="st"></span></span></div>
+                    <div class="r"><span><span class="av"></span>Maria Popescu</span><span class="sc">94</span><span><span class="st"></span></span></div>
+                    <div class="r"><span><span class="av"></span>I. Stan</span><span class="sc">61</span><span><span class="st"></span></span></div>
+                  </div>
+                  <div class="list"></div>
+                </div>
+              </div>
+              <div class="sheet">
+                <div class="hd">
+                  <div class="av">MP</div>
+                  <div>
+                    <div class="nm">Maria Popescu</div>
+                    <div class="co">Popescu Retail SRL · Cluj</div>
+                  </div>
+                </div>
+                <div class="tabs"><span class="on">Timeline</span><span>Deals</span><span>Mesaje</span><span>Docs</span></div>
+                <div class="tl">
+                  <div class="e"><span class="tm">azi · 09:41</span><br>Email deschis: „Ofertă Q2”</div>
+                  <div class="e"><span class="tm">ieri · 16:02</span><br>Booking creat · Consult. Vi 14:00</div>
+                  <div class="e"><span class="tm">Lu · 11:15</span><br>Deal avansat → Negotiation</div>
+                  <div class="e"><span class="tm">sâm. trecut</span><br>NPS 9 / 10 — „răspuns rapid.”</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+    if (id === '06') {
+      return `
+        <div class="app">
+          ${sideNav}
+          <div class="main">
+            ${topBar('Pipeline / Q2')}
+            <div class="body">
+              <div class="kb">
+                <div class="col">
+                  <div class="hd"><b>Lead</b><span>12</span></div>
+                  <div class="card"><span class="nm">Vodamar SRL</span><span class="sub">€4.2k · A.D.</span></div>
+                  <div class="ghost"></div>
+                  <div class="card"><span class="nm">NordLogic</span><span class="sub">€2.1k · M.P.</span></div>
+                </div>
+                <div class="col">
+                  <div class="hd"><b>Contacted</b><span>8</span></div>
+                  <div class="card moving"><span class="nm">Vodamar SRL</span><span class="sub">€4.2k · Lead → Cont.</span></div>
+                  <div class="card"><span class="nm">Delta Farm</span><span class="sub">€7.6k · L.G.</span></div>
+                  <div class="card"><span class="nm">Altis</span><span class="sub">€3.0k · I.S.</span></div>
+                </div>
+                <div class="col">
+                  <div class="hd"><b>Negotiation</b><span>5</span></div>
+                  <div class="card"><span class="nm">Popescu Retail</span><span class="sub">€18.2k · M.P.</span></div>
+                  <div class="card"><span class="nm">Munteanu &amp; Co</span><span class="sub">€9.8k · V.M.</span></div>
+                </div>
+                <div class="col">
+                  <div class="hd"><b>Won</b><span>14</span></div>
+                  <div class="card"><span class="nm">Enache Imp.</span><span class="sub">€12.4k · R.E.</span></div>
+                  <div class="card"><span class="nm">Ilie Tehnic</span><span class="sub">€5.1k · C.I.</span></div>
+                </div>
+              </div>
+              <div class="arrow"></div>
+            </div>
+          </div>
+        </div>`;
+    }
+    if (id === '07') {
+      return `
+        <div class="app">
+          ${sideNav}
+          <div class="main">
+            ${topBar('Bookings / Nou')}
+            <div class="body">
+              <div class="form">
+                <div class="t">Creează booking</div>
+                <div class="fld"><span class="lbl">Client</span><span class="in">Maria Popescu</span></div>
+                <div class="row">
+                  <div class="fld"><span class="lbl">Dată</span><span class="in">Vi · 24.04.2026</span></div>
+                  <div class="fld"><span class="lbl">Oră</span><span class="in">14:00 → 15:00</span></div>
+                </div>
+                <div class="fld"><span class="lbl">Responsabil</span><span class="in">A. Dumitru</span></div>
+                <div class="conflict">
+                  <span class="warn">⚠</span>
+                  <div class="msg">
+                    <b>CONFLICT DE TIMP</b><br>
+                    A. Dumitru are deja <b>Consult. Stan</b> la 14:30 – 15:30.<br>
+                    Sugestie: 15:45 sau altă persoană.
+                  </div>
+                </div>
+                <div class="btn">Sugerează slot ↑</div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+    if (id === '08') {
+      return `
+        <div class="app">
+          ${sideNav}
+          <div class="main">
+            ${topBar('Facturare / Print preview')}
+            <div class="body" style="background:#cdc6b0">
+              <div class="print-chrome">
+                <div class="dots"><i></i><i></i><i></i></div>
+                <span class="ttl">Print preview · INV-2042.pdf</span>
+              </div>
+              <div class="paper">
+                <div class="hd">
+                  <div class="logo"><i>Alpis</i> Fusion</div>
+                  <div class="num"><span>Factură</span><b>INV-2042</b><span>22.04.2026</span></div>
+                </div>
+                <div class="to">
+                  Popescu Retail SRL · Cluj-Napoca<br>
+                  CUI RO 12345678 · J12/456/2019
+                </div>
+                <div class="lines">
+                  <div class="r h"><span>Descriere</span><span>Cant.</span><span>Total</span></div>
+                  <div class="r"><span>Consultanță Vi 14:00</span><span>1</span><span>€180</span></div>
+                  <div class="r"><span>Fusion Pro · lună</span><span>1</span><span>€49</span></div>
+                  <div class="r"><span>Add-on Reporting</span><span>1</span><span>€19</span></div>
+                  <div class="r"><span>TVA 19%</span><span></span><span>€47.12</span></div>
+                </div>
+                <div class="tot"><span>Total</span><span class="v">€295.12</span></div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+    if (id === '09') {
+      return `
+        <div class="app">
+          ${sideNav}
+          <div class="main">
+            ${topBar('Automatizări / Flow #4')}
+            <div class="body" style="padding:0">
+              <div class="canvas">
+                <div class="hd"><span>Flow:</span> <b>Client nou → Facturare</b></div>
+                <svg class="wires" viewBox="0 0 400 200" preserveAspectRatio="none">
+                  <path d="M 42 60 C 90 60, 90 110, 130 110" fill="none" stroke="#1b1a17" stroke-width="1"/>
+                  <path d="M 200 110 C 240 110, 240 60, 285 60" fill="none" stroke="#1b1a17" stroke-width="1"/>
+                  <path d="M 355 60 C 385 60, 385 110, 355 110" fill="none" stroke="#1b1a17" stroke-width="1" stroke-dasharray="3 2"/>
+                  <path d="M 285 110 C 245 110, 245 155, 200 155" fill="none" stroke="#1b1a17" stroke-width="1"/>
+                  <path d="M 130 155 C 90 155, 90 110, 50 110" fill="none" stroke="#1b1a17" stroke-width="1" stroke-dasharray="3 2"/>
+                </svg>
+                <div class="node trg" style="left:4%;top:26%"><span class="d"></span>Client nou</div>
+                <div class="node" style="left:30%;top:50%"><span class="d"></span>Email welcome</div>
+                <div class="node" style="left:65%;top:26%"><span class="d"></span>Booking</div>
+                <div class="node" style="left:80%;top:50%"><span class="d"></span>Reminder 24h</div>
+                <div class="node out" style="left:30%;top:72%"><span class="d"></span>Factură auto</div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+    if (id === '10') {
+      return `
+        <div class="app">
+          ${sideNav}
+          <div class="main">
+            ${topBar('Dashboard / loop')}
+            <div class="body">
+              <div class="kpis">
+                ${kpi('Venit Q2','€284.5k','+12.4%','')}
+                ${kpi('Deals activ','47','+3','')}
+                ${kpi('Rata conv.','23.8%','+1.2%','')}
+                ${kpi('Booking/zi','18','−2','dn')}
+              </div>
+              <div class="end">fade out.<span class="sm">00:40 · cut</span></div>
+            </div>
+          </div>
+        </div>`;
+    }
+    return '';
+  }
+
+  function kpi(lbl,v,d,dn){
+    return `<div class="k">
+      <span class="lbl">${lbl}</span>
+      <span class="v">${v}</span>
+      <span class="d ${dn}">${d}</span>
+      <span class="spark">${Array.from({length:18},()=>`<i style="height:${20+Math.random()*80}%"></i>`).join('')}</span>
+    </div>`;
+  }
+
+  function lineChart(){
+    let pts = [];
+    let y = 60;
+    for(let i=0;i<=30;i++){
+      y += (Math.random()-0.35)*8;
+      y = Math.max(18, Math.min(90, y));
+      pts.push([i*(100/30), 100-y]);
+    }
+    const d = pts.map((p,i)=> (i===0?'M':'L')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+    const area = d + ` L 100 100 L 0 100 Z`;
+    return `<svg viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path d="${area}" fill="#e8dcb5" opacity="0.55"/>
+      <path d="${d}" fill="none" stroke="#1b1a17" stroke-width="1" vector-effect="non-scaling-stroke"/>
+    </svg>`;
+  }
+</script>
+</body>
+</html>
