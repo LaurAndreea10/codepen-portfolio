@@ -6,6 +6,9 @@
 <title>Laura Andreea — Front-end CRM & Dashboard Developer</title>
 <meta name="description" content="Portofoliu Laura Andreea: CRM, dashboard-uri și Marketing-Tech tools. Intro cinematic urmat de homepage-ul real." />
 <meta name="theme-color" content="#04080f" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="shortcut icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="apple-touch-icon" href="favicon.svg" />
 <style>
   :root{--bg:#04080f;--fg:#f1f4fa;--accent:#6aa6ff;--line:rgba(255,255,255,.14);--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
   *{box-sizing:border-box}
@@ -184,6 +187,9 @@
   }
 
   function patchPortfolioHtml(html){
+    if(!/<link[^>]+rel=["'](?:shortcut )?icon/i.test(html)){
+      html = html.replace('</head>', '<link rel="icon" type="image/svg+xml" href="favicon.svg" />\n<link rel="shortcut icon" type="image/svg+xml" href="favicon.svg" />\n</head>');
+    }
     html = html.replace('</head>', nowPatchCss() + '</head>');
     var nowBlock = nowSectionHtml() + '\n\n    <div class="section-divider"></div>\n\n';
     var replaced = false;
