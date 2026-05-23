@@ -89,6 +89,57 @@
 
   <link rel="preload" href="style.css" as="style" />
   <link rel="stylesheet" href="style.css" />
+  <!-- Intro overlay — synchronous early-exit (no flicker on return visits) -->
+  <script>
+    try {
+      if (sessionStorage.getItem('la_intro_seen')) {
+        document.documentElement.style.setProperty('--intro-display', 'none');
+      }
+    } catch(e) {}
+  </script>
+
+  <!-- Intro overlay — critical CSS (prevents FOUC) -->
+  <style>
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #04080f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #intro-overlay.intro-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    #intro-svg {
+      width: 100%;
+      height: 100%;
+      max-width: 100vw;
+      max-height: 100vh;
+    }
+    #ir1 { animation: intro-ring-pulse 2s ease-in-out infinite alternate; }
+    #ir2 { animation: intro-ring-pulse 2s ease-in-out infinite alternate 0.15s; }
+    #ir3 { animation: intro-ring-pulse 2s ease-in-out infinite alternate 0.3s; }
+    @keyframes intro-ring-pulse {
+      from { opacity: 0.5; }
+      to   { opacity: 1; }
+    }
+    #imonogram { opacity: 0; animation: intro-fade-in 0.8s ease 0.3s forwards; }
+    #itagline  { opacity: 0; animation: intro-fade-in 0.8s ease 1.2s forwards; }
+    #iskip     { opacity: 0; animation: intro-fade-in 0.6s ease 2.0s forwards; }
+    @keyframes intro-fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #intro-overlay { display: none !important; }
+    }
+  </style>
 </head>
 <body>
 
@@ -100,7 +151,7 @@
        - sessionStorage: skip on return visits
        - prefers-reduced-motion: skip immediately
   ============================================================ -->
-  <div id="intro-overlay" aria-hidden="true" role="presentation">
+  <div id="intro-overlay" aria-hidden="true">
     <svg id="intro-svg" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <!-- background -->
       <rect width="1200" height="800" fill="#04080f"/>
@@ -134,97 +185,41 @@
       <circle cx="100" cy="30" r="6" fill="#ff4a52"/>
       <text x="115" y="36" font-family="JetBrains Mono, monospace" font-size="16" fill="#8089a0" letter-spacing="2">REC · TAKE 01</text>
       <!-- tagline - animated in -->
-      <text id="itagline" x="600" y="520" text-anchor="middle" font-family="Space Grotesk, system-ui, sans-serif" font-size="18" fill="#6aa6ff" letter-spacing="4" opacity="0">FRONT-END CRM &amp; DASHBOARD DEVELOPER</text>
+      <text id="itagline" x="600" y="520" text-anchor="middle" font-family="Space Grotesk, system-ui, sans-serif" font-size="18" fill="#6aa6ff" letter-spacing="4">FRONT-END CRM &amp; DASHBOARD DEVELOPER</text>
       <!-- skip hint -->
-      <text id="iskip" x="600" y="720" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="rgba(128,137,160,0.7)" opacity="0">click or press any key to skip</text>
+      <text id="iskip" x="600" y="720" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="rgba(128,137,160,0.7)">click or press any key to skip</text>
     </svg>
   </div>
 
-  <style>
-    #intro-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: #04080f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      /* fade-out transition */
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-    #intro-overlay.intro-hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    #intro-svg {
-      width: 100%;
-      height: 100%;
-      max-width: 100vw;
-      max-height: 100vh;
-    }
-    /* ring pulse animations */
-    #ir1 { animation: intro-ring-pulse 2s ease-in-out infinite alternate; }
-    #ir2 { animation: intro-ring-pulse 2s ease-in-out infinite alternate 0.15s; }
-    #ir3 { animation: intro-ring-pulse 2s ease-in-out infinite alternate 0.3s; }
-    @keyframes intro-ring-pulse {
-      0%   { opacity: 0.6; }
-      100% { opacity: 1; }
-    }
-    /* monogram fade in */
-    #imonogram {
-      opacity: 0;
-      animation: intro-fade-in 0.8s ease 0.3s forwards;
-    }
-    /* tagline fade in after monogram */
-    #itagline {
-      animation: intro-fade-in 0.8s ease 1.2s forwards;
-    }
-    /* skip hint appears later */
-    #iskip {
-      animation: intro-fade-in 0.6s ease 2s forwards;
-    }
-    @keyframes intro-fade-in {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    /* prefers-reduced-motion: skip all animations, dismiss immediately */
-    @media (prefers-reduced-motion: reduce) {
-      #intro-overlay { display: none !important; }
-    }
-  </style>
 
   <script>
     (function() {
       'use strict';
-      var STORAGE_KEY = 'la_intro_seen';
-      var AUTO_DISMISS_MS = 3400;
-
       var overlay = document.getElementById('intro-overlay');
       if (!overlay) return;
 
-      // Already seen this session → hide immediately (no flicker)
+      // Head script already set CSS var; if display none, bail.
       try {
-        if (sessionStorage.getItem(STORAGE_KEY)) {
+        if (sessionStorage.getItem('la_intro_seen')) {
           overlay.style.display = 'none';
           return;
         }
       } catch(e) {}
 
+      var dismissed = false;
       function dismiss() {
+        if (dismissed) return;
+        dismissed = true;
         overlay.classList.add('intro-hidden');
-        // Remove from DOM after transition so it doesn't block screen readers
         setTimeout(function() {
           if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-        }, 700);
-        try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch(e) {}
+        }, 650);
+        try { sessionStorage.setItem('la_intro_seen', '1'); } catch(e) {}
+        document.removeEventListener('keydown', skip);
       }
 
-      // Auto-dismiss
-      var timer = setTimeout(dismiss, AUTO_DISMISS_MS);
+      var timer = setTimeout(dismiss, 3400);
 
-      // Manual skip
       function skip() {
         clearTimeout(timer);
         dismiss();
@@ -232,9 +227,10 @@
 
       overlay.addEventListener('click', skip);
       overlay.addEventListener('touchstart', skip, { passive: true });
-      document.addEventListener('keydown', skip, { once: true });
+      document.addEventListener('keydown', skip);
     })();
   </script>
+
 
   <div class="skip-links" aria-label="Linkuri rapide">
     <a class="skip-link" href="#home">Sari la început</a>
