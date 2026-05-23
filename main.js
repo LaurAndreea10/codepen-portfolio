@@ -26,7 +26,6 @@
       implementationImplemented: 'Implementat',
       implementationProgress: 'În dezvoltare',
       implementationRoadmap: 'Roadmap',
-      nowEditHint: 'Actualizezi săptămânal doar obiectul nowContent din main.js.',
       statusEditHint: 'Actualizezi statusurile cardurilor doar din obiectul cardStatusContent din main.js.',
       nowUpdatedPrefix: 'Actualizat:',
       nowLabel: '⚡ Now',
@@ -52,7 +51,6 @@
       implementationImplemented: 'Implemented',
       implementationProgress: 'In progress',
       implementationRoadmap: 'Roadmap',
-      nowEditHint: 'Update only the nowContent object in main.js each week.',
       statusEditHint: 'Update card statuses only from the cardStatusContent object in main.js.',
       nowUpdatedPrefix: 'Updated:',
       nowLabel: '⚡ Now',
@@ -275,7 +273,7 @@
     if (badge && time) {
       badge.innerHTML = `${translations[currentLang].nowUpdatedPrefix} <time datetime="${copy.datetime}">${copy.label}</time>`;
       const updatedTime = badge.querySelector('time');
-      if (updatedTime) updatedTime.title = translations[currentLang].nowEditHint;
+      if (updatedTime) updatedTime.removeAttribute('title');
     }
     if (list) {
       list.innerHTML = '';
@@ -287,13 +285,8 @@
       });
     }
     if (note) note.textContent = copy.note;
-    let helper = els.nowSection.querySelector('.now-helper');
-    if (!helper && note) {
-      helper = document.createElement('p');
-      helper.className = 'now-helper';
-      note.insertAdjacentElement('afterend', helper);
-    }
-    if (helper) helper.textContent = translations[currentLang].nowEditHint;
+    const helper = els.nowSection.querySelector('.now-helper');
+    if (helper) helper.remove();
   }
 
   function applyLanguage(lang) {
