@@ -608,7 +608,7 @@
 
     <!-- Scene 2: monogram + name -->
     <div class="scene s2">
-      <div class="eyebrow">// portfolio · 2026</div>
+      <div class="eyebrow" id="intro-s2-year">// portfolio · 2026</div>
 
       <div class="mono-wrap">
         <div class="mono">
@@ -757,6 +757,10 @@
   var yy = String(now.getFullYear()).slice(-2);
   var dateEl = document.getElementById('intro-date');
   if (dateEl) dateEl.textContent = dd + '.' + mm + '.' + yy;
+
+  // Scene 2 year
+  var s2year = document.getElementById('intro-s2-year');
+  if (s2year) s2year.textContent = '// portfolio · ' + now.getFullYear();
 
   // 2. Stat counter targets — inject a <style> with correct @keyframes values
   //    This is the only cross-browser way since CSS registered properties
@@ -1613,15 +1617,16 @@ setInterval(restart, TOTAL*1000);
             </div>
           </article>
 
-          <article class="project-card glass" aria-labelledby="clientops-suite-title">
-            <span class="badge-new">NEW</span>
+          <article class="project-card glass project-card-wip" aria-labelledby="clientops-suite-title">
+            <span class="badge-wip">🔧 În construcție</span>
             <div class="project-top">
               <div><h3 id="clientops-suite-title">ClientOps Suite Premium</h3><span class="badge-github">GitHub</span></div>
               <span class="tag premium">premium</span>
             </div>
-            <p class="project-desc">Suită CRM premium cu fluxuri operaționale avansate, automatizări și dashboard unificat.</p>
+            <p class="project-desc">Suită CRM premium cu fluxuri operaționale avansate, automatizări și dashboard unificat. Demo live în lucru — codul e public pe GitHub.</p>
             <div class="card-actions">
               <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/clientops-suite-app-premium" target="_blank" rel="noopener noreferrer">GitHub →</a>
+              <span class="btn btn-ghost btn-disabled" aria-disabled="true">Demo în lucru</span>
             </div>
           </article>
 
@@ -1812,12 +1817,51 @@ setInterval(restart, TOTAL*1000);
         </div>
 
         <div class="insights-grid">
-          <article class="project-card glass"><span class="tag">Lessons</span><h3>3 lecții din construirea unui SaaS CRM de la zero</h3><p class="project-desc">Un CRM este un sistem de decizii, nu doar o interfață cu lead-uri și task-uri.</p></article>
-          <article class="project-card glass"><span class="tag">Architecture</span><h3>De ce am trecut de la single-file HTML la Vite + React</h3><p class="project-desc">Vite + React mi-au permis să separ layout-ul, cardurile și fluxurile în componente reutilizabile.</p></article>
-          <article class="project-card glass"><span class="tag">UX decisions</span><h3>Flow builder vs Kanban</h3><p class="project-desc">Kanban-ul organizează munca, iar Flow builder-ul organizează deciziile.</p></article>
-          <article class="project-card glass"><span class="tag">Subiecte viitoare</span><h3>Ce aș documenta mai departe</h3><p class="project-desc">Deciziile din spatele automatizărilor și claritatea pe măsură ce cresc datele și regulile.</p></article>
+          <article class="project-card glass" aria-labelledby="insight-1-title">
+            <span class="tag">Lessons</span>
+            <h3 id="insight-1-title">3 lecții din construirea unui SaaS CRM de la zero</h3>
+            <p class="project-desc">Un CRM este un sistem de decizii, nu doar o interfață cu lead-uri și task-uri.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="insights/saas-crm-lectii.html">Citește insight-ul</a>
+            </div>
+          </article>
+          <article class="project-card glass" aria-labelledby="insight-2-title">
+            <span class="tag">Architecture</span>
+            <h3 id="insight-2-title">De ce am trecut de la single-file HTML la Vite + React</h3>
+            <p class="project-desc">Vite + React mi-au permis să separ layout-ul, cardurile și fluxurile în componente reutilizabile.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="insights/single-file-la-vite-react.html">Citește insight-ul</a>
+            </div>
+          </article>
+          <article class="project-card glass" aria-labelledby="insight-3-title">
+            <span class="tag">UX decisions</span>
+            <h3 id="insight-3-title">Flow builder vs Kanban</h3>
+            <p class="project-desc">Kanban-ul organizează munca, iar Flow builder-ul organizează deciziile.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="insights/flow-builder-vs-kanban.html">Citește insight-ul</a>
+            </div>
+          </article>
+          <article class="project-card glass" aria-labelledby="insight-4-title">
+            <span class="tag">Subiecte viitoare</span>
+            <h3 id="insight-4-title">Ce aș documenta mai departe</h3>
+            <p class="project-desc">Deciziile din spatele automatizărilor și claritatea pe măsură ce cresc datele și regulile.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="insights/ce-as-documenta.html">Citește insight-ul</a>
+            </div>
+          </article>
           <article class="project-card glass"><span class="tag">Case study</span><h3>Excel-Quest — de la landing static la produs cu progres salvat</h3><p class="project-desc">Am transformat Excel-Quest dintr-un landing simplu într-un produs orientat pe reluare.</p><div class="card-actions"><a class="btn btn-primary" href="projects/excel-quest.html">Deschide case study</a><a class="btn btn-secondary" href="https://laurandreea10.github.io/Excel-Quest/excel-quest-hub.html" target="_blank" rel="noopener noreferrer">Vezi hub-ul</a></div></article>
         </div>
+
+        <style>
+          .badge-wip {
+            display: inline-block; font-size: .7rem; font-weight: 600;
+            padding: .2rem .6rem; border-radius: 4px; margin-bottom: .5rem;
+            background: rgba(251,191,36,.12); color: #fbbf24;
+            border: 1px solid rgba(251,191,36,.3); letter-spacing: .04em;
+          }
+          .project-card-wip { opacity: .88; }
+          .btn-ghost.btn-disabled { opacity: .45; cursor: not-allowed; pointer-events: none; }
+        </style>
       </div>
     </section>
 
