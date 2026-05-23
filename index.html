@@ -38,6 +38,7 @@
 <div class="status" id="status">INTRO CINEMATIC · LIVE METRICS</div>
 <script>
 (function(){
+  var STABLE_PORTFOLIO_URL = 'https://raw.githubusercontent.com/LaurAndreea10/codepen-portfolio/882fe5e15e3405806e6442ca242539d22e428f62/index.html';
   var INTRO_CONFIG = {
     codepenProjects: 64,
     alpisModules: 6,
@@ -48,33 +49,24 @@
   };
 
   function roDateShort(){
-    var parts = new Intl.DateTimeFormat('ro-RO', {timeZone: INTRO_CONFIG.timezone, day: '2-digit', month: '2-digit', year: '2-digit'}).formatToParts(new Date());
+    var parts = new Intl.DateTimeFormat('ro-RO',{timeZone:INTRO_CONFIG.timezone,day:'2-digit',month:'2-digit',year:'2-digit'}).formatToParts(new Date());
     var map = {};
-    parts.forEach(function(p){ map[p.type] = p.value; });
-    return [map.day, map.month, map.year].join('.');
+    parts.forEach(function(p){map[p.type]=p.value});
+    return [map.day,map.month,map.year].join('.');
   }
-
-  function roDateLong(){
-    return new Intl.DateTimeFormat('ro-RO', {timeZone: INTRO_CONFIG.timezone, day: '2-digit', month: 'long', year: 'numeric'}).format(new Date());
-  }
-
-  function currentYear(){
-    return new Intl.DateTimeFormat('en-GB', {timeZone: INTRO_CONFIG.timezone, year:'numeric'}).format(new Date());
-  }
-
+  function roDateLong(){return new Intl.DateTimeFormat('ro-RO',{timeZone:INTRO_CONFIG.timezone,day:'2-digit',month:'long',year:'numeric'}).format(new Date())}
+  function currentYear(){return new Intl.DateTimeFormat('en-GB',{timeZone:INTRO_CONFIG.timezone,year:'numeric'}).format(new Date())}
   function getPublicRepoCount(){
     var fallback = INTRO_CONFIG.githubFallbackRepos;
-    return fetch('https://api.github.com/users/' + INTRO_CONFIG.githubUser + '/repos?per_page=1', {cache:'no-store'})
+    return fetch('https://api.github.com/users/'+INTRO_CONFIG.githubUser+'/repos?per_page=1',{cache:'no-store'})
       .then(function(r){
-        if(!r.ok) throw new Error('GitHub API ' + r.status);
+        if(!r.ok) throw new Error('GitHub API '+r.status);
         var link = r.headers.get('Link') || '';
         var m = link.match(/[?&]page=(\d+)>; rel="last"/);
         if(m) return Number(m[1]) || fallback;
-        return r.json().then(function(items){ return Array.isArray(items) ? items.length : fallback; });
-      })
-      .catch(function(){ return fallback; });
+        return r.json().then(function(items){return Array.isArray(items) ? items.length : fallback});
+      }).catch(function(){return fallback});
   }
-
   function patchIntroDocument(doc, repoCount){
     if(!doc || !doc.body || doc.__liveIntroPatched) return;
     doc.__liveIntroPatched = true;
@@ -82,8 +74,8 @@
     style.id = 'live-intro-metrics-style';
     style.textContent = '.num1:before{content:attr(data-count)!important}.num2:before{content:attr(data-count)!important}.num3:before{content:attr(data-count)!important}.num4:before{content:attr(data-count)!important}';
     doc.head.appendChild(style);
-    function setText(selector, value){ var el = doc.querySelector(selector); if(el) el.textContent = value; }
-    function setCount(selector, value){ var el = doc.querySelector(selector); if(el) el.setAttribute('data-count', String(value)); }
+    function setText(selector,value){var el=doc.querySelector(selector); if(el) el.textContent=value}
+    function setCount(selector,value){var el=doc.querySelector(selector); if(el) el.setAttribute('data-count',String(value))}
     setCount('.num1', INTRO_CONFIG.codepenProjects);
     setCount('.num2', repoCount);
     setCount('.num3', INTRO_CONFIG.alpisModules);
@@ -94,16 +86,15 @@
         if(v) v.textContent = roDateShort();
       }
     });
-    setText('.s2 .eyebrow', '// portfolio · ' + currentYear());
+    setText('.s2 .eyebrow','// portfolio · '+currentYear());
     var bottomLeft = doc.querySelector('.lb.bot .l span:first-child');
-    if(bottomLeft) bottomLeft.innerHTML = 'LIVE DATA&nbsp;·&nbsp;<span class="meta-hide">' + roDateLong() + '</span>';
+    if(bottomLeft) bottomLeft.innerHTML = 'LIVE DATA&nbsp;·&nbsp;<span class="meta-hide">'+roDateLong()+'</span>';
   }
-
   function patchIntroFrame(){
-    var frame = document.getElementById('introFrame');
+    var frame=document.getElementById('introFrame');
     if(!frame) return;
     getPublicRepoCount().then(function(repoCount){
-      try { patchIntroDocument(frame.contentDocument || frame.contentWindow.document, repoCount); } catch(e) {}
+      try{patchIntroDocument(frame.contentDocument || frame.contentWindow.document, repoCount)}catch(e){}
     });
   }
 
@@ -112,14 +103,16 @@
       '.now-tabbar{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 18px;padding:6px;border:1px solid var(--line,rgba(255,255,255,.1));border-radius:16px;background:var(--panel-2,rgba(255,255,255,.04))}\n' +
       '.now-tab{border:1px solid transparent;background:transparent;color:var(--muted,#9db0d4);border-radius:12px;padding:9px 13px;font:inherit;font-weight:800;cursor:pointer;transition:.2s}\n' +
       '.now-tab:hover,.now-tab:focus-visible{color:var(--text,#eef4ff);border-color:var(--line,rgba(255,255,255,.16));outline:0}\n' +
-      '.now-tab.is-active{background:linear-gradient(135deg,rgba(79,140,255,.18),rgba(34,211,238,.08));border-color:rgba(79,140,255,.38);color:var(--text,#eef4ff);box-shadow:0 14px 32px -24px rgba(79,140,255,.8)}\n' +
+      '.now-tab.is-active{background:linear-gradient(135deg,rgba(79,140,255,.2),rgba(34,211,238,.08));border-color:rgba(79,140,255,.48);color:var(--text,#eef4ff);box-shadow:0 14px 32px -24px rgba(79,140,255,.8)}\n' +
       '.now-panel{display:none}.now-panel.is-active{display:block;animation:nowFade .22s ease}@keyframes nowFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}\n' +
-      '.now-list{display:grid;gap:12px;margin:0;padding:0;list-style:none}.now-list li{padding:14px 15px;border:1px solid var(--line,rgba(255,255,255,.1));border-radius:14px;background:var(--panel-2,rgba(255,255,255,.035));line-height:1.65}\n' +
-      '.now-list strong{color:var(--text,#eef4ff)}.now-list a{color:var(--accent,#4f8cff);font-weight:800;text-decoration:none}.now-list a:hover{text-decoration:underline}\n' +
+      '.now-list,.thirty-checklist{display:grid;gap:12px;margin:0;padding:0;list-style:none}.now-list li,.thirty-checklist li{padding:14px 15px;border:1px solid var(--line,rgba(255,255,255,.1));border-radius:14px;background:var(--panel-2,rgba(255,255,255,.035));line-height:1.65}\n' +
+      '.now-list strong,.thirty-checklist strong{color:var(--text,#eef4ff)}.now-list a{color:var(--accent,#4f8cff);font-weight:800;text-decoration:none}.now-list a:hover{text-decoration:underline}\n' +
       '.now-kicker{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--accent,#4f8cff);margin-bottom:8px}\n' +
       '.now-pill-mini{display:inline-flex;margin-left:8px;padding:2px 8px;border-radius:999px;border:1px solid rgba(79,140,255,.28);background:rgba(79,140,255,.1);font-size:.72rem;color:var(--accent,#4f8cff);font-weight:800;vertical-align:middle}\n' +
       '.now-subtitle{margin:0 0 14px;color:var(--muted,#9db0d4);line-height:1.7}.now-note{margin-top:16px;color:var(--muted,#9db0d4);font-size:.92rem;line-height:1.7}\n' +
-      '.thirty-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:16px 0}.thirty-card{padding:14px;border:1px solid var(--line,rgba(255,255,255,.1));border-radius:14px;background:linear-gradient(135deg,rgba(79,140,255,.12),rgba(255,255,255,.03));line-height:1.6}.thirty-card b{display:block;color:var(--text,#eef4ff);margin-bottom:5px}.thirty-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.thirty-actions a{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;border:1px solid rgba(79,140,255,.28);background:rgba(79,140,255,.08);color:var(--accent,#4f8cff);font-weight:900;text-decoration:none}\n' +
+      '.thirty-hero{margin:0 0 14px;padding:16px 16px;border:1px solid rgba(79,140,255,.28);border-radius:18px;background:linear-gradient(135deg,rgba(79,140,255,.16),rgba(34,211,238,.06));line-height:1.7}.thirty-hero b{color:var(--text,#eef4ff)}\n' +
+      '.thirty-checklist li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}.check-icon{display:grid;place-items:center;width:24px;height:24px;border-radius:999px;background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.34);color:#22d3ee;font-weight:900}.check-body{min-width:0}.check-body small{display:block;margin-top:3px;color:var(--muted,#9db0d4);line-height:1.55}\n' +
+      '.thirty-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.thirty-actions a{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;border:1px solid rgba(79,140,255,.28);background:rgba(79,140,255,.08);color:var(--accent,#4f8cff);font-weight:900;text-decoration:none}\n' +
       '</style>\n';
   }
 
@@ -135,12 +128,22 @@
       '            <p class="now-badge">Actualizat automat: <time id="now-live-date" datetime=""></time></p>\n' +
       '          </div>\n' +
       '          <div class="now-tabbar" role="tablist" aria-label="Status lucru curent">\n' +
-      '            <button class="now-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="now-current" data-now-tab="current">În curs</button>\n' +
+      '            <button class="now-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="now-30" data-now-tab="thirty">30 de secunde</button>\n' +
+      '            <button class="now-tab" type="button" role="tab" aria-selected="false" aria-controls="now-current" data-now-tab="current">În curs</button>\n' +
       '            <button class="now-tab" type="button" role="tab" aria-selected="false" aria-controls="now-history" data-now-tab="history">Istoric</button>\n' +
       '            <button class="now-tab" type="button" role="tab" aria-selected="false" aria-controls="now-next" data-now-tab="next">Urmează</button>\n' +
-      '            <button class="now-tab" type="button" role="tab" aria-selected="false" aria-controls="now-30" data-now-tab="thirty">30 de secunde</button>\n' +
       '          </div>\n' +
-      '          <div class="now-panel is-active" id="now-current" role="tabpanel" data-now-panel="current">\n' +
+      '          <div class="now-panel is-active" id="now-30" role="tabpanel" data-now-panel="thirty">\n' +
+      '            <p class="thirty-hero"><b>Checklist de 30 de secunde:</b> sumar rapid pentru cine intră prima dată și vrea să înțeleagă imediat direcția portofoliului.</p>\n' +
+      '            <ul class="thirty-checklist">\n' +
+      '              <li><span class="check-icon">✓</span><span class="check-body"><strong>Direcție clară</strong><small>Front-end pentru CRM-uri, dashboard-uri și Marketing-Tech tools — nu „de toate”.</small></span></li>\n' +
+      '              <li><span class="check-icon">✓</span><span class="check-body"><strong>Dovadă practică</strong><small>64 experimente publice + proiecte live cu GitHub Pages, fără backend obligatoriu.</small></span></li>\n' +
+      '              <li><span class="check-icon">✓</span><span class="check-body"><strong>Logică de produs</strong><small>Fiecare demo are flow, status, date, export sau interacțiune reală — nu doar UI static.</small></span></li>\n' +
+      '              <li><span class="check-icon">✓</span><span class="check-body"><strong>Ce verifici prima dată</strong><small>Alpis Fusion CRM, ClientFlow, Marketing OS și case study-urile.</small></span></li>\n' +
+      '            </ul>\n' +
+      '            <div class="thirty-actions"><a href="#projects">Top proiecte →</a><a href="#marketing-tech">Marketing-Tech →</a><a href="projects/alpis-fusion-crm.html">Case study →</a><a href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">GitHub →</a></div>\n' +
+      '          </div>\n' +
+      '          <div class="now-panel" id="now-current" role="tabpanel" data-now-panel="current">\n' +
       '            <p class="now-subtitle">Lucruri active, vizibile ca roadmap curent — nu le mai amestec cu livrările finalizate.</p>\n' +
       '            <ul class="now-list">\n' +
       '              <li><span class="now-kicker">📊 Marketing-Tech</span><br><strong>Industry Benchmarks Dashboard</strong> <span class="now-pill-mini">În curs</span><br>Dashboard cu benchmarks pe canal, industrie și funnel stage. Include comparație rapidă pentru CTR, CVR, CAC, ROAS și drop-off pe fiecare etapă.</li>\n' +
@@ -163,84 +166,62 @@
       '              <li>↗ <strong>Mini case study</strong> — explicație scurtă: problemă, decizie, rezultat, ce aș face diferit.</li>\n' +
       '            </ul>\n' +
       '          </div>\n' +
-      '          <div class="now-panel" id="now-30" role="tabpanel" data-now-panel="thirty">\n' +
-      '            <p class="now-subtitle"><strong>30 de secunde:</strong> citire rapidă pentru cine intră prima dată și vrea să înțeleagă imediat direcția portofoliului.</p>\n' +
-      '            <div class="thirty-grid">\n' +
-      '              <div class="thirty-card"><b>1. Direcție clară</b>Front-end pentru CRM-uri, dashboard-uri și Marketing-Tech tools — nu „de toate”.</div>\n' +
-      '              <div class="thirty-card"><b>2. Dovadă practică</b>64 experimente publice + proiecte live cu GitHub Pages, fără backend obligatoriu.</div>\n' +
-      '              <div class="thirty-card"><b>3. Logică de produs</b>Fiecare demo are flow, status, date, export sau interacțiune reală — nu doar UI static.</div>\n' +
-      '              <div class="thirty-card"><b>4. Ce verifici prima dată</b>Alpis Fusion CRM, ClientFlow, Marketing OS și case study-urile.</div>\n' +
-      '            </div>\n' +
-      '            <div class="thirty-actions"><a href="#projects">Top proiecte →</a><a href="#marketing-tech">Marketing-Tech →</a><a href="projects/alpis-fusion-crm.html">Case study →</a><a href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">GitHub →</a></div>\n' +
-      '          </div>\n' +
       '          <div class="now-tags" aria-label="Tehnologii active acum">\n' +
       '            <span class="now-tag">Marketing-Tech</span><span class="now-tag">Benchmarks</span><span class="now-tag">UTM</span><span class="now-tag">Vanilla JS</span><span class="now-tag">localStorage</span><span class="now-tag">RO/EN</span>\n' +
       '          </div>\n' +
-      '          <p class="now-note">Secțiune de tip now page, cu tab separat pentru istoric și sumar de 30 de secunde pentru scanare rapidă.</p>\n' +
+      '          <p class="now-note">Secțiune de tip now page, cu „30 de secunde” mutat primul și transformat în checklist pentru scanare rapidă.</p>\n' +
       '        </article>\n' +
       '      </div>\n' +
       '    </section>\n';
   }
 
   function tabsScript(){
-    return '<script id="now-history-tabs-script">(function(){function init(){var d=document.getElementById("now-live-date");if(d){var now=new Date();d.dateTime=now.toISOString().slice(0,10);d.textContent=new Intl.DateTimeFormat("ro-RO",{day:"2-digit",month:"long",year:"numeric"}).format(now);}document.addEventListener("click",function(e){var tab=e.target.closest&&e.target.closest("[data-now-tab]");if(!tab)return;var wrap=tab.closest("#now");if(!wrap)return;var key=tab.getAttribute("data-now-tab");wrap.querySelectorAll("[data-now-tab]").forEach(function(t){var on=t===tab;t.classList.toggle("is-active",on);t.setAttribute("aria-selected",on?"true":"false");});wrap.querySelectorAll("[data-now-panel]").forEach(function(p){p.classList.toggle("is-active",p.getAttribute("data-now-panel")===key);});});}if(document.readyState!=="loading")init();else document.addEventListener("DOMContentLoaded",init);})();</scr' + 'ipt>';
+    return '<script id="now-history-tabs-script">(function(){function init(){var d=document.getElementById("now-live-date");if(d){var now=new Date();d.dateTime=now.toISOString().slice(0,10);d.textContent=new Intl.DateTimeFormat("ro-RO",{day:"2-digit",month:"long",year:"numeric"}).format(now);}document.addEventListener("click",function(e){var tab=e.target.closest&&e.target.closest("[data-now-tab]");if(!tab)return;var wrap=tab.closest("#now");if(!wrap)return;var key=tab.getAttribute("data-now-tab");wrap.querySelectorAll("[data-now-tab]").forEach(function(t){var on=t===tab;t.classList.toggle("is-active",on);t.setAttribute("aria-selected",on?"true":"false");});wrap.querySelectorAll("[data-now-panel]").forEach(function(p){p.classList.toggle("is-active",p.getAttribute("data-now-panel")===key);});});}if(document.readyState!=="loading")init();else document.addEventListener("DOMContentLoaded",init);})();</scr'+'ipt>';
   }
 
   function patchPortfolioHtml(html){
     if(!/<link[^>]+rel=["'](?:shortcut )?icon/i.test(html)){
-      html = html.replace('</head>', '<link rel="icon" type="image/svg+xml" href="favicon.svg" />\n<link rel="shortcut icon" type="image/svg+xml" href="favicon.svg" />\n</head>');
+      html = html.replace('</head>','<link rel="icon" type="image/svg+xml" href="favicon.svg" />\n<link rel="shortcut icon" type="image/svg+xml" href="favicon.svg" />\n</head>');
     }
     html = html.replace('</head>', nowPatchCss() + '</head>');
     var nowBlock = nowSectionHtml() + '\n\n    <div class="section-divider"></div>\n\n';
     var replaced = false;
-    html = html.replace(/<section id="now"[\s\S]*?<div class="section-divider"><\/div>\s*(?=<section id="marketing-tech")/, function(){ replaced = true; return nowBlock; });
-    if(!replaced){
-      html = html.replace(/<section id="marketing-tech"/, nowBlock + '<section id="marketing-tech"');
-    }
+    html = html.replace(/<section id="now"[\s\S]*?<div class="section-divider"><\/div>\s*(?=<section id="marketing-tech")/, function(){replaced=true;return nowBlock});
+    if(!replaced){html = html.replace(/<section id="marketing-tech"/, nowBlock + '<section id="marketing-tech"')}
     html = html.replace('</body>', tabsScript() + '</body>');
     return html;
   }
 
   var params = new URLSearchParams(location.search);
-  if (params.get('portfolio') === '1') {
-    var STABLE_PORTFOLIO_URL='https://raw.githubusercontent.com/LaurAndreea10/codepen-portfolio/882fe5e15e3405806e6442ca242539d22e428f62/index.html';
+  if(params.get('portfolio') === '1'){
     document.body.innerHTML = '<p style="font:14px system-ui;color:#9db0d4;padding:24px">Se încarcă portofoliul…</p>';
     document.body.style.overflow = 'auto';
     fetch(STABLE_PORTFOLIO_URL,{cache:'no-store'})
-      .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
-      .then(function(html){ document.open(); document.write(patchPortfolioHtml(html)); document.close(); })
-      .catch(function(err){
-        document.body.innerHTML = '<div style="font:14px/1.5 system-ui;color:#eaf1fb;background:#071226;min-height:100vh;padding:24px"><h1>Portofoliul nu s-a încărcat</h1><p>'+err.message+'</p><p><a style="color:#6aa6ff" href="https://github.com/LaurAndreea10/codepen-portfolio">Deschide repo-ul GitHub</a></p></div>';
-      });
+      .then(function(r){if(!r.ok) throw new Error('HTTP '+r.status); return r.text()})
+      .then(function(html){document.open();document.write(patchPortfolioHtml(html));document.close()})
+      .catch(function(err){document.body.innerHTML='<div style="font:14px/1.5 system-ui;color:#eaf1fb;background:#071226;min-height:100vh;padding:24px"><h1>Portofoliul nu s-a încărcat</h1><p>'+err.message+'</p><p><a style="color:#6aa6ff" href="https://github.com/LaurAndreea10/codepen-portfolio">Deschide repo-ul GitHub</a></p></div>'});
     return;
   }
 
-  var finished = false;
-  var body = document.body;
-  var skip = document.getElementById('skipIntro');
-  var intro = document.getElementById('introShell');
-  var introFrame = document.getElementById('introFrame');
-
-  if(introFrame){
-    introFrame.addEventListener('load', patchIntroFrame);
-    setTimeout(patchIntroFrame, 800);
-  }
-
+  var finished=false;
+  var body=document.body;
+  var skip=document.getElementById('skipIntro');
+  var intro=document.getElementById('introShell');
+  var introFrame=document.getElementById('introFrame');
+  if(introFrame){introFrame.addEventListener('load',patchIntroFrame);setTimeout(patchIntroFrame,800)}
   function finish(){
     if(finished) return;
-    finished = true;
+    finished=true;
     body.classList.add('reveal');
-    setTimeout(function(){ if(intro) intro.style.display='none'; }, 1450);
+    setTimeout(function(){if(intro) intro.style.display='none'},1450);
   }
-
-  window.addEventListener('message', function(event){
+  window.addEventListener('message',function(event){
     if(!event || !event.data) return;
     if(event.data.type === 'portfolio-intro-ended' || event.data.type === 'portfolio-intro-skip') finish();
   });
-
-  skip.addEventListener('click', finish);
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') finish(); });
-  setTimeout(finish, 13200);
+  skip.addEventListener('click',finish);
+  document.addEventListener('keydown',function(e){if(e.key === 'Escape') finish()});
+  setTimeout(finish,13200);
 })();
 </script>
 </body>
