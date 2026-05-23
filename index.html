@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Laura Andreea · Intro cinematic</title>
-<meta name="description" content="Prototip cinematic Laura Andreea cu intro afișat direct în index, fără iframe, plus hub pentru toate paginile demo.">
+<title>Laura Andreea — Front-end CRM & Dashboard Developer</title>
+<meta name="description" content="Portofoliu Laura Andreea: CRM, dashboard-uri și Marketing-Tech tools. Intro cinematic urmat de homepage-ul real al portofoliului." />
+<meta name="theme-color" content="#050f20">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -18,20 +19,16 @@
     --muted-2:#5f7398;
     --accent:#5aa9ff;
     --accent-soft:#9ccbff;
-    --blue:#4d9fff;
     --line:rgba(150,180,225,.12);
     --line-acc:rgba(90,169,255,.30);
-    --shadow:0 28px 90px rgba(0,0,0,.42);
     --sora:'Sora',sans-serif;
     --serif:'Fraunces',Georgia,serif;
     --mono:'JetBrains Mono',monospace;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{min-height:100%}
-  body{background:var(--navy);color:var(--ink);font-family:var(--sora);overflow-x:hidden}
-  a{color:inherit}
+  html,body{height:100%}
+  body{background:var(--navy);color:var(--ink);font-family:var(--sora);overflow:hidden}
 
-  /* ============ INTRO INLINE — fără iframe ============ */
   #intro{
     position:fixed;inset:0;z-index:100;overflow:hidden;
     background:
@@ -39,10 +36,8 @@
       radial-gradient(120% 90% at 50% 120%, var(--navy-2) 0%, transparent 45%),
       var(--navy);
   }
-  .curtain{position:absolute;left:0;width:100%;height:50%;z-index:60;background:transparent;
-    transition:transform 1s cubic-bezier(.76,0,.12,1);pointer-events:none}
-  .curtain.top{top:0}
-  .curtain.bot{bottom:0}
+  .curtain{position:absolute;left:0;width:100%;height:50%;z-index:60;background:transparent;transition:transform 1s cubic-bezier(.76,0,.12,1);pointer-events:none}
+  .curtain.top{top:0}.curtain.bot{bottom:0}
   #intro.closing .curtain{background:var(--navy)}
   #intro.closing .curtain.top{border-bottom:1px solid var(--line-acc)}
   #intro.closing .curtain.bot{border-top:1px solid var(--line-acc)}
@@ -52,211 +47,83 @@
   #intro.gone{visibility:hidden;pointer-events:none}
 
   #particles{position:absolute;inset:0;z-index:1;pointer-events:none}
-
   .aura{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;mix-blend-mode:screen;z-index:0}
   .aura.a1{width:50vw;height:50vw;background:rgba(77,159,255,.25);top:-12%;left:8%;animation:breathe 11s ease-in-out infinite}
   .aura.a2{width:42vw;height:42vw;background:rgba(120,200,255,.16);bottom:-10%;right:6%;animation:breathe 13s ease-in-out infinite -4s}
   @keyframes breathe{0%,100%{transform:translate(0,0) scale(1);opacity:.7}50%{transform:translate(3vw,-4vh) scale(1.18);opacity:1}}
 
-  #intro::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.4;z-index:1;
-    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
-    background-size:64px 64px;
-    -webkit-mask-image:radial-gradient(110% 80% at 50% 42%,#000 25%,transparent 78%);mask-image:radial-gradient(110% 80% at 50% 42%,#000 25%,transparent 78%)}
-  #intro::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.045;z-index:5;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  #intro::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.4;z-index:1;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(110% 80% at 50% 42%,#000 25%,transparent 78%);mask-image:radial-gradient(110% 80% at 50% 42%,#000 25%,transparent 78%)}
+  #intro::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.045;z-index:5;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
   .stage{position:relative;height:100%;display:grid;place-items:center;padding:24px;z-index:3}
   .content{text-align:center;position:relative;will-change:transform}
-
   .crest{display:flex;align-items:center;justify-content:center;gap:18px;opacity:0;animation:fade .9s .2s forwards}
   .crest .rule{width:clamp(40px,10vw,90px);height:1px;background:linear-gradient(90deg,transparent,var(--line-acc))}
   .crest .rule.r{background:linear-gradient(90deg,var(--line-acc),transparent)}
   .crest .mono{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--accent);letter-spacing:.02em}
-
   .eyebrow{margin-top:26px;font-family:var(--mono);font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--muted-2);opacity:0;animation:fade .9s .5s forwards}
-
   .name{margin-top:14px;font-family:var(--serif);font-weight:300;font-size:clamp(46px,10vw,118px);line-height:.98;letter-spacing:-.02em;position:relative}
   .name .row{display:block;position:relative}
-  .name .ch{display:inline-block;opacity:0;transform:translateY(40px) rotateX(-40deg);transform-origin:bottom;
-    animation:drop .7s cubic-bezier(.16,1,.3,1) forwards}
+  .name .ch{display:inline-block;opacity:0;transform:translateY(40px) rotateX(-40deg);transform-origin:bottom;animation:drop .7s cubic-bezier(.16,1,.3,1) forwards}
   .name .last .ch{color:var(--accent)}
   .name .last{font-style:italic}
   @keyframes drop{to{opacity:1;transform:none}}
-  .name::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
-    background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.55) 50%,transparent 62%);
-    background-size:280% 100%;background-position:160% 0;
-    -webkit-mask-image:linear-gradient(#000,#000);
-    mix-blend-mode:overlay;opacity:0;animation:shine 1.5s 1.2s ease forwards}
+  .name::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.55) 50%,transparent 62%);background-size:280% 100%;background-position:160% 0;-webkit-mask-image:linear-gradient(#000,#000);mix-blend-mode:overlay;opacity:0;animation:shine 1.5s 1.2s ease forwards}
   @keyframes shine{0%{opacity:0;background-position:160% 0}25%{opacity:1}100%{opacity:0;background-position:-60% 0}}
-
   .role{margin-top:24px;font-size:clamp(13px,1.7vw,16px);color:var(--muted);letter-spacing:.06em;opacity:0;animation:fade 1s 1.15s forwards}
-  .role b{color:var(--ink);font-weight:500}
-  .role .sep{color:var(--accent);margin:0 10px}
-
+  .role b{color:var(--ink);font-weight:500}.role .sep{color:var(--accent);margin:0 10px}
   .chips{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
-  .chip{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--muted);
-    border:1px solid var(--line);border-radius:999px;padding:8px 15px;background:rgba(255,255,255,.025);backdrop-filter:blur(4px);
-    opacity:0;transform:translateY(10px);animation:fadeUp .6s forwards}
-  .chip:nth-child(1){animation-delay:1.4s}.chip:nth-child(2){animation-delay:1.52s}
-  .chip:nth-child(3){animation-delay:1.64s}.chip:nth-child(4){animation-delay:1.76s}
+  .chip{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:8px 15px;background:rgba(255,255,255,.025);backdrop-filter:blur(4px);opacity:0;transform:translateY(10px);animation:fadeUp .6s forwards}
+  .chip:nth-child(1){animation-delay:1.4s}.chip:nth-child(2){animation-delay:1.52s}.chip:nth-child(3){animation-delay:1.64s}.chip:nth-child(4){animation-delay:1.76s}
   .chip b{color:var(--accent-soft);font-weight:500}
-  @keyframes fade{to{opacity:1}}
-  @keyframes fadeUp{to{opacity:1;transform:none}}
-
-  .footer-intro{position:absolute;left:0;right:0;bottom:clamp(24px,5vh,42px);display:flex;align-items:center;gap:20px;padding:0 clamp(24px,6vw,60px);z-index:65}
+  @keyframes fade{to{opacity:1}}@keyframes fadeUp{to{opacity:1;transform:none}}
+  .footer{position:absolute;left:0;right:0;bottom:clamp(24px,5vh,42px);display:flex;align-items:center;gap:20px;padding:0 clamp(24px,6vw,60px);z-index:65}
   .prog{flex:1;height:1px;background:rgba(255,255,255,.08);position:relative;overflow:hidden}
-  .prog i{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--navy-3),var(--accent));
-    animation:load 4s cubic-bezier(.4,0,.2,1) forwards;box-shadow:0 0 12px rgba(77,159,255,.6)}
+  .prog i{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--navy-3),var(--accent));animation:load 4s cubic-bezier(.4,0,.2,1) forwards;box-shadow:0 0 12px rgba(77,159,255,.6)}
   @keyframes load{to{width:100%}}
-  .skip{background:transparent;border:1px solid var(--line-acc);color:var(--accent-soft);font-family:var(--sora);font-size:13px;
-    letter-spacing:.04em;padding:10px 20px;border-radius:999px;cursor:pointer;transition:.3s;white-space:nowrap}
+  .skip{background:transparent;border:1px solid var(--line-acc);color:var(--accent-soft);font-family:var(--sora);font-size:13px;letter-spacing:.04em;padding:10px 20px;border-radius:999px;cursor:pointer;transition:.3s;white-space:nowrap}
   .skip:hover,.skip:focus-visible{background:var(--accent);color:var(--navy);border-color:var(--accent);box-shadow:0 0 24px -4px rgba(90,169,255,.55);outline:0}
-
-  /* ============ HUB PROTOTIP ============ */
-  #portfolio{min-height:100vh;opacity:0;transition:opacity .65s ease;background:
-    radial-gradient(circle at 16% 0%,rgba(90,169,255,.12),transparent 32%),
-    radial-gradient(circle at 84% 15%,rgba(120,200,255,.07),transparent 28%),var(--navy)}
-  body.ready #portfolio{opacity:1}
-  .nav{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(22px,5vw,56px);
-    background:rgba(5,15,32,.8);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-  .nav .brand{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--accent)}
-  .nav .links{display:flex;gap:22px;font-size:13px}
-  .nav .links a{color:var(--muted);text-decoration:none;transition:.2s}
-  .nav .links a:hover{color:var(--accent)}
-  .nav .lang{border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:12px;color:var(--ink);cursor:pointer;background:rgba(255,255,255,.03)}
-  .hero{max-width:1080px;margin:0 auto;padding:clamp(54px,11vh,120px) clamp(22px,5vw,56px) 56px}
-  .hero .tag{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
-  .hero h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,6vw,64px);line-height:1.08;margin-top:18px;letter-spacing:-.01em}
-  .hero h2 em{color:var(--accent);font-style:italic}
-  .hero p{margin-top:22px;max-width:660px;color:var(--muted);font-size:16px;line-height:1.7}
-  .actions{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:11px 18px;background:rgba(255,255,255,.035);color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;cursor:pointer;transition:.25s}
-  .btn:hover{transform:translateY(-2px);border-color:var(--line-acc);background:rgba(90,169,255,.1)}
-  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--navy)}
-  .section-head{max-width:1080px;margin:0 auto;padding:0 clamp(22px,5vw,56px) 20px;display:flex;align-items:end;justify-content:space-between;gap:20px;flex-wrap:wrap}
-  .section-head h2{font-family:var(--serif);font-size:clamp(28px,4vw,44px);font-weight:300;letter-spacing:-.02em}
-  .section-head p{color:var(--muted);max-width:620px;line-height:1.7;font-size:14px}
-  .cards{max-width:1080px;margin:0 auto;padding:0 clamp(22px,5vw,56px) 100px;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
-  .pcard{background:linear-gradient(180deg,var(--navy-2),rgba(10,26,51,.5));border:1px solid var(--line);border-radius:16px;padding:24px;transition:.35s;box-shadow:var(--shadow);min-height:210px;display:flex;flex-direction:column}
-  .pcard:hover{transform:translateY(-5px);border-color:var(--line-acc);box-shadow:0 24px 50px -24px rgba(90,169,255,.35)}
-  .pcard .t{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--accent);text-transform:uppercase}
-  .pcard h3{font-family:var(--serif);font-size:22px;font-weight:400;margin:10px 0 7px}
-  .pcard p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:18px}
-  .pcard .btn{margin-top:auto;align-self:flex-start}
-  .note{max-width:1080px;margin:0 auto 40px;padding:16px clamp(22px,5vw,56px);color:var(--muted);line-height:1.7;font-size:14px}
-  .note-inner{border-left:3px solid var(--accent);background:rgba(90,169,255,.06);padding:14px 16px;border-radius:0 14px 14px 0}
-
-  @media(max-width:560px){.nav .links{display:none}.footer-intro{gap:12px}.skip{padding:9px 14px}.chips{max-width:340px;margin-left:auto;margin-right:auto}}
-  @media(prefers-reduced-motion:reduce){
-    #intro{display:none!important}
-    #portfolio{opacity:1!important}
-    .crest,.eyebrow,.role,.chip,.prog i,.name .ch{animation:none!important;opacity:1!important;transform:none!important;width:auto!important}
-    .name::after{display:none}.prog i{width:70%!important}.pcard:hover,.btn:hover{transform:none}
-  }
+  .loading-note{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:200;font:12px/1.4 var(--mono);color:var(--muted);opacity:0;transition:opacity .25s;text-align:center;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(5,15,32,.72);backdrop-filter:blur(10px)}
+  .loading-note.show{opacity:1}
+  @media(max-width:560px){.footer{gap:12px}.skip{padding:9px 14px}.chips{max-width:340px;margin-left:auto;margin-right:auto}}
+  @media(prefers-reduced-motion:reduce){#intro{display:none!important}.crest,.eyebrow,.role,.chip,.prog i,.name .ch{animation:none!important;opacity:1!important;transform:none!important;width:auto!important}.name::after{display:none}.prog i{width:70%!important}}
 </style>
 </head>
 <body>
-
 <section id="intro" aria-label="Intro cinematic Laura Andreea">
   <div class="aura a1"></div><div class="aura a2"></div>
   <canvas id="particles" aria-hidden="true"></canvas>
-
   <div class="stage">
     <div class="content" id="content">
       <div class="crest"><span class="rule"></span><span class="mono">L · A</span><span class="rule r"></span></div>
       <div class="eyebrow">Portfolio · 2026</div>
-      <h1 class="name" aria-label="Laura Andreea">
-        <span class="row first" data-text="Laura"></span>
-        <span class="row last" data-text="Andreea"></span>
-      </h1>
+      <h1 class="name" aria-label="Laura Andreea"><span class="row first" data-text="Laura"></span><span class="row last" data-text="Andreea"></span></h1>
       <div class="role">Front-End <b>CRM &amp; Dashboard</b> Developer <span class="sep">·</span> <b>RO</b> / <b>EN</b></div>
-      <div class="chips">
-        <span class="chip"><b>64</b> proiecte live</span>
-        <span class="chip"><b>6</b> module SaaS</span>
-        <span class="chip">Vite · React · TS</span>
-        <span class="chip">CI/CD automat</span>
-      </div>
+      <div class="chips"><span class="chip"><b>64</b> proiecte live</span><span class="chip"><b>6</b> module SaaS</span><span class="chip">Vite · React · TS</span><span class="chip">CI/CD automat</span></div>
     </div>
   </div>
-
-  <div class="curtain top"></div>
-  <div class="curtain bot"></div>
-
-  <div class="footer-intro">
-    <div class="prog"><i></i></div>
-    <button class="skip" id="skip" type="button">Intră în prototip →</button>
-  </div>
+  <div class="curtain top"></div><div class="curtain bot"></div>
+  <div class="footer"><div class="prog"><i></i></div><button class="skip" id="skip" type="button">Intră în portofoliu →</button></div>
 </section>
-
-<main id="portfolio">
-  <nav class="nav" aria-label="Navigare prototip">
-    <div class="brand">Laura Andreea</div>
-    <div class="links"><a href="#pages">Pagini</a><a href="intro-cinematic-standalone.html">Intro standalone</a><a href="Alpis Fusion CRM Demo.html">Alpis Demo</a></div>
-    <button class="lang" id="replay" type="button">Replay intro</button>
-  </nav>
-
-  <section class="hero">
-    <div class="tag">CRM · Marketing · Front-end</div>
-    <h2>Intro cinematic implementat direct în <em>index.</em></h2>
-    <p>Varianta nouă nu mai depinde de iframe: animația apare imediat la încărcarea paginii, are particule, reveal pe litere, cortină de tranziție, skip și replay. Toate paginile originale din prototip rămân disponibile mai jos.</p>
-    <div class="actions">
-      <button class="btn primary" type="button" id="replayHero">Replay intro</button>
-      <a class="btn" href="intro-cinematic-standalone.html">Deschide standalone</a>
-      <a class="btn" href="#pages">Vezi paginile incluse</a>
-    </div>
-  </section>
-
-  <section id="pages">
-    <div class="section-head">
-      <div>
-        <div class="tag">Prototype files</div>
-        <h2>Paginile incluse</h2>
-      </div>
-      <p>Am păstrat fișierele originale și le-am legat din hub, ca să poți testa rapid pe GitHub Pages.</p>
-    </div>
-
-    <div class="cards">
-      <article class="pcard"><span class="t">HTML</span><h3>Alpis Fusion CRM Demo</h3><p>Demo reel pentru Alpis Fusion CRM.</p><a class="btn" href="Alpis Fusion CRM Demo.html">Deschide</a></article>
-      <article class="pcard"><span class="t">HTML</span><h3>Intro Cinematic v1</h3><p>Varianta inițială a intro-ului cinematic.</p><a class="btn" href="Intro Cinematic v1.html">Deschide</a></article>
-      <article class="pcard"><span class="t">HTML</span><h3>Intro Cinematic bundle</h3><p>Bundle-ul cinematic complet.</p><a class="btn" href="Intro Cinematic.bundle.html">Deschide</a></article>
-      <article class="pcard"><span class="t">HTML</span><h3>Intro Cinematic</h3><p>Fișier HTML inclus în prototip.</p><a class="btn" href="Intro Cinematic.html">Deschide</a></article>
-      <article class="pcard"><span class="t">HTML</span><h3>Intro Portofoliu Laura Andreea</h3><p>Intro pentru portofoliu CRM &amp; Dashboard Developer.</p><a class="btn" href="Intro Portofoliu Laura Andreea.html">Deschide</a></article>
-      <article class="pcard"><span class="t">HTML</span><h3>Operațiunea Nucile de Aur</h3><p>Scenă/prototip inclus în arhiva inițială.</p><a class="btn" href="Operatiunea Nucile de Aur.html">Deschide</a></article>
-      <article class="pcard"><span class="t">HTML</span><h3>Storyboard</h3><p>Storyboard pentru prezentare video.</p><a class="btn" href="Storyboard.html">Deschide</a></article>
-      <article class="pcard"><span class="t">HTML</span><h3>Video ClientFlow</h3><p>Scenă video pentru ClientFlow.</p><a class="btn" href="Video-ClientFlow.html">Deschide</a></article>
-      <article class="pcard"><span class="t">HTML</span><h3>Video ImpactPath</h3><p>Scenă video pentru Impact Path.</p><a class="btn" href="Video-ImpactPath.html">Deschide</a></article>
-      <article class="pcard"><span class="t">HTML</span><h3>Video standalone src</h3><p>Sursă video standalone.</p><a class="btn" href="Video-standalone-src.html">Deschide</a></article>
-      <article class="pcard"><span class="t">HTML</span><h3>Video</h3><p>Video demo principal.</p><a class="btn" href="Video.html">Deschide</a></article>
-      <article class="pcard"><span class="t">Standalone</span><h3>Intro Cinematic Standalone</h3><p>Fișierul standalone păstrat separat pentru testare.</p><a class="btn" href="intro-cinematic-standalone.html">Deschide</a></article>
-    </div>
-
-    <div class="note"><div class="note-inner">Pentru GitHub Pages: urcă toate fișierele din arhivă în repo. Pagina principală este <strong>index.html</strong>. Intro-ul apare direct în index, iar varianta completă rămâne în <strong>intro-cinematic-standalone.html</strong>.</div></div>
-  </section>
-</main>
-
+<p class="loading-note" id="loadingNote">Se încarcă portofoliul real…</p>
 <script>
 (function(){
-  let done=false;
-  const intro=document.getElementById('intro');
-  const skip=document.getElementById('skip');
-  const content=document.getElementById('content');
-  const replay=document.getElementById('replay');
-  const replayHero=document.getElementById('replayHero');
-  const reduced=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let timer=null;
-
-  // typing pe litere: sparge fiecare .row în <span class="ch">
+  var STABLE_PORTFOLIO_URL = 'https://raw.githubusercontent.com/LaurAndreea10/codepen-portfolio/882fe5e15e3405806e6442ca242539d22e428f62/index.html';
+  var done=false, loadingStarted=false;
+  var intro=document.getElementById('intro');
+  var skip=document.getElementById('skip');
+  var content=document.getElementById('content');
+  var note=document.getElementById('loadingNote');
+  var reduced=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function buildLetters(){
-    document.querySelectorAll('.name .row').forEach(row=>row.innerHTML='');
-    const rows=document.querySelectorAll('.name .row');
-    let runStart=0.35;
-    const per=0.05;
-    rows.forEach((row)=>{
-      const txt=row.dataset.text || '';
-      [...txt].forEach((c,ci)=>{
-        const s=document.createElement('span');
+    document.querySelectorAll('.name .row').forEach(function(row){row.innerHTML='';});
+    var runStart=0.35, per=0.05;
+    document.querySelectorAll('.name .row').forEach(function(row){
+      var txt=row.dataset.text || '';
+      Array.from(txt).forEach(function(c,ci){
+        var s=document.createElement('span');
         s.className='ch';
-        s.textContent = c===' ' ? '\u00a0' : c;
+        s.textContent=c===' ' ? '\u00a0' : c;
         s.style.animationDelay=(runStart+ci*per)+'s';
         row.appendChild(s);
       });
@@ -264,92 +131,71 @@
     });
   }
   buildLetters();
-
-  // particule fine de lumină
-  const cv=document.getElementById('particles');
-  const ctx=cv.getContext ? cv.getContext('2d') : null;
-  let W=0,H=0,parts=[],raf=0;
-  function size(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
+  var cv=document.getElementById('particles'), ctx=cv && cv.getContext ? cv.getContext('2d') : null;
+  var W=0,H=0,parts=[],raf=0;
+  function size(){ if(!cv) return; W=cv.width=innerWidth; H=cv.height=innerHeight; }
   function initParticles(){
     if(!ctx) return;
-    size();
-    parts=[];
-    const count=innerWidth < 640 ? 34 : 60;
-    for(let i=0;i<count;i++){
-      parts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.8+.4,
-        vx:(Math.random()-.5)*.15,vy:(Math.random()-.5)*.15,a:Math.random()*.5+.1});
-    }
+    size(); parts=[];
+    var count=innerWidth < 640 ? 34 : 60;
+    for(var i=0;i<count;i++) parts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.8+.4,vx:(Math.random()-.5)*.15,vy:(Math.random()-.5)*.15,a:Math.random()*.5+.1});
   }
-  initParticles();
-  addEventListener('resize',()=>{size();initParticles();});
   function draw(){
     if(!ctx || done) return;
     ctx.clearRect(0,0,W,H);
-    parts.forEach(p=>{
-      p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle='rgba(130,185,255,'+p.a+')';ctx.fill();
+    parts.forEach(function(p){
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle='rgba(130,185,255,'+p.a+')'; ctx.fill();
     });
     raf=requestAnimationFrame(draw);
   }
-
-  // parallax subtil la mouse
-  let tx=0,ty=0,cx=0,cy=0,parallaxActive=true;
-  intro.addEventListener('mousemove',e=>{
-    tx=(e.clientX/innerWidth-.5)*18; ty=(e.clientY/innerHeight-.5)*18;
-  });
-  function parallaxLoop(){
+  initParticles(); addEventListener('resize',function(){size();initParticles();}); draw();
+  var tx=0,ty=0,cx=0,cy=0,parallaxActive=true;
+  intro.addEventListener('mousemove',function(e){tx=(e.clientX/innerWidth-.5)*18;ty=(e.clientY/innerHeight-.5)*18;});
+  (function loop(){
     if(!parallaxActive) return;
     cx+=(tx-cx)*.06; cy+=(ty-cy)*.06;
     if(content) content.style.transform='translate('+cx+'px,'+cy+'px)';
-    requestAnimationFrame(parallaxLoop);
+    requestAnimationFrame(loop);
+  })();
+  async function loadRealPortfolio(){
+    if(loadingStarted) return;
+    loadingStarted=true;
+    if(note) note.classList.add('show');
+    try{
+      var res=await fetch(STABLE_PORTFOLIO_URL,{cache:'no-store'});
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      var html=await res.text();
+      document.open();
+      document.write(html);
+      document.close();
+    }catch(err){
+      if(note){
+        note.classList.add('show');
+        note.innerHTML='Nu am putut încărca automat portofoliul. <a style="color:#9ccbff" href="https://github.com/LaurAndreea10/codepen-portfolio/blob/882fe5e15e3405806e6442ca242539d22e428f62/index.html">Deschide versiunea stabilă</a>';
+      }
+      console.error(err);
+    }
   }
-
   function finish(){
-    if(done)return;done=true;
+    if(done) return; done=true;
     intro.classList.add('closing');
-    requestAnimationFrame(()=>requestAnimationFrame(()=>intro.classList.add('done')));
-    setTimeout(()=>{
+    requestAnimationFrame(function(){requestAnimationFrame(function(){intro.classList.add('done');});});
+    setTimeout(function(){
       intro.classList.add('gone');
       intro.style.display='none';
-      document.body.classList.add('ready');
       parallaxActive=false;
       if(raf) cancelAnimationFrame(raf);
+      loadRealPortfolio();
     },1100);
-    if(timer) clearTimeout(timer);
   }
-
-  function restart(){
-    done=false;
-    parallaxActive=true;
-    tx=ty=cx=cy=0;
-    buildLetters();
-    initParticles();
-    intro.classList.remove('closing','done','gone');
-    intro.style.display='block';
-    document.body.classList.remove('ready');
-    draw();
-    parallaxLoop();
-    if(timer) clearTimeout(timer);
-    timer=setTimeout(finish,4000);
-  }
-
-  if(reduced){
-    intro.style.display='none';
-    document.body.classList.add('ready');
-  } else {
-    draw();
-    parallaxLoop();
-    timer=setTimeout(finish,4000);
-  }
-
-  skip.addEventListener('click',()=>{if(timer)clearTimeout(timer);finish();});
-  replay.addEventListener('click',restart);
-  replayHero.addEventListener('click',restart);
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(timer)clearTimeout(timer);finish();}});
-  intro.addEventListener('click',e=>{if(e.target===intro||e.target.classList.contains('stage')){if(timer)clearTimeout(timer);finish();}});
-  setTimeout(()=>{if(!done && !reduced)finish();},7500);
+  var timer=setTimeout(finish,4000);
+  if(reduced){clearTimeout(timer);loadRealPortfolio();}
+  skip.addEventListener('click',function(){clearTimeout(timer);finish();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){clearTimeout(timer);finish();}});
+  intro.addEventListener('click',function(e){if(e.target===intro||e.target.classList.contains('stage')){clearTimeout(timer);finish();}});
+  setTimeout(function(){if(!done && !reduced)finish();},7500);
 })();
 </script>
 </body>
