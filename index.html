@@ -634,7 +634,7 @@
         <div class="row">
           <span class="k">production</span><span class="v">Laura Andreea P.</span>
           <span class="k">role</span>           <span class="v">front-end · crm · dashboard</span>
-          <span class="k">date</span>           <span class="v acc">26.05.26</span>
+          <span class="k">date</span>           <span class="v acc" id="intro-date">26.05.26</span>
           <span class="k">scene</span>          <span class="v">01 / intro</span>
         </div>
       </div>
@@ -782,6 +782,68 @@
 </div>
 
 <script>
+// ---- LIVE DATA: date + stat counters ----
+(function(){
+  // 1. Date live: DD.MM.YY
+  var now = new Date();
+  var dd = String(now.getDate()).padStart(2,'0');
+  var mm = String(now.getMonth()+1).padStart(2,'0');
+  var yy = String(now.getFullYear()).slice(-2);
+  var dateEl = document.getElementById('intro-date');
+  if (dateEl) dateEl.textContent = dd + '.' + mm + '.' + yy;
+
+  // 2. Stat counter targets — inject a <style> with correct @keyframes values
+  //    This is the only cross-browser way since CSS registered properties
+  //    can't interpolate through var() in @keyframes.
+  var v1 = 64;  // CodePen projects
+  var v2 = 20;  // GitHub repos (updated from API below)
+  var v3 = 6;   // SaaS modules
+  var v4 = 10;  // Certs
+
+  function injectCounterStyles(repos) {
+    var existing = document.getElementById('intro-counter-css');
+    if (existing) existing.remove();
+    var s = document.createElement('style');
+    s.id = 'intro-counter-css';
+    s.textContent =
+      '@keyframes cnt1{to{--c1:' + v1 + '}}' +
+      '@keyframes cnt2{to{--c2:' + (repos || v2) + '}}' +
+      '@keyframes cnt3{to{--c3:' + v3 + '}}' +
+      '@keyframes cnt4{to{--c4:' + v4 + '}}';
+    document.head.appendChild(s);
+  }
+
+  // Initial inject with defaults
+  injectCounterStyles(v2);
+
+  // Try GitHub API — arrives before scene 3 at ~6.7s in most cases
+  var ghCacheKey = 'la_gh_repos';
+  var ghCacheTs  = 'la_gh_repos_ts';
+  var TTL = 6 * 60 * 60 * 1000;
+  try {
+    var cached = sessionStorage.getItem(ghCacheKey);
+    var ts = parseInt(sessionStorage.getItem(ghCacheTs) || '0');
+    if (cached && Date.now() - ts < TTL) {
+      injectCounterStyles(parseInt(cached));
+    } else {
+      fetch('https://api.github.com/users/LaurAndreea10', {
+        headers: { 'Accept': 'application/vnd.github.v3+json' }
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (d.public_repos > 0) {
+          injectCounterStyles(d.public_repos);
+          try {
+            sessionStorage.setItem(ghCacheKey, String(d.public_repos));
+            sessionStorage.setItem(ghCacheTs, String(Date.now()));
+          } catch(e){}
+        }
+      })
+      .catch(function(){});
+    }
+  } catch(e){}
+})();
+
 // ---- dust particles ----
 (function(){
   const dust = document.getElementById('dust');
