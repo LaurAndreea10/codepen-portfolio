@@ -45,20 +45,14 @@
   };
 
   function roDateShort(){
-    var parts = new Intl.DateTimeFormat('ro-RO', {
-      timeZone: INTRO_CONFIG.timezone,
-      day: '2-digit', month: '2-digit', year: '2-digit'
-    }).formatToParts(new Date());
+    var parts = new Intl.DateTimeFormat('ro-RO', {timeZone: INTRO_CONFIG.timezone, day: '2-digit', month: '2-digit', year: '2-digit'}).formatToParts(new Date());
     var map = {};
     parts.forEach(function(p){ map[p.type] = p.value; });
     return [map.day, map.month, map.year].join('.');
   }
 
   function roDateLong(){
-    return new Intl.DateTimeFormat('ro-RO', {
-      timeZone: INTRO_CONFIG.timezone,
-      day: '2-digit', month: 'long', year: 'numeric'
-    }).format(new Date());
+    return new Intl.DateTimeFormat('ro-RO', {timeZone: INTRO_CONFIG.timezone, day: '2-digit', month: 'long', year: 'numeric'}).format(new Date());
   }
 
   function currentYear(){
@@ -81,34 +75,22 @@
   function patchIntroDocument(doc, repoCount){
     if(!doc || !doc.body || doc.__liveIntroPatched) return;
     doc.__liveIntroPatched = true;
-
     var style = doc.createElement('style');
     style.id = 'live-intro-metrics-style';
     style.textContent = '.num1:before{content:attr(data-count)!important}.num2:before{content:attr(data-count)!important}.num3:before{content:attr(data-count)!important}.num4:before{content:attr(data-count)!important}';
     doc.head.appendChild(style);
-
-    function setText(selector, value){
-      var el = doc.querySelector(selector);
-      if(el) el.textContent = value;
-    }
-    function setCount(selector, value){
-      var el = doc.querySelector(selector);
-      if(el) el.setAttribute('data-count', String(value));
-    }
-
+    function setText(selector, value){ var el = doc.querySelector(selector); if(el) el.textContent = value; }
+    function setCount(selector, value){ var el = doc.querySelector(selector); if(el) el.setAttribute('data-count', String(value)); }
     setCount('.num1', INTRO_CONFIG.codepenProjects);
     setCount('.num2', repoCount);
     setCount('.num3', INTRO_CONFIG.alpisModules);
     setCount('.num4', INTRO_CONFIG.certifications);
-
-    var keys = Array.prototype.slice.call(doc.querySelectorAll('.slate .k'));
-    keys.forEach(function(k){
+    Array.prototype.slice.call(doc.querySelectorAll('.slate .k')).forEach(function(k){
       if((k.textContent || '').trim().toLowerCase() === 'date'){
         var v = k.nextElementSibling;
         if(v) v.textContent = roDateShort();
       }
     });
-
     setText('.s2 .eyebrow', '// portfolio · ' + currentYear());
     var bottomLeft = doc.querySelector('.lb.bot .l span:first-child');
     if(bottomLeft) bottomLeft.innerHTML = 'LIVE DATA&nbsp;·&nbsp;<span class="meta-hide">' + roDateLong() + '</span>';
@@ -122,8 +104,8 @@
     });
   }
 
-  function patchPortfolioHtml(html){
-    var nowCss = '\n<style id="now-history-tabs-patch">\n' +
+  function nowPatchCss(){
+    return '\n<style id="now-history-tabs-patch">\n' +
       '.now-tabbar{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 18px;padding:6px;border:1px solid var(--line,rgba(255,255,255,.1));border-radius:16px;background:var(--panel-2,rgba(255,255,255,.04))}\n' +
       '.now-tab{border:1px solid transparent;background:transparent;color:var(--muted,#9db0d4);border-radius:12px;padding:9px 13px;font:inherit;font-weight:800;cursor:pointer;transition:.2s}\n' +
       '.now-tab:hover,.now-tab:focus-visible{color:var(--text,#eef4ff);border-color:var(--line,rgba(255,255,255,.16));outline:0}\n' +
@@ -134,9 +116,12 @@
       '.now-kicker{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--accent,#4f8cff);margin-bottom:8px}\n' +
       '.now-pill-mini{display:inline-flex;margin-left:8px;padding:2px 8px;border-radius:999px;border:1px solid rgba(79,140,255,.28);background:rgba(79,140,255,.1);font-size:.72rem;color:var(--accent,#4f8cff);font-weight:800;vertical-align:middle}\n' +
       '.now-subtitle{margin:0 0 14px;color:var(--muted,#9db0d4);line-height:1.7}.now-note{margin-top:16px;color:var(--muted,#9db0d4);font-size:.92rem;line-height:1.7}\n' +
+      '.thirty-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:16px 0}.thirty-card{padding:14px;border:1px solid var(--line,rgba(255,255,255,.1));border-radius:14px;background:linear-gradient(135deg,rgba(79,140,255,.12),rgba(255,255,255,.03));line-height:1.6}.thirty-card b{display:block;color:var(--text,#eef4ff);margin-bottom:5px}.thirty-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.thirty-actions a{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;border:1px solid rgba(79,140,255,.28);background:rgba(79,140,255,.08);color:var(--accent,#4f8cff);font-weight:900;text-decoration:none}\n' +
       '</style>\n';
+  }
 
-    var nowHtml = '\n    <section id="now" aria-labelledby="now-title">\n' +
+  function nowSectionHtml(){
+    return '\n    <section id="now" aria-labelledby="now-title">\n' +
       '      <div class="container">\n' +
       '        <article class="about-card glass">\n' +
       '          <div class="now-head">\n' +
@@ -150,6 +135,7 @@
       '            <button class="now-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="now-current" data-now-tab="current">În curs</button>\n' +
       '            <button class="now-tab" type="button" role="tab" aria-selected="false" aria-controls="now-history" data-now-tab="history">Istoric</button>\n' +
       '            <button class="now-tab" type="button" role="tab" aria-selected="false" aria-controls="now-next" data-now-tab="next">Urmează</button>\n' +
+      '            <button class="now-tab" type="button" role="tab" aria-selected="false" aria-controls="now-30" data-now-tab="thirty">30 de secunde</button>\n' +
       '          </div>\n' +
       '          <div class="now-panel is-active" id="now-current" role="tabpanel" data-now-panel="current">\n' +
       '            <p class="now-subtitle">Lucruri active, vizibile ca roadmap curent — nu le mai amestec cu livrările finalizate.</p>\n' +
@@ -174,34 +160,38 @@
       '              <li>↗ <strong>Mini case study</strong> — explicație scurtă: problemă, decizie, rezultat, ce aș face diferit.</li>\n' +
       '            </ul>\n' +
       '          </div>\n' +
+      '          <div class="now-panel" id="now-30" role="tabpanel" data-now-panel="thirty">\n' +
+      '            <p class="now-subtitle"><strong>30 de secunde:</strong> citire rapidă pentru cine intră prima dată și vrea să înțeleagă imediat direcția portofoliului.</p>\n' +
+      '            <div class="thirty-grid">\n' +
+      '              <div class="thirty-card"><b>1. Direcție clară</b>Front-end pentru CRM-uri, dashboard-uri și Marketing-Tech tools — nu „de toate”.</div>\n' +
+      '              <div class="thirty-card"><b>2. Dovadă practică</b>64 experimente publice + proiecte live cu GitHub Pages, fără backend obligatoriu.</div>\n' +
+      '              <div class="thirty-card"><b>3. Logică de produs</b>Fiecare demo are flow, status, date, export sau interacțiune reală — nu doar UI static.</div>\n' +
+      '              <div class="thirty-card"><b>4. Ce verifici prima dată</b>Alpis Fusion CRM, ClientFlow, Marketing OS și case study-urile.</div>\n' +
+      '            </div>\n' +
+      '            <div class="thirty-actions"><a href="#projects">Top proiecte →</a><a href="#marketing-tech">Marketing-Tech →</a><a href="projects/alpis-fusion-crm.html">Case study →</a><a href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">GitHub →</a></div>\n' +
+      '          </div>\n' +
       '          <div class="now-tags" aria-label="Tehnologii active acum">\n' +
       '            <span class="now-tag">Marketing-Tech</span><span class="now-tag">Benchmarks</span><span class="now-tag">UTM</span><span class="now-tag">Vanilla JS</span><span class="now-tag">localStorage</span><span class="now-tag">RO/EN</span>\n' +
       '          </div>\n' +
-      '          <p class="now-note">Secțiune de tip now page, cu tab separat pentru istoric ca să nu mai pară că livrările finalizate sunt încă „în curs”.</p>\n' +
+      '          <p class="now-note">Secțiune de tip now page, cu tab separat pentru istoric și sumar de 30 de secunde pentru scanare rapidă.</p>\n' +
       '        </article>\n' +
       '      </div>\n' +
       '    </section>\n';
+  }
 
-    var nowScript = '\n<script id="now-history-tabs-script">\n' +
-      '(function(){\n' +
-      '  function ready(fn){ if(document.readyState!=="loading") fn(); else document.addEventListener("DOMContentLoaded",fn); }\n' +
-      '  ready(function(){\n' +
-      '    var d=document.getElementById("now-live-date");\n' +
-      '    if(d){ var now=new Date(); d.dateTime=now.toISOString().slice(0,10); d.textContent=new Intl.DateTimeFormat("ro-RO",{day:"2-digit",month:"long",year:"numeric"}).format(now); }\n' +
-      '    var tabs=[].slice.call(document.querySelectorAll("[data-now-tab]"));\n' +
-      '    var panels=[].slice.call(document.querySelectorAll("[data-now-panel]"));\n' +
-      '    tabs.forEach(function(tab){ tab.addEventListener("click",function(){\n' +
-      '      var key=tab.getAttribute("data-now-tab");\n' +
-      '      tabs.forEach(function(t){ var on=t===tab; t.classList.toggle("is-active",on); t.setAttribute("aria-selected",on?"true":"false"); });\n' +
-      '      panels.forEach(function(p){ p.classList.toggle("is-active",p.getAttribute("data-now-panel")===key); });\n' +
-      '    }); });\n' +
-      '  });\n' +
-      '})();\n' +
-      '<\\/script>\n';
+  function tabsScript(){
+    return '<script id="now-history-tabs-script">(function(){function init(){var d=document.getElementById("now-live-date");if(d){var now=new Date();d.dateTime=now.toISOString().slice(0,10);d.textContent=new Intl.DateTimeFormat("ro-RO",{day:"2-digit",month:"long",year:"numeric"}).format(now);}document.addEventListener("click",function(e){var tab=e.target.closest&&e.target.closest("[data-now-tab]");if(!tab)return;var wrap=tab.closest("#now");if(!wrap)return;var key=tab.getAttribute("data-now-tab");wrap.querySelectorAll("[data-now-tab]").forEach(function(t){var on=t===tab;t.classList.toggle("is-active",on);t.setAttribute("aria-selected",on?"true":"false");});wrap.querySelectorAll("[data-now-panel]").forEach(function(p){p.classList.toggle("is-active",p.getAttribute("data-now-panel")===key);});});}if(document.readyState!=="loading")init();else document.addEventListener("DOMContentLoaded",init);})();</scr' + 'ipt>';
+  }
 
-    html = html.replace('</head>', nowCss + '</head>');
-    html = html.replace(/<section id="now"[\s\S]*?<div class="section-divider"><\/div>\s*<section id="marketing-tech"/, nowHtml + '\n\n    <div class="section-divider"></div>\n\n    <section id="marketing-tech"');
-    html = html.replace('</body>', nowScript + '</body>');
+  function patchPortfolioHtml(html){
+    html = html.replace('</head>', nowPatchCss() + '</head>');
+    var nowBlock = nowSectionHtml() + '\n\n    <div class="section-divider"></div>\n\n';
+    var replaced = false;
+    html = html.replace(/<section id="now"[\s\S]*?<div class="section-divider"><\/div>\s*(?=<section id="marketing-tech")/, function(){ replaced = true; return nowBlock; });
+    if(!replaced){
+      html = html.replace(/<section id="marketing-tech"/, nowBlock + '<section id="marketing-tech"');
+    }
+    html = html.replace('</body>', tabsScript() + '</body>');
     return html;
   }
 
@@ -234,9 +224,7 @@
     if(finished) return;
     finished = true;
     body.classList.add('reveal');
-    setTimeout(function(){
-      if(intro) intro.style.display='none';
-    }, 1450);
+    setTimeout(function(){ if(intro) intro.style.display='none'; }, 1450);
   }
 
   window.addEventListener('message', function(event){
