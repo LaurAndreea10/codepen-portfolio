@@ -155,96 +155,753 @@
 </head>
 <body>
 
+
   <!-- ============================================================
-       INTRO CINEMATIC OVERLAY
-       - position: fixed over full viewport, z-index: 9999
-       - auto-dismiss after 3.4s
-       - skip on click / keydown / touch
-       - sessionStorage: skip on return visits
-       - prefers-reduced-motion: skip immediately
+       INTRO CINEMATIC OVERLAY — extracted from Intro_Cinematic_Standalone
+       13s · 5 scenes · auto-dismiss + skip
+       sessionStorage: skip on return visits
+       prefers-reduced-motion: skip immediately
   ============================================================ -->
+  <style id="intro-css">
+    /* ---- Overlay container ---- */
+    body.intro-active { overflow: hidden !important; }
+    #intro-overlay {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 2147483647 !important;
+      background: #04080f;
+      overflow: hidden;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      cursor: default;
+      transform: translateZ(0);
+    }
+    #intro-overlay.intro-hidden {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+    /* ---- Scoped intro CSS ---- */
+    #intro-overlay{
+  --bg:#04080f;
+  --bg-2:#07101f;
+  --bg-glow:#0d1a30;
+  --fg:#f1f4fa;
+  --fg-2:#c4cbd9;
+  --muted:#8089a0;
+  --dim:#3a4256;
+  --accent:#6aa6ff;
+  --accent-2:#9cc2ff;
+  --accent-soft:rgba(106,166,255,0.18);
+  --accent-glow:rgba(106,166,255,0.55);
+  --line:rgba(255,255,255,0.10);
+  --line-2:rgba(255,255,255,0.22);
+  --mono:'JetBrains Mono', ui-monospace, monospace;
+  --display:'Space Grotesk', system-ui, sans-serif;
+  --body:'Inter', system-ui, sans-serif;
+  --T:13s;
+
+  /* responsive type scale */
+  --t-hero:   clamp(72px, 17.5vmin, 280px);
+  --t-h2:     clamp(40px, 8.5vmin, 128px);
+  --t-tag:    clamp(34px, 7.2vmin, 108px);
+  --t-stat:   clamp(58px, 14vmin, 180px);
+  --t-url:    clamp(26px, 5.5vmin, 84px);
+  --t-eye:    clamp(11px, 1.6vmin, 18px);
+  --t-mono:   clamp(11px, 1.4vmin, 16px);
+  --t-body:   clamp(15px, 2.1vmin, 24px);
+
+  --pad:      clamp(20px, 5vmin, 96px);
+  --lb:       clamp(28px, 6.5vmin, 96px);
+}
+#intro-overlay .viewport{
+  position:fixed;inset:0;display:grid;place-items:center;background:#000;
+  perspective:1200px;
+}
+#intro-overlay .stage{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 45%, var(--bg-glow) 0%, var(--bg-2) 55%, var(--bg) 100%);
+  overflow:hidden;
+  transform-origin:center center;
+  animation: stageZoom var(--T) ease-in-out infinite;
+}
+
+@keyframes stageZoom{
+  0%   {transform:scale(1.00)}
+  100% {transform:scale(1.045)}
+}
+#intro-overlay /* ---------------- letterbox ---------------- */
+.lb{position:absolute;left:0;right:0;height:var(--lb);background:#000;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);
+  font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.16em;text-transform:uppercase}
+#intro-overlay .lb.top{top:0;transform:translateY(-100%);animation:lbTop 0.9s cubic-bezier(.7,0,.3,1) forwards}
+#intro-overlay .lb.bot{bottom:0;transform:translateY(100%);animation:lbBot 0.9s cubic-bezier(.7,0,.3,1) forwards}
+
+@keyframes lbTop{to{transform:translateY(0)}}
+
+@keyframes lbBot{to{transform:translateY(0)}}
+#intro-overlay .lb .l, #intro-overlay .lb .r{ display:flex; align-items:center; gap:14px; opacity:0; animation:lbContent 0.4s 1.0s ease-out forwards }
+#intro-overlay .lb .l .rec{width:8px;height:8px;border-radius:50%;background:#ff4a52;box-shadow:0 0 12px rgba(255,74,82,0.7);animation:blink 1.2s steps(2) infinite}
+#intro-overlay .lb .l b, #intro-overlay .lb .r b{color:var(--fg-2);font-weight:500;letter-spacing:0.10em}
+#intro-overlay .lb .r .tc{font-variant-numeric:tabular-nums;color:var(--fg)}
+
+@keyframes blink{50%{opacity:0.25}}
+
+@keyframes lbContent{to{opacity:1}}
+#intro-overlay /* ---------------- HUD ---------------- */
+.hud{position:absolute;inset:calc(var(--lb) + var(--pad)) var(--pad);z-index:20;pointer-events:none}
+#intro-overlay .hud .crosshair{position:absolute;width:clamp(14px,2.3vmin,26px);height:clamp(14px,2.3vmin,26px);border:1px solid var(--line-2);opacity:0;animation:hudIn 0.5s 0.9s ease-out forwards}
+#intro-overlay .hud .crosshair.tl{top:0;left:0;border-right:none;border-bottom:none}
+#intro-overlay .hud .crosshair.tr{top:0;right:0;border-left:none;border-bottom:none}
+#intro-overlay .hud .crosshair.bl{bottom:0;left:0;border-right:none;border-top:none}
+#intro-overlay .hud .crosshair.br{bottom:0;right:0;border-left:none;border-top:none;animation-delay:1.05s}
+#intro-overlay .hud .crosshair.tr{animation-delay:1.0s}
+#intro-overlay .hud .crosshair.bl{animation-delay:1.0s}
+
+@keyframes hudIn{to{opacity:1}}
+#intro-overlay /* ---------------- background grid ---------------- */
+.gridwrap{position:absolute;inset:0;z-index:5;opacity:0;animation:gridFade 1.2s 0.5s ease-out forwards}
+
+@keyframes gridFade{to{opacity:0.55}}
+#intro-overlay .gridwrap svg{width:100%;height:100%;display:block}
+#intro-overlay .gridline{stroke:rgba(255,255,255,0.05);stroke-width:1;fill:none;
+  stroke-dasharray:3000;stroke-dashoffset:3000;animation:draw 1.8s 0.6s cubic-bezier(.6,0,.3,1) forwards;vector-effect:non-scaling-stroke}
+#intro-overlay .gridline.v{animation-duration:1.2s}
+#intro-overlay .gridline.accent{stroke:rgba(106,166,255,0.32);stroke-width:1.5}
+
+@keyframes draw{to{stroke-dashoffset:0}}
+#intro-overlay /* ---------------- floating dust particles ---------------- */
+.dust{position:absolute;inset:0;z-index:8;pointer-events:none;opacity:0;animation:dustIn 1.5s 1.2s ease-out forwards}
+
+@keyframes dustIn{to{opacity:0.55}}
+#intro-overlay .dust span{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--accent);box-shadow:0 0 4px var(--accent-glow);
+  animation:floaty 9s linear infinite}
+#intro-overlay .dust span:nth-child(odd){background:#fff;box-shadow:0 0 3px rgba(255,255,255,0.5);width:1.5px;height:1.5px}
+
+@keyframes floaty{
+  0%{transform:translateY(20vh) translateX(0);opacity:0}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{transform:translateY(-110vh) translateX(var(--dx,10px));opacity:0}
+}
+#intro-overlay /* ---------------- light streak (scene transitions) ---------------- */
+.streak{position:absolute;left:-30%;top:0;bottom:0;width:60%;z-index:35;pointer-events:none;opacity:0;
+  background:linear-gradient(110deg, transparent 30%, rgba(106,166,255,0.35) 45%, rgba(255,255,255,0.55) 50%, rgba(106,166,255,0.35) 55%, transparent 70%);
+  filter:blur(8px);mix-blend-mode:screen;
+  animation: streakSweep var(--T) ease-in-out infinite;
+}
+
+@keyframes streakSweep{
+  0%, 18%   { opacity:0; transform:translateX(0) skewX(-12deg) }
+  20%       { opacity:1; }
+  25%       { opacity:0; transform:translateX(260vw) skewX(-12deg) }
+  /* hold */
+  38%       { opacity:0; transform:translateX(-30vw) skewX(-12deg) }
+  42%       { opacity:1; }
+  47%       { opacity:0; transform:translateX(260vw) skewX(-12deg) }
+  58%       { opacity:0; transform:translateX(-30vw) skewX(-12deg) }
+  62%       { opacity:1; }
+  67%       { opacity:0; transform:translateX(260vw) skewX(-12deg) }
+  78%       { opacity:0; transform:translateX(-30vw) skewX(-12deg) }
+  82%       { opacity:1; }
+  87%       { opacity:0; transform:translateX(260vw) skewX(-12deg) }
+  100%      { opacity:0; transform:translateX(260vw) skewX(-12deg) }
+}
+#intro-overlay /* ---------------- scenes ---------------- */
+.scenes{position:absolute;inset:0;display:grid;place-items:center;z-index:25}
+#intro-overlay .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;text-align:center;padding:0 var(--pad)}
+
+
+@keyframes show{
+  0%{opacity:0;transform:translateY(14px) scale(0.98)}
+  10%{opacity:1;transform:translateY(0) scale(1)}
+  85%{opacity:1;transform:translateY(0) scale(1)}
+  100%{opacity:0;transform:translateY(-10px) scale(1.02)}
+}
+#intro-overlay /* ---- SCENE 1: slate ---- */
+.s1{animation: show 2.0s 1.0s both;}
+#intro-overlay .s1 .slate{
+  display:flex;flex-direction:column;align-items:stretch;gap:clamp(14px,2.6vmin,28px);
+  border:1px solid var(--line-2);
+  padding:clamp(28px,5vmin,52px) clamp(36px,7vmin,80px) clamp(32px,5.5vmin,56px);
+  border-radius:6px;background:rgba(255,255,255,0.015);
+  position:relative;min-width:min(420px, 88vw);max-width:min(640px, 92vw);
+  backdrop-filter: blur(2px);
+}
+#intro-overlay .s1 .slate::before, #intro-overlay .s1 .slate::after{
+  content:"";position:absolute;left:-1px;right:-1px;height:clamp(12px,2vmin,20px);
+  background:repeating-linear-gradient(135deg, var(--fg) 0 14px, #000 14px 28px);
+  opacity:0.9;
+}
+#intro-overlay .s1 .slate::before{top:-1px}
+#intro-overlay .s1 .slate::after{bottom:-1px}
+#intro-overlay .s1 .slate .sub{font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.4em;text-transform:uppercase;text-align:center}
+#intro-overlay .s1 .slate .big{font-family:var(--display);font-weight:600;font-size:clamp(48px,11vmin,128px);color:var(--fg);letter-spacing:-0.02em;line-height:1;text-align:center}
+#intro-overlay .s1 .slate .row{display:grid;grid-template-columns:auto 1fr;gap:clamp(8px,1.3vmin,14px) clamp(20px,3.5vmin,40px);
+  font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;
+  padding-top:clamp(8px,1.5vmin,16px);border-top:1px dashed var(--line)}
+#intro-overlay .s1 .slate .row .k{color:var(--muted);text-align:right}
+#intro-overlay .s1 .slate .row .v{color:var(--fg);font-weight:500;text-align:left}
+#intro-overlay .s1 .slate .row .v.acc{color:var(--accent)}
+#intro-overlay /* ---- SCENE 2: monogram + name reveal ---- */
+.s2{animation: showStill 2.8s 3.3s both;}
+
+@keyframes showStill{
+  0%{opacity:0}
+  6%{opacity:1}
+  92%{opacity:1}
+  100%{opacity:0}
+}
+#intro-overlay .s2 .mono-wrap{position:relative;display:grid;place-items:center;margin-bottom:clamp(20px,4vmin,48px)}
+#intro-overlay .s2 .mono{position:relative;width:clamp(140px,28vmin,360px);height:clamp(140px,28vmin,360px)}
+#intro-overlay .s2 .mono svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#intro-overlay .s2 .ring{fill:none;stroke:var(--accent);stroke-width:1.5;vector-effect:non-scaling-stroke;
+  stroke-dasharray:600;stroke-dashoffset:600}
+#intro-overlay .s2 .ring.r1{animation:ringDraw 1.0s 3.4s cubic-bezier(.6,0,.3,1) forwards}
+#intro-overlay .s2 .ring.r2{animation:ringDraw 1.2s 3.55s cubic-bezier(.6,0,.3,1) forwards;stroke:rgba(106,166,255,0.5)}
+#intro-overlay .s2 .ring.r3{animation:ringDraw 1.0s 3.7s cubic-bezier(.6,0,.3,1) forwards;stroke:rgba(106,166,255,0.25)}
+
+@keyframes ringDraw{to{stroke-dashoffset:0}}
+#intro-overlay .s2 .pulse{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--accent);opacity:0;animation:pulseOut 2.2s 4.4s ease-out infinite}
+#intro-overlay .s2 .pulse.p2{animation-delay:4.7s}
+#intro-overlay .s2 .pulse.p3{animation-delay:5.0s}
+
+@keyframes pulseOut{
+  0%{transform:scale(0.85);opacity:0.7}
+  100%{transform:scale(1.7);opacity:0}
+}
+#intro-overlay .s2 .glyph{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:clamp(70px,14vmin,180px);color:var(--fg);letter-spacing:-0.04em;line-height:1;opacity:0;transform:scale(0.6);animation:glyphIn 0.9s 3.85s cubic-bezier(.2,.9,.2,1) forwards}
+
+@keyframes glyphIn{
+  0%{opacity:0;transform:scale(0.4)}
+  60%{opacity:1;transform:scale(1.08)}
+  100%{opacity:1;transform:scale(1)}
+}
+#intro-overlay .s2 .glyph .acc-l{color:var(--accent)}
+#intro-overlay .s2 .eyebrow{font-family:var(--mono);font-size:var(--t-eye);letter-spacing:0.55em;color:var(--accent);text-transform:uppercase;margin-bottom:clamp(14px,2.5vmin,28px);opacity:0;animation:fadeUp 0.6s 3.35s forwards}
+#intro-overlay .s2 .name{font-family:var(--display);font-weight:600;font-size:clamp(44px,11vmin,140px);line-height:0.95;letter-spacing:-0.045em;color:var(--fg);display:flex;flex-direction:column;align-items:center;gap:clamp(2px,0.5vmin,8px);margin:0}
+#intro-overlay .s2 .name span{display:block;overflow:hidden;line-height:1.0}
+#intro-overlay .s2 .name span i{display:inline-block;font-style:normal;transform:translateY(110%);animation:slideUp 0.8s cubic-bezier(.2,.8,.2,1) forwards}
+#intro-overlay .s2 .name span:nth-child(1) i{animation-delay:4.55s}
+#intro-overlay .s2 .name span:nth-child(2) i{animation-delay:4.75s;color:var(--accent)}
+
+@keyframes slideUp{to{transform:translateY(0)}}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+#intro-overlay .s2 .rule{width:0;height:1px;background:var(--accent);margin:clamp(20px,3.5vmin,38px) 0 clamp(16px,2.5vmin,28px);animation:ruleGrow 1.2s 5.0s cubic-bezier(.6,0,.3,1) forwards;box-shadow:0 0 8px var(--accent-glow)}
+
+@keyframes ruleGrow{to{width:min(560px, 70vw)}}
+#intro-overlay .s2 .role{font-family:var(--mono);font-size:var(--t-body);color:var(--fg-2);letter-spacing:0.18em;text-transform:uppercase;opacity:0;animation:fadeUp 0.7s 5.4s forwards;max-width:90vw}
+#intro-overlay .s2 .role b{color:var(--fg);font-weight:600}
+#intro-overlay /* ---- SCENE 3: stat tickers with radar pulses ---- */
+.s3{animation:showStill 2.4s 6.4s both;}
+#intro-overlay .s3 .eyebrow{font-family:var(--mono);font-size:var(--t-eye);letter-spacing:0.45em;color:var(--accent);text-transform:uppercase;margin-bottom:clamp(28px,4vmin,56px)}
+#intro-overlay .s3 .figs{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(2px,0.5vmin,4px);
+  border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);
+  width:100%;max-width:min(1500px, 96vw)}
+#intro-overlay .s3 .fig{padding:clamp(20px,4.5vmin,50px) clamp(14px,2.8vmin,32px);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;align-items:flex-start;gap:clamp(8px,1.4vmin,16px);position:relative;overflow:hidden}
+#intro-overlay .s3 .fig:last-child{border-right:none}
+#intro-overlay .s3 .fig .big{font-family:var(--display);font-weight:600;font-size:var(--t-stat);line-height:0.85;letter-spacing:-0.045em;color:var(--fg);font-variant-numeric:tabular-nums;position:relative;z-index:2}
+#intro-overlay .s3 .fig.acc .big{color:var(--accent);text-shadow:0 0 24px var(--accent-soft)}
+#intro-overlay .s3 .fig .big .plus{color:var(--muted);font-size:0.4em;vertical-align:top;margin-left:2px;letter-spacing:0}
+#intro-overlay .s3 .fig .lbl{font-family:var(--mono);font-size:var(--t-mono);color:var(--accent);text-transform:uppercase;letter-spacing:0.14em;position:relative;z-index:2}
+#intro-overlay .s3 .fig .meta{font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;position:relative;z-index:2}
+#intro-overlay /* radar pulse rings on stats */
+.s3 .fig .radar{position:absolute;left:-20%;bottom:-30%;width:clamp(120px,18vmin,260px);height:clamp(120px,18vmin,260px);
+  border-radius:50%;border:1px solid var(--accent);opacity:0;
+  animation:radar 2.4s 7.0s ease-out infinite}
+#intro-overlay .s3 .fig:nth-child(2) .radar{animation-delay:7.15s}
+#intro-overlay .s3 .fig:nth-child(3) .radar{animation-delay:7.3s}
+#intro-overlay .s3 .fig:nth-child(4) .radar{animation-delay:7.45s}
+
+@keyframes radar{
+  0%{transform:scale(0.4);opacity:0.55}
+  100%{transform:scale(2.4);opacity:0}
+}
+#intro-overlay /* CSS @property counters */
+@property --c1{ syntax: '<integer>'; initial-value: 0; inherits: false; }
+#intro-overlay @property --c2{ syntax: '<integer>'; initial-value: 0; inherits: false; }
+#intro-overlay @property --c3{ syntax: '<integer>'; initial-value: 0; inherits: false; }
+#intro-overlay @property --c4{ syntax: '<integer>'; initial-value: 0; inherits: false; }
+#intro-overlay .s3 .num1{counter-reset:c1 var(--c1);animation:cnt1 1.6s 6.7s cubic-bezier(.2,.8,.2,1) forwards}
+#intro-overlay .s3 .num1::before{content:counter(c1)}
+#intro-overlay .s3 .num2{counter-reset:c2 var(--c2);animation:cnt2 1.6s 6.85s cubic-bezier(.2,.8,.2,1) forwards}
+#intro-overlay .s3 .num2::before{content:counter(c2)}
+#intro-overlay .s3 .num3{counter-reset:c3 var(--c3);animation:cnt3 1.3s 7.0s cubic-bezier(.2,.8,.2,1) forwards}
+#intro-overlay .s3 .num3::before{content:counter(c3)}
+#intro-overlay .s3 .num4{counter-reset:c4 var(--c4);animation:cnt4 1.5s 7.15s cubic-bezier(.2,.8,.2,1) forwards}
+#intro-overlay .s3 .num4::before{content:counter(c4)}
+
+@keyframes cnt1{to{--c1:64}}
+
+@keyframes cnt2{to{--c2:20}}
+
+@keyframes cnt3{to{--c3:6}}
+
+@keyframes cnt4{to{--c4:10}}
+#intro-overlay /* ---- SCENE 4: tagline word-by-word ---- */
+.s4{animation:showStill 2.4s 9.0s both;}
+#intro-overlay .s4 .quote{position:absolute;top:0;left:var(--pad);font-family:var(--display);font-size:clamp(120px,22vmin,260px);color:rgba(106,166,255,0.16);line-height:0.9;font-weight:600;pointer-events:none;opacity:0;animation:fadeUp 0.6s 9.05s forwards}
+#intro-overlay .s4 h2{font-family:var(--display);font-weight:500;font-size:var(--t-tag);line-height:1.08;letter-spacing:-0.025em;color:var(--fg);text-align:center;max-width:min(1500px,94vw);margin:0;display:flex;flex-wrap:wrap;justify-content:center;gap:0.25em 0.32em}
+#intro-overlay .s4 h2 .w{display:inline-block;overflow:hidden;line-height:1.08}
+#intro-overlay .s4 h2 .w i{display:inline-block;font-style:normal;transform:translateY(110%);animation:slideUp 0.6s cubic-bezier(.2,.8,.2,1) forwards}
+#intro-overlay .s4 h2 .w:nth-child(1) i{animation-delay:9.15s}
+#intro-overlay .s4 h2 .w:nth-child(2) i{animation-delay:9.25s}
+#intro-overlay .s4 h2 .w:nth-child(3) i{animation-delay:9.35s}
+#intro-overlay .s4 h2 .w:nth-child(4) i{animation-delay:9.45s; color:var(--accent)}
+#intro-overlay .s4 h2 .w:nth-child(5) i{animation-delay:9.55s}
+#intro-overlay .s4 h2 .w:nth-child(6) i{animation-delay:9.65s}
+#intro-overlay .s4 h2 .w:nth-child(7) i{animation-delay:9.75s}
+#intro-overlay .s4 h2 .w:nth-child(8) i{animation-delay:9.85s}
+#intro-overlay .s4 .sig{margin-top:clamp(18px,3.5vmin,46px);font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.3em;text-transform:uppercase;opacity:0;animation:fadeUp 0.6s 10.4s forwards}
+#intro-overlay /* ---- SCENE 5: URL outro ---- */
+.s5{animation:showStill 2.6s 11.4s both;}
+#intro-overlay .s5 .ring-bg{position:absolute;left:50%;top:50%;width:clamp(200px,40vmin,520px);height:clamp(200px,40vmin,520px);
+  border-radius:50%;border:1px solid var(--line-2);transform:translate(-50%,-50%) scale(0.4);opacity:0;
+  animation:ringBgIn 1.4s 11.5s cubic-bezier(.2,.9,.2,1) forwards}
+#intro-overlay .s5 .ring-bg.r2{border-color:var(--accent);opacity:0;animation-delay:11.65s;animation-duration:1.6s}
+
+@keyframes ringBgIn{
+  0%{transform:translate(-50%,-50%) scale(0.4);opacity:0}
+  60%{opacity:0.4}
+  100%{transform:translate(-50%,-50%) scale(1);opacity:0.18}
+}
+#intro-overlay .s5 .mark{display:flex;align-items:center;gap:clamp(10px,1.8vmin,20px);font-family:var(--mono);font-size:var(--t-mono);color:var(--accent);letter-spacing:0.4em;text-transform:uppercase;margin-bottom:clamp(18px,3vmin,34px);opacity:0;animation:fadeUp 0.6s 11.55s forwards;position:relative;z-index:2}
+#intro-overlay .s5 .mark .d{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent-glow)}
+#intro-overlay .s5 .url{font-family:var(--display);font-weight:500;font-size:var(--t-url);color:var(--fg);letter-spacing:-0.02em;line-height:1.12;text-align:center;opacity:0;animation:fadeUp 0.7s 11.75s forwards;position:relative;z-index:2;max-width:96vw;word-break:break-word}
+#intro-overlay .s5 .url span{color:var(--accent)}
+#intro-overlay .s5 .cta{margin-top:clamp(26px,4.5vmin,54px);display:flex;flex-wrap:wrap;gap:clamp(12px,2vmin,22px);justify-content:center;align-items:center;font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.24em;text-transform:uppercase;opacity:0;animation:fadeUp 0.6s 12.0s forwards;position:relative;z-index:2}
+#intro-overlay .s5 .cta a{color:var(--fg-2);text-decoration:none;border-bottom:1px solid var(--line-2);padding-bottom:6px;transition:color .2s, border-color .2s;pointer-events:auto}
+#intro-overlay .s5 .cta a:hover{color:var(--accent);border-color:var(--accent)}
+#intro-overlay .s5 .cta .sep{opacity:0.5}
+#intro-overlay /* ---------------- film grain & vignette ---------------- */
+.grain{position:absolute;inset:0;pointer-events:none;z-index:55;opacity:0.07;mix-blend-mode:overlay}
+#intro-overlay .grain svg{width:100%;height:100%}
+#intro-overlay .vignette{position:absolute;inset:0;pointer-events:none;z-index:50;
+  background:radial-gradient(ellipse 80% 65% at 50% 50%, transparent 55%, rgba(0,0,0,0.65) 100%);}
+#intro-overlay /* horizontal scan line */
+.scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg, transparent, rgba(106,166,255,0.5), transparent);z-index:45;opacity:0;
+  animation:scan var(--T) linear infinite}
+
+@keyframes scan{
+  0%{top:-2%;opacity:0}
+  4%{opacity:0.55}
+  45%{top:103%;opacity:0.55}
+  46%{opacity:0}
+  100%{opacity:0}
+}
+#intro-overlay /* ---------------- controls ---------------- */
+.controls{position:fixed;bottom:calc(var(--lb) + 16px);right:16px;display:flex;gap:10px;z-index:200;font-family:var(--mono)}
+#intro-overlay .controls button, #intro-overlay .controls a{background:rgba(4,8,15,0.7);border:1px solid var(--line-2);color:var(--fg-2);padding:10px 14px;border-radius:999px;cursor:pointer;letter-spacing:0.18em;text-transform:uppercase;transition:.2s;font-size:11px;backdrop-filter:blur(6px);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+#intro-overlay .controls button:hover, #intro-overlay .controls a:hover{border-color:var(--accent);color:var(--accent)}
+@media (max-aspect-ratio: 3/4){#intro-overlay /* stats 2x2 */
+  .s3 .figs{grid-template-columns:repeat(2,1fr)}
+#intro-overlay .s3 .fig{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+#intro-overlay .s3 .fig:nth-child(2n){border-right:none}
+#intro-overlay .s3 .fig:nth-child(3), #intro-overlay .s3 .fig:nth-child(4){border-bottom:none}
+#intro-overlay .s3 .fig{padding:clamp(20px,4.2vmin,40px) clamp(16px,3.5vmin,26px)}
+#intro-overlay .s3 .fig .big{font-size:clamp(64px,16vw,140px)}
+#intro-overlay /* monogram smaller on mobile, #intro-overlay name tighter */
+  .s2 .mono{width:clamp(140px,38vw,260px);height:clamp(140px,38vw,260px)}
+#intro-overlay .s2 .glyph{font-size:clamp(72px,18vw,140px)}
+#intro-overlay .s2 .name{font-size:clamp(48px,13vw,108px)}
+#intro-overlay /* tagline bigger on portrait per width */
+  .s4 h2{font-size:clamp(36px,9vw,84px);max-width:92vw}
+#intro-overlay /* slate fills more width */
+  .s1 .slate{min-width:88vw;max-width:88vw}
+#intro-overlay .s1 .slate .big{font-size:clamp(48px,16vw,108px)}
+#intro-overlay /* outro stacked */
+  .s5 .url{font-size:clamp(28px,7.8vw,72px)}
+#intro-overlay .s5 .cta{flex-direction:column;gap:14px}
+#intro-overlay .s5 .cta .sep{display:none}
+#intro-overlay /* hide some letterbox text on very narrow */
+  .lb .l b, #intro-overlay .lb .r b{font-size:10px}
+#intro-overlay .lb .meta-hide{display:none}}
+@media (max-width: 520px){#intro-overlay .lb .meta-hide{display:none}
+#intro-overlay .controls{bottom:calc(var(--lb) + 10px);right:10px}
+#intro-overlay .controls button, #intro-overlay .controls a{padding:8px 12px;font-size:10px}}
+@media (prefers-reduced-motion: reduce){}
+    /* ---- Intro-specific overrides for containment ---- */
+    #intro-overlay .viewport {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+    }
+    #intro-overlay .stage {
+      position: absolute !important;
+      inset: 0 !important;
+    }
+    /* ---- Num counter animation (from original) ---- */
+    @property --n1 { syntax: "<integer>"; inherits: false; initial-value: 0; }
+    @property --n2 { syntax: "<integer>"; inherits: false; initial-value: 0; }
+    @property --n3 { syntax: "<integer>"; inherits: false; initial-value: 0; }
+    @property --n4 { syntax: "<integer>"; inherits: false; initial-value: 0; }
+    #intro-overlay .num1 {
+      animation: count1 2s steps(64, end) 5.5s both;
+      counter-reset: n var(--n1);
+    }
+    #intro-overlay .num1::after { content: counter(n); }
+    #intro-overlay .num2 {
+      animation: count2 2s steps(20, end) 5.5s both;
+      counter-reset: n var(--n2);
+    }
+    #intro-overlay .num2::after { content: counter(n); }
+    #intro-overlay .num3 {
+      animation: count3 1.5s steps(6, end) 5.5s both;
+      counter-reset: n var(--n3);
+    }
+    #intro-overlay .num3::after { content: counter(n); }
+    #intro-overlay .num4 {
+      animation: count4 1.5s steps(10, end) 5.5s both;
+      counter-reset: n var(--n4);
+    }
+    #intro-overlay .num4::after { content: counter(n); }
+    @keyframes count1 { from { --n1: 0 } to { --n1: 64 } }
+    @keyframes count2 { from { --n2: 0 } to { --n2: 20 } }
+    @keyframes count3 { from { --n3: 0 } to { --n3: 6 } }
+    @keyframes count4 { from { --n4: 0 } to { --n4: 10 } }
+    /* ---- Skip button ---- */
+    #intro-skip {
+      position: fixed;
+      bottom: calc(clamp(28px, 6.5vmin, 96px) + 18px);
+      right: 28px;
+      z-index: 2147483647;
+      background: rgba(4,8,15,0.75);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #8089a0;
+      padding: 9px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: border-color .2s, color .2s;
+      opacity: 0;
+      animation: intro-fade-in 0.4s ease 2s forwards;
+      backdrop-filter: blur(6px);
+    }
+    #intro-skip:hover { border-color: #6aa6ff; color: #6aa6ff; }
+    @keyframes intro-fade-in { from {opacity:0} to {opacity:1} }
+    @media (prefers-reduced-motion: reduce) {
+      #intro-overlay, #intro-skip { display: none !important; }
+      body.intro-active { overflow: unset !important; }
+    }
+  </style>
+
   <div id="intro-overlay" aria-hidden="true">
-    <svg id="intro-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- background -->
-      <rect width="1200" height="800" fill="#04080f"/>
-      <!-- letterbox bars -->
-      <rect x="0" y="0" width="1200" height="60" fill="#000"/>
-      <rect x="0" y="740" width="1200" height="60" fill="#000"/>
-      <!-- faint grid -->
-      <line x1="0" y1="266" x2="1200" y2="266" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-      <line x1="0" y1="534" x2="1200" y2="534" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-      <line x1="400" y1="60" x2="400" y2="740" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-      <line x1="800" y1="60" x2="800" y2="740" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-      <!-- center crosshairs -->
-      <line x1="0" y1="400" x2="1200" y2="400" stroke="#6aa6ff" stroke-opacity="0.3" stroke-width="1.5"/>
-      <line x1="600" y1="60" x2="600" y2="740" stroke="#6aa6ff" stroke-opacity="0.3" stroke-width="1.5"/>
-      <!-- monogram rings -->
-      <circle id="ir1" cx="600" cy="400" r="180" fill="none" stroke="#6aa6ff" stroke-width="2"/>
-      <circle id="ir2" cx="600" cy="400" r="148" fill="none" stroke="#6aa6ff" stroke-opacity="0.5" stroke-width="1.5"/>
-      <circle id="ir3" cx="600" cy="400" r="116" fill="none" stroke="#6aa6ff" stroke-opacity="0.25" stroke-width="1.5"/>
-      <!-- LA monogram -->
-      <text id="imonogram" x="600" y="450" text-anchor="middle" font-family="Space Grotesk, system-ui, sans-serif" font-size="160" font-weight="700" letter-spacing="-6">
-        <tspan fill="#f1f4fa">L</tspan><tspan fill="#6aa6ff">A</tspan>
-      </text>
-      <!-- corner crosshairs -->
-      <g stroke="rgba(255,255,255,0.22)" stroke-width="2" fill="none">
-        <path d="M 80 120 L 80 100 L 100 100"/>
-        <path d="M 1120 120 L 1120 100 L 1100 100"/>
-        <path d="M 80 680 L 80 700 L 100 700"/>
-        <path d="M 1120 680 L 1120 700 L 1100 700"/>
-      </g>
-      <!-- REC dot -->
-      <circle cx="100" cy="30" r="6" fill="#ff4a52"/>
-      <text x="115" y="36" font-family="JetBrains Mono, monospace" font-size="16" fill="#8089a0" letter-spacing="2">REC · TAKE 01</text>
-      <!-- tagline -->
-      <text id="itagline" x="600" y="520" text-anchor="middle" font-family="Space Grotesk, system-ui, sans-serif" font-size="18" fill="#6aa6ff" letter-spacing="4">FRONT-END CRM &amp; DASHBOARD DEVELOPER</text>
-      <!-- skip hint -->
-      <text id="iskip" x="600" y="720" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="rgba(128,137,160,0.7)">click or press any key to skip</text>
+    <div class="viewport">
+<div class="stage" id="stage">
+
+  <!-- bg grid -->
+  <div class="gridwrap">
+    <svg viewBox="0 0 1920 1080" preserveAspectRatio="none">
+      <line class="gridline" x1="0" y1="360" x2="1920" y2="360"></line>
+      <line class="gridline" x1="0" y1="720" x2="1920" y2="720" style="animation-delay:0.75s"></line>
+      <line class="gridline v" x1="640" y1="0" x2="640" y2="1080" style="animation-delay:0.9s"></line>
+      <line class="gridline v" x1="1280" y1="0" x2="1280" y2="1080" style="animation-delay:1.05s"></line>
+      <line class="gridline accent" x1="0" y1="540" x2="1920" y2="540" style="animation-delay:1.3s;animation-duration:2s"></line>
+      <line class="gridline accent v" x1="960" y1="0" x2="960" y2="1080" style="animation-delay:1.4s;animation-duration:1.4s"></line>
     </svg>
   </div>
+
+  <!-- dust particles -->
+  <div class="dust" id="dust"></div>
+
+  <!-- HUD crosshairs -->
+  <div class="hud">
+    <span class="crosshair tl"></span>
+    <span class="crosshair tr"></span>
+    <span class="crosshair bl"></span>
+    <span class="crosshair br"></span>
+  </div>
+
+  <!-- light streak -->
+  <div class="streak"></div>
+
+  <!-- scenes -->
+  <div class="scenes">
+
+    <!-- Scene 1: slate -->
+    <div class="scene s1">
+      <div class="slate">
+        <span class="sub">// portfolio intro reel</span>
+        <span class="big">TAKE&nbsp;01</span>
+        <div class="row">
+          <span class="k">production</span><span class="v">Laura Andreea P.</span>
+          <span class="k">role</span>           <span class="v">front-end · crm · dashboard</span>
+          <span class="k">date</span>           <span class="v acc">26.05.26</span>
+          <span class="k">scene</span>          <span class="v">01 / intro</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 2: monogram + name -->
+    <div class="scene s2">
+      <div class="eyebrow">// portfolio · 2026</div>
+
+      <div class="mono-wrap">
+        <div class="mono">
+          <span class="pulse"></span>
+          <span class="pulse p2"></span>
+          <span class="pulse p3"></span>
+          <svg viewBox="0 0 200 200">
+            <circle class="ring r1" cx="100" cy="100" r="92"></circle>
+            <circle class="ring r2" cx="100" cy="100" r="78"></circle>
+            <circle class="ring r3" cx="100" cy="100" r="64"></circle>
+          </svg>
+          <div class="glyph"><span>L</span><span class="acc-l">A</span></div>
+        </div>
+      </div>
+
+      <div class="name">
+        <span><i>LAURA</i></span>
+        <span><i>ANDREEA</i></span>
+      </div>
+      <div class="rule"></div>
+      <div class="role">Front-end <b>CRM &amp; Dashboard</b> Developer</div>
+    </div>
+
+    <!-- Scene 3: stat tickers -->
+    <div class="scene s3">
+      <div class="eyebrow">// proof of work</div>
+      <div class="figs">
+        <div class="fig acc">
+          <span class="radar"></span>
+          <span class="big"><span class="num1"></span></span>
+          <span class="lbl">CodePen · Live</span>
+          <span class="meta">proiecte funcționale</span>
+        </div>
+        <div class="fig">
+          <span class="radar"></span>
+          <span class="big"><span class="num2"></span><span class="plus">+</span></span>
+          <span class="lbl">GitHub · Public</span>
+          <span class="meta">repo-uri publice</span>
+        </div>
+        <div class="fig">
+          <span class="radar"></span>
+          <span class="big"><span class="num3"></span></span>
+          <span class="lbl">Alpis Fusion</span>
+          <span class="meta">module SaaS</span>
+        </div>
+        <div class="fig">
+          <span class="radar"></span>
+          <span class="big"><span class="num4"></span><span class="plus">+</span></span>
+          <span class="lbl">Certificări</span>
+          <span class="meta">JS · marketing · data</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 4: tagline word-by-word -->
+    <div class="scene s4">
+      <span class="quote">"</span>
+      <h2>
+        <span class="w"><i>Interfețe</i></span>
+        <span class="w"><i>care</i></span>
+        <span class="w"><i>transformă</i></span>
+        <span class="w"><i>procese</i></span>
+        <span class="w"><i>în</i></span>
+        <span class="w"><i>fluxuri</i></span>
+        <span class="w"><i>clare.</i></span>
+      </h2>
+      <div class="sig">— Manifest de produs</div>
+    </div>
+
+    <!-- Scene 5: URL outro -->
+    <div class="scene s5">
+      <div class="ring-bg"></div>
+      <div class="ring-bg r2"></div>
+      <div class="mark"><span class="d"></span> Cut · End of Reel</div>
+      <div class="url">
+        laurandreea10<span>.</span>github<span>.</span>io<br>
+        <span>/</span>codepen-portfolio
+      </div>
+      <div class="cta">
+        <a href="Intro Portofoliu Laura Andreea.html">Vezi deck-ul →</a>
+        <span class="sep">·</span>
+        <a href="mailto:andreealaurap@gmail.com">Scrie-mi</a>
+        <span class="sep">·</span>
+        <a href="https://github.com/LaurAndreea10">GitHub</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- scan line -->
+  <div class="scan"></div>
+
+  <!-- grain -->
+  <div class="grain">
+    <svg xmlns="http://www.w3.org/2000/svg">
+      <filter id="n">
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence>
+        <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0"></feColorMatrix>
+      </filter>
+      <rect width="100%" height="100%" filter="url(#n)"></rect>
+    </svg>
+  </div>
+
+  <!-- vignette -->
+  <div class="vignette"></div>
+
+  <!-- letterbox bars w/ chrome -->
+  <div class="lb top">
+    <div class="l">
+      <span class="rec"></span>
+      <span>REC&nbsp;·&nbsp;<b>TAKE&nbsp;01</b></span>
+      <span class="meta-hide" style="opacity:.5">/&nbsp;INTRO</span>
+    </div>
+    <div class="r">
+      <span class="meta-hide">TC</span>
+      <b class="tc" id="tc">00:00:00:00</b>
+    </div>
+  </div>
+  <div class="lb bot">
+    <div class="l">
+      <span>16:9&nbsp;·&nbsp;<span class="meta-hide">1920×1080</span></span>
+      <span class="meta-hide" style="opacity:.5">·&nbsp;24 fps</span>
+    </div>
+    <div class="r">
+      <span class="meta-hide">ISO 400&nbsp;·&nbsp;</span>
+      <span>f/2.8</span>
+      <span class="meta-hide" style="opacity:.5">·&nbsp;1/50</span>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="controls">
+  <button id="replay">↻ Replay</button>
+  <a href="Intro Portofoliu Laura Andreea.html">Skip →</a>
+</div>
+
+<script>
+// ---- dust particles ----
+(function(){
+  const dust = document.getElementById('dust');
+  const N = 28;
+  for (let i=0;i<N;i++){
+    const s = document.createElement('span');
+    const dur = 5 + Math.random()*7;
+    const delay = -Math.random()*dur;
+    const left = Math.random()*100;
+    const dx = (Math.random()-0.5)*60;
+    s.style.left = left + 'vw';
+    s.style.animationDuration = dur + 's';
+    s.style.animationDelay = delay + 's';
+    s.style.setProperty('--dx', dx + 'px');
+    dust.appendChild(s);
+  }
+})();
+
+// ---- timecode ----
+const TOTAL = 13;
+const tcEl = document.getElementById('tc');
+let startTime = performance.now();
+function pad(n,w=2){return String(n).padStart(w,'0')}
+function fmtTC(t){
+  const f = Math.floor(t*24);
+  const ff = f%24;
+  const ss = Math.floor(f/24)%60;
+  const mm = Math.floor(f/24/60)%60;
+  const hh = Math.floor(f/24/3600);
+  return pad(hh)+':'+pad(mm)+':'+pad(ss)+':'+pad(ff);
+}
+function loop(now){
+  const t = ((now - startTime)/1000) % TOTAL;
+  tcEl.textContent = fmtTC(t);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+// ---- replay ----
+function restart(){
+  const stage = document.getElementById('stage');
+  const clone = stage.cloneNode(true);
+  stage.replaceWith(clone);
+  startTime = performance.now();
+  attachReplay();
+}
+function attachReplay(){
+  const b = document.getElementById('replay');
+  if (b) b.addEventListener('click', restart);
+}
+attachReplay();
+setInterval(restart, TOTAL*1000);
+</script>
+  </div>
+  <button id="intro-skip" type="button" aria-label="Skip intro" onclick="window.__introDismiss&&window.__introDismiss()">SKIP →</button>
 
   <script>
     (function() {
       'use strict';
-      var overlay = document.getElementById('intro-overlay');
-      if (!overlay) return;
+      var KEY = 'la_intro_seen';
 
-      // Return visit — hide immediately before any paint
+      // Return visit → hide before paint
       try {
-        if (sessionStorage.getItem('la_intro_seen')) {
-          overlay.style.cssText = 'display:none!important';
+        if (sessionStorage.getItem(KEY)) {
+          var s = document.getElementById('intro-css');
+          var o = document.getElementById('intro-overlay');
+          var sk = document.getElementById('intro-skip');
+          if (s) s.remove();
+          if (o) o.style.cssText = 'display:none!important';
+          if (sk) sk.style.cssText = 'display:none!important';
           return;
         }
       } catch(e) {}
 
-      // Lock scroll on body while intro is active
       document.body.classList.add('intro-active');
 
       var dismissed = false;
       function dismiss() {
         if (dismissed) return;
         dismissed = true;
+        var o = document.getElementById('intro-overlay');
+        var sk = document.getElementById('intro-skip');
         document.body.classList.remove('intro-active');
-        overlay.classList.add('intro-hidden');
+        if (o) o.classList.add('intro-hidden');
+        if (sk) sk.style.opacity = '0';
         setTimeout(function() {
-          if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-        }, 600);
-        try { sessionStorage.setItem('la_intro_seen', '1'); } catch(e) {}
-        document.removeEventListener('keydown', skip);
+          var o2 = document.getElementById('intro-overlay');
+          var sk2 = document.getElementById('intro-skip');
+          var css = document.getElementById('intro-css');
+          if (o2 && o2.parentNode) o2.parentNode.removeChild(o2);
+          if (sk2 && sk2.parentNode) sk2.parentNode.removeChild(sk2);
+          if (css && css.parentNode) css.parentNode.removeChild(css);
+        }, 550);
+        try { sessionStorage.setItem(KEY, '1'); } catch(e) {}
+        document.removeEventListener('keydown', onKey);
       }
 
-      var timer = setTimeout(dismiss, 3400);
+      // Expose globally for skip button
+      window.__introDismiss = dismiss;
 
-      function skip() {
-        clearTimeout(timer);
-        dismiss();
+      // Auto-dismiss after 13s (full reel) + 0.5s buffer
+      var timer = setTimeout(dismiss, 13500);
+
+      function onKey() { clearTimeout(timer); dismiss(); }
+      document.addEventListener('keydown', onKey);
+
+      // Touch skip on the overlay itself (not the skip button which has its own handler)
+      var overlay = document.getElementById('intro-overlay');
+      if (overlay) {
+        overlay.addEventListener('touchstart', function(e) {
+          // Only dismiss if touch isn't on an interactive element
+          if (!e.target.closest('a, button')) {
+            clearTimeout(timer);
+            dismiss();
+          }
+        }, { passive: true });
       }
-
-      overlay.addEventListener('click', skip);
-      overlay.addEventListener('touchstart', skip, { passive: true });
-      document.addEventListener('keydown', skip);
     })();
   </script>
+
 
 
   <div class="skip-links" aria-label="Linkuri rapide">
