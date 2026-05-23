@@ -529,35 +529,7 @@
       position: absolute !important;
       inset: 0 !important;
     }
-    /* ---- Num counter animation (from original) ---- */
-    @property --n1 { syntax: "<integer>"; inherits: false; initial-value: 0; }
-    @property --n2 { syntax: "<integer>"; inherits: false; initial-value: 0; }
-    @property --n3 { syntax: "<integer>"; inherits: false; initial-value: 0; }
-    @property --n4 { syntax: "<integer>"; inherits: false; initial-value: 0; }
-    #intro-overlay .num1 {
-      animation: count1 2s steps(64, end) 5.5s both;
-      counter-reset: n var(--n1);
-    }
-    #intro-overlay .num1::after { content: counter(n); }
-    #intro-overlay .num2 {
-      animation: count2 2s steps(20, end) 5.5s both;
-      counter-reset: n var(--n2);
-    }
-    #intro-overlay .num2::after { content: counter(n); }
-    #intro-overlay .num3 {
-      animation: count3 1.5s steps(6, end) 5.5s both;
-      counter-reset: n var(--n3);
-    }
-    #intro-overlay .num3::after { content: counter(n); }
-    #intro-overlay .num4 {
-      animation: count4 1.5s steps(10, end) 5.5s both;
-      counter-reset: n var(--n4);
-    }
-    #intro-overlay .num4::after { content: counter(n); }
-    @keyframes count1 { from { --n1: 0 } to { --n1: 64 } }
-    @keyframes count2 { from { --n2: 0 } to { --n2: 20 } }
-    @keyframes count3 { from { --n3: 0 } to { --n3: 6 } }
-    @keyframes count4 { from { --n4: 0 } to { --n4: 10 } }
+    /* Counter animation handled by original cnt1-4 system (::before) + dynamic JS injection */
     /* ---- Skip button ---- */
     #intro-skip {
       position: fixed;
