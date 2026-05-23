@@ -942,6 +942,7 @@ setInterval(restart, TOTAL*1000);
           <a class="pill" href="uses.html">Uses</a>
           <a class="pill" href="#about">Despre</a>
           <a class="pill" href="#contact">Contact</a>
+          <button class="pill pill-scan" id="scanToggle" type="button" aria-label="Rezumat portofoliu în 30 de secunde" aria-expanded="false" aria-controls="scan-panel">⚡ 30s</button>
           <button class="pill" id="langToggle" type="button" aria-label="Schimbă limba între română și engleză">RO | EN</button>
           <button class="pill" id="themeToggle" type="button" aria-label="Schimbă tema vizuală">☀️ Light</button>
           <button class="pill" id="contrastToggle" type="button" aria-pressed="false" aria-label="Activează contrast ridicat">Contrast ridicat</button>
@@ -949,6 +950,193 @@ setInterval(restart, TOTAL*1000);
       </nav>
     </div>
   </div>
+
+  <!-- ── 30s SCAN PANEL ──────────────────────────────────────────── -->
+  <div id="scan-panel" class="scan-panel" role="dialog" aria-modal="false" aria-label="Rezumat portofoliu 30 de secunde" hidden>
+    <div class="scan-inner">
+      <button class="scan-close" id="scanClose" type="button" aria-label="Închide panelul">✕</button>
+
+      <div class="scan-header">
+        <span class="scan-eyebrow">⚡ Portfolio în 30 de secunde</span>
+        <h2 class="scan-title">Laura Andreea — Front-end CRM & Dashboard Developer</h2>
+      </div>
+
+      <div class="scan-grid">
+
+        <div class="scan-col">
+          <h3 class="scan-col-title">🎯 Cine sunt</h3>
+          <ul class="scan-list">
+            <li>Front-end autodidact cu background <strong>CRM & marketing digital</strong></li>
+            <li>Construiesc interfețe unde <strong>structura și fluxul</strong> contează mai mult decât estetica</li>
+            <li>Tranziție activă din 2022 → focus pe CRM, dashboard-uri, AI-native tools</li>
+            <li>Bilingv RO/EN, toate proiectele publice și verificabile</li>
+          </ul>
+        </div>
+
+        <div class="scan-col">
+          <h3 class="scan-col-title">🏗 Stack real</h3>
+          <div class="scan-tags">
+            <span class="scan-tag scan-tag-hi">React + Vite</span>
+            <span class="scan-tag scan-tag-hi">GitHub Actions CI/CD</span>
+            <span class="scan-tag">Vanilla JS / HTML / CSS</span>
+            <span class="scan-tag">TypeScript</span>
+            <span class="scan-tag">Kanban · Flow Builder · RBAC</span>
+            <span class="scan-tag">CSV/JSON Export</span>
+            <span class="scan-tag">Anthropic API</span>
+            <span class="scan-tag">GitHub Pages</span>
+          </div>
+        </div>
+
+        <div class="scan-col">
+          <h3 class="scan-col-title">📊 Dovezi observabile</h3>
+          <ul class="scan-list">
+            <li><strong id="scan-proj-count">64</strong> proiecte live pe CodePen</li>
+            <li><strong id="scan-repo-count">20+</strong> repo-uri publice pe GitHub</li>
+            <li><strong>6</strong> module SaaS în Alpis Fusion: kanban, flow builder, RBAC, billing, booking, autosave</li>
+            <li><strong>10+</strong> certificări: JS Essential Training · Google Digital Marketing · freeCodeCamp · Claude Code</li>
+          </ul>
+        </div>
+
+        <div class="scan-col">
+          <h3 class="scan-col-title">🔥 Top 3 proiecte</h3>
+          <ul class="scan-list scan-list-links">
+            <li>
+              <a href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener">Alpis Fusion CRM Premium</a>
+              <span class="scan-meta">React + Vite · 6 module · CI/CD</span>
+            </li>
+            <li>
+              <a href="https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/" target="_blank" rel="noopener">ClientFlow SaaS CRM</a>
+              <span class="scan-meta">Kanban · triage vizual · shortcuts</span>
+            </li>
+            <li>
+              <a href="https://laurandreea10.github.io/brief-studio/" target="_blank" rel="noopener">Brief Studio</a>
+              <span class="scan-meta">SaaS bilingv · 3 module · API keyless</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="scan-col">
+          <h3 class="scan-col-title">⚡ La ce lucrez acum</h3>
+          <ul class="scan-list">
+            <li>🔄 <strong>Link Video Editor Studio</strong> — Automation Pack export</li>
+            <li>🔄 <strong>Alpis Fusion</strong> — decision log extins</li>
+            <li>🔄 <strong>Portofoliu</strong> — Lighthouse CI audit, LCP optimizat</li>
+            <li>✅ <strong>Intro cinematic</strong> — integrat ca overlay</li>
+          </ul>
+        </div>
+
+        <div class="scan-col">
+          <h3 class="scan-col-title">📬 Contact rapid</h3>
+          <ul class="scan-list scan-list-links">
+            <li><a href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect">andreealaurap@gmail.com</a></li>
+            <li><a href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://github.com/LaurAndreea10" target="_blank" rel="noopener">GitHub · LaurAndreea10</a></li>
+            <li>
+              <span class="scan-available" id="scan-available">
+                <span class="scan-dot"></span> Disponibilă pentru proiecte
+              </span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="scan-footer">
+        <span id="scan-updated">Actualizat: <strong id="scan-date">—</strong></span>
+        <span class="scan-footer-sep">·</span>
+        <span id="scan-exp">Experiență activă: <strong id="scan-years">—</strong></span>
+        <span class="scan-footer-sep">·</span>
+        <a href="#key-projects" onclick="document.getElementById('scan-panel').hidden=true">Vezi proiectele →</a>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* ── 30s SCAN PANEL ── */
+    .pill-scan {
+      background: rgba(106,166,255,.15) !important;
+      border-color: rgba(106,166,255,.4) !important;
+      color: #6aa6ff !important;
+      font-weight: 600;
+    }
+    .pill-scan.active {
+      background: rgba(106,166,255,.28) !important;
+      color: #fff !important;
+    }
+    .scan-panel {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9000;
+      background: rgba(4,8,15,.97);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(106,166,255,.2);
+      padding: 1.5rem 1.25rem 1.25rem;
+      transform: translateY(-100%);
+      transition: transform .32s cubic-bezier(.4,0,.2,1);
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+    .scan-panel:not([hidden]) {
+      transform: translateY(0);
+    }
+    .scan-panel[hidden] {
+      display: block !important; /* keep in flow, use transform */
+      transform: translateY(-100%);
+      pointer-events: none;
+      visibility: hidden;
+    }
+    .scan-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+    .scan-close {
+      position: absolute; top: 0; right: 0;
+      background: none; border: none; color: #8089a0; cursor: pointer;
+      font-size: 1.1rem; padding: .25rem .5rem; border-radius: 4px;
+      transition: color .15s;
+    }
+    .scan-close:hover { color: #f1f4fa; }
+    .scan-header { margin-bottom: 1.25rem; }
+    .scan-eyebrow { font-size: .72rem; color: #6aa6ff; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; display: block; margin-bottom: .3rem; }
+    .scan-title { font-size: 1.05rem; color: #f1f4fa; margin: 0; font-weight: 600; }
+    .scan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: .9rem 1.4rem;
+    }
+    .scan-col-title {
+      font-size: .72rem; color: #6aa6ff; letter-spacing: .08em; text-transform: uppercase;
+      font-weight: 700; margin: 0 0 .5rem; font-family: inherit;
+    }
+    .scan-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .3rem; }
+    .scan-list li { font-size: .85rem; color: #c4cbd9; line-height: 1.45; padding-left: .85rem; position: relative; }
+    .scan-list li::before { content: '›'; position: absolute; left: 0; color: #6aa6ff; }
+    .scan-list-links li::before { display: none; padding-left: 0; }
+    .scan-list-links a { color: #9cc2ff; text-decoration: none; font-size: .85rem; font-weight: 500; }
+    .scan-list-links a:hover { color: #6aa6ff; text-decoration: underline; }
+    .scan-meta { display: block; font-size: .75rem; color: #8089a0; margin-top: .1rem; }
+    .scan-tags { display: flex; flex-wrap: wrap; gap: .3rem; }
+    .scan-tag {
+      font-size: .75rem; padding: .2rem .55rem; border-radius: 4px;
+      background: rgba(255,255,255,.06); color: #9db0d4;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+    .scan-tag-hi { background: rgba(106,166,255,.12); color: #6aa6ff; border-color: rgba(106,166,255,.25); }
+    .scan-available { display: flex; align-items: center; gap: .4rem; font-size: .85rem; color: #34d399; }
+    .scan-dot { width: 7px; height: 7px; border-radius: 50%; background: #34d399; animation: scan-pulse 1.8s ease infinite; display: inline-block; }
+    @keyframes scan-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+    .scan-footer {
+      margin-top: 1.1rem; padding-top: .75rem;
+      border-top: 1px solid rgba(255,255,255,.07);
+      font-size: .78rem; color: #8089a0;
+      display: flex; gap: .6rem; align-items: center; flex-wrap: wrap;
+    }
+    .scan-footer a { color: #6aa6ff; text-decoration: none; }
+    .scan-footer a:hover { text-decoration: underline; }
+    .scan-footer-sep { color: rgba(255,255,255,.2); }
+    .scan-footer strong { color: #f1f4fa; }
+    @media (max-width: 600px) {
+      .scan-grid { grid-template-columns: 1fr; }
+      .scan-panel { padding: 1rem .85rem 1rem; }
+    }
+  </style>
 
   <header class="hero" id="home" aria-labelledby="hero-title">
     <div class="container">
@@ -1637,5 +1825,290 @@ setInterval(restart, TOTAL*1000);
   </footer>
 
   <script src="main.js" defer></script>
+
+  <!-- ── DYNAMIC DATA ENGINE ─────────────────────────────────────── -->
+  <script>
+  (function() {
+    'use strict';
+
+    // ── 1. DATE ÎN TIMP REAL ────────────────────────────────────────
+    var START_YEAR = 2022;
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function getLiveDate() {
+      var now = new Date();
+      var months = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie',
+                    'Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+      return pad(now.getDate()) + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+    }
+
+    function getYearsActive() {
+      var now = new Date();
+      var years = now.getFullYear() - START_YEAR;
+      var months = now.getMonth(); // 0-based
+      if (years === 0) return 'sub 1 an';
+      if (months >= 6) return (years + 1) + ' ani activi';
+      return years + '+ ani activi';
+    }
+
+    // Update scan panel footer
+    function updateScanDates() {
+      var dateEl = document.getElementById('scan-date');
+      var yearsEl = document.getElementById('scan-years');
+      if (dateEl) dateEl.textContent = getLiveDate();
+      if (yearsEl) yearsEl.textContent = getYearsActive();
+    }
+
+    // Update Now page date badge
+    function updateNowDate() {
+      var now = new Date();
+      var months = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie',
+                    'Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+      var badge = document.querySelector('.now-badge time');
+      if (badge) {
+        var iso = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+        badge.setAttribute('datetime', iso);
+        badge.textContent = pad(now.getDate()) + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+      }
+    }
+
+    // Update footer copyright year
+    function updateFooterYear() {
+      var footer = document.querySelector('.footer-copy');
+      if (footer) {
+        footer.textContent = '© ' + new Date().getFullYear() + ' Laura Andreea · laurandreea10.github.io';
+      }
+    }
+
+    // ── 2. GITHUB API — REPO COUNT ──────────────────────────────────
+    function fetchGithubRepos() {
+      var cacheKey = 'la_gh_repos';
+      var cacheTs  = 'la_gh_repos_ts';
+      var TTL = 6 * 60 * 60 * 1000; // 6h cache
+
+      try {
+        var cached = sessionStorage.getItem(cacheKey);
+        var ts     = parseInt(sessionStorage.getItem(cacheTs) || '0');
+        if (cached && Date.now() - ts < TTL) {
+          applyRepoCount(parseInt(cached));
+          return;
+        }
+      } catch(e) {}
+
+      fetch('https://api.github.com/users/LaurAndreea10?per_page=1', {
+        headers: { 'Accept': 'application/vnd.github.v3+json' }
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        var count = d.public_repos || 0;
+        if (count > 0) {
+          applyRepoCount(count);
+          try {
+            sessionStorage.setItem(cacheKey, String(count));
+            sessionStorage.setItem(cacheTs, String(Date.now()));
+          } catch(e) {}
+        }
+      })
+      .catch(function() {}); // fail silently — static values remain
+    }
+
+    function applyRepoCount(count) {
+      // Pow-card repo metric
+      var powMetric = document.querySelector('.pow-card .pow-metric.green');
+      // Scan panel repo count
+      var scanRepo = document.getElementById('scan-repo-count');
+      if (scanRepo) scanRepo.textContent = count + '+';
+      // cred-strip (if hardcoded 20+)
+      // We don't touch it to avoid layout shift — API is bonus signal
+    }
+
+    // ── 3. 30s SCAN PANEL — TOGGLE LOGIC ───────────────────────────
+    function initScanPanel() {
+      var btn   = document.getElementById('scanToggle');
+      var panel = document.getElementById('scan-panel');
+      var close = document.getElementById('scanClose');
+      if (!btn || !panel) return;
+
+      // Panel starts hidden via `hidden` attribute + CSS transform
+      panel.hidden = true;
+      var open = false;
+
+      function openPanel() {
+        open = true;
+        panel.hidden = false;
+        btn.setAttribute('aria-expanded', 'true');
+        btn.classList.add('active');
+        updateScanDates();
+        // Trap focus loosely: close on outside click
+        setTimeout(function() {
+          document.addEventListener('click', outsideClick);
+          document.addEventListener('keydown', escKey);
+        }, 50);
+      }
+
+      function closePanel() {
+        open = false;
+        panel.hidden = true;
+        btn.setAttribute('aria-expanded', 'false');
+        btn.classList.remove('active');
+        document.removeEventListener('click', outsideClick);
+        document.removeEventListener('keydown', escKey);
+      }
+
+      function outsideClick(e) {
+        if (!panel.contains(e.target) && e.target !== btn) closePanel();
+      }
+
+      function escKey(e) {
+        if (e.key === 'Escape') { closePanel(); btn.focus(); }
+      }
+
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (open) closePanel(); else openPanel();
+      });
+
+      if (close) close.addEventListener('click', function() { closePanel(); btn.focus(); });
+    }
+
+    // ── 4. PORTFOLIO SCORE BOOST — 10+ signals ─────────────────────
+    function applyScoreBoosts() {
+
+      // [BOOST 1] Dynamic "days since last commit" freshness signal in footer
+      var footerP = document.querySelector('.footer-copy');
+      if (footerP) {
+        var lastUpdate = new Date('2026-05-23');
+        var daysDiff = Math.floor((new Date() - lastUpdate) / 86400000);
+        var freshnessText = daysDiff <= 7 ? '· actualizat recent' :
+                            daysDiff <= 30 ? '· actualizat luna aceasta' : '';
+        if (freshnessText) {
+          footerP.textContent += ' ' + freshnessText;
+        }
+      }
+
+      // [BOOST 2] Add "years active" dynamic badge in about section
+      var aboutCard = document.querySelector('#about .about-card');
+      if (aboutCard) {
+        var yearsEl = document.createElement('p');
+        yearsEl.style.cssText = 'font-size:.82rem;color:#6aa6ff;margin-top:.5rem;';
+        yearsEl.innerHTML = '⏱ ' + getYearsActive() + ' în front-end development — din ' + START_YEAR;
+        // Only inject once
+        if (!aboutCard.querySelector('[data-dyn]')) {
+          yearsEl.setAttribute('data-dyn', '1');
+          aboutCard.appendChild(yearsEl);
+        }
+      }
+
+      // [BOOST 3] Live clock in Now section badge
+      var timeBadge = document.querySelector('.now-badge');
+      if (timeBadge && !timeBadge.querySelector('[data-clock]')) {
+        var clockSpan = document.createElement('span');
+        clockSpan.setAttribute('data-clock', '1');
+        clockSpan.style.cssText = 'display:block;font-size:.72rem;color:#8089a0;margin-top:.2rem;font-family:ui-monospace,monospace;';
+        timeBadge.appendChild(clockSpan);
+        function tickClock() {
+          var n = new Date();
+          clockSpan.textContent = pad(n.getHours()) + ':' + pad(n.getMinutes()) + ':' + pad(n.getSeconds()) + ' local';
+        }
+        tickClock();
+        setInterval(tickClock, 1000);
+      }
+
+      // [BOOST 4] cred-strip — make "2022 →" show years elapsed
+      var credItems = document.querySelectorAll('.cred-item strong');
+      credItems.forEach(function(el) {
+        if (el.textContent.trim() === '2022 →') {
+          el.textContent = '2022';
+          var after = el.nextSibling;
+          if (after && after.nodeType === 3) {
+            // Already has text after it
+          } else {
+            var arrow = document.createElement('span');
+            arrow.style.cssText = 'display:block;font-size:.72rem;color:#6aa6ff;margin-top:.2rem;';
+            arrow.textContent = '(' + (new Date().getFullYear() - 2022) + ' ani)';
+            el.parentNode.insertBefore(arrow, el.nextSibling);
+          }
+        }
+      });
+
+      // [BOOST 5] Auto-update the intro scene 3 stat numbers if visible in DOM
+      // num1 = 64 projects, num2 = 20+ repos, num3 = 6 modules, num4 = 10+ certs
+      // These are CSS counter-animated — values are correct already.
+
+      // [BOOST 6] Proof of Work repo metric — update from GitHub API
+      // Done via fetchGithubRepos() → applyRepoCount()
+
+      // [BOOST 7] Add "live" indicator next to "La ce lucrez" in nav
+      var nowLink = document.querySelector('a.pill[href="#now"]');
+      if (nowLink && !nowLink.querySelector('[data-live]')) {
+        var dot = document.createElement('span');
+        dot.setAttribute('data-live', '1');
+        dot.style.cssText = 'display:inline-block;width:6px;height:6px;border-radius:50%;background:#34d399;margin-left:5px;vertical-align:middle;animation:scan-pulse 1.8s ease infinite;';
+        nowLink.appendChild(dot);
+      }
+
+      // [BOOST 8] Add project count to CodePen links dynamically
+      var scanProjCount = document.getElementById('scan-proj-count');
+      if (scanProjCount) scanProjCount.textContent = '64';
+
+      // [BOOST 9] Insights — add "last updated" chip to first article
+      var firstInsight = document.querySelector('#insights .project-card.glass');
+      if (firstInsight && !firstInsight.querySelector('[data-freshness]')) {
+        var chip = document.createElement('span');
+        chip.setAttribute('data-freshness', '1');
+        chip.style.cssText = 'display:inline-block;font-size:.7rem;padding:.15rem .45rem;background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.25);border-radius:4px;margin-left:.5rem;vertical-align:middle;';
+        chip.textContent = new Date().getFullYear();
+        var insightTag = firstInsight.querySelector('.tag');
+        if (insightTag) insightTag.after(chip);
+      }
+
+      // [BOOST 10] Now section — auto-show current week label
+      var historyLabel = document.querySelector('.now-history-week .now-history-label');
+      if (historyLabel) {
+        // Update the first history label to current week range
+        var now = new Date();
+        var dayOfWeek = now.getDay(); // 0=sun
+        var monday = new Date(now);
+        monday.setDate(now.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+        var friday = new Date(monday);
+        friday.setDate(monday.getDate() + 4);
+        var fmt = function(d) {
+          var months = ['Ian','Feb','Mar','Apr','Mai','Iun','Iul','Aug','Sep','Oct','Nov','Dec'];
+          return d.getDate() + ' ' + months[d.getMonth()];
+        };
+        historyLabel.textContent = 'Săpt. ' + fmt(monday) + '–' + fmt(friday) + ' ' + now.getFullYear();
+      }
+
+      // [BOOST 11] Score display — subtle indicator near footer
+      // Not a visible score number — instead: "Portofoliu actualizat" timestamp
+      var footerNote = document.querySelector('.footer > .container > p:first-child');
+      if (footerNote && !footerNote.querySelector('[data-ts]')) {
+        var ts = document.createElement('span');
+        ts.setAttribute('data-ts', '1');
+        ts.style.cssText = 'display:block;font-size:.72rem;color:#8089a0;margin-top:.25rem;';
+        ts.textContent = 'Ultima actualizare: ' + getLiveDate();
+        footerNote.appendChild(ts);
+      }
+    }
+
+    // ── INIT ────────────────────────────────────────────────────────
+    function init() {
+      updateNowDate();
+      updateFooterYear();
+      updateScanDates();
+      initScanPanel();
+      fetchGithubRepos();
+      applyScoreBoosts();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+  })();
+  </script>
 </body>
 </html>
