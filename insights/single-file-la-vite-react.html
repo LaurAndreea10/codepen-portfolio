@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>De ce am trecut de la single-file HTML la Vite + React — Laura Andreea</title>
+  <meta name="description" content="Decizia arhitecturală care a schimbat cum construiesc: de la fișiere HTML de 3000 de linii la componente reutilizabile cu Vite și React." />
+  <meta name="author" content="Laura Andreea" />
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/insights/single-file-la-vite-react.html" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <meta property="og:title" content="De ce am trecut de la single-file HTML la Vite + React — Laura Andreea" />
+  <meta property="og:description" content="Decizia arhitecturală care a schimbat cum construiesc: de la fișiere HTML de 3000 de linii la componente reutilizabile cu Vite și React." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/insights/single-file-la-vite-react.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="../style.css" />
+  <style>.insight-hero{padding:3rem 0 2rem}.insight-back{display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;color:#8089a0;text-decoration:none;margin-bottom:2rem;transition:color .15s}.insight-back:hover{color:#6aa6ff}.insight-tag{display:inline-block;font-size:.72rem;padding:.2rem .6rem;border-radius:4px;background:rgba(106,166,255,.12);color:#6aa6ff;border:1px solid rgba(106,166,255,.25);margin-bottom:1rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600}.insight-title{font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.15;margin:0 0 1rem;color:#f1f4fa}.insight-meta{font-size:.82rem;color:#8089a0;margin-bottom:2.5rem;display:flex;gap:1rem;flex-wrap:wrap}.insight-meta span{display:flex;align-items:center;gap:.3rem}.insight-body{max-width:720px}.insight-body h2{font-size:1.15rem;color:#f1f4fa;margin:2rem 0 .6rem}.insight-body p,.insight-body ul{color:#c4cbd9;line-height:1.7;margin:0 0 1rem;font-size:.97rem}.insight-body ul{padding-left:1.2rem}.insight-body li{margin-bottom:.4rem}.insight-body strong{color:#f1f4fa}.insight-callout{background:rgba(106,166,255,.07);border-left:3px solid #6aa6ff;padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.5rem 0}.insight-callout p{margin:0;color:#9cc2ff}.insight-footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:1rem;flex-wrap:wrap;align-items:center}.insight-footer p{font-size:.82rem;color:#8089a0;margin:0}</style>
+</head>
+<body>
+  <div class="topbar"><div class="container"><nav class="nav glass" aria-label="Navigare"><a class="brand" href="../" aria-label="Înapoi la portofoliu"><span class="badge" aria-hidden="true">CP</span><span>Portofoliu</span></a><div class="nav-links"><a class="pill" href="../#insights">← Toate insights</a><a class="pill" href="../#contact">Contact</a></div></nav></div></div>
+  <main><article class="insight-hero"><div class="container"><a class="insight-back" href="../#insights">← Înapoi la insights</a><span class="insight-tag">Architecture</span><h1 class="insight-title">De ce am trecut de la single-file HTML la Vite + React</h1><div class="insight-meta"><span>✍️ Laura Andreea</span><span>📅 Aprilie 2026</span><span>⏱ 5 min lectură</span></div><div class="insight-body">
+    <p>Primul meu proiect CRM serios — ClientFlow — era un singur fișier HTML de ~2800 de linii. CSS inline, JavaScript embedded, totul într-un loc. A funcționat. Dar nu a putut crește.</p>
+    <h2>Ce funcționează la single-file</h2><p>Nu vreau să spun că single-file e greșit. Am construit zeci de proiecte funcționale și deployate în acest format: Excel Quest, Basket VS AI, Link Video Editor Studio. Pentru proiecte cu un singur scop, bine definit, e corect.</p><ul><li>Zero configurare — deschizi în browser, gata</li><li>Deploy instant pe GitHub Pages fără build step</li><li>Portabil — trimiți un fișier, nu un repo întreg</li></ul>
+    <h2>Unde single-file cedează</h2><p>Alpis Fusion CRM are 6 module: kanban, flow builder, RBAC, billing, booking, autosave. Fiecare modul are starea sa, logica sa, componentele sale. Într-un single-file, orice modificare în kanban putea rupe billing-ul.</p><div class="insight-callout"><p><strong>Problema reală nu e dimensiunea fișierului, ci izolarea schimbărilor.</strong> Când nu poți modifica un modul fără să riști un altul, productivitatea scade drastic.</p></div>
+    <h2>De ce Vite + React, nu altceva</h2><p>Am evaluat Vue și Svelte. Am ales React pentru că:</p><ul><li><strong>Ecosistemul</strong> — soluțiile la probleme comune există deja și sunt documentate</li><li><strong>Vite</strong> — build sub 2 secunde local, HMR instant, configurare minimă</li><li><strong>Componente ca unitate de gândire</strong> — un KanbanCard e un fișier, nu o funcție îngropată în 200 de linii</li></ul>
+    <h2>Ce am câștigat concret</h2><p>Build-ul final al Alpis Fusion (~287KB) e mai mic decât multe single-file-uri pe care le-am scris. Dar mai important: pot adăuga un câmp nou în Lead Pipeline fără să ating Billing. Pot refactoriza RBAC fără să testez manual întreaga aplicație.</p><p>GitHub Actions CI/CD face deploy automat la orice push pe main. Dacă ceva se rupe la build, știu înainte să ajungă live.</p>
+  </div><div class="insight-footer"><p>Ai întrebări sau vrei să discuți despre asta?</p><a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Re: De ce am trecut de la single-file HTML la Vite + React">Scrie-mi</a><a class="btn btn-secondary" href="../#insights">← Toate insights</a></div></div></article></main>
+  <footer class="footer"><div class="container"><p class="footer-copy">© <script>document.write(new Date().getFullYear())</script> Laura Andreea · laurandreea10.github.io</p></div></footer>
+</body>
+</html>
