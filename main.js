@@ -20,13 +20,13 @@
       previewLabel: 'Preview live',
       previewOpen: 'Deschide proiectul',
       previewCaseStudy: 'Deschide case study',
-      previewCode: 'CodePen →',
+      previewCode: 'Live →',
       heroPrimary: 'Scrie-mi despre un proiect',
       heroSecondary: 'Deschide Alpis Fusion →',
       implementationImplemented: 'Implementat',
       implementationProgress: 'În dezvoltare',
       implementationRoadmap: 'Roadmap',
-      statusEditHint: 'Actualizezi statusurile cardurilor doar din obiectul cardStatusContent din main.js.',
+      statusEditHint: 'Status implementare actualizat automat din main.js.',
       nowUpdatedPrefix: 'Actualizat:',
       nowLabel: '⚡ Now',
       nowTitle: 'La ce lucrez săptămâna asta'
@@ -45,13 +45,13 @@
       previewLabel: 'Live preview',
       previewOpen: 'Open project',
       previewCaseStudy: 'Open case study',
-      previewCode: 'CodePen →',
+      previewCode: 'Live →',
       heroPrimary: 'Email me about a project',
       heroSecondary: 'Open Alpis Fusion →',
       implementationImplemented: 'Implemented',
       implementationProgress: 'In progress',
       implementationRoadmap: 'Roadmap',
-      statusEditHint: 'Update card statuses only from the cardStatusContent object in main.js.',
+      statusEditHint: 'Implementation status updated automatically from main.js.',
       nowUpdatedPrefix: 'Updated:',
       nowLabel: '⚡ Now',
       nowTitle: 'What I am working on this week'
@@ -64,6 +64,9 @@
     'Link Video Editor Studio': 'implemented',
     'CampaignPilot': 'implemented',
     'Campaign ROI Calculator': 'implemented',
+    'Marketing OS': 'implemented',
+    'Marketing-Tech Templates': 'implemented',
+    'Lighthouse CI Audit Guide': 'implemented',
     'Lead Magnet Landing': 'roadmap',
     'Alpis Fusion CRM Premium': 'implemented',
     'Brief Studio': 'implemented',
@@ -77,26 +80,26 @@
 
   const nowContent = {
     ro: {
-      datetime: '2026-05',
-      label: 'Mai 2026',
+      datetime: '2026-05-24',
+      label: '24 Mai 2026',
       items: [
-        'Focus curent: <strong>Industry Benchmarks Dashboard + UTM Builder v1.2</strong> în Marketing OS.',
-        'Iterez pe <a href="https://laurandreea10.github.io/Link-Video-Editor-Studio/" target="_blank" rel="noopener noreferrer"><strong>Link Video Editor Studio</strong></a> — adaug Automation Pack export.',
-        'Pregătesc un studiu de caz extins pentru <a href="projects/alpis-fusion-crm.html"><strong>Alpis Fusion CRM Premium</strong></a> — decision log cu alegeri de produs și UX.',
-        'Fac audit Lighthouse CI pe <a href="./index.html" aria-label="Deschide homepage-ul portofoliului"><strong>portofoliu</strong></a> și extrag CSS-ul non-critic pentru LCP mai bun.',
-        'Extind zona <a href="./index.html#marketing-tech"><strong>marketing-tech</strong></a> după <a href="./Campaign%20ROI%20Calculator.html"><strong>Campaign ROI Calculator</strong></a> cu noi template-uri orientate pe conversie și growth workflows.'
+        'Focus curent: <a href="./marketing-os.html"><strong>Marketing OS</strong></a> — Industry Benchmarks Dashboard + UTM Builder v1.2.',
+        'Iterez pe <a href="./link-video-automation-pack.html"><strong>Link Video Editor Studio — Automation Pack</strong></a> — generare timeline din brief și export JSON pentru handoff video.',
+        'Pregătesc un studiu de caz extins pentru <a href="./alpis-fusion-crm.html"><strong>Alpis Fusion CRM Premium</strong></a> — decision log cu alegeri de produs și UX.',
+        'Fac audit pe <a href="./lighthouse-audit-guide.html"><strong>Lighthouse CI Audit Guide</strong></a> — LCP, CSS non-critic, CLS și TBT.',
+        'Extind zona <a href="./marketing-tech-templates.html"><strong>Marketing-Tech Templates</strong></a> cu template-uri orientate pe conversie și growth workflows.'
       ],
       note: 'Actualizat manual, ca secțiune de tip now page, pentru a arăta clar ce prioritizez în perioada curentă.'
     },
     en: {
-      datetime: '2026-05',
-      label: 'May 2026',
+      datetime: '2026-05-24',
+      label: 'May 24, 2026',
       items: [
-        'Current focus: <strong>Industry Benchmarks Dashboard + UTM Builder v1.2</strong> inside Marketing OS.',
-        'Iterating on <a href="https://laurandreea10.github.io/Link-Video-Editor-Studio/" target="_blank" rel="noopener noreferrer"><strong>Link Video Editor Studio</strong></a> — adding Automation Pack export.',
-        'Preparing an extended case study for <a href="projects/alpis-fusion-crm.html"><strong>Alpis Fusion CRM Premium</strong></a> — a decision log with product and UX choices.',
-        'Running a Lighthouse CI audit on the <a href="./index.html" aria-label="Open the portfolio homepage"><strong>portfolio</strong></a> and extracting non-critical CSS for better LCP.',
-        'Expanding the <a href="./index.html#marketing-tech"><strong>marketing-tech</strong></a> area after <a href="./Campaign%20ROI%20Calculator.html"><strong>Campaign ROI Calculator</strong></a> with new conversion-oriented templates and growth workflows.'
+        'Current focus: <a href="./marketing-os.html"><strong>Marketing OS</strong></a> — Industry Benchmarks Dashboard + UTM Builder v1.2.',
+        'Iterating on <a href="./link-video-automation-pack.html"><strong>Link Video Editor Studio — Automation Pack</strong></a> — timeline generation from briefs and JSON export for video handoff.',
+        'Preparing an extended case study for <a href="./alpis-fusion-crm.html"><strong>Alpis Fusion CRM Premium</strong></a> — product and UX decision log.',
+        'Auditing <a href="./lighthouse-audit-guide.html"><strong>Lighthouse CI Audit Guide</strong></a> — LCP, non-critical CSS, CLS and TBT.',
+        'Expanding <a href="./marketing-tech-templates.html"><strong>Marketing-Tech Templates</strong></a> with conversion-oriented templates and growth workflows.'
       ],
       note: 'Updated manually as a now-page style section to show clearly what I am prioritizing in the current period.'
     }
@@ -106,23 +109,17 @@
     {
       title: 'Alpis Fusion CRM Premium',
       label: 'CRM premium',
-      description: {
-        ro: 'Colecție modulară pentru lead pipeline, task management, billing și automatizări.',
-        en: 'Modular collection for lead pipeline, task management, billing and automations.'
-      },
+      description: { ro: 'Colecție modulară pentru lead pipeline, task management, billing și automatizări.', en: 'Modular collection for lead pipeline, task management, billing and automations.' },
       meta: 'Vite + React · build optimizat · Deploy automatizat',
       frameUrl: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/',
-      primaryUrl: 'projects/alpis-fusion-crm.html',
+      primaryUrl: './alpis-fusion-crm.html',
       secondaryUrl: 'https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium',
       codeUrl: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/'
     },
     {
       title: 'ClientFlow SaaS CRM',
       label: 'SaaS CRM',
-      description: {
-        ro: 'Sistem CRM orientat pe task-uri, automatizări și acțiuni operaționale zilnice.',
-        en: 'CRM system focused on tasks, automations and daily operational actions.'
-      },
+      description: { ro: 'Sistem CRM orientat pe task-uri, automatizări și acțiuni operaționale zilnice.', en: 'CRM system focused on tasks, automations and daily operational actions.' },
       meta: 'Kanban + triage · Shortcuts · Prioritizare vizuală',
       frameUrl: 'https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/',
       primaryUrl: 'projects/clientflow.html',
@@ -132,13 +129,10 @@
     {
       title: 'Link Video Editor Studio',
       label: 'Video studio',
-      description: {
-        ro: 'Studio pentru workflow video, navigare rapidă și prezentare premium.',
-        en: 'Studio for video workflow, quick navigation and premium presentation.'
-      },
-      meta: 'HTML · CSS · JavaScript · GitHub Pages',
+      description: { ro: 'Studio pentru workflow video, navigare rapidă și Automation Pack export.', en: 'Studio for video workflow, quick navigation and Automation Pack export.' },
+      meta: 'HTML · CSS · JavaScript · Automation Pack',
       frameUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/',
-      primaryUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/',
+      primaryUrl: './link-video-automation-pack.html',
       secondaryUrl: 'https://github.com/LaurAndreea10/Link-Video-Editor-Studio',
       codeUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/'
     }
@@ -182,30 +176,6 @@
   let autoplayId = null;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  function applyThemeFromStorage() {
-    const savedTheme = localStorage.getItem(STORAGE_KEYS.theme);
-    if (savedTheme === 'light') els.body.classList.add('light');
-    else els.body.classList.remove('light');
-    syncThemeButton();
-  }
-
-  function applyContrastFromStorage() {
-    const savedContrast = localStorage.getItem(STORAGE_KEYS.contrast);
-    const isHigh = savedContrast === 'high';
-    els.body.classList.toggle('high-contrast', isHigh);
-    if (els.contrastToggle) {
-      els.contrastToggle.setAttribute('aria-pressed', String(isHigh));
-      els.contrastToggle.textContent = isHigh ? translations[currentLang].contrastOn : translations[currentLang].contrastOff;
-    }
-  }
-
-  function syncThemeButton() {
-    if (!els.themeToggle) return;
-    const isLight = els.body.classList.contains('light');
-    els.themeToggle.textContent = isLight ? translations[currentLang].themeDark : translations[currentLang].themeLight;
-    els.themeToggle.setAttribute('aria-label', currentLang === 'ro' ? 'Schimbă tema vizuală' : 'Change visual theme');
-  }
-
   function normalizeImplementationState(value) {
     if (!value) return null;
     const normalized = String(value).trim().toLowerCase();
@@ -218,6 +188,13 @@
   function getCardTitle(card) {
     const titleEl = card.querySelector('h3');
     return titleEl ? titleEl.textContent.trim() : '';
+  }
+
+  function getImplementationLabel(state) {
+    const copy = translations[currentLang];
+    if (state === 'implemented') return copy.implementationImplemented;
+    if (state === 'roadmap') return copy.implementationRoadmap;
+    return copy.implementationProgress;
   }
 
   function inferImplementationState(card) {
@@ -235,13 +212,6 @@
     if (hasLive) return 'implemented';
     if (links.some(link => (link.getAttribute('href') || '').includes('github.com'))) return 'progress';
     return 'progress';
-  }
-
-  function getImplementationLabel(state) {
-    const copy = translations[currentLang];
-    if (state === 'implemented') return copy.implementationImplemented;
-    if (state === 'roadmap') return copy.implementationRoadmap;
-    return copy.implementationProgress;
   }
 
   function decorateImplementationCards() {
@@ -268,12 +238,13 @@
     const title = els.nowSection.querySelector('.now-title');
     const badge = els.nowSection.querySelector('.now-badge');
     const list = els.nowSection.querySelector('.now-list');
+    const checklist = els.nowSection.querySelector('#now-panel-active .now-checklist');
     const note = els.nowSection.querySelector('.now-note');
+
     if (eyebrow) eyebrow.textContent = translations[currentLang].nowLabel;
     if (title) title.textContent = translations[currentLang].nowTitle;
-    if (badge) {
-      badge.innerHTML = `${translations[currentLang].nowUpdatedPrefix} <time datetime="${copy.datetime}">${copy.label}</time>`;
-    }
+    if (badge) badge.innerHTML = `${translations[currentLang].nowUpdatedPrefix} <time datetime="${copy.datetime}">${copy.label}</time>`;
+
     if (list) {
       list.innerHTML = '';
       copy.items.forEach(item => {
@@ -283,7 +254,51 @@
         list.appendChild(li);
       });
     }
+
+    if (checklist && !checklist.dataset.integratedLinks) {
+      const linkMap = [
+        ['./link-video-automation-pack.html', 'Deschide Automation Pack'],
+        ['./alpis-fusion-crm.html', 'Deschide case study'],
+        ['./lighthouse-audit-guide.html', 'Deschide audit guide'],
+        ['./marketing-tech-templates.html', 'Deschide templates']
+      ];
+      [...checklist.querySelectorAll('.now-item-active')].forEach((item, index) => {
+        const target = linkMap[index];
+        if (!target || item.querySelector('.now-link-action')) return;
+        const action = document.createElement('a');
+        action.className = 'now-tag now-link-action';
+        action.href = target[0];
+        action.textContent = target[1];
+        action.setAttribute('aria-label', target[1]);
+        item.querySelector('div')?.appendChild(action);
+      });
+      checklist.dataset.integratedLinks = 'true';
+    }
+
     if (note) note.textContent = copy.note;
+  }
+
+  function applyThemeFromStorage() {
+    const savedTheme = localStorage.getItem(STORAGE_KEYS.theme);
+    els.body.classList.toggle('light', savedTheme === 'light');
+    syncThemeButton();
+  }
+
+  function applyContrastFromStorage() {
+    const savedContrast = localStorage.getItem(STORAGE_KEYS.contrast);
+    const isHigh = savedContrast === 'high';
+    els.body.classList.toggle('high-contrast', isHigh);
+    if (els.contrastToggle) {
+      els.contrastToggle.setAttribute('aria-pressed', String(isHigh));
+      els.contrastToggle.textContent = isHigh ? translations[currentLang].contrastOn : translations[currentLang].contrastOff;
+    }
+  }
+
+  function syncThemeButton() {
+    if (!els.themeToggle) return;
+    const isLight = els.body.classList.contains('light');
+    els.themeToggle.textContent = isLight ? translations[currentLang].themeDark : translations[currentLang].themeLight;
+    els.themeToggle.setAttribute('aria-label', currentLang === 'ro' ? 'Schimbă tema vizuală' : 'Change visual theme');
   }
 
   function applyLanguage(lang) {
@@ -303,6 +318,7 @@
     applyContrastFromStorage();
     renderPreviewChips();
     setPreview(previewIndex);
+    setupPortfolioIntegrations();
     decorateImplementationCards();
     setupNowSection();
   }
@@ -360,6 +376,98 @@
     renderPreviewChips();
   }
 
+  function createProjectCard({ title, badge, tag, description, href, secondaryHref, secondaryLabel }) {
+    const article = document.createElement('article');
+    article.className = 'project-card glass';
+    article.dataset.status = 'implemented';
+    article.innerHTML = `
+      <span class="badge-new">NEW</span>
+      <div class="project-top">
+        <div>
+          <h3>${title}</h3>
+          <span class="badge-github">${badge}</span>
+        </div>
+        <span class="tag github">${tag}</span>
+      </div>
+      <p class="project-desc">${description}</p>
+      <div class="card-actions">
+        <a class="btn btn-primary" href="${href}">Deschide Live</a>
+        ${secondaryHref ? `<a class="btn btn-secondary" href="${secondaryHref}">${secondaryLabel || 'Detalii'}</a>` : ''}
+      </div>
+    `;
+    return article;
+  }
+
+  function setupPortfolioIntegrations() {
+    const marketingGrid = document.querySelector('#marketing-tech .projects-grid');
+    if (marketingGrid && !marketingGrid.dataset.extendedIntegrations) {
+      const existingTitles = new Set([...marketingGrid.querySelectorAll('h3')].map(h => h.textContent.trim()));
+      const cards = [
+        {
+          title: 'Marketing OS',
+          badge: 'Industry Benchmarks · UTM Builder v1.2',
+          tag: 'marketing-os',
+          description: 'Workspace integrat pentru marketing managers: benchmark-uri pe industrii, UTM builder, KPI tracking și istoric campanii.',
+          href: './marketing-os.html',
+          secondaryHref: './marketing-os.html#utm',
+          secondaryLabel: 'UTM Builder'
+        },
+        {
+          title: 'Marketing-Tech Templates',
+          badge: 'Conversion · Growth workflows',
+          tag: 'growth',
+          description: 'Suită de template-uri pentru funnel, A/B testing, lead magnet builder și workflow-uri de conversie.',
+          href: './marketing-tech-templates.html'
+        },
+        {
+          title: 'Lighthouse CI Audit Guide',
+          badge: 'Performance · LCP · CSS audit',
+          tag: 'performance',
+          description: 'Tool educațional pentru audit de performanță: scoruri Lighthouse simulate, oportunități LCP/CLS/TBT și fix-uri concrete.',
+          href: './lighthouse-audit-guide.html'
+        }
+      ];
+      cards.forEach(card => {
+        if (!existingTitles.has(card.title)) marketingGrid.appendChild(createProjectCard(card));
+      });
+      marketingGrid.dataset.extendedIntegrations = 'true';
+    }
+
+    const marketingActions = document.querySelector('#marketing-tech .section-head .card-actions');
+    if (marketingActions && !marketingActions.querySelector('[href="./marketing-os.html"]')) {
+      [
+        ['Marketing OS', './marketing-os.html'],
+        ['Templates', './marketing-tech-templates.html'],
+        ['Lighthouse Audit', './lighthouse-audit-guide.html']
+      ].forEach(([label, href]) => {
+        const link = document.createElement('a');
+        link.className = 'btn btn-secondary';
+        link.href = href;
+        link.textContent = label;
+        marketingActions.appendChild(link);
+      });
+    }
+
+    const linkVideoCard = [...document.querySelectorAll('.project-card')].find(card => getCardTitle(card) === 'Link Video Editor Studio');
+    const linkVideoActions = linkVideoCard?.querySelector('.card-actions');
+    if (linkVideoActions && !linkVideoActions.querySelector('[href="./link-video-automation-pack.html"]')) {
+      const link = document.createElement('a');
+      link.className = 'btn btn-secondary';
+      link.href = './link-video-automation-pack.html';
+      link.textContent = 'Automation Pack';
+      linkVideoActions.appendChild(link);
+    }
+
+    const alpisActions = document.querySelector('#key-alpis-title')?.closest('.project-card')?.querySelector('.card-actions');
+    if (alpisActions && !alpisActions.querySelector('[href="./alpis-fusion-crm.html"]')) {
+      const link = document.createElement('a');
+      link.className = 'btn btn-secondary';
+      link.href = './alpis-fusion-crm.html';
+      link.textContent = 'Case study complet';
+      alpisActions.appendChild(link);
+    }
+  }
+
   function startAutoplay() {
     if (prefersReducedMotion.matches || previewSlides.length < 2) return;
     stopAutoplay();
@@ -367,10 +475,16 @@
   }
 
   function stopAutoplay() {
-    if (autoplayId) { window.clearInterval(autoplayId); autoplayId = null; }
+    if (autoplayId) {
+      window.clearInterval(autoplayId);
+      autoplayId = null;
+    }
   }
 
-  function restartAutoplay() { stopAutoplay(); startAutoplay(); }
+  function restartAutoplay() {
+    stopAutoplay();
+    startAutoplay();
+  }
 
   function setupThemeToggle() {
     if (!els.themeToggle) return;
@@ -414,13 +528,14 @@
         else link.removeAttribute('aria-current');
       });
     }, { rootMargin: '-20% 0px -60% 0px', threshold: [0.2, 0.35, 0.55] });
-    els.sections.forEach(s => observer.observe(s));
+    els.sections.forEach(section => observer.observe(section));
   }
 
   function setupReducedMotionWatcher() {
     if (typeof prefersReducedMotion.addEventListener === 'function') {
       prefersReducedMotion.addEventListener('change', () => {
-        if (prefersReducedMotion.matches) stopAutoplay(); else startAutoplay();
+        if (prefersReducedMotion.matches) stopAutoplay();
+        else startAutoplay();
       });
     }
   }
@@ -428,21 +543,23 @@
   function initPortfolioCore() {
     applyThemeFromStorage();
     applyContrastFromStorage();
-    applyLanguage(currentLang);
     setupThemeToggle();
     setupContrastToggle();
     setupLangToggle();
     setupPreviewFrame();
     setupAriaCurrent();
     setupReducedMotionWatcher();
+    applyLanguage(currentLang);
     setPreview(0);
+    setupPortfolioIntegrations();
     decorateImplementationCards();
     setupNowSection();
     startAutoplay();
   }
 
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stopAutoplay(); else startAutoplay();
+    if (document.hidden) stopAutoplay();
+    else startAutoplay();
   });
 
   document.addEventListener('DOMContentLoaded', initPortfolioCore);
