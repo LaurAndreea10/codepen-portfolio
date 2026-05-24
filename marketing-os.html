@@ -3,31 +3,1685 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Marketing OS — Benchmarks + UTM Builder v1.2 | Laura Andreea</title>
-<meta name="description" content="Marketing-Tech workspace cu Industry Benchmarks Dashboard, UTM Builder v1.2, ROI calculator, lead magnet și brief generator. Bilingv RO/EN, 0 backend, localStorage." />
-<meta name="theme-color" content="#071226" />
+<title>Marketing OS — Industry Benchmarks + UTM Builder v1.2</title>
+<meta name="description" content="Marketing OS: Industry Benchmarks Dashboard și UTM Builder v1.2 — workspace integrat pentru marketing managers." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-:root{--bg:#071226;--bg2:#0d1b3a;--panel:rgba(255,255,255,.045);--panel2:rgba(255,255,255,.085);--border:rgba(255,255,255,.12);--text:#e6edf7;--muted:#97a3b8;--accent:#06b6d4;--accent2:#22d3ee;--blue:#5b8def;--good:#10b981;--warn:#f59e0b;--bad:#ef4444;--radius:12px}html[data-theme=light]{--bg:#f7f9fc;--bg2:#fff;--panel:rgba(0,0,0,.035);--panel2:rgba(0,0,0,.07);--border:rgba(0,0,0,.12);--text:#0d1b3a;--muted:#4a5568}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(circle at 80% -10%,rgba(6,182,212,.12),transparent 34%),var(--bg);color:var(--text);line-height:1.55;min-height:100vh}button,input,select,textarea{font:inherit}.topbar{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:color-mix(in srgb,var(--bg2) 88%,transparent);backdrop-filter:blur(14px);position:sticky;top:0;z-index:20}.brand{font-weight:900;letter-spacing:.02em}.brand span{color:var(--accent2)}.actions{display:flex;gap:.5rem;flex-wrap:wrap}.back,.topbar button,.mini-btn{background:var(--panel);color:var(--text);border:1px solid var(--border);padding:.45rem .75rem;border-radius:8px;cursor:pointer;font-size:.84rem;text-decoration:none}.back{color:var(--accent);background:transparent}.layout{display:grid;grid-template-columns:238px 1fr;min-height:calc(100vh - 65px)}.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:1rem .65rem;display:flex;flex-direction:column;gap:.28rem}.sidebar button{background:transparent;color:var(--text);border:0;padding:.72rem 1rem;border-radius:10px;cursor:pointer;font-size:.92rem;text-align:left}.sidebar button:hover{background:var(--panel)}.sidebar button.active{background:linear-gradient(135deg,rgba(6,182,212,.16),rgba(91,141,239,.1));color:var(--accent2);font-weight:800}.sep{font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);padding:.85rem 1rem .25rem}main{padding:1.5rem;overflow-x:hidden}.view{display:none}.view.active{display:block;animation:fade .22s ease}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}h1{font-size:clamp(1.55rem,3vw,2.35rem);line-height:1.1;margin:0 0 .5rem}h2{font-size:1.1rem;margin:1.4rem 0 .6rem}.lede{color:var(--muted);margin:0 0 1.4rem;max-width:860px}.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1rem}.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.85rem}.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.75rem;margin-bottom:1rem}.panel,.kpi,.stage,.template-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem}.panel h3{margin:0 0 .75rem;color:var(--accent2);font-size:1rem}.kpi .label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.kpi .value{font-size:1.75rem;font-weight:900;color:var(--accent2);font-variant-numeric:tabular-nums}.chip,.tag{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .58rem;border-radius:999px;font-size:.72rem;background:rgba(6,182,212,.14);border:1px solid rgba(6,182,212,.22);color:var(--accent2);margin:.15rem .25rem .15rem 0}.tag.warn{color:var(--warn);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.1)}.tag.good{color:var(--good);border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.1)}label{display:block;font-size:.82rem;color:var(--muted);margin:.72rem 0 .3rem}input,textarea,select{width:100%;padding:.58rem .72rem;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px}textarea{min-height:90px;resize:vertical}input:focus,textarea:focus,select:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px rgba(6,182,212,.17)}.btn{background:var(--accent);color:#06111f;border:0;padding:.65rem 1rem;border-radius:8px;cursor:pointer;font-weight:850;margin-top:1rem}.btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--border)}.btn-row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:.75rem}th,td{padding:.58rem;text-align:left;border-bottom:1px solid var(--border)}th{color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em}.num{text-align:right;font-variant-numeric:tabular-nums}.pipeline,.bench-bars{display:grid;gap:.55rem}.pipeline{grid-template-columns:repeat(4,1fr);margin-top:1rem}.stage{text-align:center}.stage-name{font-size:.72rem;text-transform:uppercase;color:var(--muted)}.stage-value{font-size:1.4rem;font-weight:900;color:var(--accent2)}.stage-conv{font-size:.78rem;color:var(--muted)}.output{background:var(--bg);border:1px dashed var(--border);padding:1rem;border-radius:8px;margin-top:1rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85rem;white-space:pre-wrap;word-break:break-word}.bench-row{display:grid;grid-template-columns:130px 1fr 70px;gap:.75rem;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border)}.bar-track{height:10px;border-radius:999px;background:var(--panel2);overflow:hidden}.bar-fill{height:100%;width:var(--w);background:linear-gradient(90deg,var(--accent),var(--blue));border-radius:999px}.insight{border-left:3px solid var(--accent);padding:.85rem 1rem;background:rgba(6,182,212,.07);border-radius:0 8px 8px 0;color:var(--text)}.utm-url{font-size:.82rem}.invalid{border-color:var(--bad)!important}.template-card{cursor:pointer;transition:.2s}.template-card:hover{transform:translateY(-2px);border-color:var(--accent)}.toast{position:fixed;right:1.25rem;bottom:1.25rem;background:var(--good);color:#fff;padding:.75rem 1rem;border-radius:9px;transform:translateX(130%);transition:.3s;z-index:99}.toast.show{transform:none}[lang-en]{display:none}body[data-lang=en] [lang-ro]{display:none}body[data-lang=en] [lang-en]{display:initial}@media(max-width:780px){.layout{grid-template-columns:1fr}.sidebar{position:sticky;top:65px;z-index:15;display:flex;overflow-x:auto;flex-direction:row;border-right:0;border-bottom:1px solid var(--border)}.sidebar button{white-space:nowrap;min-width:145px;text-align:center}.pipeline{grid-template-columns:repeat(2,1fr)}main{padding:1rem}.bench-row{grid-template-columns:92px 1fr 58px}}
+:root {
+  --bg: #04070f;
+  --bg-2: #080e1c;
+  --bg-3: #0c1426;
+  --panel: rgba(12, 20, 38, 0.9);
+  --panel-2: rgba(255,255,255,0.04);
+  --panel-3: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border-2: rgba(255,255,255,0.14);
+  --text: #e8edf8;
+  --muted: #7b8ba6;
+  --muted-2: #a4b0c8;
+  --accent: #3b82f6;
+  --accent-2: #60a5fa;
+  --accent-glow: rgba(59,130,246,0.2);
+  --green: #22c55e;
+  --green-bg: rgba(34,197,94,0.1);
+  --amber: #f59e0b;
+  --amber-bg: rgba(245,158,11,0.1);
+  --red: #ef4444;
+  --red-bg: rgba(239,68,68,0.1);
+  --purple: #a78bfa;
+  --purple-bg: rgba(167,139,250,0.1);
+  --teal: #14b8a6;
+  --teal-bg: rgba(20,184,166,0.1);
+  --mono: 'DM Mono', ui-monospace, monospace;
+  --display: 'Sora', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; font-family: var(--display);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+h1,h2,h3,h4,p { margin: 0; }
+
+/* ── LAYOUT ── */
+.shell { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+.sidebar {
+  background: var(--bg-2);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  padding: 0;
+  position: sticky; top: 0; height: 100vh;
+  overflow-y: auto;
+}
+.main { overflow-x: hidden; }
+
+/* ── SIDEBAR ── */
+.brand {
+  padding: 22px 20px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.brand-name {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent-2);
+}
+.brand-sub {
+  font-size: 10px; color: var(--muted); margin-top: 2px;
+  font-family: var(--mono); letter-spacing: 0.06em;
+}
+.nav-section { padding: 16px 12px 0; }
+.nav-label {
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); padding: 0 8px; margin-bottom: 6px;
+  font-family: var(--mono);
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: 8px;
+  font-size: 13px; color: var(--muted-2); margin-bottom: 2px;
+  border: 1px solid transparent; background: none;
+  width: 100%; text-align: left;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.nav-item:hover { background: var(--panel-3); color: var(--text); }
+.nav-item.active {
+  background: var(--accent-glow);
+  color: var(--accent-2);
+  border-color: rgba(59,130,246,0.25);
+}
+.nav-icon {
+  width: 16px; height: 16px; flex-shrink: 0;
+  display: grid; place-items: center; font-size: 14px;
+}
+.nav-badge {
+  margin-left: auto; font-size: 9px; font-family: var(--mono);
+  padding: 2px 6px; border-radius: 4px;
+  background: rgba(59,130,246,0.15); color: var(--accent-2);
+}
+.sidebar-footer {
+  margin-top: auto; padding: 16px 12px;
+  border-top: 1px solid var(--border);
+}
+.live-dot {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; color: var(--green); font-family: var(--mono);
+  letter-spacing: 0.06em;
+}
+.live-dot::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+  animation: pulse 1.8s ease infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+
+/* ── TOPBAR ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; height: 60px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-2);
+  position: sticky; top: 0; z-index: 40;
+}
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.page-title { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; }
+.page-meta { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.top-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 7px;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.02em;
+  border: 1px solid var(--border-2); background: var(--panel-3);
+  color: var(--muted-2); transition: all 0.15s;
+}
+.top-btn:hover { border-color: var(--accent); color: var(--accent-2); }
+.top-btn.primary {
+  background: var(--accent); border-color: var(--accent);
+  color: #fff;
+}
+.top-btn.primary:hover { background: var(--accent-2); }
+
+/* ── CONTENT ── */
+.content { padding: 28px; }
+.tab-bar {
+  display: flex; gap: 4px; padding: 4px;
+  background: var(--panel-2); border: 1px solid var(--border);
+  border-radius: 10px; margin-bottom: 28px;
+  width: fit-content;
+}
+.tab {
+  padding: 8px 20px; border-radius: 7px;
+  font-size: 13px; font-weight: 500;
+  border: 1px solid transparent; background: none;
+  color: var(--muted); transition: all 0.15s;
+}
+.tab:hover { color: var(--text); }
+.tab.active {
+  background: var(--panel-3); color: var(--text);
+  border-color: var(--border-2);
+}
+
+/* ── SECTION HIDDEN ── */
+.tab-section { display: none; }
+.tab-section.active { display: block; }
+
+/* ── GRID UTILS ── */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+.card-sm { padding: 16px; }
+.card-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; margin-bottom: 16px;
+}
+.card-title { font-size: 13px; font-weight: 600; letter-spacing: 0.02em; }
+.card-sub { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: var(--mono); }
+.card-badge {
+  font-size: 10px; padding: 3px 8px; border-radius: 5px;
+  font-family: var(--mono); letter-spacing: 0.06em;
+  font-weight: 500;
+}
+.badge-green { background: var(--green-bg); color: var(--green); }
+.badge-amber { background: var(--amber-bg); color: var(--amber); }
+.badge-red { background: var(--red-bg); color: var(--red); }
+.badge-blue { background: var(--accent-glow); color: var(--accent-2); }
+.badge-purple { background: var(--purple-bg); color: var(--purple); }
+.badge-teal { background: var(--teal-bg); color: var(--teal); }
+
+/* ── METRIC CARDS ── */
+.metric-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.metric-label {
+  font-size: 11px; color: var(--muted); font-family: var(--mono);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.metric-value { font-size: 26px; font-weight: 700; letter-spacing: -0.04em; }
+.metric-delta {
+  font-size: 11px; font-family: var(--mono);
+  display: flex; align-items: center; gap: 4px;
+}
+.delta-up { color: var(--green); }
+.delta-down { color: var(--red); }
+.delta-neutral { color: var(--muted); }
+
+/* ── TABLES ── */
+table { width: 100%; border-collapse: collapse; }
+th {
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); font-family: var(--mono); font-weight: 500;
+  padding: 0 12px 10px; text-align: left; border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 11px 12px; font-size: 13px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--panel-2); }
+
+/* ── BENCHMARK BARS ── */
+.bench-bar-wrap { display: flex; align-items: center; gap: 10px; }
+.bench-bar-bg {
+  flex: 1; height: 6px; border-radius: 3px;
+  background: rgba(255,255,255,0.06);
+}
+.bench-bar-fill {
+  height: 100%; border-radius: 3px;
+  transition: width 0.6s cubic-bezier(.4,0,.2,1);
+}
+.bench-val { font-family: var(--mono); font-size: 12px; min-width: 42px; text-align: right; }
+.you-marker {
+  width: 8px; height: 8px; border-radius: 50%;
+  border: 2px solid var(--amber);
+  background: transparent; display: inline-block;
+  margin-right: 4px; vertical-align: middle;
+}
+.ind-marker {
+  width: 8px; height: 8px; border-radius: 2px;
+  background: var(--accent); display: inline-block;
+  margin-right: 4px; vertical-align: middle;
+}
+
+/* ── INDUSTRY SELECTOR ── */
+.ind-selector {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+}
+.ind-chip {
+  padding: 7px 14px; border-radius: 7px;
+  font-size: 12px; font-weight: 500;
+  border: 1px solid var(--border); background: var(--panel-2);
+  color: var(--muted-2); transition: all 0.15s;
+}
+.ind-chip:hover { border-color: var(--border-2); color: var(--text); }
+.ind-chip.active {
+  background: var(--accent-glow); border-color: rgba(59,130,246,0.35);
+  color: var(--accent-2);
+}
+
+/* ── PERCENTILE GAUGE ── */
+.gauge-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.gauge-label { font-size: 11px; color: var(--muted); font-family: var(--mono); text-align: center; }
+.gauge-val { font-size: 22px; font-weight: 700; letter-spacing: -0.04em; }
+
+/* ── UTM BUILDER ── */
+.utm-form { display: flex; flex-direction: column; gap: 16px; }
+.field-group {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+}
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field-label {
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); font-family: var(--mono);
+}
+.field input, .field select, .field textarea {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  padding: 10px 12px; font-family: var(--display); font-size: 13px;
+  outline: none; transition: border-color 0.15s;
+  -webkit-appearance: none; appearance: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+}
+.field select { cursor: pointer; }
+.field textarea { resize: vertical; min-height: 72px; }
+.field input::placeholder { color: var(--muted); }
+.optional-tag {
+  font-size: 9px; padding: 1px 5px; border-radius: 3px;
+  background: var(--panel-3); color: var(--muted); margin-left: 4px;
+  vertical-align: middle; font-family: var(--mono); letter-spacing: 0.06em;
+}
+
+/* ── UTM PREVIEW ── */
+.utm-preview {
+  background: var(--bg-3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px;
+}
+.utm-preview-label {
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); font-family: var(--mono); margin-bottom: 10px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.utm-preview-url {
+  font-family: var(--mono); font-size: 12px; color: var(--text);
+  word-break: break-all; line-height: 1.6;
+}
+.utm-preview-url .base { color: var(--muted-2); }
+.utm-preview-url .sep { color: var(--border-2); }
+.utm-preview-url .param-key { color: var(--muted); }
+.utm-preview-url .param-val { color: var(--accent-2); }
+
+/* ── UTM PRESETS ── */
+.presets-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.preset-card {
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px 14px; background: var(--panel-2);
+  cursor: pointer; transition: all 0.15s; text-align: left;
+}
+.preset-card:hover { border-color: var(--accent); background: var(--accent-glow); }
+.preset-name { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+.preset-meta { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+
+/* ── UTM HISTORY ── */
+.history-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.history-item:last-child { border-bottom: none; }
+.history-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+.history-url { font-family: var(--mono); font-size: 11px; color: var(--muted); word-break: break-all; }
+.history-tags { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.history-tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; font-family: var(--mono); }
+.copy-btn {
+  margin-left: auto; flex-shrink: 0;
+  padding: 6px 10px; border-radius: 7px;
+  font-size: 11px; font-family: var(--mono);
+  border: 1px solid var(--border); background: var(--panel-3);
+  color: var(--muted-2); transition: all 0.15s;
+}
+.copy-btn:hover { border-color: var(--accent); color: var(--accent-2); }
+.copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+/* ── CHANNEL COMPARE ── */
+.channel-row {
+  display: grid; align-items: center;
+  grid-template-columns: 130px 1fr 60px 80px;
+  gap: 12px; padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.channel-row:last-child { border-bottom: none; }
+.channel-name { font-size: 13px; font-weight: 500; }
+.channel-bar-bg {
+  height: 8px; border-radius: 4px;
+  background: rgba(255,255,255,0.06); overflow: hidden;
+}
+.channel-bar-fill {
+  height: 100%; border-radius: 4px;
+  transition: width 0.6s cubic-bezier(.4,0,.2,1);
+}
+.channel-pct { font-family: var(--mono); font-size: 12px; text-align: right; }
+.channel-delta { font-family: var(--mono); font-size: 11px; text-align: right; }
+
+/* ── SECTION HEADERS ── */
+.section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 18px; }
+.section-title { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; }
+.section-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.section-action { font-size: 12px; color: var(--accent-2); font-family: var(--mono); }
+
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(--border); margin: 22px 0; }
+
+/* ── LEGEND ── */
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted-2); }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+.legend-sq { width: 8px; height: 8px; border-radius: 2px; }
+
+/* ── TOOLTIP ── */
+.tooltip-wrap { position: relative; display: inline-flex; }
+.tooltip-icon { font-size: 11px; color: var(--muted); cursor: help; }
+.tooltip-box {
+  display: none; position: absolute; bottom: calc(100% + 6px); left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-3); border: 1px solid var(--border-2);
+  border-radius: 7px; padding: 8px 10px;
+  font-size: 11px; color: var(--muted-2); line-height: 1.5;
+  white-space: nowrap; z-index: 100; font-family: var(--mono);
+}
+.tooltip-wrap:hover .tooltip-box { display: block; }
+
+/* ── STATUS BAR ── */
+.status-bar {
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 16px; border-radius: 9px;
+  background: var(--bg-3); border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.status-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-family: var(--mono); }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--panel-3); border-radius: 3px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .grid-2, .grid-3, .field-group, .presets-grid { grid-template-columns: 1fr; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
 </style>
 </head>
-<body data-lang="ro">
-<header class="topbar"><div style="display:flex;align-items:center;gap:.75rem"><a href="index.html" class="back">←</a><div class="brand">Marketing <span>OS</span></div></div><div class="actions"><button onclick="exportData()">Export</button><button onclick="resetData()">Reset</button><button onclick="toggleLang()" id="lang-btn">EN</button><button onclick="toggleTheme()" id="theme-btn">☀️</button></div></header>
-<div class="layout"><nav class="sidebar"><div class="sep">Workspace</div><button class="nav-btn active" data-view="dashboard">📊 Dashboard</button><button class="nav-btn" data-view="benchmarks">📈 Benchmarks</button><button class="nav-btn" data-view="utm">🔗 UTM v1.2</button><button class="nav-btn" data-view="campaign">🎯 <span lang-ro>Campanii</span><span lang-en>Campaigns</span></button><button class="nav-btn" data-view="roi">💰 ROI</button><button class="nav-btn" data-view="leadmagnet">🧲 Lead Magnet</button><button class="nav-btn" data-view="brief">📝 Brief</button><div class="sep">Info</div><button class="nav-btn" data-view="about">ℹ️ <span lang-ro>Despre</span><span lang-en>About</span></button></nav><main>
-<section class="view active" id="view-dashboard"><h1>Marketing-Tech Command Center</h1><p class="lede" lang-ro>Workspace 0 backend pentru campanii, benchmarks, UTM-uri, ROI și brief-uri. Totul se salvează local în browser.</p><p class="lede" lang-en>Zero-backend workspace for campaigns, benchmarks, UTMs, ROI and briefs. Everything is saved locally in browser.</p><div class="kpi-grid"><div class="kpi"><div class="label" lang-ro>Campanii active</div><div class="label" lang-en>Active campaigns</div><div class="value" id="kpi-campaigns">0</div></div><div class="kpi"><div class="label" lang-ro>Buget total</div><div class="label" lang-en>Total budget</div><div class="value" id="kpi-budget">€0</div></div><div class="kpi"><div class="label" lang-ro>Revenue estimat</div><div class="label" lang-en>Estimated revenue</div><div class="value" id="kpi-revenue">€0</div></div><div class="kpi"><div class="label" lang-ro>ROI mediu</div><div class="label" lang-en>Avg ROI</div><div class="value" id="kpi-roi">0%</div></div></div><div class="grid2"><div class="panel"><h3 lang-ro>Pipeline general</h3><h3 lang-en>General pipeline</h3><div class="pipeline"><div class="stage"><div class="stage-name">Impressions</div><div class="stage-value" id="stage-impressions">0</div></div><div class="stage"><div class="stage-name">Clicks</div><div class="stage-value" id="stage-clicks">0</div><div class="stage-conv" id="conv-clicks">—</div></div><div class="stage"><div class="stage-name">Leads</div><div class="stage-value" id="stage-leads">0</div><div class="stage-conv" id="conv-leads">—</div></div><div class="stage"><div class="stage-name" lang-ro>Clienți</div><div class="stage-name" lang-en>Customers</div><div class="stage-value" id="stage-customers">0</div><div class="stage-conv" id="conv-customers">—</div></div></div></div><div class="panel"><h3 lang-ro>Roadmap implementat</h3><h3 lang-en>Implemented roadmap</h3><span class="tag good">Industry Benchmarks Dashboard</span><span class="tag good">UTM Builder v1.2</span><span class="tag">Naming profiles</span><span class="tag">Saved templates</span><p class="lede" style="margin-top:.75rem" lang-ro>Folosește benchmarks pentru target-uri realiste, apoi generează UTM-uri consistente cu profile și template-uri salvate.</p><p class="lede" style="margin-top:.75rem" lang-en>Use benchmarks for realistic targets, then generate consistent UTMs with saved profiles and templates.</p></div></div><div class="panel" style="margin-top:1rem"><h3 lang-ro>Ultimele campanii</h3><h3 lang-en>Recent campaigns</h3><table><thead><tr><th lang-ro>Nume</th><th lang-en>Name</th><th>Channel</th><th class="num">Budget</th><th class="num">ROI</th></tr></thead><tbody id="campaigns-table"></tbody></table></div></section>
-<section class="view" id="view-benchmarks"><h1>Industry Benchmarks Dashboard</h1><p class="lede" lang-ro>Compară canalul, industria și etapa de funnel. Benchmarks sunt orientative pentru demo/strategie — nu date live externe.</p><p class="lede" lang-en>Compare channel, industry and funnel stage. Benchmarks are directional for demo/strategy — not live external data.</p><div class="grid2"><div class="panel"><h3 lang-ro>Filtre benchmark</h3><h3 lang-en>Benchmark filters</h3><label>Channel</label><select id="bm-channel" oninput="renderBenchmarks()"><option>Google Ads</option><option>LinkedIn</option><option>Meta</option><option>Email</option><option>SEO / Content</option><option>Outbound</option></select><label lang-ro>Industrie</label><label lang-en>Industry</label><select id="bm-industry" oninput="renderBenchmarks()"><option>SaaS B2B</option><option>E-commerce</option><option>Education</option><option>Local Services</option><option>Beauty / Lifestyle</option></select><label lang-ro>Funnel stage</label><label lang-en>Funnel stage</label><select id="bm-stage" oninput="renderBenchmarks()"><option>Awareness</option><option>Consideration</option><option>Conversion</option><option>Retention</option></select><label lang-ro>CTR campania ta (%)</label><label lang-en>Your CTR (%)</label><input id="bm-your-ctr" type="number" value="2.4" step=".1" oninput="renderBenchmarks()"><label lang-ro>Lead conversion campania ta (%)</label><label lang-en>Your lead conversion (%)</label><input id="bm-your-cvr" type="number" value="7.5" step=".1" oninput="renderBenchmarks()"><label lang-ro>CAC campania ta (€)</label><label lang-en>Your CAC (€)</label><input id="bm-your-cac" type="number" value="58" oninput="renderBenchmarks()"></div><div class="panel"><h3 lang-ro>Rezultat benchmark</h3><h3 lang-en>Benchmark result</h3><div class="kpi-grid"><div class="kpi"><div class="label">CTR target</div><div class="value" id="bm-ctr">—</div></div><div class="kpi"><div class="label">Lead CVR</div><div class="value" id="bm-cvr">—</div></div><div class="kpi"><div class="label">CAC range</div><div class="value" id="bm-cac">—</div></div><div class="kpi"><div class="label">Score</div><div class="value" id="bm-score">—</div></div></div><div class="bench-bars" id="bm-bars"></div><div class="insight" id="bm-insight" style="margin-top:1rem"></div></div></div><div class="panel" style="margin-top:1rem"><h3 lang-ro>Playbook recomandat</h3><h3 lang-en>Recommended playbook</h3><div id="bm-playbook"></div></div></section>
-<section class="view" id="view-utm"><h1>UTM Builder v1.2</h1><p class="lede" lang-ro>Naming convention profiles + saved campaign templates. Construiește linkuri tracked consistente și copiază raportul.</p><p class="lede" lang-en>Naming convention profiles + saved campaign templates. Build consistent tracked links and copy the report.</p><div class="grid2"><div class="panel"><h3 lang-ro>Builder</h3><h3 lang-en>Builder</h3><label lang-ro>Profil naming</label><label lang-en>Naming profile</label><select id="utm-profile" oninput="applyUtmProfile()"><option value="strict">Strict lowercase + underscore</option><option value="paid">Paid media: channel_campaign_variant</option><option value="content">Content: topic_format_month</option><option value="crm">CRM lifecycle: segment_stage_offer</option></select><label>Template</label><select id="utm-template" oninput="loadUtmTemplate()"><option value="">—</option></select><label>Base URL</label><input id="utm-url" value="https://laurandreea10.github.io/codepen-portfolio/marketing-os.html" oninput="buildUTM()"><div class="grid2"><div><label>utm_source</label><input id="utm-source" value="linkedin" oninput="buildUTM()"></div><div><label>utm_medium</label><input id="utm-medium" value="social" oninput="buildUTM()"></div><div><label>utm_campaign</label><input id="utm-campaign" value="marketing_os_launch" oninput="buildUTM()"></div><div><label>utm_content</label><input id="utm-content" value="benchmark_card" oninput="buildUTM()"></div><div><label>utm_term</label><input id="utm-term" placeholder="optional" oninput="buildUTM()"></div><div><label lang-ro>Nume template</label><label lang-en>Template name</label><input id="utm-template-name" placeholder="LinkedIn launch"></div></div><div class="btn-row"><button class="btn" onclick="buildUTM()">Generate</button><button class="btn secondary" onclick="saveUtmTemplate()"><span lang-ro>Salvează template</span><span lang-en>Save template</span></button><button class="btn secondary" onclick="copyUTM()">Copy URL</button></div></div><div class="panel"><h3 lang-ro>Preview + validare</h3><h3 lang-en>Preview + validation</h3><span class="tag" id="utm-status">—</span><div class="output utm-url" id="utm-output"></div><h2 lang-ro>Raport tracking</h2><h2 lang-en>Tracking report</h2><div class="output" id="utm-report"></div><div class="btn-row"><button class="btn secondary" onclick="copyReport()"><span lang-ro>Copiază raport</span><span lang-en>Copy report</span></button><button class="btn secondary" onclick="deleteUtmTemplate()"><span lang-ro>Șterge template</span><span lang-en>Delete template</span></button></div></div></div><div class="panel" style="margin-top:1rem"><h3 lang-ro>Template-uri salvate</h3><h3 lang-en>Saved templates</h3><div class="grid3" id="utm-template-cards"></div></div></section>
-<section class="view" id="view-campaign"><h1 lang-ro>Planificator campanii</h1><h1 lang-en>Campaign planner</h1><p class="lede" lang-ro>Adaugă o campanie cu obiectiv, buget și canal.</p><p class="lede" lang-en>Add a campaign with objective, budget and channel.</p><div class="grid2"><div class="panel"><h3 lang-ro>Campanie nouă</h3><h3 lang-en>New campaign</h3><label lang-ro>Nume campanie</label><label lang-en>Campaign name</label><input id="c-name" placeholder="Q3 Lead Gen — LinkedIn"><label>Channel</label><select id="c-channel"><option>Google Ads</option><option>LinkedIn</option><option>Meta</option><option>Email</option><option>SEO / Content</option><option>Outbound</option></select><label lang-ro>Buget (€)</label><label lang-en>Budget (€)</label><input type="number" id="c-budget" placeholder="5000"><label lang-ro>Impresii estimate</label><label lang-en>Estimated impressions</label><input type="number" id="c-impressions" placeholder="50000"><label>CTR (%)</label><input type="number" id="c-ctr" placeholder="2.5" step=".1"><label lang-ro>Conversie lead (%)</label><label lang-en>Lead conversion (%)</label><input type="number" id="c-leadconv" placeholder="8" step=".1"><label lang-ro>Conversie client (%)</label><label lang-en>Customer conversion (%)</label><input type="number" id="c-custconv" placeholder="12" step=".1"><label lang-ro>Valoare medie client (€)</label><label lang-en>Avg customer value (€)</label><input type="number" id="c-aov" placeholder="450"><button class="btn" onclick="addCampaign()"><span lang-ro>Adaugă campanie</span><span lang-en>Add campaign</span></button></div><div class="panel"><h3 lang-ro>Lista campanii</h3><h3 lang-en>Campaign list</h3><table><thead><tr><th lang-ro>Nume</th><th lang-en>Name</th><th class="num">ROI</th><th></th></tr></thead><tbody id="campaign-list"></tbody></table></div></div></section>
-<section class="view" id="view-roi"><h1>ROI Calculator</h1><p class="lede" lang-ro>Calculator independent: estimează ROI, ROAS, CAC și profit.</p><p class="lede" lang-en>Standalone calculator: estimate ROI, ROAS, CAC and profit.</p><div class="grid2"><div class="panel"><h3 lang-ro>Intrări</h3><h3 lang-en>Inputs</h3><label lang-ro>Investiție (€)</label><label lang-en>Investment (€)</label><input type="number" id="roi-spend" value="5000" oninput="calcROI()"><label lang-ro>Revenue generat (€)</label><label lang-en>Revenue generated (€)</label><input type="number" id="roi-revenue" value="18000" oninput="calcROI()"><label lang-ro>Clienți obținuți</label><label lang-en>Customers acquired</label><input type="number" id="roi-customers" value="40" oninput="calcROI()"><label lang-ro>Costuri operaționale (€)</label><label lang-en>Operational costs (€)</label><input type="number" id="roi-opex" value="2000" oninput="calcROI()"></div><div class="panel"><h3 lang-ro>Rezultate</h3><h3 lang-en>Results</h3><div class="kpi-grid"><div class="kpi"><div class="label">ROI</div><div class="value" id="roi-result">—</div></div><div class="kpi"><div class="label">ROAS</div><div class="value" id="roas-result">—</div></div><div class="kpi"><div class="label">CAC</div><div class="value" id="cac-result">—</div></div><div class="kpi"><div class="label" lang-ro>Profit net</div><div class="label" lang-en>Net profit</div><div class="value" id="profit-result">—</div></div></div></div></div></section>
-<section class="view" id="view-leadmagnet"><h1>Lead Magnet Builder</h1><p class="lede" lang-ro>Construiește copy-ul pentru un lead magnet landing.</p><p class="lede" lang-en>Build the copy for a lead magnet landing.</p><div class="grid2"><div class="panel"><h3 lang-ro>Configurare</h3><h3 lang-en>Setup</h3><label lang-ro>Tip lead magnet</label><label lang-en>Lead magnet type</label><select id="lm-type"><option value="checklist">Checklist</option><option value="ebook">eBook / Guide</option><option value="template">Template</option><option value="webinar">Webinar</option><option value="audit">Audit gratuit</option></select><label lang-ro>Audiență țintă</label><label lang-en>Target audience</label><input id="lm-audience" placeholder="Marketing managers SaaS B2B"><label lang-ro>Problema rezolvată</label><label lang-en>Problem solved</label><input id="lm-problem" placeholder="Optimizarea funnel-ului de conversie"><label lang-ro>Beneficiu principal</label><label lang-en>Main benefit</label><input id="lm-benefit" placeholder="Dublarea conversiei în 30 zile"><label lang-ro>Timp consum</label><label lang-en>Time to consume</label><input id="lm-time" placeholder="10 minute"><button class="btn" onclick="generateLeadMagnet()"><span lang-ro>Generează copy</span><span lang-en>Generate copy</span></button></div><div class="panel"><h3>Preview</h3><div id="lm-output" class="output">Completează și apasă Generează copy</div><button class="btn secondary" onclick="copyOutput('lm-output')">Copy</button></div></div></section>
-<section class="view" id="view-brief"><h1>Brief Generator</h1><p class="lede" lang-ro>Generează un brief de campanie structurat.</p><p class="lede" lang-en>Generate a structured campaign brief.</p><div class="grid2"><div class="panel"><h3 lang-ro>Date brief</h3><h3 lang-en>Brief data</h3><label lang-ro>Nume proiect</label><label lang-en>Project name</label><input id="b-name" placeholder="Lansare produs Q3"><label lang-ro>Obiectiv</label><label lang-en>Objective</label><textarea id="b-goal" placeholder="500 lead-uri calificate în 60 zile"></textarea><label lang-ro>Audiență</label><label lang-en>Audience</label><textarea id="b-audience"></textarea><label lang-ro>Mesaj cheie</label><label lang-en>Key message</label><textarea id="b-message"></textarea><label lang-ro>Buget (€)</label><label lang-en>Budget (€)</label><input type="number" id="b-budget"><label>Deadline</label><input id="b-deadline" placeholder="30 septembrie 2026"><button class="btn" onclick="generateBrief()"><span lang-ro>Generează brief</span><span lang-en>Generate brief</span></button></div><div class="panel"><h3 lang-ro>Brief generat</h3><h3 lang-en>Generated brief</h3><div id="b-output" class="output">Completează datele și generează brief-ul</div><div class="btn-row"><button class="btn secondary" onclick="copyOutput('b-output')">Copy</button><button class="btn secondary" onclick="downloadBrief()">Download .md</button></div></div></div></section>
-<section class="view" id="view-about"><h1 lang-ro>Despre Marketing OS</h1><h1 lang-en>About Marketing OS</h1><div class="panel"><p lang-ro><strong>Marketing OS</strong> este workspace-ul meu Marketing-Tech: benchmarks, UTM-uri consistente, ROI, lead magnets și briefs într-un singur fișier HTML. 0 backend, 0 costuri, deploy pe GitHub Pages.</p><p lang-en><strong>Marketing OS</strong> is my Marketing-Tech workspace: benchmarks, consistent UTMs, ROI, lead magnets and briefs in one HTML file. 0 backend, 0 costs, GitHub Pages deploy.</p><h3>Stack & decisions</h3><ul><li>Single-file HTML — 0 build, 0 backend, 0 dependencies.</li><li>localStorage pentru templates/campanii.</li><li>Bilingv RO/EN nativ.</li><li>Export JSON pentru backup.</li></ul><span class="tag">Marketing-Tech</span><span class="tag">Industry Benchmarks</span><span class="tag">UTM v1.2</span><span class="tag">No-Backend</span></div></section>
-</main></div><div class="toast" id="toast">Salvat ✓</div>
+<body>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" aria-label="Navigare Marketing OS">
+    <div class="brand">
+      <div class="brand-name">Marketing OS</div>
+      <div class="brand-sub">v1.2 · workspace unificat</div>
+    </div>
+
+    <nav class="nav-section">
+      <div class="nav-label">Overview</div>
+      <button class="nav-item active" onclick="switchTab('benchmarks')">
+        <span class="nav-icon">📊</span> Industry Benchmarks
+        <span class="nav-badge">NEW</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('utm')">
+        <span class="nav-icon">🔗</span> UTM Builder
+        <span class="nav-badge">v1.2</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('channels')">
+        <span class="nav-icon">📡</span> Channel Mix
+      </button>
+    </nav>
+
+    <nav class="nav-section" style="margin-top:12px">
+      <div class="nav-label">Tools</div>
+      <button class="nav-item" onclick="switchTab('campaigns')">
+        <span class="nav-icon">🗓</span> Campaigns
+      </button>
+      <button class="nav-item" onclick="switchTab('roi')">
+        <span class="nav-icon">💰</span> ROI Calculator
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="live-dot">Date actualizate live</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:6px;font-family:var(--mono)" id="sidebar-date"></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <div class="page-title" id="page-title">Industry Benchmarks Dashboard</div>
+          <div class="page-meta" id="page-meta">Compară performanța ta cu industria · Q2 2026</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="top-btn" onclick="toggleLang()">
+          <span id="lang-label">RO | EN</span>
+        </button>
+        <button class="top-btn" onclick="exportData()">↓ Export CSV</button>
+        <button class="top-btn primary" onclick="openShare()">↗ Share</button>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- TAB BAR -->
+      <div class="tab-bar" role="tablist">
+        <button class="tab active" role="tab" onclick="switchTab('benchmarks')">Benchmarks</button>
+        <button class="tab" role="tab" onclick="switchTab('utm')">UTM Builder</button>
+        <button class="tab" role="tab" onclick="switchTab('channels')">Channel Mix</button>
+        <button class="tab" role="tab" onclick="switchTab('campaigns')">Campaigns</button>
+        <button class="tab" role="tab" onclick="switchTab('roi')">ROI</button>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════
+           TAB: BENCHMARKS
+      ═══════════════════════════════════════════════ -->
+      <div id="tab-benchmarks" class="tab-section active">
+
+        <!-- Industry Selector -->
+        <div class="section-header">
+          <div>
+            <div class="section-title">Selectează industria</div>
+            <div class="section-sub">Datele sunt actualizate Q2 2026 — surse: HubSpot, Mailchimp, Databox</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <label style="font-size:11px;color:var(--muted);font-family:var(--mono)">Perioadă:</label>
+            <select style="background:var(--panel-2);border:1px solid var(--border);border-radius:7px;color:var(--text);padding:6px 10px;font-size:12px;font-family:var(--mono);outline:none" onchange="updatePeriod(this.value)">
+              <option>Q2 2026</option><option>Q1 2026</option><option>Q4 2025</option><option>Q3 2025</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ind-selector" id="ind-selector">
+          <button class="ind-chip active" onclick="selectIndustry('saas')">SaaS / Tech</button>
+          <button class="ind-chip" onclick="selectIndustry('ecommerce')">E-commerce</button>
+          <button class="ind-chip" onclick="selectIndustry('b2b')">B2B Services</button>
+          <button class="ind-chip" onclick="selectIndustry('media')">Media / Editorial</button>
+          <button class="ind-chip" onclick="selectIndustry('healthcare')">Healthcare</button>
+          <button class="ind-chip" onclick="selectIndustry('finance')">Finance</button>
+        </div>
+
+        <!-- KPI Overview -->
+        <div class="grid-4" style="margin-bottom:20px" id="kpi-grid"></div>
+
+        <!-- Benchmark Table + Chart -->
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Benchmark detaliat</div>
+                <div class="card-sub">Tu vs. median industrie vs. top 25%</div>
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-right:6px">Compară cu:</label>
+                <select id="compare-mode" onchange="renderBenchTable()" style="background:var(--panel-2);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:5px 8px;font-size:11px;font-family:var(--mono);outline:none">
+                  <option value="median">Median</option>
+                  <option value="top25">Top 25%</option>
+                  <option value="top10">Top 10%</option>
+                </select>
+              </div>
+            </div>
+            <div class="legend" style="margin-bottom:14px">
+              <div class="legend-item"><span class="legend-sq" style="background:var(--accent)"></span> Industrie</div>
+              <div class="legend-item"><span class="legend-dot" style="border:2px solid var(--amber);background:transparent"></span> Tu</div>
+              <div class="legend-item"><span class="legend-sq" style="background:rgba(167,139,250,0.4)"></span> Top 25%</div>
+            </div>
+            <div id="bench-table-wrap"></div>
+          </div>
+
+          <div class="card" style="display:flex;flex-direction:column;gap:16px">
+            <div class="card-header" style="margin-bottom:0">
+              <div>
+                <div class="card-title">Radar performanță</div>
+                <div class="card-sub">Scor relativ față de industrie</div>
+              </div>
+              <span class="card-badge badge-blue" id="radar-score">—</span>
+            </div>
+            <div style="position:relative;width:100%;height:260px">
+              <canvas id="radar-chart" role="img" aria-label="Radar chart comparand metricile tale cu industria">Date radar.</canvas>
+            </div>
+            <div style="font-size:12px;color:var(--muted);padding:10px 12px;background:var(--bg-3);border-radius:8px;border:1px solid var(--border);font-family:var(--mono);line-height:1.6" id="bench-insight"></div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Trend Chart -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Tendință — 6 luni</div>
+              <div class="card-sub">Evoluție comparativă cu mediana industriei selectate</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="card-badge badge-blue" onclick="switchTrendMetric('ctr')" id="trend-ctr" style="cursor:pointer;border:none">CTR</button>
+              <button class="card-badge" onclick="switchTrendMetric('cvr')" id="trend-cvr" style="cursor:pointer;border:none;background:var(--panel-3);color:var(--muted)">CVR</button>
+              <button class="card-badge" onclick="switchTrendMetric('open')" id="trend-open" style="cursor:pointer;border:none;background:var(--panel-3);color:var(--muted)">Email Open</button>
+            </div>
+          </div>
+          <div style="position:relative;width:100%;height:220px">
+            <canvas id="trend-chart" role="img" aria-label="Line chart tendinta metricilor in timp">Tendinta metricilor.</canvas>
+          </div>
+        </div>
+
+        <!-- Percentile Breakdown -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Distribuție percentilă — industria selectată</div>
+            <span class="card-badge badge-green">Live Q2 2026</span>
+          </div>
+          <div style="position:relative;width:100%;height:200px">
+            <canvas id="percentile-chart" role="img" aria-label="Distributia percentila a performantelor in industrie">Distributie percentila.</canvas>
+          </div>
+        </div>
+
+      </div><!-- /tab-benchmarks -->
+
+
+      <!-- ═══════════════════════════════════════════════
+           TAB: UTM BUILDER v1.2
+      ═══════════════════════════════════════════════ -->
+      <div id="tab-utm" class="tab-section">
+
+        <div class="status-bar">
+          <div class="status-item"><span class="status-dot" style="background:var(--green)"></span> Builder activ</div>
+          <div class="status-item" style="color:var(--muted)">·</div>
+          <div class="status-item"><span class="status-dot" style="background:var(--accent)"></span> <span id="utm-count">0</span> URL-uri generate</div>
+          <div class="status-item" style="color:var(--muted)">·</div>
+          <div class="status-item"><span class="status-dot" style="background:var(--amber)"></span> v1.2 — Bulk + Presets</div>
+        </div>
+
+        <div class="grid-2">
+          <!-- FORM -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Configurează campania</div>
+                <div class="card-sub">Câmpurile marcate cu * sunt obligatorii</div>
+              </div>
+              <button class="card-badge badge-amber" onclick="resetUTM()" style="cursor:pointer;border:none">↺ Reset</button>
+            </div>
+
+            <div class="utm-form">
+              <div class="field">
+                <label class="field-label">URL Destinație *</label>
+                <input type="url" id="utm-url" placeholder="https://site.ro/pagina" oninput="buildUTM()" />
+              </div>
+
+              <div class="field-group">
+                <div class="field">
+                  <label class="field-label">Source (utm_source) *</label>
+                  <input type="text" id="utm-source" placeholder="google, facebook, newsletter" oninput="buildUTM()" list="source-suggestions" />
+                  <datalist id="source-suggestions">
+                    <option value="google"></option><option value="facebook"></option>
+                    <option value="instagram"></option><option value="linkedin"></option>
+                    <option value="tiktok"></option><option value="newsletter"></option>
+                    <option value="twitter"></option><option value="youtube"></option>
+                    <option value="organic"></option><option value="direct"></option>
+                  </datalist>
+                </div>
+                <div class="field">
+                  <label class="field-label">Medium (utm_medium) *</label>
+                  <select id="utm-medium" onchange="buildUTM()">
+                    <option value="">— selectează —</option>
+                    <option value="cpc">cpc (paid search)</option>
+                    <option value="social">social (organic)</option>
+                    <option value="paid-social">paid-social</option>
+                    <option value="email">email</option>
+                    <option value="display">display</option>
+                    <option value="affiliate">affiliate</option>
+                    <option value="referral">referral</option>
+                    <option value="organic">organic</option>
+                    <option value="video">video</option>
+                    <option value="sms">sms</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Campaign Name (utm_campaign) *</label>
+                <input type="text" id="utm-campaign" placeholder="black-friday-2026, launch-q2" oninput="buildUTM()" />
+              </div>
+
+              <div class="field-group">
+                <div class="field">
+                  <label class="field-label">Term <span class="optional-tag">optional</span></label>
+                  <input type="text" id="utm-term" placeholder="cuvinte cheie" oninput="buildUTM()" />
+                </div>
+                <div class="field">
+                  <label class="field-label">Content <span class="optional-tag">optional</span></label>
+                  <input type="text" id="utm-content" placeholder="banner-top, cta-hero" oninput="buildUTM()" />
+                </div>
+              </div>
+
+              <!-- v1.2: Custom param -->
+              <div class="field-group">
+                <div class="field">
+                  <label class="field-label">Custom Param <span class="optional-tag">v1.2</span></label>
+                  <input type="text" id="utm-custom-key" placeholder="utm_partner" oninput="buildUTM()" />
+                </div>
+                <div class="field">
+                  <label class="field-label">Valoare custom</label>
+                  <input type="text" id="utm-custom-val" placeholder="partner-name" oninput="buildUTM()" />
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 0">
+                <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted-2);cursor:pointer">
+                  <input type="checkbox" id="utm-encode" onchange="buildUTM()" style="width:14px;height:14px;accent-color:var(--accent)" checked />
+                  URL encode automat
+                </label>
+                <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted-2);cursor:pointer">
+                  <input type="checkbox" id="utm-lowercase" onchange="buildUTM()" style="width:14px;height:14px;accent-color:var(--accent)" checked />
+                  Normalizare lowercase
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- PREVIEW + PRESETS -->
+          <div style="display:flex;flex-direction:column;gap:16px">
+
+            <div class="card">
+              <div class="utm-preview">
+                <div class="utm-preview-label">
+                  URL generat
+                  <button class="copy-btn" id="copy-main-btn" onclick="copyUTM()">⊕ Copiază</button>
+                </div>
+                <div class="utm-preview-url" id="utm-output">
+                  <span style="color:var(--muted)">— completează câmpurile de mai sus —</span>
+                </div>
+              </div>
+
+              <!-- v1.2: Validation -->
+              <div id="utm-validation" style="margin-top:10px;font-size:11px;font-family:var(--mono);padding:8px 10px;border-radius:7px;display:none"></div>
+
+              <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+                <button class="top-btn" onclick="saveToHistory()" style="font-size:11px">💾 Salvează în istoric</button>
+                <button class="top-btn" onclick="generateBulk()" style="font-size:11px">⊞ Bulk generate</button>
+                <button class="top-btn" onclick="generateQR()" style="font-size:11px">▣ QR Code</button>
+              </div>
+            </div>
+
+            <!-- PRESETS -->
+            <div class="card card-sm">
+              <div class="card-header" style="margin-bottom:12px">
+                <div class="card-title" style="font-size:12px">⚡ Presets rapide</div>
+              </div>
+              <div class="presets-grid" id="presets-grid"></div>
+            </div>
+
+            <!-- v1.2: Bulk output -->
+            <div class="card card-sm" id="bulk-card" style="display:none">
+              <div class="card-header" style="margin-bottom:10px">
+                <div>
+                  <div class="card-title" style="font-size:12px">Bulk URLs generate</div>
+                  <div class="card-sub">Pentru fiecare canal social configurat</div>
+                </div>
+                <button class="copy-btn" onclick="copyBulk()">⊕ Copiază toate</button>
+              </div>
+              <div id="bulk-output" style="font-family:var(--mono);font-size:11px;color:var(--muted-2);display:flex;flex-direction:column;gap:8px"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="card" style="margin-top:16px">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Istoric URL-uri</div>
+              <div class="card-sub">Salvate în sesiunea curentă</div>
+            </div>
+            <button class="card-badge badge-red" onclick="clearHistory()" style="cursor:pointer;border:none">✕ Șterge tot</button>
+          </div>
+          <div id="utm-history">
+            <div style="font-size:12px;color:var(--muted);text-align:center;padding:20px 0;font-family:var(--mono)">
+              Niciun URL salvat încă. Generează și salvează primul link →
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /tab-utm -->
+
+
+      <!-- ═══════════════════════════════════════════════
+           TAB: CHANNEL MIX
+      ═══════════════════════════════════════════════ -->
+      <div id="tab-channels" class="tab-section">
+
+        <div class="grid-4" style="margin-bottom:20px">
+          <div class="metric-card">
+            <div class="metric-label">Trafic Total</div>
+            <div class="metric-value" style="color:var(--text)">148.3K</div>
+            <div class="metric-delta delta-up">↑ 12.4% vs luna trecută</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Sesiuni Plătite</div>
+            <div class="metric-value" style="color:var(--accent-2)">42.1K</div>
+            <div class="metric-delta delta-up">↑ 8.1% vs luna trecută</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Conversii Totale</div>
+            <div class="metric-value" style="color:var(--green)">3,847</div>
+            <div class="metric-delta delta-up">↑ 21.3% vs luna trecută</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Cost / Conversie</div>
+            <div class="metric-value" style="color:var(--amber)">38.2 lei</div>
+            <div class="metric-delta delta-down">↓ 4.2% vs luna trecută</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Mix canale — Trafic</div>
+              <span class="card-badge badge-blue">Mai 2026</span>
+            </div>
+            <div style="position:relative;width:100%;height:240px">
+              <canvas id="channel-donut" role="img" aria-label="Donut chart distributia traficului pe canale">Distributia traficului pe canale.</canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Canal vs. Conversii</div>
+              <div class="card-sub">Contribuție relativă</div>
+            </div>
+            <div id="channel-rows"></div>
+          </div>
+        </div>
+
+      </div><!-- /tab-channels -->
+
+
+      <!-- ═══════════════════════════════════════════════
+           TAB: CAMPAIGNS
+      ═══════════════════════════════════════════════ -->
+      <div id="tab-campaigns" class="tab-section">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Campanii active — Mai 2026</div>
+            <button class="top-btn primary" onclick="addCampaign()" style="font-size:11px;padding:6px 12px">+ Campanie nouă</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Campanie</th><th>Canal</th><th>Status</th>
+                <th>Budget</th><th>Cheltuit</th><th>CVR</th><th>ROI</th>
+              </tr>
+            </thead>
+            <tbody id="campaigns-tbody"></tbody>
+          </table>
+        </div>
+
+      </div><!-- /tab-campaigns -->
+
+
+      <!-- ═══════════════════════════════════════════════
+           TAB: ROI CALCULATOR
+      ═══════════════════════════════════════════════ -->
+      <div id="tab-roi" class="tab-section">
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Parametri campanie</div>
+            </div>
+            <div class="utm-form">
+              <div class="field-group">
+                <div class="field">
+                  <label class="field-label">Budget total (lei) *</label>
+                  <input type="number" id="roi-budget" placeholder="5000" oninput="calcROI()" />
+                </div>
+                <div class="field">
+                  <label class="field-label">Venituri generate (lei) *</label>
+                  <input type="number" id="roi-revenue" placeholder="18000" oninput="calcROI()" />
+                </div>
+              </div>
+              <div class="field-group">
+                <div class="field">
+                  <label class="field-label">Clickuri totale</label>
+                  <input type="number" id="roi-clicks" placeholder="12000" oninput="calcROI()" />
+                </div>
+                <div class="field">
+                  <label class="field-label">Leads generate</label>
+                  <input type="number" id="roi-leads" placeholder="340" oninput="calcROI()" />
+                </div>
+              </div>
+              <div class="field-group">
+                <div class="field">
+                  <label class="field-label">Conversii (vânzări)</label>
+                  <input type="number" id="roi-conversions" placeholder="42" oninput="calcROI()" />
+                </div>
+                <div class="field">
+                  <label class="field-label">CPM mediu (lei / 1000)</label>
+                  <input type="number" id="roi-cpm" placeholder="25" oninput="calcROI()" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Rezultate calculate</div>
+              <span class="card-badge badge-green">Live</span>
+            </div>
+            <div id="roi-results" style="display:flex;flex-direction:column;gap:12px">
+              <div style="font-size:12px;color:var(--muted);text-align:center;padding:30px 0;font-family:var(--mono)">
+                Completează parametrii pentru a calcula →
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /tab-roi -->
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /shell -->
+
+
 <script>
-const STORAGE_KEY='marketing-os-v2';const DEFAULT_TEMPLATES=[{name:'LinkedIn launch',source:'linkedin',medium:'social',campaign:'marketing_os_launch',content:'benchmark_dashboard',term:''},{name:'Google paid search',source:'google',medium:'cpc',campaign:'crm_dashboard_demo',content:'search_ad_a',term:'crm dashboard'},{name:'Email newsletter',source:'newsletter',medium:'email',campaign:'may_learning_update',content:'hero_cta',term:''}];let state={campaigns:[],utmTemplates:DEFAULT_TEMPLATES};const $=x=>document.getElementById(x);function isEN(){return document.body.dataset.lang==='en'}function loadState(){try{const s=localStorage.getItem(STORAGE_KEY);if(s)state={...state,...JSON.parse(s)};if(!state.utmTemplates||!state.utmTemplates.length)state.utmTemplates=DEFAULT_TEMPLATES}catch(e){}}function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}function showToast(msg){const t=$('toast');t.textContent=msg||(isEN()?'Saved ✓':'Salvat ✓');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}document.querySelectorAll('.nav-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));btn.classList.add('active');$('view-'+btn.dataset.view).classList.add('active');if(btn.dataset.view==='benchmarks')renderBenchmarks();if(btn.dataset.view==='utm')renderUtmTemplates()}));
-function addCampaign(){const name=$('c-name').value.trim();if(!name){alert(isEN()?'Campaign name required':'Nume campanie obligatoriu');return}const budget=+$('c-budget').value||0,impressions=+$('c-impressions').value||0,ctr=+$('c-ctr').value||0,leadconv=+$('c-leadconv').value||0,custconv=+$('c-custconv').value||0,aov=+$('c-aov').value||0;const clicks=Math.round(impressions*ctr/100),leads=Math.round(clicks*leadconv/100),customers=Math.round(leads*custconv/100),revenue=customers*aov,roi=budget>0?Math.round((revenue-budget)/budget*100):0;state.campaigns.push({id:Date.now(),name,channel:$('c-channel').value,budget,impressions,clicks,leads,customers,revenue,roi});saveState();renderAll();$('c-name').value='';showToast()}function deleteCampaign(cid){state.campaigns=state.campaigns.filter(c=>c.id!==cid);saveState();renderAll()}function renderCampaignList(){const tb=$('campaign-list');tb.innerHTML=state.campaigns.length?state.campaigns.map(c=>`<tr><td>${c.name}<br><small style="color:var(--muted)">${c.channel}</small></td><td class="num" style="color:${c.roi>=0?'var(--good)':'var(--bad)'}">${c.roi}%</td><td><button class="mini-btn" onclick="deleteCampaign(${c.id})">✕</button></td></tr>`).join(''):'<tr><td colspan="3" style="text-align:center;color:var(--muted)">—</td></tr>'}function renderDashboard(){const sum=k=>state.campaigns.reduce((s,c)=>s+(+c[k]||0),0),budget=sum('budget'),revenue=sum('revenue'),imp=sum('impressions'),clicks=sum('clicks'),leads=sum('leads'),customers=sum('customers'),avg=state.campaigns.length?Math.round(state.campaigns.reduce((s,c)=>s+c.roi,0)/state.campaigns.length):0;$('kpi-campaigns').textContent=state.campaigns.length;$('kpi-budget').textContent='€'+budget.toLocaleString();$('kpi-revenue').textContent='€'+revenue.toLocaleString();$('kpi-roi').textContent=avg+'%';$('stage-impressions').textContent=imp.toLocaleString();$('stage-clicks').textContent=clicks.toLocaleString();$('stage-leads').textContent=leads.toLocaleString();$('stage-customers').textContent=customers.toLocaleString();$('conv-clicks').textContent=imp?((clicks/imp)*100).toFixed(2)+'% CTR':'—';$('conv-leads').textContent=clicks?((leads/clicks)*100).toFixed(1)+'% conv':'—';$('conv-customers').textContent=leads?((customers/leads)*100).toFixed(1)+'% close':'—';const recent=state.campaigns.slice(-5).reverse();$('campaigns-table').innerHTML=recent.length?recent.map(c=>`<tr><td>${c.name}</td><td>${c.channel}</td><td class="num">€${c.budget.toLocaleString()}</td><td class="num" style="color:${c.roi>=0?'var(--good)':'var(--bad)'}">${c.roi}%</td></tr>`).join(''):`<tr><td colspan="4" style="text-align:center;color:var(--muted)">${isEN()?'No campaigns yet':'Nicio campanie încă'}</td></tr>`}function renderAll(){renderDashboard();renderCampaignList();renderBenchmarks();renderUtmTemplates();buildUTM()}
-const BM_BASE={"Google Ads":{ctr:3.2,cvr:6.5,cac:55},LinkedIn:{ctr:0.9,cvr:8.2,cac:85},Meta:{ctr:1.8,cvr:5.6,cac:42},Email:{ctr:4.5,cvr:10.5,cac:18},"SEO / Content":{ctr:2.1,cvr:7.4,cac:28},Outbound:{ctr:1.1,cvr:4.4,cac:95}};const IND={"SaaS B2B":1.15,"E-commerce":.92,Education:1.05,"Local Services":.88,"Beauty / Lifestyle":.96};const STAGE={Awareness:{ctr:1.25,cvr:.72,cac:.9},Consideration:{ctr:1,cvr:1,cac:1},Conversion:{ctr:.78,cvr:1.35,cac:1.12},Retention:{ctr:1.45,cvr:1.65,cac:.55}};function renderBenchmarks(){if(!$('bm-channel'))return;const ch=$('bm-channel').value,ind=$('bm-industry').value,st=$('bm-stage').value,b=BM_BASE[ch],im=IND[ind],sm=STAGE[st];const ctr=+(b.ctr*im*sm.ctr).toFixed(2),cvr=+(b.cvr*im*sm.cvr).toFixed(1),cac=Math.round(b.cac/im*sm.cac);$('bm-ctr').textContent=ctr+'%';$('bm-cvr').textContent=cvr+'%';$('bm-cac').textContent='€'+Math.round(cac*.75)+'–€'+Math.round(cac*1.25);const yourCtr=+$('bm-your-ctr').value||0,yourCvr=+$('bm-your-cvr').value||0,yourCac=+$('bm-your-cac').value||0;const score=Math.max(0,Math.min(100,Math.round((yourCtr/ctr*35)+(yourCvr/cvr*40)+(cac/Math.max(yourCac,1)*25))));$('bm-score').textContent=score+'/100';const rows=[['CTR',yourCtr,ctr,'%'],['Lead CVR',yourCvr,cvr,'%'],['CAC',yourCac,cac,'€']];$('bm-bars').innerHTML=rows.map(([n,y,t,u])=>{const pct=n==='CAC'?Math.min(140,t/Math.max(y,1)*100):Math.min(140,y/Math.max(t,1)*100);return `<div class="bench-row"><strong>${n}</strong><div><div class="bar-track"><div class="bar-fill" style="--w:${pct}%"></div></div><small style="color:var(--muted)">${isEN()?'yours':'al tău'}: ${u==='€'?'€':''}${y}${u==='%'?'%':''} · benchmark: ${u==='€'?'€':''}${t}${u==='%'?'%':''}</small></div><span class="tag ${pct>=100?'good':'warn'}">${Math.round(pct)}%</span></div>`}).join('');const best=score>=80?['Performanță peste benchmark. Scalează cu buget controlat și testează variante creative.','Above benchmark. Scale with controlled budget and test creative variants.']:score>=55?['Aproape de benchmark. Optimizează weak spot-ul principal înainte de scaling.','Near benchmark. Optimize the main weak spot before scaling.']:['Sub benchmark. Recomand test nou pe audience/message/offer înainte de buget mare.','Below benchmark. Run a new audience/message/offer test before increasing spend.'];$('bm-insight').textContent=isEN()?best[1]:best[0];$('bm-playbook').innerHTML=`<span class="tag">${ch}</span><span class="tag">${ind}</span><span class="tag">${st}</span><ul><li>${isEN()?'Set target CTR around':'Setează CTR țintă în jur de'} <strong>${ctr}%</strong>.</li><li>${isEN()?'Use lead conversion guardrail':'Folosește prag de conversie lead'}: <strong>${cvr}%</strong>.</li><li>${isEN()?'Investigate if CAC exceeds':'Investigă dacă CAC depășește'} <strong>€${Math.round(cac*1.25)}</strong>.</li><li>${isEN()?'Export this snapshot into your campaign brief.':'Exportă snapshot-ul în brief-ul campaniei.'}</li></ul>`}
-function clean(v){const profile=$('utm-profile').value;let x=String(v||'').trim();if(profile==='strict'||profile==='paid'||profile==='crm')x=x.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'');if(profile==='content')x=x.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');return x}function buildUTM(){if(!$('utm-url'))return;['source','medium','campaign','content','term'].forEach(k=>{$('utm-'+k).classList.remove('invalid')});let ok=true;const base=$('utm-url').value.trim();try{new URL(base)}catch(e){ok=false;$('utm-url').classList.add('invalid')}const params={utm_source:clean($('utm-source').value),utm_medium:clean($('utm-medium').value),utm_campaign:clean($('utm-campaign').value),utm_content:clean($('utm-content').value),utm_term:clean($('utm-term').value)};['source','medium','campaign'].forEach(k=>{if(!params['utm_'+k]){ok=false;$('utm-'+k).classList.add('invalid')}});const qs=Object.entries(params).filter(([,v])=>v).map(([k,v])=>`${k}=${encodeURIComponent(v)}`).join('&');const url=ok?base.replace(/\?$/,'')+(base.includes('?')?'&':'?')+qs:'—';$('utm-output').textContent=url;$('utm-status').textContent=ok?(isEN()?'Valid convention':'Convenție validă'):(isEN()?'Check required fields':'Verifică datele obligatorii');$('utm-status').className='tag '+(ok?'good':'warn');$('utm-report').textContent=`UTM TRACKING REPORT\nURL: ${url}\nProfile: ${$('utm-profile').value}\nSource: ${params.utm_source}\nMedium: ${params.utm_medium}\nCampaign: ${params.utm_campaign}\nContent: ${params.utm_content||'-'}\nTerm: ${params.utm_term||'-'}\nGenerated: ${new Date().toLocaleString(isEN()?'en-US':'ro-RO')}`;return url}function applyUtmProfile(){buildUTM()}function renderUtmTemplates(){if(!$('utm-template'))return;const sel=$('utm-template');const current=sel.value;sel.innerHTML='<option value="">—</option>'+state.utmTemplates.map((t,i)=>`<option value="${i}">${t.name}</option>`).join('');sel.value=current;$('utm-template-cards').innerHTML=state.utmTemplates.map((t,i)=>`<div class="template-card" onclick="loadUtmTemplate(${i})"><strong>${t.name}</strong><p style="color:var(--muted);margin:.4rem 0 0;font-size:.86rem">${t.source} / ${t.medium}<br>${t.campaign}</p></div>`).join('')}function loadUtmTemplate(idx){const i=idx!==undefined?idx:+$('utm-template').value;if(isNaN(i)||!state.utmTemplates[i])return;const t=state.utmTemplates[i];$('utm-source').value=t.source;$('utm-medium').value=t.medium;$('utm-campaign').value=t.campaign;$('utm-content').value=t.content||'';$('utm-term').value=t.term||'';$('utm-template').value=i;buildUTM()}function saveUtmTemplate(){const name=$('utm-template-name').value.trim()||$('utm-campaign').value.trim()||'UTM template';state.utmTemplates.push({name,source:$('utm-source').value,medium:$('utm-medium').value,campaign:$('utm-campaign').value,content:$('utm-content').value,term:$('utm-term').value});saveState();$('utm-template-name').value='';renderUtmTemplates();showToast(isEN()?'Template saved ✓':'Template salvat ✓')}function deleteUtmTemplate(){const i=+$('utm-template').value;if(isNaN(i)||!state.utmTemplates[i])return;state.utmTemplates.splice(i,1);saveState();renderUtmTemplates();showToast(isEN()?'Template deleted':'Template șters')}function copyUTM(){navigator.clipboard.writeText(buildUTM()).then(()=>showToast('URL copied ✓'))}function copyReport(){navigator.clipboard.writeText($('utm-report').textContent).then(()=>showToast(isEN()?'Report copied ✓':'Raport copiat ✓'))}
-function calcROI(){const spend=+$('roi-spend').value||0,revenue=+$('roi-revenue').value||0,customers=+$('roi-customers').value||0,opex=+$('roi-opex').value||0;$('roi-result').textContent=(spend?((revenue-spend)/spend*100):0).toFixed(0)+'%';$('roas-result').textContent=(spend?revenue/spend:0).toFixed(2)+'x';$('cac-result').textContent='€'+(customers?((spend+opex)/customers):0).toFixed(0);$('profit-result').textContent='€'+(revenue-spend-opex).toLocaleString()}function generateLeadMagnet(){const type=$('lm-type').value,a=$('lm-audience').value||'[audiență]',p=$('lm-problem').value||'[problemă]',b=$('lm-benefit').value||'[beneficiu]',time=$('lm-time').value||'10 minute';$('lm-output').textContent=isEN()?`HEADLINE:\n${b} — for ${a}\n\nSUB-HEADLINE:\nA ${type} that solves ${p} in ${time}.\n\nVALUE BULLETS:\n✓ Concrete steps\n✓ Real examples\n✓ Reusable framework\n\nCTA:\n[ Get free access → ]`:`HEADLINE:\n${b} — pentru ${a}\n\nSUB-HEADLINE:\nUn ${type} care rezolvă ${p} în ${time}.\n\nBULLETS DE VALOARE:\n✓ Pași concreți\n✓ Exemple reale\n✓ Framework reutilizabil\n\nCTA:\n[ Obține acces gratuit → ]`}function generateBrief(){const name=$('b-name').value||'[Proiect]',goal=$('b-goal').value||'[Obiectiv]',aud=$('b-audience').value||'[Audiență]',msg=$('b-message').value||'[Mesaj]',budget=$('b-budget').value||0,deadline=$('b-deadline').value||'[Deadline]';$('b-output').textContent=isEN()?`# Campaign Brief — ${name}\n\n## Objective\n${goal}\n\n## Target audience\n${aud}\n\n## Key message\n${msg}\n\n## Budget\n€${(+budget).toLocaleString()}\n\n## Deadline\n${deadline}\n\n## Benchmarks\nUse Industry Benchmarks Dashboard before launch.\n\n## UTM\nUse UTM Builder v1.2 profile for consistent tracking.`:`# Brief Campanie — ${name}\n\n## Obiectiv\n${goal}\n\n## Audiență țintă\n${aud}\n\n## Mesaj cheie\n${msg}\n\n## Buget\n€${(+budget).toLocaleString()}\n\n## Deadline\n${deadline}\n\n## Benchmarks\nFolosește Industry Benchmarks Dashboard înainte de lansare.\n\n## UTM\nFolosește UTM Builder v1.2 pentru tracking consistent.`}function downloadBrief(){const blob=new Blob([$('b-output').textContent],{type:'text/markdown'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='brief-campanie.md';a.click();URL.revokeObjectURL(url)}function copyOutput(x){navigator.clipboard.writeText($(x).textContent).then(()=>showToast(isEN()?'Copied ✓':'Copiat ✓'))}function exportData(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='marketing-os-export.json';a.click();URL.revokeObjectURL(url)}function resetData(){if(!confirm(isEN()?'Delete all local data?':'Sigur ștergi toate datele locale?'))return;state={campaigns:[],utmTemplates:DEFAULT_TEMPLATES};saveState();renderAll()}function toggleLang(){const n=isEN()?'ro':'en';document.body.dataset.lang=n;document.documentElement.lang=n;$('lang-btn').textContent=n==='ro'?'EN':'RO';localStorage.setItem('mos-lang',n);renderBenchmarks();buildUTM()}function toggleTheme(){const h=document.documentElement,n=h.dataset.theme==='light'?'dark':'light';h.dataset.theme=n;$('theme-btn').textContent=n==='light'?'🌙':'☀️';localStorage.setItem('mos-theme',n)}(()=>{loadState();const savedLang=localStorage.getItem('mos-lang');if(savedLang==='en'){document.body.dataset.lang='en';document.documentElement.lang='en';$('lang-btn').textContent='RO'}if(localStorage.getItem('mos-theme')==='light'){document.documentElement.dataset.theme='light';$('theme-btn').textContent='🌙'}renderAll();calcROI()})();
+/* ═══════════════════════════════════════════════════════
+   DATA LAYER
+═══════════════════════════════════════════════════════ */
+const INDUSTRIES = {
+  saas: {
+    name: 'SaaS / Tech',
+    kpis: [
+      { label: 'Email Open Rate', you: 28.4, median: 24.1, top25: 35.2, top10: 42.0, unit: '%', trend: +1.2 },
+      { label: 'CTR Email', you: 4.1, median: 3.8, top25: 5.9, top10: 8.2, unit: '%', trend: +0.3 },
+      { label: 'Conv. Rate Landing', you: 3.2, median: 2.6, top25: 4.8, top10: 7.1, unit: '%', trend: -0.1 },
+      { label: 'CAC', you: 142, median: 186, top25: 98, top10: 62, unit: 'lei', trend: -12, lowerBetter: true },
+      { label: 'Bounce Rate', you: 48, median: 52, top25: 38, top10: 28, unit: '%', trend: -2, lowerBetter: true },
+      { label: 'LTV / CAC', you: 4.2, median: 3.1, top25: 6.0, top10: 9.5, unit: 'x', trend: +0.4 }
+    ],
+    insight: 'Email open rate peste median (+17.8%). CTR în creștere. CAC sub median — eficiență bună. Focus pe conv. rate landing page.'
+  },
+  ecommerce: {
+    name: 'E-commerce',
+    kpis: [
+      { label: 'Email Open Rate', you: 19.2, median: 17.4, top25: 26.0, top10: 34.1, unit: '%', trend: +0.8 },
+      { label: 'CTR Email', you: 2.8, median: 2.1, top25: 4.2, top10: 6.0, unit: '%', trend: +0.2 },
+      { label: 'Conv. Rate Shop', you: 2.1, median: 1.8, top25: 3.4, top10: 5.2, unit: '%', trend: +0.3 },
+      { label: 'Avg. Order Value', you: 284, median: 220, top25: 380, top10: 620, unit: 'lei', trend: +18 },
+      { label: 'Cart Abandon Rate', you: 68, median: 72, top25: 58, top10: 44, unit: '%', trend: -1.5, lowerBetter: true },
+      { label: 'ROAS', you: 3.8, median: 2.9, top25: 5.2, top10: 8.0, unit: 'x', trend: +0.6 }
+    ],
+    insight: 'AOV și ROAS peste median. Cart abandon rate în scădere — bun. Conv. rate mai aproape de median; testează checkout streamlining.'
+  },
+  b2b: {
+    name: 'B2B Services',
+    kpis: [
+      { label: 'Email Open Rate', you: 32.1, median: 28.6, top25: 40.2, top10: 52.0, unit: '%', trend: +2.1 },
+      { label: 'CTR Email', you: 5.4, median: 4.2, top25: 7.1, top10: 10.8, unit: '%', trend: +0.7 },
+      { label: 'Lead Conv. Rate', you: 8.2, median: 6.4, top25: 12.0, top10: 18.5, unit: '%', trend: +1.4 },
+      { label: 'CAC', you: 420, median: 580, top25: 280, top10: 180, unit: 'lei', trend: -35, lowerBetter: true },
+      { label: 'Sales Cycle', you: 32, median: 45, top25: 22, top10: 12, unit: 'zile', trend: -3, lowerBetter: true },
+      { label: 'MQL→SQL Rate', you: 28, median: 22, top25: 40, top10: 58, unit: '%', trend: +2.8 }
+    ],
+    insight: 'Performanță puternică pe email și CAC. Sales cycle sub median — semn de calificare bună. Crește MQL→SQL prin nurturing extins.'
+  },
+  media: {
+    name: 'Media / Editorial',
+    kpis: [
+      { label: 'Email Open Rate', you: 38.2, median: 34.0, top25: 48.0, top10: 62.0, unit: '%', trend: +1.8 },
+      { label: 'CTR Email', you: 6.2, median: 4.8, top25: 9.4, top10: 14.2, unit: '%', trend: +0.9 },
+      { label: 'Pageviews / Sesiune', you: 3.1, median: 2.4, top25: 4.8, top10: 7.2, unit: 'pg', trend: +0.2 },
+      { label: 'Timp pe site', you: 3.42, median: 2.80, top25: 5.10, top10: 7.80, unit: 'min', trend: +0.14 },
+      { label: 'Subscriber Growth', you: 2.8, median: 1.9, top25: 4.2, top10: 7.1, unit: '%/lună', trend: +0.4 },
+      { label: 'Churn Rate', you: 3.1, median: 4.8, top25: 1.9, top10: 0.9, unit: '%/lună', trend: -0.3, lowerBetter: true }
+    ],
+    insight: 'Engagement puternic — open rate și CTR mult peste median. Pageviews/sesiune și timp pe site excelente. Subscriber growth sustenabil.'
+  },
+  healthcare: {
+    name: 'Healthcare',
+    kpis: [
+      { label: 'Email Open Rate', you: 22.4, median: 21.0, top25: 30.0, top10: 40.0, unit: '%', trend: +0.6 },
+      { label: 'CTR Email', you: 2.9, median: 2.4, top25: 4.1, top10: 6.2, unit: '%', trend: +0.2 },
+      { label: 'Appointment Conv.', you: 18.2, median: 14.8, top25: 24.0, top10: 34.0, unit: '%', trend: +2.1 },
+      { label: 'Patient Retention', you: 76, median: 68, top25: 84, top10: 92, unit: '%', trend: +1.8 },
+      { label: 'CAC Pacient', you: 280, median: 340, top25: 180, top10: 110, unit: 'lei', trend: -22, lowerBetter: true },
+      { label: 'NPS Score', you: 48, median: 38, top25: 62, top10: 78, unit: 'pct', trend: +4 }
+    ],
+    insight: 'Appointment conv. rate și patient retention peste industrie. CAC optimizat. Crește NPS prin follow-up post-consultație digitalizat.'
+  },
+  finance: {
+    name: 'Finance',
+    kpis: [
+      { label: 'Email Open Rate', you: 26.8, median: 23.2, top25: 34.0, top10: 44.0, unit: '%', trend: +1.4 },
+      { label: 'CTR Email', you: 3.8, median: 3.1, top25: 5.6, top10: 8.4, unit: '%', trend: +0.5 },
+      { label: 'Application Conv.', you: 6.4, median: 4.8, top25: 9.2, top10: 14.0, unit: '%', trend: +0.9 },
+      { label: 'CAC Client', you: 620, median: 840, top25: 380, top10: 220, unit: 'lei', trend: -48, lowerBetter: true },
+      { label: 'Churn Rate', you: 2.4, median: 3.8, top25: 1.4, top10: 0.7, unit: '%/lună', trend: -0.2, lowerBetter: true },
+      { label: 'LTV', you: 4800, median: 3200, top25: 7200, top10: 12000, unit: 'lei', trend: +220 }
+    ],
+    insight: 'CAC și churn rate sub median — eficiență ridicată. LTV +50% față de median. Application conv. rate solid. Crește spre top 25%.'
+  }
+};
+
+const CHANNELS = {
+  organic: { name: 'Organic Search', pct: 38, conv: 2840, color: '#22c55e' },
+  paid: { name: 'Paid Search', pct: 22, conv: 1240, color: '#3b82f6' },
+  social: { name: 'Social Organic', pct: 16, conv: 580, color: '#a78bfa' },
+  paidSocial: { name: 'Paid Social', pct: 12, conv: 680, color: '#f59e0b' },
+  email: { name: 'Email', pct: 8, conv: 890, color: '#14b8a6' },
+  referral: { name: 'Referral', pct: 4, conv: 210, color: '#f87171' }
+};
+
+const CAMPAIGNS = [
+  { name: 'Brand Awareness Q2', canal: 'Paid Social', status: 'active', budget: 8000, spent: 5420, cvr: 2.1, roi: 2.8 },
+  { name: 'Lead Gen — SaaS Trial', canal: 'Google Ads', status: 'active', budget: 12000, spent: 7840, cvr: 4.8, roi: 4.2 },
+  { name: 'Email Nurture Seq. 3', canal: 'Email', status: 'paused', budget: 1200, spent: 380, cvr: 8.2, roi: 6.1 },
+  { name: 'Retargeting MAI', canal: 'Meta Ads', status: 'active', budget: 5000, spent: 4210, cvr: 3.4, roi: 3.8 },
+  { name: 'Content SEO Cluster', canal: 'Organic', status: 'active', budget: 3000, spent: 1800, cvr: 1.9, roi: 5.4 },
+  { name: 'LinkedIn B2B Push', canal: 'LinkedIn Ads', status: 'draft', budget: 6000, spent: 0, cvr: 0, roi: 0 }
+];
+
+const PRESETS = [
+  { name: 'Google Ads', source: 'google', medium: 'cpc', campaign: 'brand', icon: '🔍' },
+  { name: 'Facebook Organic', source: 'facebook', medium: 'social', campaign: 'organic', icon: '📘' },
+  { name: 'Instagram Paid', source: 'instagram', medium: 'paid-social', campaign: 'campaign', icon: '📸' },
+  { name: 'LinkedIn B2B', source: 'linkedin', medium: 'paid-social', campaign: 'b2b-lead', icon: '💼' },
+  { name: 'Newsletter', source: 'newsletter', medium: 'email', campaign: 'monthly', icon: '📧' },
+  { name: 'TikTok Awareness', source: 'tiktok', medium: 'paid-social', campaign: 'awareness', icon: '🎵' }
+];
+
+const TREND_DATA = {
+  labels: ['Dec', 'Ian', 'Feb', 'Mar', 'Apr', 'Mai'],
+  ctr: { you: [3.1, 3.4, 3.6, 3.8, 4.0, 4.1], ind: [3.6, 3.7, 3.7, 3.8, 3.8, 3.8] },
+  cvr: { you: [2.8, 2.9, 3.0, 3.1, 3.1, 3.2], ind: [2.5, 2.5, 2.6, 2.6, 2.6, 2.6] },
+  open: { you: [24.1, 25.2, 26.0, 27.1, 27.8, 28.4], ind: [23.8, 23.9, 24.0, 24.0, 24.1, 24.1] }
+};
+
+/* ═══════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════ */
+let currentIndustry = 'saas';
+let currentTab = 'benchmarks';
+let currentTrendMetric = 'ctr';
+let utmHistory = [];
+let utmCount = 0;
+let radarChart = null;
+let trendChart = null;
+let percentileChart = null;
+let channelDonut = null;
+let lang = 'ro';
+
+/* ═══════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  initDate();
+  renderKPIs();
+  renderBenchTable();
+  renderRadar();
+  renderTrend();
+  renderPercentile();
+  renderChannels();
+  renderCampaigns();
+  renderPresets();
+  buildUTM();
+});
+
+function initDate() {
+  const now = new Date();
+  const fmt = now.toLocaleDateString('ro-RO', { day: '2-digit', month: 'short', year: 'numeric' });
+  const el = document.getElementById('sidebar-date');
+  if (el) el.textContent = fmt;
+}
+
+/* ═══════════════════════════════════════════════════════
+   TAB SWITCHING
+═══════════════════════════════════════════════════════ */
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    const tabs = ['benchmarks','utm','channels','campaigns','roi'];
+    t.classList.toggle('active', tabs[i] === tab);
+  });
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.toggle('active', n.getAttribute('onclick') && n.getAttribute('onclick').includes(`'${tab}'`));
+  });
+  const sec = document.getElementById(`tab-${tab}`);
+  if (sec) sec.classList.add('active');
+
+  const titles = {
+    benchmarks: ['Industry Benchmarks Dashboard', 'Compară performanța ta cu industria · Q2 2026'],
+    utm: ['UTM Builder v1.2', 'Generează și gestionează link-uri tracked · Bulk + Presets'],
+    channels: ['Channel Mix', 'Distribuția traficului și conversiilor pe canale'],
+    campaigns: ['Campanii active', 'Overview și status campanii curente · Mai 2026'],
+    roi: ['ROI Calculator', 'Calculează ROI, ROAS, CAC, CPL în timp real']
+  };
+  const t = titles[tab] || ['Marketing OS', ''];
+  document.getElementById('page-title').textContent = t[0];
+  document.getElementById('page-meta').textContent = t[1];
+}
+
+/* ═══════════════════════════════════════════════════════
+   INDUSTRY SELECT
+═══════════════════════════════════════════════════════ */
+function selectIndustry(ind) {
+  currentIndustry = ind;
+  document.querySelectorAll('.ind-chip').forEach((c, i) => {
+    const keys = ['saas','ecommerce','b2b','media','healthcare','finance'];
+    c.classList.toggle('active', keys[i] === ind);
+  });
+  renderKPIs();
+  renderBenchTable();
+  renderRadar();
+  renderTrend();
+  renderPercentile();
+}
+
+function updatePeriod(v) { /* Could refresh data by period */ }
+
+/* ═══════════════════════════════════════════════════════
+   KPI GRID
+═══════════════════════════════════════════════════════ */
+function renderKPIs() {
+  const ind = INDUSTRIES[currentIndustry];
+  const grid = document.getElementById('kpi-grid');
+  const topKPIs = ind.kpis.slice(0, 4);
+  grid.innerHTML = topKPIs.map(k => {
+    const isGood = k.lowerBetter ? k.you <= k.median : k.you >= k.median;
+    const deltaClass = k.trend > 0 ? (k.lowerBetter ? 'delta-down' : 'delta-up') : (k.lowerBetter ? 'delta-up' : 'delta-down');
+    const deltaIcon = k.trend > 0 ? '↑' : '↓';
+    return `<div class="metric-card">
+      <div class="metric-label">${k.label}</div>
+      <div class="metric-value" style="color:${isGood ? 'var(--green)' : 'var(--amber)'}">${k.you}${k.unit}</div>
+      <div class="metric-delta ${deltaClass}">${deltaIcon} ${Math.abs(k.trend)}${k.unit} vs luna trecută</div>
+      <div style="font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:2px">Median: ${k.median}${k.unit}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   BENCHMARK TABLE
+═══════════════════════════════════════════════════════ */
+function renderBenchTable() {
+  const ind = INDUSTRIES[currentIndustry];
+  const mode = document.getElementById('compare-mode')?.value || 'median';
+  const compareKey = mode;
+  const wrap = document.getElementById('bench-table-wrap');
+  if (!wrap) return;
+
+  const rows = ind.kpis.map(k => {
+    const compVal = k[compareKey];
+    const isGood = k.lowerBetter ? k.you <= compVal : k.you >= compVal;
+    const pctOfComp = k.lowerBetter
+      ? Math.min(100, (compVal / (k.you || 0.01)) * 100)
+      : Math.min(100, (k.you / (compVal || 0.01)) * 100);
+    const yourPct = k.lowerBetter
+      ? Math.min(100, (compVal / Math.max(k.you, compVal) * 100))
+      : Math.min(100, (k.you / Math.max(k.you, k.top10) * 100));
+    const indPct = k.lowerBetter
+      ? Math.min(100, (compVal / Math.max(k.you, compVal) * 100) * 0.85)
+      : Math.min(100, (compVal / Math.max(k.you, k.top10) * 100));
+    const badgeClass = isGood ? 'badge-green' : 'badge-amber';
+    const badgeText = isGood ? '↑ Bine' : '↓ Sub';
+    return `<div style="padding:10px 0;border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+        <span style="font-size:13px;font-weight:500">${k.label}</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="card-badge ${badgeClass}">${badgeText}</span>
+          <span style="font-family:var(--mono);font-size:12px;color:var(--text)">${k.you}${k.unit}</span>
+        </div>
+      </div>
+      <div class="bench-bar-wrap">
+        <div class="bench-bar-bg" style="flex:1">
+          <div class="bench-bar-fill" style="width:${yourPct}%;background:var(--amber)"></div>
+        </div>
+        <span class="bench-val" style="color:var(--amber)">${k.you}${k.unit}</span>
+      </div>
+      <div class="bench-bar-wrap" style="margin-top:4px">
+        <div class="bench-bar-bg" style="flex:1">
+          <div class="bench-bar-fill" style="width:${indPct}%;background:var(--accent)"></div>
+        </div>
+        <span class="bench-val" style="color:var(--muted)">${compVal}${k.unit}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  wrap.innerHTML = rows;
+
+  const score = calcScore(ind);
+  const scoreEl = document.getElementById('radar-score');
+  if (scoreEl) {
+    scoreEl.textContent = `Scor: ${score}/100`;
+    scoreEl.className = `card-badge ${score >= 70 ? 'badge-green' : score >= 50 ? 'badge-amber' : 'badge-red'}`;
+  }
+  const insightEl = document.getElementById('bench-insight');
+  if (insightEl) insightEl.textContent = ind.insight;
+}
+
+function calcScore(ind) {
+  const scores = ind.kpis.map(k => {
+    const base = k.lowerBetter ? k.median / (k.you || 0.01) : k.you / (k.median || 0.01);
+    return Math.min(100, base * 50);
+  });
+  return Math.round(scores.reduce((a,b) => a+b, 0) / scores.length);
+}
+
+/* ═══════════════════════════════════════════════════════
+   RADAR CHART
+═══════════════════════════════════════════════════════ */
+function renderRadar() {
+  const ind = INDUSTRIES[currentIndustry];
+  const labels = ind.kpis.map(k => k.label.split(' ').slice(0, 2).join(' '));
+  const youData = ind.kpis.map(k => {
+    const base = k.lowerBetter ? k.median / (k.you || 0.01) : k.you / (k.median || 0.01);
+    return Math.min(100, Math.round(base * 55));
+  });
+  const indData = Array(ind.kpis.length).fill(55);
+
+  const ctx = document.getElementById('radar-chart');
+  if (!ctx) return;
+  if (radarChart) radarChart.destroy();
+  radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Tu', data: youData, borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.12)', borderWidth: 2, pointBackgroundColor: '#f59e0b', pointRadius: 4 },
+        { label: 'Median industrie', data: indData, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.08)', borderWidth: 1.5, pointBackgroundColor: '#3b82f6', pointRadius: 3, borderDash: [4,3] }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        r: {
+          min: 0, max: 100,
+          grid: { color: 'rgba(255,255,255,0.07)' },
+          angleLines: { color: 'rgba(255,255,255,0.07)' },
+          ticks: { display: false, stepSize: 25 },
+          pointLabels: { color: '#7b8ba6', font: { size: 10 } }
+        }
+      }
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   TREND CHART
+═══════════════════════════════════════════════════════ */
+function renderTrend() {
+  const d = TREND_DATA;
+  const m = currentTrendMetric;
+  const ctx = document.getElementById('trend-chart');
+  if (!ctx) return;
+  if (trendChart) trendChart.destroy();
+  trendChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: d.labels,
+      datasets: [
+        { label: 'Tu', data: d[m].you, borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.08)', borderWidth: 2.5, fill: true, tension: 0.4, pointBackgroundColor: '#f59e0b', pointRadius: 4 },
+        { label: 'Median industrie', data: d[m].ind, borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [5,4], tension: 0.4, pointBackgroundColor: '#3b82f6', pointRadius: 3 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#7b8ba6', font: { size: 11 } } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#7b8ba6', font: { size: 11 }, callback: v => v + '%' } }
+      }
+    }
+  });
+}
+
+function switchTrendMetric(m) {
+  currentTrendMetric = m;
+  ['ctr','cvr','open'].forEach(k => {
+    const el = document.getElementById(`trend-${k}`);
+    if (!el) return;
+    el.className = k === m ? 'card-badge badge-blue' : 'card-badge';
+    if (k !== m) { el.style.background = 'var(--panel-3)'; el.style.color = 'var(--muted)'; }
+    else { el.style.background = ''; el.style.color = ''; }
+  });
+  renderTrend();
+}
+
+/* ═══════════════════════════════════════════════════════
+   PERCENTILE CHART
+═══════════════════════════════════════════════════════ */
+function renderPercentile() {
+  const ctx = document.getElementById('percentile-chart');
+  if (!ctx) return;
+  if (percentileChart) percentileChart.destroy();
+
+  const youScore = calcScore(INDUSTRIES[currentIndustry]);
+  const labels = Array.from({length: 10}, (_, i) => `${i*10+1}-${i*10+10}%`);
+  const dist = [4, 7, 11, 15, 18, 16, 12, 9, 6, 2];
+  const colors = labels.map((_, i) => {
+    const mid = i * 10 + 5;
+    return Math.abs(mid - youScore) < 10 ? '#f59e0b' : 'rgba(59,130,246,0.35)';
+  });
+
+  percentileChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Distribuție companii',
+        data: dist,
+        backgroundColor: colors,
+        borderWidth: 0,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `${ctx.parsed.y}% din companii` } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#7b8ba6', font: { size: 9 }, maxRotation: 30 } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#7b8ba6', font: { size: 10 }, callback: v => v + '%' } }
+      }
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   CHANNELS
+═══════════════════════════════════════════════════════ */
+function renderChannels() {
+  const ctx = document.getElementById('channel-donut');
+  if (!ctx) return;
+
+  const keys = Object.keys(CHANNELS);
+  const vals = keys.map(k => CHANNELS[k].pct);
+  const colors = keys.map(k => CHANNELS[k].color);
+  const names = keys.map(k => CHANNELS[k].name);
+
+  if (channelDonut) channelDonut.destroy();
+  channelDonut = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: names,
+      datasets: [{ data: vals, backgroundColor: colors, borderWidth: 2, borderColor: '#04070f' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '68%',
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.parsed}%` } }
+      }
+    }
+  });
+
+  const rows = document.getElementById('channel-rows');
+  if (!rows) return;
+  const totalConv = Object.values(CHANNELS).reduce((a,c) => a + c.conv, 0);
+  rows.innerHTML = keys.map(k => {
+    const ch = CHANNELS[k];
+    const convPct = ((ch.conv / totalConv) * 100).toFixed(1);
+    return `<div class="channel-row">
+      <div class="channel-name" style="display:flex;align-items:center;gap:7px">
+        <span style="width:8px;height:8px;border-radius:2px;background:${ch.color};flex-shrink:0"></span>
+        <span style="font-size:12px">${ch.name}</span>
+      </div>
+      <div class="channel-bar-bg">
+        <div class="channel-bar-fill" style="width:${ch.pct}%;background:${ch.color}"></div>
+      </div>
+      <div class="channel-pct" style="font-size:12px;color:var(--muted-2)">${ch.pct}%</div>
+      <div class="channel-delta" style="font-size:11px;color:var(--green)">+${convPct}%</div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   CAMPAIGNS
+═══════════════════════════════════════════════════════ */
+function renderCampaigns() {
+  const tbody = document.getElementById('campaigns-tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = CAMPAIGNS.map(c => {
+    const statusMap = { active: ['badge-green', '● Activ'], paused: ['badge-amber', '⏸ Pauzat'], draft: ['badge-blue', '◌ Draft'] };
+    const [sc, st] = statusMap[c.status] || ['badge-blue', c.status];
+    const spentPct = c.budget > 0 ? Math.round((c.spent / c.budget) * 100) : 0;
+    const roiColor = c.roi >= 4 ? 'var(--green)' : c.roi >= 2 ? 'var(--amber)' : 'var(--red)';
+    return `<tr>
+      <td style="font-weight:500;font-size:13px">${c.name}</td>
+      <td style="font-size:12px;color:var(--muted-2)">${c.canal}</td>
+      <td><span class="card-badge ${sc}">${st}</span></td>
+      <td style="font-family:var(--mono);font-size:12px">${c.budget.toLocaleString()} lei</td>
+      <td>
+        <div style="font-family:var(--mono);font-size:12px;margin-bottom:3px">${c.spent.toLocaleString()} lei <span style="color:var(--muted)">(${spentPct}%)</span></div>
+        <div style="height:3px;border-radius:2px;background:rgba(255,255,255,0.06);overflow:hidden">
+          <div style="height:100%;width:${spentPct}%;background:var(--accent);border-radius:2px"></div>
+        </div>
+      </td>
+      <td style="font-family:var(--mono);font-size:12px">${c.cvr}%</td>
+      <td style="font-family:var(--mono);font-size:13px;font-weight:600;color:${roiColor}">${c.roi > 0 ? c.roi + 'x' : '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function addCampaign() {
+  const name = prompt('Nume campanie nouă:');
+  if (name) {
+    CAMPAIGNS.push({ name, canal: 'Google Ads', status: 'draft', budget: 0, spent: 0, cvr: 0, roi: 0 });
+    renderCampaigns();
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   UTM BUILDER v1.2
+═══════════════════════════════════════════════════════ */
+function buildUTM() {
+  const url = document.getElementById('utm-url')?.value.trim() || '';
+  let source = document.getElementById('utm-source')?.value.trim() || '';
+  const mediumRaw = document.getElementById('utm-medium')?.value || '';
+  let campaign = document.getElementById('utm-campaign')?.value.trim() || '';
+  let term = document.getElementById('utm-term')?.value.trim() || '';
+  let content = document.getElementById('utm-content')?.value.trim() || '';
+  let customKey = document.getElementById('utm-custom-key')?.value.trim() || '';
+  let customVal = document.getElementById('utm-custom-val')?.value.trim() || '';
+  const doLower = document.getElementById('utm-lowercase')?.checked !== false;
+  const doEncode = document.getElementById('utm-encode')?.checked !== false;
+
+  if (doLower) { source = source.toLowerCase(); campaign = campaign.toLowerCase().replace(/\s+/g,'-'); term = term.toLowerCase(); content = content.toLowerCase(); }
+
+  const enc = v => doEncode ? encodeURIComponent(v) : v;
+  const output = document.getElementById('utm-output');
+  const validation = document.getElementById('utm-validation');
+
+  if (!url || !source || !mediumRaw || !campaign) {
+    if (output) output.innerHTML = '<span style="color:var(--muted)">— completează câmpurile obligatorii (*) —</span>';
+    if (validation) validation.style.display = 'none';
+    return;
+  }
+
+  let errors = [];
+  if (!url.match(/^https?:\/\//)) errors.push('URL trebuie să înceapă cu http:// sau https://');
+  if (source.includes(' ')) errors.push('Source nu trebuie să conțină spații');
+
+  if (errors.length && validation) {
+    validation.style.display = 'block';
+    validation.style.background = 'var(--red-bg)';
+    validation.style.color = 'var(--red)';
+    validation.style.border = '1px solid rgba(239,68,68,0.2)';
+    validation.textContent = '⚠ ' + errors.join(' · ');
+  } else if (validation) {
+    validation.style.display = 'block';
+    validation.style.background = 'var(--green-bg)';
+    validation.style.color = 'var(--green)';
+    validation.style.border = '1px solid rgba(34,197,94,0.2)';
+    validation.textContent = '✓ URL valid — gata de copiat';
+  }
+
+  const base = url.includes('?') ? url : url;
+  const sep = url.includes('?') ? '&' : '?';
+  const params = [
+    ['utm_source', source],
+    ['utm_medium', mediumRaw],
+    ['utm_campaign', campaign],
+    ...(term ? [['utm_term', term]] : []),
+    ...(content ? [['utm_content', content]] : []),
+    ...(customKey && customVal ? [[customKey, customVal]] : [])
+  ];
+
+  const paramStr = params.map(([k,v]) => `<span class="param-key">${k}</span>=<span class="param-val">${enc(v)}</span>`).join('<span class="sep">&</span>');
+  if (output) output.innerHTML = `<span class="base">${base}${sep}</span>${paramStr}`;
+
+  utmCount++;
+  const countEl = document.getElementById('utm-count');
+  if (countEl) countEl.textContent = utmCount;
+}
+
+function copyUTM() {
+  const url = document.getElementById('utm-url')?.value.trim() || '';
+  if (!url) return;
+  const source = document.getElementById('utm-source')?.value.trim() || '';
+  const medium = document.getElementById('utm-medium')?.value || '';
+  const campaign = document.getElementById('utm-campaign')?.value.trim().toLowerCase().replace(/\s+/g,'-') || '';
+  const term = document.getElementById('utm-term')?.value.trim() || '';
+  const content = document.getElementById('utm-content')?.value.trim() || '';
+  const customKey = document.getElementById('utm-custom-key')?.value.trim() || '';
+  const customVal = document.getElementById('utm-custom-val')?.value.trim() || '';
+
+  const params = new URLSearchParams({ utm_source: source, utm_medium: medium, utm_campaign: campaign });
+  if (term) params.set('utm_term', term);
+  if (content) params.set('utm_content', content);
+  if (customKey && customVal) params.set(customKey, customVal);
+  const full = (url.includes('?') ? url + '&' : url + '?') + params.toString();
+
+  navigator.clipboard?.writeText(full).catch(() => {});
+  const btn = document.getElementById('copy-main-btn');
+  if (btn) { btn.textContent = '✓ Copiat!'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = '⊕ Copiază'; btn.classList.remove('copied'); }, 2000); }
+}
+
+function saveToHistory() {
+  const url = document.getElementById('utm-url')?.value.trim() || '';
+  const source = document.getElementById('utm-source')?.value.trim() || '';
+  const medium = document.getElementById('utm-medium')?.value || '';
+  const campaign = document.getElementById('utm-campaign')?.value.trim() || '';
+  if (!url || !source || !medium || !campaign) { alert('Completează câmpurile obligatorii mai întâi.'); return; }
+
+  const params = new URLSearchParams({ utm_source: source, utm_medium: medium, utm_campaign: campaign });
+  const full = (url.includes('?') ? url + '&' : url + '?') + params.toString();
+  utmHistory.unshift({ name: campaign, url: full, source, medium, ts: new Date().toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' }) });
+  renderHistory();
+}
+
+function renderHistory() {
+  const wrap = document.getElementById('utm-history');
+  if (!wrap) return;
+  if (!utmHistory.length) { wrap.innerHTML = '<div style="font-size:12px;color:var(--muted);text-align:center;padding:20px 0;font-family:var(--mono)">Niciun URL salvat încă.</div>'; return; }
+
+  wrap.innerHTML = utmHistory.map((h, i) => `
+    <div class="history-item">
+      <div style="flex:1;min-width:0">
+        <div class="history-name">${h.name}</div>
+        <div class="history-url">${h.url}</div>
+        <div class="history-tags">
+          <span class="history-tag badge-blue">${h.source}</span>
+          <span class="history-tag badge-purple">${h.medium}</span>
+          <span style="font-size:10px;color:var(--muted);font-family:var(--mono);padding:2px 0">${h.ts}</span>
+        </div>
+      </div>
+      <button class="copy-btn" onclick="copyHistoryItem(${i})">⊕</button>
+    </div>
+  `).join('');
+}
+
+function copyHistoryItem(i) {
+  navigator.clipboard?.writeText(utmHistory[i].url).catch(() => {});
+  const btns = document.querySelectorAll('.history-item .copy-btn');
+  if (btns[i]) { btns[i].textContent = '✓'; btns[i].classList.add('copied'); setTimeout(() => { btns[i].textContent = '⊕'; btns[i].classList.remove('copied'); }, 1500); }
+}
+
+function clearHistory() { utmHistory = []; renderHistory(); }
+
+function generateBulk() {
+  const url = document.getElementById('utm-url')?.value.trim() || '';
+  const campaign = document.getElementById('utm-campaign')?.value.trim().toLowerCase().replace(/\s+/g,'-') || 'campaign';
+  if (!url) { alert('Completează URL-ul destinație mai întâi.'); return; }
+
+  const channels = [
+    { source: 'google', medium: 'cpc' },
+    { source: 'facebook', medium: 'paid-social' },
+    { source: 'instagram', medium: 'paid-social' },
+    { source: 'linkedin', medium: 'paid-social' },
+    { source: 'newsletter', medium: 'email' },
+    { source: 'tiktok', medium: 'paid-social' }
+  ];
+
+  const card = document.getElementById('bulk-card');
+  const out = document.getElementById('bulk-output');
+  if (card) card.style.display = 'block';
+  if (out) {
+    out.innerHTML = channels.map(ch => {
+      const p = new URLSearchParams({ utm_source: ch.source, utm_medium: ch.medium, utm_campaign: campaign });
+      const full = (url.includes('?') ? url + '&' : url + '?') + p.toString();
+      return `<div style="padding:6px 8px;border-radius:6px;background:var(--bg-3);border:1px solid var(--border)">
+        <div style="color:var(--accent-2);margin-bottom:3px;font-size:10px">${ch.source} / ${ch.medium}</div>
+        <div style="word-break:break-all;color:var(--muted-2)">${full}</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function copyBulk() {
+  const url = document.getElementById('utm-url')?.value.trim() || '';
+  const campaign = document.getElementById('utm-campaign')?.value.trim().toLowerCase().replace(/\s+/g,'-') || 'campaign';
+  const channels = [
+    { source: 'google', medium: 'cpc' },
+    { source: 'facebook', medium: 'paid-social' },
+    { source: 'instagram', medium: 'paid-social' },
+    { source: 'linkedin', medium: 'paid-social' },
+    { source: 'newsletter', medium: 'email' },
+    { source: 'tiktok', medium: 'paid-social' }
+  ];
+  const all = channels.map(ch => {
+    const p = new URLSearchParams({ utm_source: ch.source, utm_medium: ch.medium, utm_campaign: campaign });
+    return (url.includes('?') ? url + '&' : url + '?') + p.toString();
+  }).join('\n');
+  navigator.clipboard?.writeText(all).catch(() => {});
+}
+
+function generateQR() { alert('QR Code: funcționalitate în roadmap — v1.3'); }
+
+function resetUTM() {
+  ['utm-url','utm-source','utm-campaign','utm-term','utm-content','utm-custom-key','utm-custom-val'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  const m = document.getElementById('utm-medium'); if (m) m.value = '';
+  const out = document.getElementById('utm-output');
+  if (out) out.innerHTML = '<span style="color:var(--muted)">— completează câmpurile de mai sus —</span>';
+  const v = document.getElementById('utm-validation'); if (v) v.style.display = 'none';
+  const bc = document.getElementById('bulk-card'); if (bc) bc.style.display = 'none';
+}
+
+/* ═══════════════════════════════════════════════════════
+   PRESETS
+═══════════════════════════════════════════════════════ */
+function renderPresets() {
+  const grid = document.getElementById('presets-grid');
+  if (!grid) return;
+  grid.innerHTML = PRESETS.map(p => `
+    <button class="preset-card" onclick="applyPreset('${p.source}','${p.medium}','${p.campaign}')">
+      <div class="preset-name">${p.icon} ${p.name}</div>
+      <div class="preset-meta">${p.source} · ${p.medium}</div>
+    </button>
+  `).join('');
+}
+
+function applyPreset(src, med, camp) {
+  const s = document.getElementById('utm-source'); if (s) s.value = src;
+  const m = document.getElementById('utm-medium'); if (m) m.value = med;
+  const c = document.getElementById('utm-campaign'); if (c && !c.value) c.value = camp;
+  buildUTM();
+}
+
+/* ═══════════════════════════════════════════════════════
+   ROI CALCULATOR
+═══════════════════════════════════════════════════════ */
+function calcROI() {
+  const budget = parseFloat(document.getElementById('roi-budget')?.value) || 0;
+  const revenue = parseFloat(document.getElementById('roi-revenue')?.value) || 0;
+  const clicks = parseFloat(document.getElementById('roi-clicks')?.value) || 0;
+  const leads = parseFloat(document.getElementById('roi-leads')?.value) || 0;
+  const conversions = parseFloat(document.getElementById('roi-conversions')?.value) || 0;
+  const cpm = parseFloat(document.getElementById('roi-cpm')?.value) || 0;
+
+  const wrap = document.getElementById('roi-results');
+  if (!wrap) return;
+  if (!budget || !revenue) { wrap.innerHTML = '<div style="font-size:12px;color:var(--muted);text-align:center;padding:30px 0;font-family:var(--mono)">Completează parametrii pentru a calcula →</div>'; return; }
+
+  const roi = ((revenue - budget) / budget * 100).toFixed(1);
+  const roas = (revenue / budget).toFixed(2);
+  const cpl = leads > 0 ? (budget / leads).toFixed(2) : '—';
+  const cpa = conversions > 0 ? (budget / conversions).toFixed(2) : '—';
+  const ctr = (clicks > 0 && cpm > 0) ? ((clicks / (budget / cpm * 1000)) * 100).toFixed(2) : '—';
+  const convRate = leads > 0 && conversions > 0 ? ((conversions / leads) * 100).toFixed(1) : '—';
+  const roiColor = parseFloat(roi) >= 200 ? 'var(--green)' : parseFloat(roi) >= 50 ? 'var(--amber)' : 'var(--red)';
+
+  const metrics = [
+    { label: 'ROI', value: roi + '%', color: roiColor, desc: `(Venituri - Budget) / Budget × 100` },
+    { label: 'ROAS', value: roas + 'x', color: parseFloat(roas) >= 3 ? 'var(--green)' : 'var(--amber)', desc: 'Venituri / Budget' },
+    { label: 'Cost per Lead', value: cpl === '—' ? '—' : cpl + ' lei', color: 'var(--text)', desc: 'Budget / Leads' },
+    { label: 'Cost per Achiziție', value: cpa === '—' ? '—' : cpa + ' lei', color: 'var(--text)', desc: 'Budget / Conversii' },
+    { label: 'Conv. Rate (Lead→Sale)', value: convRate === '—' ? '—' : convRate + '%', color: 'var(--accent-2)', desc: 'Conversii / Leads' },
+  ];
+
+  wrap.innerHTML = metrics.map(m => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:9px;background:var(--bg-3);border:1px solid var(--border)">
+      <div>
+        <div style="font-size:11px;color:var(--muted);font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase">${m.label}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px;font-family:var(--mono)">${m.desc}</div>
+      </div>
+      <div style="font-size:22px;font-weight:700;letter-spacing:-0.04em;color:${m.color}">${m.value}</div>
+    </div>
+  `).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   UTILITIES
+═══════════════════════════════════════════════════════ */
+function toggleLang() {
+  lang = lang === 'ro' ? 'en' : 'ro';
+  document.getElementById('lang-label').textContent = lang === 'ro' ? 'RO | EN' : 'EN | RO';
+  document.documentElement.lang = lang;
+}
+
+function exportData() {
+  const ind = INDUSTRIES[currentIndustry];
+  const rows = [['Metric','Tu','Median','Top 25%','Top 10%']];
+  ind.kpis.forEach(k => rows.push([k.label, k.you + k.unit, k.median + k.unit, k.top25 + k.unit, k.top10 + k.unit]));
+  const csv = rows.map(r => r.join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = `benchmarks-${currentIndustry}-${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+}
+
+function openShare() { alert('Share: funcționalitate în roadmap · v1.3'); }
 </script>
 </body>
 </html>
