@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Marketing-Tech Templates — Conversion & Growth Suite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#040810;--bg2:#080e1c;--bg3:#0d1526;
+  --panel:rgba(13,21,38,.9);--p2:rgba(255,255,255,.04);--p3:rgba(255,255,255,.07);
+  --bdr:rgba(255,255,255,.07);--bdr2:rgba(255,255,255,.14);
+  --tx:#e6ecf8;--mu:#607090;--mu2:#8fa0be;
+  --acc:#5b8dee;--acc2:#7fa8f4;--ag:rgba(91,141,238,.14);
+  --gr:#22c55e;--gr-bg:rgba(34,197,94,.1);
+  --am:#f59e0b;--am-bg:rgba(245,158,11,.1);
+  --rd:#ef4444;--rd-bg:rgba(239,68,68,.1);
+  --pu:#a78bfa;--pu-bg:rgba(167,139,250,.1);
+  --te:#14b8a6;--te-bg:rgba(20,184,166,.1);
+  --pk:#f472b6;--pk-bg:rgba(244,114,182,.1);
+  --mo:'JetBrains Mono',ui-monospace,monospace;
+  --di:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--di);background:var(--bg);color:var(--tx);overflow-x:hidden;line-height:1.6}
+h1,h2,h3,h4,p{margin:0}
+button{font:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 32px;border-bottom:1px solid var(--bdr);
+  background:var(--bg2);position:sticky;top:0;z-index:40;
+}
+.nav-brand{font-size:14px;font-weight:700;letter-spacing:-.02em}
+.nav-brand span{color:var(--acc2)}
+.tbtn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:8px;font-size:12px;font-weight:500;
+  border:1px solid var(--bdr2);background:var(--p2);color:var(--mu2);
+  transition:all .15s;
+}
+.tbtn:hover{border-color:var(--acc);color:var(--acc2)}
+.tbtn.pr{background:var(--acc);border-color:var(--acc);color:#fff}
+.tbtn.pr:hover{background:var(--acc2)}
+
+/* HERO */
+.hero{padding:60px 32px 40px;max-width:1160px;margin:0 auto}
+.ey{display:inline-flex;align-items:center;gap:7px;margin-bottom:16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc2);font-family:var(--mo);padding:4px 12px;border-radius:16px;background:var(--ag);border:1px solid rgba(91,141,238,.2)}
+.hero h1{font-size:clamp(2rem,4vw,3.2rem);font-weight:700;letter-spacing:-.04em;line-height:1.06;margin-bottom:14px}
+.hero h1 span{color:var(--acc2)}
+.hero-sub{font-size:.97rem;color:var(--mu2);max-width:66ch;line-height:1.8;margin-bottom:32px}
+.template-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0}
+.tnav-btn{
+  padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;
+  border:1px solid var(--bdr);background:var(--p2);color:var(--mu2);
+  transition:all .15s;
+}
+.tnav-btn:hover{border-color:var(--bdr2);color:var(--tx)}
+.tnav-btn.active{background:var(--ag);border-color:rgba(91,141,238,.35);color:var(--acc2)}
+
+/* CONTENT */
+.content{max-width:1160px;margin:0 auto;padding:28px 32px 60px}
+.template-section{display:none}
+.template-section.active{display:block}
+
+/* CARDS */
+.card{background:var(--panel);border:1px solid var(--bdr);border-radius:14px;padding:22px}
+.card+.card{margin-top:14px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:760px){.two-col,.three-col{grid-template-columns:1fr}}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}
+.ct{font-size:13px;font-weight:600;margin-bottom:3px}
+.cs{font-size:11px;color:var(--mu);font-family:var(--mo)}
+.bdg{font-size:10px;padding:3px 9px;border-radius:5px;font-family:var(--mo);font-weight:500;letter-spacing:.06em}
+.bg{background:var(--gr-bg);color:var(--gr)}.ba{background:var(--am-bg);color:var(--am)}.bb{background:var(--ag);color:var(--acc2)}.bp{background:var(--pu-bg);color:var(--pu)}.bt{background:var(--te-bg);color:var(--te)}.bk{background:var(--pk-bg);color:var(--pk)}
+
+/* FIELDS */
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.field-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);font-family:var(--mo)}
+.field input,.field select,.field textarea{width:100%;background:var(--p2);border:1px solid var(--bdr);border-radius:8px;color:var(--tx);padding:9px 12px;font-family:var(--di);font-size:13px;outline:none;transition:border-color .15s;-webkit-appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(91,141,238,.1)}
+.field input::placeholder,.field textarea::placeholder{color:var(--mu)}
+.field textarea{resize:vertical;min-height:72px}
+
+/* METRIC CARDS */
+.metric-mini{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:14px 16px}
+.mv{font-size:24px;font-weight:700;letter-spacing:-.04em}
+.ml{font-size:10px;color:var(--mu);font-family:var(--mo);text-transform:uppercase;letter-spacing:.07em;margin-top:3px}
+.md{font-size:11px;font-family:var(--mo);margin-top:2px}
+
+/* FUNNEL VISUAL */
+.funnel-wrap{padding:20px 0;display:flex;flex-direction:column;gap:4px}
+.funnel-stage{
+  display:flex;align-items:center;gap:14px;
+  padding:12px 16px;border-radius:10px;border:1px solid var(--bdr);
+  background:var(--p2);cursor:pointer;transition:border-color .15s;
+}
+.funnel-stage:hover{border-color:var(--bdr2)}
+.funnel-stage-bar{flex:1;height:28px;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-size:12px;font-weight:600;transition:width .4s}
+.funnel-label{width:130px;font-size:12px;font-weight:500;flex-shrink:0}
+.funnel-val{font-family:var(--mo);font-size:12px;min-width:60px;text-align:right}
+.funnel-drop{font-family:var(--mo);font-size:10px;color:var(--rd);min-width:50px;text-align:right}
+.funnel-arrow{font-size:10px;color:var(--mu);padding:4px 0;text-align:center;margin:-2px 0}
+
+/* AB TABLE */
+.ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.variant-card{border:1px solid var(--bdr);border-radius:12px;padding:16px;background:var(--p2)}
+.variant-card.winner{border-color:var(--gr);background:var(--gr-bg)}
+.variant-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-family:var(--mo);margin-bottom:8px}
+.variant-headline{font-size:16px;font-weight:700;margin-bottom:6px}
+.variant-desc{font-size:12px;color:var(--mu2);margin-bottom:12px;line-height:1.6}
+.variant-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.vs{background:var(--bg3);border-radius:7px;padding:8px;text-align:center}
+.vs-val{font-size:16px;font-weight:700;font-family:var(--mo)}
+.vs-label{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+.winner-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--gr);font-family:var(--mo);background:var(--gr-bg);padding:3px 9px;border-radius:5px;margin-top:10px}
+
+/* LEAD MAGNET BUILDER */
+.lm-preview{
+  border:1px solid var(--bdr);border-radius:12px;overflow:hidden;
+  background:linear-gradient(135deg,rgba(91,141,238,.12),rgba(167,139,250,.08));
+}
+.lm-preview-bar{background:var(--bg3);padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--bdr)}
+.lm-bar-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2)}
+.lm-content{padding:28px;text-align:center}
+.lm-badge-preview{display:inline-block;font-size:10px;padding:4px 10px;border-radius:4px;margin-bottom:12px;font-family:var(--mo)}
+.lm-h1-preview{font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-.03em;margin-bottom:8px;line-height:1.2}
+.lm-sub-preview{font-size:13px;color:var(--mu2);margin-bottom:16px;line-height:1.7}
+.lm-bullets{list-style:none;padding:0;margin:0 0 18px;text-align:left;display:inline-block}
+.lm-bullets li{font-size:12px;color:var(--mu2);padding:3px 0;display:flex;align-items:center;gap:7px}
+.lm-bullets li::before{content:'✓';color:var(--gr);font-weight:700}
+.lm-input-row{display:flex;gap:8px;max-width:380px;margin:0 auto 12px}
+.lm-input-fake{flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:10px 14px;font-size:12px;color:var(--mu2)}
+.lm-cta-fake{padding:10px 20px;border-radius:7px;font-size:12px;font-weight:600;border:none;cursor:default;white-space:nowrap}
+.lm-social-proof{font-size:10px;color:var(--mu);font-family:var(--mo)}
+
+/* GROWTH WORKFLOW */
+.wf-step{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--bdr)}
+.wf-step:last-child{border-bottom:none}
+.wf-num{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;font-family:var(--mo);flex-shrink:0}
+.wf-body{}
+.wf-title{font-size:13px;font-weight:600;margin-bottom:3px}
+.wf-desc{font-size:12px;color:var(--mu2);line-height:1.6;margin-bottom:6px}
+.wf-tags{display:flex;gap:5px;flex-wrap:wrap}
+.wf-tag{font-size:10px;padding:2px 7px;border-radius:4px;font-family:var(--mo)}
+.wf-connect{text-align:center;font-size:16px;color:var(--bdr2);margin:0}
+
+/* DIVIDER */
+.div{height:1px;background:var(--bdr);margin:20px 0}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--p3);border-radius:2px}
+
+/* NOTIF */
+.notif{position:fixed;bottom:24px;right:24px;z-index:200;background:var(--bg2);border:1px solid var(--bdr2);border-radius:10px;padding:11px 18px;font-size:13px;transform:translateY(80px);opacity:0;transition:all .28s;pointer-events:none}
+.notif.show{transform:translateY(0);opacity:1}
+
+@media(max-width:640px){
+  .hero,.content{padding-left:18px;padding-right:18px}
+  .nav{padding:12px 18px}
+  .hero{padding-top:36px}
+  .ab-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">📊 Marketing-Tech · <span>Conversion Suite</span></div>
+  <div style="display:flex;gap:8px">
+    <button class="tbtn pr" onclick="exportTemplate()" style="font-size:12px">↓ Export template activ</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="ey">📊 Marketing-Tech Templates</div>
+  <h1>Conversion &amp; <span>Growth Suite</span></h1>
+  <p class="hero-sub">
+    4 template-uri interactive pentru marketing managers și echipe growth: Lead Magnet Builder, Conversion Funnel Analyzer, A/B Test Tracker și Growth Workflow Designer — toate configurabile și exportabile.
+  </p>
+  <div class="template-nav">
+    <button class="tnav-btn active" onclick="showTemplate('leadmagnet')">🎯 Lead Magnet Builder</button>
+    <button class="tnav-btn" onclick="showTemplate('funnel')">🔻 Conversion Funnel</button>
+    <button class="tnav-btn" onclick="showTemplate('abtest')">⚖ A/B Test Tracker</button>
+    <button class="tnav-btn" onclick="showTemplate('growth')">📈 Growth Workflow</button>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- ═══════ TEMPLATE 1: LEAD MAGNET BUILDER ═══════ -->
+  <div class="template-section active" id="tmpl-leadmagnet">
+    <div class="two-col">
+
+      <!-- FORM -->
+      <div>
+        <div class="card">
+          <div class="card-head">
+            <div><div class="ct">Lead Magnet Landing Page Builder</div><div class="cs">Configurează și preview instant</div></div>
+            <span class="bdg bk">NEW</span>
+          </div>
+
+          <div class="field">
+            <div class="field-label">Tip lead magnet</div>
+            <select id="lm-type" onchange="updateLMPreview()">
+              <option value="ebook">📘 Ebook / Guide</option>
+              <option value="checklist">✅ Checklist</option>
+              <option value="template">📄 Template pack</option>
+              <option value="webinar">🎥 Webinar gratuit</option>
+              <option value="tool">🛠 Tool / Calculator</option>
+              <option value="report">📊 Industry Report</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <div class="field-label">Headline principal *</div>
+            <input type="text" id="lm-headline" placeholder="ex: Ghidul complet pentru growth hacking în SaaS" oninput="updateLMPreview()" />
+          </div>
+
+          <div class="field">
+            <div class="field-label">Subheadline / Propunere de valoare</div>
+            <input type="text" id="lm-sub" placeholder="ex: Descoperă cele 12 tactici pe care le folosesc echipele de top" oninput="updateLMPreview()" />
+          </div>
+
+          <div class="field">
+            <div class="field-label">Beneficii (câte un bullet per linie)</div>
+            <textarea id="lm-bullets" placeholder="Crești conversion rate cu 30%&#10;Economisești 5 ore/săptămână&#10;Template-uri gata de folosit&#10;Acces instant după înregistrare" rows="5" oninput="updateLMPreview()"></textarea>
+          </div>
+
+          <div class="two-col">
+            <div class="field">
+              <div class="field-label">Text CTA button</div>
+              <input type="text" id="lm-cta" value="Descarcă gratuit →" oninput="updateLMPreview()" />
+            </div>
+            <div class="field">
+              <div class="field-label">Social proof</div>
+              <input type="text" id="lm-proof" value="Alăturat de 2,400+ marketeri" oninput="updateLMPreview()" />
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field">
+              <div class="field-label">Culoare accent</div>
+              <select id="lm-color" onchange="updateLMPreview()">
+                <option value="acc">Albastru (default)</option>
+                <option value="gr">Verde</option>
+                <option value="pu">Violet</option>
+                <option value="am">Amber</option>
+                <option value="te">Teal</option>
+                <option value="pk">Pink</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="field-label">Câmp email placeholder</div>
+              <input type="text" id="lm-email-ph" value="Adresa ta de email" oninput="updateLMPreview()" />
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+            <button class="tbtn pr" onclick="generateLMHTML()" style="font-size:12px">↓ Exportă HTML</button>
+            <button class="tbtn" onclick="loadLMSample()" style="font-size:12px">← Sample</button>
+            <button class="tbtn" onclick="copyLMHTML()" style="font-size:12px" id="copy-lm-btn">⊕ Copiază HTML</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PREVIEW -->
+      <div>
+        <div style="font-size:10px;color:var(--mu);font-family:var(--mo);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Preview Live →</div>
+        <div class="lm-preview" id="lm-preview">
+          <div class="lm-preview-bar">
+            <div class="lm-bar-dot"></div><div class="lm-bar-dot"></div><div class="lm-bar-dot"></div>
+            <span style="font-size:10px;color:var(--mu);font-family:var(--mo);margin-left:8px">yoursite.ro/free-guide</span>
+          </div>
+          <div class="lm-content" id="lm-content">
+            <div style="color:var(--mu);font-size:13px;padding:40px 0">Completează formularul pentru preview →</div>
+          </div>
+        </div>
+
+        <!-- Email gate metrics -->
+        <div class="card" style="margin-top:14px">
+          <div class="ct" style="margin-bottom:12px">Metrici expected (benchmarks industrie)</div>
+          <div class="three-col">
+            <div class="metric-mini">
+              <div class="mv" style="color:var(--gr)">25–45%</div>
+              <div class="ml">Conv. Rate landing</div>
+              <div class="md" style="color:var(--mu)">Cold traffic</div>
+            </div>
+            <div class="metric-mini">
+              <div class="mv" style="color:var(--acc2)">55–75%</div>
+              <div class="ml">Conv. Rate warm</div>
+              <div class="md" style="color:var(--mu)">Email / Social</div>
+            </div>
+            <div class="metric-mini">
+              <div class="mv" style="color:var(--am)">3–7%</div>
+              <div class="ml">Lead → Customer</div>
+              <div class="md" style="color:var(--mu)">30 zile nurture</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ TEMPLATE 2: CONVERSION FUNNEL ═══════ -->
+  <div class="template-section" id="tmpl-funnel">
+    <div class="two-col">
+
+      <div>
+        <div class="card">
+          <div class="card-head">
+            <div><div class="ct">Conversion Funnel Configurator</div><div class="cs">Setează valorile per etapă — drop-off automat</div></div>
+            <span class="bdg bt">Live calc</span>
+          </div>
+
+          <div id="funnel-fields" style="display:flex;flex-direction:column;gap:10px"></div>
+
+          <div class="div"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="tbtn pr" onclick="recalcFunnel()" style="font-size:12px">⚡ Recalculează</button>
+            <button class="tbtn" onclick="loadSampleFunnel()" style="font-size:12px">← Sample SaaS</button>
+            <button class="tbtn" onclick="addFunnelStage()" style="font-size:12px">+ Etapă</button>
+          </div>
+        </div>
+
+        <!-- Funnel Insights -->
+        <div class="card" style="margin-top:14px">
+          <div class="ct" style="margin-bottom:14px">Diagnositc funnel</div>
+          <div id="funnel-insights" style="display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--mu2)">
+            <div style="color:var(--mu);font-family:var(--mo)">Setează datele funnelului →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FUNNEL VISUAL -->
+      <div>
+        <div class="card">
+          <div class="card-head">
+            <div class="ct">Vizualizare funnel</div>
+            <button class="tbtn" onclick="exportFunnel()" style="font-size:10px;padding:5px 10px">↓ Export CSV</button>
+          </div>
+          <div class="funnel-wrap" id="funnel-visual">
+            <div style="text-align:center;padding:30px 0;color:var(--mu);font-size:12px;font-family:var(--mo)">Configurează funnelul →</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div class="ct" style="margin-bottom:12px">KPIs globale</div>
+          <div class="two-col" id="funnel-kpis">
+            <div class="metric-mini"><div class="mv" id="fk-overall" style="color:var(--acc2)">—</div><div class="ml">Conv. overall</div></div>
+            <div class="metric-mini"><div class="mv" id="fk-bottleneck" style="color:var(--rd)">—</div><div class="ml">Bottleneck</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ TEMPLATE 3: A/B TEST TRACKER ═══════ -->
+  <div class="template-section" id="tmpl-abtest">
+
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-head">
+        <div>
+          <div class="ct">A/B Test Configurator</div>
+          <div class="cs">Introdu variante și metrici — winner automat</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="tbtn" onclick="loadSampleAB()" style="font-size:11px">← Sample</button>
+          <button class="tbtn pr" onclick="declareWinner()" style="font-size:11px">⚡ Declară winner</button>
+        </div>
+      </div>
+
+      <!-- Test Config -->
+      <div class="two-col" style="margin-bottom:18px">
+        <div class="field"><div class="field-label">Numele testului</div><input type="text" id="ab-name" placeholder="Hero CTA — Varianta text" /></div>
+        <div class="field">
+          <div class="field-label">Metric principal</div>
+          <select id="ab-metric">
+            <option>Conversion Rate (%)</option>
+            <option>Click-Through Rate (%)</option>
+            <option>Revenue per visitor</option>
+            <option>Email sign-up rate (%)</option>
+            <option>Bounce Rate (%)</option>
+            <option>Time on Page (sec)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="ab-grid" id="ab-grid">
+        <!-- rendered by JS -->
+      </div>
+
+      <div style="margin-top:18px;padding:14px;background:var(--bg3);border-radius:10px;border:1px solid var(--bdr)">
+        <div style="font-size:11px;color:var(--mu);font-family:var(--mo);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Semnificație statistică</div>
+        <div id="ab-stat-result" style="font-size:13px;color:var(--mu2)">Completează ambele variante pentru calcul →</div>
+        <div class="div"></div>
+        <div style="font-size:11px;color:var(--mu2);line-height:1.6">
+          <strong>Regula practică:</strong> Ai nevoie de minim 100+ conversii per variantă și ≥ 95% confidence pentru a declara un winner valid. Sub aceste praguri, rezultatele pot fi zgomot statistic.
+        </div>
+      </div>
+    </div>
+
+    <!-- AB History -->
+    <div class="card">
+      <div class="card-head">
+        <div class="ct">Istoricul testelor</div>
+        <button class="tbtn" onclick="saveABTest()" style="font-size:11px">💾 Salvează testul curent</button>
+      </div>
+      <div id="ab-history" style="font-size:12px;color:var(--mu);font-family:var(--mo);text-align:center;padding:20px 0">
+        Niciun test salvat încă →
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════ TEMPLATE 4: GROWTH WORKFLOW ═══════ -->
+  <div class="template-section" id="tmpl-growth">
+    <div class="two-col">
+
+      <div>
+        <div class="card">
+          <div class="card-head">
+            <div><div class="ct">Growth Workflow Designer</div><div class="cs">Selectează tipul de workflow și configurează</div></div>
+            <span class="bdg bp">Templates</span>
+          </div>
+
+          <div class="field" style="margin-bottom:14px">
+            <div class="field-label">Tip workflow</div>
+            <select id="wf-type" onchange="loadWorkflow()">
+              <option value="onboarding">🚀 Onboarding sequence (SaaS)</option>
+              <option value="nurture">💌 Lead nurture — email sequence</option>
+              <option value="reactivation">♻ Re-engagement / Reactivare churned</option>
+              <option value="upsell">💰 Upsell / Expansion sequence</option>
+              <option value="referral">👥 Referral program workflow</option>
+              <option value="viral">⚡ Viral loop / Product-led growth</option>
+            </select>
+          </div>
+
+          <div id="wf-steps" style="display:flex;flex-direction:column;gap:0"></div>
+
+          <div class="div"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="tbtn pr" onclick="exportWorkflow()" style="font-size:12px">↓ Export JSON</button>
+            <button class="tbtn" onclick="copyWorkflow()" style="font-size:12px" id="copy-wf-btn">⊕ Copiază</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORKFLOW KPIs -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+
+        <div class="card">
+          <div class="ct" style="margin-bottom:14px">KPIs expected per workflow</div>
+          <div id="wf-kpis" style="display:flex;flex-direction:column;gap:10px"></div>
+        </div>
+
+        <div class="card">
+          <div class="ct" style="margin-bottom:12px">Configurare workflow</div>
+          <div id="wf-config" style="display:flex;flex-direction:column;gap:10px">
+            <div class="field"><div class="field-label">Trigger inițial</div><input type="text" id="wf-trigger" placeholder="ex: User se înregistrează" /></div>
+            <div class="field"><div class="field-label">Owner workflow</div><input type="text" id="wf-owner" placeholder="@marketing-team" /></div>
+            <div class="field"><div class="field-label">Goal final</div><input type="text" id="wf-goal" placeholder="ex: Activare feature principal" /></div>
+            <div class="field"><div class="field-label">Durata totală</div><select id="wf-duration"><option>7 zile</option><option>14 zile</option><option>30 zile</option><option>60 zile</option><option>90 zile</option></select></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ct" style="margin-bottom:12px">Tool-uri recomandate</div>
+          <div id="wf-tools" style="display:flex;flex-direction:column;gap:7px;font-size:12px"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<div class="notif" id="notif" role="status" aria-live="polite"></div>
+
+<script>
+/* ═══════════════════════════════════════
+   TEMPLATE NAVIGATION
+═══════════════════════════════════════ */
+const TMPL_KEYS = ['leadmagnet','funnel','abtest','growth'];
+function showTemplate(k) {
+  TMPL_KEYS.forEach(t => {
+    document.getElementById('tmpl-'+t)?.classList.toggle('active', t===k);
+  });
+  document.querySelectorAll('.tnav-btn').forEach((b,i) => b.classList.toggle('active', TMPL_KEYS[i]===k));
+  if (k==='funnel' && !FUNNEL_STAGES.length) loadSampleFunnel();
+  if (k==='abtest') renderABGrid();
+  if (k==='growth') loadWorkflow();
+}
+
+/* ═══════════════════════════════════════
+   1. LEAD MAGNET BUILDER
+═══════════════════════════════════════ */
+const COLOR_MAP = { acc:'#5b8dee', gr:'#22c55e', pu:'#a78bfa', am:'#f59e0b', te:'#14b8a6', pk:'#f472b6' };
+
+function updateLMPreview() {
+  const headline = document.getElementById('lm-headline')?.value || '';
+  const sub = document.getElementById('lm-sub')?.value || '';
+  const bulletsRaw = document.getElementById('lm-bullets')?.value || '';
+  const cta = document.getElementById('lm-cta')?.value || 'Descarcă gratuit →';
+  const proof = document.getElementById('lm-proof')?.value || '';
+  const colorKey = document.getElementById('lm-color')?.value || 'acc';
+  const emailPh = document.getElementById('lm-email-ph')?.value || 'Adresa ta de email';
+  const typeVal = document.getElementById('lm-type')?.value || 'ebook';
+  const color = COLOR_MAP[colorKey] || COLOR_MAP.acc;
+  const typeEmoji = { ebook:'📘', checklist:'✅', template:'📄', webinar:'🎥', tool:'🛠', report:'📊' };
+  const typeLabel = { ebook:'Ebook Gratuit', checklist:'Checklist Gratuit', template:'Template Pack', webinar:'Webinar Gratuit', tool:'Tool Gratuit', report:'Report Gratuit' };
+
+  if (!headline) { document.getElementById('lm-content').innerHTML = '<div style="color:var(--mu);font-size:13px;padding:40px 0">Completează formularul pentru preview →</div>'; return; }
+
+  const bullets = bulletsRaw.split('\n').filter(b=>b.trim());
+  const bulletsHTML = bullets.map(b => `<li>${b.trim()}</li>`).join('');
+
+  document.getElementById('lm-content').innerHTML = `
+    <div class="lm-badge-preview" style="background:${color}22;color:${color};border:1px solid ${color}44">
+      ${typeEmoji[typeVal]} ${typeLabel[typeVal]}
+    </div>
+    <div class="lm-h1-preview" style="color:var(--tx)">${headline}</div>
+    ${sub ? `<div class="lm-sub-preview">${sub}</div>` : ''}
+    ${bullets.length ? `<ul class="lm-bullets">${bulletsHTML}</ul>` : ''}
+    <div class="lm-input-row">
+      <div class="lm-input-fake">${emailPh}</div>
+      <div class="lm-cta-fake" style="background:${color};color:#fff">${cta}</div>
+    </div>
+    ${proof ? `<div class="lm-social-proof">🔒 ${proof}</div>` : ''}
+  `;
+}
+
+function loadLMSample() {
+  document.getElementById('lm-headline').value = 'Ghidul complet: 30 de tactici de growth pentru SaaS în 2026';
+  document.getElementById('lm-sub').value = 'Descoperă exact ce fac echipele de marketing din top SaaS pentru a crește MRR cu 40%+ în primul trimestru';
+  document.getElementById('lm-bullets').value = 'Tactici testate pe 200+ companii SaaS\nTemplate-uri ready-to-use pentru fiecare canal\nChecklist de implementare pas cu pas\nAcces la comunitate privată de 2,400+ marketeri\nActualizat Q2 2026 cu cele mai noi date';
+  document.getElementById('lm-cta').value = 'Vreau ghidul gratuit →';
+  document.getElementById('lm-proof').value = 'Acces instant · 2,400+ marketeri · Fără spam';
+  document.getElementById('lm-type').value = 'ebook';
+  document.getElementById('lm-color').value = 'acc';
+  updateLMPreview();
+  notify('Sample încărcat');
+}
+
+function generateLMHTML() {
+  const colorKey = document.getElementById('lm-color')?.value || 'acc';
+  const color = COLOR_MAP[colorKey];
+  const headline = document.getElementById('lm-headline')?.value || '';
+  const sub = document.getElementById('lm-sub')?.value || '';
+  const cta = document.getElementById('lm-cta')?.value || 'Descarcă gratuit';
+  const bulletsRaw = document.getElementById('lm-bullets')?.value || '';
+  const proof = document.getElementById('lm-proof')?.value || '';
+  const bullets = bulletsRaw.split('\n').filter(b=>b.trim()).map(b=>`<li>✓ ${b.trim()}</li>`).join('');
+
+  const html = `<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>${headline}</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#04070d;color:#e6ecf8;display:grid;place-items:center;min-height:100vh;padding:20px}
+.wrap{max-width:520px;width:100%;text-align:center}
+.badge{display:inline-block;font-size:11px;padding:5px 14px;border-radius:20px;background:${color}22;color:${color};border:1px solid ${color}44;margin-bottom:16px}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:12px}
+.sub{font-size:15px;color:#8fa0be;line-height:1.75;margin-bottom:20px}
+ul{list-style:none;text-align:left;display:inline-block;margin:0 0 24px;padding:0}
+ul li{font-size:13px;color:#8fa0be;padding:5px 0}
+.form-row{display:flex;gap:8px;max-width:400px;margin:0 auto 12px;flex-wrap:wrap}
+input[type=email]{flex:1;min-width:180px;padding:12px 16px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#e6ecf8;font-size:14px;outline:none}
+input[type=email]:focus{border-color:${color}}
+button{padding:12px 22px;border-radius:8px;background:${color};color:#fff;border:none;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.proof{font-size:11px;color:#607090}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="badge">🎯 Gratuit</div>
+  <h1>${headline}</h1>
+  <p class="sub">${sub}</p>
+  ${bullets ? `<ul>${bullets}</ul>` : ''}
+  <div class="form-row">
+    <input type="email" placeholder="Adresa ta de email" required/>
+    <button type="button">${cta}</button>
+  </div>
+  ${proof ? `<p class="proof">🔒 ${proof}</p>` : ''}
+</div>
+</body>
+</html>`;
+
+  const a = document.createElement('a');
+  a.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(html);
+  a.download = 'lead-magnet-landing.html';
+  a.click();
+  notify('↓ lead-magnet-landing.html descărcat');
+}
+
+function copyLMHTML() { notify('Funcție în curs — folosește Export HTML'); }
+
+/* ═══════════════════════════════════════
+   2. CONVERSION FUNNEL
+═══════════════════════════════════════ */
+let FUNNEL_STAGES = [];
+const FUNNEL_COLORS = ['#5b8dee','#14b8a6','#22c55e','#f59e0b','#a78bfa','#f472b6'];
+
+function loadSampleFunnel() {
+  FUNNEL_STAGES = [
+    { name:'Vizitatori unici', value:10000, unit:'nr' },
+    { name:'Pagina produs vizitată', value:3200, unit:'nr' },
+    { name:'Click CTA / Signup', value:840, unit:'nr' },
+    { name:'Activare cont (feature used)', value:380, unit:'nr' },
+    { name:'Free → Trial activ', value:142, unit:'nr' },
+    { name:'Trial → Client plătitor', value:38, unit:'nr' }
+  ];
+  renderFunnelFields();
+  recalcFunnel();
+}
+
+function renderFunnelFields() {
+  const wrap = document.getElementById('funnel-fields');
+  if (!wrap) return;
+  wrap.innerHTML = FUNNEL_STAGES.map((s,i) => `
+    <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:6px">
+        <input type="text" value="${s.name}" onchange="FUNNEL_STAGES[${i}].name=this.value;recalcFunnel()" style="background:var(--p2);border:1px solid var(--bdr);border-radius:7px;color:var(--tx);padding:8px 10px;font-size:12px;outline:none"/>
+        <input type="number" value="${s.value}" onchange="FUNNEL_STAGES[${i}].value=+this.value;recalcFunnel()" style="width:90px;background:var(--p2);border:1px solid var(--bdr);border-radius:7px;color:var(--tx);padding:8px 10px;font-size:12px;outline:none;font-family:var(--mo)"/>
+      </div>
+      <button onclick="FUNNEL_STAGES.splice(${i},1);renderFunnelFields();recalcFunnel()" style="background:var(--rd-bg);color:var(--rd);border:1px solid rgba(239,68,68,.2);border-radius:6px;padding:6px 10px;font-size:11px;cursor:pointer">✕</button>
+    </div>
+  `).join('');
+}
+
+function addFunnelStage() {
+  FUNNEL_STAGES.push({ name:'Etapă nouă', value:0, unit:'nr' });
+  renderFunnelFields();
+  recalcFunnel();
+}
+
+function recalcFunnel() {
+  const visual = document.getElementById('funnel-visual');
+  const insights = document.getElementById('funnel-insights');
+  if (!visual || !FUNNEL_STAGES.length) return;
+
+  const top = FUNNEL_STAGES[0]?.value || 1;
+  let html = '';
+  let worstDrop = 0, worstStage = '';
+
+  FUNNEL_STAGES.forEach((s,i) => {
+    const pct = Math.round((s.value / top) * 100);
+    const barW = Math.max(12, pct);
+    const color = FUNNEL_COLORS[i % FUNNEL_COLORS.length];
+    let dropHTML = '';
+    if (i > 0) {
+      const prev = FUNNEL_STAGES[i-1].value || 1;
+      const drop = Math.round((1 - s.value/prev)*100);
+      if (drop > worstDrop) { worstDrop = drop; worstStage = s.name; }
+      dropHTML = `<div class="funnel-arrow">↓ -${drop}% drop-off</div>`;
+    }
+    html += dropHTML + `
+      <div class="funnel-stage">
+        <div class="funnel-label">${s.name}</div>
+        <div style="flex:1">
+          <div class="funnel-stage-bar" style="width:${barW}%;background:${color}22;color:${color};border:1px solid ${color}44">
+            ${pct}%
+          </div>
+        </div>
+        <div class="funnel-val">${s.value.toLocaleString()}</div>
+      </div>`;
+  });
+  visual.innerHTML = html;
+
+  const overall = Math.round((FUNNEL_STAGES[FUNNEL_STAGES.length-1]?.value / top) * 10000) / 100;
+  document.getElementById('fk-overall').textContent = overall + '%';
+  document.getElementById('fk-bottleneck').textContent = worstStage ? worstStage.slice(0,12)+'…' : '—';
+
+  if (insights) {
+    const ins = [];
+    if (worstDrop > 60) ins.push(`⚠ Drop-off critic la <strong>${worstStage}</strong> (-${worstDrop}%) — prioritizează optimizarea acestei etape`);
+    if (overall < 1) ins.push(`⚠ Conv. overall sub 1% — verifică targetingul sau propunerea de valoare`);
+    if (overall >= 3) ins.push(`✓ Conv. overall ${overall}% — peste median pentru SaaS (1.5–3%)`);
+    if (!ins.length) ins.push('Introdu date pentru diagnostic →');
+    insights.innerHTML = ins.map(t => `<div style="padding:8px 10px;background:var(--bg3);border-radius:7px;border:1px solid var(--bdr);line-height:1.6">${t}</div>`).join('');
+  }
+}
+
+function exportFunnel() {
+  const top = FUNNEL_STAGES[0]?.value || 1;
+  const rows = [['Etapă','Volum','% din top','Drop-off față de prev']];
+  FUNNEL_STAGES.forEach((s,i) => {
+    const pct = (s.value/top*100).toFixed(1);
+    const drop = i > 0 ? ((1-s.value/(FUNNEL_STAGES[i-1].value||1))*100).toFixed(1)+'%' : '—';
+    rows.push([s.name, s.value, pct+'%', drop]);
+  });
+  const csv = rows.map(r=>r.join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='conversion-funnel.csv';
+  a.click();
+  notify('↓ Funnel exportat CSV');
+}
+
+/* ═══════════════════════════════════════
+   3. A/B TEST TRACKER
+═══════════════════════════════════════ */
+let abTests = [];
+const AB_VARIANTS = [
+  { id:'a', label:'Varianta A (Control)', headline:'', desc:'', visitors:0, conversions:0 },
+  { id:'b', label:'Varianta B (Challenger)', headline:'', desc:'', visitors:0, conversions:0 }
+];
+
+function renderABGrid() {
+  const grid = document.getElementById('ab-grid');
+  if (!grid) return;
+  grid.innerHTML = AB_VARIANTS.map((v,i) => `
+    <div class="variant-card" id="vc-${v.id}">
+      <div class="variant-label" style="color:var(--mu2)">${v.label}</div>
+      <div class="field" style="margin-bottom:8px"><div class="field-label">Headline/Element testat</div><input type="text" value="${v.headline}" placeholder="ex: 'Încearcă gratuit' vs 'Start Free Trial'" onchange="AB_VARIANTS[${i}].headline=this.value" /></div>
+      <div class="field" style="margin-bottom:10px"><div class="field-label">Descriere modificare</div><textarea style="min-height:48px" placeholder="ex: CTA buton — text mai urgent" onchange="AB_VARIANTS[${i}].desc=this.value">${v.desc}</textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="field"><div class="field-label">Vizitatori</div><input type="number" value="${v.visitors||''}" placeholder="5000" onchange="AB_VARIANTS[${i}].visitors=+this.value;calcABStats()" /></div>
+        <div class="field"><div class="field-label">Conversii</div><input type="number" value="${v.conversions||''}" placeholder="240" onchange="AB_VARIANTS[${i}].conversions=+this.value;calcABStats()" /></div>
+      </div>
+      <div class="vs" id="vs-${v.id}" style="margin-top:10px;background:var(--bg3);border-radius:8px;padding:8px;text-align:center">
+        <div class="vs-val" style="color:var(--acc2)" id="cvr-${v.id}">—</div>
+        <div class="vs-label">Conv. Rate</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function calcABStats() {
+  const a = AB_VARIANTS[0], b = AB_VARIANTS[1];
+  const cvrA = a.visitors > 0 ? (a.conversions/a.visitors*100) : 0;
+  const cvrB = b.visitors > 0 ? (b.conversions/b.visitors*100) : 0;
+  const elA = document.getElementById('cvr-a'), elB = document.getElementById('cvr-b');
+  if (elA) elA.textContent = cvrA.toFixed(2) + '%';
+  if (elB) elB.textContent = cvrB.toFixed(2) + '%';
+  const lift = cvrA > 0 ? ((cvrB - cvrA)/cvrA*100).toFixed(1) : 0;
+  const result = document.getElementById('ab-stat-result');
+  if (result && a.visitors && b.visitors) {
+    const enough = a.visitors >= 100 && b.visitors >= 100 && a.conversions >= 30 && b.conversions >= 30;
+    const winner = cvrB > cvrA ? 'B' : 'A';
+    const color = enough ? 'var(--gr)' : 'var(--am)';
+    result.innerHTML = `<span style="color:${color}">${enough ? '✓ Sample size suficient' : '⚠ Sample size insuficient'}</span> · Lift B vs A: <strong style="color:${parseFloat(lift)>0?'var(--gr)':'var(--rd)'}">${lift > 0 ? '+' : ''}${lift}%</strong> · Winner estimat: <strong>Varianta ${winner}</strong>`;
+  }
+}
+
+function declareWinner() {
+  const a = AB_VARIANTS[0], b = AB_VARIANTS[1];
+  if (!a.visitors || !b.visitors) { notify('Completează datele ambelor variante'); return; }
+  const cvrA = a.conversions/a.visitors, cvrB = b.conversions/b.visitors;
+  const winner = cvrB > cvrA ? 'B' : 'A';
+  const winnerCard = document.getElementById(`vc-${winner.toLowerCase()}`);
+  if (winnerCard) { winnerCard.classList.add('winner'); winnerCard.innerHTML += '<div class="winner-badge">🏆 WINNER DECLARAT</div>'; }
+  notify(`Varianta ${winner} declarată winner`);
+}
+
+function loadSampleAB() {
+  document.getElementById('ab-name').value = 'Hero CTA — Test text buton principal';
+  AB_VARIANTS[0] = { id:'a', label:'Varianta A (Control)', headline:'"Încearcă gratuit"', desc:'CTA original — text generic, fără urgență', visitors:4200, conversions:168 };
+  AB_VARIANTS[1] = { id:'b', label:'Varianta B (Challenger)', headline:'"Start Free — 14 zile, fără card"', desc:'CTA cu specificitate: durata trial + fără risc financiar', visitors:4100, conversions:218 };
+  renderABGrid();
+  calcABStats();
+  notify('Sample A/B test încărcat');
+}
+
+function saveABTest() {
+  const name = document.getElementById('ab-name')?.value || 'Test ' + (abTests.length+1);
+  abTests.push({ name, a:{...AB_VARIANTS[0]}, b:{...AB_VARIANTS[1]}, date: new Date().toLocaleDateString('ro-RO') });
+  const hist = document.getElementById('ab-history');
+  if (hist) {
+    hist.innerHTML = abTests.map((t,i) => {
+      const cvrA = t.a.visitors > 0 ? (t.a.conversions/t.a.visitors*100).toFixed(2) : '—';
+      const cvrB = t.b.visitors > 0 ? (t.b.conversions/t.b.visitors*100).toFixed(2) : '—';
+      return `<div style="padding:12px 0;border-bottom:1px solid var(--bdr);font-size:12px">
+        <div style="font-weight:600;margin-bottom:3px">${t.name}</div>
+        <div style="color:var(--mu2);font-family:var(--mo)">${t.date} · A: ${cvrA}% · B: ${cvrB}%</div>
+      </div>`;
+    }).join('');
+  }
+  notify('Test salvat în istoric');
+}
+
+/* ═══════════════════════════════════════
+   4. GROWTH WORKFLOWS
+═══════════════════════════════════════ */
+const WORKFLOWS = {
+  onboarding: {
+    steps: [
+      { day:'Zi 0', title:'Welcome email', desc:'Personalizat cu use case ales la signup. Link către feature principal. NU pune 10 link-uri — pune 1 acțiune clară.', type:'email', color:'var(--acc2)' },
+      { day:'Zi 1', title:'In-app tooltip / tour', desc:'Ghidaj contextual pe feature principal. Progress bar vizibil. Completare = first success moment.', type:'in-app', color:'var(--pu)' },
+      { day:'Zi 2', title:'Check-in email', desc:'„Ai reușit să [acțiune]?" — dacă NU: link rapid și ofertă onboarding call. Dacă DA: sugerează next step.', type:'email', color:'var(--acc2)' },
+      { day:'Zi 5', title:'Case study / Social proof', desc:'Email cu user similar care a obținut rezultat concret. Specificitea contează: numere reale, context similar.', type:'email', color:'var(--acc2)' },
+      { day:'Zi 7', title:'Check-in SDR / CS', desc:'Task automat pentru SDR dacă userul nu a activat feature principal. Personalizare bazată pe comportament din app.', type:'task', color:'var(--am)' },
+      { day:'Zi 14', title:'Trial conversion push', desc:'CTA clar pentru upgrade. Focus pe beneficiul pierdut dacă nu upgradeaza. Ofertă limitată dacă e potrivit.', type:'email', color:'var(--rd)' }
+    ],
+    kpis:[{label:'Email open rate target',val:'35–50%'},{label:'Feature activation rate',val:'40–60%'},{label:'Trial → Paid conv.',val:'15–25%'}],
+    tools:['Intercom / Customer.io — email sequences','Appcues / Userflow — in-app guidance','HubSpot / Pipedrive — task automation','Mixpanel — behavioral tracking']
+  },
+  nurture: {
+    steps: [
+      { day:'Zi 0', title:'Lead magnet delivery', desc:'Livrare imediată asset promis. Email simplu, curat — nu pune alt CTA. Lasă valoarea să vorbească.', type:'email', color:'var(--acc2)' },
+      { day:'Zi 2', title:'Value email #1', desc:'Email util, fără sell. Insight relevant pentru problemă lead-ului. Construiește trust înainte de a cere ceva.', type:'email', color:'var(--acc2)' },
+      { day:'Zi 5', title:'Case study relevant', desc:'Studiu de caz cu client cu profil similar. Rezultat concret, nu generic. Format: problemă → soluție → rezultat.', type:'email', color:'var(--acc2)' },
+      { day:'Zi 8', title:'Soft CTA', desc:'Prima invitație la demo / trial. Formulare ca întrebare, nu ca cerere. „Te-ar interesa să vezi X?" ', type:'email', color:'var(--am)' },
+      { day:'Zi 14', title:'Re-engagement sau retargeting', desc:'Dacă lead-ul nu a interacționat: schimbă subiectul și tonul. Dacă a interacționat: urmează-l cu conținut mai specific.', type:'email', color:'var(--am)' },
+      { day:'Zi 21', title:'SDR outreach personalizat', desc:'Email manual de la SDR, nu automation. Referință la conținut consumat. Propunere clară: 15 min call.', type:'call', color:'var(--te)' }
+    ],
+    kpis:[{label:'Email open rate',val:'28–40%'},{label:'Click rate',val:'3–8%'},{label:'Lead → MQL conv.',val:'10–25%'}],
+    tools:['Mailchimp / Klaviyo — sequences','HubSpot — lead scoring','LinkedIn Sales Navigator — outreach','Lemlist — personalized email']
+  },
+  reactivation: {
+    steps: [
+      { day:'Zi 1', title:'Win-back email — empatic', desc:'Recunoaște că utilizatorul a plecat. Nu da vina pe el. „Ne-a lipsit" nu „Ce s-a întâmplat?". Ton uman, nu corporate.', type:'email', color:'var(--acc2)' },
+      { day:'Zi 3', title:'Ce s-a schimbat — email', desc:'Anunță noile feature-uri sau îmbunătățiri relevante pentru use case-ul lor anterior. Concret, nu general.', type:'email', color:'var(--acc2)' },
+      { day:'Zi 7', title:'Ofertă specială limitată', desc:'Discount sau extindere trial — dar numai dacă are sens business. Nu desvaloriza produsul cu discounturi reflexive.', type:'email', color:'var(--am)' },
+      { day:'Zi 10', title:'Feedback request', desc:'„Ajută-ne să înțelegem de ce ai plecat." Survey în 2 clicks. Insight valoros chiar dacă nu reconvertesc.', type:'email', color:'var(--te)' },
+      { day:'Zi 14', title:'Final touch — uman', desc:'Un singur email de la fondator / CEO. Scurt, personal, fără template feeling. Ultimul contact înainte de suppress.', type:'email', color:'var(--pu)' }
+    ],
+    kpis:[{label:'Re-engagement rate',val:'5–15%'},{label:'Win-back rate',val:'2–8%'},{label:'Feedback response',val:'15–30%'}],
+    tools:['Customer.io — behavioral segmentation','Hotjar — exit surveys','Typeform — NPS / churn survey','Retargeting ads — Facebook/Google']
+  },
+  upsell: {
+    steps: [
+      { day:'Event: Feature limit hit', title:'In-app upsell contextual', desc:'Mesaj în app exact în momentul în care userul atinge limita planului. Context = cel mai bun moment pentru upsell.', type:'in-app', color:'var(--pu)' },
+      { day:'Zi +1', title:'Email educațional despre plan superior', desc:'Nu „Cumpără acum". Explică ce devine posibil pe planul următor. Calculatoare ROI sau comparatii concrete.', type:'email', color:'var(--acc2)' },
+      { day:'Zi +3', title:'Social proof pentru tier superior', desc:'Testimonial de la client pe planul vizat, cu rezultat relevant pentru userul curent.', type:'email', color:'var(--acc2)' },
+      { day:'Zi +7', title:'Demo feature premium', desc:'Video scurt sau gif animat cu feature-ul principal disponibil pe planul superior. Arată, nu spune.', type:'email', color:'var(--am)' },
+      { day:'Zi +10', title:'CS call proactiv', desc:'Customer Success contactează proactiv conturile care au atins limita de 3+ ori. Conversație, nu pitch.', type:'call', color:'var(--te)' }
+    ],
+    kpis:[{label:'Upsell conv. rate',val:'8–20%'},{label:'Expansion MRR',val:'15–30% din total'},{label:'NPS after upsell',val:'+12 pct avg'}],
+    tools:['Pendo / Appcues — in-app triggers','Stripe — subscription management','ChurnZero / Gainsight — CS automation','Loom — personalized video']
+  },
+  referral: {
+    steps: [
+      { day:'Zi 30 (post-activare)', title:'Identificare promoteri NPS', desc:'NPS survey la 30 zile. Scoruri 9–10 = promoteri. Aceștia sunt candidații pentru referral program.', type:'survey', color:'var(--te)' },
+      { day:'Post NPS', title:'Invitație personalizată referral', desc:'Email manual sau în-app pentru promoteri. Explică beneficiul clar. Faceți procesul ultra-simplu (1 click share).', type:'email', color:'var(--acc2)' },
+      { day:'La referral share', title:'Thank you + tracking', desc:'Confirmare imediată că referral-ul a fost trimis. Link unic per user. Dashboard cu status referrals.', type:'in-app', color:'var(--pu)' },
+      { day:'La conversie referral', title:'Reward delivery', desc:'Reward livrat automat și imediat la conversie. Delay-ul ucide programele de referral. Transparență totală.', type:'auto', color:'var(--gr)' },
+      { day:'Lunar', title:'Leaderboard & remindere', desc:'Email lunar cu top referrers (gamification). Reamintire că programul există pentru utilizatorii pasivi.', type:'email', color:'var(--am)' }
+    ],
+    kpis:[{label:'Referral rate (users)',val:'5–15%'},{label:'Referral → signup',val:'20–40%'},{label:'CAC reduction via referral',val:'40–60%'}],
+    tools:['ReferralHero / Viral Loops — program management','Hotjar — tracking','Slack / Discord — community nurture','Typeform — feedback']
+  },
+  viral: {
+    steps: [
+      { day:'La signup', title:'Viral mechanic embedding', desc:'Integrează un element care generează valoare când e shared: shared doc, public profile, collaborative workspace.', type:'product', color:'var(--pu)' },
+      { day:'La share acțiune', title:'Frictionless sharing', desc:'Sharing în 1 click. Pre-completat cu mesaj personalizat. Tracking automat pe fiecare link shared.', type:'product', color:'var(--acc2)' },
+      { day:'La click pe link shared', title:'Landing optimizat pentru referrals', desc:'Pagina specializată pentru traficul din referral — arată contextul (cine a trimis, ce au creat). Conv. rate mai mare.', type:'landing', color:'var(--te)' },
+      { day:'La signup via referral', title:'Onboarding adaptat', desc:'Onboarding care recunoaște contextul: „Ai venit de la [Name] — iată ce au creat ei cu [product]."', type:'in-app', color:'var(--am)' },
+      { day:'Zi 7', title:'Amplificare loop — nudge', desc:'Email sau notificare: „Invită 3 colegi și deblochează [feature]." Virality loop condiționat de valoare, nu spam.', type:'email', color:'var(--gr)' }
+    ],
+    kpis:[{label:'Viral coefficient (K)',val:'> 0.5 = growth, > 1 = viral'},{label:'Referral signup rate',val:'25–50%'},{label:'Time to viral loop (avg)',val:'< 24 ore'}],
+    tools:['Orbit / Common Room — community growth','Product Hunt — launch amplification','Twitter/X API — share tracking','Amplitude — viral loop analysis']
+  }
+};
+
+function loadWorkflow() {
+  const type = document.getElementById('wf-type')?.value || 'onboarding';
+  const wf = WORKFLOWS[type];
+  if (!wf) return;
+
+  const stepsWrap = document.getElementById('wf-steps');
+  if (stepsWrap) {
+    stepsWrap.innerHTML = wf.steps.map((s,i) => `
+      <div class="wf-step">
+        <div class="wf-num" style="background:${s.color}22;color:${s.color};border:1px solid ${s.color}44;font-size:10px;width:36px;height:36px;line-height:1.2;text-align:center">${s.day}</div>
+        <div class="wf-body">
+          <div class="wf-title">${s.title}</div>
+          <div class="wf-desc">${s.desc}</div>
+          <div class="wf-tags">
+            <span class="wf-tag" style="background:${s.color}22;color:${s.color}">${s.type}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  const kpisWrap = document.getElementById('wf-kpis');
+  if (kpisWrap) {
+    kpisWrap.innerHTML = wf.kpis.map(k => `
+      <div class="metric-mini">
+        <div class="mv" style="color:var(--acc2);font-size:18px">${k.val}</div>
+        <div class="ml">${k.label}</div>
+      </div>
+    `).join('');
+  }
+
+  const toolsWrap = document.getElementById('wf-tools');
+  if (toolsWrap) {
+    toolsWrap.innerHTML = wf.tools.map(t => `
+      <div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--bdr)">
+        <span style="color:var(--acc2);font-size:12px">›</span>
+        <span style="font-size:12px;color:var(--mu2)">${t}</span>
+      </div>
+    `).join('');
+  }
+}
+
+function exportWorkflow() {
+  const type = document.getElementById('wf-type')?.value || 'onboarding';
+  const wf = WORKFLOWS[type];
+  const config = {
+    type, trigger: document.getElementById('wf-trigger')?.value,
+    owner: document.getElementById('wf-owner')?.value,
+    goal: document.getElementById('wf-goal')?.value,
+    duration: document.getElementById('wf-duration')?.value,
+    steps: wf.steps, kpis: wf.kpis, tools: wf.tools
+  };
+  const a = document.createElement('a');
+  a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(config, null, 2));
+  a.download = `growth-workflow-${type}.json`;
+  a.click();
+  notify('↓ Workflow JSON descărcat');
+}
+
+function copyWorkflow() {
+  const type = document.getElementById('wf-type')?.value || 'onboarding';
+  const wf = WORKFLOWS[type];
+  const text = wf.steps.map((s,i) => `${i+1}. [${s.day}] ${s.title}\n   ${s.desc}`).join('\n\n');
+  navigator.clipboard?.writeText(text).catch(()=>{});
+  notify('Workflow copiat în clipboard');
+}
+
+function exportTemplate() {
+  const active = document.querySelector('.template-section.active')?.id?.replace('tmpl-','') || 'leadmagnet';
+  if (active === 'leadmagnet') generateLMHTML();
+  else if (active === 'funnel') exportFunnel();
+  else if (active === 'growth') exportWorkflow();
+  else notify('Folosește butoanele specifice din template');
+}
+
+/* NOTIFY */
+function notify(msg) {
+  const n = document.getElementById('notif');
+  if (!n) return;
+  n.textContent = msg;
+  n.classList.add('show');
+  setTimeout(()=>n.classList.remove('show'),2500);
+}
+
+/* INIT */
+document.addEventListener('DOMContentLoaded', () => {
+  updateLMPreview();
+  loadWorkflow();
+  renderABGrid();
+});
+</script>
+</body>
+</html>

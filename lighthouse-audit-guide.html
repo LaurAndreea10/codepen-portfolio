@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Lighthouse CI Audit — Portfolio Performance Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#05080f;--bg2:#090f1e;--bg3:#0e1628;
+  --panel:rgba(14,22,40,.88);--p2:rgba(255,255,255,.04);--p3:rgba(255,255,255,.07);
+  --bdr:rgba(255,255,255,.07);--bdr2:rgba(255,255,255,.13);
+  --tx:#e4ecf8;--mu:#627090;--mu2:#8fa3c4;
+  --acc:#4f8cff;--acc2:#7aabff;--ag:rgba(79,140,255,.15);
+  --gr:#22c55e;--gr-bg:rgba(34,197,94,.1);
+  --am:#f59e0b;--am-bg:rgba(245,158,11,.1);
+  --rd:#ef4444;--rd-bg:rgba(239,68,68,.1);
+  --mo:'JetBrains Mono',ui-monospace,monospace;
+  --di:'Space Grotesk',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:var(--di);background:var(--bg);color:var(--tx);line-height:1.6;overflow-x:hidden}
+h1,h2,h3,h4,p{margin:0}
+button{font:inherit;cursor:pointer}
+code{font-family:var(--mo);font-size:.9em;background:var(--p2);padding:2px 6px;border-radius:4px;color:var(--acc2)}
+
+/* TOPBAR */
+.bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 32px;border-bottom:1px solid var(--bdr);
+  background:var(--bg2);position:sticky;top:0;z-index:40;
+}
+.bar-title{font-size:14px;font-weight:700;letter-spacing:-.02em}
+.bar-sub{font-size:10px;color:var(--mu);font-family:var(--mo);margin-top:1px}
+.tbtn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:8px;font-size:12px;font-weight:500;
+  border:1px solid var(--bdr2);background:var(--p2);color:var(--mu2);
+  transition:all .15s;
+}
+.tbtn:hover{border-color:var(--acc);color:var(--acc2)}
+.tbtn.pr{background:var(--acc);border-color:var(--acc);color:#fff}
+.tbtn.pr:hover{background:var(--acc2)}
+
+/* HERO */
+.hero{padding:52px 32px 36px;max-width:1140px;margin:0 auto}
+.ey{
+  display:inline-flex;align-items:center;gap:7px;margin-bottom:16px;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--acc2);font-family:var(--mo);
+  padding:4px 12px;border-radius:16px;background:var(--ag);border:1px solid rgba(79,140,255,.2);
+}
+.hero h1{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;letter-spacing:-.04em;line-height:1.08;margin-bottom:14px}
+.hero h1 span{color:var(--acc2)}
+.hero-sub{font-size:.96rem;color:var(--mu2);max-width:66ch;line-height:1.8;margin-bottom:28px}
+.score-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+.score-card{
+  background:var(--panel);border:1px solid var(--bdr);border-radius:12px;padding:16px 18px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;
+}
+.score-ring{
+  width:72px;height:72px;border-radius:50%;display:grid;place-items:center;
+  font-size:22px;font-weight:700;letter-spacing:-.04em;
+  border:3px solid transparent;
+}
+.score-ring.good{border-color:var(--gr);color:var(--gr)}
+.score-ring.needs{border-color:var(--am);color:var(--am)}
+.score-ring.poor{border-color:var(--rd);color:var(--rd)}
+.score-name{font-size:11px;color:var(--mu2);font-family:var(--mo);text-transform:uppercase;letter-spacing:.08em}
+.score-target{font-size:10px;color:var(--mu);font-family:var(--mo);margin-top:2px}
+
+/* LAYOUT */
+.ws{display:grid;grid-template-columns:1fr 340px;gap:22px;padding:0 32px 60px;max-width:1140px;margin:0 auto}
+@media(max-width:900px){.ws{grid-template-columns:1fr;padding:0 18px 40px}}
+
+/* CARD */
+.card{background:var(--panel);border:1px solid var(--bdr);border-radius:14px;padding:20px}
+.card+.card{margin-top:14px}
+.ch{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.ct{font-size:13px;font-weight:600}
+.cs{font-size:11px;color:var(--mu);font-family:var(--mo);margin-top:2px}
+.bdg{font-size:10px;padding:3px 8px;border-radius:5px;font-family:var(--mo);font-weight:500;letter-spacing:.06em}
+.bg{background:var(--gr-bg);color:var(--gr)}
+.ba{background:var(--am-bg);color:var(--am)}
+.br{background:var(--rd-bg);color:var(--rd)}
+.bb{background:var(--ag);color:var(--acc2)}
+
+/* OPPORTUNITY ITEMS */
+.opp{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 0;border-bottom:1px solid var(--bdr);
+}
+.opp:last-child{border-bottom:none}
+.opp-score{
+  width:44px;height:44px;border-radius:10px;flex-shrink:0;
+  display:grid;place-items:center;font-size:13px;font-weight:700;
+  font-family:var(--mo);
+}
+.opp-score.high{background:var(--rd-bg);color:var(--rd);border:1px solid rgba(239,68,68,.2)}
+.opp-score.med{background:var(--am-bg);color:var(--am);border:1px solid rgba(245,158,11,.2)}
+.opp-score.low{background:var(--gr-bg);color:var(--gr);border:1px solid rgba(34,197,94,.2)}
+.opp-body{}
+.opp-title{font-size:13px;font-weight:600;margin-bottom:3px}
+.opp-desc{font-size:12px;color:var(--mu2);line-height:1.6;margin-bottom:6px}
+.opp-fix{
+  font-family:var(--mo);font-size:11px;color:var(--acc2);
+  background:var(--ag);padding:6px 10px;border-radius:7px;
+  border:1px solid rgba(79,140,255,.15);line-height:1.6;
+}
+.opp-gain{font-size:10px;color:var(--gr);font-family:var(--mo);margin-top:5px}
+
+/* CODE BLOCK */
+.codeblock{
+  background:var(--bg3);border:1px solid var(--bdr2);border-radius:10px;
+  padding:14px 16px;font-family:var(--mo);font-size:11px;color:var(--mu2);
+  line-height:1.75;overflow-x:auto;white-space:pre;margin:10px 0;
+}
+.codeblock .cm{color:var(--mu);font-style:italic}
+.codeblock .ck{color:var(--acc2)}
+.codeblock .cv{color:var(--gr)}
+.codeblock .cp{color:var(--am)}
+
+/* TOOL: CSS EXTRACTOR */
+.extractor{display:flex;flex-direction:column;gap:12px}
+.ex-field{display:flex;flex-direction:column;gap:5px}
+.ex-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);font-family:var(--mo)}
+.ex-input,.ex-textarea{
+  width:100%;background:var(--p2);border:1px solid var(--bdr);border-radius:8px;
+  color:var(--tx);padding:9px 12px;font-family:var(--di);font-size:12px;outline:none;
+  transition:border-color .15s;
+}
+.ex-input:focus,.ex-textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(79,140,255,.1)}
+.ex-textarea{resize:vertical;min-height:120px;font-family:var(--mo);font-size:11px}
+.ex-input::placeholder,.ex-textarea::placeholder{color:var(--mu)}
+.ex-result{
+  background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;
+  padding:14px;font-family:var(--mo);font-size:11px;color:var(--mu2);
+  line-height:1.7;max-height:280px;overflow-y:auto;white-space:pre-wrap;display:none;
+}
+
+/* CHECKLIST */
+.cl-item{
+  display:flex;align-items:flex-start;gap:10px;padding:10px 0;
+  border-bottom:1px solid var(--bdr);font-size:12px;
+}
+.cl-item:last-child{border-bottom:none}
+.cl-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.cl-text{flex:1}
+.cl-label{font-weight:500;margin-bottom:2px}
+.cl-sub{color:var(--mu2);font-size:11px;line-height:1.6}
+.cl-status{
+  font-size:10px;padding:2px 7px;border-radius:4px;
+  font-family:var(--mo);flex-shrink:0;margin-top:2px;
+}
+
+/* PROGRESS BAR */
+.pbar{height:6px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden;margin:8px 0}
+.pbar-fill{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+
+/* DIVIDER */
+.div{height:1px;background:var(--bdr);margin:20px 0}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--p3);border-radius:2px}
+
+/* NOTIF */
+.notif{position:fixed;bottom:24px;right:24px;z-index:200;background:var(--bg2);border:1px solid var(--bdr2);border-radius:10px;padding:11px 18px;font-size:13px;transform:translateY(80px);opacity:0;transition:all .28s;pointer-events:none}
+.notif.show{transform:translateY(0);opacity:1}
+
+@media(max-width:640px){
+  .score-row{grid-template-columns:repeat(2,1fr)}
+  .hero{padding:32px 18px 24px}
+  .bar{padding:12px 18px}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div>
+    <div class="bar-title">⚡ Lighthouse CI Audit Tool</div>
+    <div class="bar-sub">Portfolio Performance · laurandreea10.github.io</div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button class="tbtn" onclick="runSimulatedAudit()">▶ Simulează audit</button>
+    <button class="tbtn pr" onclick="exportReport()">↓ Export raport</button>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="ey">🔍 Lighthouse CI · Audit activ</div>
+  <h1>Audit performanță<br><span>portofoliu</span></h1>
+  <p class="hero-sub">
+    Scoruri simulate bazate pe analiza structurii <code>index.html</code> — CSS non-critic identificat, oportunități LCP, CLS și TBT documentate cu fix-uri concrete.
+  </p>
+
+  <!-- SCORE RINGS -->
+  <div class="score-row" id="score-row">
+    <div class="score-card">
+      <div class="score-ring needs" id="score-perf">72</div>
+      <div class="score-name">Performance</div>
+      <div class="score-target">Target: ≥ 90</div>
+    </div>
+    <div class="score-card">
+      <div class="score-ring good" id="score-a11y">94</div>
+      <div class="score-name">Accessibility</div>
+      <div class="score-target">Target: ≥ 95</div>
+    </div>
+    <div class="score-card">
+      <div class="score-ring good" id="score-bp">88</div>
+      <div class="score-name">Best Practices</div>
+      <div class="score-target">Target: ≥ 90</div>
+    </div>
+    <div class="score-card">
+      <div class="score-ring good" id="score-seo">96</div>
+      <div class="score-name">SEO</div>
+      <div class="score-target">Target: ≥ 95</div>
+    </div>
+  </div>
+</div>
+
+<div class="ws">
+
+  <!-- LEFT COLUMN -->
+  <div>
+
+    <!-- OPPORTUNITIES -->
+    <div class="card">
+      <div class="ch">
+        <div>
+          <div class="ct">Oportunități identificate</div>
+          <div class="cs">Ordonate după impact · Estimări pentru 3G mobile</div>
+        </div>
+        <span class="bdg ba">6 issues</span>
+      </div>
+
+      <!-- OPP 1 -->
+      <div class="opp">
+        <div class="opp-score high">LCP</div>
+        <div class="opp-body">
+          <div class="opp-title">Render-blocking CSS — style.css &amp; Google Fonts</div>
+          <div class="opp-desc">
+            <code>style.css</code> (~18KB) și Google Fonts blochează First Paint. Browserul nu poate randa nimic până nu descarcă și parsează ambele resurse. Pe conexiuni lente → LCP &gt; 3s.
+          </div>
+          <div class="opp-fix"><span style="color:var(--acc2)">FIX:</span> Extrage CSS-ul critic (~3KB) inline în &lt;head&gt;. Încarcă restul cu <code>rel="preload"</code> + <code>onload</code>. Fonts: adaugă <code>display=swap</code> (deja prezent ✓). Consideră self-hosting.</div>
+          <div class="opp-gain">↑ Potențial economie: ~0.8–1.2s FCP</div>
+        </div>
+      </div>
+
+      <!-- OPP 2 -->
+      <div class="opp">
+        <div class="opp-score high">TBT</div>
+        <div class="opp-body">
+          <div class="opp-title">JS inline voluminos — main.js + scripts inline în HTML</div>
+          <div class="opp-desc">
+            Multiple <code>&lt;script&gt;</code> inline în body execută înainte ca pagina să fie complet încărcată. Dynamic data engine (~4KB inline) și multiple event listeners blochează main thread.
+          </div>
+          <div class="opp-fix"><span style="color:var(--acc2)">FIX:</span> Consolidează scripturile inline în <code>main.js</code> (deja <code>defer</code> ✓). Elimină scripturile duplicate din body. Folosește <code>requestIdleCallback</code> pentru boost-urile non-critice.</div>
+          <div class="opp-gain">↑ Potențial economie: ~200–400ms TBT</div>
+        </div>
+      </div>
+
+      <!-- OPP 3 -->
+      <div class="opp">
+        <div class="opp-score med">CLS</div>
+        <div class="opp-body">
+          <div class="opp-title">Layout shift — fonturi &amp; hero image</div>
+          <div class="opp-desc">
+            Fonturile Google Fonts cauzează FOUT (Flash of Unstyled Text) care produce CLS. Hero image <code>alpis-fusion-demo-poster.svg</code> fără dimensiuni explicite poate cauza reflow la load.
+          </div>
+          <div class="opp-fix"><span style="color:var(--acc2)">FIX:</span> Adaugă <code>width</code>/<code>height</code> explicit pe toate imaginile. Preload fonturile critice în &lt;head&gt;. Adaugă <code>font-display: swap</code> (deja prezent ✓). Consideră <code>size-adjust</code> fallback font.</div>
+          <div class="opp-gain">↑ CLS target: &lt; 0.1 (estimat actual: ~0.15)</div>
+        </div>
+      </div>
+
+      <!-- OPP 4 -->
+      <div class="opp">
+        <div class="opp-score med">IMG</div>
+        <div class="opp-body">
+          <div class="opp-title">SVG OG Image fără dimensiuni declarate</div>
+          <div class="opp-desc">
+            <code>alpis-fusion-demo-poster.svg</code> este folosit ca OG image și hero fallback fără <code>width</code>/<code>height</code> pe tag-ul img. SVG-urile fără dimensiuni intrinseci cauzează reflow.
+          </div>
+          <div class="opp-fix"><span style="color:var(--acc2)">FIX:</span> <code>&lt;img width="1200" height="630" src="..."&gt;</code>. Adaugă <code>loading="lazy"</code> pe hero iframe. Consideră conversie la WebP pentru non-SVG images.</div>
+          <div class="opp-gain">↑ Elimină reflow + îmbunătățire CLS</div>
+        </div>
+      </div>
+
+      <!-- OPP 5 -->
+      <div class="opp">
+        <div class="opp-score med">CSS</div>
+        <div class="opp-body">
+          <div class="opp-title">CSS duplicat — reguli inline + style.css</div>
+          <div class="opp-desc">
+            Regulile pentru <code>.now-tabs</code>, <code>.scan-panel</code>, <code>.badge-wip</code> sunt definite atât în <code>style.css</code> cât și în blocuri <code>&lt;style&gt;</code> inline din HTML. Payload CSS total crescut inutil.
+          </div>
+          <div class="opp-fix"><span style="color:var(--acc2)">FIX:</span> Mută toate regulile inline în <code>style.css</code>. Elimină blocurile <code>&lt;style&gt;</code> din body. Folosește PurgeCSS sau manual audit pentru clase neutilizate.</div>
+          <div class="opp-gain">↑ Reducere ~15–20% CSS payload</div>
+        </div>
+      </div>
+
+      <!-- OPP 6 -->
+      <div class="opp">
+        <div class="opp-score low">ARIA</div>
+        <div class="opp-body">
+          <div class="opp-title">Intro overlay — aria-hidden + reduced motion</div>
+          <div class="opp-desc">
+            Intro overlay are <code>aria-hidden="true"</code> corect, dar CSS-ul intro ocupă ~8KB inline în head. Funcționează pe reduced-motion, dar CSS-ul nu este eliminat din DOM la skip imediat.
+          </div>
+          <div class="opp-fix"><span style="color:var(--acc2)">FIX:</span> CSS-ul intro poate fi mutat în <code>intro.css</code> și încărcat condiționat (skip dacă sessionStorage key prezent). Economie: ~8KB din first-paint critical path.</div>
+          <div class="opp-gain">↑ Potențial: elimină 8KB CSS din critical path pe return visits</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRITICAL CSS EXTRACTOR TOOL -->
+    <div class="card" style="margin-top:14px">
+      <div class="ch">
+        <div>
+          <div class="ct">Critical CSS Extractor</div>
+          <div class="cs">Identifică și extrage CSS-ul above-the-fold din style.css</div>
+        </div>
+        <span class="bdg bb">Tool interactiv</span>
+      </div>
+
+      <div class="extractor">
+        <div class="ex-field">
+          <div class="ex-label">URL pagină (pentru referință)</div>
+          <input class="ex-input" id="ex-url" type="url" value="https://laurandreea10.github.io/codepen-portfolio/" placeholder="https://..." />
+        </div>
+
+        <div class="ex-field">
+          <div class="ex-label">Paste CSS (sau secțiunea din style.css)</div>
+          <textarea class="ex-textarea" id="ex-css" placeholder="/* Paste CSS complet sau porțiunea de analizat */
+
+.topbar { ... }
+.hero { ... }
+.nav { ... }
+..."></textarea>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="tbtn pr" onclick="extractCritical()" style="font-size:12px">⚡ Extrage Critical CSS</button>
+          <button class="tbtn" onclick="loadSampleCSS()" style="font-size:12px">← Sample CSS</button>
+          <button class="tbtn" onclick="copyExtracted()" style="font-size:12px" id="copy-ex-btn">⊕ Copiază rezultat</button>
+        </div>
+
+        <div id="ex-stats" style="display:none;font-size:12px;color:var(--mu2);padding:10px 12px;background:var(--bg3);border-radius:8px;border:1px solid var(--bdr);font-family:var(--mo)"></div>
+
+        <div class="ex-result" id="ex-result"></div>
+      </div>
+    </div>
+
+    <!-- IMPLEMENTATION GUIDE -->
+    <div class="card" style="margin-top:14px">
+      <div class="ch">
+        <div class="ct">Ghid implementare — pas cu pas</div>
+        <span class="bdg bg">Action plan</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:0">
+
+        <div style="padding:16px 0;border-bottom:1px solid var(--bdr)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="background:var(--rd-bg);color:var(--rd);padding:3px 9px;border-radius:5px;font-size:11px;font-family:var(--mo)">STEP 1</span>
+            <span style="font-size:13px;font-weight:600">Inline Critical CSS în &lt;head&gt;</span>
+          </div>
+          <p style="font-size:12px;color:var(--mu2);margin-bottom:10px;line-height:1.7">
+            Extrage CSS-ul necesar pentru above-the-fold (nav, hero, hero-card, eyebrow, h1, btn). Pune-l direct în <code>&lt;style&gt;</code> în head. Restul — încarcă async.
+          </p>
+<div class="codeblock"><span class="cm">/* În &lt;head&gt; — ÎNAINTE */</span>
+<span class="ck">&lt;link</span> <span class="cp">rel</span>=<span class="cv">"stylesheet"</span> <span class="cp">href</span>=<span class="cv">"style.css"</span><span class="ck">&gt;</span>
+
+<span class="cm">/* În &lt;head&gt; — DUPĂ */</span>
+<span class="ck">&lt;style&gt;</span>
+  <span class="cm">/* Critical CSS inline — ~3KB */</span>
+  <span class="ck">:root</span> { <span class="cp">--bg</span>: <span class="cv">#071226</span>; <span class="cp">--accent</span>: <span class="cv">#4f8cff</span>; ... }
+  <span class="ck">.topbar</span> { <span class="cp">position</span>: <span class="cv">sticky</span>; ... }
+  <span class="ck">.nav</span> { ... }
+  <span class="ck">.hero</span> { ... }
+  <span class="ck">.hero-card</span> { ... }
+  <span class="ck">h1</span> { ... }
+  <span class="ck">.btn</span> { ... }
+<span class="ck">&lt;/style&gt;</span>
+<span class="cm">/* Non-critical — async */</span>
+<span class="ck">&lt;link</span> <span class="cp">rel</span>=<span class="cv">"preload"</span> <span class="cp">href</span>=<span class="cv">"style.css"</span> <span class="cp">as</span>=<span class="cv">"style"</span>
+      <span class="cp">onload</span>=<span class="cv">"this.onload=null;this.rel='stylesheet'"</span><span class="ck">&gt;</span>
+<span class="ck">&lt;noscript&gt;&lt;link</span> <span class="cp">rel</span>=<span class="cv">"stylesheet"</span> <span class="cp">href</span>=<span class="cv">"style.css"</span><span class="ck">&gt;&lt;/noscript&gt;</span></div>
+        </div>
+
+        <div style="padding:16px 0;border-bottom:1px solid var(--bdr)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="background:var(--am-bg);color:var(--am);padding:3px 9px;border-radius:5px;font-size:11px;font-family:var(--mo)">STEP 2</span>
+            <span style="font-size:13px;font-weight:600">Elimină CSS duplicat inline</span>
+          </div>
+          <p style="font-size:12px;color:var(--mu2);margin-bottom:10px;line-height:1.7">
+            Mută toate blocurile <code>&lt;style&gt;</code> din body în <code>style.css</code>. Clasele <code>.now-tabs</code>, <code>.badge-wip</code>, <code>.scan-panel</code> sunt definite de 2 ori.
+          </p>
+<div class="codeblock"><span class="cm"># Audit CSS duplicat — căutare rapidă în terminal</span>
+<span class="ck">grep</span> -n <span class="cv">".now-tab"</span> index.html
+<span class="cm"># → găsit în &lt;style id="intro-css"&gt; și în style.css</span>
+
+<span class="cm"># Script bash: extrage toate blocurile &lt;style&gt; din body</span>
+<span class="ck">grep</span> -o <span class="cv">'&lt;style&gt;.*?&lt;/style&gt;'</span> index.html | <span class="ck">wc</span> -c
+<span class="cm"># → estimat ~8KB de CSS duplicat sau inline nenecesar</span></div>
+        </div>
+
+        <div style="padding:16px 0;border-bottom:1px solid var(--bdr)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="background:var(--am-bg);color:var(--am);padding:3px 9px;border-radius:5px;font-size:11px;font-family:var(--mo)">STEP 3</span>
+            <span style="font-size:13px;font-weight:600">Intro CSS — condiționat pe return visits</span>
+          </div>
+          <p style="font-size:12px;color:var(--mu2);margin-bottom:10px;line-height:1.7">
+            CSS-ul intro (~8KB) este în critical path chiar și pe return visits unde intro-ul nu se mai arată. Mută-l în fișier separat și încarcă-l condiționat.
+          </p>
+<div class="codeblock"><span class="ck">&lt;script&gt;</span>
+  <span class="cm">// Încarcă CSS intro doar la prima vizită</span>
+  <span class="ck">if</span> (!sessionStorage.getItem(<span class="cv">'la_intro_seen'</span>)) {
+    <span class="ck">const</span> link = document.createElement(<span class="cv">'link'</span>);
+    link.rel = <span class="cv">'stylesheet'</span>;
+    link.href = <span class="cv">'intro.css'</span>;
+    document.head.appendChild(link);
+  }
+<span class="ck">&lt;/script&gt;</span></div>
+        </div>
+
+        <div style="padding:16px 0;border-bottom:1px solid var(--bdr)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="background:var(--gr-bg);color:var(--gr);padding:3px 9px;border-radius:5px;font-size:11px;font-family:var(--mo)">STEP 4</span>
+            <span style="font-size:13px;font-weight:600">GitHub Actions — Lighthouse CI automat</span>
+          </div>
+          <p style="font-size:12px;color:var(--mu2);margin-bottom:10px;line-height:1.7">
+            Adaugă Lighthouse CI ca workflow GitHub Actions. Rulează la fiecare PR și blochează merge dacă scorul scade sub threshold.
+          </p>
+<div class="codeblock"><span class="cm"># .github/workflows/lighthouse.yml</span>
+<span class="ck">name</span>: <span class="cv">Lighthouse CI</span>
+<span class="ck">on</span>: [push, pull_request]
+<span class="ck">jobs</span>:
+  <span class="cp">lighthouse</span>:
+    <span class="ck">runs-on</span>: <span class="cv">ubuntu-latest</span>
+    <span class="ck">steps</span>:
+      - <span class="ck">uses</span>: <span class="cv">actions/checkout@v4</span>
+      - <span class="ck">name</span>: <span class="cv">Run Lighthouse CI</span>
+        <span class="ck">uses</span>: <span class="cv">treosh/lighthouse-ci-action@v10</span>
+        <span class="ck">with</span>:
+          <span class="cp">urls</span>: <span class="cv">|
+            https://laurandreea10.github.io/codepen-portfolio/</span>
+          <span class="cp">budgetPath</span>: <span class="cv">./budget.json</span>
+          <span class="cp">uploadArtifacts</span>: <span class="cv">true</span></div>
+<div class="codeblock"><span class="cm">// budget.json</span>
+[{
+  <span class="ck">"path"</span>: <span class="cv">"/*"</span>,
+  <span class="ck">"assertions"</span>: {
+    <span class="ck">"categories:performance"</span>: [<span class="cv">"error"</span>, {<span class="ck">"minScore"</span>: <span class="cp">0.85</span>}],
+    <span class="ck">"categories:accessibility"</span>: [<span class="cv">"error"</span>, {<span class="ck">"minScore"</span>: <span class="cp">0.92</span>}],
+    <span class="ck">"categories:seo"</span>: [<span class="cv">"error"</span>, {<span class="ck">"minScore"</span>: <span class="cp">0.92</span>}],
+    <span class="ck">"first-contentful-paint"</span>: [<span class="cv">"warn"</span>, {<span class="ck">"maxNumericValue"</span>: <span class="cp">2000</span>}],
+    <span class="ck">"largest-contentful-paint"</span>: [<span class="cv">"error"</span>, {<span class="ck">"maxNumericValue"</span>: <span class="cp">2500</span>}]
+  }
+}]</div>
+        </div>
+
+        <div style="padding:16px 0">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="background:var(--gr-bg);color:var(--gr);padding:3px 9px;border-radius:5px;font-size:11px;font-family:var(--mo)">STEP 5</span>
+            <span style="font-size:13px;font-weight:600">Preload resurse critice</span>
+          </div>
+<div class="codeblock"><span class="cm">&lt;!-- În &lt;head&gt;, înainte de &lt;link stylesheet&gt; --&gt;</span>
+<span class="ck">&lt;link</span> <span class="cp">rel</span>=<span class="cv">"preconnect"</span> <span class="cp">href</span>=<span class="cv">"https://fonts.googleapis.com"</span><span class="ck">&gt;</span> <span class="cm">&lt;!-- deja ✓ --&gt;</span>
+<span class="ck">&lt;link</span> <span class="cp">rel</span>=<span class="cv">"preconnect"</span> <span class="cp">href</span>=<span class="cv">"https://fonts.gstatic.com"</span> <span class="cp">crossorigin</span><span class="ck">&gt;</span> <span class="cm">&lt;!-- ✓ --&gt;</span>
+<span class="ck">&lt;link</span> <span class="cp">rel</span>=<span class="cv">"preload"</span> <span class="cp">href</span>=<span class="cv">"style.css"</span> <span class="cp">as</span>=<span class="cv">"style"</span><span class="ck">&gt;</span> <span class="cm">&lt;!-- deja ✓ --&gt;</span>
+
+<span class="cm">&lt;!-- ADAUGĂ: preload SVG hero --&gt;</span>
+<span class="ck">&lt;link</span> <span class="cp">rel</span>=<span class="cv">"preload"</span>
+      <span class="cp">href</span>=<span class="cv">"alpis-fusion-demo-poster.svg"</span>
+      <span class="cp">as</span>=<span class="cv">"image"</span>
+      <span class="cp">type</span>=<span class="cv">"image/svg+xml"</span><span class="ck">&gt;</span></div>
+        </div>
+
+      </div><!-- steps -->
+    </div>
+
+  </div><!-- /left -->
+
+  <!-- RIGHT COLUMN -->
+  <div>
+
+    <!-- CHECKLIST AUDIT -->
+    <div class="card">
+      <div class="ch" style="margin-bottom:14px">
+        <div class="ct">Checklist audit complet</div>
+        <button class="tbtn" onclick="toggleAll()" style="font-size:10px;padding:5px 10px" id="toggle-all-btn">Bifează tot</button>
+      </div>
+
+      <div id="checklist-wrap">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+
+    <!-- PROGRESS PROJECTION -->
+    <div class="card" style="margin-top:14px">
+      <div class="ch" style="margin-bottom:14px">
+        <div class="ct">Proiecție scoruri după fix-uri</div>
+        <span class="bdg bg">Estimat</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+            <span>Performance</span>
+            <span style="font-family:var(--mo)"><span style="color:var(--am)">72</span> → <span style="color:var(--gr)" id="perf-proj">91</span></span>
+          </div>
+          <div class="pbar"><div class="pbar-fill" style="width:72%;background:var(--am)"></div></div>
+          <div class="pbar"><div class="pbar-fill" style="width:91%;background:var(--gr)" id="perf-bar"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+            <span>Accessibility</span>
+            <span style="font-family:var(--mo)"><span style="color:var(--gr)">94</span> → <span style="color:var(--gr)">97</span></span>
+          </div>
+          <div class="pbar"><div class="pbar-fill" style="width:94%;background:var(--gr)"></div></div>
+          <div class="pbar"><div class="pbar-fill" style="width:97%;background:var(--gr)"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+            <span>Best Practices</span>
+            <span style="font-family:var(--mo)"><span style="color:var(--gr)">88</span> → <span style="color:var(--gr)">93</span></span>
+          </div>
+          <div class="pbar"><div class="pbar-fill" style="width:88%;background:var(--gr)"></div></div>
+          <div class="pbar"><div class="pbar-fill" style="width:93%;background:var(--gr)"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+            <span>SEO</span>
+            <span style="font-family:var(--mo)"><span style="color:var(--gr)">96</span> → <span style="color:var(--gr)">98</span></span>
+          </div>
+          <div class="pbar"><div class="pbar-fill" style="width:96%;background:var(--gr)"></div></div>
+          <div class="pbar"><div class="pbar-fill" style="width:98%;background:var(--gr)"></div></div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;padding:10px 12px;background:var(--bg3);border-radius:8px;border:1px solid var(--bdr);font-size:11px;color:var(--mu2);font-family:var(--mo);line-height:1.7">
+        Estimare bazată pe: inline critical CSS (+8-12 pct), eliminare CSS duplicat (+3-5 pct), intro.css condiționat (+4-6 pct), preload resurse (+2-3 pct).
+      </div>
+    </div>
+
+    <!-- RESOURCES -->
+    <div class="card" style="margin-top:14px">
+      <div class="ct" style="margin-bottom:12px">Resurse utile</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+        <a href="https://web.dev/articles/extract-critical-css" target="_blank" rel="noopener" style="color:var(--acc2);display:flex;align-items:center;gap:6px">↗ web.dev — Extract Critical CSS</a>
+        <a href="https://github.com/treosh/lighthouse-ci-action" target="_blank" rel="noopener" style="color:var(--acc2);display:flex;align-items:center;gap:6px">↗ Lighthouse CI Action (GitHub)</a>
+        <a href="https://web.dev/articles/optimize-lcp" target="_blank" rel="noopener" style="color:var(--acc2);display:flex;align-items:center;gap:6px">↗ web.dev — Optimize LCP</a>
+        <a href="https://developer.chrome.com/docs/lighthouse/performance/render-blocking-resources" target="_blank" rel="noopener" style="color:var(--acc2);display:flex;align-items:center;gap:6px">↗ Chrome — Render-blocking resources</a>
+        <a href="https://web.dev/articles/cls" target="_blank" rel="noopener" style="color:var(--acc2);display:flex;align-items:center;gap:6px">↗ web.dev — Cumulative Layout Shift</a>
+      </div>
+    </div>
+
+  </div><!-- /right -->
+</div><!-- /ws -->
+
+<div class="notif" id="notif" role="status" aria-live="polite"></div>
+
+<script>
+/* CHECKLIST DATA */
+const CHECKS = [
+  { id:'c1', label:'Inline Critical CSS în &lt;head&gt;', sub:'~3KB CSS above-the-fold inline, restul async', impact:'high', done:false },
+  { id:'c2', label:'Elimină CSS duplicat din body', sub:'.now-tabs, .badge-wip, .scan-panel — 2x definite', impact:'med', done:false },
+  { id:'c3', label:'Intro CSS condiționat', sub:'Mută intro.css în fișier separat, încarcă la prima vizită', impact:'high', done:false },
+  { id:'c4', label:'Adaugă width/height pe img hero SVG', sub:'Previne reflow și CLS pe hero fallback image', impact:'med', done:false },
+  { id:'c5', label:'Preload SVG hero image', sub:'&lt;link rel="preload" href="poster.svg" as="image"&gt;', impact:'low', done:false },
+  { id:'c6', label:'Consolidează scripturile inline în main.js', sub:'Mută dynamic data engine și boosts în main.js (defer)', impact:'med', done:false },
+  { id:'c7', label:'GitHub Actions Lighthouse CI workflow', sub:'.github/workflows/lighthouse.yml + budget.json', impact:'low', done:false },
+  { id:'c8', label:'requestIdleCallback pentru boost-uri non-critice', sub:'applyScoreBoosts() → idle callback', impact:'low', done:false },
+  { id:'c9', label:'Verifică font-display:swap pe toate fonturile', sub:'Inter, Space Grotesk — verifică CSS final', impact:'low', done:true },
+  { id:'c10', label:'preconnect pentru Google Fonts', sub:'Deja prezent în head ✓', impact:'low', done:true },
+  { id:'c11', label:'&lt;link rel="preload"&gt; pentru style.css', sub:'Deja prezent ✓ — verifică ordinea în head', impact:'low', done:true },
+  { id:'c12', label:'Structured data JSON-LD validat', sub:'Schema.org Person + WebSite — deja implementat ✓', impact:'low', done:true }
+];
+
+const IMPACT_MAP = { high:['br','⚡ Impact ridicat'], med:['ba','⚡ Impact mediu'], low:['bb','⚡ Impact scăzut'] };
+
+function renderChecklist() {
+  const wrap = document.getElementById('checklist-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = CHECKS.map(c => {
+    const [cls, label] = IMPACT_MAP[c.impact] || IMPACT_MAP.low;
+    return `<div class="cl-item" id="item-${c.id}">
+      <input type="checkbox" id="${c.id}" ${c.done?'checked':''} onchange="toggleCheck('${c.id}')" style="width:15px;height:15px;accent-color:var(--acc);cursor:pointer;flex-shrink:0;margin-top:3px"/>
+      <div class="cl-text">
+        <div class="cl-label" style="${c.done?'text-decoration:line-through;color:var(--mu)':''}">${c.label}</div>
+        <div class="cl-sub">${c.sub}</div>
+      </div>
+      <span class="cl-status bdg ${cls}">${label}</span>
+    </div>`;
+  }).join('');
+  updateProgress();
+}
+
+function toggleCheck(id) {
+  const c = CHECKS.find(c => c.id === id);
+  if (c) { c.done = document.getElementById(id)?.checked || false; updateProgress(); renderChecklist(); }
+}
+
+function toggleAll() {
+  const allDone = CHECKS.every(c => c.done);
+  CHECKS.forEach(c => c.done = !allDone);
+  renderChecklist();
+  const btn = document.getElementById('toggle-all-btn');
+  if (btn) btn.textContent = allDone ? 'Bifează tot' : 'Debifează tot';
+}
+
+function updateProgress() {
+  const done = CHECKS.filter(c => c.done).length;
+  const pct = Math.round((done / CHECKS.length) * 100);
+  const perfScore = 72 + Math.round(pct * 0.19);
+  const el = document.getElementById('perf-proj');
+  const bar = document.getElementById('perf-bar');
+  if (el) el.textContent = Math.min(95, perfScore);
+  if (bar) bar.style.width = Math.min(95, perfScore) + '%';
+}
+
+/* CRITICAL CSS EXTRACTOR */
+const CRITICAL_SELECTORS = [
+  ':root','body','html','*',
+  '.topbar','.nav','.nav-links','.brand','.pill','.glass',
+  '.hero','.hero-card','.hero-layout','.hero-main','.hero-text','.hero-actions',
+  'h1','h2','.eyebrow','.section-head',
+  '.btn','.btn-primary','.btn-secondary',
+  '.container','.skip-link','.sr-only',
+  '@keyframes','@media (prefers-reduced-motion'
+];
+
+function extractCritical() {
+  const css = document.getElementById('ex-css')?.value || '';
+  if (!css.trim()) { notify('Paste CSS mai întâi'); return; }
+
+  const rules = [];
+  const seen = new Set();
+
+  CRITICAL_SELECTORS.forEach(sel => {
+    const escaped = sel.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/\\\*/g,'[^}]*');
+    const pattern = new RegExp(`(${escaped}[^{]*\\{[^}]*\\})`, 'gis');
+    const matches = css.match(pattern) || [];
+    matches.forEach(m => { if (!seen.has(m.trim())) { seen.add(m.trim()); rules.push(m.trim()); } });
+  });
+
+  const result = rules.join('\n\n') || '/* Nicio regulă critică identificată cu selectoarele curente */';
+  const el = document.getElementById('ex-result');
+  if (el) { el.style.display = 'block'; el.textContent = result; }
+
+  const stats = document.getElementById('ex-stats');
+  if (stats) {
+    stats.style.display = 'block';
+    const origSize = new Blob([css]).size;
+    const critSize = new Blob([result]).size;
+    stats.textContent = `CSS original: ${(origSize/1024).toFixed(1)}KB · Critical extras: ${(critSize/1024).toFixed(1)}KB · Economie: ${Math.round((1-critSize/origSize)*100)}% · ${rules.length} reguli critice`;
+  }
+  notify('Critical CSS extras — ' + rules.length + ' reguli');
+}
+
+function loadSampleCSS() {
+  document.getElementById('ex-css').value = `/* Exemplu porțiune din style.css */
+:root {
+  --bg: #071226;
+  --accent: #4f8cff;
+  --text: #eef4ff;
+  --muted: #9db0d4;
+  --container: 1280px;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Inter, sans-serif; background: var(--bg); color: var(--text); }
+h1 { font-size: clamp(2.2rem, 5vw, 4.6rem); letter-spacing: -.04em; }
+.container { width: min(var(--container), calc(100% - 32px)); margin: 0 auto; }
+.topbar { position: sticky; top: 0; z-index: 50; padding: 14px 0; }
+.nav { padding: 14px 18px; border-radius: 999px; display: flex; }
+.hero { padding: 34px 0 18px; }
+.hero-card { padding: 32px; border-radius: 24px; }
+.eyebrow { font-size: .84rem; font-weight: 800; color: var(--accent); }
+.btn { min-height: 48px; padding: 0 18px; border-radius: 999px; }
+.btn-primary { color: #fff; background: linear-gradient(135deg, var(--accent), #8b5cf6); }
+/* Non-critical — below fold */
+.projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+.project-card { padding: 22px; min-height: 420px; }
+.footer { padding: 40px 0; text-align: center; }
+.insights-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+@keyframes scan-pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+@media (max-width: 760px) { .nav { border-radius: 24px; } }`;
+  notify('Sample CSS încărcat');
+}
+
+function copyExtracted() {
+  const el = document.getElementById('ex-result');
+  if (!el || el.style.display === 'none') { notify('Extrage mai întâi CSS-ul critic'); return; }
+  navigator.clipboard?.writeText(el.textContent).catch(()=>{});
+  const btn = document.getElementById('copy-ex-btn');
+  if (btn) { btn.textContent = '✓ Copiat!'; setTimeout(()=>btn.textContent='⊕ Copiază rezultat',2000); }
+  notify('Critical CSS copiat în clipboard');
+}
+
+function runSimulatedAudit() {
+  const scores = ['perf','a11y','bp','seo'];
+  const targets = [72,94,88,96];
+  const rings = document.querySelectorAll('.score-ring');
+  rings.forEach((r,i) => {
+    let v = 0;
+    const target = targets[i];
+    const id = setInterval(() => {
+      v = Math.min(target, v + Math.ceil(target/20));
+      r.textContent = v;
+      if (v >= target) clearInterval(id);
+    }, 40);
+  });
+  notify('Audit simulat în curs...');
+}
+
+function exportReport() {
+  const done = CHECKS.filter(c=>c.done).map(c=>c.label.replace(/<[^>]+>/g,''));
+  const todo = CHECKS.filter(c=>!c.done).map(c=>c.label.replace(/<[^>]+>/g,''));
+  const report = `# Lighthouse CI Audit Report\n## Portfolio: laurandreea10.github.io\nData: ${new Date().toLocaleDateString('ro-RO')}\n\n## Scoruri curente\n- Performance: 72 (target ≥ 90)\n- Accessibility: 94 ✓\n- Best Practices: 88\n- SEO: 96 ✓\n\n## Fix-uri completate (${done.length}/${CHECKS.length})\n${done.map(d=>`- ✅ ${d}`).join('\n')}\n\n## Rămase (${todo.length})\n${todo.map(t=>`- ○ ${t}`).join('\n')}\n\n## Oportunități principale\n1. Inline Critical CSS → +8-12 pct Performance\n2. Elimină CSS duplicat → +3-5 pct\n3. Intro CSS condiționat → +4-6 pct return visits\n4. GitHub Actions Lighthouse CI → monitorizare continuă\n`;
+  const a = document.createElement('a');
+  a.href = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(report);
+  a.download = 'lighthouse-audit-' + new Date().toISOString().split('T')[0] + '.md';
+  a.click();
+  notify('↓ Raport Markdown descărcat');
+}
+
+function notify(msg) {
+  const n = document.getElementById('notif');
+  if (!n) return;
+  n.textContent = msg;
+  n.classList.add('show');
+  setTimeout(()=>n.classList.remove('show'),2500);
+}
+
+document.addEventListener('DOMContentLoaded', renderChecklist);
+</script>
+</body>
+</html>

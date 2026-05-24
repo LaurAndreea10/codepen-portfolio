@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Alpis Fusion CRM Premium — Case Study & Decision Log</title>
+<meta name="description" content="Case study extins: Alpis Fusion CRM Premium — decision log cu alegeri de produs, trade-off-uri UX și structură modulară. Laura Andreea, front-end developer."/>
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/projects/alpis-fusion-crm.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#04070d;--bg2:#08101e;--bg3:#0c1624;
+  --panel:rgba(12,22,36,.9);--panel2:rgba(255,255,255,.04);--panel3:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+  --text:#e6edf8;--muted:#6b7a99;--muted2:#9aadc8;
+  --acc:#4f8cff;--acc2:#7aabff;--acc-glow:rgba(79,140,255,.16);
+  --green:#22c55e;--green-bg:rgba(34,197,94,.1);
+  --amber:#f59e0b;--amber-bg:rgba(245,158,11,.1);
+  --red:#ef4444;--red-bg:rgba(239,68,68,.1);
+  --purple:#a78bfa;--purple-bg:rgba(167,139,250,.1);
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --display:'Sora',system-ui,sans-serif;
+  --editorial:'Fraunces',Georgia,serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--display);background:var(--bg);color:var(--text);overflow-x:hidden}
+h1,h2,h3,h4,p{margin:0}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+.nav{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 40px;border-bottom:1px solid var(--border);
+  background:rgba(4,7,13,.92);backdrop-filter:blur(12px);
+}
+.nav-brand{font-size:13px;font-weight:600;color:var(--muted2)}
+.nav-brand span{color:var(--acc2)}
+.nav-links{display:flex;gap:6px}
+.nav-pill{
+  padding:7px 14px;border-radius:20px;font-size:12px;font-weight:500;
+  border:1px solid var(--border);background:var(--panel2);color:var(--muted2);
+  cursor:pointer;transition:all .15s;
+}
+.nav-pill:hover,.nav-pill.active{border-color:rgba(79,140,255,.35);color:var(--acc2);background:var(--acc-glow)}
+
+/* HERO */
+.cs-hero{padding:80px 40px 60px;max-width:1100px;margin:0 auto;position:relative}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--acc2);font-family:var(--mono);
+  padding:4px 14px;border-radius:20px;background:var(--acc-glow);border:1px solid rgba(79,140,255,.22);
+}
+.cs-hero h1{
+  font-family:var(--editorial);font-size:clamp(2.4rem,5vw,4rem);
+  font-weight:600;letter-spacing:-.03em;line-height:1.05;
+  margin-bottom:22px;max-width:16ch;
+}
+.cs-hero h1 em{font-style:italic;color:var(--acc2)}
+.hero-intro{
+  font-size:1.08rem;color:var(--muted2);line-height:1.85;
+  max-width:68ch;margin-bottom:36px;
+}
+.hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:40px}
+.hero-stat{
+  background:var(--panel);border:1px solid var(--border);border-radius:14px;
+  padding:18px 20px;
+}
+.hero-stat-val{font-size:28px;font-weight:700;letter-spacing:-.05em;color:var(--acc2);line-height:1}
+.hero-stat-label{font-size:11px;color:var(--muted);margin-top:6px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.hero-stat-sub{font-size:11px;color:var(--muted2);margin-top:3px}
+.hero-ctas{display:flex;gap:10px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:11px 22px;border-radius:9px;font-size:13px;font-weight:500;
+  border:1px solid var(--border2);background:var(--panel2);color:var(--muted2);
+  transition:all .15s;cursor:pointer;
+}
+.btn:hover{border-color:var(--acc);color:var(--acc2)}
+.btn.primary{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.primary:hover{background:var(--acc2)}
+
+/* CONTENT GRID */
+.cs-layout{display:grid;grid-template-columns:1fr 260px;gap:32px;max-width:1100px;margin:0 auto;padding:0 40px 80px}
+@media(max-width:900px){.cs-layout{grid-template-columns:1fr;padding:0 20px 60px}}
+
+/* TOC */
+.toc{position:sticky;top:80px;height:fit-content}
+.toc-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-family:var(--mono);margin-bottom:12px}
+.toc-item{
+  display:block;font-size:12px;color:var(--muted2);padding:6px 10px;
+  border-radius:7px;border-left:2px solid transparent;
+  transition:all .15s;margin-bottom:2px;
+}
+.toc-item:hover,.toc-item.active{color:var(--acc2);border-left-color:var(--acc);background:var(--acc-glow)}
+.toc-item.sub{padding-left:22px;font-size:11px}
+.toc-divider{height:1px;background:var(--border);margin:10px 0}
+
+/* SECTIONS */
+.cs-section{padding:40px 0;border-top:1px solid var(--border)}
+.cs-section:first-child{border-top:none;padding-top:0}
+.section-label{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--acc2);font-family:var(--mono);margin-bottom:14px;
+}
+.section-label::before{content:'';width:20px;height:1px;background:var(--acc2)}
+.cs-section h2{
+  font-family:var(--editorial);font-size:clamp(1.6rem,3vw,2.4rem);
+  font-weight:600;letter-spacing:-.03em;line-height:1.15;margin-bottom:16px;
+}
+.cs-section p{font-size:.97rem;color:var(--muted2);line-height:1.85;margin-bottom:14px}
+.cs-section p:last-child{margin-bottom:0}
+
+/* DECISION LOG */
+.decision-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:14px;
+  padding:22px;margin-bottom:14px;position:relative;overflow:hidden;
+}
+.decision-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--acc);border-radius:3px 0 0 3px;
+}
+.decision-card.trade-off::before{background:var(--amber)}
+.decision-card.rejected::before{background:var(--red)}
+.decision-card.insight::before{background:var(--green)}
+.dc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.dc-title{font-size:14px;font-weight:600;letter-spacing:-.01em}
+.dc-badge{
+  font-size:10px;padding:3px 9px;border-radius:5px;
+  font-family:var(--mono);font-weight:500;letter-spacing:.06em;white-space:nowrap;
+}
+.dc-context{font-size:12px;color:var(--muted2);line-height:1.7;margin-bottom:12px;font-style:italic}
+.dc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dc-col-label{
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  font-family:var(--mono);margin-bottom:6px;font-weight:500;
+}
+.dc-items{display:flex;flex-direction:column;gap:5px}
+.dc-item{
+  display:flex;align-items:flex-start;gap:7px;
+  font-size:12px;color:var(--muted2);line-height:1.6;
+}
+.dc-item::before{content:'›';color:inherit;flex-shrink:0;margin-top:1px}
+.dc-decision{
+  margin-top:12px;padding:10px 14px;border-radius:9px;
+  background:var(--panel2);border:1px solid var(--border2);
+  font-size:12px;line-height:1.7;
+}
+.dc-decision strong{color:var(--acc2);font-weight:600}
+
+/* STACK TABLE */
+.stack-table{width:100%;border-collapse:collapse;margin:16px 0}
+.stack-table th{
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);font-family:var(--mono);font-weight:500;
+  padding:0 14px 10px;text-align:left;border-bottom:1px solid var(--border2);
+}
+.stack-table td{padding:11px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
+.stack-table tr:last-child td{border-bottom:none}
+.stack-table tr:hover td{background:var(--panel2)}
+.tech-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 9px;border-radius:5px;font-size:11px;font-family:var(--mono);
+  background:var(--acc-glow);color:var(--acc2);border:1px solid rgba(79,140,255,.2);
+}
+
+/* MODULE GRID */
+.module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}
+.module-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:12px;
+  padding:16px 18px;
+}
+.module-icon{font-size:20px;margin-bottom:8px;display:block}
+.module-name{font-size:13px;font-weight:600;margin-bottom:4px}
+.module-desc{font-size:11px;color:var(--muted2);line-height:1.6}
+.module-badge{
+  display:inline-block;font-size:9px;padding:2px 7px;border-radius:4px;
+  font-family:var(--mono);margin-top:8px;
+}
+
+/* TIMELINE HISTORY */
+.hist-list{display:flex;flex-direction:column;gap:0}
+.hist-item{
+  display:grid;grid-template-columns:120px 1fr;gap:16px;
+  padding:16px 0;border-bottom:1px solid var(--border);
+}
+.hist-item:last-child{border-bottom:none}
+.hist-date{font-family:var(--mono);font-size:11px;color:var(--acc2);font-weight:500}
+.hist-title{font-size:13px;font-weight:600;margin-bottom:4px}
+.hist-desc{font-size:12px;color:var(--muted2);line-height:1.6}
+.hist-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.hist-tag{font-size:10px;padding:2px 7px;border-radius:4px;font-family:var(--mono)}
+
+/* QUOTE */
+.pull-quote{
+  margin:24px 0;padding:24px 28px;border-radius:14px;
+  background:var(--panel);border:1px solid var(--border);
+  border-left:3px solid var(--acc);
+}
+.pull-quote p{
+  font-family:var(--editorial);font-size:1.15rem;font-style:italic;
+  color:var(--text);line-height:1.7;margin:0;
+}
+.pull-quote cite{display:block;font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:10px;font-style:normal;letter-spacing:.06em}
+
+/* METRICS PROOF */
+.proof-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:20px 0}
+.proof-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px;
+}
+.proof-before-after{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:12px}
+.proof-val{font-size:20px;font-weight:700;letter-spacing:-.04em}
+.proof-label{font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:2px;text-transform:uppercase;letter-spacing:.07em}
+.proof-arrow{color:var(--acc2);font-size:18px}
+.proof-desc{font-size:12px;color:var(--muted2);line-height:1.6}
+
+/* FOOTER */
+.cs-footer{
+  max-width:1100px;margin:0 auto;padding:40px 40px 60px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+}
+.footer-meta{font-size:12px;color:var(--muted);font-family:var(--mono)}
+.footer-ctas{display:flex;gap:8px}
+
+/* RESPONSIVE */
+@media(max-width:760px){
+  .cs-hero{padding:48px 20px 36px}
+  .hero-grid{grid-template-columns:repeat(2,1fr)}
+  .module-grid{grid-template-columns:1fr 1fr}
+  .dc-grid{grid-template-columns:1fr}
+  .proof-grid{grid-template-columns:1fr}
+  .nav{padding:12px 20px}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">Portofoliu · <span>Laura Andreea</span></div>
+  <div class="nav-links">
+    <a class="nav-pill" href="#context">Context</a>
+    <a class="nav-pill" href="#decisions">Decision Log</a>
+    <a class="nav-pill" href="#modules">Module</a>
+    <a class="nav-pill" href="#tradeoffs">Trade-offs</a>
+    <a class="nav-pill" href="#proof">Dovezi</a>
+    <a class="nav-pill" href="#history">Istoric versiuni</a>
+  </div>
+</nav>
+
+<div class="cs-hero">
+  <div class="hero-eyebrow">📂 Case Study · Decision Log</div>
+  <h1>Alpis Fusion CRM <em>Premium</em></h1>
+  <p class="hero-intro">
+    Un CRM modular construit cu React + Vite, structurat în jurul unui singur principiu: un workspace unic pentru toate deciziile operative dintr-un ciclu de vânzare. Documentez deciziile de produs, trade-off-urile UX și evoluția arhitecturală de la V1 la versiunea Premium.
+  </p>
+
+  <div class="hero-grid">
+    <div class="hero-stat">
+      <div class="hero-stat-val">6</div>
+      <div class="hero-stat-label">Module SaaS</div>
+      <div class="hero-stat-sub">Kanban · Flow Builder · RBAC · Billing · Booking · Autosave</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">~287KB</div>
+      <div class="hero-stat-label">Build optimizat</div>
+      <div class="hero-stat-sub">Vite + React 18 · GitHub Actions CI/CD</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">2022→</div>
+      <div class="hero-stat-label">Iterare activă</div>
+      <div class="hero-stat-sub">De la single-file HTML la SaaS modular</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">0</div>
+      <div class="hero-stat-label">Dependențe externe UI</div>
+      <div class="hero-stat-sub">CSS custom, fără component library</div>
+    </div>
+  </div>
+
+  <div class="hero-ctas">
+    <a class="btn primary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener">↗ Demo live</a>
+    <a class="btn" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener">GitHub →</a>
+    <a class="btn" href="../index.html#key-projects">← Înapoi la portofoliu</a>
+  </div>
+</div>
+
+<div class="cs-layout">
+
+  <!-- MAIN CONTENT -->
+  <div>
+
+    <!-- CONTEXT -->
+    <section class="cs-section" id="context">
+      <div class="section-label">01 · Context</div>
+      <h2>De ce am construit un CRM de la zero</h2>
+      <p>
+        Background-ul meu în CRM și marketing digital m-a expus la o problemă recurentă: echipele de vânzări și operațiuni foloseau 3–5 tool-uri separate (pipeline, task-uri, facturare, booking, comunicare) care nu se vorbeau între ele. Rezultatul era context switching constant și date fragmentate.
+      </p>
+      <p>
+        Alpis Fusion CRM Premium nu este un exercițiu de UI. Este un produs de referință construit pentru a demonstra că un front-end developer cu background în produs poate gândi și implementa un workspace integrat — nu doar un dashboard frumos.
+      </p>
+
+      <div class="pull-quote">
+        <p>„Un CRM bun nu organizează date — organizează decizii. Fiecare ecran trebuie să răspundă la o întrebare clară: ce fac acum cu acest lead / task / client?"</p>
+        <cite>— Principiu de design ghid pentru Alpis Fusion</cite>
+      </div>
+
+      <p>
+        Stack-ul ales — React 18 + Vite + GitHub Actions — reflectă o decizie conștientă de a folosi unelte industriale reale, nu confort. Am evitat component libraries pentru că voiam control total asupra fiecărui comportament vizual și a fiecărei interacțiuni.
+      </p>
+    </section>
+
+    <!-- STACK -->
+    <section class="cs-section" id="stack">
+      <div class="section-label">02 · Stack tehnic</div>
+      <h2>Deciziile de arhitectură</h2>
+      <p>Fiecare decizie tehnică a avut o justificare de produs, nu de preferință personală.</p>
+
+      <table class="stack-table">
+        <thead>
+          <tr><th>Layer</th><th>Tehnologie</th><th>Alternativa considerată</th><th>Motivul alegerii</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--muted2);font-size:12px">UI Framework</td>
+            <td><span class="tech-chip">React 18</span></td>
+            <td style="font-size:12px;color:var(--muted2)">Vue 3 / Vanilla JS</td>
+            <td style="font-size:12px;color:var(--muted2)">Ecosystem mai larg, patterns bine-definite pentru state management complex</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted2);font-size:12px">Build Tool</td>
+            <td><span class="tech-chip">Vite 5</span></td>
+            <td style="font-size:12px;color:var(--muted2)">Create React App / Webpack</td>
+            <td style="font-size:12px;color:var(--muted2)">HMR instant, build optimizat, configurare minimă pentru GitHub Pages</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted2);font-size:12px">CI/CD</td>
+            <td><span class="tech-chip">GitHub Actions</span></td>
+            <td style="font-size:12px;color:var(--muted2)">Manual deploy / Netlify</td>
+            <td style="font-size:12px;color:var(--muted2)">Deploy automat la fiecare push, zero cost, vizibil în repo public</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted2);font-size:12px">Styling</td>
+            <td><span class="tech-chip">CSS Custom</span></td>
+            <td style="font-size:12px;color:var(--muted2)">Tailwind / MUI / Chakra</td>
+            <td style="font-size:12px;color:var(--muted2)">Control total, fără overhead, CSS variables pentru theming consistent</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted2);font-size:12px">State</td>
+            <td><span class="tech-chip">React Context + useState</span></td>
+            <td style="font-size:12px;color:var(--muted2)">Redux / Zustand</td>
+            <td style="font-size:12px;color:var(--muted2)">Complexitate proporțională cu necesarul — fără over-engineering</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted2);font-size:12px">Persistență</td>
+            <td><span class="tech-chip">localStorage + autosave</span></td>
+            <td style="font-size:12px;color:var(--muted2)">Backend / IndexedDB</td>
+            <td style="font-size:12px;color:var(--muted2)">Demo fără dependențe server, autosave la 30s, export CSV/JSON</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- DECISION LOG -->
+    <section class="cs-section" id="decisions">
+      <div class="section-label">03 · Decision Log</div>
+      <h2>Alegerile de produs documentate</h2>
+      <p>Fiecare decizie majoră a generat un conflict între opțiuni — le documentez cu contextul, alternativele și rațiunea finală.</p>
+
+      <!-- D1 -->
+      <div class="decision-card">
+        <div class="dc-head">
+          <div class="dc-title">D-01 · Single workspace vs. multi-page navigation</div>
+          <span class="dc-badge" style="background:var(--acc-glow);color:var(--acc2)">ARCHITECTURAL</span>
+        </div>
+        <div class="dc-context">Context: Primele prototipuri aveau navigație separată per modul (pipeline.html, tasks.html, billing.html). Usability testing intern arăta că schimbul de context era principalul blocaj.</div>
+        <div class="dc-grid">
+          <div>
+            <div class="dc-col-label" style="color:var(--red)">Opțiunea respinsă</div>
+            <div class="dc-items">
+              <div class="dc-item" style="color:var(--muted2)">Multi-page: fiecare modul pe URL propriu</div>
+              <div class="dc-item" style="color:var(--muted2)">Navigație clasică cu sidebar link-uri</div>
+              <div class="dc-item" style="color:var(--muted2)">State resetat la fiecare navigație</div>
+              <div class="dc-item" style="color:var(--muted2)">Context switching: 7+ click-uri per update</div>
+            </div>
+          </div>
+          <div>
+            <div class="dc-col-label" style="color:var(--green)">Opțiunea aleasă</div>
+            <div class="dc-items">
+              <div class="dc-item" style="color:var(--muted2)">Single Page App cu tab switching</div>
+              <div class="dc-item" style="color:var(--muted2)">Toate modulele accesibile fără reload</div>
+              <div class="dc-item" style="color:var(--muted2)">State persistent între tab-uri</div>
+              <div class="dc-item" style="color:var(--muted2)">Context switching: 1–2 click-uri per update</div>
+            </div>
+          </div>
+        </div>
+        <div class="dc-decision">
+          <strong>Decizie:</strong> SPA cu React Router + lazy loading per modul. Trade-off acceptat: bundle inițial mai mare (~287KB), compensat de experiență fluidă și LCP optimizat.
+        </div>
+      </div>
+
+      <!-- D2 -->
+      <div class="decision-card trade-off">
+        <div class="dc-head">
+          <div class="dc-title">D-02 · Kanban vs. List view pentru pipeline</div>
+          <span class="dc-badge" style="background:var(--amber-bg);color:var(--amber)">UX TRADE-OFF</span>
+        </div>
+        <div class="dc-context">Context: Pipeline-ul de lead-uri trebuia să fie atât vizibil (status rapid) cât și scanabil (volum mare de contacte). Ambele views au avantaje distincte.</div>
+        <div class="dc-grid">
+          <div>
+            <div class="dc-col-label" style="color:var(--amber)">Kanban</div>
+            <div class="dc-items">
+              <div class="dc-item" style="color:var(--muted2)">Vizibil: status pe etape la o privire</div>
+              <div class="dc-item" style="color:var(--muted2)">Drag & drop intuitiv pentru mutare</div>
+              <div class="dc-item" style="color:var(--muted2)">Limitat la ~10 carduri/coloană practic</div>
+              <div class="dc-item" style="color:var(--muted2)">Căutare și filtrare mai greoaie</div>
+            </div>
+          </div>
+          <div>
+            <div class="dc-col-label" style="color:var(--acc2)">List / Table</div>
+            <div class="dc-items">
+              <div class="dc-item" style="color:var(--muted2)">Scanabil: volume mari de contacte</div>
+              <div class="dc-item" style="color:var(--muted2)">Filtrare și sortare rapidă</div>
+              <div class="dc-item" style="color:var(--muted2)">Export CSV direct</div>
+              <div class="dc-item" style="color:var(--muted2)">Nu comunică statusul vizual la fel</div>
+            </div>
+          </div>
+        </div>
+        <div class="dc-decision">
+          <strong>Decizie:</strong> Ambele. Toggle Kanban/List cu stare salvată per sesiune. Kanban pentru overview operațional, List pentru bulk actions și export. Costul: complexitate UI mai mare, compensat de utilitate.
+        </div>
+      </div>
+
+      <!-- D3 -->
+      <div class="decision-card">
+        <div class="dc-head">
+          <div class="dc-title">D-03 · Flow Builder: nod drag-and-drop vs. form sequential</div>
+          <span class="dc-badge" style="background:var(--acc-glow);color:var(--acc2)">FEATURE DESIGN</span>
+        </div>
+        <div class="dc-context">Context: Automatizările de follow-up trebuiau să fie definite de user. Drag-and-drop este familiar din tools ca Make/Zapier, dar adaugă complexitate de implementare semnificativă.</div>
+        <div class="dc-grid">
+          <div>
+            <div class="dc-col-label" style="color:var(--red)">Drag-and-drop canvas</div>
+            <div class="dc-items">
+              <div class="dc-item" style="color:var(--muted2)">Familiar din Zapier / Make</div>
+              <div class="dc-item" style="color:var(--muted2)">Vizual, flexibil</div>
+              <div class="dc-item" style="color:var(--muted2)">+2 săptămâni implementare</div>
+              <div class="dc-item" style="color:var(--muted2)">Acces. problematică pe touch</div>
+            </div>
+          </div>
+          <div>
+            <div class="dc-col-label" style="color:var(--green)">Step-based sequential</div>
+            <div class="dc-items">
+              <div class="dc-item" style="color:var(--muted2)">Implementat în 3 zile</div>
+              <div class="dc-item" style="color:var(--muted2)">Accesibil, clar, linear</div>
+              <div class="dc-item" style="color:var(--muted2)">Acoperă 90% din use cases reale</div>
+              <div class="dc-item" style="color:var(--muted2)">Mobile-friendly by default</div>
+            </div>
+          </div>
+        </div>
+        <div class="dc-decision">
+          <strong>Decizie:</strong> Step-based cu trigger → condition → action pattern. Acoperă use cases reale (email la X zile, task la schimbare status) fără overhead. Drag-and-drop canvas rămâne în roadmap v2.
+        </div>
+      </div>
+
+      <!-- D4 -->
+      <div class="decision-card insight">
+        <div class="dc-head">
+          <div class="dc-title">D-04 · RBAC: roluri fixe vs. roluri custom</div>
+          <span class="dc-badge" style="background:var(--green-bg);color:var(--green)">PRODUCT INSIGHT</span>
+        </div>
+        <div class="dc-context">Context: Role-Based Access Control era necesar pentru a simula un CRM real cu echipă. Întrebarea: cât de granular să fie permisiunile?</div>
+        <div class="dc-grid">
+          <div>
+            <div class="dc-col-label" style="color:var(--red)">Roluri custom (granular)</div>
+            <div class="dc-items">
+              <div class="dc-item" style="color:var(--muted2)">Flexibil, enterprise-ready</div>
+              <div class="dc-item" style="color:var(--muted2)">Complexitate admin ridicată</div>
+              <div class="dc-item" style="color:var(--muted2)">Dificil de înțeles pentru SMB</div>
+              <div class="dc-item" style="color:var(--muted2)">Edge cases de implementare numeroase</div>
+            </div>
+          </div>
+          <div>
+            <div class="dc-col-label" style="color:var(--green)">3 roluri fixe + toggle</div>
+            <div class="dc-items">
+              <div class="dc-item" style="color:var(--muted2)">Admin / Manager / Agent — clar</div>
+              <div class="dc-item" style="color:var(--muted2)">Acoperă 95% din cazuri SMB</div>
+              <div class="dc-item" style="color:var(--muted2)">Implementat în 1 zi</div>
+              <div class="dc-item" style="color:var(--muted2)">UX simplu: toggle per secțiune</div>
+            </div>
+          </div>
+        </div>
+        <div class="dc-decision">
+          <strong>Insight:</strong> Complexitatea nu este o virtute. Roluri fixe cu toggle clar acoperă 95% din nevoile reale ale echipelor mici-medii. Simplitatea este o decizie de produs, nu o limitare tehnică.
+        </div>
+      </div>
+
+      <!-- D5 -->
+      <div class="decision-card trade-off">
+        <div class="dc-head">
+          <div class="dc-title">D-05 · Billing: PDF invoices native vs. link extern</div>
+          <span class="dc-badge" style="background:var(--amber-bg);color:var(--amber)">UX TRADE-OFF</span>
+        </div>
+        <div class="dc-context">Context: Modulul de billing trebuia să genereze facturi. Alternativa simplă era un link către un tool extern (Stripe, FreshBooks). Alternativa ambițioasă: PDF generat în browser.</div>
+        <div class="dc-grid">
+          <div>
+            <div class="dc-col-label" style="color:var(--amber)">Link extern (Stripe etc.)</div>
+            <div class="dc-items">
+              <div class="dc-item" style="color:var(--muted2)">Implementat în ore</div>
+              <div class="dc-item" style="color:var(--muted2)">Nu demonstrează capabilitate</div>
+              <div class="dc-item" style="color:var(--muted2)">Dependency pe third-party</div>
+            </div>
+          </div>
+          <div>
+            <div class="dc-col-label" style="color:var(--green)">PDF generat în browser</div>
+            <div class="dc-items">
+              <div class="dc-item" style="color:var(--muted2)">Demonstrează capabilitate tehnică</div>
+              <div class="dc-item" style="color:var(--muted2)">Zero dependențe externe</div>
+              <div class="dc-item" style="color:var(--muted2)">Template customizabil</div>
+            </div>
+          </div>
+        </div>
+        <div class="dc-decision">
+          <strong>Decizie:</strong> PDF generat nativ cu CSS print + window.print() + template HTML structurat. Funcționează offline, zero cost, și demonstrează că front-end-ul poate acoperi fluxuri complete fără backend.
+        </div>
+      </div>
+
+    </section>
+
+    <!-- MODULES -->
+    <section class="cs-section" id="modules">
+      <div class="section-label">04 · Module implementate</div>
+      <h2>Cele 6 module SaaS</h2>
+      <p>Fiecare modul rezolvă o problemă distinctă dintr-un ciclu operațional CRM. Nu există funcționalitate adăugată pentru estetică.</p>
+
+      <div class="module-grid">
+        <div class="module-card">
+          <span class="module-icon">📊</span>
+          <div class="module-name">Lead Pipeline / Kanban</div>
+          <div class="module-desc">Vizualizare status lead-uri pe etape. Drag & drop, toggle Kanban/List, filtrare și export CSV. Prioritizare vizuală prin culoare + icon.</div>
+          <span class="module-badge badge-green" style="background:var(--green-bg);color:var(--green)">Implemented</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">⚡</span>
+          <div class="module-name">Flow Builder</div>
+          <div class="module-desc">Automatizări step-based: trigger → condition → action. Follow-up automat, schimbări de status, atribuire task-uri la evenimente definite.</div>
+          <span class="module-badge" style="background:var(--acc-glow);color:var(--acc2)">Implemented</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">🔐</span>
+          <div class="module-name">RBAC — Role Management</div>
+          <div class="module-desc">3 roluri (Admin / Manager / Agent) cu permisiuni per secțiune. Toggle granular, UI de admin clar. Simulează echipă reală.</div>
+          <span class="module-badge" style="background:var(--acc-glow);color:var(--acc2)">Implemented</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">💰</span>
+          <div class="module-name">Billing & Invoices</div>
+          <div class="module-desc">Generare facturi PDF direct în browser. Template customizabil, calcul TVA automat, istoric tranzacții, export PDF/CSV.</div>
+          <span class="module-badge" style="background:var(--acc-glow);color:var(--acc2)">Implemented</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">📅</span>
+          <div class="module-name">Booking & Calendar</div>
+          <div class="module-desc">Programări cu disponibilitate, confirmare, reminder. Integrare cu pipeline: booking legat de lead activ.</div>
+          <span class="module-badge" style="background:var(--acc-glow);color:var(--acc2)">Implemented</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">💾</span>
+          <div class="module-name">Autosave & Persistență</div>
+          <div class="module-desc">Autosave la 30 secunde în localStorage. Indicator vizual de stare. Export complet JSON. Funcționează offline fără backend.</div>
+          <span class="module-badge" style="background:var(--acc-glow);color:var(--acc2)">Implemented</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRADE-OFFS -->
+    <section class="cs-section" id="tradeoffs">
+      <div class="section-label">05 · Trade-offs conștiente</div>
+      <h2>Ce am ales să NU fac și de ce</h2>
+      <p>Deciziile de excludere sunt la fel de importante ca cele de includere. Le documentez explicit.</p>
+
+      <div class="decision-card rejected">
+        <div class="dc-head">
+          <div class="dc-title">❌ Backend / API propriu</div>
+          <span class="dc-badge" style="background:var(--red-bg);color:var(--red)">EXCLUS CONȘTIENT</span>
+        </div>
+        <div class="dc-decision">
+          <strong>Motivul:</strong> Scopul proiectului este demonstrarea capabilităților front-end, nu arhitectura full-stack. Un backend ar fi mutat atenția de la UX și logica de produs la DevOps și securitate. localStorage + JSON export acoperă complet demonstrația. Un backend real ar necesita hosting plătit și ar reduce accesibilitatea demo-ului pentru recruitori.
+        </div>
+      </div>
+
+      <div class="decision-card rejected">
+        <div class="dc-head">
+          <div class="dc-title">❌ Component Library (MUI, Chakra, Shadcn)</div>
+          <span class="dc-badge" style="background:var(--red-bg);color:var(--red)">EXCLUS CONȘTIENT</span>
+        </div>
+        <div class="dc-decision">
+          <strong>Motivul:</strong> O component library ar fi ascuns deciziile de design în spatele unor defaults predefinite. Scopul era să demonstrez că știu să construiesc interfețe, nu să configurez biblioteci. CSS custom înseamnă că fiecare decizie vizuală este a mea — și poate fi explicată.
+        </div>
+      </div>
+
+      <div class="decision-card rejected">
+        <div class="dc-head">
+          <div class="dc-title">❌ TypeScript strict pe tot proiectul</div>
+          <span class="dc-badge" style="background:var(--amber-bg);color:var(--amber)">AMÂNAT</span>
+        </div>
+        <div class="dc-decision">
+          <strong>Motivul:</strong> TypeScript strict crește timpul de implementare cu ~30% pentru un solo developer. Am ales să demonstrez logica de produs completă în JavaScript, cu tipizare pe modulele critice (RBAC, billing). TypeScript complet este în roadmap pentru versiunea enterprise.
+        </div>
+      </div>
+    </section>
+
+    <!-- PROOF -->
+    <section class="cs-section" id="proof">
+      <div class="section-label">06 · Dovezi observabile</div>
+      <h2>Înainte și după — metrici concrete</h2>
+
+      <div class="proof-grid">
+        <div class="proof-card">
+          <div class="proof-before-after">
+            <div>
+              <div class="proof-val" style="color:var(--red)">7+</div>
+              <div class="proof-label">Click-uri / update (V1)</div>
+            </div>
+            <div class="proof-arrow">→</div>
+            <div>
+              <div class="proof-val" style="color:var(--green)">1–2</div>
+              <div class="proof-label">Click-uri / update (Premium)</div>
+            </div>
+          </div>
+          <div class="proof-desc">Reducere context switching prin single workspace. Lead, status, task și factură fără schimbare de pagină.</div>
+        </div>
+
+        <div class="proof-card">
+          <div class="proof-before-after">
+            <div>
+              <div class="proof-val" style="color:var(--red)">3–5</div>
+              <div class="proof-label">Tool-uri separate (înainte)</div>
+            </div>
+            <div class="proof-arrow">→</div>
+            <div>
+              <div class="proof-val" style="color:var(--green)">1</div>
+              <div class="proof-label">Workspace unificat</div>
+            </div>
+          </div>
+          <div class="proof-desc">Pipeline + task-uri + billing + booking + automatizări într-o singură interfață fără reload.</div>
+        </div>
+
+        <div class="proof-card">
+          <div class="proof-before-after">
+            <div>
+              <div class="proof-val" style="color:var(--red)">HTML</div>
+              <div class="proof-label">Single-file V1</div>
+            </div>
+            <div class="proof-arrow">→</div>
+            <div>
+              <div class="proof-val" style="color:var(--green)">React</div>
+              <div class="proof-label">Componente modulare</div>
+            </div>
+          </div>
+          <div class="proof-desc">Tranziție de la single HTML la arhitectură componentizată cu state management, lazy loading și CI/CD.</div>
+        </div>
+
+        <div class="proof-card">
+          <div class="proof-before-after">
+            <div>
+              <div class="proof-val" style="color:var(--red)">Manual</div>
+              <div class="proof-label">Deploy (V1)</div>
+            </div>
+            <div class="proof-arrow">→</div>
+            <div>
+              <div class="proof-val" style="color:var(--green)">Auto</div>
+              <div class="proof-label">GitHub Actions CI/CD</div>
+            </div>
+          </div>
+          <div class="proof-desc">Deploy automat la fiecare push pe main. Build verificat, assets optimizate, zero downtime.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORY -->
+    <section class="cs-section" id="history">
+      <div class="section-label">07 · Istoric versiuni</div>
+      <h2>Evoluția proiectului</h2>
+
+      <div class="hist-list">
+        <div class="hist-item">
+          <div><div class="hist-date">2022</div></div>
+          <div>
+            <div class="hist-title">ALPis CRM V1 — Prototip single-file</div>
+            <div class="hist-desc">Primul prototip: HTML + CSS + JS într-un singur fișier. Funcționalitate de bază: lista contacte, status simplu, note. Fără componentizare, fără build step.</div>
+            <div class="hist-tags">
+              <span class="hist-tag" style="background:var(--panel2);color:var(--muted2)">HTML/CSS/JS</span>
+              <span class="hist-tag" style="background:var(--panel2);color:var(--muted2)">Single-file</span>
+              <span class="hist-tag" style="background:var(--panel2);color:var(--muted2)">Proof of concept</span>
+            </div>
+          </div>
+        </div>
+        <div class="hist-item">
+          <div><div class="hist-date">2023</div></div>
+          <div>
+            <div class="hist-title">Alpis Fusion V2 — Kanban + pipeline</div>
+            <div class="hist-desc">Adăugat Kanban board, pipeline pe etape, sistem de note per lead. Primele componente React. Deploy manual pe GitHub Pages.</div>
+            <div class="hist-tags">
+              <span class="hist-tag" style="background:var(--acc-glow);color:var(--acc2)">React (primele comp.)</span>
+              <span class="hist-tag" style="background:var(--panel2);color:var(--muted2)">Kanban</span>
+            </div>
+          </div>
+        </div>
+        <div class="hist-item">
+          <div><div class="hist-date">2024</div></div>
+          <div>
+            <div class="hist-title">Alpis Fusion Premium V1 — React + Vite</div>
+            <div class="hist-desc">Migrare completă la React 18 + Vite. GitHub Actions CI/CD. Adăugat: RBAC, Flow Builder step-based, Billing cu PDF, Booking calendar.</div>
+            <div class="hist-tags">
+              <span class="hist-tag" style="background:var(--green-bg);color:var(--green)">React 18 + Vite</span>
+              <span class="hist-tag" style="background:var(--green-bg);color:var(--green)">GitHub Actions</span>
+              <span class="hist-tag" style="background:var(--acc-glow);color:var(--acc2)">6 module</span>
+            </div>
+          </div>
+        </div>
+        <div class="hist-item">
+          <div><div class="hist-date">2025</div></div>
+          <div>
+            <div class="hist-title">Premium — Module extinse + Task Manager</div>
+            <div class="hist-desc">Task Manager cu priorități, Customer Health Score, Lead Source tracking, Recurring Revenue module, Segment Builder, Audit Trail, CSV import, CRUD complet.</div>
+            <div class="hist-tags">
+              <span class="hist-tag" style="background:var(--purple-bg);color:var(--purple)">+8 features</span>
+              <span class="hist-tag" style="background:var(--panel2);color:var(--muted2)">CSV import</span>
+              <span class="hist-tag" style="background:var(--panel2);color:var(--muted2)">Audit Trail</span>
+            </div>
+          </div>
+        </div>
+        <div class="hist-item">
+          <div><div class="hist-date">2026 →</div></div>
+          <div>
+            <div class="hist-title">Decision log extins · Roadmap activ</div>
+            <div class="hist-desc">Documentare extinsă decizii de produs. Roadmap: TypeScript strict, drag-and-drop flow builder, API integration layer, mobile-first redesign.</div>
+            <div class="hist-tags">
+              <span class="hist-tag" style="background:var(--amber-bg);color:var(--amber)">În curs</span>
+              <span class="hist-tag" style="background:var(--panel2);color:var(--muted2)">TypeScript roadmap</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /main -->
+
+  <!-- TOC -->
+  <aside class="toc">
+    <div class="toc-title">Cuprins</div>
+    <a class="toc-item" href="#context">01 · Context</a>
+    <a class="toc-item sub" href="#stack">Stack tehnic</a>
+    <a class="toc-item" href="#decisions">02 · Decision Log</a>
+    <a class="toc-item sub" href="#decisions">D-01 Workspace vs. Multi-page</a>
+    <a class="toc-item sub" href="#decisions">D-02 Kanban vs. List</a>
+    <a class="toc-item sub" href="#decisions">D-03 Flow Builder</a>
+    <a class="toc-item sub" href="#decisions">D-04 RBAC</a>
+    <a class="toc-item sub" href="#decisions">D-05 Billing PDF</a>
+    <a class="toc-item" href="#modules">03 · Module</a>
+    <a class="toc-item" href="#tradeoffs">04 · Trade-offs</a>
+    <a class="toc-item" href="#proof">05 · Dovezi</a>
+    <a class="toc-item" href="#history">06 · Istoric</a>
+    <div class="toc-divider"></div>
+    <a class="toc-item" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener" style="color:var(--acc2)">↗ Demo live</a>
+    <a class="toc-item" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener">GitHub →</a>
+  </aside>
+
+</div><!-- /cs-layout -->
+
+<div class="cs-footer">
+  <div class="footer-meta">© 2026 Laura Andreea · laurandreea10.github.io · Actualizat: Mai 2026</div>
+  <div class="footer-ctas">
+    <a class="btn primary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener">↗ Demo live</a>
+    <a class="btn" href="../index.html#contact">Contact →</a>
+  </div>
+</div>
+
+<script>
+const toc = document.querySelectorAll('.toc-item[href^="#"]');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = '#' + e.target.id;
+      toc.forEach(t => t.classList.toggle('active', t.getAttribute('href') === id));
+    }
+  });
+}, { rootMargin:'-20% 0px -60% 0px', threshold: 0.2 });
+document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
