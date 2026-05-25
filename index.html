@@ -13,8 +13,6 @@
   <link rel="alternate" hreflang="en" href="https://laurandreea10.github.io/codepen-portfolio/?lang=en" />
   <link rel="alternate" hreflang="x-default" href="https://laurandreea10.github.io/codepen-portfolio/" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Laura Andreea — Front-end CRM & Dashboard Developer" />
@@ -96,6 +94,38 @@
         document.documentElement.style.setProperty('--intro-display', 'none');
       }
     } catch(e) {}
+  </script>
+
+  <!-- Shared GitHub repo-count fetch (single request for the whole page).
+       Defined here in <head> so BOTH the intro reel and the data engine
+       consume the same Promise instead of firing two network requests. -->
+  <script>
+    (function() {
+      var cacheKey = 'la_gh_repos', cacheTs = 'la_gh_repos_ts';
+      var TTL = 6 * 60 * 60 * 1000;
+      window.__laGhRepos = new Promise(function(resolve) {
+        try {
+          var cached = sessionStorage.getItem(cacheKey);
+          var ts = parseInt(sessionStorage.getItem(cacheTs) || '0');
+          if (cached && Date.now() - ts < TTL) { resolve(parseInt(cached)); return; }
+        } catch(e) {}
+        fetch('https://api.github.com/users/LaurAndreea10?per_page=1', {
+          headers: { 'Accept': 'application/vnd.github.v3+json' }
+        })
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          var count = d.public_repos || 0;
+          if (count > 0) {
+            try {
+              sessionStorage.setItem(cacheKey, String(count));
+              sessionStorage.setItem(cacheTs, String(Date.now()));
+            } catch(e){}
+          }
+          resolve(count);
+        })
+        .catch(function(){ resolve(0); });
+      });
+    })();
   </script>
 
   <!-- Intro overlay — critical CSS (prevents FOUC) -->
@@ -542,7 +572,7 @@
       padding: 9px 18px;
       border-radius: 999px;
       cursor: pointer;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-family: ui-monospace, monospace;
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -786,32 +816,12 @@
   // Initial inject with defaults
   injectCounterStyles(v2);
 
-  // Try GitHub API — arrives before scene 3 at ~6.7s in most cases
-  var ghCacheKey = 'la_gh_repos';
-  var ghCacheTs  = 'la_gh_repos_ts';
-  var TTL = 6 * 60 * 60 * 1000;
-  try {
-    var cached = sessionStorage.getItem(ghCacheKey);
-    var ts = parseInt(sessionStorage.getItem(ghCacheTs) || '0');
-    if (cached && Date.now() - ts < TTL) {
-      injectCounterStyles(parseInt(cached));
-    } else {
-      fetch('https://api.github.com/users/LaurAndreea10', {
-        headers: { 'Accept': 'application/vnd.github.v3+json' }
-      })
-      .then(function(r){ return r.json(); })
-      .then(function(d){
-        if (d.public_repos > 0) {
-          injectCounterStyles(d.public_repos);
-          try {
-            sessionStorage.setItem(ghCacheKey, String(d.public_repos));
-            sessionStorage.setItem(ghCacheTs, String(Date.now()));
-          } catch(e){}
-        }
-      })
-      .catch(function(){});
-    }
-  } catch(e){}
+  // Shared GitHub repo count (single fetch for whole page — see window.__laGhRepos)
+  if (window.__laGhRepos && typeof window.__laGhRepos.then === 'function') {
+    window.__laGhRepos.then(function(count){
+      if (count > 0) injectCounterStyles(count);
+    });
+  }
 })();
 
 // ---- dust particles ----
@@ -1461,36 +1471,6 @@ setInterval(restart, TOTAL*1000);
             Actualizat manual ca secțiune de tip <em>now page</em> — arată ce prioritizez activ, nu doar ce am construit.
           </p>
 
-          <style>
-            .now-tabs { display: flex; gap: .5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
-            .now-tab {
-              background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
-              color: #9db0d4; padding: .45rem 1rem; border-radius: 6px; cursor: pointer;
-              font-size: .85rem; font-family: inherit; transition: background .2s, color .2s, border-color .2s;
-            }
-            .now-tab:hover { background: rgba(255,255,255,.1); color: #f1f4fa; }
-            .now-tab-active { background: rgba(106,166,255,.15); border-color: rgba(106,166,255,.4); color: #6aa6ff; }
-            .now-panel-hidden { display: none; }
-            .now-checklist { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .85rem; }
-            .now-item { display: flex; gap: .75rem; align-items: flex-start; font-size: .93rem; line-height: 1.5; }
-            .now-status { flex-shrink: 0; font-size: 1.1rem; margin-top: .05rem; }
-            .now-item-done { opacity: .75; }
-            .now-item-done strong { text-decoration: line-through; text-decoration-color: rgba(255,255,255,.3); }
-            .now-tag {
-              display: inline-block; font-size: .72rem; padding: .15rem .55rem;
-              background: rgba(106,166,255,.12); color: #6aa6ff;
-              border-radius: 4px; border: 1px solid rgba(106,166,255,.25);
-              margin-left: .5rem; vertical-align: middle; white-space: nowrap;
-            }
-            .now-tag-done { background: rgba(52,211,153,.1); color: #34d399; border-color: rgba(52,211,153,.25); }
-            .now-history { display: flex; flex-direction: column; gap: 1.25rem; }
-            .now-history-week { border-left: 2px solid rgba(106,166,255,.25); padding-left: 1rem; }
-            .now-history-label { font-size: .78rem; color: #6aa6ff; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; display: block; margin-bottom: .4rem; }
-            .now-history ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .3rem; }
-            .now-history li { font-size: .88rem; color: #9db0d4; padding-left: .75rem; position: relative; }
-            .now-history li::before { content: '·'; position: absolute; left: 0; color: #6aa6ff; }
-          </style>
-
           <script>
             (function() {
               var tabs = document.querySelectorAll('.now-tab');
@@ -1954,46 +1934,22 @@ setInterval(restart, TOTAL*1000);
       }
     }
 
-    // ── 2. GITHUB API — REPO COUNT ──────────────────────────────────
+    // ── 2. GITHUB API — REPO COUNT (consumes shared head promise) ──
+    // window.__laGhRepos is created once in <head> so the intro reel and
+    // this engine share ONE network request. Here we just read the result.
     function fetchGithubRepos() {
-      var cacheKey = 'la_gh_repos';
-      var cacheTs  = 'la_gh_repos_ts';
-      var TTL = 6 * 60 * 60 * 1000; // 6h cache
-
-      try {
-        var cached = sessionStorage.getItem(cacheKey);
-        var ts     = parseInt(sessionStorage.getItem(cacheTs) || '0');
-        if (cached && Date.now() - ts < TTL) {
-          applyRepoCount(parseInt(cached));
-          return;
-        }
-      } catch(e) {}
-
-      fetch('https://api.github.com/users/LaurAndreea10?per_page=1', {
-        headers: { 'Accept': 'application/vnd.github.v3+json' }
-      })
-      .then(function(r) { return r.json(); })
-      .then(function(d) {
-        var count = d.public_repos || 0;
-        if (count > 0) {
-          applyRepoCount(count);
-          try {
-            sessionStorage.setItem(cacheKey, String(count));
-            sessionStorage.setItem(cacheTs, String(Date.now()));
-          } catch(e) {}
-        }
-      })
-      .catch(function() {}); // fail silently — static values remain
+      if (window.__laGhRepos && typeof window.__laGhRepos.then === 'function') {
+        window.__laGhRepos.then(function(count) {
+          if (count > 0) applyRepoCount(count);
+        });
+      }
     }
 
     function applyRepoCount(count) {
-      // Pow-card repo metric
-      var powMetric = document.querySelector('.pow-card .pow-metric.green');
       // Scan panel repo count
       var scanRepo = document.getElementById('scan-repo-count');
       if (scanRepo) scanRepo.textContent = count + '+';
-      // cred-strip (if hardcoded 20+)
-      // We don't touch it to avoid layout shift — API is bonus signal
+      // cred-strip left untouched to avoid layout shift — API is a bonus signal
     }
 
     // ── 3. 30s SCAN PANEL — TOGGLE LOGIC ───────────────────────────
@@ -2045,7 +2001,7 @@ setInterval(restart, TOTAL*1000);
       if (close) close.addEventListener('click', function() { closePanel(); btn.focus(); });
     }
 
-    // ── 4. PORTFOLIO SCORE BOOST — 10+ signals ─────────────────────
+    // ── 4. PORTFOLIO SCORE BOOST — dynamic signals ─────────────────
     function applyScoreBoosts() {
 
       // [BOOST 1] Dynamic "days since last commit" freshness signal in footer
@@ -2105,12 +2061,9 @@ setInterval(restart, TOTAL*1000);
         }
       });
 
-      // [BOOST 5] Auto-update the intro scene 3 stat numbers if visible in DOM
-      // num1 = 64 projects, num2 = 20+ repos, num3 = 6 modules, num4 = 10+ certs
-      // These are CSS counter-animated — values are correct already.
+      // [BOOST 5] Intro scene 3 stat numbers — CSS counter-animated, values correct.
 
-      // [BOOST 6] Proof of Work repo metric — update from GitHub API
-      // Done via fetchGithubRepos() → applyRepoCount()
+      // [BOOST 6] Proof of Work repo metric — handled via fetchGithubRepos() → applyRepoCount()
 
       // [BOOST 7] Add "live" indicator next to "La ce lucrez" in nav
       var nowLink = document.querySelector('a.pill[href="#now"]');
@@ -2136,25 +2089,11 @@ setInterval(restart, TOTAL*1000);
         if (insightTag) insightTag.after(chip);
       }
 
-      // [BOOST 10] Now section — auto-show current week label
-      var historyLabel = document.querySelector('.now-history-week .now-history-label');
-      if (historyLabel) {
-        // Update the first history label to current week range
-        var now = new Date();
-        var dayOfWeek = now.getDay(); // 0=sun
-        var monday = new Date(now);
-        monday.setDate(now.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-        var friday = new Date(monday);
-        friday.setDate(monday.getDate() + 4);
-        var fmt = function(d) {
-          var months = ['Ian','Feb','Mar','Apr','Mai','Iun','Iul','Aug','Sep','Oct','Nov','Dec'];
-          return d.getDate() + ' ' + months[d.getMonth()];
-        };
-        historyLabel.textContent = 'Săpt. ' + fmt(monday) + '–' + fmt(friday) + ' ' + now.getFullYear();
-      }
+      // [BOOST 10] Now history current-week label — handled by main.js
+      //   (currentWeekLabel(), bilingual). Removed from here to avoid being
+      //   overwritten and to keep RO/EN in sync.
 
-      // [BOOST 11] Score display — subtle indicator near footer
-      // Not a visible score number — instead: "Portofoliu actualizat" timestamp
+      // [BOOST 11] Footer — "last updated" timestamp
       var footerNote = document.querySelector('.footer > .container > p:first-child');
       if (footerNote && !footerNote.querySelector('[data-ts]')) {
         var ts = document.createElement('span');
