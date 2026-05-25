@@ -82,26 +82,54 @@
     ro: {
       datetime: '2026-05-24',
       label: '24 Mai 2026',
-      items: [
-        'Focus curent: <a href="./marketing-os.html"><strong>Marketing OS</strong></a> — Industry Benchmarks Dashboard + UTM Builder v1.2.',
-        'Iterez pe <a href="./link-video-automation-pack.html"><strong>Link Video Editor Studio — Automation Pack</strong></a> — generare timeline din brief și export JSON pentru handoff video.',
-        'Pregătesc un studiu de caz extins pentru <a href="./alpis-fusion-crm.html"><strong>Alpis Fusion CRM Premium</strong></a> — decision log cu alegeri de produs și UX.',
-        'Fac audit pe <a href="./lighthouse-audit-guide.html"><strong>Lighthouse CI Audit Guide</strong></a> — LCP, CSS non-critic, CLS și TBT.',
-        'Extind zona <a href="./marketing-tech-templates.html"><strong>Marketing-Tech Templates</strong></a> cu template-uri orientate pe conversie și growth workflows.'
+      tabs: { active: '🔄 În curs', done: '✅ Finalizat recent', history: '📅 Istoric' },
+      // Each active item may carry an optional `link` {href, label} that is
+      // only rendered if the target page is reachable (checked defensively).
+      active: [
+        { title: 'Link Video Editor Studio', body: 'Automation Pack export: generare automată timeline din brief, export JSON structurat pentru handoff video.', tag: 'Iterație', link: { href: './link-video-automation-pack.html', label: 'Deschide Automation Pack' } },
+        { title: 'Alpis Fusion CRM Premium', body: 'studiu de caz extins cu decision log: alegeri de produs, trade-off-uri UX, structura modulară.', tag: 'Documentație', link: { href: './alpis-fusion-crm.html', label: 'Deschide case study' } },
+        { title: 'Portofoliu — Lighthouse CI', body: 'audit performanță, extragere CSS non-critic, îmbunătățire LCP și eliminare render-blocking.', tag: 'Performanță', link: { href: './lighthouse-audit-guide.html', label: 'Deschide audit guide' } },
+        { title: 'Marketing-Tech expansion', body: 'noi template-uri orientate pe conversie și growth workflows după Campaign ROI Calculator.', tag: 'Produs nou', link: { href: './marketing-tech-templates.html', label: 'Deschide templates' } }
       ],
-      note: 'Actualizat manual, ca secțiune de tip now page, pentru a arăta clar ce prioritizez în perioada curentă.'
+      done: [
+        { title: 'Intro cinematic overlay', body: 'integrat ca overlay SVG animat peste portofoliu, fără a afecta SEO. SessionStorage skip, prefers-reduced-motion support.', tag: 'Mai 2026' },
+        { title: 'ClientOps Suite Premium', body: 'suită CRM completă cu fluxuri operaționale avansate, automatizări și dashboard unificat. Deploy GitHub Pages.', tag: 'Mai 2026' },
+        { title: 'Brief Studio', body: 'platformă SaaS bilingvă RO/EN cu Brief Generator, Mood Board și Market Lens. API-uri keyless publice.', tag: 'Apr 2026' },
+        { title: 'Proof of Work section', body: 'înlocuit secțiunea de testimoniale cu dovezi tehnice obiective: repo-uri publice, CI/CD, proiecte live verificabile.', tag: 'Apr 2026' },
+        { title: 'CampaignPilot', body: 'workspace unificat pentru planificarea campaniilor: KPI overview, funnel, budget allocation, content calendar, brief generator.', tag: 'Apr 2026' }
+      ],
+      history: [
+        { label: 'Săpt. 19–23 Mai 2026', items: ['Intro cinematic integrat ca overlay în portofoliu', 'Îmbunătățiri tehnice overlay: CSS în head, early-exit script, SVG cross-browser fix', 'Secțiunea Now — refactorizare cu checklist și istoric'] },
+        { label: 'Săpt. 12–18 Mai 2026', items: ['ClientOps Suite Premium — finalizat și deploiat', 'Link Video Editor Studio — primele iterații live', 'Nexus Protocol v2 — 6 facțiuni, AI Director, 30 achievements'] },
+        { label: 'Săpt. 5–11 Mai 2026', items: ['Marketing-Tech — CampaignPilot și ROI Calculator livrate', 'Portofoliu extins la 64 proiecte live', 'Proof of Work section — înlocuit testimoniale cu dovezi obiective'] },
+        { label: 'Aprilie 2026', items: ['Brief Studio — platformă SaaS bilingvă cu 3 module', 'GitHub Projects category adăugată în portofoliu', 'ARCADE OPS Excel Quest — finalizat cu story mode și leaderboard'] }
+      ],
+      note: 'Actualizat manual ca secțiune de tip now page — arată ce prioritizez activ, nu doar ce am construit.'
     },
     en: {
       datetime: '2026-05-24',
       label: 'May 24, 2026',
-      items: [
-        'Current focus: <a href="./marketing-os.html"><strong>Marketing OS</strong></a> — Industry Benchmarks Dashboard + UTM Builder v1.2.',
-        'Iterating on <a href="./link-video-automation-pack.html"><strong>Link Video Editor Studio — Automation Pack</strong></a> — timeline generation from briefs and JSON export for video handoff.',
-        'Preparing an extended case study for <a href="./alpis-fusion-crm.html"><strong>Alpis Fusion CRM Premium</strong></a> — product and UX decision log.',
-        'Auditing <a href="./lighthouse-audit-guide.html"><strong>Lighthouse CI Audit Guide</strong></a> — LCP, non-critical CSS, CLS and TBT.',
-        'Expanding <a href="./marketing-tech-templates.html"><strong>Marketing-Tech Templates</strong></a> with conversion-oriented templates and growth workflows.'
+      tabs: { active: '🔄 In progress', done: '✅ Recently shipped', history: '📅 History' },
+      active: [
+        { title: 'Link Video Editor Studio', body: 'Automation Pack export: auto-generate a timeline from a brief, structured JSON export for video handoff.', tag: 'Iteration', link: { href: './link-video-automation-pack.html', label: 'Open Automation Pack' } },
+        { title: 'Alpis Fusion CRM Premium', body: 'extended case study with a decision log: product choices, UX trade-offs, modular structure.', tag: 'Documentation', link: { href: './alpis-fusion-crm.html', label: 'Open case study' } },
+        { title: 'Portfolio — Lighthouse CI', body: 'performance audit, non-critical CSS extraction, LCP improvement and removing render-blocking.', tag: 'Performance', link: { href: './lighthouse-audit-guide.html', label: 'Open audit guide' } },
+        { title: 'Marketing-Tech expansion', body: 'new conversion-oriented templates and growth workflows after Campaign ROI Calculator.', tag: 'New product', link: { href: './marketing-tech-templates.html', label: 'Open templates' } }
       ],
-      note: 'Updated manually as a now-page style section to show clearly what I am prioritizing in the current period.'
+      done: [
+        { title: 'Intro cinematic overlay', body: 'integrated as an animated SVG overlay on top of the portfolio, without hurting SEO. SessionStorage skip, prefers-reduced-motion support.', tag: 'May 2026' },
+        { title: 'ClientOps Suite Premium', body: 'complete CRM suite with advanced operational flows, automations and a unified dashboard. Deployed on GitHub Pages.', tag: 'May 2026' },
+        { title: 'Brief Studio', body: 'bilingual RO/EN SaaS platform with Brief Generator, Mood Board and Market Lens. Public keyless APIs.', tag: 'Apr 2026' },
+        { title: 'Proof of Work section', body: 'replaced the testimonials section with objective technical proof: public repos, CI/CD, verifiable live projects.', tag: 'Apr 2026' },
+        { title: 'CampaignPilot', body: 'unified workspace for campaign planning: KPI overview, funnel, budget allocation, content calendar, brief generator.', tag: 'Apr 2026' }
+      ],
+      history: [
+        { label: 'Week of May 19–23, 2026', items: ['Cinematic intro integrated as a portfolio overlay', 'Overlay technical improvements: CSS in head, early-exit script, SVG cross-browser fix', 'Now section — refactored with checklist and history'] },
+        { label: 'Week of May 12–18, 2026', items: ['ClientOps Suite Premium — finished and deployed', 'Link Video Editor Studio — first live iterations', 'Nexus Protocol v2 — 6 factions, AI Director, 30 achievements'] },
+        { label: 'Week of May 5–11, 2026', items: ['Marketing-Tech — CampaignPilot and ROI Calculator shipped', 'Portfolio expanded to 64 live projects', 'Proof of Work section — replaced testimonials with objective proof'] },
+        { label: 'April 2026', items: ['Brief Studio — bilingual SaaS platform with 3 modules', 'GitHub Projects category added to the portfolio', 'ARCADE OPS Excel Quest — finished with story mode and leaderboard'] }
+      ],
+      note: 'Updated manually as a now-page style section — it shows what I actively prioritize, not just what I have built.'
     }
   };
 
@@ -231,21 +259,72 @@
     });
   }
 
+  // Cache of which target pages are reachable (HEAD check), so we don't
+  // probe the same URL repeatedly across language toggles.
+  const _pageReachable = {};
+  function probePage(href) {
+    if (href in _pageReachable) return _pageReachable[href];
+    // Mark as pending; resolve async. Until resolved, treat as reachable=false
+    // so we never flash a link that might 404.
+    _pageReachable[href] = false;
+    fetch(href, { method: 'HEAD' })
+      .then(r => { _pageReachable[href] = r.ok; if (r.ok) setupNowSection(); })
+      .catch(() => { _pageReachable[href] = false; });
+    return false;
+  }
+
+  function currentWeekLabel() {
+    const now = new Date();
+    const dow = now.getDay();
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - (dow === 0 ? 6 : dow - 1));
+    const friday = new Date(monday);
+    friday.setDate(monday.getDate() + 4);
+    const M = currentLang === 'ro'
+      ? ['Ian','Feb','Mar','Apr','Mai','Iun','Iul','Aug','Sep','Oct','Noi','Dec']
+      : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const year = friday.getFullYear();
+    if (currentLang === 'ro') {
+      return monday.getMonth() === friday.getMonth()
+        ? `Săpt. ${monday.getDate()}–${friday.getDate()} ${M[friday.getMonth()]} ${year}`
+        : `Săpt. ${monday.getDate()} ${M[monday.getMonth()]}–${friday.getDate()} ${M[friday.getMonth()]} ${year}`;
+    }
+    return monday.getMonth() === friday.getMonth()
+      ? `Week of ${M[monday.getMonth()]} ${monday.getDate()}–${friday.getDate()}, ${year}`
+      : `Week of ${M[monday.getMonth()]} ${monday.getDate()}–${M[friday.getMonth()]} ${friday.getDate()}, ${year}`;
+  }
+
   function setupNowSection() {
     if (!els.nowSection) return;
     const copy = nowContent[currentLang] || nowContent.ro;
+    const t = translations[currentLang];
+
+    // ---- Header ----
     const eyebrow = els.nowSection.querySelector('.eyebrow');
     const title = els.nowSection.querySelector('.now-title');
     const badge = els.nowSection.querySelector('.now-badge');
-    const list = els.nowSection.querySelector('.now-list');
-    const checklist = els.nowSection.querySelector('#now-panel-active .now-checklist');
     const note = els.nowSection.querySelector('.now-note');
+    if (eyebrow) eyebrow.textContent = t.nowLabel;
+    if (title) title.textContent = t.nowTitle;
+    if (badge) {
+      // Preserve any live-clock span injected elsewhere.
+      const clock = badge.querySelector('[data-clock]');
+      badge.innerHTML = `${t.nowUpdatedPrefix} <time datetime="${copy.datetime}">${copy.label}</time>`;
+      if (clock) badge.appendChild(clock);
+    }
+    if (note) note.innerHTML = copy.note;
 
-    if (eyebrow) eyebrow.textContent = translations[currentLang].nowLabel;
-    if (title) title.textContent = translations[currentLang].nowTitle;
-    if (badge) badge.innerHTML = `${translations[currentLang].nowUpdatedPrefix} <time datetime="${copy.datetime}">${copy.label}</time>`;
+    // ---- Tab button labels ----
+    const tabA = els.nowSection.querySelector('#now-tab-active');
+    const tabD = els.nowSection.querySelector('#now-tab-done');
+    const tabH = els.nowSection.querySelector('#now-tab-history');
+    if (tabA && copy.tabs) tabA.textContent = copy.tabs.active;
+    if (tabD && copy.tabs) tabD.textContent = copy.tabs.done;
+    if (tabH && copy.tabs) tabH.textContent = copy.tabs.history;
 
-    if (list) {
+    // ---- Legacy .now-list fallback (only if the markup uses it) ----
+    const list = els.nowSection.querySelector('.now-list');
+    if (list && Array.isArray(copy.items)) {
       list.innerHTML = '';
       copy.items.forEach(item => {
         const li = document.createElement('li');
@@ -255,27 +334,77 @@
       });
     }
 
-    if (checklist && !checklist.dataset.integratedLinks) {
-      const linkMap = [
-        ['./link-video-automation-pack.html', 'Deschide Automation Pack'],
-        ['./alpis-fusion-crm.html', 'Deschide case study'],
-        ['./lighthouse-audit-guide.html', 'Deschide audit guide'],
-        ['./marketing-tech-templates.html', 'Deschide templates']
-      ];
-      [...checklist.querySelectorAll('.now-item-active')].forEach((item, index) => {
-        const target = linkMap[index];
-        if (!target || item.querySelector('.now-link-action')) return;
+    // ---- Build a checklist <li> (active or done) ----
+    const buildItem = (entry, done) => {
+      const li = document.createElement('li');
+      li.className = 'now-item ' + (done ? 'now-item-done' : 'now-item-active');
+      const status = document.createElement('span');
+      status.className = 'now-status';
+      status.setAttribute('aria-label', done
+        ? (currentLang === 'ro' ? 'Finalizat' : 'Done')
+        : (currentLang === 'ro' ? 'În lucru' : 'In progress'));
+      status.textContent = done ? '✅' : '🔄';
+      const div = document.createElement('div');
+      const strong = document.createElement('strong');
+      strong.textContent = entry.title;
+      div.appendChild(strong);
+      div.appendChild(document.createTextNode(' — ' + entry.body + ' '));
+      if (entry.tag) {
+        const tag = document.createElement('span');
+        tag.className = 'now-tag' + (done ? ' now-tag-done' : '');
+        tag.textContent = entry.tag;
+        div.appendChild(tag);
+      }
+      // Defensive link: only render if the target page is reachable.
+      if (entry.link && probePage(entry.link.href)) {
         const action = document.createElement('a');
         action.className = 'now-tag now-link-action';
-        action.href = target[0];
-        action.textContent = target[1];
-        action.setAttribute('aria-label', target[1]);
-        item.querySelector('div')?.appendChild(action);
-      });
-      checklist.dataset.integratedLinks = 'true';
+        action.href = entry.link.href;
+        action.textContent = entry.link.label;
+        action.setAttribute('aria-label', entry.link.label);
+        div.appendChild(document.createTextNode(' '));
+        div.appendChild(action);
+      }
+      li.appendChild(status);
+      li.appendChild(div);
+      return li;
+    };
+
+    // ---- Panel: active ----
+    const activePanel = els.nowSection.querySelector('#now-panel-active .now-checklist');
+    if (activePanel && Array.isArray(copy.active)) {
+      activePanel.innerHTML = '';
+      copy.active.forEach(entry => activePanel.appendChild(buildItem(entry, false)));
     }
 
-    if (note) note.textContent = copy.note;
+    // ---- Panel: done ----
+    const donePanel = els.nowSection.querySelector('#now-panel-done .now-checklist');
+    if (donePanel && Array.isArray(copy.done)) {
+      donePanel.innerHTML = '';
+      copy.done.forEach(entry => donePanel.appendChild(buildItem(entry, true)));
+    }
+
+    // ---- Panel: history (first label computed live, bilingual) ----
+    const historyPanel = els.nowSection.querySelector('#now-panel-history .now-history');
+    if (historyPanel && Array.isArray(copy.history)) {
+      historyPanel.innerHTML = '';
+      copy.history.forEach((week, idx) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'now-history-week';
+        const label = document.createElement('span');
+        label.className = 'now-history-label';
+        label.textContent = idx === 0 ? currentWeekLabel() : week.label;
+        const ul = document.createElement('ul');
+        week.items.forEach(text => {
+          const li = document.createElement('li');
+          li.textContent = text;
+          ul.appendChild(li);
+        });
+        wrap.appendChild(label);
+        wrap.appendChild(ul);
+        historyPanel.appendChild(wrap);
+      });
+    }
   }
 
   function applyThemeFromStorage() {
@@ -427,19 +556,30 @@
           href: './lighthouse-audit-guide.html'
         }
       ];
+      // Only inject a card if its target page is reachable (avoids 404s).
+      let injectedAny = false;
       cards.forEach(card => {
-        if (!existingTitles.has(card.title)) marketingGrid.appendChild(createProjectCard(card));
+        if (existingTitles.has(card.title)) return;
+        if (probePage(card.href)) {
+          marketingGrid.appendChild(createProjectCard(card));
+          injectedAny = true;
+        }
       });
-      marketingGrid.dataset.extendedIntegrations = 'true';
+      // Mark done only once at least one probe resolved as reachable, so a later
+      // re-run (after async probe) can still inject. If none reachable yet, leave
+      // unmarked so setupNowSection's re-trigger can retry.
+      if (injectedAny) marketingGrid.dataset.extendedIntegrations = 'true';
     }
 
     const marketingActions = document.querySelector('#marketing-tech .section-head .card-actions');
-    if (marketingActions && !marketingActions.querySelector('[href="./marketing-os.html"]')) {
+    if (marketingActions) {
       [
         ['Marketing OS', './marketing-os.html'],
         ['Templates', './marketing-tech-templates.html'],
         ['Lighthouse Audit', './lighthouse-audit-guide.html']
       ].forEach(([label, href]) => {
+        if (marketingActions.querySelector(`[href="${href}"]`)) return;
+        if (!probePage(href)) return;
         const link = document.createElement('a');
         link.className = 'btn btn-secondary';
         link.href = href;
@@ -450,7 +590,7 @@
 
     const linkVideoCard = [...document.querySelectorAll('.project-card')].find(card => getCardTitle(card) === 'Link Video Editor Studio');
     const linkVideoActions = linkVideoCard?.querySelector('.card-actions');
-    if (linkVideoActions && !linkVideoActions.querySelector('[href="./link-video-automation-pack.html"]')) {
+    if (linkVideoActions && !linkVideoActions.querySelector('[href="./link-video-automation-pack.html"]') && probePage('./link-video-automation-pack.html')) {
       const link = document.createElement('a');
       link.className = 'btn btn-secondary';
       link.href = './link-video-automation-pack.html';
@@ -458,13 +598,17 @@
       linkVideoActions.appendChild(link);
     }
 
+    // alpis-fusion-crm.html is the decision log we ship alongside — always link it.
     const alpisActions = document.querySelector('#key-alpis-title')?.closest('.project-card')?.querySelector('.card-actions');
-    if (alpisActions && !alpisActions.querySelector('[href="./alpis-fusion-crm.html"]')) {
-      const link = document.createElement('a');
-      link.className = 'btn btn-secondary';
-      link.href = './alpis-fusion-crm.html';
-      link.textContent = 'Case study complet';
-      alpisActions.appendChild(link);
+    if (alpisActions) {
+      let alpisLink = alpisActions.querySelector('[href="./alpis-fusion-crm.html"]');
+      if (!alpisLink) {
+        alpisLink = document.createElement('a');
+        alpisLink.className = 'btn btn-secondary';
+        alpisLink.href = './alpis-fusion-crm.html';
+        alpisActions.appendChild(alpisLink);
+      }
+      alpisLink.textContent = currentLang === 'ro' ? 'Case study complet' : 'Full case study';
     }
   }
 
@@ -554,7 +698,46 @@
     setupPortfolioIntegrations();
     decorateImplementationCards();
     setupNowSection();
+    setupNowConflictGuard();
     startAutoplay();
+  }
+
+  // Defensive guard: if another script (e.g. a legacy now-section.js) mutates
+  // the Now panels after we've populated them, reapply our bilingual content so
+  // main.js stays the source of truth. Self-throttled to avoid infinite loops.
+  function setupNowConflictGuard() {
+    if (!els.nowSection || typeof MutationObserver !== 'function') return;
+    const panels = [
+      els.nowSection.querySelector('#now-panel-active .now-checklist'),
+      els.nowSection.querySelector('#now-panel-done .now-checklist'),
+      els.nowSection.querySelector('#now-panel-history .now-history')
+    ].filter(Boolean);
+    if (!panels.length) return;
+
+    let busy = false;
+    let reclaims = 0;
+    const MAX_RECLAIMS = 5; // stop after a few, so we never fight forever
+
+    const observer = new MutationObserver(() => {
+      if (busy || reclaims >= MAX_RECLAIMS) return;
+      // Only reclaim if our markers are gone (i.e. someone overwrote us).
+      const stillOurs = els.nowSection.querySelector('#now-panel-active .now-item-active');
+      if (stillOurs) return;
+      busy = true;
+      reclaims++;
+      setupNowSection();
+      // Release on the next frame so our own writes don't retrigger us.
+      window.requestAnimationFrame(() => { busy = false; });
+    });
+
+    panels.forEach(p => observer.observe(p, { childList: true, subtree: false }));
+
+    // Also give a one-shot reapply shortly after load, covering deferred
+    // scripts that run after us without mutating in an observable burst.
+    window.setTimeout(() => {
+      const stillOurs = els.nowSection.querySelector('#now-panel-active .now-item-active');
+      if (!stillOurs && reclaims < MAX_RECLAIMS) { reclaims++; setupNowSection(); }
+    }, 300);
   }
 
   document.addEventListener('visibilitychange', () => {
