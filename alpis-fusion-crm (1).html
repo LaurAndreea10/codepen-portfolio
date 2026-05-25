@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alpis Fusion CRM Premium — Decision Log · Laura Andreea</title>
+  <meta name="description" content="Decision log pentru Alpis Fusion CRM Premium: alegerile de produs, trade-off-urile UX și deciziile de arhitectură din spatele unui CRM modular React + Vite." />
+  <meta name="author" content="Laura Andreea" />
+  <meta name="theme-color" content="#04080f" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/projects/alpis-fusion-crm.html" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Alpis Fusion CRM Premium — Decision Log" />
+  <meta property="og:description" content="Alegerile de produs, trade-off-urile UX și deciziile de arhitectură din spatele unui CRM modular React + Vite." />
+  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/projects/alpis-fusion-crm.html" />
+  <meta property="og:locale" content="ro_RO" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Alpis Fusion CRM Premium — Decision Log",
+    "description": "Decision log cu alegerile de produs, trade-off-urile UX și deciziile de arhitectură din spatele unui CRM modular React + Vite.",
+    "author": { "@type": "Person", "name": "Laura Andreea", "url": "https://laurandreea10.github.io/codepen-portfolio/" },
+    "inLanguage": ["ro", "en"],
+    "about": ["CRM", "Front-end Architecture", "React", "Vite", "UX Design"]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #04080f;
+      --bg-2: #07101f;
+      --panel: rgba(13, 24, 46, .72);
+      --panel-2: rgba(255, 255, 255, .04);
+      --text: #f1f4fa;
+      --text-2: #c4cbd9;
+      --muted: #8089a0;
+      --line: rgba(255, 255, 255, .1);
+      --line-2: rgba(255, 255, 255, .18);
+      --accent: #6aa6ff;
+      --accent-soft: rgba(106, 166, 255, .12);
+      --green: #34d399;
+      --amber: #fbbf24;
+      --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+      --body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --container: 880px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--body);
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(106,166,255,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg-2), var(--bg));
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { width: min(var(--container), calc(100% - 40px)); margin: 0 auto; }
+
+    /* ---- top nav ---- */
+    .topnav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(4,8,15,.85), rgba(4,8,15,.3));
+      border-bottom: 1px solid var(--line);
+    }
+    .topnav .container {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0; gap: 16px;
+    }
+    .back-link {
+      font-family: var(--mono); font-size: .82rem;
+      color: var(--muted); display: inline-flex; align-items: center; gap: 8px;
+      letter-spacing: .04em;
+    }
+    .back-link:hover { color: var(--accent); text-decoration: none; }
+    .topnav-actions { display: flex; gap: 10px; }
+    .topnav-actions a {
+      font-family: var(--mono); font-size: .78rem; letter-spacing: .06em;
+      text-transform: uppercase; padding: 7px 13px; border-radius: 999px;
+      border: 1px solid var(--line-2); color: var(--text-2);
+    }
+    .topnav-actions a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+    /* ---- hero ---- */
+    .hero { padding: 64px 0 40px; }
+    .eyebrow {
+      font-family: var(--mono); font-size: .76rem; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5.5vw, 3.4rem); line-height: 1.05;
+      letter-spacing: -.03em; margin: 0 0 20px; font-weight: 700;
+    }
+    .hero .lede {
+      font-size: 1.12rem; color: var(--text-2); max-width: 62ch; margin: 0 0 28px;
+    }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 8px 10px;
+      font-family: var(--mono); font-size: .78rem;
+    }
+    .hero-meta span {
+      padding: 6px 12px; border-radius: 6px;
+      background: var(--panel-2); border: 1px solid var(--line);
+      color: var(--text-2); letter-spacing: .03em;
+    }
+    .hero-meta span.hi { background: var(--accent-soft); border-color: rgba(106,166,255,.28); color: var(--accent); }
+    .hero-cta { margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 11px 20px; border-radius: 999px; font-weight: 600; font-size: .92rem;
+      border: 1px solid transparent; transition: transform .15s, border-color .15s, background .15s;
+    }
+    .btn:hover { transform: translateY(-2px); text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #04080f; }
+    .btn-secondary { background: var(--panel-2); color: var(--text); border-color: var(--line-2); }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ---- TL;DR box ---- */
+    .tldr {
+      margin: 8px 0 48px; padding: 24px 26px;
+      border-radius: 16px; border: 1px solid var(--line-2);
+      background: var(--panel); backdrop-filter: blur(10px);
+    }
+    .tldr h2 {
+      font-family: var(--mono); font-size: .8rem; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent); margin: 0 0 14px;
+    }
+    .tldr ul { margin: 0; padding-left: 20px; color: var(--text-2); }
+    .tldr li { margin-bottom: 8px; }
+    .tldr strong { color: var(--text); }
+    .tldr code {
+      font-family: var(--mono); font-size: .85em;
+      background: rgba(255,255,255,.06); padding: 1px 6px; border-radius: 4px;
+    }
+
+    /* ---- decision log ---- */
+    .log { padding-bottom: 40px; }
+    .log-intro { margin-bottom: 40px; }
+    .log-intro h2 { font-size: 1.7rem; letter-spacing: -.02em; margin: 0 0 14px; }
+    .log-intro p { color: var(--text-2); margin: 0 0 14px; }
+
+    .decision {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      padding: 28px 28px 26px;
+      margin-bottom: 22px;
+    }
+    .decision::before {
+      content: attr(data-num);
+      position: absolute; top: 24px; right: 26px;
+      font-family: var(--mono); font-size: 2.6rem; font-weight: 700;
+      color: rgba(255,255,255,.05); line-height: 1; letter-spacing: -.04em;
+      pointer-events: none;
+    }
+    .decision-head {
+      display: flex; align-items: center; gap: 10px;
+      flex-wrap: wrap; margin-bottom: 8px;
+    }
+    .decision-tag {
+      font-family: var(--mono); font-size: .68rem; letter-spacing: .1em;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 999px;
+      background: var(--accent-soft); color: var(--accent);
+      border: 1px solid rgba(106,166,255,.25);
+    }
+    .decision-tag.arch { background: rgba(96,165,250,.12); color: #60a5fa; border-color: rgba(96,165,250,.28); }
+    .decision-tag.ux { background: rgba(52,211,153,.1); color: var(--green); border-color: rgba(52,211,153,.25); }
+    .decision-tag.product { background: rgba(192,132,252,.12); color: #c084fc; border-color: rgba(192,132,252,.28); }
+    .decision h3 {
+      font-size: 1.32rem; letter-spacing: -.02em; margin: 0 0 18px; max-width: 38ch;
+    }
+    .decision-row {
+      display: grid; grid-template-columns: 120px 1fr; gap: 6px 18px;
+      padding: 12px 0; border-top: 1px dashed var(--line);
+    }
+    .decision-row:first-of-type { border-top: none; }
+    .decision-row dt {
+      font-family: var(--mono); font-size: .72rem; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--muted); padding-top: 3px;
+    }
+    .decision-row dd { margin: 0; color: var(--text-2); }
+    .decision-row dd strong { color: var(--text); font-weight: 600; }
+    .chose { color: var(--green) !important; }
+    .tradeoff { color: var(--amber); }
+    .decision code {
+      font-family: var(--mono); font-size: .85em;
+      background: rgba(255,255,255,.06); padding: 1px 6px; border-radius: 4px;
+    }
+    .options-list { margin: 4px 0 0; padding-left: 18px; }
+    .options-list li { margin-bottom: 5px; }
+    .options-list li.picked::marker { content: '✓ '; color: var(--green); }
+    .options-list li.picked { color: var(--text); }
+
+    /* ---- closing ---- */
+    .closing {
+      margin-top: 40px; padding: 32px 30px;
+      border-radius: 18px; border: 1px solid var(--line-2);
+      background: linear-gradient(135deg, var(--accent-soft), transparent);
+    }
+    .closing h2 { font-size: 1.4rem; margin: 0 0 12px; letter-spacing: -.02em; }
+    .closing p { color: var(--text-2); margin: 0 0 20px; max-width: 58ch; }
+
+    /* ---- footer ---- */
+    .foot {
+      border-top: 1px solid var(--line); margin-top: 56px;
+      padding: 28px 0 48px; text-align: center;
+      font-family: var(--mono); font-size: .78rem; color: var(--muted);
+      letter-spacing: .04em;
+    }
+    .foot a { color: var(--muted); }
+    .foot a:hover { color: var(--accent); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn:hover { transform: none; }
+    }
+    @media (max-width: 600px) {
+      .decision-row { grid-template-columns: 1fr; gap: 2px; }
+      .decision-row dt { padding-top: 8px; }
+      .decision::before { font-size: 1.8rem; top: 20px; right: 20px; }
+      .hero { padding: 40px 0 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <div class="container">
+      <a class="back-link" href="../index.html#key-projects">← Înapoi la portofoliu</a>
+      <div class="topnav-actions">
+        <a href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Live demo</a>
+        <a href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <span class="eyebrow">Decision Log · Case Study</span>
+      <h1>Alpis Fusion CRM Premium</h1>
+      <p class="lede">
+        Nu doar <em>ce</em> am construit, ci <strong>de ce</strong>. Acest decision log documentează
+        alegerile de produs, trade-off-urile UX și deciziile de arhitectură din spatele unui CRM modular —
+        gândit ca un sistem de decizii, nu doar o listă de lead-uri.
+      </p>
+      <div class="hero-meta">
+        <span class="hi">React 18 + Vite</span>
+        <span class="hi">GitHub Actions CI/CD</span>
+        <span>~287KB build</span>
+        <span>6 module SaaS</span>
+        <span>Single App.jsx → componentizat</span>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Deschide demo live →</a>
+        <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">Vezi codul + Actions</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div class="tldr">
+      <h2>// TL;DR pentru recruiteri</h2>
+      <ul>
+        <li><strong>Problema:</strong> un CRM tipic împrăștie lead-uri, task-uri și billing pe ecrane separate, forțând schimbări constante de context.</li>
+        <li><strong>Decizia centrală:</strong> un singur workspace unde fluxul critic (lead → follow-up → booking → factură) se desfășoară fără schimbare de pagină.</li>
+        <li><strong>Stack:</strong> React 18 + Vite pentru build rapid și componente reutilizabile; deploy automat prin GitHub Actions.</li>
+        <li><strong>Trade-off acceptat conștient:</strong> am început ca un singur <code>App.jsx</code> mare pentru viteză de iterație, apoi am refactorizat pe module pe măsură ce complexitatea a crescut.</li>
+      </ul>
+    </div>
+
+    <section class="log">
+      <div class="log-intro">
+        <h2>De ce un decision log?</h2>
+        <p>
+          Un portofoliu arată rezultatul. Un decision log arată raționamentul — partea care contează cel mai mult
+          când evaluezi cum gândește cineva produsul. Pentru fiecare decizie majoră am notat contextul, opțiunile
+          considerate, ce am ales și ce am sacrificat în schimb.
+        </p>
+        <p>
+          Background-ul meu în CRM și marketing înseamnă că pornesc întotdeauna de la întrebarea operațională:
+          <em>ce trebuie să facă utilizatorul, și cum îl ajut să decidă mai repede?</em>
+        </p>
+      </div>
+
+      <article class="decision" data-num="01">
+        <div class="decision-head">
+          <span class="decision-tag product">Produs</span>
+        </div>
+        <h3>Workspace unic vs. module separate cu navigare între ele</h3>
+        <dl>
+          <div class="decision-row">
+            <dt>Context</dt>
+            <dd>Fluxul critic al unui operator CRM e: primește lead → îl califică → programează follow-up → confirmă booking → emite factură. În CRM-urile clasice, fiecare pas e pe alt ecran.</dd>
+          </div>
+          <div class="decision-row">
+            <dt>Opțiuni</dt>
+            <dd>
+              <ul class="options-list">
+                <li>Module separate cu rută proprie (familiar, dar fragmentat).</li>
+                <li class="picked">Un workspace unificat cu panouri contextuale, fără schimbare de pagină.</li>
+                <li>Hibrid: dashboard central + drill-down în pagini separate.</li>
+              </ul>
+            </dd>
+          </div>
+          <div class="decision-row">
+            <dt>Am ales</dt>
+            <dd><strong class="chose">Workspace unificat.</strong> 3 arii separate colapsate într-un singur context operațional. Lead, status, follow-up, booking și factură se rezolvă fără să pierzi firul.</dd>
+          </div>
+          <div class="decision-row">
+            <dt>Trade-off</dt>
+            <dd class="tradeoff">Densitate vizuală mai mare pe un singur ecran. Am compensat prin ierarhie clară și panouri care se extind doar la nevoie, nu permanent.</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="decision" data-num="02">
+        <div class="decision-head">
+          <span class="decision-tag arch">Arhitectură</span>
+        </div>
+        <h3>Single App.jsx la început, componentizare după</h3>
+        <dl>
+          <div class="decision-row">
+            <dt>Context</dt>
+            <dd>La început prioritatea era viteza de iterație: să văd repede dacă fluxul unificat funcționează ca idee, nu să construiesc arhitectura perfectă de la prima linie.</dd>
+          </div>
+          <div class="decision-row">
+            <dt>Opțiuni</dt>
+            <dd>
+              <ul class="options-list">
+                <li>Arhitectură componentizată de la zero (curată, dar lentă de pornit).</li>
+                <li class="picked">Un <code>App.jsx</code> mare, refactorizat pe module când complexitatea o cere.</li>
+              </ul>
+            </dd>
+          </div>
+          <div class="decision-row">
+            <dt>Am ales</dt>
+            <dd><strong class="chose">Single-file întâi, refactor după.</strong> Am livrat funcționalitatea (Task Manager, Customer Health Score, Lead Source, Recurring Revenue, Segment Builder, Audit Trail, CSV import) rapid, apoi am separat în module.</dd>
+          </div>
+          <div class="decision-row">
+            <dt>Trade-off</dt>
+            <dd class="tradeoff">O perioadă cu un fișier greu de navigat. Acceptabil pentru un proiect solo unde viteza de validare conta mai mult decât întreținerea pe termen lung — și documentat conștient, nu din neglijență.</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="decision" data-num="03">
+        <div class="decision-head">
+          <span class="decision-tag arch">Arhitectură</span>
+        </div>
+        <h3>Vite + React în loc de single-file HTML/JS</h3>
+        <dl>
+          <div class="decision-row">
+            <dt>Context</dt>
+            <dd>Multe din proiectele mele anterioare erau single-file HTML. Pentru un CRM cu module care se repetă (carduri, panouri, fluxuri), aveam nevoie de reutilizare reală a componentelor.</dd>
+          </div>
+          <div class="decision-row">
+            <dt>Opțiuni</dt>
+            <dd>
+              <ul class="options-list">
+                <li>Single-file vanilla JS (zero build, dar duplicare masivă de cod).</li>
+                <li class="picked">Vite + React (build rapid, componente, HMR la dezvoltare).</li>
+              </ul>
+            </dd>
+          </div>
+          <div class="decision-row">
+            <dt>Am ales</dt>
+            <dd><strong class="chose">Vite + React.</strong> Mi-a permis să separ layout-ul, cardurile și fluxurile în componente reutilizabile, cu un build optimizat de ~287KB.</dd>
+          </div>
+          <div class="decision-row">
+            <dt>Trade-off</dt>
+            <dd class="tradeoff">Pas de build și pipeline de deploy — rezolvat prin GitHub Actions CI/CD, ca să rămână la fel de simplu de publicat ca un fișier static.</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="decision" data-num="04">
+        <div class="decision-head">
+          <span class="decision-tag ux">UX</span>
+        </div>
+        <h3>Customer Health Score vizibil vs. ascuns în rapoarte</h3>
+        <dl>
+          <div class="decision-row">
+            <dt>Context</dt>
+            <dd>Un scor de sănătate al clientului e util doar dacă influențează acțiunea în momentul deciziei — nu dacă stă îngropat într-un raport pe care nimeni nu-l deschide.</dd>
+          </div>
+          <div class="decision-row">
+            <dt>Opțiuni</dt>
+            <dd>
+              <ul class="options-list">
+                <li>Raport separat de analytics (corect, dar pasiv).</li>
+                <li class="picked">Scor inline, lângă fiecare client, la punctul de decizie.</li>
+              </ul>
+            </dd>
+          </div>
+          <div class="decision-row">
+            <dt>Am ales</dt>
+            <dd><strong class="chose">Scor inline, la punctul de decizie.</strong> Semnal vizual imediat lângă client, ca operatorul să prioritizeze fără să schimbe ecranul.</dd>
+          </div>
+          <div class="decision-row">
+            <dt>Trade-off</dt>
+            <dd class="tradeoff">Mai multă informație pe card. Am ținut-o sub control reducând scorul la un singur indicator color + valoare, nu un mini-dashboard per rând.</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="decision" data-num="05">
+        <div class="decision-head">
+          <span class="decision-tag ux">UX</span>
+        </div>
+        <h3>Flow Builder ca strat separat de Kanban</h3>
+        <dl>
+          <div class="decision-row">
+            <dt>Context</dt>
+            <dd>Kanban-ul organizează <em>munca</em> — ce trebuie făcut, în ce stadiu e. Dar nu organizează <em>deciziile</em> — regulile care spun ce se întâmplă automat când un lead atinge un anumit status.</dd>
+          </div>
+          <div class="decision-row">
+            <dt>Opțiuni</dt>
+            <dd>
+              <ul class="options-list">
+                <li>Doar Kanban, cu automatizări ascunse în setări.</li>
+                <li class="picked">Flow Builder vizibil, ca strat distinct peste Kanban.</li>
+              </ul>
+            </dd>
+          </div>
+          <div class="decision-row">
+            <dt>Am ales</dt>
+            <dd><strong class="chose">Flow Builder ca strat separat.</strong> Kanban-ul rămâne pentru execuție; Flow Builder-ul face vizibilă logica de automatizare, ca utilizatorul să înțeleagă și să modifice regulile, nu doar să le suporte.</dd>
+          </div>
+          <div class="decision-row">
+            <dt>Trade-off</dt>
+            <dd class="tradeoff">Două concepte de învățat în loc de unul. Compensat prin separarea clară a rolurilor: „munca” într-un loc, „deciziile” în altul — fiecare cu propriul mental model.</dd>
+          </div>
+        </dl>
+      </article>
+
+      <div class="closing">
+        <h2>Ce aș documenta mai departe</h2>
+        <p>
+          Următorul strat de decizii pe care vreau să-l fac explicit: logica din spatele automatizărilor
+          (când o regulă ajută vs. când devine zgomot) și cum păstrez claritatea pe măsură ce cresc
+          datele, modulele și numărul de reguli. Un CRM rămâne util doar cât timp deciziile lui rămân lizibile.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Vezi produsul live →</a>
+          <a class="btn btn-secondary" href="../index.html#insights">Alte insight-uri</a>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="container">
+      Decision log · Alpis Fusion CRM Premium · <a href="../index.html">laurandreea10.github.io/codepen-portfolio</a>
+    </div>
+  </footer>
+
+</body>
+</html>
