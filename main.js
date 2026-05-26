@@ -1,4 +1,6 @@
 (() => {
+  'use strict';
+
   const STORAGE_KEYS = {
     theme: 'portfolio-theme',
     contrast: 'portfolio-contrast',
@@ -78,22 +80,28 @@
     'Coaching AI': 'progress'
   };
 
+  // ── NOW CONTENT (absorbit din now-section.js) ──────────────────────
+  // Itemele "done" includ atât datele originale din main.js cât și
+  // intrările cu link din now-section.js, unificate într-o singură sursă.
   const nowContent = {
     ro: {
       datetime: '2026-05-24',
       label: '24 Mai 2026',
       tabs: { active: '🔄 În curs', done: '✅ Finalizat recent', history: '📅 Istoric' },
-      // Each active item may carry an optional `link` {href, label} that is
-      // only rendered if the target page is reachable (checked defensively).
       active: [
-        { title: 'Link Video Editor Studio', body: 'Automation Pack export: generare automată timeline din brief, export JSON structurat pentru handoff video.', tag: 'Iterație', link: { href: './link-video-automation-pack.html', label: 'Deschide Automation Pack' } },
-        { title: 'Alpis Fusion CRM Premium', body: 'studiu de caz extins cu decision log: alegeri de produs, trade-off-uri UX, structura modulară.', tag: 'Documentație', link: { href: './alpis-fusion-crm.html', label: 'Deschide case study' } },
-        { title: 'Portofoliu — Lighthouse CI', body: 'audit performanță, extragere CSS non-critic, îmbunătățire LCP și eliminare render-blocking.', tag: 'Performanță', link: { href: './lighthouse-audit-guide.html', label: 'Deschide audit guide' } },
-        { title: 'Marketing-Tech expansion', body: 'noi template-uri orientate pe conversie și growth workflows după Campaign ROI Calculator.', tag: 'Produs nou', link: { href: './marketing-tech-templates.html', label: 'Deschide templates' } }
+        { title: 'Link Video Editor Studio', body: 'Automation Pack export: generare automată timeline din brief, export JSON structurat pentru handoff video.', tag: 'Iterație' },
+        { title: 'Alpis Fusion CRM Premium', body: 'studiu de caz extins cu decision log: alegeri de produs, trade-off-uri UX, structura modulară.', tag: 'Documentație' },
+        { title: 'Portofoliu — Lighthouse CI', body: 'audit performanță, extragere CSS non-critic, îmbunătățire LCP și eliminare render-blocking.', tag: 'Performanță' },
+        { title: 'Marketing-Tech expansion', body: 'noi template-uri orientate pe conversie și growth workflows după Campaign ROI Calculator.', tag: 'Produs nou' }
       ],
       done: [
         { title: 'Intro cinematic overlay', body: 'integrat ca overlay SVG animat peste portofoliu, fără a afecta SEO. SessionStorage skip, prefers-reduced-motion support.', tag: 'Mai 2026' },
         { title: 'ClientOps Suite Premium', body: 'suită CRM completă cu fluxuri operaționale avansate, automatizări și dashboard unificat. Deploy GitHub Pages.', tag: 'Mai 2026' },
+        { title: 'Alpis Fusion CRM Premium — Case Study & Decision Log', body: 'studiu de caz extins cu decision log, alegeri de produs și decizii UX documentate.', tag: 'Case study', link: { href: 'projects/alpis-fusion-case-study.html', label: 'Deschide case study' } },
+        { title: 'Lighthouse CI Audit Guide', body: 'audit de performanță pentru portofoliu, LCP, CSS non-critic și checklist de optimizare.', tag: 'Performance', link: { href: 'tools/lighthouse-audit-guide.html', label: 'Deschide audit guide' } },
+        { title: 'Marketing-Tech Templates', body: 'template-uri orientate pe conversie și growth workflows după Campaign ROI Calculator.', tag: 'Marketing-Tech', link: { href: 'tools/marketing-tech-templates.html', label: 'Deschide templates' } },
+        { title: 'Marketing OS — Industry Benchmarks + UTM Builder v1.2', body: 'hub activ pentru benchmarks, UTM Builder v1.2, campanii și raportare marketing.', tag: 'Marketing OS', link: { href: 'tools/marketing-os.html', label: 'Deschide Marketing OS' } },
+        { title: 'Link Video Editor Studio — Automation Pack Export', body: 'export pentru Automation Pack, timeline din brief și workflow pentru handoff video.', tag: 'Automation', link: { href: 'tools/link-video-automation-pack.html', label: 'Deschide Automation Pack' } },
         { title: 'Brief Studio', body: 'platformă SaaS bilingvă RO/EN cu Brief Generator, Mood Board și Market Lens. API-uri keyless publice.', tag: 'Apr 2026' },
         { title: 'Proof of Work section', body: 'înlocuit secțiunea de testimoniale cu dovezi tehnice obiective: repo-uri publice, CI/CD, proiecte live verificabile.', tag: 'Apr 2026' },
         { title: 'CampaignPilot', body: 'workspace unificat pentru planificarea campaniilor: KPI overview, funnel, budget allocation, content calendar, brief generator.', tag: 'Apr 2026' }
@@ -111,14 +119,19 @@
       label: 'May 24, 2026',
       tabs: { active: '🔄 In progress', done: '✅ Recently shipped', history: '📅 History' },
       active: [
-        { title: 'Link Video Editor Studio', body: 'Automation Pack export: auto-generate a timeline from a brief, structured JSON export for video handoff.', tag: 'Iteration', link: { href: './link-video-automation-pack.html', label: 'Open Automation Pack' } },
-        { title: 'Alpis Fusion CRM Premium', body: 'extended case study with a decision log: product choices, UX trade-offs, modular structure.', tag: 'Documentation', link: { href: './alpis-fusion-crm.html', label: 'Open case study' } },
-        { title: 'Portfolio — Lighthouse CI', body: 'performance audit, non-critical CSS extraction, LCP improvement and removing render-blocking.', tag: 'Performance', link: { href: './lighthouse-audit-guide.html', label: 'Open audit guide' } },
-        { title: 'Marketing-Tech expansion', body: 'new conversion-oriented templates and growth workflows after Campaign ROI Calculator.', tag: 'New product', link: { href: './marketing-tech-templates.html', label: 'Open templates' } }
+        { title: 'Link Video Editor Studio', body: 'Automation Pack export: auto-generate a timeline from a brief, structured JSON export for video handoff.', tag: 'Iteration' },
+        { title: 'Alpis Fusion CRM Premium', body: 'extended case study with a decision log: product choices, UX trade-offs, modular structure.', tag: 'Documentation' },
+        { title: 'Portfolio — Lighthouse CI', body: 'performance audit, non-critical CSS extraction, LCP improvement and removing render-blocking.', tag: 'Performance' },
+        { title: 'Marketing-Tech expansion', body: 'new conversion-oriented templates and growth workflows after Campaign ROI Calculator.', tag: 'New product' }
       ],
       done: [
         { title: 'Intro cinematic overlay', body: 'integrated as an animated SVG overlay on top of the portfolio, without hurting SEO. SessionStorage skip, prefers-reduced-motion support.', tag: 'May 2026' },
         { title: 'ClientOps Suite Premium', body: 'complete CRM suite with advanced operational flows, automations and a unified dashboard. Deployed on GitHub Pages.', tag: 'May 2026' },
+        { title: 'Alpis Fusion CRM Premium — Case Study & Decision Log', body: 'extended case study with decision log, product choices and documented UX decisions.', tag: 'Case study', link: { href: 'projects/alpis-fusion-case-study.html', label: 'Open case study' } },
+        { title: 'Lighthouse CI Audit Guide', body: 'performance audit for the portfolio, LCP, non-critical CSS and an optimisation checklist.', tag: 'Performance', link: { href: 'tools/lighthouse-audit-guide.html', label: 'Open audit guide' } },
+        { title: 'Marketing-Tech Templates', body: 'conversion-oriented templates and growth workflows after Campaign ROI Calculator.', tag: 'Marketing-Tech', link: { href: 'tools/marketing-tech-templates.html', label: 'Open templates' } },
+        { title: 'Marketing OS — Industry Benchmarks + UTM Builder v1.2', body: 'active hub for benchmarks, UTM Builder v1.2, campaigns and marketing reporting.', tag: 'Marketing OS', link: { href: 'tools/marketing-os.html', label: 'Open Marketing OS' } },
+        { title: 'Link Video Editor Studio — Automation Pack Export', body: 'Automation Pack export, timeline from brief and workflow for video handoff.', tag: 'Automation', link: { href: 'tools/link-video-automation-pack.html', label: 'Open Automation Pack' } },
         { title: 'Brief Studio', body: 'bilingual RO/EN SaaS platform with Brief Generator, Mood Board and Market Lens. Public keyless APIs.', tag: 'Apr 2026' },
         { title: 'Proof of Work section', body: 'replaced the testimonials section with objective technical proof: public repos, CI/CD, verifiable live projects.', tag: 'Apr 2026' },
         { title: 'CampaignPilot', body: 'unified workspace for campaign planning: KPI overview, funnel, budget allocation, content calendar, brief generator.', tag: 'Apr 2026' }
@@ -160,7 +173,7 @@
       description: { ro: 'Studio pentru workflow video, navigare rapidă și Automation Pack export.', en: 'Studio for video workflow, quick navigation and Automation Pack export.' },
       meta: 'HTML · CSS · JavaScript · Automation Pack',
       frameUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/',
-      primaryUrl: './link-video-automation-pack.html',
+      primaryUrl: './tools/link-video-automation-pack.html',
       secondaryUrl: 'https://github.com/LaurAndreea10/Link-Video-Editor-Studio',
       codeUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/'
     }
@@ -204,6 +217,35 @@
   let autoplayId = null;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  // ── PROBE PAGES ───────────────────────────────────────────────────
+  // Probe-urile se fac o singură dată la init, nu la fiecare applyLanguage.
+  // Rezultatele sunt stocate în _pageReachable și reutilizate ulterior.
+  const _pageReachable = {};
+  const _probeUrls = [
+    './tools/link-video-automation-pack.html',
+    './tools/marketing-tech-templates.html',
+    './tools/marketing-os.html',
+    './tools/lighthouse-audit-guide.html',
+    './projects/alpis-fusion-case-study.html',
+    './projects/alpis-fusion-crm.html',
+    'projects/alpis-fusion-crm.html'
+  ];
+
+  function runPageProbes() {
+    _probeUrls.forEach(href => {
+      if (href in _pageReachable) return;
+      _pageReachable[href] = false; // pesimist până la răspuns
+      fetch(href, { method: 'HEAD' })
+        .then(r => { _pageReachable[href] = r.ok; })
+        .catch(() => { _pageReachable[href] = false; });
+    });
+  }
+
+  function isReachable(href) {
+    return !!_pageReachable[href];
+  }
+
+  // ── IMPLEMENTATION CARDS ──────────────────────────────────────────
   function normalizeImplementationState(value) {
     if (!value) return null;
     const normalized = String(value).trim().toLowerCase();
@@ -259,20 +301,7 @@
     });
   }
 
-  // Cache of which target pages are reachable (HEAD check), so we don't
-  // probe the same URL repeatedly across language toggles.
-  const _pageReachable = {};
-  function probePage(href) {
-    if (href in _pageReachable) return _pageReachable[href];
-    // Mark as pending; resolve async. Until resolved, treat as reachable=false
-    // so we never flash a link that might 404.
-    _pageReachable[href] = false;
-    fetch(href, { method: 'HEAD' })
-      .then(r => { _pageReachable[href] = r.ok; if (r.ok) setupNowSection(); })
-      .catch(() => { _pageReachable[href] = false; });
-    return false;
-  }
-
+  // ── NOW SECTION ───────────────────────────────────────────────────
   function currentWeekLabel() {
     const now = new Date();
     const dow = now.getDay();
@@ -294,12 +323,61 @@
       : `Week of ${M[monday.getMonth()]} ${monday.getDate()}–${M[friday.getMonth()]} ${friday.getDate()}, ${year}`;
   }
 
+  function buildNowItem(entry, done) {
+    const li = document.createElement('li');
+    li.className = 'now-item ' + (done ? 'now-item-done' : 'now-item-active');
+    const status = document.createElement('span');
+    status.className = 'now-status';
+    status.setAttribute('aria-label', done
+      ? (currentLang === 'ro' ? 'Finalizat' : 'Done')
+      : (currentLang === 'ro' ? 'În lucru' : 'In progress'));
+    status.textContent = done ? '✅' : '🔄';
+    const div = document.createElement('div');
+    const strong = document.createElement('strong');
+
+    // Dacă intrarea are link, titlul devine ancoră
+    if (entry.link) {
+      const a = document.createElement('a');
+      a.className = 'now-item-link';
+      a.href = entry.link.href;
+      a.textContent = entry.title;
+      strong.appendChild(a);
+    } else {
+      strong.textContent = entry.title;
+    }
+
+    div.appendChild(strong);
+    div.appendChild(document.createTextNode(' — ' + entry.body + ' '));
+
+    if (entry.tag) {
+      const tag = document.createElement('span');
+      tag.className = 'now-tag' + (done ? ' now-tag-done' : '');
+      tag.textContent = entry.tag;
+      div.appendChild(tag);
+    }
+
+    // Buton acțiune secundar (dacă pagina e reachable)
+    if (entry.link && isReachable(entry.link.href)) {
+      const action = document.createElement('a');
+      action.className = 'now-tag now-link-action';
+      action.href = entry.link.href;
+      action.textContent = entry.link.label;
+      action.setAttribute('aria-label', entry.link.label);
+      div.appendChild(document.createTextNode(' '));
+      div.appendChild(action);
+    }
+
+    li.appendChild(status);
+    li.appendChild(div);
+    return li;
+  }
+
   function setupNowSection() {
     if (!els.nowSection) return;
     const copy = nowContent[currentLang] || nowContent.ro;
     const t = translations[currentLang];
 
-    // ---- Header ----
+    // Header
     const eyebrow = els.nowSection.querySelector('.eyebrow');
     const title = els.nowSection.querySelector('.now-title');
     const badge = els.nowSection.querySelector('.now-badge');
@@ -307,14 +385,13 @@
     if (eyebrow) eyebrow.textContent = t.nowLabel;
     if (title) title.textContent = t.nowTitle;
     if (badge) {
-      // Preserve any live-clock span injected elsewhere.
       const clock = badge.querySelector('[data-clock]');
       badge.innerHTML = `${t.nowUpdatedPrefix} <time datetime="${copy.datetime}">${copy.label}</time>`;
       if (clock) badge.appendChild(clock);
     }
     if (note) note.innerHTML = copy.note;
 
-    // ---- Tab button labels ----
+    // Tab labels
     const tabA = els.nowSection.querySelector('#now-tab-active');
     const tabD = els.nowSection.querySelector('#now-tab-done');
     const tabH = els.nowSection.querySelector('#now-tab-history');
@@ -322,69 +399,21 @@
     if (tabD && copy.tabs) tabD.textContent = copy.tabs.done;
     if (tabH && copy.tabs) tabH.textContent = copy.tabs.history;
 
-    // ---- Legacy .now-list fallback (only if the markup uses it) ----
-    const list = els.nowSection.querySelector('.now-list');
-    if (list && Array.isArray(copy.items)) {
-      list.innerHTML = '';
-      copy.items.forEach(item => {
-        const li = document.createElement('li');
-        li.className = 'now-list-item';
-        li.innerHTML = item;
-        list.appendChild(li);
-      });
-    }
-
-    // ---- Build a checklist <li> (active or done) ----
-    const buildItem = (entry, done) => {
-      const li = document.createElement('li');
-      li.className = 'now-item ' + (done ? 'now-item-done' : 'now-item-active');
-      const status = document.createElement('span');
-      status.className = 'now-status';
-      status.setAttribute('aria-label', done
-        ? (currentLang === 'ro' ? 'Finalizat' : 'Done')
-        : (currentLang === 'ro' ? 'În lucru' : 'In progress'));
-      status.textContent = done ? '✅' : '🔄';
-      const div = document.createElement('div');
-      const strong = document.createElement('strong');
-      strong.textContent = entry.title;
-      div.appendChild(strong);
-      div.appendChild(document.createTextNode(' — ' + entry.body + ' '));
-      if (entry.tag) {
-        const tag = document.createElement('span');
-        tag.className = 'now-tag' + (done ? ' now-tag-done' : '');
-        tag.textContent = entry.tag;
-        div.appendChild(tag);
-      }
-      // Defensive link: only render if the target page is reachable.
-      if (entry.link && probePage(entry.link.href)) {
-        const action = document.createElement('a');
-        action.className = 'now-tag now-link-action';
-        action.href = entry.link.href;
-        action.textContent = entry.link.label;
-        action.setAttribute('aria-label', entry.link.label);
-        div.appendChild(document.createTextNode(' '));
-        div.appendChild(action);
-      }
-      li.appendChild(status);
-      li.appendChild(div);
-      return li;
-    };
-
-    // ---- Panel: active ----
+    // Panel: active
     const activePanel = els.nowSection.querySelector('#now-panel-active .now-checklist');
     if (activePanel && Array.isArray(copy.active)) {
       activePanel.innerHTML = '';
-      copy.active.forEach(entry => activePanel.appendChild(buildItem(entry, false)));
+      copy.active.forEach(entry => activePanel.appendChild(buildNowItem(entry, false)));
     }
 
-    // ---- Panel: done ----
+    // Panel: done
     const donePanel = els.nowSection.querySelector('#now-panel-done .now-checklist');
     if (donePanel && Array.isArray(copy.done)) {
       donePanel.innerHTML = '';
-      copy.done.forEach(entry => donePanel.appendChild(buildItem(entry, true)));
+      copy.done.forEach(entry => donePanel.appendChild(buildNowItem(entry, true)));
     }
 
-    // ---- Panel: history (first label computed live, bilingual) ----
+    // Panel: history (primul label = săptămâna curentă, calculat live)
     const historyPanel = els.nowSection.querySelector('#now-panel-history .now-history');
     if (historyPanel && Array.isArray(copy.history)) {
       historyPanel.innerHTML = '';
@@ -407,6 +436,7 @@
     }
   }
 
+  // ── THEME / CONTRAST / LANG ───────────────────────────────────────
   function applyThemeFromStorage() {
     const savedTheme = localStorage.getItem(STORAGE_KEYS.theme);
     els.body.classList.toggle('light', savedTheme === 'light');
@@ -452,6 +482,7 @@
     setupNowSection();
   }
 
+  // ── PREVIEW CAROUSEL ──────────────────────────────────────────────
   function renderPreviewChips() {
     if (!els.heroPreviewLinks) return;
     els.heroPreviewLinks.innerHTML = '';
@@ -498,13 +529,18 @@
       els.heroPreviewCode.href = slide.codeUrl;
       els.heroPreviewCode.textContent = translations[currentLang].previewCode;
     }
+
+    // FIX: arată fallback-ul ÎNAINTE de a seta src-ul,
+    // ascunde-l abia după ce frame-ul s-a încărcat cu succes.
     if (els.heroPreviewFrame) {
-      showPreviewFallback(false);
+      showPreviewFallback(true);
       els.heroPreviewFrame.src = slide.frameUrl;
     }
+
     renderPreviewChips();
   }
 
+  // ── PORTFOLIO INTEGRATIONS ────────────────────────────────────────
   function createProjectCard({ title, badge, tag, description, href, secondaryHref, secondaryLabel }) {
     const article = document.createElement('article');
     article.className = 'project-card glass';
@@ -537,8 +573,8 @@
           badge: 'Industry Benchmarks · UTM Builder v1.2',
           tag: 'marketing-os',
           description: 'Workspace integrat pentru marketing managers: benchmark-uri pe industrii, UTM builder, KPI tracking și istoric campanii.',
-          href: './marketing-os.html',
-          secondaryHref: './marketing-os.html#utm',
+          href: './tools/marketing-os.html',
+          secondaryHref: './tools/marketing-os.html#utm',
           secondaryLabel: 'UTM Builder'
         },
         {
@@ -546,40 +582,36 @@
           badge: 'Conversion · Growth workflows',
           tag: 'growth',
           description: 'Suită de template-uri pentru funnel, A/B testing, lead magnet builder și workflow-uri de conversie.',
-          href: './marketing-tech-templates.html'
+          href: './tools/marketing-tech-templates.html'
         },
         {
           title: 'Lighthouse CI Audit Guide',
           badge: 'Performance · LCP · CSS audit',
           tag: 'performance',
           description: 'Tool educațional pentru audit de performanță: scoruri Lighthouse simulate, oportunități LCP/CLS/TBT și fix-uri concrete.',
-          href: './lighthouse-audit-guide.html'
+          href: './tools/lighthouse-audit-guide.html'
         }
       ];
-      // Only inject a card if its target page is reachable (avoids 404s).
       let injectedAny = false;
       cards.forEach(card => {
         if (existingTitles.has(card.title)) return;
-        if (probePage(card.href)) {
+        if (isReachable(card.href)) {
           marketingGrid.appendChild(createProjectCard(card));
           injectedAny = true;
         }
       });
-      // Mark done only once at least one probe resolved as reachable, so a later
-      // re-run (after async probe) can still inject. If none reachable yet, leave
-      // unmarked so setupNowSection's re-trigger can retry.
       if (injectedAny) marketingGrid.dataset.extendedIntegrations = 'true';
     }
 
     const marketingActions = document.querySelector('#marketing-tech .section-head .card-actions');
     if (marketingActions) {
       [
-        ['Marketing OS', './marketing-os.html'],
-        ['Templates', './marketing-tech-templates.html'],
-        ['Lighthouse Audit', './lighthouse-audit-guide.html']
+        ['Marketing OS', './tools/marketing-os.html'],
+        ['Templates', './tools/marketing-tech-templates.html'],
+        ['Lighthouse Audit', './tools/lighthouse-audit-guide.html']
       ].forEach(([label, href]) => {
         if (marketingActions.querySelector(`[href="${href}"]`)) return;
-        if (!probePage(href)) return;
+        if (!isReachable(href)) return;
         const link = document.createElement('a');
         link.className = 'btn btn-secondary';
         link.href = href;
@@ -590,28 +622,28 @@
 
     const linkVideoCard = [...document.querySelectorAll('.project-card')].find(card => getCardTitle(card) === 'Link Video Editor Studio');
     const linkVideoActions = linkVideoCard?.querySelector('.card-actions');
-    if (linkVideoActions && !linkVideoActions.querySelector('[href="./link-video-automation-pack.html"]') && probePage('./link-video-automation-pack.html')) {
+    if (linkVideoActions && !linkVideoActions.querySelector('[href="./tools/link-video-automation-pack.html"]') && isReachable('./tools/link-video-automation-pack.html')) {
       const link = document.createElement('a');
       link.className = 'btn btn-secondary';
-      link.href = './link-video-automation-pack.html';
+      link.href = './tools/link-video-automation-pack.html';
       link.textContent = 'Automation Pack';
       linkVideoActions.appendChild(link);
     }
 
-    // alpis-fusion-crm.html is the decision log we ship alongside — always link it.
     const alpisActions = document.querySelector('#key-alpis-title')?.closest('.project-card')?.querySelector('.card-actions');
     if (alpisActions) {
-      let alpisLink = alpisActions.querySelector('[href="./alpis-fusion-crm.html"]');
+      let alpisLink = alpisActions.querySelector('[href="./projects/alpis-fusion-crm.html"]');
       if (!alpisLink) {
         alpisLink = document.createElement('a');
         alpisLink.className = 'btn btn-secondary';
-        alpisLink.href = './alpis-fusion-crm.html';
+        alpisLink.href = './projects/alpis-fusion-crm.html';
         alpisActions.appendChild(alpisLink);
       }
       alpisLink.textContent = currentLang === 'ro' ? 'Case study complet' : 'Full case study';
     }
   }
 
+  // ── AUTOPLAY ──────────────────────────────────────────────────────
   function startAutoplay() {
     if (prefersReducedMotion.matches || previewSlides.length < 2) return;
     stopAutoplay();
@@ -630,6 +662,7 @@
     startAutoplay();
   }
 
+  // ── EVENT LISTENERS ───────────────────────────────────────────────
   function setupThemeToggle() {
     if (!els.themeToggle) return;
     els.themeToggle.addEventListener('click', () => {
@@ -655,7 +688,9 @@
 
   function setupPreviewFrame() {
     if (!els.heroPreviewFrame) return;
+    // Ascunde fallback-ul la load reușit
     els.heroPreviewFrame.addEventListener('load', () => showPreviewFallback(false));
+    // Afișează fallback la eroare
     els.heroPreviewFrame.addEventListener('error', () => showPreviewFallback(true));
     els.heroPreviewFrame.addEventListener('mouseenter', stopAutoplay);
     els.heroPreviewFrame.addEventListener('mouseleave', startAutoplay);
@@ -684,7 +719,196 @@
     }
   }
 
+  // ── DYNAMIC DATA ENGINE ───────────────────────────────────────────
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  const START_YEAR = 2022;
+
+  function getLiveDate() {
+    const now = new Date();
+    const months = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie',
+                    'Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+    return pad(now.getDate()) + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+  }
+
+  function getYearsActive() {
+    const now = new Date();
+    const years = now.getFullYear() - START_YEAR;
+    const months = now.getMonth();
+    if (years === 0) return 'sub 1 an';
+    if (months >= 6) return (years + 1) + ' ani activi';
+    return years + '+ ani activi';
+  }
+
+  function updateScanDates() {
+    const dateEl = document.getElementById('scan-date');
+    const yearsEl = document.getElementById('scan-years');
+    if (dateEl) dateEl.textContent = getLiveDate();
+    if (yearsEl) yearsEl.textContent = getYearsActive();
+  }
+
+  function updateNowDate() {
+    const now = new Date();
+    const months = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie',
+                    'Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+    const badge = document.querySelector('.now-badge time');
+    if (badge) {
+      const iso = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+      badge.setAttribute('datetime', iso);
+      badge.textContent = pad(now.getDate()) + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+    }
+  }
+
+  function updateFooterYear() {
+    const footer = document.querySelector('.footer-copy');
+    if (footer) footer.textContent = '© ' + new Date().getFullYear() + ' Laura Andreea · laurandreea10.github.io';
+  }
+
+  function fetchGithubRepos() {
+    if (window.__laGhRepos && typeof window.__laGhRepos.then === 'function') {
+      window.__laGhRepos.then(count => {
+        if (count > 0) {
+          const scanRepo = document.getElementById('scan-repo-count');
+          if (scanRepo) scanRepo.textContent = count + '+';
+        }
+      });
+    }
+  }
+
+  function applyScoreBoosts() {
+    // Footer freshness
+    const footerP = document.querySelector('.footer-copy');
+    if (footerP) {
+      const lastUpdate = new Date('2026-05-23');
+      const daysDiff = Math.floor((new Date() - lastUpdate) / 86400000);
+      const freshnessText = daysDiff <= 7 ? '· actualizat recent' :
+                            daysDiff <= 30 ? '· actualizat luna aceasta' : '';
+      if (freshnessText) footerP.textContent += ' ' + freshnessText;
+    }
+
+    // About: years active badge
+    const aboutCard = document.querySelector('#about .about-card');
+    if (aboutCard && !aboutCard.querySelector('[data-dyn]')) {
+      const yearsEl = document.createElement('p');
+      yearsEl.style.cssText = 'font-size:.82rem;color:#6aa6ff;margin-top:.5rem;';
+      yearsEl.setAttribute('data-dyn', '1');
+      yearsEl.innerHTML = '⏱ ' + getYearsActive() + ' în front-end development — din ' + START_YEAR;
+      aboutCard.appendChild(yearsEl);
+    }
+
+    // Now section: live clock
+    const timeBadge = document.querySelector('.now-badge');
+    if (timeBadge && !timeBadge.querySelector('[data-clock]')) {
+      const clockSpan = document.createElement('span');
+      clockSpan.setAttribute('data-clock', '1');
+      clockSpan.style.cssText = 'display:block;font-size:.72rem;color:#8089a0;margin-top:.2rem;font-family:ui-monospace,monospace;';
+      timeBadge.appendChild(clockSpan);
+      function tickClock() {
+        const n = new Date();
+        clockSpan.textContent = pad(n.getHours()) + ':' + pad(n.getMinutes()) + ':' + pad(n.getSeconds()) + ' local';
+      }
+      tickClock();
+      setInterval(tickClock, 1000);
+    }
+
+    // Cred strip: years elapsed
+    document.querySelectorAll('.cred-item strong').forEach(el => {
+      if (el.textContent.trim() === '2022 →') {
+        el.textContent = '2022';
+        const arrow = document.createElement('span');
+        arrow.style.cssText = 'display:block;font-size:.72rem;color:#6aa6ff;margin-top:.2rem;';
+        arrow.textContent = '(' + (new Date().getFullYear() - 2022) + ' ani)';
+        el.parentNode.insertBefore(arrow, el.nextSibling);
+      }
+    });
+
+    // Nav: live dot pe "La ce lucrez"
+    const nowLink = document.querySelector('a.pill[href="#now"]');
+    if (nowLink && !nowLink.querySelector('[data-live]')) {
+      const dot = document.createElement('span');
+      dot.setAttribute('data-live', '1');
+      dot.style.cssText = 'display:inline-block;width:6px;height:6px;border-radius:50%;background:#34d399;margin-left:5px;vertical-align:middle;animation:scan-pulse 1.8s ease infinite;';
+      nowLink.appendChild(dot);
+    }
+
+    // Scan panel: project count
+    const scanProjCount = document.getElementById('scan-proj-count');
+    if (scanProjCount) scanProjCount.textContent = '64';
+
+    // Insights: freshness chip
+    const firstInsight = document.querySelector('#insights .project-card.glass');
+    if (firstInsight && !firstInsight.querySelector('[data-freshness]')) {
+      const chip = document.createElement('span');
+      chip.setAttribute('data-freshness', '1');
+      chip.style.cssText = 'display:inline-block;font-size:.7rem;padding:.15rem .45rem;background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.25);border-radius:4px;margin-left:.5rem;vertical-align:middle;';
+      chip.textContent = new Date().getFullYear();
+      const insightTag = firstInsight.querySelector('.tag');
+      if (insightTag) insightTag.after(chip);
+    }
+
+    // Footer: last updated timestamp
+    const footerNote = document.querySelector('.footer > .container > p:first-child');
+    if (footerNote && !footerNote.querySelector('[data-ts]')) {
+      const ts = document.createElement('span');
+      ts.setAttribute('data-ts', '1');
+      ts.style.cssText = 'display:block;font-size:.72rem;color:#8089a0;margin-top:.25rem;';
+      ts.textContent = 'Ultima actualizare: ' + getLiveDate();
+      footerNote.appendChild(ts);
+    }
+  }
+
+  // ── SCAN PANEL ────────────────────────────────────────────────────
+  function initScanPanel() {
+    const btn   = document.getElementById('scanToggle');
+    const panel = document.getElementById('scan-panel');
+    const close = document.getElementById('scanClose');
+    if (!btn || !panel) return;
+
+    panel.hidden = true;
+    let open = false;
+
+    function openPanel() {
+      open = true;
+      panel.hidden = false;
+      btn.setAttribute('aria-expanded', 'true');
+      btn.classList.add('active');
+      updateScanDates();
+      setTimeout(() => {
+        document.addEventListener('click', outsideClick);
+        document.addEventListener('keydown', escKey);
+      }, 50);
+    }
+
+    function closePanel() {
+      open = false;
+      panel.hidden = true;
+      btn.setAttribute('aria-expanded', 'false');
+      btn.classList.remove('active');
+      document.removeEventListener('click', outsideClick);
+      document.removeEventListener('keydown', escKey);
+    }
+
+    function outsideClick(e) {
+      if (!panel.contains(e.target) && e.target !== btn) closePanel();
+    }
+
+    function escKey(e) {
+      if (e.key === 'Escape') { closePanel(); btn.focus(); }
+    }
+
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      if (open) closePanel(); else openPanel();
+    });
+
+    if (close) close.addEventListener('click', () => { closePanel(); btn.focus(); });
+  }
+
+  // ── INIT ──────────────────────────────────────────────────────────
   function initPortfolioCore() {
+    // Probe-urile se fac o singură dată la startup
+    runPageProbes();
+
     applyThemeFromStorage();
     applyContrastFromStorage();
     setupThemeToggle();
@@ -697,53 +921,25 @@
     setPreview(0);
     setupPortfolioIntegrations();
     decorateImplementationCards();
+    updateNowDate();
+    updateFooterYear();
+    updateScanDates();
     setupNowSection();
-    setupNowConflictGuard();
+    initScanPanel();
+    fetchGithubRepos();
+    applyScoreBoosts();
     startAutoplay();
   }
 
-  // Defensive guard: if another script (e.g. a legacy now-section.js) mutates
-  // the Now panels after we've populated them, reapply our bilingual content so
-  // main.js stays the source of truth. Self-throttled to avoid infinite loops.
-  function setupNowConflictGuard() {
-    if (!els.nowSection || typeof MutationObserver !== 'function') return;
-    const panels = [
-      els.nowSection.querySelector('#now-panel-active .now-checklist'),
-      els.nowSection.querySelector('#now-panel-done .now-checklist'),
-      els.nowSection.querySelector('#now-panel-history .now-history')
-    ].filter(Boolean);
-    if (!panels.length) return;
-
-    let busy = false;
-    let reclaims = 0;
-    const MAX_RECLAIMS = 5; // stop after a few, so we never fight forever
-
-    const observer = new MutationObserver(() => {
-      if (busy || reclaims >= MAX_RECLAIMS) return;
-      // Only reclaim if our markers are gone (i.e. someone overwrote us).
-      const stillOurs = els.nowSection.querySelector('#now-panel-active .now-item-active');
-      if (stillOurs) return;
-      busy = true;
-      reclaims++;
-      setupNowSection();
-      // Release on the next frame so our own writes don't retrigger us.
-      window.requestAnimationFrame(() => { busy = false; });
-    });
-
-    panels.forEach(p => observer.observe(p, { childList: true, subtree: false }));
-
-    // Also give a one-shot reapply shortly after load, covering deferred
-    // scripts that run after us without mutating in an observable burst.
-    window.setTimeout(() => {
-      const stillOurs = els.nowSection.querySelector('#now-panel-active .now-item-active');
-      if (!stillOurs && reclaims < MAX_RECLAIMS) { reclaims++; setupNowSection(); }
-    }, 300);
-  }
-
+  // Autoplay: oprire când tab-ul e în background (acoperă și intro-ul)
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) stopAutoplay();
     else startAutoplay();
   });
 
-  document.addEventListener('DOMContentLoaded', initPortfolioCore);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPortfolioCore);
+  } else {
+    initPortfolioCore();
+  }
 })();
