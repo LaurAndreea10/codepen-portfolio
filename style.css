@@ -514,9 +514,9 @@ iframe {
   iframe { min-height: 280px; }
   .project-actions { flex-direction: column; }
 }
+
 /* ============================================================
    ADDITIONS v2 — extrase din index.html (inline → style.css)
-   Adaugă la finalul style.css existent
    ============================================================ */
 
 /* --- High contrast mode --- */
@@ -726,7 +726,7 @@ body.high-contrast {
 .now-list-item { font-size: .93rem; line-height: 1.65; color: var(--muted); padding-left: 1.2rem; position: relative; }
 .now-list-item::before { content: '›'; position: absolute; left: 0; color: var(--accent); }
 
-/* --- Now tabs (from inline <style>) --- */
+/* --- Now tabs --- */
 .now-tabs { display: flex; gap: .5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
 .now-tab {
   background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
@@ -748,6 +748,17 @@ body.high-contrast {
   margin-left: .5rem; vertical-align: middle; white-space: nowrap;
 }
 .now-tag-done { background: rgba(52,211,153,.1); color: #34d399; border-color: rgba(52,211,153,.25); }
+/* Link în titlul unui item din now (provenit din now-section.js, acum în style.css) */
+.now-item-link {
+  color: var(--accent, #6aa6ff);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(106,166,255,.35);
+}
+.now-item-link:hover { color: var(--text, #fff); border-bottom-color: currentColor; }
+/* Buton acțiune secundar în item */
+.now-link-action {
+  cursor: pointer; margin-left: .5rem;
+}
 .now-history { display: flex; flex-direction: column; gap: 1.25rem; }
 .now-history-week { border-left: 2px solid rgba(106,166,255,.25); padding-left: 1rem; }
 .now-history-label {
@@ -759,7 +770,7 @@ body.high-contrast {
 .now-history li { font-size: .88rem; color: #9db0d4; padding-left: .75rem; position: relative; }
 .now-history li::before { content: '·'; position: absolute; left: 0; color: #6aa6ff; }
 
-/* --- 30s Scan panel (from inline <style>) --- */
+/* --- 30s Scan panel --- */
 .pill-scan {
   background: rgba(106,166,255,.15) !important;
   border-color: rgba(106,166,255,.4) !important;
@@ -963,7 +974,7 @@ body.high-contrast {
   letter-spacing: .07em; color: var(--accent); margin-bottom: 14px;
 }
 
-/* --- Hero quote (captivant) --- */
+/* --- Hero quote --- */
 #heroQuote {
   margin: 14px 0 4px;
   min-height: 28px; font-size: .88rem;
@@ -985,6 +996,9 @@ body.high-contrast {
 }
 #changelogList li { display: flex; gap: 10px; font-size: .83rem; }
 #changelogList time { color: var(--accent); font-weight: 600; white-space: nowrap; }
+
+/* --- WIP card helpers (eliminate inline style din insights) --- */
+.btn-ghost.btn-disabled { opacity: .45; cursor: not-allowed; pointer-events: none; }
 
 /* --- Responsive additions --- */
 @media (max-width: 1080px) {
