@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ro" data-lang="ro">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Career Toolkit — AI tools for your job search</title>
+<meta name="description" content="A suite of bilingual RO/EN AI career tools: CV evaluator, cover letters, bio optimizer, salary negotiation, project reviews. Zero cost." />
+<meta property="og:title" content="Career Toolkit — AI tools for your job search" />
+<meta property="og:description" content="Five bilingual AI career tools, zero cost, runs anywhere." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#06070d;--panel:rgba(16,18,26,0.7);--line:rgba(255,255,255,0.1);
+    --txt:#e8eef5;--mut:#8b97a8;
+    --cv:#7af0ff;--cover:#ffd166;--bio:#36f1cd;--counter:#ff6b9d;--proof:#8d8dff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--txt);font-family:'Outfit',sans-serif;line-height:1.6;overflow-x:hidden;position:relative;min-height:100vh;}
+  .grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000,transparent);pointer-events:none;z-index:0;}
+  .glow{position:fixed;border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0;}
+  .g1{width:500px;height:500px;background:#1b6cff;top:-200px;left:-100px;opacity:.25;}
+  .g2{width:460px;height:460px;background:#36f1cd;top:30%;right:-160px;opacity:.16;}
+  .g3{width:420px;height:420px;background:#ff6b9d;bottom:-160px;left:30%;opacity:.14;}
+
+  nav{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:26px clamp(20px,5vw,48px);max-width:1100px;margin:0 auto;}
+  .brand{display:flex;gap:12px;align-items:center;}
+  .brand .mark{font-size:1.5rem;background:linear-gradient(120deg,var(--cv),var(--bio),var(--counter));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;}
+  .brand h1{font-family:'Fraunces',serif;font-weight:900;font-size:1.3rem;letter-spacing:.03em;}
+  .lang{background:transparent;border:1px solid var(--line);color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:.8rem;padding:8px 14px;border-radius:10px;cursor:pointer;transition:.25s;}
+  .lang:hover{border-color:#fff;}
+
+  .wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 clamp(20px,5vw,48px);}
+
+  header.hero{text-align:center;padding:70px 0 50px;}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin-bottom:20px;}
+  .hero h2{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(2.6rem,8vw,5rem);line-height:1.02;margin-bottom:24px;letter-spacing:-.01em;}
+  .hero h2 .grad{background:linear-gradient(120deg,var(--cv),var(--bio) 50%,var(--counter));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero p{font-size:clamp(1.1rem,2.2vw,1.35rem);color:var(--mut);max-width:600px;margin:0 auto 18px;font-weight:300;}
+  .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:24px;}
+  .badge{font-family:'JetBrains Mono',monospace;font-size:.74rem;padding:7px 14px;border-radius:20px;border:1px solid var(--line);color:var(--mut);}
+
+  .apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;padding:30px 0 60px;}
+  .app{position:relative;background:var(--panel);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:20px;padding:28px;text-decoration:none;color:var(--txt);overflow:hidden;transition:.3s;display:flex;flex-direction:column;min-height:230px;}
+  .app::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 0%,var(--accent),transparent 60%);opacity:.1;transition:.3s;}
+  .app:hover{transform:translateY(-4px);border-color:var(--accent);}
+  .app:hover::before{opacity:.2;}
+  .app .ic{font-size:1.9rem;margin-bottom:16px;color:var(--accent);filter:drop-shadow(0 0 10px var(--accent));}
+  .app h3{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;margin-bottom:8px;}
+  .app .role{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+  .app p{font-size:.92rem;color:var(--mut);flex:1;}
+  .app .go{margin-top:16px;font-size:.9rem;color:var(--accent);display:flex;align-items:center;gap:6px;transition:.25s;}
+  .app:hover .go{gap:12px;}
+
+  .app.cv{--accent:var(--cv);}
+  .app.cover{--accent:var(--cover);}
+  .app.bio{--accent:var(--bio);}
+  .app.counter{--accent:var(--counter);}
+  .app.proof{--accent:var(--proof);}
+
+  .how{padding:50px 0;border-top:1px solid rgba(255,255,255,.06);}
+  .how h3{font-family:'Fraunces',serif;font-size:clamp(1.6rem,4vw,2.2rem);text-align:center;margin-bottom:36px;}
+  .how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+  .how-item{text-align:center;padding:10px;}
+  .how-item .n{font-family:'JetBrains Mono',monospace;font-size:1.6rem;color:var(--cv);margin-bottom:8px;}
+  .how-item b{display:block;margin-bottom:6px;font-size:1.05rem;}
+  .how-item span{font-size:.88rem;color:var(--mut);}
+
+  footer{padding:50px 0 70px;text-align:center;border-top:1px solid rgba(255,255,255,.06);}
+  footer p{color:var(--mut);font-size:.88rem;}
+  footer a{color:var(--cv);text-decoration:none;}
+
+  [data-lang="ro"] .en{display:none;}
+  [data-lang="en"] .ro{display:none;}
+
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
+  .reveal.in{opacity:1;transform:none;}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+
+<nav>
+  <div class="brand"><span class="mark">◈</span><h1>Career Toolkit</h1></div>
+  <button class="lang" id="langBtn">EN</button>
+</nav>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">5 <span class="ro">unelte AI · bilingv RO/EN · cost zero</span><span class="en">AI tools · bilingual RO/EN · zero cost</span></p>
+    <h2>
+      <span class="ro">Tot ce-ți trebuie<br>pentru <span class="grad">căutarea unui job</span></span>
+      <span class="en">Everything you need<br>for <span class="grad">your job search</span></span>
+    </h2>
+    <p>
+      <span class="ro">O suită de aplicații care îți evaluează CV-ul, scriu scrisori de intenție, îți optimizează profilul, te pregătesc de negociere și îți cizelează proiectele.</span>
+      <span class="en">A suite of apps that evaluate your CV, write cover letters, optimize your profile, prep you to negotiate, and polish your projects.</span>
+    </p>
+    <div class="badges">
+      <span class="badge">⚡ <span class="ro">funcționează oriunde</span><span class="en">runs anywhere</span></span>
+      <span class="badge">🔒 <span class="ro">fără cheie API</span><span class="en">no API key</span></span>
+      <span class="badge">🌐 RO / EN</span>
+    </div>
+  </header>
+
+  <div class="apps">
+    <a class="app cv reveal" href="./cv-scout/">
+      <span class="ic">◈</span>
+      <span class="role">CV Scout</span>
+      <h3><span class="ro">Evaluator CV</span><span class="en">CV Evaluator</span></h3>
+      <p><span class="ro">Scoruri pe categorii, feedback pe secțiuni, rescrieri și interviu adaptiv.</span><span class="en">Category scores, section feedback, rewrites and an adaptive interview.</span></p>
+      <span class="go"><span class="ro">Deschide</span><span class="en">Open</span> →</span>
+    </a>
+
+    <a class="app cover reveal" href="./cover-forge/">
+      <span class="ic">✎</span>
+      <span class="role">Cover Forge</span>
+      <h3><span class="ro">Scrisori de intenție</span><span class="en">Cover Letters</span></h3>
+      <p><span class="ro">Scrisori adaptate din CV + anunț de job, cu ton și lungime la alegere.</span><span class="en">Tailored letters from your CV + job post, with tone and length control.</span></p>
+      <span class="go"><span class="ro">Deschide</span><span class="en">Open</span> →</span>
+    </a>
+
+    <a class="app bio reveal" href="./bio-lab/">
+      <span class="ic">◐</span>
+      <span class="role">Bio Lab</span>
+      <h3><span class="ro">Optimizator profil</span><span class="en">Bio Optimizer</span></h3>
+      <p><span class="ro">Headline magnetic și secțiune „Despre", în 3 variante de ton.</span><span class="en">A magnetic headline and an "About" section, in 3 tone variants.</span></p>
+      <span class="go"><span class="ro">Deschide</span><span class="en">Open</span> →</span>
+    </a>
+
+    <a class="app counter reveal" href="./counter/">
+      <span class="ic">⇄</span>
+      <span class="role">Counter</span>
+      <h3><span class="ro">Negociere salarială</span><span class="en">Salary Negotiation</span></h3>
+      <p><span class="ro">Strategie, sumă-țintă argumentată și un mesaj gata de trimis.</span><span class="en">A strategy, a justified target number, and a ready-to-send message.</span></p>
+      <span class="go"><span class="ro">Deschide</span><span class="en">Open</span> →</span>
+    </a>
+
+    <a class="app proof reveal" href="./proof/">
+      <span class="ic">◆</span>
+      <span class="role">Proof</span>
+      <h3><span class="ro">Reviewer proiecte</span><span class="en">Project Reviewer</span></h3>
+      <p><span class="ro">Scor, feedback structurat și o descriere îmbunătățită pentru portofoliu.</span><span class="en">A score, structured feedback, and an improved portfolio description.</span></p>
+      <span class="go"><span class="ro">Deschide</span><span class="en">Open</span> →</span>
+    </a>
+
+    <div class="app reveal" style="--accent:var(--mut);justify-content:center;align-items:center;text-align:center;border-style:dashed;">
+      <span class="ic" style="color:var(--mut);filter:none;">＋</span>
+      <p style="flex:none;"><span class="ro">În curând: mai multe unelte</span><span class="en">Coming soon: more tools</span></p>
+    </div>
+  </div>
+
+  <section class="how">
+    <h3 class="reveal"><span class="ro">Cum funcționează</span><span class="en">How it works</span></h3>
+    <div class="how-grid">
+      <div class="how-item reveal"><div class="n">01</div><b><span class="ro">Alegi unealta</span><span class="en">Pick a tool</span></b><span class="ro">Fiecare rezolvă o etapă din căutarea jobului.</span><span class="en">Each one solves a step of the job hunt.</span></div>
+      <div class="how-item reveal"><div class="n">02</div><b><span class="ro">Adaugi datele</span><span class="en">Add your data</span></b><span class="ro">CV, anunț, profil sau proiect — sau apeși „demo".</span><span class="en">CV, job post, profile or project — or hit "demo".</span></div>
+      <div class="how-item reveal"><div class="n">03</div><b><span class="ro">Primești rezultatul</span><span class="en">Get the result</span></b><span class="ro">AI real în Claude.ai, motor local oriunde altundeva.</span><span class="en">Real AI in Claude.ai, a local engine everywhere else.</span></div>
+      <div class="how-item reveal"><div class="n">04</div><b><span class="ro">Salvezi & reiei</span><span class="en">Save & revisit</span></b><span class="ro">Fiecare unealtă păstrează un istoric pe dispozitiv.</span><span class="en">Each tool keeps a history on your device.</span></div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>
+      <span class="ro">Construit de</span><span class="en">Built by</span>
+      <a href="https://github.com/LaurAndreea10" target="_blank" rel="noopener">LaurAndreea10</a> ·
+      <a href="https://laurandreea10.github.io/" target="_blank" rel="noopener">Portfolio</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  const html = document.documentElement;
+  const btn = document.getElementById('langBtn');
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-lang') === 'ro' ? 'en' : 'ro';
+    html.setAttribute('data-lang', next);
+    html.setAttribute('lang', next);
+    btn.textContent = next === 'ro' ? 'EN' : 'RO';
+  });
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>
