@@ -778,6 +778,7 @@ requestAnimationFrame(loop);
 
 function restart(){
   var stage = document.getElementById('stage');
+  if (!stage) { stopIntroReplay(); return; }  // overlay deja scos din DOM
   var clone = stage.cloneNode(true);
   stage.replaceWith(clone);
   startTime = performance.now();
@@ -789,22 +790,20 @@ function attachReplay(){
 }
 attachReplay();
 
-// FIX: oprește replay când tab-ul e în background
 var introInterval = null;
+function stopIntroReplay() {
+  if (introInterval) { clearInterval(introInterval); introInterval = null; }
+}
 function scheduleIntroReplay() {
-  if (introInterval) clearInterval(introInterval);
+  stopIntroReplay();
   introInterval = setInterval(function() {
     if (!document.hidden) restart();
   }, TOTAL * 1000);
 }
 scheduleIntroReplay();
 document.addEventListener('visibilitychange', function() {
-  if (document.hidden) {
-    clearInterval(introInterval);
-    introInterval = null;
-  } else {
-    scheduleIntroReplay();
-  }
+  if (document.hidden) stopIntroReplay();
+  else scheduleIntroReplay();
 });
 </script>
   </div>
@@ -848,6 +847,8 @@ document.addEventListener('visibilitychange', function() {
         }, 550);
         try { sessionStorage.setItem(KEY, '1'); } catch(e) {}
         document.removeEventListener('keydown', onKey);
+        // Oprește intervalul de replay — overlay-ul nu mai există
+        if (typeof stopIntroReplay === 'function') stopIntroReplay();
       }
 
       window.__introDismiss = dismiss;
@@ -980,12 +981,12 @@ document.addEventListener('visibilitychange', function() {
         </div>
 
         <div class="scan-col">
-          <h3 class="scan-col-title">⚡ La ce lucrez acum</h3>
+          <h3 class="scan-col-title">✅ Livrat recent</h3>
           <ul class="scan-list">
-            <li>🔄 <strong>Link Video Editor Studio</strong> — Automation Pack export</li>
-            <li>🔄 <strong>Alpis Fusion</strong> — decision log extins</li>
-            <li>🔄 <strong>Portofoliu</strong> — Lighthouse CI audit, LCP optimizat</li>
-            <li>✅ <strong>Intro cinematic</strong> — integrat ca overlay</li>
+            <li>✅ <strong>Link Video Editor Studio</strong> — Automation Pack Export livrat</li>
+            <li>✅ <strong>Alpis Fusion</strong> — Case Study & Decision Log publicat</li>
+            <li>✅ <strong>Portofoliu</strong> — Lighthouse CI audit complet</li>
+            <li>✅ <strong>Marketing-Tech Templates</strong> — suită nouă livrată</li>
           </ul>
         </div>
 
