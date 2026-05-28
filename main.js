@@ -85,26 +85,33 @@
   // intrările cu link din now-section.js, unificate într-o singură sursă.
   const nowContent = {
     ro: {
-      datetime: '2026-05-26',
-      label: '26 Mai 2026',
+      datetime: '2026-05-27',
+      label: '27 Mai 2026',
       tabs: { active: '🔄 În curs', done: '✅ Finalizat recent', history: '📅 Istoric' },
-      active: [],
+      active: [
+        { title: 'Career Toolkit', body: 'suită de instrumente pentru pregătirea carierei: CV builder, cover letter generator, job tracker și interview prep. Primul deploy live.', tag: 'Produs nou', link: { href: 'https://laurandreea10.github.io/Career-Toolkit/', label: 'Deschide Career Toolkit' } },
+        { title: 'ClientOps Suite Premium — Demo live', body: 'demo live în construcție pentru suita CRM cu fluxuri operaționale avansate. Repo public disponibil.', tag: 'CRM', link: { href: 'https://github.com/LaurAndreea10/clientops-suite-app-premium', label: 'Repo GitHub' } },
+        { title: 'Lead Magnet Landing', body: 'landing page modular pentru ebooks, white papers și resource downloads: hero hook, proof, email gate, thank-you flow și structură reutilizabilă pentru campanii. Status: layout + flow de conversie.', tag: 'Marketing-Tech' },
+        { title: 'Excel Quest V2', body: 'extind aplicația gamificată cu progres salvat, lecții structurate, certificate preview și flow „continuă de unde ai rămas". Status: UX de reluare + dashboard progres.', tag: 'Iterație', link: { href: 'https://laurandreea10.github.io/Excel-Quest/', label: 'Deschide Excel Quest' } },
+        { title: 'Portfolio Polish / Accessibility Pass', body: 'rafinare secțiunea Now, contrast, skip links, focus states, mobile UX și microcopy bilingv RO/EN. Status: audit vizual + îmbunătățiri incrementale.', tag: 'Performanță' },
+        { title: 'Open-source contribution', body: 'pregătesc un PR mic pe un proiect public cu multe stele: fix pentru forwarded refs în componente React, cu test și reproducere. Status: fork + branch + test case.', tag: 'OSS' },
+        { title: 'Marketing OS — suită unificată', body: 'unific CampaignPilot, ROI Calculator, Brief Generator și Lead Magnet Landing într-o suită de tool-uri pentru planificare, execuție și analiză campanii. Status: structură hub + linkuri între module.', tag: 'Marketing OS', link: { href: 'tools/marketing-os.html', label: 'Deschide Marketing OS' } }
+      ],
       done: [
-        { title: 'CV Scout', body: 'aplicație de analiză CV cu scoring automat, feedback structurat și recomandări de îmbunătățire.', tag: 'Mai 2026', link: { href: 'https://laurandreea10.github.io/cv-scout', label: 'Deschide CV Scout' } },
+        { title: 'CV Scout', body: 'aplicație de analiză CV cu scoring automat, feedback structurat și recomandări de îmbunătățire.', tag: 'Mai 2026', link: { href: 'https://laurandreea10.github.io/cv-scout', label: 'Deschide CV Scout' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/CV-SCOUT', label: 'Repo GitHub' } },
         { title: 'Link Video Editor Studio — Automation Pack Export', body: 'Automation Pack finalizat: generare automată timeline din brief, export JSON structurat pentru handoff video.', tag: 'Mai 2026', link: { href: 'tools/link-video-automation-pack.html', label: 'Deschide Automation Pack' } },
         { title: 'Alpis Fusion CRM Premium — Case Study & Decision Log', body: 'studiu de caz extins cu decision log, alegeri de produs, trade-off-uri UX și structura modulară documentată.', tag: 'Mai 2026', link: { href: 'projects/alpis-fusion-case-study.html', label: 'Deschide case study' } },
         { title: 'Portofoliu — Lighthouse CI Audit', body: 'audit performanță finalizat: CSS non-critic extras, LCP îmbunătățit, render-blocking eliminat.', tag: 'Mai 2026', link: { href: 'tools/lighthouse-audit-guide.html', label: 'Deschide audit guide' } },
         { title: 'Marketing-Tech Templates', body: 'suită nouă de template-uri orientate pe conversie și growth workflows, extinsă după Campaign ROI Calculator.', tag: 'Mai 2026', link: { href: 'tools/marketing-tech-templates.html', label: 'Deschide templates' } },
         { title: 'Intro cinematic overlay', body: 'integrat ca overlay SVG animat peste portofoliu, fără a afecta SEO. SessionStorage skip, prefers-reduced-motion support.', tag: 'Mai 2026' },
         { title: 'ClientOps Suite Premium', body: 'suită CRM completă cu fluxuri operaționale avansate, automatizări și dashboard unificat. Deploy GitHub Pages.', tag: 'Mai 2026' },
-        { title: 'Lighthouse CI Audit Guide', body: 'audit de performanță pentru portofoliu, LCP, CSS non-critic și checklist de optimizare.', tag: 'Mai 2026', link: { href: 'tools/lighthouse-audit-guide.html', label: 'Deschide audit guide' } },
-        { title: 'Marketing OS — Industry Benchmarks + UTM Builder v1.2', body: 'hub activ pentru benchmarks, UTM Builder v1.2, campanii și raportare marketing.', tag: 'Marketing OS', link: { href: 'tools/marketing-os.html', label: 'Deschide Marketing OS' } },
+        { title: 'Marketing OS — Industry Benchmarks + UTM Builder v1.2', body: 'hub activ pentru benchmarks, UTM Builder v1.2, campanii și raportare marketing.', tag: 'Mai 2026', link: { href: 'tools/marketing-os.html', label: 'Deschide Marketing OS' } },
         { title: 'Brief Studio', body: 'platformă SaaS bilingvă RO/EN cu Brief Generator, Mood Board și Market Lens. API-uri keyless publice.', tag: 'Apr 2026' },
         { title: 'Proof of Work section', body: 'înlocuit secțiunea de testimoniale cu dovezi tehnice obiective: repo-uri publice, CI/CD, proiecte live verificabile.', tag: 'Apr 2026' },
         { title: 'CampaignPilot', body: 'workspace unificat pentru planificarea campaniilor: KPI overview, funnel, budget allocation, content calendar, brief generator.', tag: 'Apr 2026' }
       ],
       history: [
-        { label: 'Săpt. 26 Mai 2026', items: ['CV Scout — aplicație analiză CV livrată', 'Link Video Editor Studio — Automation Pack Export finalizat', 'Alpis Fusion — Case Study & Decision Log publicat', 'Portofoliu — Lighthouse CI audit complet', 'Marketing-Tech Templates — suită nouă livrată'] },
+        { label: 'Săpt. 27 Mai 2026', items: ['Career Toolkit — primul deploy live', 'CV Scout — aplicație analiză CV livrată', 'Link Video Editor Studio — Automation Pack Export finalizat', 'Alpis Fusion — Case Study & Decision Log publicat', 'Portofoliu — Lighthouse CI audit complet', 'Marketing-Tech Templates — suită nouă livrată'] },
         { label: 'Săpt. 19–23 Mai 2026', items: ['Intro cinematic integrat ca overlay în portofoliu', 'Îmbunătățiri tehnice overlay: CSS în head, early-exit script, SVG cross-browser fix', 'Secțiunea Now — refactorizare cu checklist și istoric'] },
         { label: 'Săpt. 12–18 Mai 2026', items: ['ClientOps Suite Premium — finalizat și deploiat', 'Link Video Editor Studio — primele iterații live', 'Nexus Protocol v2 — 6 facțiuni, AI Director, 30 achievements'] },
         { label: 'Săpt. 5–11 Mai 2026', items: ['Marketing-Tech — CampaignPilot și ROI Calculator livrate', 'Portofoliu extins la 64 proiecte live', 'Proof of Work section — înlocuit testimoniale cu dovezi obiective'] },
@@ -113,26 +120,33 @@
       note: 'Actualizat manual ca secțiune de tip now page — arată ce prioritizez activ, nu doar ce am construit.'
     },
     en: {
-      datetime: '2026-05-26',
-      label: 'May 26, 2026',
+      datetime: '2026-05-27',
+      label: 'May 27, 2026',
       tabs: { active: '🔄 In progress', done: '✅ Recently shipped', history: '📅 History' },
-      active: [],
+      active: [
+        { title: 'Career Toolkit', body: 'career preparation suite: CV builder, cover letter generator, job tracker and interview prep. First live deploy.', tag: 'New product', link: { href: 'https://laurandreea10.github.io/Career-Toolkit/', label: 'Open Career Toolkit' } },
+        { title: 'ClientOps Suite Premium — Live demo', body: 'live demo in progress for the CRM suite with advanced operational flows. Public repo available.', tag: 'CRM', link: { href: 'https://github.com/LaurAndreea10/clientops-suite-app-premium', label: 'GitHub repo' } },
+        { title: 'Lead Magnet Landing', body: 'modular landing page for ebooks, white papers and resource downloads: hero hook, proof, email gate, thank-you flow and reusable campaign structure. Status: layout + conversion flow.', tag: 'Marketing-Tech' },
+        { title: 'Excel Quest V2', body: 'expanding the gamified app with saved progress, structured lessons, certificate preview and a "continue where you left off" flow. Status: resume UX + progress dashboard.', tag: 'Iteration', link: { href: 'https://laurandreea10.github.io/Excel-Quest/', label: 'Open Excel Quest' } },
+        { title: 'Portfolio Polish / Accessibility Pass', body: 'refining the Now section, contrast, skip links, focus states, mobile UX and bilingual RO/EN microcopy. Status: visual audit + incremental improvements.', tag: 'Performance' },
+        { title: 'Open-source contribution', body: 'preparing a small but visible PR on a high-star public project: fix for forwarded refs in React components, with test and reproduction case. Status: fork + branch + test case.', tag: 'OSS' },
+        { title: 'Marketing OS — unified suite', body: 'unifying CampaignPilot, ROI Calculator, Brief Generator and Lead Magnet Landing into a campaign planning, execution and analysis toolkit. Status: hub structure + inter-module links.', tag: 'Marketing OS', link: { href: 'tools/marketing-os.html', label: 'Open Marketing OS' } }
+      ],
       done: [
-        { title: 'CV Scout', body: 'CV analysis app with automatic scoring, structured feedback and improvement recommendations.', tag: 'May 2026', link: { href: 'https://laurandreea10.github.io/cv-scout', label: 'Open CV Scout' } },
+        { title: 'CV Scout', body: 'CV analysis app with automatic scoring, structured feedback and improvement recommendations.', tag: 'May 2026', link: { href: 'https://laurandreea10.github.io/cv-scout', label: 'Open CV Scout' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/CV-SCOUT', label: 'GitHub repo' } },
         { title: 'Link Video Editor Studio — Automation Pack Export', body: 'Automation Pack shipped: auto-generate a timeline from a brief, structured JSON export for video handoff.', tag: 'May 2026', link: { href: 'tools/link-video-automation-pack.html', label: 'Open Automation Pack' } },
         { title: 'Alpis Fusion CRM Premium — Case Study & Decision Log', body: 'extended case study with decision log, product choices, UX trade-offs and documented modular structure.', tag: 'May 2026', link: { href: 'projects/alpis-fusion-case-study.html', label: 'Open case study' } },
         { title: 'Portfolio — Lighthouse CI Audit', body: 'performance audit complete: non-critical CSS extracted, LCP improved, render-blocking removed.', tag: 'May 2026', link: { href: 'tools/lighthouse-audit-guide.html', label: 'Open audit guide' } },
         { title: 'Marketing-Tech Templates', body: 'new suite of conversion-oriented templates and growth workflows, expanded after Campaign ROI Calculator.', tag: 'May 2026', link: { href: 'tools/marketing-tech-templates.html', label: 'Open templates' } },
         { title: 'Intro cinematic overlay', body: 'integrated as an animated SVG overlay on top of the portfolio, without hurting SEO. SessionStorage skip, prefers-reduced-motion support.', tag: 'May 2026' },
         { title: 'ClientOps Suite Premium', body: 'complete CRM suite with advanced operational flows, automations and a unified dashboard. Deployed on GitHub Pages.', tag: 'May 2026' },
-        { title: 'Lighthouse CI Audit Guide', body: 'performance audit for the portfolio, LCP, non-critical CSS and an optimisation checklist.', tag: 'May 2026', link: { href: 'tools/lighthouse-audit-guide.html', label: 'Open audit guide' } },
-        { title: 'Marketing OS — Industry Benchmarks + UTM Builder v1.2', body: 'active hub for benchmarks, UTM Builder v1.2, campaigns and marketing reporting.', tag: 'Marketing OS', link: { href: 'tools/marketing-os.html', label: 'Open Marketing OS' } },
+        { title: 'Marketing OS — Industry Benchmarks + UTM Builder v1.2', body: 'active hub for benchmarks, UTM Builder v1.2, campaigns and marketing reporting.', tag: 'May 2026', link: { href: 'tools/marketing-os.html', label: 'Open Marketing OS' } },
         { title: 'Brief Studio', body: 'bilingual RO/EN SaaS platform with Brief Generator, Mood Board and Market Lens. Public keyless APIs.', tag: 'Apr 2026' },
         { title: 'Proof of Work section', body: 'replaced the testimonials section with objective technical proof: public repos, CI/CD, verifiable live projects.', tag: 'Apr 2026' },
         { title: 'CampaignPilot', body: 'unified workspace for campaign planning: KPI overview, funnel, budget allocation, content calendar, brief generator.', tag: 'Apr 2026' }
       ],
       history: [
-        { label: 'Week of May 26, 2026', items: ['CV Scout — CV analysis app shipped', 'Link Video Editor Studio — Automation Pack Export shipped', 'Alpis Fusion — Case Study & Decision Log published', 'Portfolio — Lighthouse CI audit complete', 'Marketing-Tech Templates — new suite delivered'] },
+        { label: 'Week of May 27, 2026', items: ['Career Toolkit — first live deploy', 'CV Scout — CV analysis app shipped', 'Link Video Editor Studio — Automation Pack Export shipped', 'Alpis Fusion — Case Study & Decision Log published', 'Portfolio — Lighthouse CI audit complete', 'Marketing-Tech Templates — new suite delivered'] },
         { label: 'Week of May 19–23, 2026', items: ['Cinematic intro integrated as a portfolio overlay', 'Overlay technical improvements: CSS in head, early-exit script, SVG cross-browser fix', 'Now section — refactored with checklist and history'] },
         { label: 'Week of May 12–18, 2026', items: ['ClientOps Suite Premium — finished and deployed', 'Link Video Editor Studio — first live iterations', 'Nexus Protocol v2 — 6 factions, AI Director, 30 achievements'] },
         { label: 'Week of May 5–11, 2026', items: ['Marketing-Tech — CampaignPilot and ROI Calculator shipped', 'Portfolio expanded to 64 live projects', 'Proof of Work section — replaced testimonials with objective proof'] },
@@ -336,6 +350,7 @@
       const a = document.createElement('a');
       a.className = 'now-item-link';
       a.href = entry.link.href;
+      if (entry.link.href.startsWith('http')) a.target = '_blank', a.rel = 'noopener noreferrer';
       a.textContent = entry.title;
       strong.appendChild(a);
     } else {
@@ -352,16 +367,23 @@
       div.appendChild(tag);
     }
 
-    // Buton acțiune secundar (dacă pagina e reachable)
-    if (entry.link && isReachable(entry.link.href)) {
+    // Link acțiune principal (extern = mereu afișat; intern = doar dacă reachable)
+    function appendActionLink(linkObj) {
+      if (!linkObj) return;
+      const isExternal = linkObj.href.startsWith('http');
+      if (!isExternal && !isReachable(linkObj.href)) return;
       const action = document.createElement('a');
       action.className = 'now-tag now-link-action';
-      action.href = entry.link.href;
-      action.textContent = entry.link.label;
-      action.setAttribute('aria-label', entry.link.label);
+      action.href = linkObj.href;
+      action.textContent = linkObj.label;
+      action.setAttribute('aria-label', linkObj.label);
+      if (isExternal) action.target = '_blank', action.rel = 'noopener noreferrer';
       div.appendChild(document.createTextNode(' '));
       div.appendChild(action);
     }
+
+    appendActionLink(entry.link);
+    appendActionLink(entry.secondaryLink);
 
     li.appendChild(status);
     li.appendChild(div);
