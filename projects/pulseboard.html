@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PulseBoard — Dashboard AI pentru venituri & operațiuni | Laura Andreea</title>
+  <meta name="description" content="Mini case study PulseBoard: dashboard de venituri și operațiuni care importă date reale, detectează anomalii și generează briefing executiv cu acțiuni." />
+  <meta name="author" content="Laura Andreea" />
+  <meta name="theme-color" content="#071226" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/projects/pulseboard.html" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="PulseBoard — Dashboard AI pentru venituri & operațiuni" />
+  <meta property="og:description" content="Import CSV/Google Sheet, anomaly detection și briefing executiv cu acțiuni concrete." />
+  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/projects/pulseboard.html" />
+  <meta property="og:locale" content="ro_RO" />
+
+  <style>
+    :root{
+      --bg:#06101f;
+      --bg2:#09172d;
+      --panel:rgba(10,22,46,.82);
+      --line:rgba(255,255,255,.11);
+      --text:#eef4ff;
+      --muted:#9db0d4;
+      --accent:#e8b84b;
+      --accent2:#60a5fa;
+      --good:#34d399;
+      --warn:#f59e0b;
+      --shadow:0 20px 48px rgba(0,0,0,.34);
+      --container:920px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(circle at top left,rgba(232,184,75,.22),transparent 34%),radial-gradient(circle at 85% 8%,rgba(96,165,250,.22),transparent 30%),linear-gradient(180deg,var(--bg2),var(--bg));line-height:1.65}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    h1,h2,h3,p{margin:0}
+    .container{width:min(var(--container),calc(100% - 32px));margin:0 auto}
+    .glass{background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(14px)}
+    .skip{position:absolute;left:12px;top:-80px;background:#fff;color:#06101f;padding:10px 14px;border-radius:999px;z-index:99;font-weight:800}.skip:focus{top:12px}
+    .topbar{position:sticky;top:0;z-index:20;padding:12px 0;background:linear-gradient(to bottom,rgba(0,0,0,.34),transparent)}
+    .nav{border-radius:999px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .brand{font-weight:800;display:flex;align-items:center;gap:10px;color:var(--text)}
+    .badge{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;color:#08111f;background:linear-gradient(135deg,var(--accent),var(--accent2));font-weight:900}
+    .pill{border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:999px;padding:9px 14px;color:var(--text);display:inline-flex;margin:3px;text-decoration:none}
+    .article{padding:34px 0 60px}
+    .article-card{border-radius:28px;padding:34px;overflow:hidden;position:relative}
+    .article-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,184,75,.10),rgba(96,165,250,.06),transparent 56%);pointer-events:none}
+    .article-card>*{position:relative}
+    .eyebrow{font-size:.82rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);display:inline-flex}
+    h1{margin-top:14px;font-size:clamp(2rem,4.5vw,3.25rem);line-height:1.05;letter-spacing:-.035em}
+    .lede{margin-top:16px;color:var(--muted);font-size:1.08rem;line-height:1.78;max-width:74ch}
+    .meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+    .meta-tag{font-size:.78rem;padding:6px 12px;border-radius:999px;border:1px solid rgba(232,184,75,.32);background:rgba(232,184,75,.12);color:#ffe6a3;font-weight:700}
+    h2{margin-top:38px;font-size:1.45rem;line-height:1.25;letter-spacing:-.01em}
+    h3{margin-top:22px;font-size:1.06rem}
+    p{margin-top:14px;color:var(--text)}
+    p.muted{color:var(--muted)}
+    ul{margin-top:12px;padding-left:20px;color:var(--text)}
+    li{margin-top:7px;line-height:1.65}
+    .context-grid,.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+    .context-item,.metric-card{border:1px solid var(--line);border-radius:16px;padding:14px;background:rgba(255,255,255,.035)}
+    .context-item strong,.metric-card strong{display:block;font-size:.78rem;text-transform:uppercase;color:var(--accent);margin-bottom:6px;letter-spacing:.04em}
+    .context-item span,.metric-card span{font-size:.94rem;line-height:1.6;color:var(--muted)}
+    .metric-card b{display:block;font-size:1.8rem;line-height:1.1;color:var(--text);letter-spacing:-.04em;margin-bottom:8px}
+    .decision{margin-top:18px;padding:17px;border-radius:16px;border:1px solid var(--line);background:rgba(96,165,250,.07)}
+    .decision strong.title{display:block;font-size:.78rem;text-transform:uppercase;color:var(--accent);margin-bottom:6px;letter-spacing:.04em}
+    .decision h3{margin-top:0}
+    .tradeoff{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:.94rem;color:var(--muted)}
+    .tradeoff b{color:var(--text)}
+    .quote{margin-top:20px;padding:16px 18px;border-left:3px solid var(--accent);background:rgba(255,255,255,.025);border-radius:8px;color:var(--text);line-height:1.7;font-style:italic}
+    .links-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 17px;border-radius:999px;border:1px solid transparent;font-weight:800;text-decoration:none}
+    .btn:hover{text-decoration:none;transform:translateY(-1px)}
+    .btn-primary{color:#08111f;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+    .btn-secondary{border-color:var(--line);background:rgba(255,255,255,.045);color:var(--text)}
+    .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:.92rem;text-decoration:none;margin-bottom:10px}
+    .back-link:hover{color:var(--text)}
+    .footer{padding:20px 0 36px;text-align:center;color:var(--muted);font-size:.92rem}
+    code{font-family:"SFMono-Regular",Consolas,monospace;background:rgba(255,255,255,.08);border:1px solid var(--line);padding:.12rem .35rem;border-radius:7px;color:#ffe6a3}
+    @media(max-width:720px){.context-grid,.metric-grid{grid-template-columns:1fr}.article-card{padding:22px}.container{width:min(var(--container),calc(100% - 20px))}.nav{border-radius:22px}h1{font-size:2rem}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Sari la conținut</a>
+  <div class="topbar">
+    <div class="container">
+      <nav class="nav glass" aria-label="Navigare">
+        <a class="brand" href="../index.html"><span class="badge">PB</span><span>PulseBoard Case Study</span></a>
+        <div>
+          <a class="pill" href="../index.html#latest-github">GitHub projects</a>
+          <a class="pill" href="../index.html#contact">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main id="main" class="article">
+    <div class="container">
+      <a class="back-link" href="../index.html#latest-github">← Înapoi la proiectele GitHub</a>
+
+      <article class="article-card glass">
+        <span class="eyebrow">Mini case study · PulseBoard</span>
+        <h1>Dashboard AI care nu doar afișează date — le transformă în decizii</h1>
+        <p class="lede">PulseBoard este un dashboard de venituri și operațiuni construit pentru scenariul real în care datele vin din CSV-uri sau Google Sheets, sunt imperfecte și trebuie interpretate rapid. Produsul detectează anomalii, compară evoluția și generează un briefing executiv cu acțiuni concrete.</p>
+
+        <div class="meta-row" aria-label="Meta tehnic">
+          <span class="meta-tag">Revenue dashboard</span>
+          <span class="meta-tag">CSV / Google Sheet</span>
+          <span class="meta-tag">AI briefing</span>
+          <span class="meta-tag">Anomaly detection</span>
+          <span class="meta-tag">Fallback local</span>
+          <span class="meta-tag">RO/EN</span>
+        </div>
+
+        <div class="links-row" aria-label="Linkuri proiect">
+          <a class="btn btn-primary" href="https://laurandreea10.github.io/Pulseboard/" target="_blank" rel="noopener noreferrer">Live Demo</a>
+          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Pulseboard" target="_blank" rel="noopener noreferrer">GitHub →</a>
+          <a class="btn btn-secondary" href="../index.html#latest-github">Portofoliu</a>
+        </div>
+
+        <h2>Problema</h2>
+        <p>Datele de business trăiesc în prea multe locuri: exporturi CSV, tabele manuale, rapoarte din CRM, sheet-uri actualizate diferit. Întrebarea „merge mai bine sau mai prost?” cere timp, curățare și interpretare. Pentru un dashboard de portofoliu, simpla afișare a numerelor nu era suficientă.</p>
+
+        <div class="context-grid">
+          <div class="context-item">
+            <strong>Input real</strong>
+            <span>CSV sau Google Sheet publicat ca CSV, cu rânduri care pot fi incomplete, dezordonate sau inconsistente.</span>
+          </div>
+          <div class="context-item">
+            <strong>Output util</strong>
+            <span>KPI-uri, trenduri, anomalii și un briefing executiv care spune ce merită făcut mai departe.</span>
+          </div>
+          <div class="context-item">
+            <strong>Constrângere</strong>
+            <span>Produsul trebuie să rămână funcțional chiar și fără un API AI disponibil sau fără backend.</span>
+          </div>
+          <div class="context-item">
+            <strong>Audiență</strong>
+            <span>Recruiteri, clienți mici sau oameni non-tehnici care au nevoie să vadă rapid logica de produs.</span>
+          </div>
+        </div>
+
+        <h2>Soluția</h2>
+        <p>Am construit PulseBoard ca un instrument de analiză orientat pe decizie: importă date, normalizează câmpurile, calculează indicatori, marchează anomaliile și rezumă concluziile într-un limbaj executiv. Accentul nu este doar pe grafic, ci pe interpretarea graficului.</p>
+
+        <div class="metric-grid">
+          <div class="metric-card">
+            <strong>Dashboard logic</strong>
+            <b>KPI</b>
+            <span>Venit, comenzi, creștere/scădere, segmente și comparații rapide.</span>
+          </div>
+          <div class="metric-card">
+            <strong>Insight layer</strong>
+            <b>AI</b>
+            <span>Briefing cu explicații și acțiuni, plus fallback determinist local.</span>
+          </div>
+          <div class="metric-card">
+            <strong>Data quality</strong>
+            <b>CSV</b>
+            <span>Parser gândit pentru date reale, nu doar pentru demo-uri perfecte.</span>
+          </div>
+          <div class="metric-card">
+            <strong>UX layer</strong>
+            <b>RO/EN</b>
+            <span>Design dark editorial, bilingv, cu ierarhie clară și citire rapidă.</span>
+          </div>
+        </div>
+
+        <h2>Decizii UX & tehnice</h2>
+
+        <div class="decision">
+          <strong class="title">Decizie 01</strong>
+          <h3>AI cu fallback determinist local</h3>
+          <p>Briefingul poate fi generat prin AI, dar produsul nu se blochează dacă API-ul nu răspunde. În acel caz, aplicația folosește reguli locale pentru a produce un rezumat coerent pe baza KPI-urilor.</p>
+          <div class="tradeoff"><b>Trade-off:</b> + demo stabil pe GitHub Pages și experiență sigură pentru portofoliu. − briefingul local este mai puțin expresiv decât un model AI real, dar păstrează valoarea produsului.</div>
+        </div>
+
+        <div class="decision">
+          <strong class="title">Decizie 02</strong>
+          <h3>Graficul evidențiază anomaliile, nu doar trendul</h3>
+          <p>În loc să arate doar o linie frumoasă, dashboard-ul marchează punctele care ies din ritm și le conectează cu explicații. Așa utilizatorul vede imediat unde trebuie să investigheze.</p>
+          <div class="tradeoff"><b>Trade-off:</b> + mai multă valoare analitică. − necesită reguli clare ca să nu pară alarmist sau arbitrar.</div>
+        </div>
+
+        <div class="decision">
+          <strong class="title">Decizie 03</strong>
+          <h3>Import flexibil pentru CSV / Google Sheet</h3>
+          <p>Am tratat importul ca parte din produs, nu ca detaliu tehnic. Utilizatorul poate lucra cu date reale, iar pentru Google Sheet se folosește exportul public CSV.</p>
+          <div class="tradeoff"><b>Trade-off:</b> + zero cost și deploy simplu. − sheet-ul trebuie publicat ca CSV, deci nu e o soluție pentru date private fără backend.</div>
+        </div>
+
+        <div class="decision">
+          <strong class="title">Decizie 04</strong>
+          <h3>Design editorial dark pentru claritate</h3>
+          <p>Am ales un look de dashboard premium, dar cu ierarhie strictă: KPI-uri sus, context lângă grafic, apoi briefing și acțiuni. Astfel produsul se simte ca un tool, nu ca o simplă pagină vizuală.</p>
+          <div class="tradeoff"><b>Trade-off:</b> + impact puternic pentru portofoliu și recruiter scan. − trebuie păstrat contrastul și spațiul ca să nu devină încărcat.</div>
+        </div>
+
+        <h2>Ce demonstrează în portofoliu</h2>
+        <ul>
+          <li><b>Gândire de produs:</b> pornește de la o problemă reală de business, nu de la un efect vizual.</li>
+          <li><b>Dashboard logic:</b> KPI-uri, comparații, interpretare și stări de date.</li>
+          <li><b>AI pragmatic:</b> integrare utilă, dar cu fallback local pentru stabilitate.</li>
+          <li><b>Zero-cost deploy:</b> potrivit pentru GitHub Pages și portofoliu public.</li>
+          <li><b>UX pentru date:</b> transformă tabelele în decizii ușor de citit.</li>
+        </ul>
+
+        <div class="quote">PulseBoard arată direcția în care se poate extinde portofoliul: aplicații care combină CRM, dashboard, logică de business și AI într-un produs demonstrabil.</div>
+
+        <h2>Următorii pași</h2>
+        <ul>
+          <li>Publicarea unui dataset demo documentat, cu exemple bune și exemple dezordonate.</li>
+          <li>Adăugarea unei secțiuni „How it works” direct în pagina live.</li>
+          <li>Export PDF / copy executive briefing pentru utilizare în prezentări.</li>
+          <li>Validări mai vizibile pentru CSV-uri incomplete sau coloane lipsă.</li>
+        </ul>
+
+        <div class="links-row" aria-label="Acțiuni finale">
+          <a class="btn btn-primary" href="https://laurandreea10.github.io/Pulseboard/" target="_blank" rel="noopener noreferrer">Deschide demo-ul</a>
+          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Pulseboard" target="_blank" rel="noopener noreferrer">Vezi repo-ul</a>
+          <a class="btn btn-secondary" href="../index.html">Înapoi la portofoliu</a>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© Laura Andreea · PulseBoard case study · GitHub Pages ready</div>
+  </footer>
+</body>
+</html>
