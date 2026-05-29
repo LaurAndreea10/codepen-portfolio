@@ -66,13 +66,7 @@
       label: '29 Mai 2026',
       tabs: { active: '🔄 În curs', done: '✅ Finalizat recent', history: '📅 Istoric' },
       active: [
-        {
-          title: 'PulseBoard',
-          body: 'roadmap activ pentru dashboard-ul de venituri & operațiuni: detectare de anomalii cu sezonalitate (normalizare pe ziua săptămânii), conectori direcți Stripe/Shopify în locul exportului manual, briefing programat trimis automat luni dimineața și export PDF/PNG al întregului dashboard.',
-          tag: 'AI Dashboard',
-          link: { href: 'https://laurandreea10.github.io/PulseBoard/', label: 'Deschide PulseBoard' },
-          secondaryLink: { href: 'https://github.com/LaurAndreea10/PulseBoard', label: 'Repo GitHub' }
-        },
+        { title: 'PulseBoard', body: 'roadmap activ pentru dashboard-ul de venituri & operațiuni: detectare de anomalii cu sezonalitate (normalizare pe ziua săptămânii), conectori direcți Stripe/Shopify în locul exportului manual, briefing programat trimis automat luni dimineața și export PDF/PNG al întregului dashboard.', tag: 'AI Dashboard', link: { href: 'https://laurandreea10.github.io/PulseBoard/', label: 'Deschide PulseBoard' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/PulseBoard', label: 'Repo GitHub' } },
         { title: 'Career Toolkit', body: 'suită de instrumente pentru pregătirea carierei: CV builder, cover letter generator, job tracker și interview prep. Primul deploy live.', tag: 'Produs nou', link: { href: 'https://laurandreea10.github.io/Career-Toolkit/', label: 'Deschide Career Toolkit' } },
         { title: 'ClientOps Suite Premium — Demo live', body: 'demo live în construcție pentru suita CRM cu fluxuri operaționale avansate. Repo public disponibil.', tag: 'CRM', link: { href: 'https://github.com/LaurAndreea10/clientops-suite-app-premium', label: 'Repo GitHub' } },
         { title: 'Lead Magnet Landing', body: 'landing page modular pentru ebooks, white papers și resource downloads: hero hook, proof, email gate, thank-you flow și structură reutilizabilă pentru campanii. Status: layout + flow de conversie.', tag: 'Marketing-Tech' },
@@ -82,6 +76,7 @@
         { title: 'Marketing OS — suită unificată', body: 'unific CampaignPilot, ROI Calculator, Brief Generator și Lead Magnet Landing într-o suită de tool-uri pentru planificare, execuție și analiză campanii. Status: structură hub + linkuri între module.', tag: 'Marketing OS', link: { href: 'tools/marketing-os.html', label: 'Deschide Marketing OS' } }
       ],
       done: [
+        { title: 'LearnFlow Accessible', body: 'aplicație educațională accesibilă, construită cu focus pe navigare clară, UX incluziv, structură mobile-friendly și experiență de învățare ușor de parcurs.', tag: 'Mai 2026', link: { href: 'https://laurandreea10.github.io/learnflow-accessible/', label: 'Deschide LearnFlow' } },
         { title: 'CV Scout', body: 'aplicație de analiză CV cu scoring automat, feedback structurat și recomandări de îmbunătățire.', tag: 'Mai 2026', link: { href: 'https://laurandreea10.github.io/cv-scout', label: 'Deschide CV Scout' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/CV-SCOUT', label: 'Repo GitHub' } },
         { title: 'Link Video Editor Studio — Automation Pack Export', body: 'Automation Pack finalizat: generare automată timeline din brief, export JSON structurat pentru handoff video.', tag: 'Mai 2026', link: { href: 'tools/link-video-automation-pack.html', label: 'Deschide Automation Pack' } },
         { title: 'Alpis Fusion CRM Premium — Case Study & Decision Log', body: 'studiu de caz extins cu decision log, alegeri de produs, trade-off-uri UX și structura modulară documentată.', tag: 'Mai 2026', link: { href: 'projects/alpis-fusion-case-study.html', label: 'Deschide case study' } },
@@ -95,7 +90,7 @@
         { title: 'CampaignPilot', body: 'workspace unificat pentru planificarea campaniilor: KPI overview, funnel, budget allocation, content calendar, brief generator.', tag: 'Apr 2026' }
       ],
       history: [
-        { label: 'Săpt. 27–29 Mai 2026', items: ['PulseBoard — roadmap adăugat în Now: sezonalitate, Stripe/Shopify, briefing programat, export PDF/PNG', 'Career Toolkit — primul deploy live', 'CV Scout — aplicație analiză CV livrată', 'Portofoliu — Lighthouse CI audit complet'] },
+        { label: 'Săpt. 27–29 Mai 2026', items: ['LearnFlow Accessible — adăugat la Finalizat recent', 'PulseBoard — roadmap adăugat în Now: sezonalitate, Stripe/Shopify, briefing programat, export PDF/PNG', 'Career Toolkit — primul deploy live', 'CV Scout — aplicație analiză CV livrată', 'Portofoliu — Lighthouse CI audit complet'] },
         { label: 'Săpt. 19–23 Mai 2026', items: ['Intro cinematic integrat ca overlay în portofoliu', 'Îmbunătățiri tehnice overlay: CSS în head, early-exit script, SVG cross-browser fix', 'Secțiunea Now — refactorizare cu checklist și istoric'] },
         { label: 'Săpt. 12–18 Mai 2026', items: ['ClientOps Suite Premium — finalizat și deploiat', 'Link Video Editor Studio — primele iterații live', 'Nexus Protocol v2 — 6 facțiuni, AI Director, 30 achievements'] },
         { label: 'Săpt. 5–11 Mai 2026', items: ['Marketing-Tech — CampaignPilot și ROI Calculator livrate', 'Portofoliu extins la 64 proiecte live', 'Proof of Work section — înlocuit testimoniale cu dovezi obiective'] },
@@ -108,13 +103,7 @@
       label: 'May 29, 2026',
       tabs: { active: '🔄 In progress', done: '✅ Recently shipped', history: '📅 History' },
       active: [
-        {
-          title: 'PulseBoard',
-          body: 'active roadmap for the revenue & ops dashboard: anomaly detection with seasonality (weekday normalization), direct Stripe/Shopify connectors instead of manual export, scheduled briefing auto-sent Monday morning, and full-dashboard PDF/PNG export.',
-          tag: 'AI Dashboard',
-          link: { href: 'https://laurandreea10.github.io/PulseBoard/', label: 'Open PulseBoard' },
-          secondaryLink: { href: 'https://github.com/LaurAndreea10/PulseBoard', label: 'GitHub repo' }
-        },
+        { title: 'PulseBoard', body: 'active roadmap for the revenue & ops dashboard: anomaly detection with seasonality (weekday normalization), direct Stripe/Shopify connectors instead of manual export, scheduled briefing auto-sent Monday morning, and full-dashboard PDF/PNG export.', tag: 'AI Dashboard', link: { href: 'https://laurandreea10.github.io/PulseBoard/', label: 'Open PulseBoard' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/PulseBoard', label: 'GitHub repo' } },
         { title: 'Career Toolkit', body: 'career preparation suite: CV builder, cover letter generator, job tracker and interview prep. First live deploy.', tag: 'New product', link: { href: 'https://laurandreea10.github.io/Career-Toolkit/', label: 'Open Career Toolkit' } },
         { title: 'ClientOps Suite Premium — Live demo', body: 'live demo in progress for the CRM suite with advanced operational flows. Public repo available.', tag: 'CRM', link: { href: 'https://github.com/LaurAndreea10/clientops-suite-app-premium', label: 'GitHub repo' } },
         { title: 'Lead Magnet Landing', body: 'modular landing page for ebooks, white papers and resource downloads: hero hook, proof, email gate, thank-you flow and reusable campaign structure. Status: layout + conversion flow.', tag: 'Marketing-Tech' },
@@ -124,6 +113,7 @@
         { title: 'Marketing OS — unified suite', body: 'unifying CampaignPilot, ROI Calculator, Brief Generator and Lead Magnet Landing into a campaign planning, execution and analysis toolkit. Status: hub structure + inter-module links.', tag: 'Marketing OS', link: { href: 'tools/marketing-os.html', label: 'Open Marketing OS' } }
       ],
       done: [
+        { title: 'LearnFlow Accessible', body: 'accessible learning app focused on clear navigation, inclusive UX, mobile-friendly structure and an easy-to-follow learning experience.', tag: 'May 2026', link: { href: 'https://laurandreea10.github.io/learnflow-accessible/', label: 'Open LearnFlow' } },
         { title: 'CV Scout', body: 'CV analysis app with automatic scoring, structured feedback and improvement recommendations.', tag: 'May 2026', link: { href: 'https://laurandreea10.github.io/cv-scout', label: 'Open CV Scout' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/CV-SCOUT', label: 'GitHub repo' } },
         { title: 'Link Video Editor Studio — Automation Pack Export', body: 'Automation Pack shipped: auto-generate a timeline from a brief, structured JSON export for video handoff.', tag: 'May 2026', link: { href: 'tools/link-video-automation-pack.html', label: 'Open Automation Pack' } },
         { title: 'Alpis Fusion CRM Premium — Case Study & Decision Log', body: 'extended case study with decision log, product choices, UX trade-offs and documented modular structure.', tag: 'May 2026', link: { href: 'projects/alpis-fusion-case-study.html', label: 'Open case study' } },
@@ -137,7 +127,7 @@
         { title: 'CampaignPilot', body: 'unified workspace for campaign planning: KPI overview, funnel, budget allocation, content calendar, brief generator.', tag: 'Apr 2026' }
       ],
       history: [
-        { label: 'Week of May 27–29, 2026', items: ['PulseBoard — added to Now roadmap: seasonality, Stripe/Shopify, scheduled briefing, PDF/PNG export', 'Career Toolkit — first live deploy', 'CV Scout — CV analysis app shipped', 'Portfolio — Lighthouse CI audit complete'] },
+        { label: 'Week of May 27–29, 2026', items: ['LearnFlow Accessible — added to Recently shipped', 'PulseBoard — added to Now roadmap: seasonality, Stripe/Shopify, scheduled briefing, PDF/PNG export', 'Career Toolkit — first live deploy', 'CV Scout — CV analysis app shipped', 'Portfolio — Lighthouse CI audit complete'] },
         { label: 'Week of May 19–23, 2026', items: ['Cinematic intro integrated as a portfolio overlay', 'Overlay technical improvements: CSS in head, early-exit script, SVG cross-browser fix', 'Now section — refactored with checklist and history'] },
         { label: 'Week of May 12–18, 2026', items: ['ClientOps Suite Premium — finished and deployed', 'Link Video Editor Studio — first live iterations', 'Nexus Protocol v2 — 6 factions, AI Director, 30 achievements'] },
         { label: 'Week of May 5–11, 2026', items: ['Marketing-Tech — CampaignPilot and ROI Calculator shipped', 'Portfolio expanded to 64 live projects', 'Proof of Work section — replaced testimonials with objective proof'] },
@@ -148,68 +138,13 @@
   };
 
   const previewSlides = [
-    {
-      title: 'PulseBoard',
-      label: 'AI dashboard',
-      description: { ro: 'Dashboard de venituri & operațiuni cu import CSV/Google Sheet, anomalii și briefing executiv.', en: 'Revenue & ops dashboard with CSV/Google Sheet import, anomalies and executive briefing.' },
-      meta: 'Dashboard · AI fallback · GitHub Pages',
-      frameUrl: 'https://laurandreea10.github.io/PulseBoard/',
-      primaryUrl: 'projects/pulseboard.html',
-      secondaryUrl: 'https://github.com/LaurAndreea10/PulseBoard',
-      codeUrl: 'https://laurandreea10.github.io/PulseBoard/'
-    },
-    {
-      title: 'Alpis Fusion CRM Premium',
-      label: 'CRM premium',
-      description: { ro: 'Colecție modulară pentru lead pipeline, task management, billing și automatizări.', en: 'Modular collection for lead pipeline, task management, billing and automations.' },
-      meta: 'Vite + React · build optimizat · Deploy automatizat',
-      frameUrl: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/',
-      primaryUrl: 'projects/alpis-fusion-crm.html',
-      secondaryUrl: 'https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium',
-      codeUrl: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/'
-    },
-    {
-      title: 'ClientFlow SaaS CRM',
-      label: 'SaaS CRM',
-      description: { ro: 'Sistem CRM orientat pe task-uri, automatizări și acțiuni operaționale zilnice.', en: 'CRM system focused on tasks, automations and daily operational actions.' },
-      meta: 'Kanban + triage · Shortcuts · Prioritizare vizuală',
-      frameUrl: 'https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/',
-      primaryUrl: 'projects/clientflow.html',
-      secondaryUrl: 'https://github.com/LaurAndreea10/ClientFlow-PRO',
-      codeUrl: 'https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/'
-    },
-    {
-      title: 'Link Video Editor Studio',
-      label: 'Video studio',
-      description: { ro: 'Studio pentru workflow video, navigare rapidă și Automation Pack export.', en: 'Studio for video workflow, quick navigation and Automation Pack export.' },
-      meta: 'HTML · CSS · JavaScript · Automation Pack',
-      frameUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/',
-      primaryUrl: 'tools/link-video-automation-pack.html',
-      secondaryUrl: 'https://github.com/LaurAndreea10/Link-Video-Editor-Studio',
-      codeUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/'
-    }
+    { title: 'PulseBoard', label: 'AI dashboard', description: { ro: 'Dashboard de venituri & operațiuni cu import CSV/Google Sheet, anomalii și briefing executiv.', en: 'Revenue & ops dashboard with CSV/Google Sheet import, anomalies and executive briefing.' }, meta: 'Dashboard · AI fallback · GitHub Pages', frameUrl: 'https://laurandreea10.github.io/PulseBoard/', primaryUrl: 'projects/pulseboard.html', secondaryUrl: 'https://github.com/LaurAndreea10/PulseBoard', codeUrl: 'https://laurandreea10.github.io/PulseBoard/' },
+    { title: 'Alpis Fusion CRM Premium', label: 'CRM premium', description: { ro: 'Colecție modulară pentru lead pipeline, task management, billing și automatizări.', en: 'Modular collection for lead pipeline, task management, billing and automations.' }, meta: 'Vite + React · build optimizat · Deploy automatizat', frameUrl: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/', primaryUrl: 'projects/alpis-fusion-crm.html', secondaryUrl: 'https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium', codeUrl: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/' },
+    { title: 'ClientFlow SaaS CRM', label: 'SaaS CRM', description: { ro: 'Sistem CRM orientat pe task-uri, automatizări și acțiuni operaționale zilnice.', en: 'CRM system focused on tasks, automations and daily operational actions.' }, meta: 'Kanban + triage · Shortcuts · Prioritizare vizuală', frameUrl: 'https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/', primaryUrl: 'projects/clientflow.html', secondaryUrl: 'https://github.com/LaurAndreea10/ClientFlow-PRO', codeUrl: 'https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/' },
+    { title: 'Link Video Editor Studio', label: 'Video studio', description: { ro: 'Studio pentru workflow video, navigare rapidă și Automation Pack export.', en: 'Studio for video workflow, quick navigation and Automation Pack export.' }, meta: 'HTML · CSS · JavaScript · Automation Pack', frameUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/', primaryUrl: 'tools/link-video-automation-pack.html', secondaryUrl: 'https://github.com/LaurAndreea10/Link-Video-Editor-Studio', codeUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/' }
   ];
 
-  const cardStatusContent = {
-    'PulseBoard': 'progress',
-    'Excel-Quest': 'implemented',
-    'BASKET VS AI': 'implemented',
-    'Link Video Editor Studio': 'implemented',
-    'CampaignPilot': 'implemented',
-    'Campaign ROI Calculator': 'implemented',
-    'Marketing OS': 'implemented',
-    'Marketing-Tech Templates': 'implemented',
-    'Lighthouse CI Audit Guide': 'implemented',
-    'Lead Magnet Landing': 'roadmap',
-    'Alpis Fusion CRM Premium': 'implemented',
-    'Brief Studio': 'implemented',
-    'ClientOps Suite Premium': 'progress',
-    'ClientFlow SaaS CRM': 'implemented',
-    'ClientOps': 'implemented',
-    'ClientFlow': 'implemented',
-    'ARCADE WORLD': 'implemented',
-    'Coaching AI': 'progress'
-  };
+  const cardStatusContent = { 'PulseBoard': 'progress', 'LearnFlow Accessible': 'implemented', 'Excel-Quest': 'implemented', 'BASKET VS AI': 'implemented', 'Link Video Editor Studio': 'implemented', 'CampaignPilot': 'implemented', 'Campaign ROI Calculator': 'implemented', 'Marketing OS': 'implemented', 'Marketing-Tech Templates': 'implemented', 'Lighthouse CI Audit Guide': 'implemented', 'Lead Magnet Landing': 'roadmap', 'Alpis Fusion CRM Premium': 'implemented', 'Brief Studio': 'implemented', 'ClientOps Suite Premium': 'progress', 'ClientFlow SaaS CRM': 'implemented', 'ClientOps': 'implemented', 'ClientFlow': 'implemented', 'ARCADE WORLD': 'implemented', 'Coaching AI': 'progress' };
 
   const els = {
     body: document.body,
@@ -251,12 +186,8 @@
   function pad(n) { return String(n).padStart(2, '0'); }
   function getLiveDate() {
     const now = new Date();
-    const months = currentLang === 'ro'
-      ? ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie']
-      : ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    return currentLang === 'ro'
-      ? `${pad(now.getDate())} ${months[now.getMonth()]} ${now.getFullYear()}`
-      : `${months[now.getMonth()]} ${pad(now.getDate())}, ${now.getFullYear()}`;
+    const months = currentLang === 'ro' ? ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'] : ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return currentLang === 'ro' ? `${pad(now.getDate())} ${months[now.getMonth()]} ${now.getFullYear()}` : `${months[now.getMonth()]} ${pad(now.getDate())}, ${now.getFullYear()}`;
   }
 
   function syncThemeButton() {
@@ -266,15 +197,9 @@
     els.themeToggle.setAttribute('aria-label', currentLang === 'ro' ? 'Schimbă tema vizuală' : 'Change visual theme');
   }
 
-  function applyThemeFromStorage() {
-    const savedTheme = localStorage.getItem(STORAGE_KEYS.theme);
-    els.body.classList.toggle('light', savedTheme === 'light');
-    syncThemeButton();
-  }
-
+  function applyThemeFromStorage() { els.body.classList.toggle('light', localStorage.getItem(STORAGE_KEYS.theme) === 'light'); syncThemeButton(); }
   function applyContrastFromStorage() {
-    const savedContrast = localStorage.getItem(STORAGE_KEYS.contrast);
-    const isHigh = savedContrast === 'high';
+    const isHigh = localStorage.getItem(STORAGE_KEYS.contrast) === 'high';
     els.body.classList.toggle('high-contrast', isHigh);
     if (els.contrastToggle) {
       els.contrastToggle.setAttribute('aria-pressed', String(isHigh));
@@ -311,65 +236,33 @@
     if (els.heroPreviewMeta) els.heroPreviewMeta.textContent = slide.meta;
     if (els.heroPreviewDescription) els.heroPreviewDescription.textContent = slide.description[currentLang];
     if (els.heroPreviewType) els.heroPreviewType.textContent = slide.label;
-    if (els.heroPreviewUrl) {
-      els.heroPreviewUrl.href = slide.secondaryUrl;
-      els.heroPreviewUrl.textContent = slide.secondaryUrl.replace(/^https?:\/\//, '');
-    }
-    if (els.heroPreviewOpen) {
-      els.heroPreviewOpen.href = slide.primaryUrl;
-      els.heroPreviewOpen.textContent = translations[currentLang].previewCaseStudy;
-    }
-    if (els.heroPreviewOpenSecondary) {
-      els.heroPreviewOpenSecondary.href = slide.secondaryUrl;
-      els.heroPreviewOpenSecondary.textContent = translations[currentLang].previewOpen;
-    }
-    if (els.heroPreviewCode) {
-      els.heroPreviewCode.href = slide.codeUrl;
-      els.heroPreviewCode.textContent = translations[currentLang].previewCode;
-    }
-    if (els.heroPreviewFrame) {
-      showPreviewFallback(true);
-      els.heroPreviewFrame.src = slide.frameUrl;
-    }
+    if (els.heroPreviewUrl) { els.heroPreviewUrl.href = slide.secondaryUrl; els.heroPreviewUrl.textContent = slide.secondaryUrl.replace(/^https?:\/\//, ''); }
+    if (els.heroPreviewOpen) { els.heroPreviewOpen.href = slide.primaryUrl; els.heroPreviewOpen.textContent = translations[currentLang].previewCaseStudy; }
+    if (els.heroPreviewOpenSecondary) { els.heroPreviewOpenSecondary.href = slide.secondaryUrl; els.heroPreviewOpenSecondary.textContent = translations[currentLang].previewOpen; }
+    if (els.heroPreviewCode) { els.heroPreviewCode.href = slide.codeUrl; els.heroPreviewCode.textContent = translations[currentLang].previewCode; }
+    if (els.heroPreviewFrame) { showPreviewFallback(true); els.heroPreviewFrame.src = slide.frameUrl; }
     renderPreviewChips();
   }
 
   function normalizeImplementationState(value) {
     if (!value) return null;
     const normalized = String(value).trim().toLowerCase();
-    if (['implemented', 'implementat', 'done', 'live'].includes(normalized)) return 'implemented';
-    if (['progress', 'in-progress', 'in_progress', 'dev', 'draft', 'wip', 'dezvoltare'].includes(normalized)) return 'progress';
-    if (['roadmap', 'soon', 'planned', 'planificat'].includes(normalized)) return 'roadmap';
+    if (['implemented','implementat','done','live'].includes(normalized)) return 'implemented';
+    if (['progress','in-progress','in_progress','dev','draft','wip','dezvoltare'].includes(normalized)) return 'progress';
+    if (['roadmap','soon','planned','planificat'].includes(normalized)) return 'roadmap';
     return null;
   }
-
-  function getCardTitle(card) {
-    const titleEl = card.querySelector('h3');
-    return titleEl ? titleEl.textContent.trim() : '';
-  }
-
-  function getImplementationLabel(state) {
-    const copy = translations[currentLang];
-    if (state === 'implemented') return copy.implementationImplemented;
-    if (state === 'roadmap') return copy.implementationRoadmap;
-    return copy.implementationProgress;
-  }
-
+  function getCardTitle(card) { const titleEl = card.querySelector('h3'); return titleEl ? titleEl.textContent.trim() : ''; }
+  function getImplementationLabel(state) { const copy = translations[currentLang]; return state === 'implemented' ? copy.implementationImplemented : state === 'roadmap' ? copy.implementationRoadmap : copy.implementationProgress; }
   function decorateImplementationCards() {
-    const cards = [...document.querySelectorAll('.projects-grid .project-card')];
-    cards.forEach(card => {
+    [...document.querySelectorAll('.projects-grid .project-card')].forEach(card => {
       const explicitState = normalizeImplementationState(card.dataset.status || card.dataset.implementation);
       const titleState = normalizeImplementationState(cardStatusContent[getCardTitle(card)]);
       const state = explicitState || titleState || (card.classList.contains('project-card-soon') ? 'roadmap' : 'implemented');
       card.dataset.implementation = state;
       card.title = translations[currentLang].statusEditHint;
       let badge = card.querySelector('.implementation-badge');
-      if (!badge) {
-        badge = document.createElement('span');
-        badge.className = 'implementation-badge';
-        badge.setAttribute('aria-label', currentLang === 'ro' ? 'Stare implementare' : 'Implementation status');
-        card.appendChild(badge);
-      }
+      if (!badge) { badge = document.createElement('span'); badge.className = 'implementation-badge'; badge.setAttribute('aria-label', currentLang === 'ro' ? 'Stare implementare' : 'Implementation status'); card.appendChild(badge); }
       badge.textContent = getImplementationLabel(state);
     });
   }
@@ -384,41 +277,20 @@
     const div = document.createElement('div');
     const strong = document.createElement('strong');
     if (entry.link) {
-      const a = document.createElement('a');
-      a.className = 'now-item-link';
-      a.href = entry.link.href;
+      const a = document.createElement('a'); a.className = 'now-item-link'; a.href = entry.link.href;
       if (entry.link.href.startsWith('http')) a.target = '_blank', a.rel = 'noopener noreferrer';
-      a.textContent = entry.title;
-      strong.appendChild(a);
-    } else {
-      strong.textContent = entry.title;
-    }
+      a.textContent = entry.title; strong.appendChild(a);
+    } else strong.textContent = entry.title;
     div.appendChild(strong);
     div.appendChild(document.createTextNode(' — ' + entry.body + ' '));
-    if (entry.tag) {
-      const tag = document.createElement('span');
-      tag.className = 'now-tag' + (done ? ' now-tag-done' : '');
-      tag.textContent = entry.tag;
-      div.appendChild(tag);
-    }
+    if (entry.tag) { const tag = document.createElement('span'); tag.className = 'now-tag' + (done ? ' now-tag-done' : ''); tag.textContent = entry.tag; div.appendChild(tag); }
     [entry.link, entry.secondaryLink].forEach(linkObj => {
       if (!linkObj) return;
-      const action = document.createElement('a');
-      action.className = 'now-tag now-link-action';
-      action.href = linkObj.href;
-      action.textContent = linkObj.label;
-      action.setAttribute('aria-label', linkObj.label);
+      const action = document.createElement('a'); action.className = 'now-tag now-link-action'; action.href = linkObj.href; action.textContent = linkObj.label; action.setAttribute('aria-label', linkObj.label);
       if (linkObj.href.startsWith('http')) action.target = '_blank', action.rel = 'noopener noreferrer';
-      div.appendChild(document.createTextNode(' '));
-      div.appendChild(action);
+      div.appendChild(document.createTextNode(' ')); div.appendChild(action);
     });
-    li.appendChild(status);
-    li.appendChild(div);
-    return li;
-  }
-
-  function currentWeekLabel() {
-    return currentLang === 'ro' ? 'Săpt. 25–29 Mai 2026' : 'Week of May 25–29, 2026';
+    li.appendChild(status); li.appendChild(div); return li;
   }
 
   function setupNowTabs() {
@@ -426,17 +298,13 @@
     els.nowSection.dataset.tabsReady = 'true';
     const tabs = els.nowSection.querySelectorAll('.now-tab');
     const panels = els.nowSection.querySelectorAll('.now-panel');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const target = tab.getAttribute('aria-controls');
-        tabs.forEach(t => { t.classList.remove('now-tab-active'); t.setAttribute('aria-selected', 'false'); });
-        panels.forEach(p => p.classList.add('now-panel-hidden'));
-        tab.classList.add('now-tab-active');
-        tab.setAttribute('aria-selected', 'true');
-        const panel = document.getElementById(target);
-        if (panel) panel.classList.remove('now-panel-hidden');
-      });
-    });
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      const target = tab.getAttribute('aria-controls');
+      tabs.forEach(t => { t.classList.remove('now-tab-active'); t.setAttribute('aria-selected', 'false'); });
+      panels.forEach(p => p.classList.add('now-panel-hidden'));
+      tab.classList.add('now-tab-active'); tab.setAttribute('aria-selected', 'true');
+      const panel = document.getElementById(target); if (panel) panel.classList.remove('now-panel-hidden');
+    }));
   }
 
   function setupNowSection() {
@@ -451,40 +319,20 @@
     if (title) title.textContent = t.nowTitle;
     if (badge) badge.innerHTML = `${t.nowUpdatedPrefix} <time datetime="${copy.datetime}">${copy.label}</time>`;
     if (note) note.innerHTML = copy.note;
-    const tabA = els.nowSection.querySelector('#now-tab-active');
-    const tabD = els.nowSection.querySelector('#now-tab-done');
-    const tabH = els.nowSection.querySelector('#now-tab-history');
-    if (tabA) tabA.textContent = copy.tabs.active;
-    if (tabD) tabD.textContent = copy.tabs.done;
-    if (tabH) tabH.textContent = copy.tabs.history;
+    const tabA = els.nowSection.querySelector('#now-tab-active'), tabD = els.nowSection.querySelector('#now-tab-done'), tabH = els.nowSection.querySelector('#now-tab-history');
+    if (tabA) tabA.textContent = copy.tabs.active; if (tabD) tabD.textContent = copy.tabs.done; if (tabH) tabH.textContent = copy.tabs.history;
     const activePanel = els.nowSection.querySelector('#now-panel-active .now-checklist');
-    if (activePanel) {
-      activePanel.innerHTML = '';
-      copy.active.forEach(entry => activePanel.appendChild(buildNowItem(entry, false)));
-    }
+    if (activePanel) { activePanel.innerHTML = ''; copy.active.forEach(entry => activePanel.appendChild(buildNowItem(entry, false))); }
     const donePanel = els.nowSection.querySelector('#now-panel-done .now-checklist');
-    if (donePanel) {
-      donePanel.innerHTML = '';
-      copy.done.forEach(entry => donePanel.appendChild(buildNowItem(entry, true)));
-    }
+    if (donePanel) { donePanel.innerHTML = ''; copy.done.forEach(entry => donePanel.appendChild(buildNowItem(entry, true))); }
     const historyPanel = els.nowSection.querySelector('#now-panel-history .now-history');
     if (historyPanel) {
       historyPanel.innerHTML = '';
-      copy.history.forEach((week, idx) => {
-        const wrap = document.createElement('div');
-        wrap.className = 'now-history-week';
-        const label = document.createElement('span');
-        label.className = 'now-history-label';
-        label.textContent = idx === 0 ? currentWeekLabel() : week.label;
-        const ul = document.createElement('ul');
-        week.items.forEach(text => {
-          const li = document.createElement('li');
-          li.textContent = text;
-          ul.appendChild(li);
-        });
-        wrap.appendChild(label);
-        wrap.appendChild(ul);
-        historyPanel.appendChild(wrap);
+      copy.history.forEach(week => {
+        const wrap = document.createElement('div'); wrap.className = 'now-history-week';
+        const label = document.createElement('span'); label.className = 'now-history-label'; label.textContent = week.label;
+        const ul = document.createElement('ul'); week.items.forEach(text => { const li = document.createElement('li'); li.textContent = text; ul.appendChild(li); });
+        wrap.appendChild(label); wrap.appendChild(ul); historyPanel.appendChild(wrap);
       });
     }
     setupNowTabs();
@@ -494,8 +342,7 @@
     const pulseCard = [...document.querySelectorAll('.project-card')].find(card => getCardTitle(card) === 'PulseBoard');
     if (!pulseCard) return;
     pulseCard.dataset.implementation = 'progress';
-    const links = pulseCard.querySelectorAll('a[href]');
-    links.forEach(link => {
+    pulseCard.querySelectorAll('a[href]').forEach(link => {
       const text = link.textContent.trim().toLowerCase();
       if (text.includes('live')) link.href = 'https://laurandreea10.github.io/PulseBoard/';
       if (text.includes('github')) link.href = 'https://github.com/LaurAndreea10/PulseBoard';
@@ -515,185 +362,28 @@
     if (els.heroPreviewLabel) els.heroPreviewLabel.textContent = translations[currentLang].previewLabel;
     if (els.heroCtaPrimary) els.heroCtaPrimary.textContent = translations[currentLang].heroPrimary;
     if (els.heroCtaSecondary) els.heroCtaSecondary.textContent = translations[currentLang].heroSecondary;
-    syncThemeButton();
-    applyContrastFromStorage();
-    setPreview(previewIndex);
-    setupNowSection();
-    decorateImplementationCards();
+    syncThemeButton(); applyContrastFromStorage(); setPreview(previewIndex); setupNowSection(); decorateImplementationCards();
   }
 
-  function setupThemeToggle() {
-    if (!els.themeToggle) return;
-    els.themeToggle.addEventListener('click', () => {
-      const isLight = els.body.classList.toggle('light');
-      localStorage.setItem(STORAGE_KEYS.theme, isLight ? 'light' : 'dark');
-      syncThemeButton();
-    });
-  }
-
-  function setupContrastToggle() {
-    if (!els.contrastToggle) return;
-    els.contrastToggle.addEventListener('click', () => {
-      const isHigh = els.body.classList.toggle('high-contrast');
-      localStorage.setItem(STORAGE_KEYS.contrast, isHigh ? 'high' : 'normal');
-      applyContrastFromStorage();
-    });
-  }
-
-  function setupLangToggle() {
-    if (!els.langToggle) return;
-    els.langToggle.addEventListener('click', () => applyLanguage(currentLang === 'ro' ? 'en' : 'ro'));
-  }
-
-  function setupPreviewFrame() {
-    if (!els.heroPreviewFrame) return;
-    els.heroPreviewFrame.addEventListener('load', () => showPreviewFallback(false));
-    els.heroPreviewFrame.addEventListener('error', () => showPreviewFallback(true));
-    els.heroPreviewFrame.addEventListener('mouseenter', stopAutoplay);
-    els.heroPreviewFrame.addEventListener('mouseleave', startAutoplay);
-  }
-
-  function setupAriaCurrent() {
-    if (!('IntersectionObserver' in window) || !els.sections.length || !els.navLinks.length) return;
-    const observer = new IntersectionObserver((entries) => {
-      const visible = entries.filter(e => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-      if (!visible.length) return;
-      const currentId = `#${visible[0].target.id}`;
-      els.navLinks.forEach(link => {
-        if (link.getAttribute('href') === currentId) link.setAttribute('aria-current', 'true');
-        else link.removeAttribute('aria-current');
-      });
-    }, { rootMargin: '-20% 0px -60% 0px', threshold: [0.2, 0.35, 0.55] });
-    els.sections.forEach(section => observer.observe(section));
-  }
-
-  function startAutoplay() {
-    if (prefersReducedMotion.matches || previewSlides.length < 2) return;
-    stopAutoplay();
-    autoplayId = window.setInterval(() => setPreview(previewIndex + 1), 5000);
-  }
-
-  function stopAutoplay() {
-    if (autoplayId) {
-      window.clearInterval(autoplayId);
-      autoplayId = null;
-    }
-  }
-
-  function restartAutoplay() {
-    stopAutoplay();
-    startAutoplay();
-  }
-
-  function setupReducedMotionWatcher() {
-    if (typeof prefersReducedMotion.addEventListener === 'function') {
-      prefersReducedMotion.addEventListener('change', () => {
-        if (prefersReducedMotion.matches) stopAutoplay();
-        else startAutoplay();
-      });
-    }
-  }
-
-  function updateFooterYear() {
-    const footer = document.querySelector('.footer-copy');
-    if (footer) footer.textContent = '© ' + new Date().getFullYear() + ' Laura Andreea · laurandreea10.github.io';
-  }
-
-  function updateScanDates() {
-    const dateEl = document.getElementById('scan-date');
-    const yearsEl = document.getElementById('scan-years');
-    if (dateEl) dateEl.textContent = getLiveDate();
-    if (yearsEl) yearsEl.textContent = (new Date().getFullYear() - 2022) + '+ ani activi';
-  }
-
-  function fetchGithubRepos() {
-    if (window.__laGhRepos && typeof window.__laGhRepos.then === 'function') {
-      window.__laGhRepos.then(count => {
-        if (count > 0) {
-          const scanRepo = document.getElementById('scan-repo-count');
-          if (scanRepo) scanRepo.textContent = count + '+';
-        }
-      });
-    }
-  }
-
-  function applyScoreBoosts() {
-    const scanProjCount = document.getElementById('scan-proj-count');
-    if (scanProjCount) scanProjCount.textContent = '64';
-    const nowLink = document.querySelector('a.pill[href="#now"]');
-    if (nowLink && !nowLink.querySelector('[data-live]')) {
-      const dot = document.createElement('span');
-      dot.setAttribute('data-live', '1');
-      dot.style.cssText = 'display:inline-block;width:6px;height:6px;border-radius:50%;background:#34d399;margin-left:5px;vertical-align:middle;animation:scan-pulse 1.8s ease infinite;';
-      nowLink.appendChild(dot);
-    }
-    const footerNote = document.querySelector('.footer > .container > p:first-child');
-    if (footerNote && !footerNote.querySelector('[data-ts]')) {
-      const ts = document.createElement('span');
-      ts.setAttribute('data-ts', '1');
-      ts.style.cssText = 'display:block;font-size:.72rem;color:#8089a0;margin-top:.25rem;';
-      ts.textContent = (currentLang === 'ro' ? 'Ultima actualizare: ' : 'Last update: ') + getLiveDate();
-      footerNote.appendChild(ts);
-    }
-  }
-
-  function initScanPanel() {
-    const btn = document.getElementById('scanToggle');
-    const panel = document.getElementById('scan-panel');
-    const close = document.getElementById('scanClose');
-    if (!btn || !panel) return;
-    panel.hidden = true;
-    let open = false;
-    function closePanel() {
-      open = false;
-      panel.hidden = true;
-      btn.setAttribute('aria-expanded', 'false');
-      btn.classList.remove('active');
-      document.removeEventListener('keydown', escKey);
-    }
-    function escKey(e) { if (e.key === 'Escape') { closePanel(); btn.focus(); } }
-    function openPanel() {
-      open = true;
-      panel.hidden = false;
-      btn.setAttribute('aria-expanded', 'true');
-      btn.classList.add('active');
-      updateScanDates();
-      document.addEventListener('keydown', escKey);
-    }
-    btn.addEventListener('click', e => { e.stopPropagation(); open ? closePanel() : openPanel(); });
-    if (close) close.addEventListener('click', () => { closePanel(); btn.focus(); });
-  }
+  function setupThemeToggle() { if (!els.themeToggle) return; els.themeToggle.addEventListener('click', () => { const isLight = els.body.classList.toggle('light'); localStorage.setItem(STORAGE_KEYS.theme, isLight ? 'light' : 'dark'); syncThemeButton(); }); }
+  function setupContrastToggle() { if (!els.contrastToggle) return; els.contrastToggle.addEventListener('click', () => { const isHigh = els.body.classList.toggle('high-contrast'); localStorage.setItem(STORAGE_KEYS.contrast, isHigh ? 'high' : 'normal'); applyContrastFromStorage(); }); }
+  function setupLangToggle() { if (!els.langToggle) return; els.langToggle.addEventListener('click', () => applyLanguage(currentLang === 'ro' ? 'en' : 'ro')); }
+  function setupPreviewFrame() { if (!els.heroPreviewFrame) return; els.heroPreviewFrame.addEventListener('load', () => showPreviewFallback(false)); els.heroPreviewFrame.addEventListener('error', () => showPreviewFallback(true)); els.heroPreviewFrame.addEventListener('mouseenter', stopAutoplay); els.heroPreviewFrame.addEventListener('mouseleave', startAutoplay); }
+  function setupAriaCurrent() { if (!('IntersectionObserver' in window) || !els.sections.length || !els.navLinks.length) return; const observer = new IntersectionObserver(entries => { const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio); if (!visible.length) return; const currentId = `#${visible[0].target.id}`; els.navLinks.forEach(link => link.getAttribute('href') === currentId ? link.setAttribute('aria-current','true') : link.removeAttribute('aria-current')); }, { rootMargin: '-20% 0px -60% 0px', threshold: [0.2,0.35,0.55] }); els.sections.forEach(section => observer.observe(section)); }
+  function startAutoplay() { if (prefersReducedMotion.matches || previewSlides.length < 2) return; stopAutoplay(); autoplayId = window.setInterval(() => setPreview(previewIndex + 1), 5000); }
+  function stopAutoplay() { if (autoplayId) { window.clearInterval(autoplayId); autoplayId = null; } }
+  function restartAutoplay() { stopAutoplay(); startAutoplay(); }
+  function setupReducedMotionWatcher() { if (typeof prefersReducedMotion.addEventListener === 'function') prefersReducedMotion.addEventListener('change', () => prefersReducedMotion.matches ? stopAutoplay() : startAutoplay()); }
+  function updateFooterYear() { const footer = document.querySelector('.footer-copy'); if (footer) footer.textContent = '© ' + new Date().getFullYear() + ' Laura Andreea · laurandreea10.github.io'; }
+  function updateScanDates() { const dateEl = document.getElementById('scan-date'), yearsEl = document.getElementById('scan-years'); if (dateEl) dateEl.textContent = getLiveDate(); if (yearsEl) yearsEl.textContent = (new Date().getFullYear() - 2022) + '+ ani activi'; }
+  function fetchGithubRepos() { if (window.__laGhRepos && typeof window.__laGhRepos.then === 'function') window.__laGhRepos.then(count => { if (count > 0) { const scanRepo = document.getElementById('scan-repo-count'); if (scanRepo) scanRepo.textContent = count + '+'; } }); }
+  function applyScoreBoosts() { const scanProjCount = document.getElementById('scan-proj-count'); if (scanProjCount) scanProjCount.textContent = '64'; const nowLink = document.querySelector('a.pill[href="#now"]'); if (nowLink && !nowLink.querySelector('[data-live]')) { const dot = document.createElement('span'); dot.setAttribute('data-live','1'); dot.style.cssText = 'display:inline-block;width:6px;height:6px;border-radius:50%;background:#34d399;margin-left:5px;vertical-align:middle;animation:scan-pulse 1.8s ease infinite;'; nowLink.appendChild(dot); } }
+  function initScanPanel() { const btn = document.getElementById('scanToggle'), panel = document.getElementById('scan-panel'), close = document.getElementById('scanClose'); if (!btn || !panel) return; panel.hidden = true; let open = false; function closePanel(){ open = false; panel.hidden = true; btn.setAttribute('aria-expanded','false'); btn.classList.remove('active'); } function openPanel(){ open = true; panel.hidden = false; btn.setAttribute('aria-expanded','true'); btn.classList.add('active'); updateScanDates(); } btn.addEventListener('click', e => { e.stopPropagation(); open ? closePanel() : openPanel(); }); if (close) close.addEventListener('click', () => { closePanel(); btn.focus(); }); }
 
   function initPortfolioCore() {
-    applyThemeFromStorage();
-    applyContrastFromStorage();
-    setupThemeToggle();
-    setupContrastToggle();
-    setupLangToggle();
-    setupPreviewFrame();
-    setupAriaCurrent();
-    setupReducedMotionWatcher();
-    fixPulseBoardLinks();
-    applyLanguage(currentLang);
-    setPreview(0);
-    decorateImplementationCards();
-    setupNowSection();
-    updateFooterYear();
-    updateScanDates();
-    initScanPanel();
-    fetchGithubRepos();
-    applyScoreBoosts();
-    startAutoplay();
+    applyThemeFromStorage(); applyContrastFromStorage(); setupThemeToggle(); setupContrastToggle(); setupLangToggle(); setupPreviewFrame(); setupAriaCurrent(); setupReducedMotionWatcher(); fixPulseBoardLinks(); applyLanguage(currentLang); setPreview(0); decorateImplementationCards(); setupNowSection(); updateFooterYear(); updateScanDates(); initScanPanel(); fetchGithubRepos(); applyScoreBoosts(); startAutoplay();
   }
 
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stopAutoplay();
-    else startAutoplay();
-  });
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPortfolioCore);
-  } else {
-    initPortfolioCore();
-  }
+  document.addEventListener('visibilitychange', () => document.hidden ? stopAutoplay() : startAutoplay());
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initPortfolioCore); else initPortfolioCore();
 })();
