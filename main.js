@@ -28,7 +28,7 @@
       implementationImplemented: 'Implementat',
       implementationProgress: 'În dezvoltare',
       implementationRoadmap: 'Roadmap',
-      statusEditHint: 'Status implementare actualizat automat din main.js.',
+      statusEditHint: 'Implementation status updated automatically from main.js.',
       nowUpdatedPrefix: 'Actualizat:',
       nowLabel: '⚡ Now',
       nowTitle: 'La ce lucrez săptămâna asta'
@@ -60,17 +60,36 @@
     }
   };
 
+  // FIX: data si datetime generate dinamic, nu hardcodate
+  function getNowDatetime() {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  function getNowLabel(lang) {
+    const now = new Date();
+    const monthsRo = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+    const monthsEn = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    if (lang === 'en') {
+      return `${monthsEn[now.getMonth()]} ${String(now.getDate()).padStart(2,'0')}, ${now.getFullYear()}`;
+    }
+    return `${String(now.getDate()).padStart(2,'0')} ${monthsRo[now.getMonth()]} ${now.getFullYear()}`;
+  }
+
   const nowContent = {
     ro: {
-      datetime: '2026-05-29',
-      label: '29 Mai 2026',
+      get datetime() { return getNowDatetime(); },
+      get label() { return getNowLabel('ro'); },
       tabs: { active: '🔄 În curs', done: '✅ Finalizat recent', history: '📅 Istoric' },
       active: [
         { title: 'PulseBoard', body: 'roadmap activ pentru dashboard-ul de venituri & operațiuni: detectare de anomalii cu sezonalitate (normalizare pe ziua săptămânii), conectori direcți Stripe/Shopify în locul exportului manual, briefing programat trimis automat luni dimineața și export PDF/PNG al întregului dashboard.', tag: 'AI Dashboard', link: { href: 'https://laurandreea10.github.io/PulseBoard/', label: 'Deschide PulseBoard' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/PulseBoard', label: 'Repo GitHub' } },
         { title: 'Career Toolkit', body: 'suită de instrumente pentru pregătirea carierei: CV builder, cover letter generator, job tracker și interview prep. Primul deploy live.', tag: 'Produs nou', link: { href: 'https://laurandreea10.github.io/Career-Toolkit/', label: 'Deschide Career Toolkit' } },
         { title: 'ClientOps Suite Premium — Demo live', body: 'demo live în construcție pentru suita CRM cu fluxuri operaționale avansate. Repo public disponibil.', tag: 'CRM', link: { href: 'https://github.com/LaurAndreea10/clientops-suite-app-premium', label: 'Repo GitHub' } },
         { title: 'Lead Magnet Landing', body: 'landing page modular pentru ebooks, white papers și resource downloads: hero hook, proof, email gate, thank-you flow și structură reutilizabilă pentru campanii. Status: layout + flow de conversie.', tag: 'Marketing-Tech' },
-        { title: 'Excel Quest V2', body: 'extind aplicația gamificată cu progres salvat, lecții structurate, certificate preview și flow „continuă de unde ai rămas”. Status: UX de reluare + dashboard progres.', tag: 'Iterație', link: { href: 'https://laurandreea10.github.io/Excel-Quest/', label: 'Deschide Excel Quest' } },
+        { title: 'Excel Quest V2', body: 'extind aplicația gamificată cu progres salvat, lecții structurate, certificate preview și flow „continuă de unde ai rămas". Status: UX de reluare + dashboard progres.', tag: 'Iterație', link: { href: 'https://laurandreea10.github.io/Excel-Quest/', label: 'Deschide Excel Quest' } },
         { title: 'Portfolio Polish / Accessibility Pass', body: 'rafinare secțiunea Now, contrast, skip links, focus states, mobile UX și microcopy bilingv RO/EN. Status: audit vizual + îmbunătățiri incrementale.', tag: 'Performanță' },
         { title: 'Open-source contribution', body: 'pregătesc un PR mic pe un proiect public cu multe stele: fix pentru forwarded refs în componente React, cu test și reproducere. Status: fork + branch + test case.', tag: 'OSS' },
         { title: 'Marketing OS — suită unificată', body: 'unific CampaignPilot, ROI Calculator, Brief Generator și Lead Magnet Landing într-o suită de tool-uri pentru planificare, execuție și analiză campanii. Status: structură hub + linkuri între module.', tag: 'Marketing OS', link: { href: 'tools/marketing-os.html', label: 'Deschide Marketing OS' } }
@@ -99,15 +118,15 @@
       note: 'Actualizat manual ca secțiune de tip now page — arată ce prioritizez activ, nu doar ce am construit.'
     },
     en: {
-      datetime: '2026-05-29',
-      label: 'May 29, 2026',
+      get datetime() { return getNowDatetime(); },
+      get label() { return getNowLabel('en'); },
       tabs: { active: '🔄 In progress', done: '✅ Recently shipped', history: '📅 History' },
       active: [
         { title: 'PulseBoard', body: 'active roadmap for the revenue & ops dashboard: anomaly detection with seasonality (weekday normalization), direct Stripe/Shopify connectors instead of manual export, scheduled briefing auto-sent Monday morning, and full-dashboard PDF/PNG export.', tag: 'AI Dashboard', link: { href: 'https://laurandreea10.github.io/PulseBoard/', label: 'Open PulseBoard' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/PulseBoard', label: 'GitHub repo' } },
         { title: 'Career Toolkit', body: 'career preparation suite: CV builder, cover letter generator, job tracker and interview prep. First live deploy.', tag: 'New product', link: { href: 'https://laurandreea10.github.io/Career-Toolkit/', label: 'Open Career Toolkit' } },
         { title: 'ClientOps Suite Premium — Live demo', body: 'live demo in progress for the CRM suite with advanced operational flows. Public repo available.', tag: 'CRM', link: { href: 'https://github.com/LaurAndreea10/clientops-suite-app-premium', label: 'GitHub repo' } },
         { title: 'Lead Magnet Landing', body: 'modular landing page for ebooks, white papers and resource downloads: hero hook, proof, email gate, thank-you flow and reusable campaign structure. Status: layout + conversion flow.', tag: 'Marketing-Tech' },
-        { title: 'Excel Quest V2', body: 'expanding the gamified app with saved progress, structured lessons, certificate preview and a “continue where you left off” flow. Status: resume UX + progress dashboard.', tag: 'Iteration', link: { href: 'https://laurandreea10.github.io/Excel-Quest/', label: 'Open Excel Quest' } },
+        { title: 'Excel Quest V2', body: 'expanding the gamified app with saved progress, structured lessons, certificate preview and a "continue where you left off" flow. Status: resume UX + progress dashboard.', tag: 'Iteration', link: { href: 'https://laurandreea10.github.io/Excel-Quest/', label: 'Open Excel Quest' } },
         { title: 'Portfolio Polish / Accessibility Pass', body: 'refining the Now section, contrast, skip links, focus states, mobile UX and bilingual RO/EN microcopy. Status: visual audit + incremental improvements.', tag: 'Performance' },
         { title: 'Open-source contribution', body: 'preparing a small but visible PR on a high-star public project: fix for forwarded refs in React components, with test and reproduction case. Status: fork + branch + test case.', tag: 'OSS' },
         { title: 'Marketing OS — unified suite', body: 'unifying CampaignPilot, ROI Calculator, Brief Generator and Lead Magnet Landing into a campaign planning, execution and analysis toolkit. Status: hub structure + inter-module links.', tag: 'Marketing OS', link: { href: 'tools/marketing-os.html', label: 'Open Marketing OS' } }
@@ -184,10 +203,16 @@
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   function pad(n) { return String(n).padStart(2, '0'); }
+
+  // FIX: getLiveDate foloseste getLangParam curent, nu hardcodat
   function getLiveDate() {
     const now = new Date();
-    const months = currentLang === 'ro' ? ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'] : ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    return currentLang === 'ro' ? `${pad(now.getDate())} ${months[now.getMonth()]} ${now.getFullYear()}` : `${months[now.getMonth()]} ${pad(now.getDate())}, ${now.getFullYear()}`;
+    const months = currentLang === 'ro'
+      ? ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie']
+      : ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return currentLang === 'ro'
+      ? `${pad(now.getDate())} ${months[now.getMonth()]} ${now.getFullYear()}`
+      : `${months[now.getMonth()]} ${pad(now.getDate())}, ${now.getFullYear()}`;
   }
 
   function syncThemeButton() {
@@ -317,6 +342,7 @@
     const note = els.nowSection.querySelector('.now-note');
     if (eyebrow) eyebrow.textContent = t.nowLabel;
     if (title) title.textContent = t.nowTitle;
+    // FIX: data generata dinamic, nu hardcodata
     if (badge) badge.innerHTML = `${t.nowUpdatedPrefix} <time datetime="${copy.datetime}">${copy.label}</time>`;
     if (note) note.innerHTML = copy.note;
     const tabA = els.nowSection.querySelector('#now-tab-active'), tabD = els.nowSection.querySelector('#now-tab-done'), tabH = els.nowSection.querySelector('#now-tab-history');
@@ -363,6 +389,8 @@
     if (els.heroCtaPrimary) els.heroCtaPrimary.textContent = translations[currentLang].heroPrimary;
     if (els.heroCtaSecondary) els.heroCtaSecondary.textContent = translations[currentLang].heroSecondary;
     syncThemeButton(); applyContrastFromStorage(); setPreview(previewIndex); setupNowSection(); decorateImplementationCards();
+    // FIX: update scan dates la fiecare schimbare de limba
+    updateScanDates();
   }
 
   function setupThemeToggle() { if (!els.themeToggle) return; els.themeToggle.addEventListener('click', () => { const isLight = els.body.classList.toggle('light'); localStorage.setItem(STORAGE_KEYS.theme, isLight ? 'light' : 'dark'); syncThemeButton(); }); }
@@ -375,13 +403,58 @@
   function restartAutoplay() { stopAutoplay(); startAutoplay(); }
   function setupReducedMotionWatcher() { if (typeof prefersReducedMotion.addEventListener === 'function') prefersReducedMotion.addEventListener('change', () => prefersReducedMotion.matches ? stopAutoplay() : startAutoplay()); }
   function updateFooterYear() { const footer = document.querySelector('.footer-copy'); if (footer) footer.textContent = '© ' + new Date().getFullYear() + ' Laura Andreea · laurandreea10.github.io'; }
-  function updateScanDates() { const dateEl = document.getElementById('scan-date'), yearsEl = document.getElementById('scan-years'); if (dateEl) dateEl.textContent = getLiveDate(); if (yearsEl) yearsEl.textContent = (new Date().getFullYear() - 2022) + '+ ani activi'; }
+
+  // FIX: updateScanDates populeaza toate campurile, inclusiv cele din about
+  function updateScanDates() {
+    const dateEl = document.getElementById('scan-date');
+    const yearsEl = document.getElementById('scan-years');
+    const liveDate = getLiveDate();
+    const yearsActive = (new Date().getFullYear() - 2022) + (currentLang === 'ro' ? '+ ani activi' : '+ active years');
+
+    if (dateEl) dateEl.textContent = liveDate;
+    if (yearsEl) yearsEl.textContent = yearsActive;
+
+    // FIX: actualizeaza si campurile din about-section care apar goale
+    // Cauta toate elementele cu id scan-date si scan-years (pot exista duplicat)
+    document.querySelectorAll('[id="scan-date"]').forEach(el => { el.textContent = liveDate; });
+    document.querySelectorAll('[id="scan-years"]').forEach(el => { el.textContent = yearsActive; });
+  }
+
   function fetchGithubRepos() { if (window.__laGhRepos && typeof window.__laGhRepos.then === 'function') window.__laGhRepos.then(count => { if (count > 0) { const scanRepo = document.getElementById('scan-repo-count'); if (scanRepo) scanRepo.textContent = count + '+'; } }); }
   function applyScoreBoosts() { const scanProjCount = document.getElementById('scan-proj-count'); if (scanProjCount) scanProjCount.textContent = '64'; const nowLink = document.querySelector('a.pill[href="#now"]'); if (nowLink && !nowLink.querySelector('[data-live]')) { const dot = document.createElement('span'); dot.setAttribute('data-live','1'); dot.style.cssText = 'display:inline-block;width:6px;height:6px;border-radius:50%;background:#34d399;margin-left:5px;vertical-align:middle;animation:scan-pulse 1.8s ease infinite;'; nowLink.appendChild(dot); } }
-  function initScanPanel() { const btn = document.getElementById('scanToggle'), panel = document.getElementById('scan-panel'), close = document.getElementById('scanClose'); if (!btn || !panel) return; panel.hidden = true; let open = false; function closePanel(){ open = false; panel.hidden = true; btn.setAttribute('aria-expanded','false'); btn.classList.remove('active'); } function openPanel(){ open = true; panel.hidden = false; btn.setAttribute('aria-expanded','true'); btn.classList.add('active'); updateScanDates(); } btn.addEventListener('click', e => { e.stopPropagation(); open ? closePanel() : openPanel(); }); if (close) close.addEventListener('click', () => { closePanel(); btn.focus(); }); }
+
+  function initScanPanel() {
+    const btn = document.getElementById('scanToggle'), panel = document.getElementById('scan-panel'), close = document.getElementById('scanClose');
+    if (!btn || !panel) return;
+    panel.hidden = true;
+    let open = false;
+    function closePanel(){ open = false; panel.hidden = true; btn.setAttribute('aria-expanded','false'); btn.classList.remove('active'); }
+    function openPanel(){ open = true; panel.hidden = false; btn.setAttribute('aria-expanded','true'); btn.classList.add('active'); updateScanDates(); }
+    btn.addEventListener('click', e => { e.stopPropagation(); open ? closePanel() : openPanel(); });
+    if (close) close.addEventListener('click', () => { closePanel(); btn.focus(); });
+  }
 
   function initPortfolioCore() {
-    applyThemeFromStorage(); applyContrastFromStorage(); setupThemeToggle(); setupContrastToggle(); setupLangToggle(); setupPreviewFrame(); setupAriaCurrent(); setupReducedMotionWatcher(); fixPulseBoardLinks(); applyLanguage(currentLang); setPreview(0); decorateImplementationCards(); setupNowSection(); updateFooterYear(); updateScanDates(); initScanPanel(); fetchGithubRepos(); applyScoreBoosts(); startAutoplay();
+    applyThemeFromStorage();
+    applyContrastFromStorage();
+    setupThemeToggle();
+    setupContrastToggle();
+    setupLangToggle();
+    setupPreviewFrame();
+    setupAriaCurrent();
+    setupReducedMotionWatcher();
+    fixPulseBoardLinks();
+    applyLanguage(currentLang);
+    setPreview(0);
+    decorateImplementationCards();
+    setupNowSection();
+    updateFooterYear();
+    // FIX: updateScanDates apelat imediat la init, nu doar la deschiderea panoului
+    updateScanDates();
+    initScanPanel();
+    fetchGithubRepos();
+    applyScoreBoosts();
+    startAutoplay();
   }
 
   document.addEventListener('visibilitychange', () => document.hidden ? stopAutoplay() : startAutoplay());
