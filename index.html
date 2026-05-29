@@ -649,7 +649,8 @@
         <span>/</span>codepen-portfolio
       </div>
       <div class="cta">
-        <a href="Intro Portofoliu Laura Andreea.html">Vezi deck-ul →</a>
+        <!-- FIX: URL fara spatii -->
+        <a href="intro-portofoliu-laura-andreea.html">Vezi deck-ul →</a>
         <span class="sep">·</span>
         <a href="mailto:andreealaurap@gmail.com">Scrie-mi</a>
         <span class="sep">·</span>
@@ -701,7 +702,8 @@
 
 <div class="controls">
   <button id="replay">↻ Replay</button>
-  <a href="Intro Portofoliu Laura Andreea.html">Skip →</a>
+  <!-- FIX: URL fara spatii -->
+  <a href="intro-portofoliu-laura-andreea.html">Skip →</a>
 </div>
 
 <script>
@@ -778,7 +780,7 @@ requestAnimationFrame(loop);
 
 function restart(){
   var stage = document.getElementById('stage');
-  if (!stage) { stopIntroReplay(); return; }  // overlay deja scos din DOM
+  if (!stage) { stopIntroReplay(); return; }
   var clone = stage.cloneNode(true);
   stage.replaceWith(clone);
   startTime = performance.now();
@@ -847,7 +849,6 @@ document.addEventListener('visibilitychange', function() {
         }, 550);
         try { sessionStorage.setItem(KEY, '1'); } catch(e) {}
         document.removeEventListener('keydown', onKey);
-        // Oprește intervalul de replay — overlay-ul nu mai există
         if (typeof stopIntroReplay === 'function') stopIntroReplay();
       }
 
@@ -983,12 +984,12 @@ document.addEventListener('visibilitychange', function() {
         <div class="scan-col">
           <h3 class="scan-col-title">🔄 În curs</h3>
           <ul class="scan-list">
+            <li>🔄 <strong>PulseBoard</strong> — roadmap activ: sezonalitate, Stripe/Shopify, briefing automat</li>
             <li>🔄 <strong>Career Toolkit</strong> — suită instrumente carieră, primul deploy live</li>
             <li>🔄 <strong>ClientOps Suite Premium</strong> — demo live în construcție</li>
             <li>🔄 <strong>Lead Magnet Landing</strong> — layout + flow de conversie</li>
             <li>🔄 <strong>Excel Quest V2</strong> — progres salvat + dashboard</li>
             <li>🔄 <strong>Portfolio Polish</strong> — accessibility audit + mobile UX</li>
-            <li>🔄 <strong>Open-source PR</strong> — forwarded refs fix React</li>
             <li>🔄 <strong>Marketing OS</strong> — suită unificată CampaignPilot + ROI + Lead Magnet</li>
           </ul>
         </div>
@@ -1008,10 +1009,11 @@ document.addEventListener('visibilitychange', function() {
         </div>
       </div>
 
+      <!-- FIX: campurile scan-date si scan-years pornesc goale, JS le populeaza imediat la load -->
       <div class="scan-footer">
-        <span id="scan-updated">Actualizat: <strong id="scan-date">—</strong></span>
+        <span id="scan-updated">Actualizat: <strong id="scan-date"></strong></span>
         <span class="scan-footer-sep">·</span>
-        <span id="scan-exp">Experiență activă: <strong id="scan-years">—</strong></span>
+        <span id="scan-exp">Experiență activă: <strong id="scan-years"></strong></span>
         <span class="scan-footer-sep">·</span>
         <a href="#key-projects" onclick="document.getElementById('scan-panel').hidden=true">Vezi proiectele →</a>
       </div>
@@ -1117,7 +1119,7 @@ document.addEventListener('visibilitychange', function() {
         </div>
 
         <div class="projects-grid" aria-label="Proiecte GitHub recente">
-                    <article class="project-card glass" aria-labelledby="pulseboard-title">
+          <article class="project-card glass" aria-labelledby="pulseboard-title">
             <span class="badge-new">NEW</span>
             <div class="project-top">
               <div>
@@ -1196,8 +1198,9 @@ document.addEventListener('visibilitychange', function() {
               <span class="eyebrow eyebrow-green">⚡ Now</span>
               <h2 id="now-title" class="now-title">La ce lucrez săptămâna asta</h2>
             </div>
+            <!-- FIX: data generata dinamic de JS, nu hardcodata -->
             <p class="now-badge">
-              Actualizat: <time datetime="2026-05-24">24 Mai 2026</time>
+              Actualizat: <time id="now-datetime"></time>
             </p>
           </div>
 
@@ -1294,6 +1297,7 @@ document.addEventListener('visibilitychange', function() {
             </div>
           </article>
 
+          <!-- FIX: opacity 1 vine din style.css, nu mai e nevoie de clasa separata vizual degradata -->
           <article class="project-card glass project-card-soon">
             <div class="project-top">
               <div><h3>Lead Magnet Landing</h3></div>
@@ -1349,6 +1353,7 @@ document.addEventListener('visibilitychange', function() {
             </div>
           </article>
 
+          <!-- FIX: opacity 1 din style.css -->
           <article class="project-card glass project-card-wip" aria-labelledby="clientops-suite-title">
             <span class="badge-wip">🔧 În construcție</span>
             <div class="project-top">
@@ -1625,7 +1630,21 @@ document.addEventListener('visibilitychange', function() {
     </div>
   </footer>
 
-  <!-- now-section.js a fost eliminat — logica este integrată în main.js -->
   <script src="main.js" defer></script>
+
+  <!-- FIX: populeaza now-datetime inline, fara flash de — -->
+  <script>
+    (function() {
+      var el = document.getElementById('now-datetime');
+      if (!el) return;
+      var now = new Date();
+      var months = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+      var d = String(now.getDate()).padStart(2,'0');
+      var y = now.getFullYear();
+      var m = String(now.getMonth()+1).padStart(2,'0');
+      el.setAttribute('datetime', y+'-'+m+'-'+d);
+      el.textContent = d + ' ' + months[now.getMonth()] + ' ' + y;
+    })();
+  </script>
 </body>
 </html>
