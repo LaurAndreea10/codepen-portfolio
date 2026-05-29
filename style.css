@@ -569,8 +569,10 @@ body.high-contrast {
   background: rgba(251,191,36,.12); color: #fbbf24;
   border: 1px solid rgba(251,191,36,.3); letter-spacing: .04em;
 }
-.project-card-wip { opacity: .88; }
-.project-card-soon { opacity: .75; }
+
+/* FIX: eliminat opacity redusa - cardurile WIP si Soon nu mai par broken */
+.project-card-wip { opacity: 1; }
+.project-card-soon { opacity: 1; }
 
 /* --- Badge GitHub --- */
 .badge-github {
@@ -748,14 +750,12 @@ body.high-contrast {
   margin-left: .5rem; vertical-align: middle; white-space: nowrap;
 }
 .now-tag-done { background: rgba(52,211,153,.1); color: #34d399; border-color: rgba(52,211,153,.25); }
-/* Link în titlul unui item din now (provenit din now-section.js, acum în style.css) */
 .now-item-link {
   color: var(--accent, #6aa6ff);
   text-decoration: none;
   border-bottom: 1px solid rgba(106,166,255,.35);
 }
 .now-item-link:hover { color: var(--text, #fff); border-bottom-color: currentColor; }
-/* Buton acțiune secundar în item */
 .now-link-action {
   cursor: pointer; margin-left: .5rem;
 }
@@ -997,7 +997,7 @@ body.high-contrast {
 #changelogList li { display: flex; gap: 10px; font-size: .83rem; }
 #changelogList time { color: var(--accent); font-weight: 600; white-space: nowrap; }
 
-/* --- WIP card helpers (eliminate inline style din insights) --- */
+/* --- WIP card helpers --- */
 .btn-ghost.btn-disabled { opacity: .45; cursor: not-allowed; pointer-events: none; }
 
 /* --- Responsive additions --- */
