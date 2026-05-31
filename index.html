@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Laura Andreea — Front-end CRM &amp; Dashboard Developer</title>
+  <title>Laura Andreea &mdash; Front-end CRM &amp; Dashboard Developer</title>
   <meta name="description" content="Construiesc interfețe CRM și dashboard-uri care transformă procese în fluxuri clare. 64 proiecte live · Vite + React · GitHub Actions · UI/UX cu logică de produs." />
   <meta name="author" content="Laura Andreea" />
   <meta name="theme-color" content="#071226" />
@@ -88,7 +88,6 @@
   <link rel="preload" href="style.css" as="style" />
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Intro overlay — synchronous early-exit (no flicker on return visits) -->
   <script>
     try {
       if (sessionStorage.getItem('la_intro_seen')) {
@@ -97,7 +96,6 @@
     } catch(e) {}
   </script>
 
-  <!-- Shared GitHub repo-count fetch (single request for the whole page) -->
   <script>
     (function() {
       var cacheKey = 'la_gh_repos', cacheTs = 'la_gh_repos_ts';
@@ -127,53 +125,27 @@
     })();
   </script>
 
-  <!-- Intro overlay — critical CSS (prevents FOUC) -->
   <style>
-    body.intro-active {
-      overflow: hidden !important;
-    }
+    body.intro-active { overflow: hidden !important; }
     #intro-overlay {
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      bottom: 0 !important;
-      width: 100vw !important;
-      height: 100vh !important;
-      z-index: 2147483647 !important;
-      background: #04080f !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      cursor: default;
-      opacity: 1;
-      transition: opacity 0.55s ease;
-      transform: translateZ(0);
-      will-change: opacity;
+      position: fixed !important; top: 0 !important; left: 0 !important;
+      right: 0 !important; bottom: 0 !important;
+      width: 100vw !important; height: 100vh !important;
+      z-index: 2147483647 !important; background: #04080f !important;
+      display: flex !important; align-items: center !important;
+      justify-content: center !important; cursor: default;
+      opacity: 1; transition: opacity 0.55s ease;
+      transform: translateZ(0); will-change: opacity;
     }
-    #intro-overlay.intro-hidden {
-      opacity: 0 !important;
-      pointer-events: none !important;
-    }
-    #intro-svg {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-    }
+    #intro-overlay.intro-hidden { opacity: 0 !important; pointer-events: none !important; }
     #ir1 { animation: intro-ring-pulse 2s ease-in-out infinite alternate; }
     #ir2 { animation: intro-ring-pulse 2s ease-in-out infinite alternate 0.15s; }
     #ir3 { animation: intro-ring-pulse 2s ease-in-out infinite alternate 0.3s; }
-    @keyframes intro-ring-pulse {
-      from { opacity: 0.5; }
-      to   { opacity: 1; }
-    }
+    @keyframes intro-ring-pulse { from { opacity: 0.5; } to { opacity: 1; } }
     #imonogram { opacity: 0; animation: intro-fade-in 0.8s ease 0.3s forwards; }
     #itagline  { opacity: 0; animation: intro-fade-in 0.8s ease 1.2s forwards; }
     #iskip     { opacity: 0; animation: intro-fade-in 0.6s ease 2.0s forwards; }
-    @keyframes intro-fade-in {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
+    @keyframes intro-fade-in { from { opacity: 0; } to { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) {
       #intro-overlay { display: none !important; }
       body.intro-active { overflow: unset !important; }
@@ -182,706 +154,426 @@
 </head>
 <body>
 
-  <!-- ============================================================
-       INTRO CINEMATIC OVERLAY
-       13s · 5 scenes · auto-dismiss + skip
-       sessionStorage: skip on return visits
-       prefers-reduced-motion: skip immediately
-  ============================================================ -->
   <style id="intro-css">
     body.intro-active { overflow: hidden !important; }
     #intro-overlay {
-      position: fixed !important;
-      inset: 0 !important;
-      width: 100vw !important;
-      height: 100vh !important;
-      z-index: 2147483647 !important;
-      background: #04080f;
-      overflow: hidden;
-      opacity: 1;
-      transition: opacity 0.5s ease;
-      cursor: default;
-      transform: translateZ(0);
+      position: fixed !important; inset: 0 !important;
+      width: 100vw !important; height: 100vh !important;
+      z-index: 2147483647 !important; background: #04080f;
+      overflow: hidden; opacity: 1; transition: opacity 0.5s ease;
+      cursor: default; transform: translateZ(0);
     }
-    #intro-overlay.intro-hidden {
-      opacity: 0 !important;
-      pointer-events: none !important;
+    #intro-overlay.intro-hidden { opacity: 0 !important; pointer-events: none !important; }
+    #intro-overlay {
+      --bg:#04080f; --bg-2:#07101f; --bg-glow:#0d1a30;
+      --fg:#f1f4fa; --fg-2:#c4cbd9; --muted:#8089a0; --dim:#3a4256;
+      --accent:#6aa6ff; --accent-2:#9cc2ff;
+      --accent-soft:rgba(106,166,255,0.18); --accent-glow:rgba(106,166,255,0.55);
+      --line:rgba(255,255,255,0.10); --line-2:rgba(255,255,255,0.22);
+      --mono:'JetBrains Mono', ui-monospace, monospace;
+      --display:'Space Grotesk', system-ui, sans-serif;
+      --body:'Inter', system-ui, sans-serif;
+      --T:18s;
+      --t-hero: clamp(72px, 17.5vmin, 280px); --t-h2: clamp(40px, 8.5vmin, 128px);
+      --t-tag: clamp(34px, 7.2vmin, 108px); --t-stat: clamp(58px, 14vmin, 180px);
+      --t-url: clamp(26px, 5.5vmin, 84px); --t-eye: clamp(11px, 1.6vmin, 18px);
+      --t-mono: clamp(11px, 1.4vmin, 16px); --t-body: clamp(15px, 2.1vmin, 24px);
+      --pad: clamp(20px, 5vmin, 96px); --lb: clamp(28px, 6.5vmin, 96px);
     }
-    #intro-overlay{
-  --bg:#04080f;
-  --bg-2:#07101f;
-  --bg-glow:#0d1a30;
-  --fg:#f1f4fa;
-  --fg-2:#c4cbd9;
-  --muted:#8089a0;
-  --dim:#3a4256;
-  --accent:#6aa6ff;
-  --accent-2:#9cc2ff;
-  --accent-soft:rgba(106,166,255,0.18);
-  --accent-glow:rgba(106,166,255,0.55);
-  --line:rgba(255,255,255,0.10);
-  --line-2:rgba(255,255,255,0.22);
-  --mono:'JetBrains Mono', ui-monospace, monospace;
-  --display:'Space Grotesk', system-ui, sans-serif;
-  --body:'Inter', system-ui, sans-serif;
-  --T:18s;
-  --t-hero:   clamp(72px, 17.5vmin, 280px);
-  --t-h2:     clamp(40px, 8.5vmin, 128px);
-  --t-tag:    clamp(34px, 7.2vmin, 108px);
-  --t-stat:   clamp(58px, 14vmin, 180px);
-  --t-url:    clamp(26px, 5.5vmin, 84px);
-  --t-eye:    clamp(11px, 1.6vmin, 18px);
-  --t-mono:   clamp(11px, 1.4vmin, 16px);
-  --t-body:   clamp(15px, 2.1vmin, 24px);
-  --pad:      clamp(20px, 5vmin, 96px);
-  --lb:       clamp(28px, 6.5vmin, 96px);
-}
-#intro-overlay .viewport{
-  position:fixed;inset:0;display:grid;place-items:center;background:#000;
-  perspective:1200px;
-}
-#intro-overlay .stage{
-  position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 70% 50% at 50% 45%, var(--bg-glow) 0%, var(--bg-2) 55%, var(--bg) 100%);
-  overflow:hidden;
-  transform-origin:center center;
-  animation: stageZoom var(--T) ease-in-out infinite;
-}
-@keyframes stageZoom{
-  0%   {transform:scale(1.00)}
-  100% {transform:scale(1.045)}
-}
-#intro-overlay .lb{position:absolute;left:0;right:0;height:var(--lb);background:#000;z-index:60;
-  display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);
-  font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.16em;text-transform:uppercase}
-#intro-overlay .lb.top{top:0;transform:translateY(-100%);animation:lbTop 0.9s cubic-bezier(.7,0,.3,1) forwards}
-#intro-overlay .lb.bot{bottom:0;transform:translateY(100%);animation:lbBot 0.9s cubic-bezier(.7,0,.3,1) forwards}
-@keyframes lbTop{to{transform:translateY(0)}}
-@keyframes lbBot{to{transform:translateY(0)}}
-#intro-overlay .lb .l, #intro-overlay .lb .r{ display:flex; align-items:center; gap:14px; opacity:0; animation:lbContent 0.4s 1.0s ease-out forwards }
-#intro-overlay .lb .l .rec{width:8px;height:8px;border-radius:50%;background:#ff4a52;box-shadow:0 0 12px rgba(255,74,82,0.7);animation:blink 1.2s steps(2) infinite}
-#intro-overlay .lb .l b, #intro-overlay .lb .r b{color:var(--fg-2);font-weight:500;letter-spacing:0.10em}
-#intro-overlay .lb .r .tc{font-variant-numeric:tabular-nums;color:var(--fg)}
-@keyframes blink{50%{opacity:0.25}}
-@keyframes lbContent{to{opacity:1}}
-#intro-overlay .hud{position:absolute;inset:calc(var(--lb) + var(--pad)) var(--pad);z-index:20;pointer-events:none}
-#intro-overlay .hud .crosshair{position:absolute;width:clamp(14px,2.3vmin,26px);height:clamp(14px,2.3vmin,26px);border:1px solid var(--line-2);opacity:0;animation:hudIn 0.5s 0.9s ease-out forwards}
-#intro-overlay .hud .crosshair.tl{top:0;left:0;border-right:none;border-bottom:none}
-#intro-overlay .hud .crosshair.tr{top:0;right:0;border-left:none;border-bottom:none}
-#intro-overlay .hud .crosshair.bl{bottom:0;left:0;border-right:none;border-top:none}
-#intro-overlay .hud .crosshair.br{bottom:0;right:0;border-left:none;border-top:none;animation-delay:1.05s}
-#intro-overlay .hud .crosshair.tr{animation-delay:1.0s}
-#intro-overlay .hud .crosshair.bl{animation-delay:1.0s}
-@keyframes hudIn{to{opacity:1}}
-#intro-overlay .gridwrap{position:absolute;inset:0;z-index:5;opacity:0;animation:gridFade 1.2s 0.5s ease-out forwards}
-@keyframes gridFade{to{opacity:0.55}}
-#intro-overlay .gridwrap svg{width:100%;height:100%;display:block}
-#intro-overlay .gridline{stroke:rgba(255,255,255,0.05);stroke-width:1;fill:none;
-  stroke-dasharray:3000;stroke-dashoffset:3000;animation:draw 1.8s 0.6s cubic-bezier(.6,0,.3,1) forwards;vector-effect:non-scaling-stroke}
-#intro-overlay .gridline.v{animation-duration:1.2s}
-#intro-overlay .gridline.accent{stroke:rgba(106,166,255,0.32);stroke-width:1.5}
-@keyframes draw{to{stroke-dashoffset:0}}
-#intro-overlay .dust{position:absolute;inset:0;z-index:8;pointer-events:none;opacity:0;animation:dustIn 1.5s 1.2s ease-out forwards}
-@keyframes dustIn{to{opacity:0.55}}
-#intro-overlay .dust span{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--accent);box-shadow:0 0 4px var(--accent-glow);
-  animation:floaty 9s linear infinite}
-#intro-overlay .dust span:nth-child(odd){background:#fff;box-shadow:0 0 3px rgba(255,255,255,0.5);width:1.5px;height:1.5px}
-@keyframes floaty{
-  0%{transform:translateY(20vh) translateX(0);opacity:0}
-  10%{opacity:1}
-  90%{opacity:1}
-  100%{transform:translateY(-110vh) translateX(var(--dx,10px));opacity:0}
-}
-#intro-overlay .streak{position:absolute;left:-30%;top:0;bottom:0;width:60%;z-index:35;pointer-events:none;opacity:0;
-  background:linear-gradient(110deg, transparent 30%, rgba(106,166,255,0.35) 45%, rgba(255,255,255,0.55) 50%, rgba(106,166,255,0.35) 55%, transparent 70%);
-  filter:blur(8px);mix-blend-mode:screen;
-  animation: streakSweep var(--T) ease-in-out infinite;
-}
-@keyframes streakSweep{
-  0%, 18%   { opacity:0; transform:translateX(0) skewX(-12deg) }
-  20%       { opacity:1; }
-  25%       { opacity:0; transform:translateX(260vw) skewX(-12deg) }
-  38%       { opacity:0; transform:translateX(-30vw) skewX(-12deg) }
-  42%       { opacity:1; }
-  47%       { opacity:0; transform:translateX(260vw) skewX(-12deg) }
-  58%       { opacity:0; transform:translateX(-30vw) skewX(-12deg) }
-  62%       { opacity:1; }
-  67%       { opacity:0; transform:translateX(260vw) skewX(-12deg) }
-  78%       { opacity:0; transform:translateX(-30vw) skewX(-12deg) }
-  82%       { opacity:1; }
-  87%       { opacity:0; transform:translateX(260vw) skewX(-12deg) }
-  100%      { opacity:0; transform:translateX(260vw) skewX(-12deg) }
-}
-#intro-overlay .scenes{position:absolute;inset:0;display:grid;place-items:center;z-index:25}
-#intro-overlay .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;text-align:center;padding:0 var(--pad)}
-@keyframes show{
-  0%{opacity:0;transform:translateY(14px) scale(0.98)}
-  10%{opacity:1;transform:translateY(0) scale(1)}
-  85%{opacity:1;transform:translateY(0) scale(1)}
-  100%{opacity:0;transform:translateY(-10px) scale(1.02)}
-}
-#intro-overlay .s1{animation: show 2.0s 1.0s both;}
-#intro-overlay .s1 .slate{
-  display:flex;flex-direction:column;align-items:stretch;gap:clamp(14px,2.6vmin,28px);
-  border:1px solid var(--line-2);
-  padding:clamp(28px,5vmin,52px) clamp(36px,7vmin,80px) clamp(32px,5.5vmin,56px);
-  border-radius:6px;background:rgba(255,255,255,0.015);
-  position:relative;min-width:min(420px, 88vw);max-width:min(640px, 92vw);
-  backdrop-filter: blur(2px);
-}
-#intro-overlay .s1 .slate::before, #intro-overlay .s1 .slate::after{
-  content:"";position:absolute;left:-1px;right:-1px;height:clamp(12px,2vmin,20px);
-  background:repeating-linear-gradient(135deg, var(--fg) 0 14px, #000 14px 28px);
-  opacity:0.9;
-}
-#intro-overlay .s1 .slate::before{top:-1px}
-#intro-overlay .s1 .slate::after{bottom:-1px}
-#intro-overlay .s1 .slate .sub{font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.4em;text-transform:uppercase;text-align:center}
-#intro-overlay .s1 .slate .big{font-family:var(--display);font-weight:600;font-size:clamp(48px,11vmin,128px);color:var(--fg);letter-spacing:-0.02em;line-height:1;text-align:center}
-#intro-overlay .s1 .slate .row{display:grid;grid-template-columns:auto 1fr;gap:clamp(8px,1.3vmin,14px) clamp(20px,3.5vmin,40px);
-  font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;
-  padding-top:clamp(8px,1.5vmin,16px);border-top:1px dashed var(--line)}
-#intro-overlay .s1 .slate .row .k{color:var(--muted);text-align:right}
-#intro-overlay .s1 .slate .row .v{color:var(--fg);font-weight:500;text-align:left}
-#intro-overlay .s1 .slate .row .v.acc{color:var(--accent)}
-#intro-overlay .s2{animation: showStill 2.8s 3.3s both;}
-@keyframes showStill{
-  0%{opacity:0}
-  6%{opacity:1}
-  92%{opacity:1}
-  100%{opacity:0}
-}
-#intro-overlay .s2 .mono-wrap{position:relative;display:grid;place-items:center;margin-bottom:clamp(20px,4vmin,48px)}
-#intro-overlay .s2 .mono{position:relative;width:clamp(140px,28vmin,360px);height:clamp(140px,28vmin,360px)}
-#intro-overlay .s2 .mono svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-#intro-overlay .s2 .ring{fill:none;stroke:var(--accent);stroke-width:1.5;vector-effect:non-scaling-stroke;
-  stroke-dasharray:600;stroke-dashoffset:600}
-#intro-overlay .s2 .ring.r1{animation:ringDraw 1.0s 3.4s cubic-bezier(.6,0,.3,1) forwards}
-#intro-overlay .s2 .ring.r2{animation:ringDraw 1.2s 3.55s cubic-bezier(.6,0,.3,1) forwards;stroke:rgba(106,166,255,0.5)}
-#intro-overlay .s2 .ring.r3{animation:ringDraw 1.0s 3.7s cubic-bezier(.6,0,.3,1) forwards;stroke:rgba(106,166,255,0.25)}
-@keyframes ringDraw{to{stroke-dashoffset:0}}
-#intro-overlay .s2 .pulse{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--accent);opacity:0;animation:pulseOut 2.2s 4.4s ease-out infinite}
-#intro-overlay .s2 .pulse.p2{animation-delay:4.7s}
-#intro-overlay .s2 .pulse.p3{animation-delay:5.0s}
-@keyframes pulseOut{
-  0%{transform:scale(0.85);opacity:0.7}
-  100%{transform:scale(1.7);opacity:0}
-}
-#intro-overlay .s2 .glyph{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:clamp(70px,14vmin,180px);color:var(--fg);letter-spacing:-0.04em;line-height:1;opacity:0;transform:scale(0.6);animation:glyphIn 0.9s 3.85s cubic-bezier(.2,.9,.2,1) forwards}
-@keyframes glyphIn{
-  0%{opacity:0;transform:scale(0.4)}
-  60%{opacity:1;transform:scale(1.08)}
-  100%{opacity:1;transform:scale(1)}
-}
-#intro-overlay .s2 .glyph .acc-l{color:var(--accent)}
-#intro-overlay .s2 .eyebrow{font-family:var(--mono);font-size:var(--t-eye);letter-spacing:0.55em;color:var(--accent);text-transform:uppercase;margin-bottom:clamp(14px,2.5vmin,28px);opacity:0;animation:fadeUp 0.6s 3.35s forwards}
-#intro-overlay .s2 .name{font-family:var(--display);font-weight:600;font-size:clamp(44px,11vmin,140px);line-height:0.95;letter-spacing:-0.045em;color:var(--fg);display:flex;flex-direction:column;align-items:center;gap:clamp(2px,0.5vmin,8px);margin:0}
-#intro-overlay .s2 .name span{display:block;overflow:hidden;line-height:1.0}
-#intro-overlay .s2 .name span i{display:inline-block;font-style:normal;transform:translateY(110%);animation:slideUp 0.8s cubic-bezier(.2,.8,.2,1) forwards}
-#intro-overlay .s2 .name span:nth-child(1) i{animation-delay:4.55s}
-#intro-overlay .s2 .name span:nth-child(2) i{animation-delay:4.75s;color:var(--accent)}
-@keyframes slideUp{to{transform:translateY(0)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-#intro-overlay .s2 .rule{width:0;height:1px;background:var(--accent);margin:clamp(20px,3.5vmin,38px) 0 clamp(16px,2.5vmin,28px);animation:ruleGrow 1.2s 5.0s cubic-bezier(.6,0,.3,1) forwards;box-shadow:0 0 8px var(--accent-glow)}
-@keyframes ruleGrow{to{width:min(560px, 70vw)}}
-#intro-overlay .s2 .role{font-family:var(--mono);font-size:var(--t-body);color:var(--fg-2);letter-spacing:0.18em;text-transform:uppercase;opacity:0;animation:fadeUp 0.7s 5.4s forwards;max-width:90vw}
-#intro-overlay .s2 .role b{color:var(--fg);font-weight:600}
-#intro-overlay .s3{animation:showStill 2.4s 6.4s both;}
-#intro-overlay .s3 .eyebrow{font-family:var(--mono);font-size:var(--t-eye);letter-spacing:0.45em;color:var(--accent);text-transform:uppercase;margin-bottom:clamp(28px,4vmin,56px)}
-#intro-overlay .s3 .figs{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(2px,0.5vmin,4px);
-  border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);
-  width:100%;max-width:min(1500px, 96vw)}
-#intro-overlay .s3 .fig{padding:clamp(20px,4.5vmin,50px) clamp(14px,2.8vmin,32px);border-right:1px solid var(--line);
-  display:flex;flex-direction:column;align-items:flex-start;gap:clamp(8px,1.4vmin,16px);position:relative;overflow:hidden}
-#intro-overlay .s3 .fig:last-child{border-right:none}
-#intro-overlay .s3 .fig .big{font-family:var(--display);font-weight:600;font-size:var(--t-stat);line-height:0.85;letter-spacing:-0.045em;color:var(--fg);font-variant-numeric:tabular-nums;position:relative;z-index:2}
-#intro-overlay .s3 .fig.acc .big{color:var(--accent);text-shadow:0 0 24px var(--accent-soft)}
-#intro-overlay .s3 .fig .big .plus{color:var(--muted);font-size:0.4em;vertical-align:top;margin-left:2px;letter-spacing:0}
-#intro-overlay .s3 .fig .lbl{font-family:var(--mono);font-size:var(--t-mono);color:var(--accent);text-transform:uppercase;letter-spacing:0.14em;position:relative;z-index:2}
-#intro-overlay .s3 .fig .meta{font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;position:relative;z-index:2}
-#intro-overlay .s3 .fig .radar{position:absolute;left:-20%;bottom:-30%;width:clamp(120px,18vmin,260px);height:clamp(120px,18vmin,260px);
-  border-radius:50%;border:1px solid var(--accent);opacity:0;
-  animation:radar 2.4s 7.0s ease-out infinite}
-#intro-overlay .s3 .fig:nth-child(2) .radar{animation-delay:7.15s}
-#intro-overlay .s3 .fig:nth-child(3) .radar{animation-delay:7.3s}
-#intro-overlay .s3 .fig:nth-child(4) .radar{animation-delay:7.45s}
-@keyframes radar{
-  0%{transform:scale(0.4);opacity:0.55}
-  100%{transform:scale(2.4);opacity:0}
-}
-@property --c1{ syntax: '<integer>'; initial-value: 0; inherits: false; }
-@property --c2{ syntax: '<integer>'; initial-value: 0; inherits: false; }
-@property --c3{ syntax: '<integer>'; initial-value: 0; inherits: false; }
-@property --c4{ syntax: '<integer>'; initial-value: 0; inherits: false; }
-#intro-overlay .s3 .num1{counter-reset:c1 var(--c1);animation:cnt1 1.6s 6.7s cubic-bezier(.2,.8,.2,1) forwards}
-#intro-overlay .s3 .num1::before{content:counter(c1)}
-#intro-overlay .s3 .num2{counter-reset:c2 var(--c2);animation:cnt2 1.6s 6.85s cubic-bezier(.2,.8,.2,1) forwards}
-#intro-overlay .s3 .num2::before{content:counter(c2)}
-#intro-overlay .s3 .num3{counter-reset:c3 var(--c3);animation:cnt3 1.3s 7.0s cubic-bezier(.2,.8,.2,1) forwards}
-#intro-overlay .s3 .num3::before{content:counter(c3)}
-#intro-overlay .s3 .num4{counter-reset:c4 var(--c4);animation:cnt4 1.5s 7.15s cubic-bezier(.2,.8,.2,1) forwards}
-#intro-overlay .s3 .num4::before{content:counter(c4)}
-#intro-overlay .s4{animation:showStill 2.4s 9.0s both;}
-#intro-overlay .s4 .quote{position:absolute;top:0;left:var(--pad);font-family:var(--display);font-size:clamp(120px,22vmin,260px);color:rgba(106,166,255,0.16);line-height:0.9;font-weight:600;pointer-events:none;opacity:0;animation:fadeUp 0.6s 9.05s forwards}
-#intro-overlay .s4 h2{font-family:var(--display);font-weight:500;font-size:var(--t-tag);line-height:1.08;letter-spacing:-0.025em;color:var(--fg);text-align:center;max-width:min(1500px,94vw);margin:0;display:flex;flex-wrap:wrap;justify-content:center;gap:0.25em 0.32em}
-#intro-overlay .s4 h2 .w{display:inline-block;overflow:hidden;line-height:1.08}
-#intro-overlay .s4 h2 .w i{display:inline-block;font-style:normal;transform:translateY(110%);animation:slideUp 0.6s cubic-bezier(.2,.8,.2,1) forwards}
-#intro-overlay .s4 h2 .w:nth-child(1) i{animation-delay:9.15s}
-#intro-overlay .s4 h2 .w:nth-child(2) i{animation-delay:9.25s}
-#intro-overlay .s4 h2 .w:nth-child(3) i{animation-delay:9.35s}
-#intro-overlay .s4 h2 .w:nth-child(4) i{animation-delay:9.45s; color:var(--accent)}
-#intro-overlay .s4 h2 .w:nth-child(5) i{animation-delay:9.55s}
-#intro-overlay .s4 h2 .w:nth-child(6) i{animation-delay:9.65s}
-#intro-overlay .s4 h2 .w:nth-child(7) i{animation-delay:9.75s}
-#intro-overlay .s4 h2 .w:nth-child(8) i{animation-delay:9.85s}
-#intro-overlay .s4 .sig{margin-top:clamp(18px,3.5vmin,46px);font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.3em;text-transform:uppercase;opacity:0;animation:fadeUp 0.6s 10.4s forwards}
-#intro-overlay .s5{animation:showStill 6.0s 11.4s both;}
-#intro-overlay .s5 .ring-bg{position:absolute;left:50%;top:50%;width:clamp(200px,40vmin,520px);height:clamp(200px,40vmin,520px);
-  border-radius:50%;border:1px solid var(--line-2);transform:translate(-50%,-50%) scale(0.4);opacity:0;
-  animation:ringBgIn 1.4s 11.5s cubic-bezier(.2,.9,.2,1) forwards}
-#intro-overlay .s5 .ring-bg.r2{border-color:var(--accent);opacity:0;animation-delay:11.65s;animation-duration:1.6s}
-@keyframes ringBgIn{
-  0%{transform:translate(-50%,-50%) scale(0.4);opacity:0}
-  60%{opacity:0.4}
-  100%{transform:translate(-50%,-50%) scale(1);opacity:0.18}
-}
-#intro-overlay .s5 .mark{display:flex;align-items:center;gap:clamp(10px,1.8vmin,20px);font-family:var(--mono);font-size:var(--t-mono);color:var(--accent);letter-spacing:0.4em;text-transform:uppercase;margin-bottom:clamp(18px,3vmin,34px);opacity:0;animation:fadeUp 0.6s 11.55s forwards;position:relative;z-index:2}
-#intro-overlay .s5 .mark .d{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent-glow)}
-#intro-overlay .s5 .url{font-family:var(--display);font-weight:500;font-size:var(--t-url);color:var(--fg);letter-spacing:-0.02em;line-height:1.12;text-align:center;opacity:0;animation:fadeUp 0.7s 11.75s forwards;position:relative;z-index:2;max-width:96vw;word-break:break-word}
-#intro-overlay .s5 .url span{color:var(--accent)}
-#intro-overlay .s5 .cta{margin-top:clamp(26px,4.5vmin,54px);display:flex;flex-wrap:wrap;gap:clamp(12px,2vmin,22px);justify-content:center;align-items:center;font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.24em;text-transform:uppercase;opacity:0;animation:fadeUp 0.6s 12.0s forwards;position:relative;z-index:2}
-#intro-overlay .s5 .cta a{color:var(--fg-2);text-decoration:none;border-bottom:1px solid var(--line-2);padding-bottom:6px;transition:color .2s, border-color .2s;pointer-events:auto}
-#intro-overlay .s5 .cta a:hover{color:var(--accent);border-color:var(--accent)}
-#intro-overlay .s5 .cta .sep{opacity:0.5}
-#intro-overlay .grain{position:absolute;inset:0;pointer-events:none;z-index:55;opacity:0.07;mix-blend-mode:overlay}
-#intro-overlay .grain svg{width:100%;height:100%}
-#intro-overlay .vignette{position:absolute;inset:0;pointer-events:none;z-index:50;
-  background:radial-gradient(ellipse 80% 65% at 50% 50%, transparent 55%, rgba(0,0,0,0.65) 100%);}
-#intro-overlay .scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg, transparent, rgba(106,166,255,0.5), transparent);z-index:45;opacity:0;
-  animation:scan var(--T) linear infinite}
-@keyframes scan{
-  0%{top:-2%;opacity:0}
-  4%{opacity:0.55}
-  45%{top:103%;opacity:0.55}
-  46%{opacity:0}
-  100%{opacity:0}
-}
-#intro-overlay .controls{position:fixed;bottom:calc(var(--lb) + 16px);right:16px;display:flex;gap:10px;z-index:200;font-family:var(--mono)}
-#intro-overlay .controls button, #intro-overlay .controls a{background:rgba(4,8,15,0.7);border:1px solid var(--line-2);color:var(--fg-2);padding:10px 14px;border-radius:999px;cursor:pointer;letter-spacing:0.18em;text-transform:uppercase;transition:.2s;font-size:11px;backdrop-filter:blur(6px);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
-#intro-overlay .controls button:hover, #intro-overlay .controls a:hover{border-color:var(--accent);color:var(--accent)}
-@media (max-aspect-ratio: 3/4){
-  #intro-overlay .s3 .figs{grid-template-columns:repeat(2,1fr)}
-  #intro-overlay .s3 .fig{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-  #intro-overlay .s3 .fig:nth-child(2n){border-right:none}
-  #intro-overlay .s3 .fig:nth-child(3), #intro-overlay .s3 .fig:nth-child(4){border-bottom:none}
-  #intro-overlay .s3 .fig{padding:clamp(20px,4.2vmin,40px) clamp(16px,3.5vmin,26px)}
-  #intro-overlay .s3 .fig .big{font-size:clamp(64px,16vw,140px)}
-  #intro-overlay .s2 .mono{width:clamp(140px,38vw,260px);height:clamp(140px,38vw,260px)}
-  #intro-overlay .s2 .glyph{font-size:clamp(72px,18vw,140px)}
-  #intro-overlay .s2 .name{font-size:clamp(48px,13vw,108px)}
-  #intro-overlay .s4 h2{font-size:clamp(36px,9vw,84px);max-width:92vw}
-  #intro-overlay .s1 .slate{min-width:88vw;max-width:88vw}
-  #intro-overlay .s1 .slate .big{font-size:clamp(48px,16vw,108px)}
-  #intro-overlay .s5 .url{font-size:clamp(28px,7.8vw,72px)}
-  #intro-overlay .s5 .cta{flex-direction:column;gap:14px}
-  #intro-overlay .s5 .cta .sep{display:none}
-  #intro-overlay .lb .l b, #intro-overlay .lb .r b{font-size:10px}
-  #intro-overlay .lb .meta-hide{display:none}
-}
-@media (max-width: 520px){
-  #intro-overlay .lb .meta-hide{display:none}
-  #intro-overlay .controls{bottom:calc(var(--lb) + 10px);right:10px}
-  #intro-overlay .controls button, #intro-overlay .controls a{padding:8px 12px;font-size:10px}
-}
-    #intro-overlay .viewport {
-      position: absolute !important;
-      inset: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
+    #intro-overlay .viewport { position:fixed;inset:0;display:grid;place-items:center;background:#000;perspective:1200px; }
+    #intro-overlay .stage { position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 45%, var(--bg-glow) 0%, var(--bg-2) 55%, var(--bg) 100%);overflow:hidden;transform-origin:center center;animation:stageZoom var(--T) ease-in-out infinite; }
+    @keyframes stageZoom { 0%{transform:scale(1.00)} 100%{transform:scale(1.045)} }
+    #intro-overlay .lb{position:absolute;left:0;right:0;height:var(--lb);background:#000;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.16em;text-transform:uppercase}
+    #intro-overlay .lb.top{top:0;transform:translateY(-100%);animation:lbTop 0.9s cubic-bezier(.7,0,.3,1) forwards}
+    #intro-overlay .lb.bot{bottom:0;transform:translateY(100%);animation:lbBot 0.9s cubic-bezier(.7,0,.3,1) forwards}
+    @keyframes lbTop{to{transform:translateY(0)}} @keyframes lbBot{to{transform:translateY(0)}}
+    #intro-overlay .lb .l, #intro-overlay .lb .r{display:flex;align-items:center;gap:14px;opacity:0;animation:lbContent 0.4s 1.0s ease-out forwards}
+    #intro-overlay .lb .l .rec{width:8px;height:8px;border-radius:50%;background:#ff4a52;box-shadow:0 0 12px rgba(255,74,82,0.7);animation:blink 1.2s steps(2) infinite}
+    #intro-overlay .lb .l b, #intro-overlay .lb .r b{color:var(--fg-2);font-weight:500;letter-spacing:0.10em}
+    #intro-overlay .lb .r .tc{font-variant-numeric:tabular-nums;color:var(--fg)}
+    @keyframes blink{50%{opacity:0.25}} @keyframes lbContent{to{opacity:1}}
+    #intro-overlay .hud{position:absolute;inset:calc(var(--lb) + var(--pad)) var(--pad);z-index:20;pointer-events:none}
+    #intro-overlay .hud .crosshair{position:absolute;width:clamp(14px,2.3vmin,26px);height:clamp(14px,2.3vmin,26px);border:1px solid var(--line-2);opacity:0;animation:hudIn 0.5s 0.9s ease-out forwards}
+    #intro-overlay .hud .crosshair.tl{top:0;left:0;border-right:none;border-bottom:none}
+    #intro-overlay .hud .crosshair.tr{top:0;right:0;border-left:none;border-bottom:none;animation-delay:1.0s}
+    #intro-overlay .hud .crosshair.bl{bottom:0;left:0;border-right:none;border-top:none;animation-delay:1.0s}
+    #intro-overlay .hud .crosshair.br{bottom:0;right:0;border-left:none;border-top:none;animation-delay:1.05s}
+    @keyframes hudIn{to{opacity:1}}
+    #intro-overlay .gridwrap{position:absolute;inset:0;z-index:5;opacity:0;animation:gridFade 1.2s 0.5s ease-out forwards}
+    @keyframes gridFade{to{opacity:0.55}}
+    #intro-overlay .gridwrap svg{width:100%;height:100%;display:block}
+    #intro-overlay .gridline{stroke:rgba(255,255,255,0.05);stroke-width:1;fill:none;stroke-dasharray:3000;stroke-dashoffset:3000;animation:draw 1.8s 0.6s cubic-bezier(.6,0,.3,1) forwards;vector-effect:non-scaling-stroke}
+    #intro-overlay .gridline.v{animation-duration:1.2s}
+    #intro-overlay .gridline.accent{stroke:rgba(106,166,255,0.32);stroke-width:1.5}
+    @keyframes draw{to{stroke-dashoffset:0}}
+    #intro-overlay .dust{position:absolute;inset:0;z-index:8;pointer-events:none;opacity:0;animation:dustIn 1.5s 1.2s ease-out forwards}
+    @keyframes dustIn{to{opacity:0.55}}
+    #intro-overlay .dust span{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--accent);box-shadow:0 0 4px var(--accent-glow);animation:floaty 9s linear infinite}
+    #intro-overlay .dust span:nth-child(odd){background:#fff;box-shadow:0 0 3px rgba(255,255,255,0.5);width:1.5px;height:1.5px}
+    @keyframes floaty{0%{transform:translateY(20vh) translateX(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-110vh) translateX(var(--dx,10px));opacity:0}}
+    #intro-overlay .streak{position:absolute;left:-30%;top:0;bottom:0;width:60%;z-index:35;pointer-events:none;opacity:0;background:linear-gradient(110deg, transparent 30%, rgba(106,166,255,0.35) 45%, rgba(255,255,255,0.55) 50%, rgba(106,166,255,0.35) 55%, transparent 70%);filter:blur(8px);mix-blend-mode:screen;animation:streakSweep var(--T) ease-in-out infinite}
+    @keyframes streakSweep{0%,18%{opacity:0;transform:translateX(0) skewX(-12deg)}20%{opacity:1}25%{opacity:0;transform:translateX(260vw) skewX(-12deg)}38%{opacity:0;transform:translateX(-30vw) skewX(-12deg)}42%{opacity:1}47%{opacity:0;transform:translateX(260vw) skewX(-12deg)}58%{opacity:0;transform:translateX(-30vw) skewX(-12deg)}62%{opacity:1}67%{opacity:0;transform:translateX(260vw) skewX(-12deg)}78%{opacity:0;transform:translateX(-30vw) skewX(-12deg)}82%{opacity:1}87%{opacity:0;transform:translateX(260vw) skewX(-12deg)}100%{opacity:0;transform:translateX(260vw) skewX(-12deg)}}
+    #intro-overlay .scenes{position:absolute;inset:0;display:grid;place-items:center;z-index:25}
+    #intro-overlay .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;text-align:center;padding:0 var(--pad)}
+    @keyframes show{0%{opacity:0;transform:translateY(14px) scale(0.98)}10%{opacity:1;transform:translateY(0) scale(1)}85%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-10px) scale(1.02)}}
+    #intro-overlay .s1{animation:show 2.0s 1.0s both}
+    #intro-overlay .s1 .slate{display:flex;flex-direction:column;align-items:stretch;gap:clamp(14px,2.6vmin,28px);border:1px solid var(--line-2);padding:clamp(28px,5vmin,52px) clamp(36px,7vmin,80px) clamp(32px,5.5vmin,56px);border-radius:6px;background:rgba(255,255,255,0.015);position:relative;min-width:min(420px,88vw);max-width:min(640px,92vw);backdrop-filter:blur(2px)}
+    #intro-overlay .s1 .slate::before,#intro-overlay .s1 .slate::after{content:"";position:absolute;left:-1px;right:-1px;height:clamp(12px,2vmin,20px);background:repeating-linear-gradient(135deg,var(--fg) 0 14px,#000 14px 28px);opacity:0.9}
+    #intro-overlay .s1 .slate::before{top:-1px} #intro-overlay .s1 .slate::after{bottom:-1px}
+    #intro-overlay .s1 .slate .sub{font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.4em;text-transform:uppercase;text-align:center}
+    #intro-overlay .s1 .slate .big{font-family:var(--display);font-weight:600;font-size:clamp(48px,11vmin,128px);color:var(--fg);letter-spacing:-0.02em;line-height:1;text-align:center}
+    #intro-overlay .s1 .slate .row{display:grid;grid-template-columns:auto 1fr;gap:clamp(8px,1.3vmin,14px) clamp(20px,3.5vmin,40px);font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;padding-top:clamp(8px,1.5vmin,16px);border-top:1px dashed var(--line)}
+    #intro-overlay .s1 .slate .row .k{color:var(--muted);text-align:right}
+    #intro-overlay .s1 .slate .row .v{color:var(--fg);font-weight:500;text-align:left}
+    #intro-overlay .s1 .slate .row .v.acc{color:var(--accent)}
+    #intro-overlay .s2{animation:showStill 2.8s 3.3s both}
+    @keyframes showStill{0%{opacity:0}6%{opacity:1}92%{opacity:1}100%{opacity:0}}
+    #intro-overlay .s2 .mono-wrap{position:relative;display:grid;place-items:center;margin-bottom:clamp(20px,4vmin,48px)}
+    #intro-overlay .s2 .mono{position:relative;width:clamp(140px,28vmin,360px);height:clamp(140px,28vmin,360px)}
+    #intro-overlay .s2 .mono svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+    #intro-overlay .s2 .ring{fill:none;stroke:var(--accent);stroke-width:1.5;vector-effect:non-scaling-stroke;stroke-dasharray:600;stroke-dashoffset:600}
+    #intro-overlay .s2 .ring.r1{animation:ringDraw 1.0s 3.4s cubic-bezier(.6,0,.3,1) forwards}
+    #intro-overlay .s2 .ring.r2{animation:ringDraw 1.2s 3.55s cubic-bezier(.6,0,.3,1) forwards;stroke:rgba(106,166,255,0.5)}
+    #intro-overlay .s2 .ring.r3{animation:ringDraw 1.0s 3.7s cubic-bezier(.6,0,.3,1) forwards;stroke:rgba(106,166,255,0.25)}
+    @keyframes ringDraw{to{stroke-dashoffset:0}}
+    #intro-overlay .s2 .pulse{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--accent);opacity:0;animation:pulseOut 2.2s 4.4s ease-out infinite}
+    #intro-overlay .s2 .pulse.p2{animation-delay:4.7s} #intro-overlay .s2 .pulse.p3{animation-delay:5.0s}
+    @keyframes pulseOut{0%{transform:scale(0.85);opacity:0.7}100%{transform:scale(1.7);opacity:0}}
+    #intro-overlay .s2 .glyph{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:clamp(70px,14vmin,180px);color:var(--fg);letter-spacing:-0.04em;line-height:1;opacity:0;transform:scale(0.6);animation:glyphIn 0.9s 3.85s cubic-bezier(.2,.9,.2,1) forwards}
+    @keyframes glyphIn{0%{opacity:0;transform:scale(0.4)}60%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+    #intro-overlay .s2 .glyph .acc-l{color:var(--accent)}
+    #intro-overlay .s2 .eyebrow{font-family:var(--mono);font-size:var(--t-eye);letter-spacing:0.55em;color:var(--accent);text-transform:uppercase;margin-bottom:clamp(14px,2.5vmin,28px);opacity:0;animation:fadeUp 0.6s 3.35s forwards}
+    #intro-overlay .s2 .name{font-family:var(--display);font-weight:600;font-size:clamp(44px,11vmin,140px);line-height:0.95;letter-spacing:-0.045em;color:var(--fg);display:flex;flex-direction:column;align-items:center;gap:clamp(2px,0.5vmin,8px);margin:0}
+    #intro-overlay .s2 .name span{display:block;overflow:hidden;line-height:1.0}
+    #intro-overlay .s2 .name span i{display:inline-block;font-style:normal;transform:translateY(110%);animation:slideUp 0.8s cubic-bezier(.2,.8,.2,1) forwards}
+    #intro-overlay .s2 .name span:nth-child(1) i{animation-delay:4.55s}
+    #intro-overlay .s2 .name span:nth-child(2) i{animation-delay:4.75s;color:var(--accent)}
+    @keyframes slideUp{to{transform:translateY(0)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    #intro-overlay .s2 .rule{width:0;height:1px;background:var(--accent);margin:clamp(20px,3.5vmin,38px) 0 clamp(16px,2.5vmin,28px);animation:ruleGrow 1.2s 5.0s cubic-bezier(.6,0,.3,1) forwards;box-shadow:0 0 8px var(--accent-glow)}
+    @keyframes ruleGrow{to{width:min(560px,70vw)}}
+    #intro-overlay .s2 .role{font-family:var(--mono);font-size:var(--t-body);color:var(--fg-2);letter-spacing:0.18em;text-transform:uppercase;opacity:0;animation:fadeUp 0.7s 5.4s forwards;max-width:90vw}
+    #intro-overlay .s2 .role b{color:var(--fg);font-weight:600}
+    #intro-overlay .s3{animation:showStill 2.4s 6.4s both}
+    #intro-overlay .s3 .eyebrow{font-family:var(--mono);font-size:var(--t-eye);letter-spacing:0.45em;color:var(--accent);text-transform:uppercase;margin-bottom:clamp(28px,4vmin,56px)}
+    #intro-overlay .s3 .figs{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(2px,0.5vmin,4px);border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);width:100%;max-width:min(1500px,96vw)}
+    #intro-overlay .s3 .fig{padding:clamp(20px,4.5vmin,50px) clamp(14px,2.8vmin,32px);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:flex-start;gap:clamp(8px,1.4vmin,16px);position:relative;overflow:hidden}
+    #intro-overlay .s3 .fig:last-child{border-right:none}
+    #intro-overlay .s3 .fig .big{font-family:var(--display);font-weight:600;font-size:var(--t-stat);line-height:0.85;letter-spacing:-0.045em;color:var(--fg);font-variant-numeric:tabular-nums;position:relative;z-index:2}
+    #intro-overlay .s3 .fig.acc .big{color:var(--accent);text-shadow:0 0 24px var(--accent-soft)}
+    #intro-overlay .s3 .fig .big .plus{color:var(--muted);font-size:0.4em;vertical-align:top;margin-left:2px;letter-spacing:0}
+    #intro-overlay .s3 .fig .lbl{font-family:var(--mono);font-size:var(--t-mono);color:var(--accent);text-transform:uppercase;letter-spacing:0.14em;position:relative;z-index:2}
+    #intro-overlay .s3 .fig .meta{font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;position:relative;z-index:2}
+    #intro-overlay .s3 .fig .radar{position:absolute;left:-20%;bottom:-30%;width:clamp(120px,18vmin,260px);height:clamp(120px,18vmin,260px);border-radius:50%;border:1px solid var(--accent);opacity:0;animation:radar 2.4s 7.0s ease-out infinite}
+    #intro-overlay .s3 .fig:nth-child(2) .radar{animation-delay:7.15s}
+    #intro-overlay .s3 .fig:nth-child(3) .radar{animation-delay:7.3s}
+    #intro-overlay .s3 .fig:nth-child(4) .radar{animation-delay:7.45s}
+    @keyframes radar{0%{transform:scale(0.4);opacity:0.55}100%{transform:scale(2.4);opacity:0}}
+    @property --c1{syntax:'<integer>';initial-value:0;inherits:false}
+    @property --c2{syntax:'<integer>';initial-value:0;inherits:false}
+    @property --c3{syntax:'<integer>';initial-value:0;inherits:false}
+    @property --c4{syntax:'<integer>';initial-value:0;inherits:false}
+    #intro-overlay .s3 .num1{counter-reset:c1 var(--c1);animation:cnt1 1.6s 6.7s cubic-bezier(.2,.8,.2,1) forwards}
+    #intro-overlay .s3 .num1::before{content:counter(c1)}
+    #intro-overlay .s3 .num2{counter-reset:c2 var(--c2);animation:cnt2 1.6s 6.85s cubic-bezier(.2,.8,.2,1) forwards}
+    #intro-overlay .s3 .num2::before{content:counter(c2)}
+    #intro-overlay .s3 .num3{counter-reset:c3 var(--c3);animation:cnt3 1.3s 7.0s cubic-bezier(.2,.8,.2,1) forwards}
+    #intro-overlay .s3 .num3::before{content:counter(c3)}
+    #intro-overlay .s3 .num4{counter-reset:c4 var(--c4);animation:cnt4 1.5s 7.15s cubic-bezier(.2,.8,.2,1) forwards}
+    #intro-overlay .s3 .num4::before{content:counter(c4)}
+    #intro-overlay .s4{animation:showStill 2.4s 9.0s both}
+    #intro-overlay .s4 .quote{position:absolute;top:0;left:var(--pad);font-family:var(--display);font-size:clamp(120px,22vmin,260px);color:rgba(106,166,255,0.16);line-height:0.9;font-weight:600;pointer-events:none;opacity:0;animation:fadeUp 0.6s 9.05s forwards}
+    #intro-overlay .s4 h2{font-family:var(--display);font-weight:500;font-size:var(--t-tag);line-height:1.08;letter-spacing:-0.025em;color:var(--fg);text-align:center;max-width:min(1500px,94vw);margin:0;display:flex;flex-wrap:wrap;justify-content:center;gap:0.25em 0.32em}
+    #intro-overlay .s4 h2 .w{display:inline-block;overflow:hidden;line-height:1.08}
+    #intro-overlay .s4 h2 .w i{display:inline-block;font-style:normal;transform:translateY(110%);animation:slideUp 0.6s cubic-bezier(.2,.8,.2,1) forwards}
+    #intro-overlay .s4 h2 .w:nth-child(1) i{animation-delay:9.15s}
+    #intro-overlay .s4 h2 .w:nth-child(2) i{animation-delay:9.25s}
+    #intro-overlay .s4 h2 .w:nth-child(3) i{animation-delay:9.35s}
+    #intro-overlay .s4 h2 .w:nth-child(4) i{animation-delay:9.45s;color:var(--accent)}
+    #intro-overlay .s4 h2 .w:nth-child(5) i{animation-delay:9.55s}
+    #intro-overlay .s4 h2 .w:nth-child(6) i{animation-delay:9.65s}
+    #intro-overlay .s4 h2 .w:nth-child(7) i{animation-delay:9.75s}
+    #intro-overlay .s4 h2 .w:nth-child(8) i{animation-delay:9.85s}
+    #intro-overlay .s4 .sig{margin-top:clamp(18px,3.5vmin,46px);font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.3em;text-transform:uppercase;opacity:0;animation:fadeUp 0.6s 10.4s forwards}
+    #intro-overlay .s5{animation:showStill 6.0s 11.4s both}
+    #intro-overlay .s5 .ring-bg{position:absolute;left:50%;top:50%;width:clamp(200px,40vmin,520px);height:clamp(200px,40vmin,520px);border-radius:50%;border:1px solid var(--line-2);transform:translate(-50%,-50%) scale(0.4);opacity:0;animation:ringBgIn 1.4s 11.5s cubic-bezier(.2,.9,.2,1) forwards}
+    #intro-overlay .s5 .ring-bg.r2{border-color:var(--accent);opacity:0;animation-delay:11.65s;animation-duration:1.6s}
+    @keyframes ringBgIn{0%{transform:translate(-50%,-50%) scale(0.4);opacity:0}60%{opacity:0.4}100%{transform:translate(-50%,-50%) scale(1);opacity:0.18}}
+    #intro-overlay .s5 .mark{display:flex;align-items:center;gap:clamp(10px,1.8vmin,20px);font-family:var(--mono);font-size:var(--t-mono);color:var(--accent);letter-spacing:0.4em;text-transform:uppercase;margin-bottom:clamp(18px,3vmin,34px);opacity:0;animation:fadeUp 0.6s 11.55s forwards;position:relative;z-index:2}
+    #intro-overlay .s5 .mark .d{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent-glow)}
+    #intro-overlay .s5 .url{font-family:var(--display);font-weight:500;font-size:var(--t-url);color:var(--fg);letter-spacing:-0.02em;line-height:1.12;text-align:center;opacity:0;animation:fadeUp 0.7s 11.75s forwards;position:relative;z-index:2;max-width:96vw;word-break:break-word}
+    #intro-overlay .s5 .url span{color:var(--accent)}
+    #intro-overlay .s5 .cta{margin-top:clamp(26px,4.5vmin,54px);display:flex;flex-wrap:wrap;gap:clamp(12px,2vmin,22px);justify-content:center;align-items:center;font-family:var(--mono);font-size:var(--t-mono);color:var(--muted);letter-spacing:0.24em;text-transform:uppercase;opacity:0;animation:fadeUp 0.6s 12.0s forwards;position:relative;z-index:2}
+    #intro-overlay .s5 .cta a{color:var(--fg-2);text-decoration:none;border-bottom:1px solid var(--line-2);padding-bottom:6px;transition:color .2s,border-color .2s;pointer-events:auto}
+    #intro-overlay .s5 .cta a:hover{color:var(--accent);border-color:var(--accent)}
+    #intro-overlay .s5 .cta .sep{opacity:0.5}
+    #intro-overlay .grain{position:absolute;inset:0;pointer-events:none;z-index:55;opacity:0.07;mix-blend-mode:overlay}
+    #intro-overlay .grain svg{width:100%;height:100%}
+    #intro-overlay .vignette{position:absolute;inset:0;pointer-events:none;z-index:50;background:radial-gradient(ellipse 80% 65% at 50% 50%, transparent 55%, rgba(0,0,0,0.65) 100%)}
+    #intro-overlay .scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(106,166,255,0.5),transparent);z-index:45;opacity:0;animation:scan var(--T) linear infinite}
+    @keyframes scan{0%{top:-2%;opacity:0}4%{opacity:0.55}45%{top:103%;opacity:0.55}46%{opacity:0}100%{opacity:0}}
+    #intro-overlay .controls{position:fixed;bottom:calc(var(--lb) + 16px);right:16px;display:flex;gap:10px;z-index:200;font-family:var(--mono)}
+    #intro-overlay .controls button,#intro-overlay .controls a{background:rgba(4,8,15,0.7);border:1px solid var(--line-2);color:var(--fg-2);padding:10px 14px;border-radius:999px;cursor:pointer;letter-spacing:0.18em;text-transform:uppercase;transition:.2s;font-size:11px;backdrop-filter:blur(6px);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+    #intro-overlay .controls button:hover,#intro-overlay .controls a:hover{border-color:var(--accent);color:var(--accent)}
+    @media (max-aspect-ratio:3/4){
+      #intro-overlay .s3 .figs{grid-template-columns:repeat(2,1fr)}
+      #intro-overlay .s3 .fig{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+      #intro-overlay .s3 .fig:nth-child(2n){border-right:none}
+      #intro-overlay .s3 .fig:nth-child(3),#intro-overlay .s3 .fig:nth-child(4){border-bottom:none}
+      #intro-overlay .s3 .fig{padding:clamp(20px,4.2vmin,40px) clamp(16px,3.5vmin,26px)}
+      #intro-overlay .s3 .fig .big{font-size:clamp(64px,16vw,140px)}
+      #intro-overlay .s2 .mono{width:clamp(140px,38vw,260px);height:clamp(140px,38vw,260px)}
+      #intro-overlay .s2 .glyph{font-size:clamp(72px,18vw,140px)}
+      #intro-overlay .s2 .name{font-size:clamp(48px,13vw,108px)}
+      #intro-overlay .s4 h2{font-size:clamp(36px,9vw,84px);max-width:92vw}
+      #intro-overlay .s1 .slate{min-width:88vw;max-width:88vw}
+      #intro-overlay .s1 .slate .big{font-size:clamp(48px,16vw,108px)}
+      #intro-overlay .s5 .url{font-size:clamp(28px,7.8vw,72px)}
+      #intro-overlay .s5 .cta{flex-direction:column;gap:14px}
+      #intro-overlay .s5 .cta .sep{display:none}
+      #intro-overlay .lb .l b,#intro-overlay .lb .r b{font-size:10px}
+      #intro-overlay .lb .meta-hide{display:none}
     }
-    #intro-overlay .stage {
-      position: absolute !important;
-      inset: 0 !important;
+    @media (max-width:520px){
+      #intro-overlay .lb .meta-hide{display:none}
+      #intro-overlay .controls{bottom:calc(var(--lb) + 10px);right:10px}
+      #intro-overlay .controls button,#intro-overlay .controls a{padding:8px 12px;font-size:10px}
     }
-    #intro-skip {
-      position: fixed;
-      bottom: calc(clamp(28px, 6.5vmin, 96px) + 18px);
-      right: 28px;
-      z-index: 2147483647;
-      background: rgba(4,8,15,0.75);
-      border: 1px solid rgba(255,255,255,0.18);
-      color: #8089a0;
-      padding: 9px 18px;
-      border-radius: 999px;
-      cursor: pointer;
-      font-family: ui-monospace, monospace;
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      transition: border-color .2s, color .2s;
-      opacity: 0;
-      animation: intro-fade-in 0.4s ease 2s forwards;
-      backdrop-filter: blur(6px);
-    }
-    #intro-skip:hover { border-color: #6aa6ff; color: #6aa6ff; }
-    @keyframes intro-fade-in { from {opacity:0} to {opacity:1} }
-    @media (prefers-reduced-motion: reduce) {
-      #intro-overlay, #intro-skip { display: none !important; }
-      body.intro-active { overflow: unset !important; }
-    }
+    #intro-overlay .viewport{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
+    #intro-overlay .stage{position:absolute!important;inset:0!important}
+    #intro-skip{position:fixed;bottom:calc(clamp(28px,6.5vmin,96px) + 18px);right:28px;z-index:2147483647;background:rgba(4,8,15,0.75);border:1px solid rgba(255,255,255,0.18);color:#8089a0;padding:9px 18px;border-radius:999px;cursor:pointer;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;transition:border-color .2s,color .2s;opacity:0;animation:intro-fade-in 0.4s ease 2s forwards;backdrop-filter:blur(6px)}
+    #intro-skip:hover{border-color:#6aa6ff;color:#6aa6ff}
+    @keyframes intro-fade-in{from{opacity:0}to{opacity:1}}
+    @media (prefers-reduced-motion:reduce){#intro-overlay,#intro-skip{display:none!important}body.intro-active{overflow:unset!important}}
   </style>
 
   <div id="intro-overlay" aria-hidden="true">
     <div class="viewport">
-<div class="stage" id="stage">
-
-  <div class="gridwrap">
-    <svg viewBox="0 0 1920 1080" preserveAspectRatio="none">
-      <line class="gridline" x1="0" y1="360" x2="1920" y2="360"></line>
-      <line class="gridline" x1="0" y1="720" x2="1920" y2="720" style="animation-delay:0.75s"></line>
-      <line class="gridline v" x1="640" y1="0" x2="640" y2="1080" style="animation-delay:0.9s"></line>
-      <line class="gridline v" x1="1280" y1="0" x2="1280" y2="1080" style="animation-delay:1.05s"></line>
-      <line class="gridline accent" x1="0" y1="540" x2="1920" y2="540" style="animation-delay:1.3s;animation-duration:2s"></line>
-      <line class="gridline accent v" x1="960" y1="0" x2="960" y2="1080" style="animation-delay:1.4s;animation-duration:1.4s"></line>
-    </svg>
-  </div>
-
-  <div class="dust" id="dust"></div>
-
-  <div class="hud">
-    <span class="crosshair tl"></span>
-    <span class="crosshair tr"></span>
-    <span class="crosshair bl"></span>
-    <span class="crosshair br"></span>
-  </div>
-
-  <div class="streak"></div>
-
-  <div class="scenes">
-
-    <div class="scene s1">
-      <div class="slate">
-        <span class="sub">// portfolio intro reel</span>
-        <span class="big">TAKE&nbsp;01</span>
-        <div class="row">
-          <span class="k">production</span><span class="v">Laura Andreea P.</span>
-          <span class="k">role</span>           <span class="v">front-end · crm · dashboard</span>
-          <span class="k">date</span>           <span class="v acc" id="intro-date">26.05.26</span>
-          <span class="k">scene</span>          <span class="v">01 / intro</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="scene s2">
-      <div class="eyebrow" id="intro-s2-year">// portfolio · 2026</div>
-      <div class="mono-wrap">
-        <div class="mono">
-          <span class="pulse"></span>
-          <span class="pulse p2"></span>
-          <span class="pulse p3"></span>
-          <svg viewBox="0 0 200 200">
-            <circle class="ring r1" cx="100" cy="100" r="92"></circle>
-            <circle class="ring r2" cx="100" cy="100" r="78"></circle>
-            <circle class="ring r3" cx="100" cy="100" r="64"></circle>
+      <div class="stage" id="stage">
+        <div class="gridwrap">
+          <svg viewBox="0 0 1920 1080" preserveAspectRatio="none">
+            <line class="gridline" x1="0" y1="360" x2="1920" y2="360"></line>
+            <line class="gridline" x1="0" y1="720" x2="1920" y2="720" style="animation-delay:0.75s"></line>
+            <line class="gridline v" x1="640" y1="0" x2="640" y2="1080" style="animation-delay:0.9s"></line>
+            <line class="gridline v" x1="1280" y1="0" x2="1280" y2="1080" style="animation-delay:1.05s"></line>
+            <line class="gridline accent" x1="0" y1="540" x2="1920" y2="540" style="animation-delay:1.3s;animation-duration:2s"></line>
+            <line class="gridline accent v" x1="960" y1="0" x2="960" y2="1080" style="animation-delay:1.4s;animation-duration:1.4s"></line>
           </svg>
-          <div class="glyph"><span>L</span><span class="acc-l">A</span></div>
+        </div>
+        <div class="dust" id="dust"></div>
+        <div class="hud">
+          <span class="crosshair tl"></span><span class="crosshair tr"></span>
+          <span class="crosshair bl"></span><span class="crosshair br"></span>
+        </div>
+        <div class="streak"></div>
+        <div class="scenes">
+          <div class="scene s1">
+            <div class="slate">
+              <span class="sub">// portfolio intro reel</span>
+              <span class="big">TAKE&nbsp;01</span>
+              <div class="row">
+                <span class="k">production</span><span class="v">Laura Andreea P.</span>
+                <span class="k">role</span><span class="v">front-end &middot; crm &middot; dashboard</span>
+                <span class="k">date</span><span class="v acc" id="intro-date">31.05.26</span>
+                <span class="k">scene</span><span class="v">01 / intro</span>
+              </div>
+            </div>
+          </div>
+          <div class="scene s2">
+            <div class="eyebrow" id="intro-s2-year">// portfolio &middot; 2026</div>
+            <div class="mono-wrap">
+              <div class="mono">
+                <span class="pulse"></span><span class="pulse p2"></span><span class="pulse p3"></span>
+                <svg viewBox="0 0 200 200">
+                  <circle class="ring r1" cx="100" cy="100" r="92"></circle>
+                  <circle class="ring r2" cx="100" cy="100" r="78"></circle>
+                  <circle class="ring r3" cx="100" cy="100" r="64"></circle>
+                </svg>
+                <div class="glyph"><span>L</span><span class="acc-l">A</span></div>
+              </div>
+            </div>
+            <div class="name"><span><i>LAURA</i></span><span><i>ANDREEA</i></span></div>
+            <div class="rule"></div>
+            <div class="role">Front-end <b>CRM &amp; Dashboard</b> Developer</div>
+          </div>
+          <div class="scene s3">
+            <div class="eyebrow">// proof of work</div>
+            <div class="figs">
+              <div class="fig acc"><span class="radar"></span><span class="big"><span class="num1"></span></span><span class="lbl">CodePen &middot; Live</span><span class="meta">proiecte func&#x21B;ionale</span></div>
+              <div class="fig"><span class="radar"></span><span class="big"><span class="num2"></span><span class="plus">+</span></span><span class="lbl">GitHub &middot; Public</span><span class="meta">repo-uri publice</span></div>
+              <div class="fig"><span class="radar"></span><span class="big"><span class="num3"></span></span><span class="lbl">Alpis Fusion</span><span class="meta">module SaaS</span></div>
+              <div class="fig"><span class="radar"></span><span class="big"><span class="num4"></span><span class="plus">+</span></span><span class="lbl">Certific&#x103;ri</span><span class="meta">JS &middot; marketing &middot; data</span></div>
+            </div>
+          </div>
+          <div class="scene s4">
+            <span class="quote">&ldquo;</span>
+            <h2>
+              <span class="w"><i>Interfe&#x21B;e</i></span>
+              <span class="w"><i>care</i></span>
+              <span class="w"><i>transform&#x103;</i></span>
+              <span class="w"><i>procese</i></span>
+              <span class="w"><i>&icirc;n</i></span>
+              <span class="w"><i>fluxuri</i></span>
+              <span class="w"><i>clare.</i></span>
+            </h2>
+            <div class="sig">&mdash; Manifest de produs</div>
+          </div>
+          <div class="scene s5">
+            <div class="ring-bg"></div><div class="ring-bg r2"></div>
+            <div class="mark"><span class="d"></span> Cut &middot; End of Reel</div>
+            <div class="url">laurandreea10<span>.</span>github<span>.</span>io<br><span>/</span>codepen-portfolio</div>
+            <div class="cta">
+              <a href="intro-portofoliu-laura-andreea.html">Vezi deck-ul &rarr;</a>
+              <span class="sep">&middot;</span>
+              <a href="mailto:andreealaurap@gmail.com">Scrie-mi</a>
+              <span class="sep">&middot;</span>
+              <a href="https://github.com/LaurAndreea10">GitHub</a>
+            </div>
+          </div>
+        </div>
+        <div class="scan"></div>
+        <div class="grain">
+          <svg xmlns="http://www.w3.org/2000/svg">
+            <filter id="n">
+              <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence>
+              <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0"></feColorMatrix>
+            </filter>
+            <rect width="100%" height="100%" filter="url(#n)"></rect>
+          </svg>
+        </div>
+        <div class="vignette"></div>
+        <div class="lb top">
+          <div class="l"><span class="rec"></span><span>REC&nbsp;&middot;&nbsp;<b>TAKE&nbsp;01</b></span><span class="meta-hide" style="opacity:.5">/&nbsp;INTRO</span></div>
+          <div class="r"><span class="meta-hide">TC</span><b class="tc" id="tc">00:00:00:00</b></div>
+        </div>
+        <div class="lb bot">
+          <div class="l"><span>16:9&nbsp;&middot;&nbsp;<span class="meta-hide">1920&times;1080</span></span><span class="meta-hide" style="opacity:.5">&middot;&nbsp;24 fps</span></div>
+          <div class="r"><span class="meta-hide">ISO 400&nbsp;&middot;&nbsp;</span><span>f/2.8</span><span class="meta-hide" style="opacity:.5">&middot;&nbsp;1/50</span></div>
         </div>
       </div>
-      <div class="name">
-        <span><i>LAURA</i></span>
-        <span><i>ANDREEA</i></span>
-      </div>
-      <div class="rule"></div>
-      <div class="role">Front-end <b>CRM &amp; Dashboard</b> Developer</div>
     </div>
-
-    <div class="scene s3">
-      <div class="eyebrow">// proof of work</div>
-      <div class="figs">
-        <div class="fig acc">
-          <span class="radar"></span>
-          <span class="big"><span class="num1"></span></span>
-          <span class="lbl">CodePen · Live</span>
-          <span class="meta">proiecte funcționale</span>
-        </div>
-        <div class="fig">
-          <span class="radar"></span>
-          <span class="big"><span class="num2"></span><span class="plus">+</span></span>
-          <span class="lbl">GitHub · Public</span>
-          <span class="meta">repo-uri publice</span>
-        </div>
-        <div class="fig">
-          <span class="radar"></span>
-          <span class="big"><span class="num3"></span></span>
-          <span class="lbl">Alpis Fusion</span>
-          <span class="meta">module SaaS</span>
-        </div>
-        <div class="fig">
-          <span class="radar"></span>
-          <span class="big"><span class="num4"></span><span class="plus">+</span></span>
-          <span class="lbl">Certificări</span>
-          <span class="meta">JS · marketing · data</span>
-        </div>
-      </div>
+    <div class="controls">
+      <button id="replay">&#x21BB; Replay</button>
+      <a href="intro-portofoliu-laura-andreea.html">Skip &rarr;</a>
     </div>
-
-    <div class="scene s4">
-      <span class="quote">"</span>
-      <h2>
-        <span class="w"><i>Interfețe</i></span>
-        <span class="w"><i>care</i></span>
-        <span class="w"><i>transformă</i></span>
-        <span class="w"><i>procese</i></span>
-        <span class="w"><i>în</i></span>
-        <span class="w"><i>fluxuri</i></span>
-        <span class="w"><i>clare.</i></span>
-      </h2>
-      <div class="sig">— Manifest de produs</div>
-    </div>
-
-    <div class="scene s5">
-      <div class="ring-bg"></div>
-      <div class="ring-bg r2"></div>
-      <div class="mark"><span class="d"></span> Cut · End of Reel</div>
-      <div class="url">
-        laurandreea10<span>.</span>github<span>.</span>io<br>
-        <span>/</span>codepen-portfolio
-      </div>
-      <div class="cta">
-        <!-- FIX: URL fara spatii -->
-        <a href="intro-portofoliu-laura-andreea.html">Vezi deck-ul →</a>
-        <span class="sep">·</span>
-        <a href="mailto:andreealaurap@gmail.com">Scrie-mi</a>
-        <span class="sep">·</span>
-        <a href="https://github.com/LaurAndreea10">GitHub</a>
-      </div>
-    </div>
-
+    <script>
+    (function(){
+      var now = new Date();
+      var dd = String(now.getDate()).padStart(2,'0');
+      var mm = String(now.getMonth()+1).padStart(2,'0');
+      var yy = String(now.getFullYear()).slice(-2);
+      var dateEl = document.getElementById('intro-date');
+      if (dateEl) dateEl.textContent = dd+'.'+mm+'.'+yy;
+      var s2year = document.getElementById('intro-s2-year');
+      if (s2year) s2year.textContent = '// portfolio · '+now.getFullYear();
+      var v1=64,v2=20,v3=6,v4=10;
+      function injectCounterStyles(repos){
+        var existing=document.getElementById('intro-counter-css');
+        if(existing)existing.remove();
+        var s=document.createElement('style');
+        s.id='intro-counter-css';
+        s.textContent='@keyframes cnt1{to{--c1:'+v1+'}}@keyframes cnt2{to{--c2:'+(repos||v2)+'}}@keyframes cnt3{to{--c3:'+v3+'}}@keyframes cnt4{to{--c4:'+v4+'}}';
+        document.head.appendChild(s);
+      }
+      injectCounterStyles(v2);
+      if(window.__laGhRepos&&typeof window.__laGhRepos.then==='function'){
+        window.__laGhRepos.then(function(count){if(count>0)injectCounterStyles(count);});
+      }
+    })();
+    (function(){
+      var dust=document.getElementById('dust');
+      var N=28;
+      for(var i=0;i<N;i++){
+        var s=document.createElement('span');
+        var dur=5+Math.random()*7;
+        var delay=-Math.random()*dur;
+        var left=Math.random()*100;
+        var dx=(Math.random()-0.5)*60;
+        s.style.left=left+'vw';
+        s.style.animationDuration=dur+'s';
+        s.style.animationDelay=delay+'s';
+        s.style.setProperty('--dx',dx+'px');
+        dust.appendChild(s);
+      }
+    })();
+    var TOTAL=18;
+    var tcEl=document.getElementById('tc');
+    var startTime=performance.now();
+    function pad(n,w){w=w||2;return String(n).padStart(w,'0')}
+    function fmtTC(t){var f=Math.floor(t*24);var ff=f%24;var ss=Math.floor(f/24)%60;var mm=Math.floor(f/24/60)%60;var hh=Math.floor(f/24/3600);return pad(hh)+':'+pad(mm)+':'+pad(ss)+':'+pad(ff)}
+    function loop(now){var t=((now-startTime)/1000)%TOTAL;tcEl.textContent=fmtTC(t);requestAnimationFrame(loop);}
+    requestAnimationFrame(loop);
+    function restart(){var stage=document.getElementById('stage');if(!stage){stopIntroReplay();return;}var clone=stage.cloneNode(true);stage.replaceWith(clone);startTime=performance.now();attachReplay();}
+    function attachReplay(){var b=document.getElementById('replay');if(b)b.addEventListener('click',restart);}
+    attachReplay();
+    var introInterval=null;
+    function stopIntroReplay(){if(introInterval){clearInterval(introInterval);introInterval=null;}}
+    function scheduleIntroReplay(){stopIntroReplay();introInterval=setInterval(function(){if(!document.hidden)restart();},TOTAL*1000);}
+    scheduleIntroReplay();
+    document.addEventListener('visibilitychange',function(){if(document.hidden)stopIntroReplay();else scheduleIntroReplay();});
+    </script>
   </div>
-
-  <div class="scan"></div>
-
-  <div class="grain">
-    <svg xmlns="http://www.w3.org/2000/svg">
-      <filter id="n">
-        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence>
-        <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0"></feColorMatrix>
-      </filter>
-      <rect width="100%" height="100%" filter="url(#n)"></rect>
-    </svg>
-  </div>
-
-  <div class="vignette"></div>
-
-  <div class="lb top">
-    <div class="l">
-      <span class="rec"></span>
-      <span>REC&nbsp;·&nbsp;<b>TAKE&nbsp;01</b></span>
-      <span class="meta-hide" style="opacity:.5">/&nbsp;INTRO</span>
-    </div>
-    <div class="r">
-      <span class="meta-hide">TC</span>
-      <b class="tc" id="tc">00:00:00:00</b>
-    </div>
-  </div>
-  <div class="lb bot">
-    <div class="l">
-      <span>16:9&nbsp;·&nbsp;<span class="meta-hide">1920×1080</span></span>
-      <span class="meta-hide" style="opacity:.5">·&nbsp;24 fps</span>
-    </div>
-    <div class="r">
-      <span class="meta-hide">ISO 400&nbsp;·&nbsp;</span>
-      <span>f/2.8</span>
-      <span class="meta-hide" style="opacity:.5">·&nbsp;1/50</span>
-    </div>
-  </div>
-
-</div>
-</div>
-
-<div class="controls">
-  <button id="replay">↻ Replay</button>
-  <!-- FIX: URL fara spatii -->
-  <a href="intro-portofoliu-laura-andreea.html">Skip →</a>
-</div>
-
-<script>
-(function(){
-  var now = new Date();
-  var dd = String(now.getDate()).padStart(2,'0');
-  var mm = String(now.getMonth()+1).padStart(2,'0');
-  var yy = String(now.getFullYear()).slice(-2);
-  var dateEl = document.getElementById('intro-date');
-  if (dateEl) dateEl.textContent = dd + '.' + mm + '.' + yy;
-
-  var s2year = document.getElementById('intro-s2-year');
-  if (s2year) s2year.textContent = '// portfolio · ' + now.getFullYear();
-
-  var v1 = 64, v2 = 20, v3 = 6, v4 = 10;
-
-  function injectCounterStyles(repos) {
-    var existing = document.getElementById('intro-counter-css');
-    if (existing) existing.remove();
-    var s = document.createElement('style');
-    s.id = 'intro-counter-css';
-    s.textContent =
-      '@keyframes cnt1{to{--c1:' + v1 + '}}' +
-      '@keyframes cnt2{to{--c2:' + (repos || v2) + '}}' +
-      '@keyframes cnt3{to{--c3:' + v3 + '}}' +
-      '@keyframes cnt4{to{--c4:' + v4 + '}}';
-    document.head.appendChild(s);
-  }
-
-  injectCounterStyles(v2);
-
-  if (window.__laGhRepos && typeof window.__laGhRepos.then === 'function') {
-    window.__laGhRepos.then(function(count){
-      if (count > 0) injectCounterStyles(count);
-    });
-  }
-})();
-
-(function(){
-  var dust = document.getElementById('dust');
-  var N = 28;
-  for (var i=0;i<N;i++){
-    var s = document.createElement('span');
-    var dur = 5 + Math.random()*7;
-    var delay = -Math.random()*dur;
-    var left = Math.random()*100;
-    var dx = (Math.random()-0.5)*60;
-    s.style.left = left + 'vw';
-    s.style.animationDuration = dur + 's';
-    s.style.animationDelay = delay + 's';
-    s.style.setProperty('--dx', dx + 'px');
-    dust.appendChild(s);
-  }
-})();
-
-var TOTAL = 18;
-var tcEl = document.getElementById('tc');
-var startTime = performance.now();
-function pad(n,w){w=w||2;return String(n).padStart(w,'0')}
-function fmtTC(t){
-  var f = Math.floor(t*24);
-  var ff = f%24;
-  var ss = Math.floor(f/24)%60;
-  var mm = Math.floor(f/24/60)%60;
-  var hh = Math.floor(f/24/3600);
-  return pad(hh)+':'+pad(mm)+':'+pad(ss)+':'+pad(ff);
-}
-function loop(now){
-  var t = ((now - startTime)/1000) % TOTAL;
-  tcEl.textContent = fmtTC(t);
-  requestAnimationFrame(loop);
-}
-requestAnimationFrame(loop);
-
-function restart(){
-  var stage = document.getElementById('stage');
-  if (!stage) { stopIntroReplay(); return; }
-  var clone = stage.cloneNode(true);
-  stage.replaceWith(clone);
-  startTime = performance.now();
-  attachReplay();
-}
-function attachReplay(){
-  var b = document.getElementById('replay');
-  if (b) b.addEventListener('click', restart);
-}
-attachReplay();
-
-var introInterval = null;
-function stopIntroReplay() {
-  if (introInterval) { clearInterval(introInterval); introInterval = null; }
-}
-function scheduleIntroReplay() {
-  stopIntroReplay();
-  introInterval = setInterval(function() {
-    if (!document.hidden) restart();
-  }, TOTAL * 1000);
-}
-scheduleIntroReplay();
-document.addEventListener('visibilitychange', function() {
-  if (document.hidden) stopIntroReplay();
-  else scheduleIntroReplay();
-});
-</script>
-  </div>
-  <button id="intro-skip" type="button" aria-label="Skip intro" onclick="window.__introDismiss&&window.__introDismiss()">SKIP →</button>
+  <button id="intro-skip" type="button" aria-label="Skip intro" onclick="window.__introDismiss&&window.__introDismiss()">SKIP &rarr;</button>
 
   <script>
-    (function() {
+    (function(){
       'use strict';
-      var KEY = 'la_intro_seen';
-
-      try {
-        if (sessionStorage.getItem(KEY)) {
-          var s = document.getElementById('intro-css');
-          var o = document.getElementById('intro-overlay');
-          var sk = document.getElementById('intro-skip');
-          if (s) s.remove();
-          if (o) o.style.cssText = 'display:none!important';
-          if (sk) sk.style.cssText = 'display:none!important';
+      var KEY='la_intro_seen';
+      try{
+        if(sessionStorage.getItem(KEY)){
+          var s=document.getElementById('intro-css');
+          var o=document.getElementById('intro-overlay');
+          var sk=document.getElementById('intro-skip');
+          if(s)s.remove();
+          if(o)o.style.cssText='display:none!important';
+          if(sk)sk.style.cssText='display:none!important';
           return;
         }
-      } catch(e) {}
-
+      }catch(e){}
       document.body.classList.add('intro-active');
-
-      var dismissed = false;
-      function dismiss() {
-        if (dismissed) return;
-        dismissed = true;
-        var o = document.getElementById('intro-overlay');
-        var sk = document.getElementById('intro-skip');
+      var dismissed=false;
+      function dismiss(){
+        if(dismissed)return;
+        dismissed=true;
+        var o=document.getElementById('intro-overlay');
+        var sk=document.getElementById('intro-skip');
         document.body.classList.remove('intro-active');
-        if (o) o.classList.add('intro-hidden');
-        if (sk) sk.style.opacity = '0';
-        setTimeout(function() {
-          var o2 = document.getElementById('intro-overlay');
-          var sk2 = document.getElementById('intro-skip');
-          var css = document.getElementById('intro-css');
-          if (o2 && o2.parentNode) o2.parentNode.removeChild(o2);
-          if (sk2 && sk2.parentNode) sk2.parentNode.removeChild(sk2);
-          if (css && css.parentNode) css.parentNode.removeChild(css);
-        }, 550);
-        try { sessionStorage.setItem(KEY, '1'); } catch(e) {}
-        document.removeEventListener('keydown', onKey);
-        if (typeof stopIntroReplay === 'function') stopIntroReplay();
+        if(o)o.classList.add('intro-hidden');
+        if(sk)sk.style.opacity='0';
+        setTimeout(function(){
+          var o2=document.getElementById('intro-overlay');
+          var sk2=document.getElementById('intro-skip');
+          var css=document.getElementById('intro-css');
+          if(o2&&o2.parentNode)o2.parentNode.removeChild(o2);
+          if(sk2&&sk2.parentNode)sk2.parentNode.removeChild(sk2);
+          if(css&&css.parentNode)css.parentNode.removeChild(css);
+        },550);
+        try{sessionStorage.setItem(KEY,'1');}catch(e){}
+        document.removeEventListener('keydown',onKey);
+        if(typeof stopIntroReplay==='function')stopIntroReplay();
       }
-
-      window.__introDismiss = dismiss;
-
-      var timer = setTimeout(dismiss, 18500);
-
-      function onKey() { clearTimeout(timer); dismiss(); }
-      document.addEventListener('keydown', onKey);
-
-      var overlay = document.getElementById('intro-overlay');
-      if (overlay) {
-        overlay.addEventListener('touchstart', function(e) {
-          if (!e.target.closest('a, button')) {
-            clearTimeout(timer);
-            dismiss();
-          }
-        }, { passive: true });
+      window.__introDismiss=dismiss;
+      var timer=setTimeout(dismiss,18500);
+      function onKey(){clearTimeout(timer);dismiss();}
+      document.addEventListener('keydown',onKey);
+      var overlay=document.getElementById('intro-overlay');
+      if(overlay){
+        overlay.addEventListener('touchstart',function(e){
+          if(!e.target.closest('a, button')){clearTimeout(timer);dismiss();}
+        },{passive:true});
       }
     })();
   </script>
 
   <div class="skip-links" aria-label="Linkuri rapide">
-    <a class="skip-link" href="#home">Sari la început</a>
+    <a class="skip-link" href="#home">Sari la &icirc;nceput</a>
     <a class="skip-link" href="#key-projects">Sari la proiectele recomandate</a>
     <a class="skip-link" href="#marketing-tech">Sari la Marketing-Tech</a>
     <a class="skip-link" href="#contact">Sari la contact</a>
   </div>
 
   <noscript>
-    <div class="noscript-banner">
-      Pentru experiența completă recomand activarea JavaScript.
-    </div>
+    <div class="noscript-banner">Pentru experien&#x21B;a complet&#x103; recomand activarea JavaScript.</div>
     <div class="noscript-links">
       <strong>Proiecte-cheie:</strong>
       <ul>
@@ -894,13 +586,12 @@ document.addEventListener('visibilitychange', function() {
 
   <div class="topbar">
     <div class="container">
-      <nav class="nav glass" aria-label="Navigare principală">
-        <a class="brand" href="#home" aria-label="Mergi la începutul paginii">
+      <nav class="nav glass" aria-label="Navigare principal&#x103;">
+        <a class="brand" href="#home" aria-label="Mergi la &icirc;nceputul paginii">
           <span class="badge" aria-hidden="true">CP</span>
           <span id="brandText">Portofoliu CodePen</span>
         </a>
-
-        <div class="nav-links" aria-label="Secțiuni principale">
+        <div class="nav-links" aria-label="Sec&#x21B;iuni principale">
           <a class="pill" href="#key-projects">Top proiecte</a>
           <a class="pill" href="#proof-of-work">Dovezi</a>
           <a class="pill" href="#marketing-tech">Marketing-Tech</a>
@@ -909,113 +600,90 @@ document.addEventListener('visibilitychange', function() {
           <a class="pill" href="uses.html">Uses</a>
           <a class="pill" href="#about">Despre</a>
           <a class="pill" href="#contact">Contact</a>
-          <button class="pill pill-scan" id="scanToggle" type="button" aria-label="Rezumat portofoliu în 30 de secunde" aria-expanded="false" aria-controls="scan-panel">⚡ 30s</button>
-          <button class="pill" id="langToggle" type="button" aria-label="Schimbă limba între română și engleză">RO | EN</button>
-          <button class="pill" id="themeToggle" type="button" aria-label="Schimbă tema vizuală">☀️ Light</button>
-          <button class="pill" id="contrastToggle" type="button" aria-pressed="false" aria-label="Activează contrast ridicat">Contrast ridicat</button>
+          <button class="pill pill-scan" id="scanToggle" type="button" aria-label="Rezumat portofoliu &icirc;n 30 de secunde" aria-expanded="false" aria-controls="scan-panel">&#x26A1; 30s</button>
+          <button class="pill" id="langToggle" type="button" aria-label="Schimb&#x103; limba &icirc;ntre rom&acirc;n&#x103; &#x219;i englez&#x103;">RO | EN</button>
+          <button class="pill" id="themeToggle" type="button" aria-label="Schimb&#x103; tema vizual&#x103;">&#x2600;&#xFE0F; Light</button>
+          <button class="pill" id="contrastToggle" type="button" aria-pressed="false" aria-label="Activeaz&#x103; contrast ridicat">Contrast ridicat</button>
         </div>
       </nav>
     </div>
   </div>
 
-  <!-- ── 30s SCAN PANEL ──────────────────────────────────────────── -->
   <div id="scan-panel" class="scan-panel" role="dialog" aria-modal="false" aria-label="Rezumat portofoliu 30 de secunde" hidden>
     <div class="scan-inner">
-      <button class="scan-close" id="scanClose" type="button" aria-label="Închide panelul">✕</button>
-
+      <button class="scan-close" id="scanClose" type="button" aria-label="&Icirc;nchide panelul">&#x2715;</button>
       <div class="scan-header">
-        <span class="scan-eyebrow">⚡ Portfolio în 30 de secunde</span>
-        <h2 class="scan-title">Laura Andreea — Front-end CRM &amp; Dashboard Developer</h2>
+        <span class="scan-eyebrow">&#x26A1; Portfolio &icirc;n 30 de secunde</span>
+        <h2 class="scan-title">Laura Andreea &mdash; Front-end CRM &amp; Dashboard Developer</h2>
       </div>
-
       <div class="scan-grid">
         <div class="scan-col">
-          <h3 class="scan-col-title">🎯 Cine sunt</h3>
+          <h3 class="scan-col-title">&#x1F3AF; Cine sunt</h3>
           <ul class="scan-list">
             <li>Front-end autodidact cu background <strong>CRM &amp; marketing digital</strong></li>
-            <li>Construiesc interfețe unde <strong>structura și fluxul</strong> contează mai mult decât estetica</li>
-            <li>Tranziție activă din 2022 → focus pe CRM, dashboard-uri, AI-native tools</li>
-            <li>Bilingv RO/EN, toate proiectele publice și verificabile</li>
+            <li>Construiesc interfe&#x21B;e unde <strong>structura &#x219;i fluxul</strong> conteaz&#x103; mai mult dec&acirc;t estetica</li>
+            <li>Tranzi&#x21B;ie activ&#x103; din 2022 &rarr; focus pe CRM, dashboard-uri, AI-native tools</li>
+            <li>Bilingv RO/EN, toate proiectele publice &#x219;i verificabile</li>
           </ul>
         </div>
-
         <div class="scan-col">
-          <h3 class="scan-col-title">🏗 Stack real</h3>
+          <h3 class="scan-col-title">&#x1F3D7; Stack real</h3>
           <div class="scan-tags">
             <span class="scan-tag scan-tag-hi">React + Vite</span>
             <span class="scan-tag scan-tag-hi">GitHub Actions CI/CD</span>
             <span class="scan-tag">Vanilla JS / HTML / CSS</span>
             <span class="scan-tag">TypeScript</span>
-            <span class="scan-tag">Kanban · Flow Builder · RBAC</span>
+            <span class="scan-tag">Kanban &middot; Flow Builder &middot; RBAC</span>
             <span class="scan-tag">CSV/JSON Export</span>
             <span class="scan-tag">Anthropic API</span>
             <span class="scan-tag">GitHub Pages</span>
           </div>
         </div>
-
         <div class="scan-col">
-          <h3 class="scan-col-title">📊 Dovezi observabile</h3>
+          <h3 class="scan-col-title">&#x1F4CA; Dovezi observabile</h3>
           <ul class="scan-list">
             <li><strong id="scan-proj-count">64</strong> proiecte live pe CodePen</li>
             <li><strong id="scan-repo-count">20+</strong> repo-uri publice pe GitHub</li>
-            <li><strong>6</strong> module SaaS în Alpis Fusion: kanban, flow builder, RBAC, billing, booking, autosave</li>
-            <li><strong>10+</strong> certificări: JS Essential Training · Google Digital Marketing · freeCodeCamp · Claude Code</li>
+            <li><strong>6</strong> module SaaS &icirc;n Alpis Fusion: kanban, flow builder, RBAC, billing, booking, autosave</li>
+            <li><strong>10+</strong> certific&#x103;ri: JS Essential Training &middot; Google Digital Marketing &middot; freeCodeCamp &middot; Claude Code</li>
           </ul>
         </div>
-
         <div class="scan-col">
-          <h3 class="scan-col-title">🔥 Top 3 proiecte</h3>
+          <h3 class="scan-col-title">&#x1F525; Top 3 proiecte</h3>
           <ul class="scan-list scan-list-links">
-            <li>
-              <a href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener">Alpis Fusion CRM Premium</a>
-              <span class="scan-meta">React + Vite · 6 module · CI/CD</span>
-            </li>
-            <li>
-              <a href="https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/" target="_blank" rel="noopener">ClientFlow SaaS CRM</a>
-              <span class="scan-meta">Kanban · triage vizual · shortcuts</span>
-            </li>
-            <li>
-              <a href="https://laurandreea10.github.io/brief-studio/" target="_blank" rel="noopener">Brief Studio</a>
-              <span class="scan-meta">SaaS bilingv · 3 module · API keyless</span>
-            </li>
+            <li><a href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener">Alpis Fusion CRM Premium</a><span class="scan-meta">React + Vite &middot; 6 module &middot; CI/CD</span></li>
+            <li><a href="https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/" target="_blank" rel="noopener">ClientFlow SaaS CRM</a><span class="scan-meta">Kanban &middot; triage vizual &middot; shortcuts</span></li>
+            <li><a href="https://laurandreea10.github.io/brief-studio/" target="_blank" rel="noopener">Brief Studio</a><span class="scan-meta">SaaS bilingv &middot; 3 module &middot; API keyless</span></li>
           </ul>
         </div>
-
         <div class="scan-col">
-          <h3 class="scan-col-title">🔄 În curs</h3>
+          <h3 class="scan-col-title">&#x1F504; &Icirc;n curs</h3>
           <ul class="scan-list">
-            <li>🔄 <strong>PulseBoard</strong> — roadmap activ: sezonalitate, Stripe/Shopify, briefing automat</li>
-            <li>🔄 <strong>Career Toolkit</strong> — suită instrumente carieră, primul deploy live</li>
-            <li>🔄 <strong>ClientOps Suite Premium</strong> — demo live în construcție</li>
-            <li>🔄 <strong>Lead Magnet Landing</strong> — layout + flow de conversie</li>
-            <li>🔄 <strong>Excel Quest V2</strong> — progres salvat + dashboard</li>
-            <li>🔄 <strong>Portfolio Polish</strong> — accessibility audit + mobile UX</li>
-            <li>🔄 <strong>Marketing OS</strong> — suită unificată CampaignPilot + ROI + Lead Magnet</li>
+            <li>&#x1F504; <strong>PulseBoard</strong> &mdash; roadmap activ: sezonalitate, Stripe/Shopify, briefing automat</li>
+            <li>&#x1F504; <strong>Career Toolkit</strong> &mdash; suit&#x103; instrumente carier&#x103;, primul deploy live</li>
+            <li>&#x1F504; <strong>ClientOps Suite Premium</strong> &mdash; demo live &icirc;n construc&#x21B;ie</li>
+            <li>&#x1F504; <strong>Lead Magnet Landing</strong> &mdash; layout + flow de conversie</li>
+            <li>&#x1F504; <strong>Excel Quest V2</strong> &mdash; progres salvat + dashboard</li>
+            <li>&#x1F504; <strong>Portfolio Polish</strong> &mdash; accessibility audit + mobile UX</li>
+            <li>&#x1F504; <strong>Marketing OS</strong> &mdash; suit&#x103; unificat&#x103; CampaignPilot + ROI + Lead Magnet</li>
           </ul>
         </div>
-
         <div class="scan-col">
-          <h3 class="scan-col-title">📬 Contact rapid</h3>
+          <h3 class="scan-col-title">&#x1F4EC; Contact rapid</h3>
           <ul class="scan-list scan-list-links">
             <li><a href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect">andreealaurap@gmail.com</a></li>
             <li><a href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener">LinkedIn</a></li>
-            <li><a href="https://github.com/LaurAndreea10" target="_blank" rel="noopener">GitHub · LaurAndreea10</a></li>
-            <li>
-              <span class="scan-available" id="scan-available">
-                <span class="scan-dot"></span> Disponibilă pentru proiecte
-              </span>
-            </li>
+            <li><a href="https://github.com/LaurAndreea10" target="_blank" rel="noopener">GitHub &middot; LaurAndreea10</a></li>
+            <li><span class="scan-available" id="scan-available"><span class="scan-dot"></span> Disponibil&#x103; pentru proiecte</span></li>
           </ul>
         </div>
       </div>
-
-      <!-- FIX: campurile scan-date si scan-years pornesc goale, JS le populeaza imediat la load -->
       <div class="scan-footer">
         <span id="scan-updated">Actualizat: <strong id="scan-date"></strong></span>
-        <span class="scan-footer-sep">·</span>
-        <span id="scan-exp">Experiență activă: <strong id="scan-years"></strong></span>
-        <span class="scan-footer-sep">·</span>
-        <a href="#key-projects" onclick="document.getElementById('scan-panel').hidden=true">Vezi proiectele →</a>
+        <span class="scan-footer-sep">&middot;</span>
+        <span id="scan-exp">Experien&#x21B;&#x103; activ&#x103;: <strong id="scan-years"></strong></span>
+        <span class="scan-footer-sep">&middot;</span>
+        <a href="#key-projects" onclick="document.getElementById('scan-panel').hidden=true">Vezi proiectele &rarr;</a>
       </div>
     </div>
   </div>
@@ -1025,17 +693,14 @@ document.addEventListener('visibilitychange', function() {
       <article class="hero-card glass">
         <div class="hero-layout">
           <div class="hero-main">
-            <span class="eyebrow" id="hero-eyebrow">CRM • Marketing • Front-end autodidact</span>
-            <h1 id="hero-title">Construiesc interfețe CRM și dashboard-uri care transformă procese complicate în fluxuri clare</h1>
-            <p class="hero-text" id="hero-text">
-              Vin din CRM și marketing, iar în front-end mă concentrez pe produse unde structura, prioritizarea și feedback-ul vizual ajută utilizatorii să înțeleagă mai repede ce au de făcut și să acționeze fără fricțiune.
-            </p>
+            <span class="eyebrow" id="hero-eyebrow">CRM &bull; Marketing &bull; Front-end autodidact</span>
+            <h1 id="hero-title">Construiesc interfe&#x21B;e CRM &#x219;i dashboard-uri care transform&#x103; procese complicate &icirc;n fluxuri clare</h1>
+            <p class="hero-text" id="hero-text">Vin din CRM &#x219;i marketing, iar &icirc;n front-end m&#x103; concentrez pe produse unde structura, prioritizarea &#x219;i feedback-ul vizual ajut&#x103; utilizatorii s&#x103; &icirc;n&#x21B;eleag&#x103; mai repede ce au de f&#x103;cut &#x219;i s&#x103; ac&#x21B;ioneze f&#x103;r&#x103; fric&#x21B;iune.</p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect" aria-label="Trimite email despre un proiect" id="heroCtaPrimary">Scrie-mi despre un proiect</a>
-              <a class="btn btn-secondary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer" aria-label="Deschide proiectul Alpis Fusion CRM Premium" id="heroCtaSecondary">Deschide Alpis Fusion →</a>
+              <a class="btn btn-secondary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer" aria-label="Deschide proiectul Alpis Fusion CRM Premium" id="heroCtaSecondary">Deschide Alpis Fusion &rarr;</a>
             </div>
           </div>
-
           <aside class="hero-preview glass" aria-label="Preview carusel proiecte" id="heroPreviewSection">
             <div class="hero-preview-top">
               <div>
@@ -1044,30 +709,19 @@ document.addEventListener('visibilitychange', function() {
               </div>
               <a class="btn btn-secondary" id="heroPreviewOpenSecondary" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer" aria-label="Deschide proiectul curent din preview">Deschide proiectul</a>
             </div>
-
-            <div class="hero-preview-links" id="heroPreviewLinks" aria-label="Selectează preview proiect"></div>
-
+            <div class="hero-preview-links" id="heroPreviewLinks" aria-label="Selecteaz&#x103; preview proiect"></div>
             <div class="hero-preview-wrap">
               <img class="hero-preview-fallback" id="heroPreviewFallback" src="alpis-fusion-demo-poster.svg" alt="Imagine fallback pentru preview proiect" />
-              <div class="hero-preview-hint" id="heroPreviewHint">Preview-ul live nu s-a încărcat. Poți folosi butoanele de mai jos pentru a deschide proiectul direct.</div>
-
-              <iframe
-                class="hero-preview-frame"
-                id="heroPreviewFrame"
-                title="Preview live proiect"
-                loading="lazy"
-                referrerpolicy="strict-origin-when-cross-origin"
-                sandbox="allow-scripts allow-same-origin allow-forms allow-popups">
-              </iframe>
-
+              <div class="hero-preview-hint" id="heroPreviewHint">Preview-ul live nu s-a &icirc;nc&#x103;rcat. Po&#x21B;i folosi butoanele de mai jos pentru a deschide proiectul direct.</div>
+              <iframe class="hero-preview-frame" id="heroPreviewFrame" title="Preview live proiect" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
               <div class="hero-preview-stage">
                 <span class="tag" id="heroPreviewType">Repository</span>
                 <h3 id="heroPreviewHeading">Alpis Fusion CRM Premium</h3>
-                <p class="meta-line" id="heroPreviewMeta">Vite + React · build optimizat · Deploy automatizat</p>
-                <p id="heroPreviewDescription">Colecție de module CRM premium pentru lead pipeline, task management și automatizări.</p>
+                <p class="meta-line" id="heroPreviewMeta">Vite + React &middot; build optimizat &middot; Deploy automatizat</p>
+                <p id="heroPreviewDescription">Colec&#x21B;ie de module CRM premium pentru lead pipeline, task management &#x219;i automatiz&#x103;ri.</p>
                 <div class="hero-preview-actions">
                   <a class="btn btn-primary" id="heroPreviewOpen" href="projects/alpis-fusion-crm.html">Deschide case study</a>
-                  <a class="btn btn-codepen" id="heroPreviewCode" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">CodePen →</a>
+                  <a class="btn btn-codepen" id="heroPreviewCode" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">CodePen &rarr;</a>
                 </div>
                 <a id="heroPreviewUrl" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">github.com/LaurAndreea10/Alpis-Fusion-CRM-premium</a>
               </div>
@@ -1085,20 +739,11 @@ document.addEventListener('visibilitychange', function() {
         <div class="cred-strip">
           <a class="cred-item" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer" aria-label="Deschide hubul CodePen cu 64 proiecte live">
             <strong>64</strong>
-            <p>proiecte live pe CodePen<br><span class="subtle-inline">25 selectate pe acest site →</span></p>
+            <p>proiecte live pe CodePen<br><span class="subtle-inline">25 selectate pe acest site &rarr;</span></p>
           </a>
-          <div class="cred-item">
-            <strong>10+</strong>
-            <p>certificări: JavaScript Essential Training · Google Digital Marketing · freeCodeCamp Data Analysis · Claude Code in Action</p>
-          </div>
-          <div class="cred-item">
-            <strong>6</strong>
-            <p>module SaaS în Alpis Fusion CRM Premium: kanban, flow builder, RBAC, billing, booking, autosave</p>
-          </div>
-          <div class="cred-item">
-            <strong>2022 →</strong>
-            <p>tranziție activă din CRM &amp; Marketing în front-end development</p>
-          </div>
+          <div class="cred-item"><strong>10+</strong><p>certific&#x103;ri: JavaScript Essential Training &middot; Google Digital Marketing &middot; freeCodeCamp Data Analysis &middot; Claude Code in Action</p></div>
+          <div class="cred-item"><strong>6</strong><p>module SaaS &icirc;n Alpis Fusion CRM Premium: kanban, flow builder, RBAC, billing, booking, autosave</p></div>
+          <div class="cred-item"><strong>2022 &rarr;</strong><p>tranzi&#x21B;ie activ&#x103; din CRM &amp; Marketing &icirc;n front-end development</p></div>
         </div>
       </div>
     </section>
@@ -1109,79 +754,50 @@ document.addEventListener('visibilitychange', function() {
       <div class="container">
         <div class="section-head">
           <div>
-            <span class="eyebrow">🚀 Latest on GitHub</span>
+            <span class="eyebrow">&#x1F680; Latest on GitHub</span>
             <h2 id="latest-github-title">Cele mai noi proiecte cu repo public</h2>
-            <div class="gh-meta">
-              <span>Cod public • Deploy automat • Open source</span>
-            </div>
+            <div class="gh-meta"><span>Cod public &bull; Deploy automat &bull; Open source</span></div>
           </div>
-          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Vezi toate repo-urile GitHub ale Laurei Andreea">Toate repo-urile →</a>
+          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Vezi toate repo-urile GitHub ale Laurei Andreea">Toate repo-urile &rarr;</a>
         </div>
-
         <div class="projects-grid" aria-label="Proiecte GitHub recente">
           <article class="project-card glass" aria-labelledby="pulseboard-title">
             <span class="badge-new">NEW</span>
-            <div class="project-top">
-              <div>
-                <h3 id="pulseboard-title">PulseBoard</h3>
-                <span class="badge-github">GitHub</span>
-              </div>
-              <span class="tag github">github</span>
-            </div>
-            <p class="project-desc">Dashboard de venituri &amp; operațiuni care importă date reale (CSV/Google Sheet), detectează anomalii și generează un briefing executiv cu acțiuni, scris de AI.</p>
+            <div class="project-top"><div><h3 id="pulseboard-title">PulseBoard</h3><span class="badge-github">GitHub</span></div><span class="tag github">github</span></div>
+            <p class="project-desc">Dashboard de venituri &amp; opera&#x21B;iuni care import&#x103; date reale (CSV/Google Sheet), detecteaz&#x103; anomalii &#x219;i genereaz&#x103; un briefing executiv cu ac&#x21B;iuni, scris de AI.</p>
             <div class="card-actions">
               <a class="btn btn-primary" href="projects/pulseboard.html">Case study</a>
-              <a class="btn btn-primary" href="https://laurandreea10.github.io/Pulseboard/" target="_blank" rel="noopener noreferrer">Live Demo</a>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Pulseboard" target="_blank" rel="noopener noreferrer">GitHub →</a>
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/PulseBoard/" target="_blank" rel="noopener noreferrer">Live Demo</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/PulseBoard" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
             </div>
           </article>
           <article class="project-card glass" aria-labelledby="excel-quest-title">
             <span class="badge-new">NEW</span>
-            <div class="project-top">
-              <div>
-                <h3 id="excel-quest-title">Excel-Quest</h3>
-                <span class="badge-github">GitHub</span>
-              </div>
-              <span class="tag github">github</span>
-            </div>
-            <p class="project-desc">Aplicație educațională gamificată pentru învățarea Excel. Structură de quest, progres vizibil și deploy GitHub Pages.</p>
+            <div class="project-top"><div><h3 id="excel-quest-title">Excel-Quest</h3><span class="badge-github">GitHub</span></div><span class="tag github">github</span></div>
+            <p class="project-desc">Aplica&#x21B;ie educa&#x21B;ional&#x103; gamificat&#x103; pentru &icirc;nv&#x103;&#x21B;area Excel. Structur&#x103; de quest, progres vizibil &#x219;i deploy GitHub Pages.</p>
             <div class="card-actions">
               <a class="btn btn-primary" href="projects/excel-quest.html">Case study</a>
               <a class="btn btn-primary" href="https://laurandreea10.github.io/Excel-Quest/" target="_blank" rel="noopener noreferrer">Live Demo</a>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Excel-Quest" target="_blank" rel="noopener noreferrer">GitHub →</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Excel-Quest" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
             </div>
           </article>
-
           <article class="project-card glass" aria-labelledby="basket-title">
             <span class="badge-new">NEW</span>
-            <div class="project-top">
-              <div>
-                <h3 id="basket-title">BASKET VS AI</h3>
-                <span class="badge-github">GitHub</span>
-              </div>
-              <span class="tag github">github</span>
-            </div>
-            <p class="project-desc">Joc arcade cu două variante live: Main și Enhanced Pro. Repo public, deploy automat și două experiențe distincte.</p>
+            <div class="project-top"><div><h3 id="basket-title">BASKET VS AI</h3><span class="badge-github">GitHub</span></div><span class="tag github">github</span></div>
+            <p class="project-desc">Joc arcade cu dou&#x103; variante live: Main &#x219;i Enhanced Pro. Repo public, deploy automat &#x219;i dou&#x103; experien&#x21B;e distincte.</p>
             <div class="card-actions">
               <a class="btn btn-primary" href="https://laurandreea10.github.io/BASKET-VS-AI/" target="_blank" rel="noopener noreferrer">Live Demo</a>
               <a class="btn btn-secondary" href="https://laurandreea10.github.io/BASKET-VS-AI/enhanced.html" target="_blank" rel="noopener noreferrer">Enhanced Pro</a>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/BASKET-VS-AI" target="_blank" rel="noopener noreferrer">GitHub →</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/BASKET-VS-AI" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
             </div>
           </article>
-
           <article class="project-card glass" aria-labelledby="link-video-title">
             <span class="badge-new">NEW</span>
-            <div class="project-top">
-              <div>
-                <h3 id="link-video-title">Link Video Editor Studio</h3>
-                <span class="badge-github">GitHub</span>
-              </div>
-              <span class="tag github">github</span>
-            </div>
-            <p class="project-desc">Studio front-end pentru planuri de producție video. Structură de produs cu zone funcționale clare.</p>
+            <div class="project-top"><div><h3 id="link-video-title">Link Video Editor Studio</h3><span class="badge-github">GitHub</span></div><span class="tag github">github</span></div>
+            <p class="project-desc">Studio front-end pentru planuri de produc&#x21B;ie video. Structur&#x103; de produs cu zone func&#x21B;ionale clare.</p>
             <div class="card-actions">
               <a class="btn btn-primary" href="https://laurandreea10.github.io/Link-Video-Editor-Studio/" target="_blank" rel="noopener noreferrer">Live Demo</a>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Link-Video-Editor-Studio" target="_blank" rel="noopener noreferrer">GitHub →</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Link-Video-Editor-Studio" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
             </div>
           </article>
         </div>
@@ -1195,51 +811,30 @@ document.addEventListener('visibilitychange', function() {
         <article class="about-card glass">
           <div class="now-head">
             <div>
-              <span class="eyebrow eyebrow-green">⚡ Now</span>
-              <h2 id="now-title" class="now-title">La ce lucrez săptămâna asta</h2>
+              <span class="eyebrow eyebrow-green">&#x26A1; Now</span>
+              <h2 id="now-title" class="now-title">La ce lucrez s&#x103;pt&#x103;m&acirc;na asta</h2>
             </div>
-            <!-- FIX: data generata dinamic de JS, nu hardcodata -->
-            <p class="now-badge">
-              Actualizat: <time id="now-datetime"></time>
-            </p>
+            <p class="now-badge">Actualizat: <time id="now-datetime"></time></p>
           </div>
-
-          <div class="now-tabs" role="tablist" aria-label="Activitate curentă">
-            <button class="now-tab now-tab-active" role="tab" aria-selected="true" aria-controls="now-panel-active" id="now-tab-active" type="button">🔄 În curs</button>
-            <button class="now-tab" role="tab" aria-selected="false" aria-controls="now-panel-done" id="now-tab-done" type="button">✅ Finalizat recent</button>
-            <button class="now-tab" role="tab" aria-selected="false" aria-controls="now-panel-history" id="now-tab-history" type="button">📅 Istoric</button>
+          <div class="now-tabs" role="tablist" aria-label="Activitate curent&#x103;">
+            <button class="now-tab now-tab-active" role="tab" aria-selected="true" aria-controls="now-panel-active" id="now-tab-active" type="button">&#x1F504; &Icirc;n curs</button>
+            <button class="now-tab" role="tab" aria-selected="false" aria-controls="now-panel-done" id="now-tab-done" type="button">&#x2705; Finalizat recent</button>
+            <button class="now-tab" role="tab" aria-selected="false" aria-controls="now-panel-history" id="now-tab-history" type="button">&#x1F4C5; Istoric</button>
           </div>
-
-          <div class="now-panel" id="now-panel-active" role="tabpanel" aria-labelledby="now-tab-active">
-            <ul class="now-checklist"></ul>
-          </div>
-
-          <div class="now-panel now-panel-hidden" id="now-panel-done" role="tabpanel" aria-labelledby="now-tab-done">
-            <ul class="now-checklist"></ul>
-          </div>
-
-          <div class="now-panel now-panel-hidden" id="now-panel-history" role="tabpanel" aria-labelledby="now-tab-history">
-            <div class="now-history"></div>
-          </div>
-
-          <p class="now-note">
-            Actualizat manual ca secțiune de tip <em>now page</em> — arată ce prioritizez activ, nu doar ce am construit.
-          </p>
-
+          <div class="now-panel" id="now-panel-active" role="tabpanel" aria-labelledby="now-tab-active"><ul class="now-checklist"></ul></div>
+          <div class="now-panel now-panel-hidden" id="now-panel-done" role="tabpanel" aria-labelledby="now-tab-done"><ul class="now-checklist"></ul></div>
+          <div class="now-panel now-panel-hidden" id="now-panel-history" role="tabpanel" aria-labelledby="now-tab-history"><div class="now-history"></div></div>
+          <p class="now-note">Actualizat manual ca sec&#x21B;iune de tip <em>now page</em> &mdash; arat&#x103; ce prioritizez activ, nu doar ce am construit.</p>
           <script>
-            (function() {
-              var tabs = document.querySelectorAll('.now-tab');
-              var panels = document.querySelectorAll('.now-panel');
-              tabs.forEach(function(tab) {
-                tab.addEventListener('click', function() {
-                  var target = tab.getAttribute('aria-controls');
-                  tabs.forEach(function(t) {
-                    t.classList.remove('now-tab-active');
-                    t.setAttribute('aria-selected', 'false');
-                  });
-                  panels.forEach(function(p) { p.classList.add('now-panel-hidden'); });
-                  tab.classList.add('now-tab-active');
-                  tab.setAttribute('aria-selected', 'true');
+            (function(){
+              var tabs=document.querySelectorAll('.now-tab');
+              var panels=document.querySelectorAll('.now-panel');
+              tabs.forEach(function(tab){
+                tab.addEventListener('click',function(){
+                  var target=tab.getAttribute('aria-controls');
+                  tabs.forEach(function(t){t.classList.remove('now-tab-active');t.setAttribute('aria-selected','false');});
+                  panels.forEach(function(p){p.classList.add('now-panel-hidden');});
+                  tab.classList.add('now-tab-active');tab.setAttribute('aria-selected','true');
                   document.getElementById(target).classList.remove('now-panel-hidden');
                 });
               });
@@ -1255,58 +850,35 @@ document.addEventListener('visibilitychange', function() {
       <div class="container">
         <div class="section-head">
           <div>
-            <span class="eyebrow">📊 Marketing-Tech</span>
-            <h2 id="marketing-tech-title">Templates pentru marketing manager și echipe growth</h2>
-            <p class="section-subtitle">Combin background-ul meu CRM &amp; marketing cu logica de produs front-end. Workspace-uri unificate pentru planificare campanii, KPI tracking și conversion UI.</p>
+            <span class="eyebrow">&#x1F4CA; Marketing-Tech</span>
+            <h2 id="marketing-tech-title">Templates pentru marketing manager &#x219;i echipe growth</h2>
+            <p class="section-subtitle">Combin background-ul meu CRM &amp; marketing cu logica de produs front-end. Workspace-uri unificate pentru planificare campanii, KPI tracking &#x219;i conversion UI.</p>
           </div>
           <div class="card-actions no-auto-margin">
             <a class="btn btn-secondary" href="./campaignpilot.html">CampaignPilot</a>
             <a class="btn btn-secondary" href="./Campaign%20ROI%20Calculator.html">ROI Calculator</a>
           </div>
         </div>
-
         <div class="projects-grid">
           <article class="project-card glass">
             <span class="badge-new">NEW</span>
-            <div class="project-top">
-              <div>
-                <h3>CampaignPilot</h3>
-                <span class="badge-github">Marketing planner · KPI hub</span>
-              </div>
-              <span class="tag github">marketing-tech</span>
-            </div>
-            <p class="project-desc">Workspace unificat pentru planificarea unei campanii de la idee la rezultate: KPI overview, funnel, budget allocation, content calendar și brief generator.</p>
+            <div class="project-top"><div><h3>CampaignPilot</h3><span class="badge-github">Marketing planner &middot; KPI hub</span></div><span class="tag github">marketing-tech</span></div>
+            <p class="project-desc">Workspace unificat pentru planificarea unei campanii de la idee la rezultate: KPI overview, funnel, budget allocation, content calendar &#x219;i brief generator.</p>
             <div class="card-actions">
               <a class="btn btn-primary" href="./campaignpilot.html">Deschide Live</a>
               <a class="btn btn-secondary" href="./campaignpilot.html#brief">Vezi Brief Generator</a>
             </div>
           </article>
-
           <article class="project-card glass">
             <span class="badge-new">NEW</span>
-            <div class="project-top">
-              <div>
-                <h3>Campaign ROI Calculator</h3>
-                <span class="badge-github">Marketing analytics · ROI tool</span>
-              </div>
-              <span class="tag github">marketing-tech</span>
-            </div>
-            <p class="project-desc">Calculator interactiv pentru evaluarea performanței campaniilor: ROI, ROAS, CAC, cost per lead, revenue estimat și profitabilitate.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="./Campaign%20ROI%20Calculator.html">Deschide Live</a>
-            </div>
+            <div class="project-top"><div><h3>Campaign ROI Calculator</h3><span class="badge-github">Marketing analytics &middot; ROI tool</span></div><span class="tag github">marketing-tech</span></div>
+            <p class="project-desc">Calculator interactiv pentru evaluarea performan&#x21B;ei campaniilor: ROI, ROAS, CAC, cost per lead, revenue estimat &#x219;i profitabilitate.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="./Campaign%20ROI%20Calculator.html">Deschide Live</a></div>
           </article>
-
-          <!-- FIX: opacity 1 vine din style.css, nu mai e nevoie de clasa separata vizual degradata -->
           <article class="project-card glass project-card-soon">
-            <div class="project-top">
-              <div><h3>Lead Magnet Landing</h3></div>
-              <span class="tag">soon</span>
-            </div>
-            <p class="project-desc">Landing page modular pentru ebooks, white papers și resource downloads. Hero hook + social proof + email gate + thank-you flow.</p>
-            <div class="card-actions">
-              <span class="btn btn-secondary btn-disabled">În roadmap</span>
-            </div>
+            <div class="project-top"><div><h3>Lead Magnet Landing</h3></div><span class="tag">soon</span></div>
+            <p class="project-desc">Landing page modular pentru ebooks, white papers &#x219;i resource downloads. Hero hook + social proof + email gate + thank-you flow.</p>
+            <div class="card-actions"><span class="btn btn-secondary btn-disabled">&Icirc;n roadmap</span></div>
           </article>
         </div>
       </div>
@@ -1318,77 +890,54 @@ document.addEventListener('visibilitychange', function() {
       <div class="container">
         <div class="section-head">
           <div>
-            <span class="eyebrow eyebrow-green">🗂 CRM Ecosystem</span>
+            <span class="eyebrow eyebrow-green">&#x1F5C2; CRM Ecosystem</span>
             <h2 id="crm-projects-title">5 produse CRM cu repo public</h2>
-            <div class="gh-meta gh-meta-green">
-              <span>Cod public · Deploy automat · Open source</span>
-            </div>
+            <div class="gh-meta gh-meta-green"><span>Cod public &middot; Deploy automat &middot; Open source</span></div>
           </div>
-          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">Toate repo-urile →</a>
+          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">Toate repo-urile &rarr;</a>
         </div>
-
         <div class="projects-grid">
           <article class="project-card glass" aria-labelledby="alpis-title">
-            <div class="project-top">
-              <div><h3 id="alpis-title">Alpis Fusion CRM Premium</h3><span class="badge-github">GitHub</span></div>
-              <span class="tag crm">crm</span>
-            </div>
-            <p class="project-desc">CRM modular cu kanban, flow builder, RBAC și billing. Vite + React, build optimizat și deploy GitHub Actions.</p>
+            <div class="project-top"><div><h3 id="alpis-title">Alpis Fusion CRM Premium</h3><span class="badge-github">GitHub</span></div><span class="tag crm">crm</span></div>
+            <p class="project-desc">CRM modular cu kanban, flow builder, RBAC &#x219;i billing. Vite + React, build optimizat &#x219;i deploy GitHub Actions.</p>
             <div class="card-actions">
               <a class="btn btn-primary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Live Demo</a>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">GitHub →</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
             </div>
           </article>
-
           <article class="project-card glass" aria-labelledby="brief-studio-title">
             <span class="badge-new">NEW</span>
-            <div class="project-top">
-              <div><h3 id="brief-studio-title">Brief Studio</h3><span class="badge-github">GitHub</span></div>
-              <span class="tag saas">saas</span>
-            </div>
-            <p class="project-desc">Platformă SaaS bilingvă RO/EN pentru gestionarea brief-urilor și comunicarea cu clienții.</p>
+            <div class="project-top"><div><h3 id="brief-studio-title">Brief Studio</h3><span class="badge-github">GitHub</span></div><span class="tag saas">saas</span></div>
+            <p class="project-desc">Platform&#x103; SaaS bilingv&#x103; RO/EN pentru gestionarea brief-urilor &#x219;i comunicarea cu clien&#x21B;ii.</p>
             <div class="card-actions">
               <a class="btn btn-primary" href="https://laurandreea10.github.io/brief-studio/" target="_blank" rel="noopener noreferrer">Live Demo</a>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/brief-studio" target="_blank" rel="noopener noreferrer">GitHub →</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/brief-studio" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
             </div>
           </article>
-
-          <!-- FIX: opacity 1 din style.css -->
           <article class="project-card glass project-card-wip" aria-labelledby="clientops-suite-title">
-            <span class="badge-wip">🔧 În construcție</span>
-            <div class="project-top">
-              <div><h3 id="clientops-suite-title">ClientOps Suite Premium</h3><span class="badge-github">GitHub</span></div>
-              <span class="tag premium">premium</span>
-            </div>
-            <p class="project-desc">Suită CRM premium cu fluxuri operaționale avansate, automatizări și dashboard unificat. Demo live în lucru — codul e public pe GitHub.</p>
+            <span class="badge-wip">&#x1F527; &Icirc;n construc&#x21B;ie</span>
+            <div class="project-top"><div><h3 id="clientops-suite-title">ClientOps Suite Premium</h3><span class="badge-github">GitHub</span></div><span class="tag premium">premium</span></div>
+            <p class="project-desc">Suit&#x103; CRM premium cu fluxuri opera&#x21B;ionale avansate, automatiz&#x103;ri &#x219;i dashboard unificat. Demo live &icirc;n lucru &mdash; codul e public pe GitHub.</p>
             <div class="card-actions">
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/clientops-suite-app-premium" target="_blank" rel="noopener noreferrer">GitHub →</a>
-              <span class="btn btn-ghost btn-disabled" aria-disabled="true">Demo în lucru</span>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/clientops-suite-app-premium" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
+              <span class="btn btn-ghost btn-disabled" aria-disabled="true">Demo &icirc;n lucru</span>
             </div>
           </article>
-
           <article class="project-card glass" aria-labelledby="clientflow-title">
-            <div class="project-top">
-              <div><h3 id="clientflow-title">ClientFlow SaaS CRM</h3><span class="badge-github">GitHub</span></div>
-              <span class="tag crm">crm</span>
-            </div>
-            <p class="project-desc">Dashboard CRM cu kanban, task triage și shortcut-uri de tastatură. Prioritizare vizuală clară pe un singur ecran.</p>
+            <div class="project-top"><div><h3 id="clientflow-title">ClientFlow SaaS CRM</h3><span class="badge-github">GitHub</span></div><span class="tag crm">crm</span></div>
+            <p class="project-desc">Dashboard CRM cu kanban, task triage &#x219;i shortcut-uri de tastatur&#x103;. Prioritizare vizual&#x103; clar&#x103; pe un singur ecran.</p>
             <div class="card-actions">
               <a class="btn btn-primary" href="https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/" target="_blank" rel="noopener noreferrer">Live Demo</a>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ClientFlow-PRO" target="_blank" rel="noopener noreferrer">GitHub →</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/ClientFlow-PRO" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
             </div>
           </article>
-
           <article class="project-card glass" aria-labelledby="clientops-title">
             <span class="badge-new">NEW</span>
-            <div class="project-top">
-              <div><h3 id="clientops-title">ClientOps</h3><span class="badge-github">GitHub</span></div>
-              <span class="tag ops">ops</span>
-            </div>
-            <p class="project-desc">Dashboard CRM operațional cu flux clar pentru gestionarea clienților și task-urilor zilnice.</p>
+            <div class="project-top"><div><h3 id="clientops-title">ClientOps</h3><span class="badge-github">GitHub</span></div><span class="tag ops">ops</span></div>
+            <p class="project-desc">Dashboard CRM opera&#x21B;ional cu flux clar pentru gestionarea clien&#x21B;ilor &#x219;i task-urilor zilnice.</p>
             <div class="card-actions">
               <a class="btn btn-primary" href="https://laurandreea10.github.io/clientops/" target="_blank" rel="noopener noreferrer">Live Demo</a>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/clientops" target="_blank" rel="noopener noreferrer">GitHub →</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/clientops" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
             </div>
           </article>
         </div>
@@ -1402,62 +951,45 @@ document.addEventListener('visibilitychange', function() {
         <div class="section-head">
           <div>
             <span class="eyebrow">Proiecte-cheie</span>
-            <h2 id="key-projects-title">3 proiecte care arată cel mai clar cum gândesc produsul și interfața</h2>
-            <p class="section-subtitle">
-              Am ales 3 proiecte care mă reprezintă cel mai bine: structură clară, logică de produs și interfețe construite pentru acțiune.
-            </p>
+            <h2 id="key-projects-title">3 proiecte care arat&#x103; cel mai clar cum g&acirc;ndesc produsul &#x219;i interfa&#x21B;a</h2>
+            <p class="section-subtitle">Am ales 3 proiecte care m&#x103; reprezint&#x103; cel mai bine: structur&#x103; clar&#x103;, logic&#x103; de produs &#x219;i interfe&#x21B;e construite pentru ac&#x21B;iune.</p>
           </div>
-          <a class="btn btn-primary" href="https://github.com/LaurAndreea10/ClientFlow-PRO" target="_blank" rel="noopener noreferrer">Vezi ClientFlow PRO pe GitHub →</a>
+          <a class="btn btn-primary" href="https://github.com/LaurAndreea10/ClientFlow-PRO" target="_blank" rel="noopener noreferrer">Vezi ClientFlow PRO pe GitHub &rarr;</a>
         </div>
-
         <div class="projects-grid">
           <article class="project-card glass" aria-labelledby="key-alpis-title">
             <span class="tag">crm</span>
             <h3 id="key-alpis-title">Alpis Fusion CRM Premium</h3>
-            <p class="project-desc">Am unificat lead pipeline, task-uri și billing într-un singur workspace, pentru un flux critic fără schimbări de context.</p>
+            <p class="project-desc">Am unificat lead pipeline, task-uri &#x219;i billing &icirc;ntr-un singur workspace, pentru un flux critic f&#x103;r&#x103; schimb&#x103;ri de context.</p>
             <div class="project-proof">
               <strong>Dovezi observabile</strong>
-              <ul>
-                <li>3 arii separate → 1 workspace unic.</li>
-                <li>Lead, status, follow-up, booking și factură fără schimbare de pagină.</li>
-                <li>Tehnic: Vite + React și GitHub Actions CI/CD.</li>
-              </ul>
+              <ul><li>3 arii separate &rarr; 1 workspace unic.</li><li>Lead, status, follow-up, booking &#x219;i factur&#x103; f&#x103;r&#x103; schimbare de pagin&#x103;.</li><li>Tehnic: Vite + React &#x219;i GitHub Actions CI/CD.</li></ul>
             </div>
             <div class="card-actions">
               <a class="btn btn-primary" href="projects/alpis-fusion-crm.html">Deschide case study</a>
               <a class="btn btn-codepen" href="https://es-d-4029897220260413-019d7cd3-34b4-7538-a067-51b147dd0f7b.codepen.dev/" target="_blank" rel="noopener noreferrer">CodePen</a>
             </div>
           </article>
-
           <article class="project-card glass" aria-labelledby="key-clientflow-title">
             <span class="tag">utility</span>
             <h3 id="key-clientflow-title">ClientFlow</h3>
-            <p class="project-desc">Am redus trierea zilnică la un ecran unic, cu semnale vizuale și shortcut-uri pentru decizii rapide.</p>
+            <p class="project-desc">Am redus trierea zilnic&#x103; la un ecran unic, cu semnale vizuale &#x219;i shortcut-uri pentru decizii rapide.</p>
             <div class="project-proof">
               <strong>Dovezi observabile</strong>
-              <ul>
-                <li>~7 click-uri/update → ~2 click-uri/update.</li>
-                <li>Triage, reasignare, status și prioritizare în același loc.</li>
-                <li>Urgența este susținută de culoare, icon și poziție.</li>
-              </ul>
+              <ul><li>~7 click-uri/update &rarr; ~2 click-uri/update.</li><li>Triage, reasignare, status &#x219;i prioritizare &icirc;n acela&#x219;i loc.</li><li>Urgen&#x21B;a este sus&#x21B;inut&#x103; de culoare, icon &#x219;i pozi&#x21B;ie.</li></ul>
             </div>
             <div class="card-actions">
               <a class="btn btn-primary" href="projects/clientflow.html">Deschide case study</a>
               <a class="btn btn-codepen" href="https://es-d-1647531020260404-019d4e21-afd1-7808-abf5-d9c88b726df2.codepen.dev/" target="_blank" rel="noopener noreferrer">CodePen</a>
             </div>
           </article>
-
           <article class="project-card glass" aria-labelledby="key-impact-title">
             <span class="tag">ui</span>
             <h3 id="key-impact-title">Alpis Impact Path</h3>
-            <p class="project-desc">Am transformat un mesaj static într-un flow în 5 pași, cu o singură decizie pe ecran și progres permanent vizibil.</p>
+            <p class="project-desc">Am transformat un mesaj static &icirc;ntr-un flow &icirc;n 5 pa&#x219;i, cu o singur&#x103; decizie pe ecran &#x219;i progres permanent vizibil.</p>
             <div class="project-proof">
               <strong>Dovezi observabile</strong>
-              <ul>
-                <li>Pagină statică lungă → flow interactiv în 5 pași.</li>
-                <li>O singură decizie per ecran.</li>
-                <li>CTA contextual la finalul fiecărui pas.</li>
-              </ul>
+              <ul><li>Pagin&#x103; static&#x103; lung&#x103; &rarr; flow interactiv &icirc;n 5 pa&#x219;i.</li><li>O singur&#x103; decizie per ecran.</li><li>CTA contextual la finalul fiec&#x103;rui pas.</li></ul>
             </div>
             <div class="card-actions">
               <a class="btn btn-primary" href="projects/alpis-impactpath.html">Deschide case study</a>
@@ -1474,44 +1006,38 @@ document.addEventListener('visibilitychange', function() {
       <div class="container">
         <div class="section-head">
           <div>
-            <span class="eyebrow">✅ Proof of Work</span>
-            <h2 id="proof-title">Dovezi tehnice obiective în loc de testimoniale</h2>
-            <p class="section-subtitle">Tot ce construiesc este public, verificabil și are istoric de versiuni.</p>
+            <span class="eyebrow">&#x2705; Proof of Work</span>
+            <h2 id="proof-title">Dovezi tehnice obiective &icirc;n loc de testimoniale</h2>
+            <p class="section-subtitle">Tot ce construiesc este public, verificabil &#x219;i are istoric de versiuni.</p>
           </div>
         </div>
-
         <div class="pow-grid">
           <div class="pow-card">
-            <div class="pow-card-header"><div class="pow-icon green">📂</div><h4>Cod public, verificabil oricând</h4></div>
+            <div class="pow-card-header"><div class="pow-icon green">&#x1F4C2;</div><h4>Cod public, verificabil oric&acirc;nd</h4></div>
             <p>Toate proiectele majore au repo public pe GitHub.</p>
             <span class="pow-metric green">20+ repo-uri publice</span>
             <div class="pow-links"><a class="pow-link" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">github.com/LaurAndreea10</a></div>
           </div>
-
           <div class="pow-card">
-            <div class="pow-card-header"><div class="pow-icon blue">🚀</div><h4>Deploy automat pe GitHub Actions</h4></div>
-            <p>Proiectele majore au CI/CD configurat pentru build și deploy automat.</p>
+            <div class="pow-card-header"><div class="pow-icon blue">&#x1F680;</div><h4>Deploy automat pe GitHub Actions</h4></div>
+            <p>Proiectele majore au CI/CD configurat pentru build &#x219;i deploy automat.</p>
             <span class="pow-metric">CI/CD configurat</span>
             <div class="pow-links">
-              <a class="pow-link" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">→ Alpis Fusion live</a>
-              <a class="pow-link" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">→ Repo + Actions</a>
+              <a class="pow-link" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">&rarr; Alpis Fusion live</a>
+              <a class="pow-link" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">&rarr; Repo + Actions</a>
             </div>
           </div>
-
           <div class="pow-card">
-            <div class="pow-card-header"><div class="pow-icon green">🌐</div><h4>64 proiecte live</h4></div>
-            <p>Nu sunt mockup-uri. Sunt proiecte funcționale, deployate pe CodePen și GitHub Pages.</p>
+            <div class="pow-card-header"><div class="pow-icon green">&#x1F310;</div><h4>64 proiecte live</h4></div>
+            <p>Nu sunt mockup-uri. Sunt proiecte func&#x21B;ionale, deployate pe CodePen &#x219;i GitHub Pages.</p>
             <span class="pow-metric green">64 proiecte live</span>
             <div class="pow-links">
-              <a class="pow-link" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer">→ Hub CodePen</a>
-              <a class="pow-link" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">→ Profil CodePen</a>
+              <a class="pow-link" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer">&rarr; Hub CodePen</a>
+              <a class="pow-link" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">&rarr; Profil CodePen</a>
             </div>
           </div>
         </div>
-
-        <div class="pow-note">
-          <strong>De ce Proof of Work?</strong> Lucrez pe proiecte personale. Dovada mea este codul public, deploy-ul real și istoricul vizibil de versiuni.
-        </div>
+        <div class="pow-note"><strong>De ce Proof of Work?</strong> Lucrez pe proiecte personale. Dovada mea este codul public, deploy-ul real &#x219;i istoricul vizibil de versiuni.</div>
       </div>
     </section>
 
@@ -1521,20 +1047,19 @@ document.addEventListener('visibilitychange', function() {
       <div class="container about-contact">
         <article class="about-card glass">
           <span class="eyebrow">Despre mine</span>
-          <h2 id="about-title">Combin experiența din CRM și Marketing cu front-end development pentru produse mai clare și mai umane</h2>
-          <p>Am lucrat în marketing, CRM, baze de date, campanii digitale și lead generation.</p>
-          <p>Din 2022 construiesc proiecte personale în React, Vite și HTML/CSS/JS, cu focus pe claritate, flux și UX.</p>
+          <h2 id="about-title">Combin experien&#x21B;a din CRM &#x219;i Marketing cu front-end development pentru produse mai clare &#x219;i mai umane</h2>
+          <p>Am lucrat &icirc;n marketing, CRM, baze de date, campanii digitale &#x219;i lead generation.</p>
+          <p>Din 2022 construiesc proiecte personale &icirc;n React, Vite &#x219;i HTML/CSS/JS, cu focus pe claritate, flux &#x219;i UX.</p>
           <div class="skills"><span>React</span><span>Vite</span><span>GitHub Actions</span><span>Kanban</span><span>Flow Builder</span><span>RBAC</span><span>PDF Invoice</span><span>CSV/JSON Export</span><span>CRM Ops</span><span>UI/UX Thinking</span><span>JavaScript</span><span>HTML/CSS</span></div>
         </article>
-
         <article class="contact-card glass" id="contact" aria-labelledby="contact-title">
           <span class="eyebrow">Contact</span>
-          <h2 id="contact-title">Construiești un CRM intern, dashboard operațional sau produs cu fluxuri clare?</h2>
-          <p>Scrie-mi dacă vrei să vezi case study-urile complete sau să discutăm.</p>
-          <div class="card-actions contact-actions" aria-label="Linkuri externe de contact și profil">
+          <h2 id="contact-title">Construie&#x219;ti un CRM intern, dashboard opera&#x21B;ional sau produs cu fluxuri clare?</h2>
+          <p>Scrie-mi dac&#x103; vrei s&#x103; vezi case study-urile complete sau s&#x103; discut&#x103;m.</p>
+          <div class="card-actions contact-actions" aria-label="Linkuri externe de contact &#x219;i profil">
             <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect">Scrie-mi despre un proiect</a>
             <a class="btn btn-primary" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a class="btn btn-codepen" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer">CodePen · 64 proiecte live →</a>
+            <a class="btn btn-codepen" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer">CodePen &middot; 64 proiecte live &rarr;</a>
             <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">GitHub</a>
           </div>
         </article>
@@ -1548,48 +1073,39 @@ document.addEventListener('visibilitychange', function() {
         <div class="section-head">
           <div>
             <span class="eyebrow">Insights</span>
-            <h2 id="insights-title">Decizii și lecții din construirea unui CRM SaaS</h2>
-            <p class="section-subtitle">Câteva insight-uri despre produs, arhitectură și UX.</p>
+            <h2 id="insights-title">Decizii &#x219;i lec&#x21B;ii din construirea unui CRM SaaS</h2>
+            <p class="section-subtitle">C&acirc;teva insight-uri despre produs, arhitectur&#x103; &#x219;i UX.</p>
           </div>
         </div>
-
         <div class="insights-grid">
           <article class="project-card glass" aria-labelledby="insight-1-title">
             <span class="tag">Lessons</span>
-            <h3 id="insight-1-title">3 lecții din construirea unui SaaS CRM de la zero</h3>
-            <p class="project-desc">Un CRM este un sistem de decizii, nu doar o interfață cu lead-uri și task-uri.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="insights/saas-crm-lectii.html">Citește insight-ul</a>
-            </div>
+            <h3 id="insight-1-title">3 lec&#x21B;ii din construirea unui SaaS CRM de la zero</h3>
+            <p class="project-desc">Un CRM este un sistem de decizii, nu doar o interfa&#x21B;&#x103; cu lead-uri &#x219;i task-uri.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="insights/saas-crm-lectii.html">Cite&#x219;te insight-ul</a></div>
           </article>
           <article class="project-card glass" aria-labelledby="insight-2-title">
             <span class="tag">Architecture</span>
             <h3 id="insight-2-title">De ce am trecut de la single-file HTML la Vite + React</h3>
-            <p class="project-desc">Vite + React mi-au permis să separ layout-ul, cardurile și fluxurile în componente reutilizabile.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="insights/single-file-la-vite-react.html">Citește insight-ul</a>
-            </div>
+            <p class="project-desc">Vite + React mi-au permis s&#x103; separ layout-ul, cardurile &#x219;i fluxurile &icirc;n componente reutilizabile.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="insights/single-file-la-vite-react.html">Cite&#x219;te insight-ul</a></div>
           </article>
           <article class="project-card glass" aria-labelledby="insight-3-title">
             <span class="tag">UX decisions</span>
             <h3 id="insight-3-title">Flow builder vs Kanban</h3>
-            <p class="project-desc">Kanban-ul organizează munca, iar Flow builder-ul organizează deciziile.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="insights/flow-builder-vs-kanban.html">Citește insight-ul</a>
-            </div>
+            <p class="project-desc">Kanban-ul organizeaz&#x103; munca, iar Flow builder-ul organizeaz&#x103; deciziile.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="insights/flow-builder-vs-kanban.html">Cite&#x219;te insight-ul</a></div>
           </article>
           <article class="project-card glass" aria-labelledby="insight-4-title">
             <span class="tag">Subiecte viitoare</span>
-            <h3 id="insight-4-title">Ce aș documenta mai departe</h3>
-            <p class="project-desc">Deciziile din spatele automatizărilor și claritatea pe măsură ce cresc datele și regulile.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="insights/ce-as-documenta.html">Citește insight-ul</a>
-            </div>
+            <h3 id="insight-4-title">Ce a&#x219; documenta mai departe</h3>
+            <p class="project-desc">Deciziile din spatele automatiz&#x103;rilor &#x219;i claritatea pe m&#x103;sur&#x103; ce cresc datele &#x219;i regulile.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="insights/ce-as-documenta.html">Cite&#x219;te insight-ul</a></div>
           </article>
           <article class="project-card glass">
             <span class="tag">Case study</span>
-            <h3>Excel-Quest — de la landing static la produs cu progres salvat</h3>
-            <p class="project-desc">Am transformat Excel-Quest dintr-un landing simplu într-un produs orientat pe reluare.</p>
+            <h3>Excel-Quest &mdash; de la landing static la produs cu progres salvat</h3>
+            <p class="project-desc">Am transformat Excel-Quest dintr-un landing simplu &icirc;ntr-un produs orientat pe reluare.</p>
             <div class="card-actions">
               <a class="btn btn-primary" href="projects/excel-quest.html">Deschide case study</a>
               <a class="btn btn-secondary" href="https://laurandreea10.github.io/Excel-Quest/excel-quest-hub.html" target="_blank" rel="noopener noreferrer">Vezi hub-ul</a>
@@ -1604,13 +1120,13 @@ document.addEventListener('visibilitychange', function() {
     <section class="final-cta-section" aria-labelledby="final-cta-title">
       <div class="container">
         <div class="final-cta-card glass">
-          <span class="eyebrow">Hai să lucrăm</span>
-          <h2 id="final-cta-title">Construiești un CRM intern, dashboard operațional sau produs cu fluxuri clare?</h2>
-          <p>Pot ajuta cu structura UX, logica de produs, prototipuri interactive sau feedback pe o interfață în lucru.</p>
+          <span class="eyebrow">Hai s&#x103; lucr&#x103;m</span>
+          <h2 id="final-cta-title">Construie&#x219;ti un CRM intern, dashboard opera&#x21B;ional sau produs cu fluxuri clare?</h2>
+          <p>Pot ajuta cu structura UX, logica de produs, prototipuri interactive sau feedback pe o interfa&#x21B;&#x103; &icirc;n lucru.</p>
           <div class="final-cta-actions">
-            <a class="btn btn-primary btn-large" href="mailto:andreealaurap@gmail.com?subject=Colaborare%20proiect%20CRM">Scrie-mi despre proiectul tău →</a>
+            <a class="btn btn-primary btn-large" href="mailto:andreealaurap@gmail.com?subject=Colaborare%20proiect%20CRM">Scrie-mi despre proiectul t&#x103;u &rarr;</a>
             <a class="btn btn-secondary" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a class="btn btn-ghost" href="#key-projects">↑ Înapoi la proiecte</a>
+            <a class="btn btn-ghost" href="#key-projects">&#x2191; &Icirc;napoi la proiecte</a>
           </div>
         </div>
       </div>
@@ -1619,31 +1135,30 @@ document.addEventListener('visibilitychange', function() {
 
   <footer class="footer">
     <div class="container">
-      <p>Portofoliu selectat, construit în jurul proiectelor care mă reprezintă cel mai bine.</p>
-      <div class="card-actions footer-actions" aria-label="Linkuri externe de contact și profil">
-        <a class="btn btn-secondary" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer">CodePen · 64 proiecte live</a>
+      <p>Portofoliu selectat, construit &icirc;n jurul proiectelor care m&#x103; reprezint&#x103; cel mai bine.</p>
+      <div class="card-actions footer-actions" aria-label="Linkuri externe de contact &#x219;i profil">
+        <a class="btn btn-secondary" href="https://es-d-5119724020260424-019d2b3a-2991-75d3-9c59-15de01ca8079.codepen.dev/" target="_blank" rel="noopener noreferrer">CodePen &middot; 64 proiecte live</a>
         <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a class="btn btn-secondary" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <a class="btn btn-secondary" href="mailto:andreealaurap@gmail.com?subject=Salut%20Laura">Email</a>
       </div>
-      <p class="footer-copy">© 2026 Laura Andreea · laurandreea10.github.io</p>
+      <p class="footer-copy">&copy; 2026 Laura Andreea &middot; laurandreea10.github.io</p>
     </div>
   </footer>
 
   <script src="main.js" defer></script>
 
-  <!-- FIX: populeaza now-datetime inline, fara flash de — -->
   <script>
-    (function() {
-      var el = document.getElementById('now-datetime');
-      if (!el) return;
-      var now = new Date();
-      var months = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
-      var d = String(now.getDate()).padStart(2,'0');
-      var y = now.getFullYear();
-      var m = String(now.getMonth()+1).padStart(2,'0');
-      el.setAttribute('datetime', y+'-'+m+'-'+d);
-      el.textContent = d + ' ' + months[now.getMonth()] + ' ' + y;
+    (function(){
+      var el=document.getElementById('now-datetime');
+      if(!el)return;
+      var now=new Date();
+      var months=['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+      var d=String(now.getDate()).padStart(2,'0');
+      var y=now.getFullYear();
+      var m=String(now.getMonth()+1).padStart(2,'0');
+      el.setAttribute('datetime',y+'-'+m+'-'+d);
+      el.textContent=d+' '+months[now.getMonth()]+' '+y;
     })();
   </script>
 </body>
