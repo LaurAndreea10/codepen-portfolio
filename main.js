@@ -204,7 +204,7 @@
 
   function pad(n) { return String(n).padStart(2, '0'); }
 
-  // FIX: getLiveDate foloseste getLangParam curent, nu hardcodat
+  // FIX: getLiveDate foloseste currentLang, nu hardcodat
   function getLiveDate() {
     const now = new Date();
     const months = currentLang === 'ro'
@@ -406,16 +406,8 @@
 
   // FIX: updateScanDates populeaza toate campurile, inclusiv cele din about
   function updateScanDates() {
-    const dateEl = document.getElementById('scan-date');
-    const yearsEl = document.getElementById('scan-years');
     const liveDate = getLiveDate();
     const yearsActive = (new Date().getFullYear() - 2022) + (currentLang === 'ro' ? '+ ani activi' : '+ active years');
-
-    if (dateEl) dateEl.textContent = liveDate;
-    if (yearsEl) yearsEl.textContent = yearsActive;
-
-    // FIX: actualizeaza si campurile din about-section care apar goale
-    // Cauta toate elementele cu id scan-date si scan-years (pot exista duplicat)
     document.querySelectorAll('[id="scan-date"]').forEach(el => { el.textContent = liveDate; });
     document.querySelectorAll('[id="scan-years"]').forEach(el => { el.textContent = yearsActive; });
   }
