@@ -7,6 +7,8 @@
     lang: 'portfolio-lang'
   };
 
+  const CODEPEN_COUNT = '66';
+
   const translations = {
     ro: {
       documentTitle: 'Laura Andreea — Front-end CRM & Dashboard Developer',
@@ -86,6 +88,7 @@
       tabs: { active: '🔄 În curs', done: '✅ Finalizat recent', history: '📅 Istoric' },
       active: [],
       done: [
+        { title: '🌊🏄🌊 SURF RUN', body: 'joc arcade surf finalizat și publicat pe GitHub Pages. Experiență mobile-first, valuri dinamice, moduri de joc, sunet și efecte de stropi.', tag: 'Iun 2026', link: { href: 'https://laurandreea10.github.io/SURF-RUN/', label: 'Deschide SURF RUN' } },
         { title: 'PulseBoard', body: 'roadmap finalizat: detectare anomalii cu sezonalitate (normalizare pe ziua săptămânii), conectori direcți Stripe/Shopify, briefing programat trimis automat luni dimineața și export PDF/PNG al întregului dashboard.', tag: 'Mai 2026', link: { href: 'https://laurandreea10.github.io/PulseBoard/', label: 'Deschide PulseBoard' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/PulseBoard', label: 'Repo GitHub' } },
         { title: 'Career Toolkit', body: 'suită de instrumente pentru pregătirea carierei livrată: CV builder, cover letter generator, job tracker și interview prep. Deploy live.', tag: 'Mai 2026', link: { href: 'https://laurandreea10.github.io/Career-Toolkit/', label: 'Deschide Career Toolkit' } },
         { title: 'ClientOps Suite Premium — Demo live', body: 'demo live livrat pentru suita CRM cu fluxuri operaționale avansate. Repo public disponibil.', tag: 'Mai 2026', link: { href: 'https://github.com/LaurAndreea10/clientops-suite-app-premium', label: 'Repo GitHub' } },
@@ -108,6 +111,7 @@
         { title: 'CampaignPilot', body: 'workspace unificat pentru planificarea campaniilor: KPI overview, funnel, budget allocation, content calendar, brief generator.', tag: 'Apr 2026' }
       ],
       history: [
+        { label: 'Săpt. 2 Iunie 2026', items: ['SURF RUN — adăugat la Finalizat recent cu link GitHub Pages', 'Portofoliu — număr CodePen actualizat la 66 proiecte live'] },
         { label: 'Săpt. 31 Mai 2026', items: ['PulseBoard — roadmap finalizat: sezonalitate, Stripe/Shopify, briefing automat, export PDF/PNG', 'Career Toolkit — suită carieră livrată cu deploy live', 'ClientOps Suite Premium — demo live livrat', 'Lead Magnet Landing — layout + flow de conversie livrate', 'Excel Quest V2 — UX reluare + dashboard progres livrate', 'Portfolio Polish / Accessibility Pass — audit vizual + îmbunătățiri complete', 'Open-source contribution — PR forwarded refs React livrat', 'Marketing OS — structură hub + linkuri între module livrate'] },
         { label: 'Săpt. 27–29 Mai 2026', items: ['LearnFlow Accessible — adăugat la Finalizat recent', 'PulseBoard — roadmap adăugat în Now: sezonalitate, Stripe/Shopify, briefing programat, export PDF/PNG', 'Career Toolkit — primul deploy live', 'CV Scout — aplicație analiză CV livrată', 'Portofoliu — Lighthouse CI audit complet'] },
         { label: 'Săpt. 19–23 Mai 2026', items: ['Intro cinematic integrat ca overlay în portofoliu', 'Îmbunătățiri tehnice overlay: CSS în head, early-exit script, SVG cross-browser fix', 'Secțiunea Now — refactorizare cu checklist și istoric'] },
@@ -123,6 +127,7 @@
       tabs: { active: '🔄 In progress', done: '✅ Recently shipped', history: '📅 History' },
       active: [],
       done: [
+        { title: '🌊🏄🌊 SURF RUN', body: 'arcade surf game shipped and published on GitHub Pages. Mobile-first experience with dynamic waves, game modes, sound and splash effects.', tag: 'Jun 2026', link: { href: 'https://laurandreea10.github.io/SURF-RUN/', label: 'Open SURF RUN' } },
         { title: 'PulseBoard', body: 'roadmap shipped: anomaly detection with seasonality (weekday normalization), direct Stripe/Shopify connectors, scheduled briefing auto-sent Monday morning and full-dashboard PDF/PNG export.', tag: 'May 2026', link: { href: 'https://laurandreea10.github.io/PulseBoard/', label: 'Open PulseBoard' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/PulseBoard', label: 'GitHub repo' } },
         { title: 'Career Toolkit', body: 'career preparation suite shipped: CV builder, cover letter generator, job tracker and interview prep. Live deploy.', tag: 'May 2026', link: { href: 'https://laurandreea10.github.io/Career-Toolkit/', label: 'Open Career Toolkit' } },
         { title: 'ClientOps Suite Premium — Live demo', body: 'live demo shipped for the CRM suite with advanced operational flows. Public repo available.', tag: 'May 2026', link: { href: 'https://github.com/LaurAndreea10/clientops-suite-app-premium', label: 'GitHub repo' } },
@@ -145,6 +150,7 @@
         { title: 'CampaignPilot', body: 'unified workspace for campaign planning: KPI overview, funnel, budget allocation, content calendar, brief generator.', tag: 'Apr 2026' }
       ],
       history: [
+        { label: 'Week of June 2, 2026', items: ['SURF RUN — added to Recently shipped with GitHub Pages link', 'Portfolio — CodePen count updated to 66 live projects'] },
         { label: 'Week of May 31, 2026', items: ['PulseBoard — roadmap shipped: seasonality, Stripe/Shopify, scheduled briefing, PDF/PNG export', 'Career Toolkit — career suite shipped with live deploy', 'ClientOps Suite Premium — live demo shipped', 'Lead Magnet Landing — layout + conversion flow shipped', 'Excel Quest V2 — resume UX + progress dashboard shipped', 'Portfolio Polish / Accessibility Pass — visual audit + incremental improvements complete', 'Open-source contribution — forwarded refs React PR shipped', 'Marketing OS — hub structure + inter-module links shipped'] },
         { label: 'Week of May 27–29, 2026', items: ['LearnFlow Accessible — added to Recently shipped', 'PulseBoard — added to Now roadmap: seasonality, Stripe/Shopify, scheduled briefing, PDF/PNG export', 'Career Toolkit — first live deploy', 'CV Scout — CV analysis app shipped', 'Portfolio — Lighthouse CI audit complete'] },
         { label: 'Week of May 19–23, 2026', items: ['Cinematic intro integrated as a portfolio overlay', 'Overlay technical improvements: CSS in head, early-exit script, SVG cross-browser fix', 'Now section — refactored with checklist and history'] },
@@ -163,7 +169,7 @@
     { title: 'Link Video Editor Studio', label: 'Video studio', description: { ro: 'Studio pentru workflow video, navigare rapidă și Automation Pack export.', en: 'Studio for video workflow, quick navigation and Automation Pack export.' }, meta: 'HTML · CSS · JavaScript · Automation Pack', frameUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/', primaryUrl: 'tools/link-video-automation-pack.html', secondaryUrl: 'https://github.com/LaurAndreea10/Link-Video-Editor-Studio', codeUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/' }
   ];
 
-  const cardStatusContent = { 'PulseBoard': 'progress', 'LearnFlow Accessible': 'implemented', 'Excel-Quest': 'implemented', 'BASKET VS AI': 'implemented', 'Link Video Editor Studio': 'implemented', 'CampaignPilot': 'implemented', 'Campaign ROI Calculator': 'implemented', 'Marketing OS': 'implemented', 'Marketing-Tech Templates': 'implemented', 'Lighthouse CI Audit Guide': 'implemented', 'Lead Magnet Landing': 'roadmap', 'Alpis Fusion CRM Premium': 'implemented', 'Brief Studio': 'implemented', 'ClientOps Suite Premium': 'progress', 'ClientFlow SaaS CRM': 'implemented', 'ClientOps': 'implemented', 'ClientFlow': 'implemented', 'ARCADE WORLD': 'implemented', 'Coaching AI': 'progress' };
+  const cardStatusContent = { 'PulseBoard': 'progress', 'LearnFlow Accessible': 'implemented', 'Excel-Quest': 'implemented', 'BASKET VS AI': 'implemented', 'Link Video Editor Studio': 'implemented', 'CampaignPilot': 'implemented', 'Campaign ROI Calculator': 'implemented', 'Marketing OS': 'implemented', 'Marketing-Tech Templates': 'implemented', 'Lighthouse CI Audit Guide': 'implemented', 'Lead Magnet Landing': 'roadmap', 'Alpis Fusion CRM Premium': 'implemented', 'Brief Studio': 'implemented', 'ClientOps Suite Premium': 'progress', 'ClientFlow SaaS CRM': 'implemented', 'ClientOps': 'implemented', 'ClientFlow': 'implemented', 'ARCADE WORLD': 'implemented', 'Coaching AI': 'progress', '🌊🏄🌊 SURF RUN': 'implemented', 'SURF RUN': 'implemented' };
 
   const els = {
     body: document.body,
@@ -413,7 +419,44 @@
   }
 
   function fetchGithubRepos() { if (window.__laGhRepos && typeof window.__laGhRepos.then === 'function') window.__laGhRepos.then(count => { if (count > 0) { const scanRepo = document.getElementById('scan-repo-count'); if (scanRepo) scanRepo.textContent = count + '+'; } }); }
-  function applyScoreBoosts() { const scanProjCount = document.getElementById('scan-proj-count'); if (scanProjCount) scanProjCount.textContent = '64'; const nowLink = document.querySelector('a.pill[href="#now"]'); if (nowLink && !nowLink.querySelector('[data-live]')) { const dot = document.createElement('span'); dot.setAttribute('data-live','1'); dot.style.cssText = 'display:inline-block;width:6px;height:6px;border-radius:50%;background:#34d399;margin-left:5px;vertical-align:middle;animation:scan-pulse 1.8s ease infinite;'; nowLink.appendChild(dot); } }
+
+  function applyCodePenCount() {
+    document.querySelectorAll('#scan-proj-count').forEach(el => { el.textContent = CODEPEN_COUNT; });
+    document.querySelectorAll('.cred-item').forEach(item => {
+      const text = item.textContent || '';
+      if (text.includes('CodePen') || text.includes('proiecte func')) {
+        const strong = item.querySelector('strong');
+        if (strong) strong.textContent = CODEPEN_COUNT;
+        item.setAttribute('aria-label', `Profil CodePen public cu ${CODEPEN_COUNT} proiecte live`);
+      }
+    });
+    document.querySelectorAll('.pow-card').forEach(card => {
+      const text = card.textContent || '';
+      if (text.includes('proiecte live') || text.includes('CodePen')) {
+        card.querySelectorAll('h4, .pow-metric, p').forEach(el => {
+          el.textContent = el.textContent.replace(/64/g, CODEPEN_COUNT);
+        });
+      }
+    });
+    document.querySelectorAll('a').forEach(link => {
+      if (link.textContent.includes('CodePen')) {
+        link.textContent = link.textContent.replace(/64/g, CODEPEN_COUNT);
+        const aria = link.getAttribute('aria-label');
+        if (aria) link.setAttribute('aria-label', aria.replace(/64/g, CODEPEN_COUNT));
+      }
+    });
+  }
+
+  function applyScoreBoosts() {
+    applyCodePenCount();
+    const nowLink = document.querySelector('a.pill[href="#now"]');
+    if (nowLink && !nowLink.querySelector('[data-live]')) {
+      const dot = document.createElement('span');
+      dot.setAttribute('data-live','1');
+      dot.style.cssText = 'display:inline-block;width:6px;height:6px;border-radius:50%;background:#34d399;margin-left:5px;vertical-align:middle;animation:scan-pulse 1.8s ease infinite;';
+      nowLink.appendChild(dot);
+    }
+  }
 
   function initScanPanel() {
     const btn = document.getElementById('scanToggle'), panel = document.getElementById('scan-panel'), close = document.getElementById('scanClose');
@@ -421,7 +464,7 @@
     panel.hidden = true;
     let open = false;
     function closePanel(){ open = false; panel.hidden = true; btn.setAttribute('aria-expanded','false'); btn.classList.remove('active'); }
-    function openPanel(){ open = true; panel.hidden = false; btn.setAttribute('aria-expanded','true'); btn.classList.add('active'); updateScanDates(); }
+    function openPanel(){ open = true; panel.hidden = false; btn.setAttribute('aria-expanded','true'); btn.classList.add('active'); updateScanDates(); applyCodePenCount(); }
     btn.addEventListener('click', e => { e.stopPropagation(); open ? closePanel() : openPanel(); });
     if (close) close.addEventListener('click', () => { closePanel(); btn.focus(); });
   }
