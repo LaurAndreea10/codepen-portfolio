@@ -116,7 +116,12 @@
       get datetime() { return getNowDatetime(); },
       get label() { return getNowLabel('ro'); },
       tabs: { active: '🔄 În curs', done: '✅ Finalizat recent', history: '📅 Istoric' },
-      active: [],
+      active: [
+        { title: 'Portfolio v2 — case studies & proof-of-work', body: 'rescriu portofoliul ca o colecție de studii de caz scurte: problemă, decizie UX, implementare, rezultat și link live.', tag: 'Iun 2026', link: { href: 'projects/alpis-fusion-crm.html', label: 'Vezi case study' } },
+        { title: 'CRM & Dashboard UX polish', body: 'îmbunătățesc proiectele CRM cu statusuri mai clare, microcopy, empty states, focus states și flow-uri mai ușor de urmărit.', tag: 'În lucru' },
+        { title: 'GitHub repo cleanup', body: 'actualizez README-uri, descrieri, demo links și structura repo-urilor pentru ca proiectele live să fie mai ușor de înțeles și verificat.', tag: 'În lucru', link: { href: 'https://github.com/LaurAndreea10', label: 'Vezi GitHub' } },
+        { title: 'Accessibility pass', body: 'verific contrastul, navigarea din tastatură, stările de focus și experiența mobile pentru proiectele principale.', tag: 'UX' }
+      ],
       done: shippedRo,
       history: [
         { label: 'Săpt. 2 Iunie 2026', items: ['SURF RUN — adăugat la Finalizat recent cu link GitHub Pages', 'Portofoliu — număr CodePen actualizat la 66 proiecte live'] },
@@ -128,7 +133,12 @@
       get datetime() { return getNowDatetime(); },
       get label() { return getNowLabel('en'); },
       tabs: { active: '🔄 In progress', done: '✅ Recently shipped', history: '📅 History' },
-      active: [],
+      active: [
+        { title: 'Portfolio v2 — case studies & proof-of-work', body: 'I am turning the portfolio into a clearer proof-of-work collection: problem, UX decision, implementation, outcome and live link.', tag: 'Jun 2026', link: { href: 'projects/alpis-fusion-crm.html', label: 'View case study' } },
+        { title: 'CRM & Dashboard UX polish', body: 'I am improving CRM projects with clearer statuses, better microcopy, empty states, focus states and easier-to-follow user flows.', tag: 'In progress' },
+        { title: 'GitHub repo cleanup', body: 'I am updating README files, descriptions, demo links and repository structure so the live projects are easier to understand and verify.', tag: 'In progress', link: { href: 'https://github.com/LaurAndreea10', label: 'View GitHub' } },
+        { title: 'Accessibility pass', body: 'I am checking contrast, keyboard navigation, focus states and mobile experience across the main projects.', tag: 'UX' }
+      ],
       done: shippedEn,
       history: [
         { label: 'Week of June 2, 2026', items: ['SURF RUN — added to Recently shipped with GitHub Pages link', 'Portfolio — CodePen count updated to 66 live projects'] },
@@ -202,7 +212,6 @@
     els.themeToggle.textContent = isLight ? translations[currentLang].themeDark : translations[currentLang].themeLight;
     els.themeToggle.setAttribute('aria-label', currentLang === 'ro' ? 'Schimbă tema vizuală' : 'Change visual theme');
   }
-
   function applyThemeFromStorage() { els.body.classList.toggle('light', localStorage.getItem(STORAGE_KEYS.theme) === 'light'); syncThemeButton(); }
   function applyContrastFromStorage() {
     const isHigh = localStorage.getItem(STORAGE_KEYS.contrast) === 'high';
