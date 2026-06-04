@@ -117,7 +117,7 @@
       get label() { return getNowLabel('ro'); },
       tabs: { active: '🔄 În curs', done: '✅ Finalizat recent', history: '📅 Istoric' },
       active: [
-        { title: 'Portfolio v2 — case studies & proof-of-work', body: 'rescriu portofoliul ca o colecție de studii de caz scurte: problemă, decizie UX, implementare, rezultat și link live.', tag: 'Iun 2026', link: { href: 'projects/alpis-fusion-crm.html', label: 'Vezi case study' } },
+        { title: 'Portfolio v2 — case studies & proof-of-work', body: 'rescriu portofoliul ca o colecție de studii de caz scurte: problemă, decizie UX, implementare, rezultat și link live.', tag: 'Iun 2026', link: { href: 'alpis-fusion-crm.html', label: 'Vezi case study' } },
         { title: 'CRM & Dashboard UX polish', body: 'îmbunătățesc proiectele CRM cu statusuri mai clare, microcopy, empty states, focus states și flow-uri mai ușor de urmărit.', tag: 'În lucru' },
         { title: 'GitHub repo cleanup', body: 'actualizez README-uri, descrieri, demo links și structura repo-urilor pentru ca proiectele live să fie mai ușor de înțeles și verificat.', tag: 'În lucru', link: { href: 'https://github.com/LaurAndreea10', label: 'Vezi GitHub' } },
         { title: 'Accessibility pass', body: 'verific contrastul, navigarea din tastatură, stările de focus și experiența mobile pentru proiectele principale.', tag: 'UX' }
@@ -134,7 +134,7 @@
       get label() { return getNowLabel('en'); },
       tabs: { active: '🔄 In progress', done: '✅ Recently shipped', history: '📅 History' },
       active: [
-        { title: 'Portfolio v2 — case studies & proof-of-work', body: 'I am turning the portfolio into a clearer proof-of-work collection: problem, UX decision, implementation, outcome and live link.', tag: 'Jun 2026', link: { href: 'projects/alpis-fusion-crm.html', label: 'View case study' } },
+        { title: 'Portfolio v2 — case studies & proof-of-work', body: 'I am turning the portfolio into a clearer proof-of-work collection: problem, UX decision, implementation, outcome and live link.', tag: 'Jun 2026', link: { href: 'alpis-fusion-crm.html', label: 'View case study' } },
         { title: 'CRM & Dashboard UX polish', body: 'I am improving CRM projects with clearer statuses, better microcopy, empty states, focus states and easier-to-follow user flows.', tag: 'In progress' },
         { title: 'GitHub repo cleanup', body: 'I am updating README files, descriptions, demo links and repository structure so the live projects are easier to understand and verify.', tag: 'In progress', link: { href: 'https://github.com/LaurAndreea10', label: 'View GitHub' } },
         { title: 'Accessibility pass', body: 'I am checking contrast, keyboard navigation, focus states and mobile experience across the main projects.', tag: 'UX' }
@@ -150,7 +150,7 @@
 
   const previewSlides = [
     { title: 'PulseBoard', label: 'AI dashboard', description: { ro: 'Dashboard de venituri & operațiuni cu import CSV/Google Sheet, anomalii și briefing executiv.', en: 'Revenue & ops dashboard with CSV/Google Sheet import, anomalies and executive briefing.' }, meta: 'Dashboard · AI fallback · GitHub Pages', frameUrl: 'https://laurandreea10.github.io/PulseBoard/', primaryUrl: 'projects/pulseboard.html', secondaryUrl: 'https://github.com/LaurAndreea10/PulseBoard', codeUrl: 'https://laurandreea10.github.io/PulseBoard/' },
-    { title: 'Alpis Fusion CRM Premium', label: 'CRM premium', description: { ro: 'Colecție modulară pentru lead pipeline, task management, billing și automatizări.', en: 'Modular collection for lead pipeline, task management, billing and automations.' }, meta: 'Vite + React · build optimizat · Deploy automatizat', frameUrl: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/', primaryUrl: 'projects/alpis-fusion-crm.html', secondaryUrl: 'https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium', codeUrl: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/' },
+    { title: 'Alpis Fusion CRM Premium', label: 'CRM premium', description: { ro: 'Colecție modulară pentru lead pipeline, task management, billing și automatizări.', en: 'Modular collection for lead pipeline, task management, billing and automations.' }, meta: 'Vite + React · build optimizat · Deploy automatizat', frameUrl: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/', primaryUrl: 'alpis-fusion-crm.html', secondaryUrl: 'https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium', codeUrl: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/' },
     { title: 'ClientFlow SaaS CRM', label: 'SaaS CRM', description: { ro: 'Sistem CRM orientat pe task-uri, automatizări și acțiuni operaționale zilnice.', en: 'CRM system focused on tasks, automations and daily operational actions.' }, meta: 'Kanban + triage · Shortcuts · Prioritizare vizuală', frameUrl: 'https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/', primaryUrl: 'projects/clientflow.html', secondaryUrl: 'https://github.com/LaurAndreea10/ClientFlow-PRO', codeUrl: 'https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/' },
     { title: 'Link Video Editor Studio', label: 'Video studio', description: { ro: 'Studio pentru workflow video, navigare rapidă și Automation Pack export.', en: 'Studio for video workflow, quick navigation and Automation Pack export.' }, meta: 'HTML · CSS · JavaScript · Automation Pack', frameUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/', primaryUrl: 'tools/link-video-automation-pack.html', secondaryUrl: 'https://github.com/LaurAndreea10/Link-Video-Editor-Studio', codeUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/' }
   ];
@@ -311,15 +311,32 @@
   function setupNowTabs() {
     if (!els.nowSection || els.nowSection.dataset.tabsReady) return;
     els.nowSection.dataset.tabsReady = 'true';
-    const tabs = els.nowSection.querySelectorAll('.now-tab');
+    const tabs = [...els.nowSection.querySelectorAll('.now-tab')];
     const panels = els.nowSection.querySelectorAll('.now-panel');
-    tabs.forEach(tab => tab.addEventListener('click', () => {
+    function activateTab(tab) {
       const target = tab.getAttribute('aria-controls');
       tabs.forEach(t => { t.classList.remove('now-tab-active'); t.setAttribute('aria-selected', 'false'); });
       panels.forEach(p => p.classList.add('now-panel-hidden'));
       tab.classList.add('now-tab-active'); tab.setAttribute('aria-selected', 'true');
       const panel = document.getElementById(target); if (panel) panel.classList.remove('now-panel-hidden');
-    }));
+    }
+    tabs.forEach(tab => tab.addEventListener('click', () => activateTab(tab)));
+    const tablist = els.nowSection.querySelector('.now-tabs');
+    if (tablist) {
+      tablist.addEventListener('keydown', event => {
+        const index = tabs.indexOf(document.activeElement);
+        if (index === -1) return;
+        let nextIndex = null;
+        if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+        if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = tabs.length - 1;
+        if (nextIndex === null) return;
+        event.preventDefault();
+        tabs[nextIndex].focus();
+        activateTab(tabs[nextIndex]);
+      });
+    }
   }
 
   function setupNowSection() {
@@ -444,6 +461,60 @@
     });
   }
 
+  function applyAccessibilityAuditFixes() {
+    if (!document.getElementById('accessibility-audit-fixes')) {
+      const style = document.createElement('style');
+      style.id = 'accessibility-audit-fixes';
+      style.textContent = `
+        .card-lang,
+        .thumbSubtitle,
+        .badge-new,
+        .badge-github,
+        .now-tag,
+        .scan-eyebrow,
+        .scan-meta,
+        .chip[style*="uppercase"],
+        .chip.is-uppercase {
+          font-size: .78rem !important;
+        }
+        .search-wrap:focus-within {
+          outline: 2px solid var(--accent);
+          outline-offset: 2px;
+        }
+        .search-wrap input:focus {
+          outline: none;
+        }
+        [tabindex="0"]:focus-visible,
+        .lead-card:focus-visible,
+        .kanban-card:focus-visible,
+        .task-row:focus-visible {
+          outline: 2px solid var(--accent, #4f8cff);
+          outline-offset: 3px;
+          border-radius: inherit;
+        }
+        :focus:not(:focus-visible) {
+          outline: none;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    const replay = document.getElementById('replay');
+    if (replay) {
+      replay.type = 'button';
+      if (!replay.getAttribute('aria-label')) replay.setAttribute('aria-label', 'Reîncepere intro cinematografic');
+    }
+
+    const scanPanel = document.getElementById('scan-panel');
+    if (scanPanel) {
+      scanPanel.setAttribute('role', 'dialog');
+      scanPanel.setAttribute('aria-modal', 'true');
+      if (!scanPanel.getAttribute('aria-label') && !scanPanel.getAttribute('aria-labelledby')) {
+        scanPanel.setAttribute('aria-label', 'Rezumat portofoliu 30 de secunde');
+      }
+    }
+  }
+
   function applyScoreBoosts() {
     applyCodePenCount();
     const nowLink = document.querySelector('a.pill[href="#now"]');
@@ -460,10 +531,41 @@
     if (!btn || !panel) return;
     panel.hidden = true;
     let open = false;
-    function closePanel(){ open = false; panel.hidden = true; btn.setAttribute('aria-expanded','false'); btn.classList.remove('active'); }
-    function openPanel(){ open = true; panel.hidden = false; btn.setAttribute('aria-expanded','true'); btn.classList.add('active'); updateScanDates(); applyCodePenCount(); }
+    let lastFocused = null;
+    const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    function getFocusable() { return [...panel.querySelectorAll(focusableSelector)].filter(el => el.offsetParent !== null || el === document.activeElement); }
+    function closePanel(){
+      open = false;
+      panel.hidden = true;
+      btn.setAttribute('aria-expanded','false');
+      btn.classList.remove('active');
+      (lastFocused && typeof lastFocused.focus === 'function' ? lastFocused : btn).focus();
+    }
+    function openPanel(){
+      lastFocused = document.activeElement;
+      open = true;
+      panel.hidden = false;
+      btn.setAttribute('aria-expanded','true');
+      btn.classList.add('active');
+      updateScanDates();
+      applyCodePenCount();
+      const first = getFocusable()[0] || panel;
+      if (!panel.hasAttribute('tabindex')) panel.setAttribute('tabindex', '-1');
+      window.setTimeout(() => first.focus(), 0);
+    }
     btn.addEventListener('click', e => { e.stopPropagation(); open ? closePanel() : openPanel(); });
-    if (close) close.addEventListener('click', () => { closePanel(); btn.focus(); });
+    if (close) close.addEventListener('click', closePanel);
+    panel.addEventListener('keydown', event => {
+      if (!open) return;
+      if (event.key === 'Escape') { event.preventDefault(); closePanel(); return; }
+      if (event.key !== 'Tab') return;
+      const focusable = getFocusable();
+      if (!focusable.length) { event.preventDefault(); panel.focus(); return; }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
   }
 
   function initPortfolioCore() {
@@ -476,6 +578,7 @@
     setupAriaCurrent();
     setupReducedMotionWatcher();
     fixPulseBoardLinks();
+    applyAccessibilityAuditFixes();
     applyLanguage(currentLang);
     setPreview(0);
     decorateImplementationCards();
