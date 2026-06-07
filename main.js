@@ -76,6 +76,10 @@
   }
 
   const shippedRo = [
+    { title: 'Portfolio v2 — case studies & proof-of-work', body: 'portofoliul a fost repoziționat ca proof-of-work: problemă, decizie UX, implementare, rezultat și link live.', tag: 'Iun 2026', link: { href: 'alpis-fusion-crm.html', label: 'Vezi case study' } },
+    { title: 'CRM & Dashboard UX polish', body: 'statusuri mai clare, microcopy, empty states, focus states și flow-uri mai ușor de urmărit pentru proiectele CRM.', tag: 'Iun 2026' },
+    { title: 'GitHub repo cleanup', body: 'README-uri, descrieri, demo links și structură repo actualizate pentru verificare mai ușoară.', tag: 'Iun 2026', link: { href: 'https://github.com/LaurAndreea10', label: 'Vezi GitHub' } },
+    { title: 'Accessibility pass', body: 'contrast, navigare din tastatură, stări de focus și experiență mobile verificate pentru proiectele principale.', tag: 'Iun 2026' },
     { title: '🌊🏄🌊 SURF RUN', body: 'joc arcade surf finalizat și publicat pe GitHub Pages. Experiență mobile-first, valuri dinamice, moduri de joc, sunet și efecte de stropi.', tag: 'Iun 2026', link: { href: 'https://laurandreea10.github.io/SURF-RUN/', label: 'Deschide SURF RUN' } },
     { title: 'PulseBoard', body: 'roadmap finalizat: detectare anomalii cu sezonalitate, conectori Stripe/Shopify, briefing automat și export PDF/PNG.', tag: 'Mai 2026', link: { href: 'https://laurandreea10.github.io/PulseBoard/', label: 'Deschide PulseBoard' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/PulseBoard', label: 'Repo GitHub' } },
     { title: 'Career Toolkit', body: 'suită de instrumente pentru pregătirea carierei livrată: CV builder, cover letter generator, job tracker și interview prep.', tag: 'Mai 2026', link: { href: 'https://laurandreea10.github.io/Career-Toolkit/', label: 'Deschide Career Toolkit' } },
@@ -94,6 +98,10 @@
   ];
 
   const shippedEn = [
+    { title: 'Portfolio v2 — case studies & proof-of-work', body: 'the portfolio was repositioned as proof-of-work: problem, UX decision, implementation, outcome and live link.', tag: 'Jun 2026', link: { href: 'alpis-fusion-crm.html', label: 'View case study' } },
+    { title: 'CRM & Dashboard UX polish', body: 'clearer statuses, better microcopy, empty states, focus states and easier-to-follow flows for CRM projects.', tag: 'Jun 2026' },
+    { title: 'GitHub repo cleanup', body: 'README files, descriptions, demo links and repository structure updated for easier verification.', tag: 'Jun 2026', link: { href: 'https://github.com/LaurAndreea10', label: 'View GitHub' } },
+    { title: 'Accessibility pass', body: 'contrast, keyboard navigation, focus states and mobile experience checked across the main projects.', tag: 'Jun 2026' },
     { title: '🌊🏄🌊 SURF RUN', body: 'arcade surf game shipped and published on GitHub Pages. Mobile-first experience with dynamic waves, game modes, sound and splash effects.', tag: 'Jun 2026', link: { href: 'https://laurandreea10.github.io/SURF-RUN/', label: 'Open SURF RUN' } },
     { title: 'PulseBoard', body: 'roadmap shipped: seasonality, Stripe/Shopify connectors, scheduled briefing and PDF/PNG export.', tag: 'May 2026', link: { href: 'https://laurandreea10.github.io/PulseBoard/', label: 'Open PulseBoard' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/PulseBoard', label: 'GitHub repo' } },
     { title: 'Career Toolkit', body: 'career preparation suite shipped: CV builder, cover letter generator, job tracker and interview prep.', tag: 'May 2026', link: { href: 'https://laurandreea10.github.io/Career-Toolkit/', label: 'Open Career Toolkit' } },
@@ -116,14 +124,10 @@
       get datetime() { return getNowDatetime(); },
       get label() { return getNowLabel('ro'); },
       tabs: { active: '🔄 În curs', done: '✅ Finalizat recent', history: '📅 Istoric' },
-      active: [
-        { title: 'Portfolio v2 — case studies & proof-of-work', body: 'rescriu portofoliul ca o colecție de studii de caz scurte: problemă, decizie UX, implementare, rezultat și link live.', tag: 'Iun 2026', link: { href: 'alpis-fusion-crm.html', label: 'Vezi case study' } },
-        { title: 'CRM & Dashboard UX polish', body: 'îmbunătățesc proiectele CRM cu statusuri mai clare, microcopy, empty states, focus states și flow-uri mai ușor de urmărit.', tag: 'În lucru' },
-        { title: 'GitHub repo cleanup', body: 'actualizez README-uri, descrieri, demo links și structura repo-urilor pentru ca proiectele live să fie mai ușor de înțeles și verificat.', tag: 'În lucru', link: { href: 'https://github.com/LaurAndreea10', label: 'Vezi GitHub' } },
-        { title: 'Accessibility pass', body: 'verific contrastul, navigarea din tastatură, stările de focus și experiența mobile pentru proiectele principale.', tag: 'UX' }
-      ],
+      active: [],
       done: shippedRo,
       history: [
+        { label: 'Săpt. 7 Iunie 2026', items: ['Portfolio v2 — trecut la Finalizat recent', 'CRM & Dashboard UX polish — trecut la Finalizat recent', 'GitHub repo cleanup — trecut la Finalizat recent', 'Accessibility pass — trecut la Finalizat recent'] },
         { label: 'Săpt. 2 Iunie 2026', items: ['SURF RUN — adăugat la Finalizat recent cu link GitHub Pages', 'Portofoliu — număr CodePen actualizat la 66 proiecte live'] },
         { label: 'Săpt. 31 Mai 2026', items: ['PulseBoard — roadmap finalizat', 'Career Toolkit — suită carieră livrată cu deploy live', 'ClientOps Suite Premium — demo live livrat', 'Excel Quest V2 — UX reluare + dashboard progres livrate'] }
       ],
@@ -133,14 +137,10 @@
       get datetime() { return getNowDatetime(); },
       get label() { return getNowLabel('en'); },
       tabs: { active: '🔄 In progress', done: '✅ Recently shipped', history: '📅 History' },
-      active: [
-        { title: 'Portfolio v2 — case studies & proof-of-work', body: 'I am turning the portfolio into a clearer proof-of-work collection: problem, UX decision, implementation, outcome and live link.', tag: 'Jun 2026', link: { href: 'alpis-fusion-crm.html', label: 'View case study' } },
-        { title: 'CRM & Dashboard UX polish', body: 'I am improving CRM projects with clearer statuses, better microcopy, empty states, focus states and easier-to-follow user flows.', tag: 'In progress' },
-        { title: 'GitHub repo cleanup', body: 'I am updating README files, descriptions, demo links and repository structure so the live projects are easier to understand and verify.', tag: 'In progress', link: { href: 'https://github.com/LaurAndreea10', label: 'View GitHub' } },
-        { title: 'Accessibility pass', body: 'I am checking contrast, keyboard navigation, focus states and mobile experience across the main projects.', tag: 'UX' }
-      ],
+      active: [],
       done: shippedEn,
       history: [
+        { label: 'Week of June 7, 2026', items: ['Portfolio v2 — moved to Recently shipped', 'CRM & Dashboard UX polish — moved to Recently shipped', 'GitHub repo cleanup — moved to Recently shipped', 'Accessibility pass — moved to Recently shipped'] },
         { label: 'Week of June 2, 2026', items: ['SURF RUN — added to Recently shipped with GitHub Pages link', 'Portfolio — CodePen count updated to 66 live projects'] },
         { label: 'Week of May 31, 2026', items: ['PulseBoard — roadmap shipped', 'Career Toolkit — career suite shipped with live deploy', 'ClientOps Suite Premium — live demo shipped', 'Excel Quest V2 — resume UX + progress dashboard shipped'] }
       ],
