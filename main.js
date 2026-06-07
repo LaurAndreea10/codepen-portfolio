@@ -124,7 +124,12 @@
       get datetime() { return getNowDatetime(); },
       get label() { return getNowLabel('ro'); },
       tabs: { active: '🔄 În curs', done: '✅ Finalizat recent', history: '📅 Istoric' },
-      active: [],
+      active: [
+        { title: 'Case study screenshots & before/after visuals', body: 'adaug capturi, comparații before/after și mini explicații vizuale pentru proiectele principale, ca studiile de caz să fie mai ușor de scanat.', tag: 'În lucru' },
+        { title: 'Project metrics & validation notes', body: 'completez proiectele-cheie cu dovezi simple: problema rezolvată, flow simplificat, decizie UX și mod de verificare live.', tag: 'UX proof' },
+        { title: 'Portfolio content cleanup RO/EN', body: 'rafinez textele bilingve, titlurile, microcopy-ul și CTA-urile pentru un portofoliu mai coerent și mai profesional.', tag: 'Content' },
+        { title: 'Recruiter / reviewer quick path', body: 'construiesc un traseu rapid pentru vizitatori: top 3 proiecte, proof-of-work, GitHub, live demos și contact vizibile în 30–60 secunde.', tag: 'Portfolio UX' }
+      ],
       done: shippedRo,
       history: [
         { label: 'Săpt. 7 Iunie 2026', items: ['Portfolio v2 — trecut la Finalizat recent', 'CRM & Dashboard UX polish — trecut la Finalizat recent', 'GitHub repo cleanup — trecut la Finalizat recent', 'Accessibility pass — trecut la Finalizat recent'] },
@@ -137,7 +142,12 @@
       get datetime() { return getNowDatetime(); },
       get label() { return getNowLabel('en'); },
       tabs: { active: '🔄 In progress', done: '✅ Recently shipped', history: '📅 History' },
-      active: [],
+      active: [
+        { title: 'Case study screenshots & before/after visuals', body: 'I am adding screenshots, before/after comparisons and short visual explanations for the main projects, so the case studies are easier to scan.', tag: 'In progress' },
+        { title: 'Project metrics & validation notes', body: 'I am completing key projects with simple proof: solved problem, simplified flow, UX decision and live verification path.', tag: 'UX proof' },
+        { title: 'Portfolio content cleanup RO/EN', body: 'I am refining bilingual text, titles, microcopy and CTAs for a more coherent and professional portfolio.', tag: 'Content' },
+        { title: 'Recruiter / reviewer quick path', body: 'I am building a faster path for visitors: top 3 projects, proof-of-work, GitHub, live demos and contact visible in 30–60 seconds.', tag: 'Portfolio UX' }
+      ],
       done: shippedEn,
       history: [
         { label: 'Week of June 7, 2026', items: ['Portfolio v2 — moved to Recently shipped', 'CRM & Dashboard UX polish — moved to Recently shipped', 'GitHub repo cleanup — moved to Recently shipped', 'Accessibility pass — moved to Recently shipped'] },
