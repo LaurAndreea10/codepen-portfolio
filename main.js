@@ -12,6 +12,7 @@
         { title: 'README + CodePen descriptions pass', body: 'pregătesc descrieri bilingve mai curate pentru proiectele recente, cu features, stack și mod de testare live.', tag: 'Docs' }
       ],
       done: [
+        { title: 'Neon Island Run 3D', body: 'joc 3D neon publicat ca repository GitHub, cu atmosferă insulară, energie arcade și direcție vizuală futuristă.', tag: 'Iun 2026', link: { href: 'https://github.com/LaurAndreea10/Neon-Island-Run-3D', label: 'Deschide GitHub' } },
         { title: 'Golden Hour Waves', body: 'proiect vizual finalizat și publicat pe GitHub Pages, cu atmosferă golden hour, valuri animate și estetică relaxată de plajă.', tag: 'Iun 2026', link: { href: 'https://laurandreea10.github.io/Golden-hour-waves/', label: 'Deschide Golden Hour Waves' } },
         { title: 'Golden Hour Waves 2', body: 'a doua versiune a experimentului vizual cu valuri golden hour, rafinată ca atmosferă, mișcare și prezentare.', tag: 'Iun 2026', link: { href: 'https://laurandreea10.github.io/Golden-hour-waves-2/', label: 'Deschide Golden Hour Waves 2' } },
         { title: 'Case study screenshots & before/after visuals', body: 'capturi, comparații before/after și mini explicații vizuale pregătite pentru proiectele principale.', tag: 'Finalizat' },
@@ -21,12 +22,14 @@
       ],
       historyLabel: 'Săpt. 12 Iunie 2026',
       historyItems: [
+        'Neon Island Run 3D — adăugat la Finalizat recent cu link GitHub',
         'Golden Hour Waves — adăugat la Finalizat recent cu link GitHub Pages',
         'Golden Hour Waves 2 — adăugat la Finalizat recent cu link GitHub Pages',
         'Cele 4 priorități de portofoliu au fost mutate din În curs în Finalizat recent',
         'În curs — actualizat cu priorități noi pentru polish, QA mobil, metadata și documentație'
       ],
       scanItems: [
+        'Neon Island Run 3D — joc 3D neon publicat pe GitHub',
         'Golden Hour Waves — experiență vizuală golden hour publicată live',
         'Golden Hour Waves 2 — versiune rafinată publicată live'
       ]
@@ -39,6 +42,7 @@
         { title: 'README + CodePen descriptions pass', body: 'I am preparing cleaner bilingual descriptions for recent projects, with features, stack and live testing notes.', tag: 'Docs' }
       ],
       done: [
+        { title: 'Neon Island Run 3D', body: 'neon 3D game published as a GitHub repository, with an island atmosphere, arcade energy and a futuristic visual direction.', tag: 'Jun 2026', link: { href: 'https://github.com/LaurAndreea10/Neon-Island-Run-3D', label: 'Open GitHub' } },
         { title: 'Golden Hour Waves', body: 'visual project shipped and published on GitHub Pages, with a golden hour atmosphere, animated waves and a relaxed beach aesthetic.', tag: 'Jun 2026', link: { href: 'https://laurandreea10.github.io/Golden-hour-waves/', label: 'Open Golden Hour Waves' } },
         { title: 'Golden Hour Waves 2', body: 'second version of the golden hour waves visual experiment, refined in atmosphere, motion and presentation.', tag: 'Jun 2026', link: { href: 'https://laurandreea10.github.io/Golden-hour-waves-2/', label: 'Open Golden Hour Waves 2' } },
         { title: 'Case study screenshots & before/after visuals', body: 'screenshots, before/after comparisons and short visual explanations prepared for the main projects.', tag: 'Done' },
@@ -48,12 +52,14 @@
       ],
       historyLabel: 'Week of June 12, 2026',
       historyItems: [
+        'Neon Island Run 3D — added to Recently shipped with GitHub link',
         'Golden Hour Waves — added to Recently shipped with GitHub Pages link',
         'Golden Hour Waves 2 — added to Recently shipped with GitHub Pages link',
         'The 4 portfolio priorities were moved from In progress to Recently shipped',
         'In progress — updated with new priorities for polish, mobile QA, metadata and documentation'
       ],
       scanItems: [
+        'Neon Island Run 3D — neon 3D game published on GitHub',
         'Golden Hour Waves — golden hour visual experience published live',
         'Golden Hour Waves 2 — refined version published live'
       ]
