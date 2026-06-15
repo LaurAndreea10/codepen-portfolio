@@ -23,12 +23,12 @@
       ],
       historyLabel: 'Săpt. 12 Iunie 2026',
       historyItems: [
-        'Neon Island Run 3D — adăugat la Finalizat recent cu link GitHub Pages',
-        'Garden Match Masters — adăugat la Finalizat recent cu link GitHub Pages',
-        'Golden Hour Waves — adăugat la Finalizat recent cu link GitHub Pages',
-        'Golden Hour Waves 2 — adăugat la Finalizat recent cu link GitHub Pages',
-        'Cele 4 priorități de portofoliu au fost mutate din În curs în Finalizat recent',
-        'În curs — actualizat cu priorități noi pentru polish, QA mobil, metadata și documentație'
+        { text: 'Neon Island Run 3D — adăugat la Finalizat recent cu link GitHub Pages', href: 'https://laurandreea10.github.io/Neon-Island-Run-3D/' },
+        { text: 'Garden Match Masters — adăugat la Finalizat recent cu link GitHub Pages', href: 'https://laurandreea10.github.io/Garden-Match-Masters/' },
+        { text: 'Golden Hour Waves — adăugat la Finalizat recent cu link GitHub Pages', href: 'https://laurandreea10.github.io/Golden-hour-waves/' },
+        { text: 'Golden Hour Waves 2 — adăugat la Finalizat recent cu link GitHub Pages', href: 'https://laurandreea10.github.io/Golden-hour-waves-2/' },
+        { text: 'Cele 4 priorități de portofoliu au fost mutate din În curs în Finalizat recent', href: '#now-panel-done' },
+        { text: 'În curs — actualizat cu priorități noi pentru polish, QA mobil, metadata și documentație', href: '#now-panel-active' }
       ],
       scanItems: [
         'Neon Island Run 3D — joc 3D neon publicat live',
@@ -56,12 +56,12 @@
       ],
       historyLabel: 'Week of June 12, 2026',
       historyItems: [
-        'Neon Island Run 3D — added to Recently shipped with GitHub Pages link',
-        'Garden Match Masters — added to Recently shipped with GitHub Pages link',
-        'Golden Hour Waves — added to Recently shipped with GitHub Pages link',
-        'Golden Hour Waves 2 — added to Recently shipped with GitHub Pages link',
-        'The 4 portfolio priorities were moved from In progress to Recently shipped',
-        'In progress — updated with new priorities for polish, mobile QA, metadata and documentation'
+        { text: 'Neon Island Run 3D — added to Recently shipped with GitHub Pages link', href: 'https://laurandreea10.github.io/Neon-Island-Run-3D/' },
+        { text: 'Garden Match Masters — added to Recently shipped with GitHub Pages link', href: 'https://laurandreea10.github.io/Garden-Match-Masters/' },
+        { text: 'Golden Hour Waves — added to Recently shipped with GitHub Pages link', href: 'https://laurandreea10.github.io/Golden-hour-waves/' },
+        { text: 'Golden Hour Waves 2 — added to Recently shipped with GitHub Pages link', href: 'https://laurandreea10.github.io/Golden-hour-waves-2/' },
+        { text: 'The 4 portfolio priorities were moved from In progress to Recently shipped', href: '#now-panel-done' },
+        { text: 'In progress — updated with new priorities for polish, mobile QA, metadata and documentation', href: '#now-panel-active' }
       ],
       scanItems: [
         'Neon Island Run 3D — neon 3D game published live',
@@ -133,6 +133,24 @@
     return li;
   }
 
+  function buildHistoryItem(entry) {
+    const li = document.createElement('li');
+    const item = typeof entry === 'string' ? { text: entry, href: '#now' } : entry;
+
+    if (item && item.href) {
+      const a = document.createElement('a');
+      a.className = 'now-history-link';
+      a.href = item.href;
+      a.textContent = item.text;
+      external(a, item.href);
+      li.appendChild(a);
+    } else {
+      li.textContent = item && item.text ? item.text : '';
+    }
+
+    return li;
+  }
+
   function patchNowSection() {
     const copy = data[lang()];
     const activePanel = document.querySelector('#now-panel-active .now-checklist');
@@ -160,11 +178,7 @@
       label.className = 'now-history-label';
       label.textContent = copy.historyLabel;
       const ul = document.createElement('ul');
-      copy.historyItems.forEach(text => {
-        const li = document.createElement('li');
-        li.textContent = text;
-        ul.appendChild(li);
-      });
+      copy.historyItems.forEach(item => ul.appendChild(buildHistoryItem(item)));
       wrap.appendChild(label);
       wrap.appendChild(ul);
       historyPanel.insertBefore(wrap, historyPanel.firstChild);
