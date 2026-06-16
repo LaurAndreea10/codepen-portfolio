@@ -12,6 +12,7 @@
         { title: 'README + CodePen descriptions pass', body: 'pregătesc descrieri bilingve mai curate pentru proiectele recente, cu features, stack și mod de testare live.', tag: 'Docs' }
       ],
       done: [
+        { title: 'Surf Run 2', body: 'continuare beach runner publicată pe GitHub Pages, cu atmosferă de plajă, misiuni rapide și energie arcade.', tag: 'Iun 2026', link: { href: 'https://laurandreea10.github.io/Surf-run-2/', label: 'Deschide Surf Run 2' } },
         { title: 'Neon Island Run 3D', body: 'joc 3D neon publicat pe GitHub Pages, cu atmosferă insulară, energie arcade și direcție vizuală futuristă.', tag: 'Iun 2026', link: { href: 'https://laurandreea10.github.io/Neon-Island-Run-3D/', label: 'Deschide Neon Island Run 3D' } },
         { title: 'Garden Match Masters', body: 'joc match-3 de grădină publicat pe GitHub Pages, cu energie colorată, obiective rapide și atmosferă arcade casual.', tag: 'Iun 2026', link: { href: 'https://laurandreea10.github.io/Garden-Match-Masters/', label: 'Deschide Garden Match Masters' } },
         { title: 'Golden Hour Waves', body: 'proiect vizual finalizat și publicat pe GitHub Pages, cu atmosferă golden hour, valuri animate și estetică relaxată de plajă.', tag: 'Iun 2026', link: { href: 'https://laurandreea10.github.io/Golden-hour-waves/', label: 'Deschide Golden Hour Waves' } },
@@ -23,6 +24,7 @@
       ],
       historyLabel: 'Săpt. 12 Iunie 2026',
       historyItems: [
+        { text: 'Surf Run 2 — adăugat la Finalizat recent cu link GitHub Pages', href: 'https://laurandreea10.github.io/Surf-run-2/' },
         { text: 'Neon Island Run 3D — adăugat la Finalizat recent cu link GitHub Pages', href: 'https://laurandreea10.github.io/Neon-Island-Run-3D/' },
         { text: 'Garden Match Masters — adăugat la Finalizat recent cu link GitHub Pages', href: 'https://laurandreea10.github.io/Garden-Match-Masters/' },
         { text: 'Golden Hour Waves — adăugat la Finalizat recent cu link GitHub Pages', href: 'https://laurandreea10.github.io/Golden-hour-waves/' },
@@ -31,6 +33,7 @@
         { text: 'În curs — actualizat cu priorități noi pentru polish, QA mobil, metadata și documentație', href: '#now-panel-active' }
       ],
       scanItems: [
+        'Surf Run 2 — beach runner publicat live',
         'Neon Island Run 3D — joc 3D neon publicat live',
         'Garden Match Masters — joc match-3 de grădină publicat live',
         'Golden Hour Waves — experiență vizuală golden hour publicată live',
@@ -45,6 +48,7 @@
         { title: 'README + CodePen descriptions pass', body: 'I am preparing cleaner bilingual descriptions for recent projects, with features, stack and live testing notes.', tag: 'Docs' }
       ],
       done: [
+        { title: 'Surf Run 2', body: 'beach runner sequel published on GitHub Pages, with a beach atmosphere, quick missions and arcade energy.', tag: 'Jun 2026', link: { href: 'https://laurandreea10.github.io/Surf-run-2/', label: 'Open Surf Run 2' } },
         { title: 'Neon Island Run 3D', body: 'neon 3D game published on GitHub Pages, with an island atmosphere, arcade energy and a futuristic visual direction.', tag: 'Jun 2026', link: { href: 'https://laurandreea10.github.io/Neon-Island-Run-3D/', label: 'Open Neon Island Run 3D' } },
         { title: 'Garden Match Masters', body: 'garden match-3 game published on GitHub Pages, with colorful arcade energy, quick objectives and a casual play feel.', tag: 'Jun 2026', link: { href: 'https://laurandreea10.github.io/Garden-Match-Masters/', label: 'Open Garden Match Masters' } },
         { title: 'Golden Hour Waves', body: 'visual project shipped and published on GitHub Pages, with a golden hour atmosphere, animated waves and a relaxed beach aesthetic.', tag: 'Jun 2026', link: { href: 'https://laurandreea10.github.io/Golden-hour-waves/', label: 'Open Golden Hour Waves' } },
@@ -56,6 +60,7 @@
       ],
       historyLabel: 'Week of June 12, 2026',
       historyItems: [
+        { text: 'Surf Run 2 — added to Recently shipped with GitHub Pages link', href: 'https://laurandreea10.github.io/Surf-run-2/' },
         { text: 'Neon Island Run 3D — added to Recently shipped with GitHub Pages link', href: 'https://laurandreea10.github.io/Neon-Island-Run-3D/' },
         { text: 'Garden Match Masters — added to Recently shipped with GitHub Pages link', href: 'https://laurandreea10.github.io/Garden-Match-Masters/' },
         { text: 'Golden Hour Waves — added to Recently shipped with GitHub Pages link', href: 'https://laurandreea10.github.io/Golden-hour-waves/' },
@@ -64,6 +69,7 @@
         { text: 'In progress — updated with new priorities for polish, mobile QA, metadata and documentation', href: '#now-panel-active' }
       ],
       scanItems: [
+        'Surf Run 2 — beach runner published live',
         'Neon Island Run 3D — neon 3D game published live',
         'Garden Match Masters — garden match-3 game published live',
         'Golden Hour Waves — golden hour visual experience published live',
