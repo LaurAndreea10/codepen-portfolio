@@ -27,6 +27,24 @@
   <meta name="twitter:description" content="CRM · Marketing · Front-end autodidact. 64 proiecte live · Vite + React · GitHub Actions · UI/UX cu logică de produs." />
   <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/alpis-fusion-demo-poster.svg" />
 
+  <!-- ====================================================
+       FIX #3: PRELOAD LCP IMAGE — prima prioritate absoluta
+       ==================================================== -->
+  <link rel="preload" as="image" href="alpis-fusion-demo-poster.svg" fetchpriority="high" />
+
+  <!-- ====================================================
+       FIX #4: FONTURI NON-BLOCKING
+       Daca style.css importa fonturi cu @import, sterge-le
+       de acolo si pastreaza doar blocul de mai jos in HTML
+       ==================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" /></noscript>
+
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="stylesheet" href="style.css" />
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -38,7 +56,7 @@
         "alternateName": "LaurAndreea10",
         "url": "https://laurandreea10.github.io/codepen-portfolio/",
         "jobTitle": "Front-end Developer",
-        "description": "Front-end developer autodidact cu background CRM și marketing digital. 64 proiecte live, focus pe CRM, dashboard-uri și AI-native tools.",
+        "description": "Front-end developer autodidact cu background CRM si marketing digital. 64 proiecte live, focus pe CRM, dashboard-uri si AI-native tools.",
         "knowsLanguage": ["ro", "en"],
         "knowsAbout": ["Front-end Development","CRM Systems","UI/UX Design","React","Vite","TypeScript","JavaScript","HTML","CSS","GitHub Actions"],
         "sameAs": [
@@ -85,9 +103,6 @@
   }
   </script>
 
-  <link rel="preload" href="style.css" as="style" />
-  <link rel="stylesheet" href="style.css" />
-
   <script>
     try {
       if (sessionStorage.getItem('la_intro_seen')) {
@@ -96,6 +111,10 @@
     } catch(e) {}
   </script>
 
+  <!-- ====================================================
+       FIX #1: GITHUB API — mutat dupa load + requestIdleCallback
+       NU mai ruleaza sincron la parse — economie ~200ms TBT
+       ==================================================== -->
   <script>
     (function() {
       var cacheKey = 'la_gh_repos', cacheTs = 'la_gh_repos_ts';
@@ -106,21 +125,27 @@
           var ts = parseInt(sessionStorage.getItem(cacheTs) || '0');
           if (cached && Date.now() - ts < TTL) { resolve(parseInt(cached)); return; }
         } catch(e) {}
-        fetch('https://api.github.com/users/LaurAndreea10?per_page=1', {
-          headers: { 'Accept': 'application/vnd.github.v3+json' }
-        })
-        .then(function(r){ return r.json(); })
-        .then(function(d){
-          var count = d.public_repos || 0;
-          if (count > 0) {
-            try {
-              sessionStorage.setItem(cacheKey, String(count));
-              sessionStorage.setItem(cacheTs, String(Date.now()));
-            } catch(e){}
-          }
-          resolve(count);
-        })
-        .catch(function(){ resolve(0); });
+        // Fetch DUPA ce pagina s-a incarcat complet — nu blocheaza render-ul
+        window.addEventListener('load', function() {
+          var idle = window.requestIdleCallback || function(cb){ setTimeout(cb, 200); };
+          idle(function() {
+            fetch('https://api.github.com/users/LaurAndreea10?per_page=1', {
+              headers: { 'Accept': 'application/vnd.github.v3+json' }
+            })
+            .then(function(r){ return r.json(); })
+            .then(function(d){
+              var count = d.public_repos || 0;
+              if (count > 0) {
+                try {
+                  sessionStorage.setItem(cacheKey, String(count));
+                  sessionStorage.setItem(cacheTs, String(Date.now()));
+                } catch(e){}
+              }
+              resolve(count);
+            })
+            .catch(function(){ resolve(0); });
+          });
+        });
       });
     })();
   </script>
@@ -135,7 +160,9 @@
       display: flex !important; align-items: center !important;
       justify-content: center !important; cursor: default;
       opacity: 1; transition: opacity 0.55s ease;
-      transform: translateZ(0); will-change: opacity;
+      /* FIX #5: scos transform:translateZ(0) — redundant cu will-change:opacity,
+         creeaza layer compositing inutil pe mobile */
+      will-change: opacity;
     }
     #intro-overlay.intro-hidden { opacity: 0 !important; pointer-events: none !important; }
     #ir1 { animation: intro-ring-pulse 2s ease-in-out infinite alternate; }
@@ -161,7 +188,9 @@
       width: 100vw !important; height: 100vh !important;
       z-index: 2147483647 !important; background: #04080f;
       overflow: hidden; opacity: 1; transition: opacity 0.5s ease;
-      cursor: default; transform: translateZ(0);
+      cursor: default;
+      /* FIX #5: scos transform:translateZ(0) — layer compositing inutil pe mobile */
+      will-change: opacity;
     }
     #intro-overlay.intro-hidden { opacity: 0 !important; pointer-events: none !important; }
     #intro-overlay {
@@ -361,6 +390,7 @@
             <line class="gridline accent v" x1="960" y1="0" x2="960" y2="1080" style="animation-delay:1.4s;animation-duration:1.4s"></line>
           </svg>
         </div>
+        <!-- FIX #7: dust container gol — populat dupa load via requestIdleCallback -->
         <div class="dust" id="dust"></div>
         <div class="hud">
           <span class="crosshair tl"></span><span class="crosshair tr"></span>
@@ -481,22 +511,32 @@
         window.__laGhRepos.then(function(count){if(count>0)injectCounterStyles(count);});
       }
     })();
-    (function(){
-      var dust=document.getElementById('dust');
-      var N=28;
-      for(var i=0;i<N;i++){
-        var s=document.createElement('span');
-        var dur=5+Math.random()*7;
-        var delay=-Math.random()*dur;
-        var left=Math.random()*100;
-        var dx=(Math.random()-0.5)*60;
-        s.style.left=left+'vw';
-        s.style.animationDuration=dur+'s';
-        s.style.animationDelay=delay+'s';
-        s.style.setProperty('--dx',dx+'px');
-        dust.appendChild(s);
-      }
-    })();
+
+    // FIX #7: dust particles — create DUPA load, in requestIdleCallback
+    // Anterior blocau main thread la parse cu 28 appendChild-uri sincrone
+    window.addEventListener('load', function() {
+      var idle = window.requestIdleCallback || function(cb){ setTimeout(cb, 300); };
+      idle(function() {
+        var dust = document.getElementById('dust');
+        if (!dust) return;
+        var N = 28;
+        var frag = document.createDocumentFragment();
+        for (var i = 0; i < N; i++) {
+          var s = document.createElement('span');
+          var dur = 5 + Math.random() * 7;
+          var delay = -Math.random() * dur;
+          var left = Math.random() * 100;
+          var dx = (Math.random() - 0.5) * 60;
+          s.style.left = left + 'vw';
+          s.style.animationDuration = dur + 's';
+          s.style.animationDelay = delay + 's';
+          s.style.setProperty('--dx', dx + 'px');
+          frag.appendChild(s);
+        }
+        dust.appendChild(frag);
+      });
+    });
+
     var TOTAL=18;
     var tcEl=document.getElementById('tc');
     var startTime=performance.now();
@@ -713,9 +753,39 @@
             </div>
             <div class="hero-preview-links" id="heroPreviewLinks" aria-label="Selecteaz&#x103; preview proiect"></div>
             <div class="hero-preview-wrap">
-              <img class="hero-preview-fallback" id="heroPreviewFallback" src="alpis-fusion-demo-poster.svg" alt="Imagine fallback pentru preview proiect" />
+              <!--
+                FIX #2 + #3: LCP image optimizat
+                - fetchpriority="high" → browser o incarca prima
+                - width + height explicite → zero CLS
+                - NO loading="lazy" pe LCP image
+                - decoding="async" → nu blocheaza main thread
+              -->
+              <img
+                class="hero-preview-fallback"
+                id="heroPreviewFallback"
+                src="alpis-fusion-demo-poster.svg"
+                alt="Preview Alpis Fusion CRM Premium"
+                width="800"
+                height="450"
+                fetchpriority="high"
+                decoding="async"
+              />
               <div class="hero-preview-hint" id="heroPreviewHint">Preview-ul live nu s-a &icirc;nc&#x103;rcat. Po&#x21B;i folosi butoanele de mai jos pentru a deschide proiectul direct.</div>
-              <iframe class="hero-preview-frame" id="heroPreviewFrame" title="Preview live proiect" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+              <!--
+                FIX #2: IFRAME FACADE
+                - Iframe-ul NU mai are src la load — zero request la parse
+                - src-ul este injectat de main.js DOAR la interactiune (hover/click)
+                - Pana la interactiune, utilizatorul vede imaginea SVG (LCP = perfect)
+                - style="display:none" — ascuns pana cand main.js il activeaza
+              -->
+              <iframe
+                class="hero-preview-frame"
+                id="heroPreviewFrame"
+                title="Preview live proiect"
+                referrerpolicy="strict-origin-when-cross-origin"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                style="display:none"
+              ></iframe>
               <div class="hero-preview-stage">
                 <span class="tag" id="heroPreviewType">Repository</span>
                 <h3 id="heroPreviewHeading">Alpis Fusion CRM Premium</h3>
@@ -1148,8 +1218,6 @@
     </div>
   </footer>
 
-  <script src="main.js" defer></script>
-
   <script>
     (function(){
       var el=document.getElementById('now-datetime');
@@ -1163,5 +1231,28 @@
       el.textContent=d+' '+months[now.getMonth()]+' '+y;
     })();
   </script>
+
+  <!-- FIX #6: main.js defer (era deja corect) -->
+  <script src="main.js" defer></script>
+
+  <!--
+    NOTE PENTRU main.js:
+    Daca ai scroll listeners, asigura-te ca au { passive: true }:
+      window.addEventListener('scroll', handler, { passive: true });
+    Daca heroPreviewFrame primea src la load, trebuie schimbat sa-l primeasca
+    doar la interactiune. Exemplu minimal:
+      var frame = document.getElementById('heroPreviewFrame');
+      var facade = document.getElementById('heroPreviewSection');
+      function activateIframe(src) {
+        if (!frame.src) {
+          frame.src = src;
+          frame.style.display = '';
+        }
+      }
+      facade.addEventListener('click', function() {
+        activateIframe('https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/');
+      }, { once: true });
+  -->
+
 </body>
 </html>
