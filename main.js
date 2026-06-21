@@ -7,33 +7,8 @@
     return root.querySelector(selector);
   }
 
-  function qsa(selector, root = document) {
-    return Array.from(root.querySelectorAll(selector));
-  }
-
   function currentLang() {
     return document.documentElement.lang === 'en' ? 'en' : 'ro';
-  }
-
-  function getActivePreviewUrl() {
-    const liveButton = qs('#heroPreviewCode');
-    const secondaryButton = qs('#heroPreviewOpenSecondary');
-    const url = liveButton && liveButton.href ? liveButton.href : secondaryButton && secondaryButton.href ? secondaryButton.href : '';
-    return url && /^https?:\/\//.test(url) ? url : '';
-  }
-
-  function setFallbackState(showFallback) {
-    const frame = qs('#heroPreviewFrame');
-    const fallback = qs('#heroPreviewFallback');
-    const hint = qs('#heroPreviewHint');
-    if (fallback) fallback.style.opacity = showFallback ? '1' : '0';
-    if (hint) {
-      hint.style.opacity = showFallback ? '1' : '0';
-      hint.textContent = currentLang() === 'en'
-        ? 'Click the preview to load the live project.'
-        : 'Click pe preview pentru a încărca proiectul live.';
-    }
-    if (frame) frame.style.opacity = showFallback ? '0' : '1';
   }
 
   function injectCarouselFixStyles() {
@@ -44,143 +19,111 @@
       .hero-preview,
       .hero-preview-wrap {
         background:
-          radial-gradient(circle at 25% 10%, rgba(79,140,255,.18), transparent 34%),
-          radial-gradient(circle at 85% 90%, rgba(139,92,246,.16), transparent 34%),
-          linear-gradient(135deg, rgba(7,18,38,.98), rgba(5,10,22,.98)) !important;
+          radial-gradient(circle at 20% 0%, rgba(79,140,255,.22), transparent 35%),
+          radial-gradient(circle at 100% 100%, rgba(139,92,246,.18), transparent 38%),
+          linear-gradient(135deg, #071226 0%, #050a16 100%) !important;
       }
       .hero-preview-wrap {
-        position: relative;
-        overflow: hidden;
-        min-height: 430px;
+        position: relative !important;
+        overflow: hidden !important;
+        min-height: 430px !important;
+        border: 1px solid rgba(255,255,255,.08) !important;
       }
-      .hero-preview-frame,
-      iframe.hero-preview-frame {
-        background: #071226 !important;
-        color-scheme: dark;
+      .hero-preview-wrap::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(120deg, rgba(79,140,255,.13), transparent 42%),
+          radial-gradient(circle at 80% 20%, rgba(255,255,255,.08), transparent 22%);
+        z-index: 0;
       }
       .hero-preview-fallback {
         background: #071226 !important;
-        object-fit: cover;
+        object-fit: cover !important;
+        opacity: 1 !important;
+        z-index: 1 !important;
+      }
+      .hero-preview-frame,
+      iframe.hero-preview-frame,
+      #heroPreviewFrame {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        background: #071226 !important;
+      }
+      .hero-preview-hint {
+        opacity: 0 !important;
+        display: none !important;
       }
       .hero-preview-stage {
-        background: linear-gradient(180deg, rgba(7,18,38,.88), rgba(5,10,22,.94)) !important;
-        border-top: 1px solid rgba(255,255,255,.08);
+        position: relative !important;
+        z-index: 2 !important;
+        margin-top: 260px !important;
+        background: linear-gradient(180deg, rgba(7,18,38,.88), rgba(5,10,22,.98)) !important;
+        border-top: 1px solid rgba(255,255,255,.1) !important;
+        backdrop-filter: blur(12px) !important;
       }
       body.light .hero-preview,
       body.light .hero-preview-wrap {
         background:
-          radial-gradient(circle at 25% 10%, rgba(79,140,255,.14), transparent 34%),
-          radial-gradient(circle at 85% 90%, rgba(139,92,246,.12), transparent 34%),
-          linear-gradient(135deg, #edf3fb, #f8fbff) !important;
+          radial-gradient(circle at 20% 0%, rgba(79,140,255,.16), transparent 35%),
+          radial-gradient(circle at 100% 100%, rgba(139,92,246,.13), transparent 38%),
+          linear-gradient(135deg, #edf3fb 0%, #f8fbff 100%) !important;
       }
-      body.light .hero-preview-frame,
-      body.light iframe.hero-preview-frame,
-      body.light .hero-preview-fallback {
-        background: #edf3fb !important;
+      body.light .hero-preview-stage {
+        background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(237,243,251,.95)) !important;
+      }
+      @media (max-width: 760px) {
+        .hero-preview-wrap { min-height: 360px !important; }
+        .hero-preview-stage { margin-top: 210px !important; }
       }
     `;
     document.head.appendChild(style);
   }
 
-  function ensureHeroPreviewFacade() {
+  function lockCarouselToDarkPoster() {
+    injectCarouselFixStyles();
     const frame = qs('#heroPreviewFrame');
     const wrap = qs('.hero-preview-wrap');
     const fallback = qs('#heroPreviewFallback');
     const hint = qs('#heroPreviewHint');
-    injectCarouselFixStyles();
-    if (!frame || !wrap || wrap.dataset.carouselFixed === '1') return;
-
-    wrap.dataset.carouselFixed = '1';
-    wrap.setAttribute('role', 'button');
-    wrap.setAttribute('tabindex', '0');
-    wrap.setAttribute('aria-label', currentLang() === 'en' ? 'Load live project preview' : 'Încarcă preview-ul live al proiectului');
-
-    // IMPORTANT: index.html had inline display:none for the iframe.
-    // The original carousel only toggles opacity, so the iframe could remain invisible.
-    frame.removeAttribute('style');
-    frame.style.display = 'block';
-    frame.style.opacity = '0';
-    frame.style.pointerEvents = 'none';
-    frame.style.background = '#071226';
-    frame.loading = 'lazy';
-
-    if (fallback) fallback.style.opacity = '1';
+    if (frame) {
+      frame.removeAttribute('src');
+      frame.setAttribute('aria-hidden', 'true');
+      frame.style.setProperty('display', 'none', 'important');
+      frame.style.setProperty('opacity', '0', 'important');
+      frame.style.setProperty('visibility', 'hidden', 'important');
+      frame.style.setProperty('pointer-events', 'none', 'important');
+      frame.style.setProperty('background', '#071226', 'important');
+    }
+    if (fallback) {
+      fallback.style.setProperty('opacity', '1', 'important');
+      fallback.style.setProperty('background', '#071226', 'important');
+    }
     if (hint) {
-      hint.style.opacity = '1';
-      hint.textContent = currentLang() === 'en'
-        ? 'Click the preview to load the live project.'
-        : 'Click pe preview pentru a încărca proiectul live.';
+      hint.style.setProperty('display', 'none', 'important');
+      hint.style.setProperty('opacity', '0', 'important');
     }
-
-    let activated = false;
-
-    function activatePreview() {
-      const url = getActivePreviewUrl();
-      if (!url) return;
-      activated = true;
-      frame.style.pointerEvents = 'auto';
-      if (frame.src !== url) frame.src = url;
-      setFallbackState(false);
+    if (wrap) {
+      wrap.dataset.carouselFixed = '2';
+      wrap.removeAttribute('role');
+      wrap.removeAttribute('tabindex');
+      wrap.removeAttribute('aria-label');
     }
-
-    function resetForSlideChange() {
-      if (!activated) {
-        frame.removeAttribute('src');
-        frame.style.pointerEvents = 'none';
-        setFallbackState(true);
-        return;
-      }
-      const url = getActivePreviewUrl();
-      if (url && frame.src !== url) {
-        setFallbackState(true);
-        frame.src = url;
-      }
-    }
-
-    frame.addEventListener('load', () => {
-      if (activated) setFallbackState(false);
-    });
-    frame.addEventListener('error', () => setFallbackState(true));
-
-    wrap.addEventListener('click', (event) => {
-      if (event.target.closest('a, button')) return;
-      activatePreview();
-    });
-
-    wrap.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        activatePreview();
-      }
-    });
-
-    // Când caruselul schimbă slide-ul, originalul modifică linkurile/chipurile.
-    // Observăm acele schimbări și sincronizăm iframe-ul fără să rupem autoplay-ul.
-    const observed = [qs('#heroPreviewTitle'), qs('#heroPreviewCode'), qs('#heroPreviewOpenSecondary'), qs('#heroPreviewLinks')].filter(Boolean);
-    const observer = new MutationObserver(() => window.requestAnimationFrame(resetForSlideChange));
-    observed.forEach(node => observer.observe(node, { childList: true, subtree: true, attributes: true, attributeFilter: ['href', 'class', 'aria-pressed'] }));
-
-    // Curățăm orice src setat de scriptul original la inițializare, ca LCP să rămână pe poster.
-    window.requestAnimationFrame(() => {
-      if (!activated) {
-        frame.removeAttribute('src');
-        setFallbackState(true);
-      }
-    });
   }
 
   function itemTemplate(item, done) {
     const link = item.href
       ? ` <a class="now-item-link" href="${item.href}" target="_blank" rel="noopener noreferrer">${item.linkLabel || 'Live'}</a>`
       : '';
-    const extra = item.href2
-      ? ` <a class="now-item-link now-link-action" href="${item.href2}" target="_blank" rel="noopener noreferrer">${item.linkLabel2 || 'V2'}</a>`
-      : '';
     const tagClass = done ? 'now-tag now-tag-done' : 'now-tag';
     return `
       <li class="now-item${done ? ' now-item-done' : ''}">
         <span class="now-status" aria-hidden="true">${done ? '✅' : '🔄'}</span>
-        <span><strong>${item.title}</strong>${link}${extra} — ${item.text}<span class="${tagClass}">${item.tag}</span></span>
+        <span><strong>${item.title}</strong>${link} — ${item.text}<span class="${tagClass}">${item.tag}</span></span>
       </li>
     `;
   }
@@ -246,25 +189,27 @@
       `;
   }
 
-  function patchCarouselRepeatedly() {
-    ensureHeroPreviewFacade();
+  function applyPatchesRepeatedly() {
+    lockCarouselToDarkPoster();
     overrideNowSection();
-    window.setTimeout(() => { ensureHeroPreviewFacade(); overrideNowSection(); }, 100);
-    window.setTimeout(() => { ensureHeroPreviewFacade(); overrideNowSection(); }, 500);
-    window.setTimeout(() => { ensureHeroPreviewFacade(); overrideNowSection(); }, 1200);
+    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); }, 50);
+    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); }, 200);
+    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); }, 700);
+    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); }, 1500);
   }
 
   function loadOriginalMain() {
+    injectCarouselFixStyles();
     const script = document.createElement('script');
     script.src = ORIGINAL_MAIN;
     script.defer = true;
-    script.onload = patchCarouselRepeatedly;
+    script.onload = applyPatchesRepeatedly;
     script.onerror = () => {
       console.warn('Portfolio original main.js could not be loaded from snapshot. Applying local patches.');
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', patchCarouselRepeatedly, { once: true });
+        document.addEventListener('DOMContentLoaded', applyPatchesRepeatedly, { once: true });
       } else {
-        patchCarouselRepeatedly();
+        applyPatchesRepeatedly();
       }
     };
     document.head.appendChild(script);
