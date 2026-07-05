@@ -76,6 +76,25 @@
       body.light .hero-preview-stage {
         background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(237,243,251,.95)) !important;
       }
+      .crm-galaxy-injected-card {
+        position: relative;
+        overflow: hidden;
+      }
+      .crm-galaxy-injected-card::after {
+        content: '15 variants';
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        padding: 5px 9px;
+        border-radius: 999px;
+        background: rgba(63,216,224,.14);
+        color: #3fd8e0;
+        border: 1px solid rgba(63,216,224,.32);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
       @media (max-width: 760px) {
         .hero-preview-wrap { min-height: 360px !important; }
         .hero-preview-stage { margin-top: 210px !important; }
@@ -128,6 +147,41 @@
     `;
   }
 
+  function injectCrmGalaxyCards() {
+    const projectHref = 'projects/crm-galaxy-3d-ultimate-15.html';
+    const readmeHref = 'projects/crm-galaxy-3d-ultimate-15.md';
+
+    const powGrid = qs('#proof-of-work .pow-grid');
+    if (powGrid && !qs('[data-crm-galaxy-proof]')) {
+      powGrid.insertAdjacentHTML('afterbegin', `
+        <div class="pow-card crm-galaxy-injected-card" data-crm-galaxy-proof>
+          <div class="pow-card-header"><div class="pow-icon blue">🪐</div><h4>CRM Galaxy 3D Ultimate finalizat</h4></div>
+          <p>Dashboard CRM experimental cu 15 variante: Galaxie, Analysis, Pipeline, PRO, Customer Success OS, Sales & Retention Hub și AI CRM Assistant.</p>
+          <span class="pow-metric">15 variante · GitHub Pages ready</span>
+          <div class="pow-links">
+            <a class="pow-link" href="${projectHref}">→ Deschide proiectul</a>
+            <a class="pow-link" href="${readmeHref}">→ README</a>
+          </div>
+        </div>
+      `);
+    }
+
+    const latestGrid = qs('#latest-github .projects-grid');
+    if (latestGrid && !qs('[data-crm-galaxy-latest]')) {
+      latestGrid.insertAdjacentHTML('afterbegin', `
+        <article class="project-card glass crm-galaxy-injected-card" data-crm-galaxy-latest aria-labelledby="crm-galaxy-title">
+          <span class="badge-new">NEW</span>
+          <div class="project-top"><div><h3 id="crm-galaxy-title">CRM Galaxy 3D Ultimate</h3><span class="badge-github">GitHub Pages · CRM Intelligence</span></div><span class="tag github">crm</span></div>
+          <p class="project-desc">Dashboard CRM vizual cu 15 variante, risk score, pipeline, Customer Success OS, import CSV/JSON sample și raport executiv generat în browser.</p>
+          <div class="card-actions">
+            <a class="btn btn-primary" href="${projectHref}">Live Demo</a>
+            <a class="btn btn-secondary" href="${readmeHref}">README →</a>
+          </div>
+        </article>
+      `);
+    }
+  }
+
   function overrideNowSection() {
     const date = qs('#now-datetime');
     const activeList = qs('#now-panel-active .now-checklist');
@@ -135,8 +189,8 @@
     const history = qs('#now-panel-history .now-history');
     if (!date || !activeList || !doneList || !history) return;
 
-    date.dateTime = '2026-06-21';
-    date.textContent = currentLang() === 'en' ? '21 June 2026' : '21 Iunie 2026';
+    date.dateTime = '2026-07-05';
+    date.textContent = currentLang() === 'en' ? '5 July 2026' : '5 Iulie 2026';
 
     const active = currentLang() === 'en'
       ? [
@@ -154,20 +208,28 @@
 
     const done = currentLang() === 'en'
       ? [
+          { title: 'CRM Galaxy 3D Ultimate', text: '15 CRM intelligence variants delivered: galaxy, analysis, pipeline, PRO, customer success, sales retention and executive report.', tag: 'Completed', href: 'projects/crm-galaxy-3d-ultimate-15.html', linkLabel: 'Open project' },
+          { title: 'CRM Galaxy 3D README', text: 'portfolio-ready bilingual project positioning, features, business value and tags documented.', tag: 'Docs', href: 'projects/crm-galaxy-3d-ultimate-15.md', linkLabel: 'README' },
           { title: 'VELOCITYX V1', text: 'first live version marked as completed and ready for review.', tag: 'Completed', href: 'https://laurandreea10.github.io/VELOCITYX/', linkLabel: 'Open V1' },
           { title: 'VELOCITYX V2', text: 'second live version marked as completed, with the new iteration available separately.', tag: 'Completed', href: 'https://laurandreea10.github.io/VELOCITYX/v2.html', linkLabel: 'Open V2' },
-          { title: 'Portfolio Now refresh', text: 'weekly work section updated with current priorities and clearer proof-of-work direction.', tag: '21 Jun' }
+          { title: 'Portfolio Now refresh', text: 'weekly work section updated with current priorities and clearer proof-of-work direction.', tag: '5 Jul' }
         ]
       : [
+          { title: 'CRM Galaxy 3D Ultimate', text: 'au fost livrate toate cele 15 variante CRM intelligence: galaxie, analiză, pipeline, PRO, customer success, sales retention și raport executiv.', tag: 'Finalizat', href: 'projects/crm-galaxy-3d-ultimate-15.html', linkLabel: 'Deschide proiectul' },
+          { title: 'CRM Galaxy 3D README', text: 'documentație de portofoliu cu poziționare bilingvă, features, business value și tag-uri.', tag: 'Docs', href: 'projects/crm-galaxy-3d-ultimate-15.md', linkLabel: 'README' },
           { title: 'VELOCITYX V1', text: 'prima versiune live este notată ca finalizată și gata de review.', tag: 'Finalizat', href: 'https://laurandreea10.github.io/VELOCITYX/', linkLabel: 'Deschide V1' },
           { title: 'VELOCITYX V2', text: 'a doua versiune live este notată ca finalizată, cu iterația nouă disponibilă separat.', tag: 'Finalizat', href: 'https://laurandreea10.github.io/VELOCITYX/v2.html', linkLabel: 'Deschide V2' },
-          { title: 'Portfolio Now refresh', text: 'secțiunea săptămânală a fost actualizată cu prioritățile curente și direcție mai clară de proof-of-work.', tag: '21 Iun' }
+          { title: 'Portfolio Now refresh', text: 'secțiunea săptămânală a fost actualizată cu prioritățile curente și direcție mai clară de proof-of-work.', tag: '5 Iul' }
         ];
 
     activeList.innerHTML = active.map(item => itemTemplate(item, false)).join('');
     doneList.innerHTML = done.map(item => itemTemplate(item, true)).join('');
     history.innerHTML = currentLang() === 'en'
       ? `
+        <div class="now-history-week">
+          <strong>July 2026</strong>
+          <p>CRM Galaxy 3D Ultimate moved to completed and added to Proof of Work with a live project page and README.</p>
+        </div>
         <div class="now-history-week">
           <strong>June 2026</strong>
           <p>VELOCITYX moved to completed: V1 and V2 are now linked as reviewable live versions.</p>
@@ -178,6 +240,10 @@
         </div>
       `
       : `
+        <div class="now-history-week">
+          <strong>Iulie 2026</strong>
+          <p>CRM Galaxy 3D Ultimate a fost mutat la finalizat și adăugat la Dovezi, cu pagină live și README.</p>
+        </div>
         <div class="now-history-week">
           <strong>Iunie 2026</strong>
           <p>VELOCITYX a fost mutat la finalizat: V1 și V2 sunt acum legate ca versiuni live pentru review.</p>
@@ -192,10 +258,11 @@
   function applyPatchesRepeatedly() {
     lockCarouselToDarkPoster();
     overrideNowSection();
-    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); }, 50);
-    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); }, 200);
-    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); }, 700);
-    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); }, 1500);
+    injectCrmGalaxyCards();
+    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); injectCrmGalaxyCards(); }, 50);
+    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); injectCrmGalaxyCards(); }, 200);
+    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); injectCrmGalaxyCards(); }, 700);
+    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); injectCrmGalaxyCards(); }, 1500);
   }
 
   function loadOriginalMain() {
