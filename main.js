@@ -95,6 +95,16 @@
         letter-spacing: .08em;
         text-transform: uppercase;
       }
+      .crm-galaxy-carousel-btn {
+        border: 1px solid rgba(63,216,224,.36) !important;
+        background: rgba(63,216,224,.10) !important;
+        color: inherit !important;
+      }
+      .crm-galaxy-carousel-btn.is-active,
+      .crm-galaxy-carousel-btn:hover {
+        border-color: #3fd8e0 !important;
+        box-shadow: 0 0 0 3px rgba(63,216,224,.10) !important;
+      }
       @media (max-width: 760px) {
         .hero-preview-wrap { min-height: 360px !important; }
         .hero-preview-stage { margin-top: 210px !important; }
@@ -145,6 +155,68 @@
         <span><strong>${item.title}</strong>${link} — ${item.text}<span class="${tagClass}">${item.tag}</span></span>
       </li>
     `;
+  }
+
+  function injectCrmGalaxyCarousel() {
+    const links = qs('#heroPreviewLinks');
+    if (!links || qs('[data-crm-galaxy-carousel]')) return;
+
+    const projectHref = 'projects/crm-galaxy-3d-ultimate-15.html';
+    const readmeHref = 'projects/crm-galaxy-3d-ultimate-15.md';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'pill crm-galaxy-carousel-btn';
+    btn.dataset.crmGalaxyCarousel = 'true';
+    btn.textContent = 'CRM Galaxy 3D';
+    btn.setAttribute('aria-label', 'Preview CRM Galaxy 3D Ultimate');
+
+    btn.addEventListener('click', () => {
+      links.querySelectorAll('button,a').forEach(el => el.classList.remove('is-active', 'active', 'on'));
+      btn.classList.add('is-active');
+
+      const titleTop = qs('#heroPreviewTitle');
+      const heading = qs('#heroPreviewHeading');
+      const type = qs('#heroPreviewType');
+      const meta = qs('#heroPreviewMeta');
+      const desc = qs('#heroPreviewDescription');
+      const open = qs('#heroPreviewOpen');
+      const code = qs('#heroPreviewCode');
+      const url = qs('#heroPreviewUrl');
+      const secondary = qs('#heroPreviewOpenSecondary');
+      const fallback = qs('#heroPreviewFallback');
+
+      if (titleTop) titleTop.textContent = 'CRM Galaxy 3D Ultimate';
+      if (heading) heading.textContent = 'CRM Galaxy 3D Ultimate';
+      if (type) type.textContent = 'CRM Intelligence';
+      if (meta) meta.textContent = '15 variante · Risk Score · Pipeline · Executive Report';
+      if (desc) desc.textContent = 'Dashboard CRM vizual care transformă portofoliul de clienți într-o galaxie interactivă, cu analiză, pipeline, Customer Success OS și raportare executivă.';
+      if (open) {
+        open.href = projectHref;
+        open.textContent = 'Deschide proiectul';
+        open.removeAttribute('target');
+      }
+      if (code) {
+        code.href = readmeHref;
+        code.textContent = 'README →';
+        code.removeAttribute('target');
+      }
+      if (url) {
+        url.href = projectHref;
+        url.textContent = 'codepen-portfolio/projects/crm-galaxy-3d-ultimate-15.html';
+        url.removeAttribute('target');
+      }
+      if (secondary) {
+        secondary.href = projectHref;
+        secondary.textContent = 'Deschide CRM Galaxy';
+        secondary.removeAttribute('target');
+      }
+      if (fallback) {
+        fallback.alt = 'Preview CRM Galaxy 3D Ultimate';
+      }
+      lockCarouselToDarkPoster();
+    });
+
+    links.insertAdjacentElement('afterbegin', btn);
   }
 
   function injectCrmGalaxyCards() {
@@ -259,10 +331,11 @@
     lockCarouselToDarkPoster();
     overrideNowSection();
     injectCrmGalaxyCards();
-    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); injectCrmGalaxyCards(); }, 50);
-    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); injectCrmGalaxyCards(); }, 200);
-    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); injectCrmGalaxyCards(); }, 700);
-    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); injectCrmGalaxyCards(); }, 1500);
+    injectCrmGalaxyCarousel();
+    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); injectCrmGalaxyCards(); injectCrmGalaxyCarousel(); }, 50);
+    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); injectCrmGalaxyCards(); injectCrmGalaxyCarousel(); }, 200);
+    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); injectCrmGalaxyCards(); injectCrmGalaxyCarousel(); }, 700);
+    window.setTimeout(() => { lockCarouselToDarkPoster(); overrideNowSection(); injectCrmGalaxyCards(); injectCrmGalaxyCarousel(); }, 1500);
   }
 
   function loadOriginalMain() {
