@@ -8,6 +8,42 @@
   const OBSERVER_TIMEOUT = 5000;
 
   const PERFORMANCE_CSS = `
+@font-face {
+  font-family: 'Inter-fallback';
+  src: local('Arial');
+  size-adjust: 107%;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'SpaceGrotesk-fallback';
+  src: local('Arial');
+  size-adjust: 105%;
+  ascent-override: 95%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+}
+body {
+  font-family: Inter, 'Inter-fallback', system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+h1, h2, h3,
+.hero-preview-top p,
+.final-cta-card h2,
+.now-title {
+  font-family: 'Space Grotesk', 'SpaceGrotesk-fallback', system-ui, sans-serif;
+}
+.hero-preview-wrap {
+  min-height: 0;
+  aspect-ratio: 16 / 9;
+}
+.hero-preview-frame,
+.hero-preview-fallback {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
 @supports (content-visibility: auto) {
   main > section:not(.hero), .gh-section, .pow-section, .final-cta-section {
     content-visibility: auto;
@@ -26,6 +62,10 @@
   .nav-links a:hover, .cred-item:hover { transform: none; }
   #intro-overlay, #intro-skip { display: none !important; }
   body.intro-active { overflow: unset !important; }
+  .hero-preview-wrap,
+  .hero-preview-frame {
+    min-height: 0;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .scan-dot { animation: none !important; }
