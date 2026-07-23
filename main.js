@@ -8,6 +8,9 @@
   const OBSERVER_TIMEOUT = 5000;
 
   const PERFORMANCE_CSS = `
+html {
+  scrollbar-gutter: stable;
+}
 @font-face {
   font-family: 'Inter-fallback';
   src: local('Arial');
