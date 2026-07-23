@@ -3,133 +3,65 @@
 
   const SNAPSHOT_MAIN =
     'https://cdn.jsdelivr.net/gh/LaurAndreea10/codepen-portfolio@32d68e9388727fd0052b50b1c09b78da26dbf812/main.js';
+  const FULL_CSS =
+    'https://cdn.jsdelivr.net/gh/LaurAndreea10/codepen-portfolio@82c3eaf8541e90b498c30d05f078966a0164a15d/style.css';
   const DATE_ISO = '2026-07-23';
-  const OBSERVER_TIMEOUT = 5000;
 
-  const PERFORMANCE_CSS = `
-html { scrollbar-gutter: stable; }
-@font-face {
-  font-family: 'Inter-fallback';
-  src: local('Arial');
-  size-adjust: 107%;
-  ascent-override: 90%;
-  descent-override: 22%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: 'SpaceGrotesk-fallback';
-  src: local('Arial');
-  size-adjust: 105%;
-  ascent-override: 95%;
-  descent-override: 24%;
-  line-gap-override: 0%;
-}
-body {
-  font-family: Inter, 'Inter-fallback', system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-h1, h2, h3,
-.hero-preview-top p,
-.final-cta-card h2,
-.now-title {
-  font-family: 'Space Grotesk', 'SpaceGrotesk-fallback', system-ui, sans-serif;
-}
-.hero-preview-wrap { min-height: 0; aspect-ratio: 16 / 9; }
-.hero-preview-frame, .hero-preview-fallback { width: 100%; height: 100%; min-height: 0; }
-#intro-overlay .s2 .rule {
-  width: min(560px, 70vw) !important;
-  transform: scaleX(0);
-  transform-origin: left center;
-  animation-name: portfolio-rule-grow !important;
-}
-@keyframes portfolio-rule-grow { to { transform: scaleX(1); } }
-@supports (content-visibility: auto) {
-  main > section:not(.hero), .gh-section, .pow-section, .final-cta-section {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 760px;
+  const currentLang = () => document.documentElement.lang === 'en' ? 'en' : 'ro';
+
+  function loadDeferredFullCSS() {
+    if (document.getElementById('portfolio-full-css')) return;
+    const load = () => {
+      const link = document.createElement('link');
+      link.id = 'portfolio-full-css';
+      link.rel = 'stylesheet';
+      link.href = FULL_CSS;
+      document.head.appendChild(link);
+    };
+    requestAnimationFrame(() => setTimeout(load, 0));
   }
-}
-.project-card, .pow-card, .cred-item { contain: layout paint; }
-.now-panel-hidden, .learn-content[hidden], .scan-panel[hidden] { pointer-events: none; }
-.project-card, .btn, .mini-btn, .pill, .cred-item { will-change: auto; }
-.now-history-week .now-checklist { margin-top: .75rem; }
-.now-history-week .now-item { opacity: .9; }
-@media (max-width: 900px), (hover: none) and (pointer: coarse) {
-  .glass, .topbar, .pow-card, .scan-panel, .hero-preview, .hero-card {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  .project-card:hover, .btn:hover, .mini-btn:hover, .pill:hover,
-  .nav-links a:hover, .cred-item:hover { transform: none; }
-  #intro-overlay, #intro-skip { display: none !important; }
-  body.intro-active { overflow: unset !important; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .scan-dot { animation: none !important; }
-}`;
 
   function installPerformanceCSS() {
     if (document.getElementById('portfolio-performance-css')) return;
     const style = document.createElement('style');
     style.id = 'portfolio-performance-css';
-    style.textContent = PERFORMANCE_CSS;
+    style.textContent = `
+      @font-face{font-family:'Inter-fallback';src:local('Arial');size-adjust:107%;ascent-override:90%;descent-override:22%;line-gap-override:0%}
+      @font-face{font-family:'SpaceGrotesk-fallback';src:local('Arial');size-adjust:105%;ascent-override:95%;descent-override:24%;line-gap-override:0%}
+      body{font-family:Inter,'Inter-fallback',system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+      h1,h2,h3,.hero-preview-top p,.final-cta-card h2,.now-title{font-family:'Space Grotesk','SpaceGrotesk-fallback',system-ui,sans-serif}
+      .hero-preview-wrap{min-height:0;aspect-ratio:16/9}
+      .hero-preview-frame,.hero-preview-fallback{width:100%;height:100%;min-height:0}
+      #intro-overlay .s2 .rule{width:min(560px,70vw)!important;transform:scaleX(0);transform-origin:left center;animation-name:portfolio-rule-grow!important}
+      @keyframes portfolio-rule-grow{to{transform:scaleX(1)}}
+      .project-card,.pow-card,.cred-item{contain:layout paint}
+      .now-history-week .now-checklist{margin-top:.75rem}
+      @media(max-width:900px),(hover:none) and (pointer:coarse){
+        #intro-overlay,#intro-skip{display:none!important}
+        body.intro-active{overflow:visible!important}
+        .glass,.topbar,.pow-card,.scan-panel,.hero-preview,.hero-card{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+      }
+    `;
     document.head.appendChild(style);
   }
 
   function bypassSlowGithubApi() {
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    const slowConnection = Boolean(
-      connection &&
-      (connection.saveData || /(?:^|-)2g|slow-2g|3g/.test(connection.effectiveType || ''))
-    );
-    const mobile = window.matchMedia('(max-width: 900px)').matches;
-    if (!slowConnection && !mobile) return;
-
+    const slow = Boolean(connection && (connection.saveData || /(?:^|-)2g|slow-2g|3g/.test(connection.effectiveType || '')));
+    if (!slow && !matchMedia('(max-width:900px)').matches) return;
     const nativeFetch = window.fetch.bind(window);
-    window.fetch = function (input, init) {
+    window.fetch = (input, init) => {
       const url = typeof input === 'string' ? input : input?.url || '';
       if (url.includes('api.github.com/users/LaurAndreea10')) {
-        return Promise.resolve(new Response(JSON.stringify({ public_repos: 0 }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' }
-        }));
+        return Promise.resolve(new Response('{"public_repos":0}', {status:200, headers:{'Content-Type':'application/json'}}));
       }
       return nativeFetch(input, init);
     };
-    window.setTimeout(() => { window.fetch = nativeFetch; }, 10000);
-  }
-
-  function preserveDesktopIntroNodes() {
-    const isMobile = window.matchMedia(
-      '(max-width: 900px), (hover: none) and (pointer: coarse)'
-    ).matches;
-    if (isMobile) return;
-
-    const nativeRemoveChild = Node.prototype.removeChild;
-    Node.prototype.removeChild = function (child) {
-      if (child && child.id === 'intro-css') return child;
-      if (child && (child.id === 'intro-overlay' || child.id === 'intro-skip')) {
-        child.style.display = 'none';
-        return child;
-      }
-      return nativeRemoveChild.call(this, child);
-    };
-
-    window.setTimeout(() => {
-      Node.prototype.removeChild = nativeRemoveChild;
-    }, 22000);
+    setTimeout(() => { window.fetch = nativeFetch; }, 10000);
   }
 
   function disableMobileIntro() {
-    const isMobile = window.matchMedia(
-      '(max-width: 900px), (hover: none) and (pointer: coarse)'
-    ).matches;
-    if (!isMobile) return;
-
-    try {
-      if (typeof window.stopIntroReplay === 'function') window.stopIntroReplay();
-    } catch (_) {}
-
+    if (!matchMedia('(max-width:900px),(hover:none) and (pointer:coarse)').matches) return;
     document.body?.classList.remove('intro-active');
     document.getElementById('intro-overlay')?.remove();
     document.getElementById('intro-skip')?.remove();
@@ -137,15 +69,11 @@ h1, h2, h3,
     try { sessionStorage.setItem('la_intro_seen', '1'); } catch (_) {}
   }
 
-  const currentLang = () =>
-    document.documentElement.lang === 'en' ? 'en' : 'ro';
-
   function updateNowDate() {
     const date = document.querySelector('#now-datetime');
     if (!date) return false;
-    const text = currentLang() === 'en' ? '23 July 2026' : '23 Iulie 2026';
     date.dateTime = DATE_ISO;
-    date.textContent = text;
+    date.textContent = currentLang() === 'en' ? '23 July 2026' : '23 Iulie 2026';
     return true;
   }
 
@@ -153,57 +81,33 @@ h1, h2, h3,
     const doneList = document.querySelector('#now-panel-done .now-checklist');
     const history = document.querySelector('#now-panel-history .now-history');
     if (!doneList || !history) return false;
-
-    const isEnglish = currentLang() === 'en';
-    const extraProjects = [
-      {
-        title: 'FileVerse 2.0',
-        text: isEnglish
-          ? 'CodePen 2.0 file-options challenge completed and published on GitHub Pages.'
-          : 'challenge-ul CodePen 2.0 dedicat opțiunilor pentru fișiere a fost finalizat și publicat pe GitHub Pages.',
-        href: 'https://laurandreea10.github.io/CodePen-2.0-file-options-challenge/'
-      },
-      {
-        title: 'BlockForge — CodePen Challenge: Blocks',
-        text: isEnglish
-          ? 'interactive blocks challenge completed and published on GitHub Pages.'
-          : 'challenge-ul interactiv dedicat blocurilor a fost finalizat și publicat pe GitHub Pages.',
-        href: 'https://laurandreea10.github.io/BlockForge-CodePen-Challenge-Blocks/'
-      },
-      {
-        title: 'Elsewhere — CodePen Challenge: View Transitions',
-        text: isEnglish
-          ? 'cinematic atlas with portal transitions, day/night scenes, compare mode and interactive mini-map.'
-          : 'atlas cinematografic cu tranziții portal, mod zi/noapte, compare view și mini-hartă interactivă.',
-        href: 'https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/'
-      }
+    const en = currentLang() === 'en';
+    const extras = [
+      ['FileVerse 2.0','https://laurandreea10.github.io/CodePen-2.0-file-options-challenge/',en?'CodePen 2.0 file-options challenge completed and published on GitHub Pages.':'challenge-ul CodePen 2.0 dedicat opțiunilor pentru fișiere a fost finalizat și publicat pe GitHub Pages.'],
+      ['BlockForge — CodePen Challenge: Blocks','https://laurandreea10.github.io/BlockForge-CodePen-Challenge-Blocks/',en?'Interactive blocks challenge completed and published on GitHub Pages.':'challenge-ul interactiv dedicat blocurilor a fost finalizat și publicat pe GitHub Pages.'],
+      ['Elsewhere — CodePen Challenge: View Transitions','https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/',en?'Cinematic atlas with portal transitions, day/night scenes and compare mode.':'atlas cinematografic cu tranziții portal, scene zi/noapte și compare mode.']
     ];
-
-    for (const project of extraProjects) {
-      if (doneList.querySelector(`[data-completed-project="${CSS.escape(project.title)}"]`)) continue;
+    for (const [title, href, text] of extras) {
+      if (doneList.querySelector(`[data-completed-project="${CSS.escape(title)}"]`)) continue;
       const li = document.createElement('li');
       li.className = 'now-item now-item-done';
-      li.dataset.completedProject = project.title;
-      li.innerHTML = `<span class="now-status" aria-hidden="true">✅</span><span><strong>${project.title}</strong> <a class="now-item-link" href="${project.href}" target="_blank" rel="noopener noreferrer">${isEnglish ? 'Open project' : 'Deschide proiectul'}</a> — ${project.text}<span class="now-tag now-tag-done">${isEnglish ? 'Completed' : 'Finalizat'}</span></span>`;
+      li.dataset.completedProject = title;
+      li.innerHTML = `<span class="now-status" aria-hidden="true">✅</span><span><strong>${title}</strong> <a class="now-item-link" href="${href}" target="_blank" rel="noopener noreferrer">${en?'Open project':'Deschide proiectul'}</a> — ${text}<span class="now-tag now-tag-done">${en?'Completed':'Finalizat'}</span></span>`;
       doneList.prepend(li);
     }
-
-    const items = Array.from(doneList.children);
+    const items = [...doneList.children];
     if (!items.length) return true;
-
     let archive = history.querySelector('[data-current-completed-archive]');
     if (!archive) {
       archive = document.createElement('div');
       archive.className = 'now-history-week';
       archive.dataset.currentCompletedArchive = 'true';
-      archive.innerHTML = `<strong>${isEnglish ? 'Completed work · July 2026' : 'Proiecte finalizate · Iulie 2026'}</strong><ul class="now-checklist"></ul>`;
+      archive.innerHTML = `<strong>${en?'Completed work · July 2026':'Proiecte finalizate · Iulie 2026'}</strong><ul class="now-checklist"></ul>`;
       history.prepend(archive);
     }
-
     const archiveList = archive.querySelector('.now-checklist');
     items.forEach(item => archiveList.appendChild(item));
-
-    doneList.innerHTML = `<li class="now-item"><span class="now-status" aria-hidden="true">✓</span><span>${isEnglish ? 'Completed projects were moved to History.' : 'Proiectele finalizate au fost mutate în Istoric.'}</span></li>`;
+    doneList.innerHTML = `<li class="now-item"><span class="now-status" aria-hidden="true">✓</span><span>${en?'Completed projects were moved to History.':'Proiectele finalizate au fost mutate în Istoric.'}</span></li>`;
     return true;
   }
 
@@ -211,20 +115,11 @@ h1, h2, h3,
     if (document.querySelector('[data-project="elsewhere-view-transitions"]')) return true;
     const grid = document.querySelector('#latest-github .projects-grid');
     if (!grid) return false;
-    const isEnglish = currentLang() === 'en';
+    const en = currentLang() === 'en';
     const card = document.createElement('article');
     card.className = 'project-card glass';
     card.dataset.project = 'elsewhere-view-transitions';
-    card.innerHTML = `
-      <span class="badge-new">NEW</span>
-      <div class="project-top"><div><h3>Elsewhere — View Transitions</h3><span class="badge-github">CodePen Challenge</span></div><span class="tag github">challenge</span></div>
-      <p class="project-desc">${isEnglish
-        ? 'Cinematic destination atlas with shared-element morphs, portal reveals, day/night scenes, interactive mini-map and compare mode.'
-        : 'Atlas cinematografic cu shared-element morphs, portal circular, scene zi/noapte, mini-hartă interactivă și compare mode.'}</p>
-      <div class="card-actions">
-        <a class="btn btn-primary" href="https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/" target="_blank" rel="noopener noreferrer">Live Demo</a>
-        <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/CodePen-Challenge-View-Transitions" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
-      </div>`;
+    card.innerHTML = `<span class="badge-new">NEW</span><div class="project-top"><div><h3>Elsewhere — View Transitions</h3><span class="badge-github">CodePen Challenge</span></div><span class="tag github">challenge</span></div><p class="project-desc">${en?'Cinematic destination atlas with shared-element morphs, portal reveals, day/night scenes, interactive mini-map and compare mode.':'Atlas cinematografic cu shared-element morphs, portal circular, scene zi/noapte, mini-hartă interactivă și compare mode.'}</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/" target="_blank" rel="noopener noreferrer">Live Demo</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/CodePen-Challenge-View-Transitions" target="_blank" rel="noopener noreferrer">GitHub →</a></div>`;
     grid.prepend(card);
     return true;
   }
@@ -235,42 +130,29 @@ h1, h2, h3,
 
   function watchSections() {
     if (refreshAdditions()) return;
-    const target = document.querySelector('main') || document.body;
-    let scheduled = false;
     const observer = new MutationObserver(() => {
-      if (scheduled) return;
-      scheduled = true;
-      requestAnimationFrame(() => {
-        scheduled = false;
-        if (refreshAdditions()) observer.disconnect();
-      });
+      if (refreshAdditions()) observer.disconnect();
     });
-    observer.observe(target, { childList: true, subtree: true });
-    window.setTimeout(() => {
-      observer.disconnect();
-      refreshAdditions();
-    }, OBSERVER_TIMEOUT);
+    observer.observe(document.querySelector('main') || document.body, {childList:true, subtree:true});
+    setTimeout(() => { observer.disconnect(); refreshAdditions(); }, 5000);
   }
 
   function loadSnapshot() {
     const script = document.createElement('script');
     script.src = SNAPSHOT_MAIN;
     script.defer = true;
-    script.onload = () => {
-      const idle = window.requestIdleCallback || (callback => setTimeout(callback, 150));
-      idle(watchSections);
-    };
+    script.onload = () => (window.requestIdleCallback || (cb => setTimeout(cb,150)))(watchSections);
     script.onerror = watchSections;
     document.head.appendChild(script);
   }
 
   bypassSlowGithubApi();
   installPerformanceCSS();
-  preserveDesktopIntroNodes();
   disableMobileIntro();
+  loadDeferredFullCSS();
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadSnapshot, { once: true });
+    document.addEventListener('DOMContentLoaded', loadSnapshot, {once:true});
   } else {
     loadSnapshot();
   }
