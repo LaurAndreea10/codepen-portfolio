@@ -2,8 +2,7 @@
   'use strict';
 
   const SNAPSHOT_MAIN =
-    'https://cdn.jsdelivr.net/gh/LaurAndreea10/codepen-portfolio@35051b781a85a6271d48556d29919167226836ff/main.js';
-
+    'https://cdn.jsdelivr.net/gh/LaurAndreea10/codepen-portfolio@32d68e9388727fd0052b50b1c09b78da26dbf812/main.js';
   const DATE_ISO = '2026-07-23';
   const OBSERVER_TIMEOUT = 5000;
 
@@ -53,6 +52,8 @@ h1, h2, h3,
 .project-card, .pow-card, .cred-item { contain: layout paint; }
 .now-panel-hidden, .learn-content[hidden], .scan-panel[hidden] { pointer-events: none; }
 .project-card, .btn, .mini-btn, .pill, .cred-item { will-change: auto; }
+.now-history-week .now-checklist { margin-top: .75rem; }
+.now-history-week .now-item { opacity: .9; }
 @media (max-width: 900px), (hover: none) and (pointer: coarse) {
   .glass, .topbar, .pow-card, .scan-panel, .hero-preview, .hero-card {
     backdrop-filter: none;
@@ -95,7 +96,6 @@ h1, h2, h3,
       }
       return nativeFetch(input, init);
     };
-
     window.setTimeout(() => { window.fetch = nativeFetch; }, 10000);
   }
 
@@ -134,166 +134,118 @@ h1, h2, h3,
     document.getElementById('intro-overlay')?.remove();
     document.getElementById('intro-skip')?.remove();
     document.getElementById('intro-css')?.remove();
-
     try { sessionStorage.setItem('la_intro_seen', '1'); } catch (_) {}
   }
-
-  bypassSlowGithubApi();
-  installPerformanceCSS();
-  preserveDesktopIntroNodes();
-  disableMobileIntro();
 
   const currentLang = () =>
     document.documentElement.lang === 'en' ? 'en' : 'ro';
 
-  function completedItem({ title, text, href, label }) {
-    const li = document.createElement('li');
-    li.className = 'now-item now-item-done';
-    li.dataset.completedProject = title;
-
-    const status = document.createElement('span');
-    status.className = 'now-status';
-    status.setAttribute('aria-hidden', 'true');
-    status.textContent = '✅';
-
-    const content = document.createElement('span');
-    const strong = document.createElement('strong');
-    const link = document.createElement('a');
-    const tag = document.createElement('span');
-
-    strong.textContent = title;
-    link.className = 'now-item-link';
-    link.href = href;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    link.textContent = label;
-    tag.className = 'now-tag now-tag-done';
-    tag.textContent = currentLang() === 'en' ? 'Completed' : 'Finalizat';
-
-    content.append(strong, ' ', link, ` — ${text}`, tag);
-    li.append(status, content);
-    return li;
-  }
-
   function updateNowDate() {
     const date = document.querySelector('#now-datetime');
     if (!date) return false;
-
     const text = currentLang() === 'en' ? '23 July 2026' : '23 Iulie 2026';
-    if (date.dateTime !== DATE_ISO) date.dateTime = DATE_ISO;
-    if (date.textContent !== text) date.textContent = text;
+    date.dateTime = DATE_ISO;
+    date.textContent = text;
     return true;
   }
 
-  function addCompletedProjects() {
-    const list = document.querySelector('#now-panel-done .now-checklist');
-    if (!list) return false;
+  function archiveCompletedToHistory() {
+    const doneList = document.querySelector('#now-panel-done .now-checklist');
+    const history = document.querySelector('#now-panel-history .now-history');
+    if (!doneList || !history) return false;
 
     const isEnglish = currentLang() === 'en';
-    const projects = [
+    const extraProjects = [
       {
         title: 'FileVerse 2.0',
         text: isEnglish
-          ? 'CodePen 2.0 file-options challenge completed and published as a live GitHub Pages project.'
-          : 'challenge-ul CodePen 2.0 dedicat opțiunilor pentru fișiere a fost finalizat și publicat live pe GitHub Pages.',
-        href: 'https://laurandreea10.github.io/CodePen-2.0-file-options-challenge/',
-        label: isEnglish ? 'Open project' : 'Deschide proiectul'
+          ? 'CodePen 2.0 file-options challenge completed and published on GitHub Pages.'
+          : 'challenge-ul CodePen 2.0 dedicat opțiunilor pentru fișiere a fost finalizat și publicat pe GitHub Pages.',
+        href: 'https://laurandreea10.github.io/CodePen-2.0-file-options-challenge/'
       },
       {
         title: 'BlockForge — CodePen Challenge: Blocks',
         text: isEnglish
-          ? 'interactive blocks challenge completed and published as a live GitHub Pages project.'
-          : 'challenge-ul interactiv dedicat blocurilor a fost finalizat și publicat live pe GitHub Pages.',
-        href: 'https://laurandreea10.github.io/BlockForge-CodePen-Challenge-Blocks/',
-        label: isEnglish ? 'Open project' : 'Deschide proiectul'
+          ? 'interactive blocks challenge completed and published on GitHub Pages.'
+          : 'challenge-ul interactiv dedicat blocurilor a fost finalizat și publicat pe GitHub Pages.',
+        href: 'https://laurandreea10.github.io/BlockForge-CodePen-Challenge-Blocks/'
       },
       {
         title: 'Elsewhere — CodePen Challenge: View Transitions',
         text: isEnglish
-          ? 'cinematic atlas with portal transitions, day/night views, compare mode, mini-map and optional soundscapes.'
-          : 'atlas cinematografic cu tranziții portal, mod zi/noapte, compare view, mini-hartă și soundscape opțional.',
-        href: 'https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/',
-        label: isEnglish ? 'Open project' : 'Deschide proiectul'
+          ? 'cinematic atlas with portal transitions, day/night scenes, compare mode and interactive mini-map.'
+          : 'atlas cinematografic cu tranziții portal, mod zi/noapte, compare view și mini-hartă interactivă.',
+        href: 'https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/'
       }
     ];
 
-    const fragment = document.createDocumentFragment();
-    for (const project of projects) {
-      if (!list.querySelector(`[data-completed-project="${CSS.escape(project.title)}"]`)) {
-        fragment.append(completedItem(project));
-      }
+    for (const project of extraProjects) {
+      if (doneList.querySelector(`[data-completed-project="${CSS.escape(project.title)}"]`)) continue;
+      const li = document.createElement('li');
+      li.className = 'now-item now-item-done';
+      li.dataset.completedProject = project.title;
+      li.innerHTML = `<span class="now-status" aria-hidden="true">✅</span><span><strong>${project.title}</strong> <a class="now-item-link" href="${project.href}" target="_blank" rel="noopener noreferrer">${isEnglish ? 'Open project' : 'Deschide proiectul'}</a> — ${project.text}<span class="now-tag now-tag-done">${isEnglish ? 'Completed' : 'Finalizat'}</span></span>`;
+      doneList.prepend(li);
     }
 
-    if (fragment.childNodes.length) list.prepend(fragment);
-    return projects.every(project =>
-      list.querySelector(`[data-completed-project="${CSS.escape(project.title)}"]`)
-    );
+    const items = Array.from(doneList.children);
+    if (!items.length) return true;
+
+    let archive = history.querySelector('[data-current-completed-archive]');
+    if (!archive) {
+      archive = document.createElement('div');
+      archive.className = 'now-history-week';
+      archive.dataset.currentCompletedArchive = 'true';
+      archive.innerHTML = `<strong>${isEnglish ? 'Completed work · July 2026' : 'Proiecte finalizate · Iulie 2026'}</strong><ul class="now-checklist"></ul>`;
+      history.prepend(archive);
+    }
+
+    const archiveList = archive.querySelector('.now-checklist');
+    items.forEach(item => archiveList.appendChild(item));
+
+    doneList.innerHTML = `<li class="now-item"><span class="now-status" aria-hidden="true">✓</span><span>${isEnglish ? 'Completed projects were moved to History.' : 'Proiectele finalizate au fost mutate în Istoric.'}</span></li>`;
+    return true;
   }
 
   function addViewTransitionsCard() {
-    if (document.querySelector('[data-project="elsewhere-view-transitions"]')) {
-      return true;
-    }
-
+    if (document.querySelector('[data-project="elsewhere-view-transitions"]')) return true;
     const grid = document.querySelector('#latest-github .projects-grid');
     if (!grid) return false;
-
     const isEnglish = currentLang() === 'en';
     const card = document.createElement('article');
     card.className = 'project-card glass';
     card.dataset.project = 'elsewhere-view-transitions';
     card.innerHTML = `
       <span class="badge-new">NEW</span>
-      <div class="project-top">
-        <div>
-          <h3>Elsewhere — View Transitions</h3>
-          <span class="badge-github">CodePen Challenge</span>
-        </div>
-        <span class="tag github">challenge</span>
-      </div>
-      <p class="project-desc">${
-        isEnglish
-          ? 'Cinematic destination atlas with shared-element morphs, click-position portal reveals, day/night scenes, interactive mini-map, compare mode and optional soundscapes.'
-          : 'Atlas cinematografic cu shared-element morphs, portal circular din punctul de click, scene zi/noapte, mini-hartă interactivă, compare mode și soundscape opțional.'
-      }</p>
+      <div class="project-top"><div><h3>Elsewhere — View Transitions</h3><span class="badge-github">CodePen Challenge</span></div><span class="tag github">challenge</span></div>
+      <p class="project-desc">${isEnglish
+        ? 'Cinematic destination atlas with shared-element morphs, portal reveals, day/night scenes, interactive mini-map and compare mode.'
+        : 'Atlas cinematografic cu shared-element morphs, portal circular, scene zi/noapte, mini-hartă interactivă și compare mode.'}</p>
       <div class="card-actions">
-        <a class="btn btn-primary"
-           href="https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/"
-           target="_blank" rel="noopener noreferrer">Live Demo</a>
-        <a class="btn btn-secondary"
-           href="https://github.com/LaurAndreea10/CodePen-Challenge-View-Transitions"
-           target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
+        <a class="btn btn-primary" href="https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/" target="_blank" rel="noopener noreferrer">Live Demo</a>
+        <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/CodePen-Challenge-View-Transitions" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
       </div>`;
-
     grid.prepend(card);
     return true;
   }
 
   function refreshAdditions() {
-    const dateReady = updateNowDate();
-    const completedReady = addCompletedProjects();
-    const cardReady = addViewTransitionsCard();
-    return dateReady && completedReady && cardReady;
+    return updateNowDate() && archiveCompletedToHistory() && addViewTransitionsCard();
   }
 
-  function watchCompletedSection() {
+  function watchSections() {
     if (refreshAdditions()) return;
-
     const target = document.querySelector('main') || document.body;
     let scheduled = false;
-
     const observer = new MutationObserver(() => {
       if (scheduled) return;
       scheduled = true;
-
       requestAnimationFrame(() => {
         scheduled = false;
         if (refreshAdditions()) observer.disconnect();
       });
     });
-
     observer.observe(target, { childList: true, subtree: true });
-
     window.setTimeout(() => {
       observer.disconnect();
       refreshAdditions();
@@ -306,11 +258,16 @@ h1, h2, h3,
     script.defer = true;
     script.onload = () => {
       const idle = window.requestIdleCallback || (callback => setTimeout(callback, 150));
-      idle(watchCompletedSection);
+      idle(watchSections);
     };
-    script.onerror = watchCompletedSection;
+    script.onerror = watchSections;
     document.head.appendChild(script);
   }
+
+  bypassSlowGithubApi();
+  installPerformanceCSS();
+  preserveDesktopIntroNodes();
+  disableMobileIntro();
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', loadSnapshot, { once: true });
