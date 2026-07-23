@@ -21,8 +21,8 @@
   function addCompletedProjects() {
     const date = document.querySelector('#now-datetime');
     if (date) {
-      date.dateTime = '2026-07-15';
-      date.textContent = currentLang() === 'en' ? '15 July 2026' : '15 Iulie 2026';
+      date.dateTime = '2026-07-23';
+      date.textContent = currentLang() === 'en' ? '23 July 2026' : '23 Iulie 2026';
     }
 
     const list = document.querySelector('#now-panel-done .now-checklist');
@@ -45,6 +45,14 @@
           : 'challenge-ul interactiv dedicat blocurilor a fost finalizat și publicat live pe GitHub Pages.',
         href: 'https://laurandreea10.github.io/BlockForge-CodePen-Challenge-Blocks/',
         label: isEnglish ? 'Open project' : 'Deschide proiectul'
+      },
+      {
+        title: 'Elsewhere — CodePen Challenge: View Transitions',
+        text: isEnglish
+          ? 'cinematic atlas with portal transitions, day/night views, compare mode, mini-map and optional soundscapes.'
+          : 'atlas cinematografic cu tranziții portal, mod zi/noapte, compare view, mini-hartă și soundscape opțional.',
+        href: 'https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/',
+        label: isEnglish ? 'Open project' : 'Deschide proiectul'
       }
     ];
 
@@ -55,21 +63,45 @@
     });
   }
 
-  function watchCompletedSection() {
-    addCompletedProjects();
-    const list = document.querySelector('#now-panel-done .now-checklist');
-    if (!list) return;
+  function addViewTransitionsCard() {
+    if (document.querySelector('[data-project="elsewhere-view-transitions"]')) return;
+    const grid = document.querySelector('#latest-github .projects-grid');
+    if (!grid) return;
+    const isEnglish = currentLang() === 'en';
+    const card = document.createElement('article');
+    card.className = 'project-card glass';
+    card.dataset.project = 'elsewhere-view-transitions';
+    card.innerHTML = `
+      <span class="badge-new">NEW</span>
+      <div class="project-top"><div><h3>Elsewhere — View Transitions</h3><span class="badge-github">CodePen Challenge</span></div><span class="tag github">challenge</span></div>
+      <p class="project-desc">${isEnglish
+        ? 'Cinematic destination atlas with shared-element morphs, click-position portal reveals, day/night scenes, interactive mini-map, compare mode and optional soundscapes.'
+        : 'Atlas cinematografic cu shared-element morphs, portal circular din punctul de click, scene zi/noapte, mini-hartă interactivă, compare mode și soundscape opțional.'}</p>
+      <div class="card-actions">
+        <a class="btn btn-primary" href="https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/" target="_blank" rel="noopener noreferrer">Live Demo</a>
+        <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/CodePen-Challenge-View-Transitions" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
+      </div>`;
+    grid.prepend(card);
+  }
 
+  function refreshAdditions() {
+    addCompletedProjects();
+    addViewTransitionsCard();
+  }
+
+  function watchCompletedSection() {
+    refreshAdditions();
+    const target = document.querySelector('main') || document.body;
     let scheduled = false;
     const observer = new MutationObserver(() => {
       if (scheduled) return;
       scheduled = true;
       queueMicrotask(() => {
         scheduled = false;
-        addCompletedProjects();
+        refreshAdditions();
       });
     });
-    observer.observe(list, { childList: true });
+    observer.observe(target, { childList: true, subtree: true });
   }
 
   function loadSnapshot() {
@@ -78,7 +110,7 @@
     script.defer = true;
     script.onload = () => {
       window.setTimeout(watchCompletedSection, 1800);
-      window.setTimeout(addCompletedProjects, 2600);
+      window.setTimeout(refreshAdditions, 2600);
     };
     script.onerror = watchCompletedSection;
     document.head.appendChild(script);
