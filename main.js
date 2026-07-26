@@ -54,6 +54,10 @@ h1, h2, h3,
 .project-card, .btn, .mini-btn, .pill, .cred-item { will-change: auto; }
 .now-history-week .now-checklist { margin-top: .75rem; }
 .now-history-week .now-item { opacity: .9; }
+#insights .project-card .tag { color: #dbe8ff; }
+#insights .project-card .project-desc { color: #c7d5ee; }
+body.light #insights .project-card .tag { color: #243b67; }
+body.light #insights .project-card .project-desc { color: #405474; }
 @media (max-width: 900px), (hover: none) and (pointer: coarse) {
   .glass, .topbar, .pow-card, .scan-panel, .hero-preview, .hero-card {
     backdrop-filter: none;
@@ -229,8 +233,27 @@ h1, h2, h3,
     return true;
   }
 
+  function normalizeHeadingOrder() {
+    const powGrid = document.querySelector('.pow-grid');
+    if (!powGrid) return false;
+
+    powGrid.querySelectorAll('.pow-card-header > h4').forEach(oldHeading => {
+      const heading = document.createElement('h3');
+      for (const attribute of oldHeading.attributes) {
+        heading.setAttribute(attribute.name, attribute.value);
+      }
+      heading.innerHTML = oldHeading.innerHTML;
+      oldHeading.replaceWith(heading);
+    });
+
+    return true;
+  }
+
   function refreshAdditions() {
-    return updateNowDate() && archiveCompletedToHistory() && addViewTransitionsCard();
+    return updateNowDate() &&
+      archiveCompletedToHistory() &&
+      addViewTransitionsCard() &&
+      normalizeHeadingOrder();
   }
 
   function watchSections() {
