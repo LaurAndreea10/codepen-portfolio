@@ -101,7 +101,8 @@
     const projects = [
       ['FileVerse 2.0', 'https://laurandreea10.github.io/CodePen-2.0-file-options-challenge/'],
       ['BlockForge — CodePen Challenge: Blocks', 'https://laurandreea10.github.io/BlockForge-CodePen-Challenge-Blocks/'],
-      ['Elsewhere — CodePen Challenge: View Transitions', 'https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/']
+      ['Elsewhere — CodePen Challenge: View Transitions', 'https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/'],
+      ['Mobile Performance Optimization — Case Study', './mobile-performance-case-study.html']
     ];
 
     for (const [title, href] of projects) {
