@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Studiu de caz despre optimizarea performanței mobile a portofoliului Laura Andreea: Lighthouse, FCP, LCP, CLS, TBT și procesul de testare." />
+  <meta name="theme-color" content="#071226" />
+  <title>Mobile Performance Case Study — Laura Andreea</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #071226;
+      --panel: #0d1830;
+      --panel-2: #111f3d;
+      --text: #eef4ff;
+      --muted: #aebddd;
+      --line: rgba(255,255,255,.12);
+      --accent: #6aa6ff;
+      --good: #38d996;
+      --warn: #ffb44d;
+      --max: 1080px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(106,166,255,.16), transparent 28%),
+        linear-gradient(180deg, #0a1730, var(--bg));
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    .wrap { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; }
+    header { padding: 28px 0 14px; }
+    .back {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 14px; border: 1px solid var(--line);
+      border-radius: 999px; text-decoration: none; background: rgba(255,255,255,.04);
+    }
+    main { padding: 26px 0 64px; }
+    .hero, .card {
+      border: 1px solid var(--line);
+      background: rgba(13,24,48,.88);
+      border-radius: 24px;
+      box-shadow: 0 22px 55px rgba(0,0,0,.28);
+    }
+    .hero { padding: clamp(24px, 5vw, 54px); }
+    .eyebrow { color: var(--accent); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: .8rem; }
+    h1 { font-size: clamp(2.2rem, 7vw, 5rem); line-height: .98; letter-spacing: -.05em; max-width: 12ch; margin: 14px 0 20px; }
+    h2 { font-size: clamp(1.4rem, 3vw, 2.1rem); margin: 0 0 14px; }
+    h3 { margin: 0 0 8px; }
+    p { margin: 0; color: var(--muted); }
+    .lead { max-width: 72ch; font-size: 1.06rem; }
+    .metrics {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px; margin-top: 30px;
+    }
+    .metric { padding: 18px; border-radius: 18px; background: var(--panel-2); border: 1px solid var(--line); }
+    .metric strong { display: block; font-size: clamp(1.65rem, 4vw, 2.6rem); color: var(--good); line-height: 1; }
+    .metric span { display: block; margin-top: 8px; color: var(--muted); font-size: .9rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+    .card { padding: 26px; }
+    .timeline { display: grid; gap: 14px; margin-top: 18px; }
+    .step { padding: 18px; border-left: 3px solid var(--accent); background: rgba(255,255,255,.035); border-radius: 0 16px 16px 0; }
+    .step strong { display: block; margin-bottom: 5px; }
+    ul { margin: 14px 0 0; padding-left: 20px; color: var(--muted); }
+    li + li { margin-top: 9px; }
+    .note { margin-top: 18px; padding: 18px; border: 1px solid rgba(255,180,77,.35); background: rgba(255,180,77,.08); border-radius: 16px; color: #ffe1b5; }
+    .result { color: var(--good); font-weight: 800; }
+    footer { padding: 0 0 40px; color: var(--muted); font-size: .9rem; }
+    @media (max-width: 760px) {
+      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid { grid-template-columns: 1fr; }
+      .hero, .card { border-radius: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <a class="back" href="./">← Înapoi la portofoliu</a>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <span class="eyebrow">Case study · Web Performance</span>
+      <h1>Cum am crescut performanța portofoliului pe mobil</h1>
+      <p class="lead">Am tratat optimizarea ca pe un proces măsurabil: audit, ipoteză, schimbare izolată, test repetat și revenire imediată atunci când o modificare producea regresii. Obiectivul nu a fost doar un scor mare, ci păstrarea funcțiilor, a designului și a stabilității vizuale.</p>
+
+      <div class="metrics" aria-label="Rezultate principale">
+        <div class="metric"><strong>0 ms</strong><span>Total Blocking Time în rulările bune</span></div>
+        <div class="metric"><strong>0</strong><span>CLS în versiunile stabile</span></div>
+        <div class="metric"><strong>83 → 90+</strong><span>De la baseline stabil la rulări optimizate</span></div>
+        <div class="metric"><strong>100</strong><span>Cel mai bun rezultat Lighthouse de laborator</span></div>
+      </div>
+
+      <div class="note"><strong>Context important:</strong> scorurile Lighthouse pot varia între rulări, profil normal și Incognito. De aceea, cel mai bun scor este prezentat ca rezultat de laborator, nu ca garanție pentru fiecare test.</div>
+    </section>
+
+    <section class="grid" aria-label="Procesul de optimizare">
+      <article class="card">
+        <h2>Problemele identificate</h2>
+        <ul>
+          <li>Intro-ul cinematografic și stilurile aplicate după parsare puteau produce schimbări de layout pe mobil.</li>
+          <li>Fonturile externe și efectele de blur adăugau cost de randare pe dispozitive mai lente.</li>
+          <li>Unele intervenții făcute din JavaScript îmbunătățeau Speed Index, dar deteriorau CLS.</li>
+          <li>Cererea către GitHub API nu era critică pentru primul ecran.</li>
+          <li><code>style.css</code> rămânea o resursă render-blocking, dar cu un cost relativ mic și previzibil.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>Principiile folosite</h2>
+        <ul>
+          <li>Am păstrat CSS-ul principal sincron pentru a evita flash-uri și deplasări vizuale.</li>
+          <li>Am eliminat pe mobil efectele costisitoare care nu schimbau informația: blur, hover transforms și intro.</li>
+          <li>Am folosit fonturi de sistem pe mobil pentru afișare imediată și metrici stabile.</li>
+          <li>Am amânat sau neutralizat solicitările care nu erau necesare pentru primul paint.</li>
+          <li>Am salvat fiecare versiune bună în branch-uri dedicate, pentru rollback rapid.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="card" style="margin-top:18px">
+      <h2>Evoluția proiectului</h2>
+      <div class="timeline">
+        <div class="step"><strong>1. Baseline stabil</strong><p>Performance 83, FCP/LCP 3,3 s, TBT 0 ms și CLS 0. Aceasta a devenit prima versiune sigură de comparație.</p></div>
+        <div class="step"><strong>2. Regresii detectate și eliminate</strong><p>Unele variante au coborât spre 71–73 și au produs CLS 0,254. Au fost retrase imediat, chiar dacă Speed Index părea mai bun.</p></div>
+        <div class="step"><strong>3. Optimizare mobilă conservatoare</strong><p>Am simplificat codul de performanță, am redus efectele vizuale costisitoare și am păstrat neatinse caruselul, temele, limbile și structura portofoliului.</p></div>
+        <div class="step"><strong>4. Rezultate 90+</strong><p>În rulări Incognito au fost obținute scoruri de 91–92, iar cea mai bună rulare de laborator a ajuns la <span class="result">100 Performance</span>.</p></div>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Rezultate și concluzii">
+      <article class="card">
+        <h2>Ce am păstrat</h2>
+        <ul>
+          <li>Caruselul proiectelor și preview-urile interactive.</li>
+          <li>Temele light/dark și interfața bilingvă RO/EN.</li>
+          <li>Secțiunile Istoric, proiecte finalizate și navigarea completă.</li>
+          <li>Designul vizual și experiența desktop.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>Ce am învățat</h2>
+        <p>Un scor izolat nu este suficient. Optimizarea reală înseamnă să compari mai multe rulări, să urmărești FCP, LCP, TBT și CLS separat și să refuzi schimbările care cresc un indicator, dar strică stabilitatea generală.</p>
+        <p style="margin-top:14px">Rezultatul cel mai valoros este procesul reproductibil: versiuni salvate, modificări mici, măsurare și rollback fără pierderea funcționalităților.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="wrap">Laura Andreea · Mobile Performance Case Study · 2026</footer>
+</body>
+</html>
