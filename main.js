@@ -152,8 +152,41 @@
     return true;
   }
 
+  function addPerformanceCaseStudyCard() {
+    if (document.querySelector('[data-project="mobile-performance-case-study"]')) return true;
+
+    const grid = document.querySelector('#latest-github .projects-grid');
+    if (!grid) return false;
+
+    const isEnglish = currentLang() === 'en';
+    const card = document.createElement('article');
+    card.className = 'project-card glass';
+    card.dataset.project = 'mobile-performance-case-study';
+    card.innerHTML = `
+      <span class="badge-new">CASE STUDY</span>
+      <div class="project-top">
+        <div>
+          <h3>${isEnglish ? 'Mobile Performance Optimization' : 'Optimizare performanță mobilă'}</h3>
+          <span class="badge-github">Lighthouse · Core Web Vitals</span>
+        </div>
+        <span class="tag utility">performance</span>
+      </div>
+      <p class="project-desc">${isEnglish
+        ? 'A transparent case study about raising mobile performance through isolated changes, repeated Lighthouse tests, CLS protection and fast rollback.'
+        : 'Studiu de caz transparent despre creșterea performanței mobile prin modificări izolate, teste Lighthouse repetate, protejarea CLS și rollback rapid.'}</p>
+      <div class="card-actions">
+        <a class="btn btn-primary" href="./mobile-performance-case-study.html">${isEnglish ? 'Read case study' : 'Citește studiul de caz'}</a>
+      </div>`;
+
+    grid.prepend(card);
+    return true;
+  }
+
   function refreshAdditions() {
-    return updateNowDate() && archiveCompletedToHistory() && addViewTransitionsCard();
+    return updateNowDate()
+      && archiveCompletedToHistory()
+      && addViewTransitionsCard()
+      && addPerformanceCaseStudyCard();
   }
 
   function watchSections() {
