@@ -186,35 +186,16 @@
   function addPerformanceCaseStudyToScan() {
     if (document.querySelector('[data-scan-performance-case-study]')) return true;
 
-    const panel = document.querySelector('.scan-panel, #scan-panel, [data-scan-panel]');
-    if (!panel) return false;
+    const doneTab = document.querySelector('#now-tab-done');
+    const tabs = doneTab?.closest('.now-tabs');
+    if (!doneTab || !tabs) return false;
 
     const isEnglish = currentLang() === 'en';
-    const linkList = panel.querySelector('.scan-list-links, .scan-list');
-
-    if (linkList) {
-      const item = document.createElement('li');
-      item.dataset.scanPerformanceCaseStudy = 'true';
-      item.innerHTML = `<a href="./mobile-performance-case-study.html">${isEnglish ? 'Mobile Performance Case Study' : 'Studiu de caz: performanță mobilă'}</a><span class="scan-meta">${isEnglish ? 'Lighthouse, Core Web Vitals, CLS protection and rollback strategy.' : 'Lighthouse, Core Web Vitals, protejarea CLS și strategie de rollback.'}</span>`;
-      linkList.prepend(item);
-      return true;
-    }
-
-    const grid = panel.querySelector('.scan-grid, .scan-inner');
-    if (!grid) return false;
-
-    const block = document.createElement('div');
-    block.dataset.scanPerformanceCaseStudy = 'true';
-    block.className = 'scan-col';
-    block.innerHTML = `
-      <h3 class="scan-col-title">${isEnglish ? 'Performance case study' : 'Studiu de caz performanță'}</h3>
-      <ul class="scan-list scan-list-links">
-        <li>
-          <a href="./mobile-performance-case-study.html">${isEnglish ? 'Mobile optimization journey' : 'Evoluția optimizării mobile'}</a>
-          <span class="scan-meta">${isEnglish ? 'From unstable Lighthouse runs to a safer mobile architecture.' : 'De la rulări Lighthouse instabile la o arhitectură mobilă mai sigură.'}</span>
-        </li>
-      </ul>`;
-    grid.appendChild(block);
+    const linkWrap = document.createElement('p');
+    linkWrap.dataset.scanPerformanceCaseStudy = 'true';
+    linkWrap.className = 'now-note now-performance-case-study-link';
+    linkWrap.innerHTML = `<a class="now-item-link" href="./mobile-performance-case-study.html">${isEnglish ? 'Open the mobile performance case study' : 'Deschide studiul de caz despre performanța mobilă'}</a>`;
+    tabs.insertAdjacentElement('afterend', linkWrap);
     return true;
   }
 
