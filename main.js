@@ -149,7 +149,7 @@
     }
 
     const isEnglish = currentLang() === 'en';
-    linkWrap.innerHTML = `<a href="./mobile-performance-case-study.html">${
+    linkWrap.innerHTML = `<a href="https://laurandreea10.github.io/codepen-portfolio/mobile-performance-case-study.html">${
       isEnglish
         ? 'Open the mobile performance case study'
         : 'Deschide studiul de caz despre performanța mobilă'
