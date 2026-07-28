@@ -6,8 +6,31 @@
   const DATE_ISO = '2026-07-28';
   const MOBILE_QUERY = '(max-width: 900px), (hover: none) and (pointer: coarse)';
 
+  const JULY_PROJECTS = [
+    {
+      title: 'TWO 2.0 — CodePen Challenge',
+      href: 'https://laurandreea10.github.io/TWO-2.0/'
+    },
+    {
+      title: 'Elsewhere — CodePen Challenge: View Transitions',
+      href: 'https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/'
+    },
+    {
+      title: 'BlockForge — CodePen Challenge: Blocks',
+      href: 'https://laurandreea10.github.io/BlockForge-CodePen-Challenge-Blocks/'
+    },
+    {
+      title: 'FileVerse 2.0',
+      href: 'https://laurandreea10.github.io/CodePen-2.0-file-options-challenge/'
+    }
+  ];
+
   function isMobile() {
     return window.matchMedia(MOBILE_QUERY).matches;
+  }
+
+  function currentLang() {
+    return document.documentElement.lang === 'en' ? 'en' : 'ro';
   }
 
   function installSafeMobileCSS() {
@@ -17,32 +40,19 @@
     style.id = 'safe-mobile-performance';
     style.textContent = `
       html { scrollbar-gutter: stable; }
-      body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-      }
+      body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important; }
       h1, h2, h3, .hero-preview-top p, .final-cta-card h2, .now-title {
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
       }
-      html body #intro-overlay,
-      html body #intro-skip {
-        display: none !important;
-      }
-      html body.intro-active {
-        overflow: auto !important;
-      }
+      html body #intro-overlay, html body #intro-skip { display: none !important; }
+      html body.intro-active { overflow: auto !important; }
       .glass, .topbar, .pow-card, .scan-panel, .hero-preview, .hero-card {
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
       }
       .project-card:hover, .btn:hover, .mini-btn:hover, .pill:hover,
-      .nav-links a:hover, .cred-item:hover {
-        transform: none !important;
-      }
-      .hero-preview-wrap,
-      .hero-preview-frame,
-      .hero-preview-fallback {
-        min-height: 0;
-      }
+      .nav-links a:hover, .cred-item:hover { transform: none !important; }
+      .hero-preview-wrap, .hero-preview-frame, .hero-preview-fallback { min-height: 0; }
     `;
     document.head.appendChild(style);
   }
@@ -80,64 +90,67 @@
     } catch (_) {}
   }
 
-  const currentLang = () =>
-    document.documentElement.lang === 'en' ? 'en' : 'ro';
-
   function updateNowDate() {
     const date = document.querySelector('#now-datetime');
-    if (!date) return false;
+    if (!date) return;
 
     date.dateTime = DATE_ISO;
     date.textContent = currentLang() === 'en' ? '28 July 2026' : '28 Iulie 2026';
-    return true;
   }
 
-  function archiveCompletedToHistory() {
+  function projectItem(project, includeTag = true) {
+    const isEnglish = currentLang() === 'en';
+    const li = document.createElement('li');
+    li.className = 'now-item now-item-done';
+    li.dataset.completedProject = project.title;
+
+    const tag = includeTag
+      ? `<span class="now-tag now-tag-done">${isEnglish ? 'Completed' : 'Finalizat'}</span>`
+      : '';
+
+    li.innerHTML = `
+      <span class="now-status" aria-hidden="true">✅</span>
+      <span>
+        <strong>${project.title}</strong>
+        <a class="now-item-link" href="${project.href}" target="_blank" rel="noopener noreferrer">
+          ${isEnglish ? 'Open project' : 'Deschide proiectul'}
+        </a>
+        ${tag}
+      </span>`;
+
+    return li;
+  }
+
+  function populateJulySections() {
     const doneList = document.querySelector('#now-panel-done .now-checklist');
     const history = document.querySelector('#now-panel-history .now-history');
     if (!doneList || !history) return false;
 
-    const isEnglish = currentLang() === 'en';
-    const projects = [
-      ['TWO 2.0 — CodePen Challenge', 'https://laurandreea10.github.io/TWO-2.0/'],
-      ['FileVerse 2.0', 'https://laurandreea10.github.io/CodePen-2.0-file-options-challenge/'],
-      ['BlockForge — CodePen Challenge: Blocks', 'https://laurandreea10.github.io/BlockForge-CodePen-Challenge-Blocks/'],
-      ['Elsewhere — CodePen Challenge: View Transitions', 'https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/'],
-      ['Mobile Performance Optimization — Case Study', './mobile-performance-case-study.html']
-    ];
+    doneList.replaceChildren(...JULY_PROJECTS.map(project => projectItem(project, true)));
 
-    for (const [title, href] of projects) {
-      if (doneList.querySelector(`[data-completed-project="${CSS.escape(title)}"]`)) continue;
+    const archive = document.createElement('div');
+    archive.className = 'now-history-week';
+    archive.dataset.currentCompletedArchive = 'true';
 
-      const li = document.createElement('li');
-      li.className = 'now-item now-item-done';
-      li.dataset.completedProject = title;
-      li.innerHTML = `<span class="now-status" aria-hidden="true">✅</span><span><strong>${title}</strong> <a class="now-item-link" href="${href}" target="_blank" rel="noopener noreferrer">${isEnglish ? 'Open project' : 'Deschide proiectul'}</a><span class="now-tag now-tag-done">${isEnglish ? 'Completed' : 'Finalizat'}</span></span>`;
-      doneList.prepend(li);
-    }
+    const heading = document.createElement('strong');
+    heading.textContent = currentLang() === 'en'
+      ? 'Completed projects · July 2026'
+      : 'Proiecte finalizate · Iulie 2026';
 
-    const items = Array.from(doneList.children);
-    let archive = history.querySelector('[data-current-completed-archive]');
+    const archiveList = document.createElement('ul');
+    archiveList.className = 'now-checklist';
+    archiveList.append(...JULY_PROJECTS.map(project => projectItem(project, false)));
 
-    if (!archive) {
-      archive = document.createElement('div');
-      archive.className = 'now-history-week';
-      archive.dataset.currentCompletedArchive = 'true';
-      archive.innerHTML = `<strong>${isEnglish ? 'Completed work · July 2026' : 'Proiecte finalizate · Iulie 2026'}</strong><ul class="now-checklist"></ul>`;
-      history.prepend(archive);
-    }
-
-    const archiveList = archive.querySelector('.now-checklist');
-    items.forEach(item => archiveList.appendChild(item));
-    doneList.innerHTML = `<li class="now-item"><span class="now-status" aria-hidden="true">✓</span><span>${isEnglish ? 'Completed projects were moved to History.' : 'Proiectele finalizate au fost mutate în Istoric.'}</span></li>`;
+    archive.append(heading, archiveList);
+    history.replaceChildren(archive);
     return true;
   }
 
   function addViewTransitionsCard() {
-    if (document.querySelector('[data-project="elsewhere-view-transitions"]')) return true;
+    if (document.querySelector('[data-project="elsewhere-view-transitions"]')) return;
 
     const grid = document.querySelector('#latest-github .projects-grid');
-    if (!grid) return false;
+    if (!grid) return;
 
     const card = document.createElement('article');
     card.className = 'project-card glass';
@@ -151,97 +164,40 @@
         <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/CodePen-Challenge-View-Transitions" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
       </div>`;
     grid.prepend(card);
-    return true;
   }
 
-  function addPerformanceCaseStudyCard() {
-    if (document.querySelector('[data-project="mobile-performance-case-study"]')) return true;
-
-    const grid = document.querySelector('#latest-github .projects-grid');
-    if (!grid) return false;
-
-    const isEnglish = currentLang() === 'en';
-    const card = document.createElement('article');
-    card.className = 'project-card glass';
-    card.dataset.project = 'mobile-performance-case-study';
-    card.innerHTML = `
-      <span class="badge-new">CASE STUDY</span>
-      <div class="project-top">
-        <div>
-          <h3>${isEnglish ? 'Mobile Performance Optimization' : 'Optimizare performanță mobilă'}</h3>
-          <span class="badge-github">Lighthouse · Core Web Vitals</span>
-        </div>
-        <span class="tag utility">performance</span>
-      </div>
-      <p class="project-desc">${isEnglish
-        ? 'A transparent case study about raising mobile performance through isolated changes, repeated Lighthouse tests, CLS protection and fast rollback.'
-        : 'Studiu de caz transparent despre creșterea performanței mobile prin modificări izolate, teste Lighthouse repetate, protejarea CLS și rollback rapid.'}</p>
-      <div class="card-actions">
-        <a class="btn btn-primary" href="./mobile-performance-case-study.html">${isEnglish ? 'Read case study' : 'Citește studiul de caz'}</a>
-      </div>`;
-
-    grid.prepend(card);
-    return true;
-  }
-
-  function addPerformanceCaseStudyToScan() {
-    if (document.querySelector('[data-scan-performance-case-study]')) return true;
-
-    const doneTab = document.querySelector('#now-tab-done');
-    const tabs = doneTab?.closest('.now-tabs');
-    if (!doneTab || !tabs) return false;
-
-    const isEnglish = currentLang() === 'en';
-    const linkWrap = document.createElement('p');
-    linkWrap.dataset.scanPerformanceCaseStudy = 'true';
-    linkWrap.className = 'now-note now-performance-case-study-link';
-    linkWrap.innerHTML = `<a class="now-item-link" href="./mobile-performance-case-study.html">${isEnglish ? 'Open the mobile performance case study' : 'Deschide studiul de caz despre performanța mobilă'}</a>`;
-    tabs.insertAdjacentElement('afterend', linkWrap);
-    return true;
-  }
-
-  function refreshAdditions() {
-    return updateNowDate()
-      && archiveCompletedToHistory()
-      && addViewTransitionsCard()
-      && addPerformanceCaseStudyCard()
-      && addPerformanceCaseStudyToScan();
-  }
-
-  function watchSections() {
-    if (refreshAdditions()) return;
-
-    const observer = new MutationObserver(() => {
-      if (refreshAdditions()) observer.disconnect();
-    });
-
-    observer.observe(document.querySelector('main') || document.body, {
-      childList: true,
-      subtree: true
-    });
-
-    window.setTimeout(() => {
-      observer.disconnect();
-      refreshAdditions();
-    }, 5000);
+  function refreshJulyContent() {
+    updateNowDate();
+    populateJulySections();
+    addViewTransitionsCard();
   }
 
   function loadSnapshot() {
     const script = document.createElement('script');
     script.src = SNAPSHOT_MAIN;
     script.async = true;
-    script.onload = watchSections;
-    script.onerror = watchSections;
+    script.onload = refreshJulyContent;
+    script.onerror = refreshJulyContent;
     document.head.appendChild(script);
   }
 
-  installSafeMobileCSS();
-  bypassMobileGithubRequest();
-  disableMobileIntro();
+  function init() {
+    installSafeMobileCSS();
+    bypassMobileGithubRequest();
+    disableMobileIntro();
+
+    // Populează imediat secțiunile, fără să depindă de snapshot sau de cache CDN.
+    refreshJulyContent();
+    loadSnapshot();
+
+    // Snapshot-ul poate modifica DOM-ul ulterior; reaplicăm conținutul din iulie.
+    window.setTimeout(refreshJulyContent, 500);
+    window.setTimeout(refreshJulyContent, 1500);
+  }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadSnapshot, { once: true });
+    document.addEventListener('DOMContentLoaded', init, { once: true });
   } else {
-    loadSnapshot();
+    init();
   }
 })();
