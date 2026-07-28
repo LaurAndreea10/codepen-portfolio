@@ -3,7 +3,7 @@
 
   const SNAPSHOT_MAIN =
     'https://cdn.jsdelivr.net/gh/LaurAndreea10/codepen-portfolio@32d68e9388727fd0052b50b1c09b78da26dbf812/main.js';
-  const DATE_ISO = '2026-07-23';
+  const DATE_ISO = '2026-07-28';
   const MOBILE_QUERY = '(max-width: 900px), (hover: none) and (pointer: coarse)';
 
   function isMobile() {
@@ -88,7 +88,7 @@
     if (!date) return false;
 
     date.dateTime = DATE_ISO;
-    date.textContent = currentLang() === 'en' ? '23 July 2026' : '23 Iulie 2026';
+    date.textContent = currentLang() === 'en' ? '28 July 2026' : '28 Iulie 2026';
     return true;
   }
 
@@ -99,6 +99,7 @@
 
     const isEnglish = currentLang() === 'en';
     const projects = [
+      ['TWO 2.0 — CodePen Challenge', 'https://laurandreea10.github.io/TWO-2.0/'],
       ['FileVerse 2.0', 'https://laurandreea10.github.io/CodePen-2.0-file-options-challenge/'],
       ['BlockForge — CodePen Challenge: Blocks', 'https://laurandreea10.github.io/BlockForge-CodePen-Challenge-Blocks/'],
       ['Elsewhere — CodePen Challenge: View Transitions', 'https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/'],
