@@ -7,22 +7,10 @@
   const MOBILE_QUERY = '(max-width: 900px), (hover: none) and (pointer: coarse)';
 
   const JULY_PROJECTS = [
-    {
-      title: 'TWO 2.0 — CodePen Challenge',
-      href: 'https://laurandreea10.github.io/TWO-2.0/'
-    },
-    {
-      title: 'Elsewhere — CodePen Challenge: View Transitions',
-      href: 'https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/'
-    },
-    {
-      title: 'BlockForge — CodePen Challenge: Blocks',
-      href: 'https://laurandreea10.github.io/BlockForge-CodePen-Challenge-Blocks/'
-    },
-    {
-      title: 'FileVerse 2.0',
-      href: 'https://laurandreea10.github.io/CodePen-2.0-file-options-challenge/'
-    }
+    { title: 'TWO 2.0 — CodePen Challenge', href: 'https://laurandreea10.github.io/TWO-2.0/' },
+    { title: 'Elsewhere — CodePen Challenge: View Transitions', href: 'https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/' },
+    { title: 'BlockForge — CodePen Challenge: Blocks', href: 'https://laurandreea10.github.io/BlockForge-CodePen-Challenge-Blocks/' },
+    { title: 'FileVerse 2.0', href: 'https://laurandreea10.github.io/CodePen-2.0-file-options-challenge/' }
   ];
 
   function isMobile() {
@@ -146,6 +134,29 @@
     return true;
   }
 
+  function addPerformanceCaseStudyLink() {
+    const completedColumnTitle = Array.from(document.querySelectorAll('.scan-col-title'))
+      .find(title => title.textContent.includes('Finalizat recent'));
+    const completedColumn = completedColumnTitle?.closest('.scan-col');
+    if (!completedColumn) return false;
+
+    let linkWrap = completedColumn.querySelector('[data-scan-performance-case-study]');
+    if (!linkWrap) {
+      linkWrap = document.createElement('p');
+      linkWrap.className = 'scan-case-study-link';
+      linkWrap.dataset.scanPerformanceCaseStudy = 'true';
+      completedColumn.appendChild(linkWrap);
+    }
+
+    const isEnglish = currentLang() === 'en';
+    linkWrap.innerHTML = `<a href="./mobile-performance-case-study.html">${
+      isEnglish
+        ? 'Open the mobile performance case study'
+        : 'Deschide studiul de caz despre performanța mobilă'
+    }</a>`;
+    return true;
+  }
+
   function addViewTransitionsCard() {
     if (document.querySelector('[data-project="elsewhere-view-transitions"]')) return;
 
@@ -169,6 +180,7 @@
   function refreshJulyContent() {
     updateNowDate();
     populateJulySections();
+    addPerformanceCaseStudyLink();
     addViewTransitionsCard();
   }
 
@@ -185,12 +197,8 @@
     installSafeMobileCSS();
     bypassMobileGithubRequest();
     disableMobileIntro();
-
-    // Populează imediat secțiunile, fără să depindă de snapshot sau de cache CDN.
     refreshJulyContent();
     loadSnapshot();
-
-    // Snapshot-ul poate modifica DOM-ul ulterior; reaplicăm conținutul din iulie.
     window.setTimeout(refreshJulyContent, 500);
     window.setTimeout(refreshJulyContent, 1500);
   }
