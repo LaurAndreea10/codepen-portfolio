@@ -3,10 +3,11 @@
 
   const SNAPSHOT_MAIN =
     'https://cdn.jsdelivr.net/gh/LaurAndreea10/codepen-portfolio@32d68e9388727fd0052b50b1c09b78da26dbf812/main.js';
-  const DATE_ISO = '2026-08-02';
+  const DATE_ISO = '2026-08-05';
   const MOBILE_QUERY = '(max-width: 900px), (hover: none) and (pointer: coarse)';
 
   const JULY_PROJECTS = [
+    { title: 'MoonMail — Cosmic Receipt Email', href: 'https://laurandreea10.github.io/MoonMail-Cosmic-Receipt-Email/' },
     { title: 'HexWords 2048', href: 'https://laurandreea10.github.io/HexWords-2048/' },
     { title: 'TWO 2.0 — CodePen Challenge', href: 'https://laurandreea10.github.io/TWO-2.0/' },
     { title: 'Elsewhere — CodePen Challenge: View Transitions', href: 'https://laurandreea10.github.io/CodePen-Challenge-View-Transitions/' },
@@ -84,7 +85,7 @@
     if (!date) return;
 
     date.dateTime = DATE_ISO;
-    date.textContent = currentLang() === 'en' ? '2 August 2026' : '2 August 2026';
+    date.textContent = currentLang() === 'en' ? '5 August 2026' : '5 August 2026';
   }
 
   function projectItem(project, includeTag = true) {
