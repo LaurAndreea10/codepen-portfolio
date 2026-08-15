@@ -3,10 +3,11 @@
 
   const SNAPSHOT_MAIN =
     'https://cdn.jsdelivr.net/gh/LaurAndreea10/codepen-portfolio@32d68e9388727fd0052b50b1c09b78da26dbf812/main.js';
-  const DATE_ISO = '2026-08-05';
+  const DATE_ISO = '2026-08-15';
   const MOBILE_QUERY = '(max-width: 900px), (hover: none) and (pointer: coarse)';
 
   const JULY_PROJECTS = [
+    { title: 'Email Alerts', href: 'https://laurandreea10.github.io/Email-Alerts/' },
     { title: 'MoonMail — Cosmic Receipt Email', href: 'https://laurandreea10.github.io/MoonMail-Cosmic-Receipt-Email/' },
     { title: 'HexWords 2048', href: 'https://laurandreea10.github.io/HexWords-2048/' },
     { title: 'TWO 2.0 — CodePen Challenge', href: 'https://laurandreea10.github.io/TWO-2.0/' },
@@ -85,7 +86,7 @@
     if (!date) return;
 
     date.dateTime = DATE_ISO;
-    date.textContent = currentLang() === 'en' ? '5 August 2026' : '5 August 2026';
+    date.textContent = currentLang() === 'en' ? '15 August 2026' : '15 August 2026';
   }
 
   function projectItem(project, includeTag = true) {
@@ -136,6 +137,21 @@
     return true;
   }
 
+  function addEmailAlertsToScanColumn() {
+    const completedColumnTitle = Array.from(document.querySelectorAll('.scan-col-title'))
+      .find(title => title.textContent.includes('Finalizat recent'));
+    const completedList = completedColumnTitle?.closest('.scan-col')?.querySelector('.scan-list');
+    if (!completedList || completedList.querySelector('[data-scan-email-alerts]')) return false;
+
+    const item = document.createElement('li');
+    item.dataset.scanEmailAlerts = 'true';
+    item.innerHTML = `✅ <strong>Email Alerts</strong> &mdash; <a href="https://laurandreea10.github.io/Email-Alerts/" target="_blank" rel="noopener noreferrer">${
+      currentLang() === 'en' ? 'live project' : 'proiect live'
+    }</a>`;
+    completedList.prepend(item);
+    return true;
+  }
+
   function addPerformanceCaseStudyLink() {
     const completedColumnTitle = Array.from(document.querySelectorAll('.scan-col-title'))
       .find(title => title.textContent.includes('Finalizat recent'));
@@ -182,6 +198,7 @@
   function refreshJulyContent() {
     updateNowDate();
     populateJulySections();
+    addEmailAlertsToScanColumn();
     addPerformanceCaseStudyLink();
     addViewTransitionsCard();
   }
