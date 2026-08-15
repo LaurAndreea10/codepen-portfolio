@@ -1,141 +1,59 @@
 (() => {
   'use strict';
 
-  const PREVIOUS_MAIN =
-    'https://cdn.jsdelivr.net/gh/LaurAndreea10/codepen-portfolio@c02951956477eacc6cb791b932b30c41d6d1b7da/main.js';
-
-  const ACTIVE_WORK = [
-    {
-      title: 'Case study accessibility pass',
-      tag: 'Accessibility',
-      ro: 'Adaug skip links, focus states consecvente, alt text mai util pentru capturi și verific navigarea cu tastatura pe paginile projects/.',
-      en: 'Add skip links, consistent focus states, stronger screenshot alt text and keyboard navigation checks across projects/ pages.'
-    },
-    {
-      title: 'Technical proof cards',
-      tag: 'Engineering proof',
-      ro: 'Expun rapid pentru proiectele-cheie stack-ul, ownership-ul, arhitectura, state/data flow și deciziile tehnice care nu se văd doar din UI.',
-      en: 'Expose stack, ownership, architecture, state/data flow and technical decisions that are not obvious from the UI alone.'
-    },
-    {
-      title: 'GitHub repo hygiene & README consistency',
-      tag: 'GitHub',
-      ro: 'Uniformizez README-urile proiectelor principale: problemă, soluție, stack, setup, demo live, capturi, accesibilitate și roadmap.',
-      en: 'Standardize flagship READMEs around problem, solution, stack, setup, live demo, screenshots, accessibility and roadmap.'
-    },
-    {
-      title: 'Homepage density & hierarchy pass',
-      tag: 'Portfolio UX',
-      ro: 'Reduc repetițiile și zgomotul vizual, păstrez CRM/SaaS și Marketing-Tech în prim-plan și mut experimentele secundare mai jos.',
-      en: 'Reduce repetition and visual noise, keep CRM/SaaS and Marketing-Tech in the foreground, and push secondary experiments lower.'
-    },
-    {
-      title: 'Project card consistency system',
-      tag: 'Design system',
-      ro: 'Standardizez cardurile pe aceeași logică: Problemă → Soluție → Build → Stack → Live → Code, pentru scanare mai rapidă.',
-      en: 'Standardize project cards around Problem → Solution → Build → Stack → Live → Code for faster scanning.'
-    },
-    {
-      title: 'Trust & verification sweep',
-      tag: 'Proof of work',
-      ro: 'Verific linkurile live, repo-urile, CTA-urile, fallback-urile și etichetele live/demo și elimin orice dovadă neclară sau redundantă.',
-      en: 'Verify live links, repositories, CTAs, fallbacks and live/demo labels, removing unclear or redundant proof.'
-    }
+  const PREVIOUS_MAIN = 'https://cdn.jsdelivr.net/gh/LaurAndreea10/codepen-portfolio@c02951956477eacc6cb791b932b30c41d6d1b7da/main.js';
+  const ACTIVE_RO = [
+    ['ClientOps Suite Premium — status & demo alignment','Curăț starea proiectului astfel încât demo-ul, repo-ul și mesajele din portofoliu să spună același lucru.','verific demo-ul live, elimin ETA-ul vechi și aliniez CTA-urile cu starea reală.','Product polish'],
+    ['Case study accessibility pass','Auditez case study-urile principale pentru navigare cu tastatura, focus vizibil și descrieri utile pentru capturi.','Alpis Fusion, ClientFlow și Link Video Editor — keyboard + focus + alt text.','Accessibility'],
+    ['Technical proof & README consistency','Fac dovezile tehnice mai ușor de verificat: stack, arhitectură, ownership, setup și link direct spre cod.','aplic același format README și proof card pe cele 3 proiecte-cheie.','Engineering proof']
+  ];
+  const ACTIVE_EN = [
+    ['ClientOps Suite Premium — status & demo alignment','Align the project state so the live demo, repository and portfolio messaging tell the same story.','verify the live demo, remove the stale ETA and align CTAs with the real project state.','Product polish'],
+    ['Case study accessibility pass','Audit the main case studies for keyboard navigation, visible focus and useful screenshot descriptions.','Alpis Fusion, ClientFlow and Link Video Editor — keyboard + focus + alt text.','Accessibility'],
+    ['Technical proof & README consistency','Make technical proof easier to verify: stack, architecture, ownership, setup and direct code links.','apply one README and proof-card format across the three flagship projects.','Engineering proof']
   ];
 
-  function currentLang() {
-    return document.documentElement.lang === 'en' ? 'en' : 'ro';
+  function en(){ return document.documentElement.lang === 'en'; }
+  function activeHtml(){
+    const items = en() ? ACTIVE_EN : ACTIVE_RO;
+    return items.map(x => `<li class="now-item now-item-active" data-static-now-item="active"><span class="now-status" aria-hidden="true">🔄</span><span><strong>${x[0]}</strong><span class="now-item-copy">${x[1]}</span><span class="now-next"><b>${en()?'Next step':'Pasul următor'}:</b> ${x[2]}</span><span class="now-tag">${x[3]}</span></span></li>`).join('');
   }
-
-  function activeItem(task) {
-    const en = currentLang() === 'en';
-    const li = document.createElement('li');
-    li.className = 'now-item now-item-active';
-    li.dataset.activePortfolioTask = task.title;
-    li.innerHTML = `
-      <span class="now-status" aria-hidden="true">🔄</span>
-      <span>
-        <strong>${task.title}</strong>
-        <span class="now-item-copy">${en ? task.en : task.ro}</span>
-        <span class="now-tag">${task.tag}</span>
-      </span>`;
-    return li;
+  function doneHtml(){
+    return en()
+      ? `<li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>Email Alerts</strong> — published with RO/EN, accessibility, dark mode and version history. <a class="now-item-link" href="https://laurandreea10.github.io/Email-Alerts/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>MoonMail — Cosmic Receipt Email</strong> — completed and published email challenge. <a class="now-item-link" href="https://laurandreea10.github.io/MoonMail-Cosmic-Receipt-Email/" target="_blank" rel="noopener noreferrer">Open project</a></span></li>`
+      : `<li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>Email Alerts</strong> — publicat cu RO/EN, accesibilitate, dark mode și istoric de versiuni. <a class="now-item-link" href="https://laurandreea10.github.io/Email-Alerts/" target="_blank" rel="noopener noreferrer">Deschide proiectul</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>MoonMail — Cosmic Receipt Email</strong> — challenge email finalizat și publicat. <a class="now-item-link" href="https://laurandreea10.github.io/MoonMail-Cosmic-Receipt-Email/" target="_blank" rel="noopener noreferrer">Deschide proiectul</a></span></li>`;
   }
-
-  function activeList() {
-    return document.querySelector('#now-panel-active .now-checklist');
+  function restoreNow(){
+    const active=document.querySelector('#now-panel-active .now-checklist');
+    const done=document.querySelector('#now-panel-done .now-checklist');
+    if(active) active.innerHTML=activeHtml();
+    if(done) done.innerHTML=doneHtml();
+    const title=document.getElementById('now-title');
+    if(title) title.textContent=en()?'What I am working on now':'La ce lucrez acum';
+    const note=document.querySelector('#now .now-note');
+    if(note) note.textContent=en()?'A small, intentionally current list: what is active, why it matters, and the next concrete step.':'O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
   }
-
-  function hasExpectedActiveWork(list) {
-    if (!list || list.children.length !== ACTIVE_WORK.length) return false;
-    return ACTIVE_WORK.every(task =>
-      list.querySelector(`[data-active-portfolio-task="${CSS.escape(task.title)}"]`)
-    );
+  function styles(){
+    if(document.getElementById('static-now-styles')) return;
+    const s=document.createElement('style');
+    s.id='static-now-styles';
+    s.textContent='#now-panel-active .now-item>span:last-child{display:grid;gap:6px}#now .now-item-copy,#now .now-next{display:block;color:var(--muted,#aeb7c8);font-size:13px;line-height:1.5;max-width:900px}#now .now-next b{color:var(--text,#eef3fb);font-weight:600}#now-panel-active .now-tag{width:max-content;font-size:11px}';
+    document.head.appendChild(s);
   }
-
-  function populateActiveWork(force = false) {
-    const list = activeList();
-    if (!list) return false;
-    if (!force && hasExpectedActiveWork(list)) return true;
-    list.replaceChildren(...ACTIVE_WORK.map(activeItem));
-    return true;
+  function guard(){
+    const now=document.getElementById('now');
+    if(!now||now.dataset.staticGuard) return;
+    now.dataset.staticGuard='1';
+    let busy=false;
+    new MutationObserver(()=>{ if(busy)return; busy=true; queueMicrotask(()=>{busy=false; if(document.querySelectorAll('#now-panel-active [data-static-now-item="active"]').length!==3||document.querySelectorAll('#now-panel-done [data-static-now-item="done"]').length!==2) restoreNow();}); }).observe(now,{childList:true,subtree:true});
+    new MutationObserver(restoreNow).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   }
-
-  function installActiveStyles() {
-    if (document.getElementById('active-work-styles')) return;
-    const style = document.createElement('style');
-    style.id = 'active-work-styles';
-    style.textContent = `
-      #now-panel-active .now-item > span:last-child { display:grid; gap:6px; }
-      #now-panel-active .now-item-copy { display:block; color:var(--muted,#aeb7c8); font-size:13px; line-height:1.5; max-width:900px; }
-      #now-panel-active .now-tag { width:max-content; font-size:11px; }
-    `;
-    document.head.appendChild(style);
+  function init(){
+    styles(); restoreNow(); guard();
+    const script=document.createElement('script');
+    script.src=PREVIOUS_MAIN; script.async=true; script.onload=restoreNow; script.onerror=restoreNow; document.head.appendChild(script);
+    window.addEventListener('load',restoreNow,{once:true});
+    [300,900,1800,3500].forEach(ms=>setTimeout(restoreNow,ms));
   }
-
-  function refreshActiveWork(force = false) {
-    installActiveStyles();
-    populateActiveWork(force);
-  }
-
-  function guardActiveWork() {
-    const panel = document.getElementById('now-panel-active');
-    if (!panel || panel.dataset.activeGuardInstalled) return;
-    panel.dataset.activeGuardInstalled = 'true';
-
-    const observer = new MutationObserver(() => {
-      const list = activeList();
-      if (!hasExpectedActiveWork(list)) refreshActiveWork(true);
-    });
-    observer.observe(panel, { childList: true, subtree: true });
-
-    const langObserver = new MutationObserver(() => refreshActiveWork(true));
-    langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
-  }
-
-  function loadPreviousMain() {
-    const script = document.createElement('script');
-    script.src = PREVIOUS_MAIN;
-    script.async = true;
-    script.onload = () => refreshActiveWork(true);
-    script.onerror = () => refreshActiveWork(true);
-    document.head.appendChild(script);
-  }
-
-  function init() {
-    refreshActiveWork(true);
-    guardActiveWork();
-    loadPreviousMain();
-
-    window.addEventListener('load', () => refreshActiveWork(true), { once: true });
-    [250, 750, 1500, 3000, 6000].forEach(delay => {
-      window.setTimeout(() => refreshActiveWork(), delay);
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
-  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
 })();
