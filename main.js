@@ -62,9 +62,21 @@
     return li;
   }
 
-  function populateActiveWork() {
-    const list = document.querySelector('#now-panel-active .now-checklist');
+  function activeList() {
+    return document.querySelector('#now-panel-active .now-checklist');
+  }
+
+  function hasExpectedActiveWork(list) {
+    if (!list || list.children.length !== ACTIVE_WORK.length) return false;
+    return ACTIVE_WORK.every(task =>
+      list.querySelector(`[data-active-portfolio-task="${CSS.escape(task.title)}"]`)
+    );
+  }
+
+  function populateActiveWork(force = false) {
+    const list = activeList();
     if (!list) return false;
+    if (!force && hasExpectedActiveWork(list)) return true;
     list.replaceChildren(...ACTIVE_WORK.map(activeItem));
     return true;
   }
@@ -81,27 +93,44 @@
     document.head.appendChild(style);
   }
 
-  function refreshActiveWork() {
+  function refreshActiveWork(force = false) {
     installActiveStyles();
-    populateActiveWork();
+    populateActiveWork(force);
+  }
+
+  function guardActiveWork() {
+    const panel = document.getElementById('now-panel-active');
+    if (!panel || panel.dataset.activeGuardInstalled) return;
+    panel.dataset.activeGuardInstalled = 'true';
+
+    const observer = new MutationObserver(() => {
+      const list = activeList();
+      if (!hasExpectedActiveWork(list)) refreshActiveWork(true);
+    });
+    observer.observe(panel, { childList: true, subtree: true });
+
+    const langObserver = new MutationObserver(() => refreshActiveWork(true));
+    langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
   }
 
   function loadPreviousMain() {
     const script = document.createElement('script');
     script.src = PREVIOUS_MAIN;
     script.async = true;
-    script.onload = () => {
-      refreshActiveWork();
-      window.setTimeout(refreshActiveWork, 700);
-      window.setTimeout(refreshActiveWork, 1800);
-    };
-    script.onerror = refreshActiveWork;
+    script.onload = () => refreshActiveWork(true);
+    script.onerror = () => refreshActiveWork(true);
     document.head.appendChild(script);
   }
 
   function init() {
-    refreshActiveWork();
+    refreshActiveWork(true);
+    guardActiveWork();
     loadPreviousMain();
+
+    window.addEventListener('load', () => refreshActiveWork(true), { once: true });
+    [250, 750, 1500, 3000, 6000].forEach(delay => {
+      window.setTimeout(() => refreshActiveWork(), delay);
+    });
   }
 
   if (document.readyState === 'loading') {
