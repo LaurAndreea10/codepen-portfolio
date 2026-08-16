@@ -35,46 +35,23 @@
     if(note) note.textContent=en()?'A small, intentionally current list: what is active, why it matters, and the next concrete step.':'O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
   }
 
-  function installCountLock(){
-    let lock=document.getElementById('codepen-count-lock');
-    if(!lock){
-      lock=document.createElement('style');
-      lock.id='codepen-count-lock';
-      document.head.appendChild(lock);
-    }
-    lock.textContent=`
-      html body #intro-overlay .s3 .num1{
-        animation:none!important;
-        counter-reset:c1 ${CODEPEN_COUNT}!important;
-      }
-      html body #intro-overlay .s3 .num1::before{
-        content:"${CODEPEN_COUNT}"!important;
-      }
-    `;
-  }
-
   function fixProjectCounts(){
-    installCountLock();
+    // Keep the original intro animation for counters 2–4.
+    // Only force the first (CodePen) counter to the verified value 82.
+    let style=document.getElementById('codepen-count-override');
+    if(!style){
+      style=document.createElement('style');
+      style.id='codepen-count-override';
+      document.head.appendChild(style);
+    }
+    style.textContent=`#intro-overlay .s3 .num1::before{content:"${CODEPEN_COUNT}"!important;}`;
 
     const legacy=document.getElementById('la-force-codepen-count-css');
-    if(legacy && legacy.textContent.includes('66')){
-      legacy.textContent=legacy.textContent.replace(/66/g,String(CODEPEN_COUNT));
-    }
+    if(legacy) legacy.remove();
 
     const scan=document.getElementById('scan-proj-count');
-    if(scan && scan.textContent!==String(CODEPEN_COUNT)) scan.textContent=String(CODEPEN_COUNT);
-
-    document.querySelectorAll('[data-codepen-count]').forEach(el=>{
-      if(el.textContent!==String(CODEPEN_COUNT)) el.textContent=String(CODEPEN_COUNT);
-    });
-
-    document.querySelectorAll('strong,span,p,li,a,h1,h2,h3,h4').forEach(el=>{
-      if(el.childElementCount) return;
-      const t=el.textContent||'';
-      if(t==='66' || /66\s*(proiecte|projects|live)/i.test(t) || /CodePen\s*[·:-]?\s*66/i.test(t)){
-        el.textContent=t.replace(/66/g,String(CODEPEN_COUNT));
-      }
-    });
+    if(scan) scan.textContent=String(CODEPEN_COUNT);
+    document.querySelectorAll('[data-codepen-count]').forEach(el=>{ el.textContent=String(CODEPEN_COUNT); });
   }
 
   function styles(){
@@ -85,34 +62,28 @@
     document.head.appendChild(s);
   }
 
-  function guard(){
+  function guardNow(){
     const now=document.getElementById('now');
-    if(now && !now.dataset.staticGuard){
-      now.dataset.staticGuard='1';
-      let busy=false;
-      new MutationObserver(()=>{
-        if(busy)return;
-        busy=true;
-        queueMicrotask(()=>{
-          busy=false;
-          if(document.querySelectorAll('#now-panel-active [data-static-now-item="active"]').length!==3||document.querySelectorAll('#now-panel-done [data-static-now-item="done"]').length!==2) restoreNow();
-          fixProjectCounts();
-        });
-      }).observe(now,{childList:true,subtree:true});
-    }
-
-    new MutationObserver(()=>{ restoreNow(); fixProjectCounts(); })
-      .observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-
-    new MutationObserver(()=>{ fixProjectCounts(); })
-      .observe(document.documentElement,{childList:true,subtree:true,characterData:true});
+    if(!now||now.dataset.staticGuard) return;
+    now.dataset.staticGuard='1';
+    let busy=false;
+    new MutationObserver(()=>{
+      if(busy) return;
+      busy=true;
+      queueMicrotask(()=>{
+        busy=false;
+        if(document.querySelectorAll('#now-panel-active [data-static-now-item="active"]').length!==3 || document.querySelectorAll('#now-panel-done [data-static-now-item="done"]').length!==2){
+          restoreNow();
+        }
+      });
+    }).observe(now,{childList:true,subtree:true});
   }
 
   function init(){
     styles();
     restoreNow();
     fixProjectCounts();
-    guard();
+    guardNow();
 
     const script=document.createElement('script');
     script.src=PREVIOUS_MAIN;
@@ -122,7 +93,7 @@
     document.head.appendChild(script);
 
     window.addEventListener('load',()=>{ restoreNow(); fixProjectCounts(); },{once:true});
-    [50,100,250,500,900,1500,2500,4000,6500,10000].forEach(ms=>setTimeout(()=>{ restoreNow(); fixProjectCounts(); },ms));
+    [100,400,1200,3000].forEach(ms=>setTimeout(fixProjectCounts,ms));
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
