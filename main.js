@@ -2,6 +2,7 @@
   'use strict';
 
   const PREVIOUS_MAIN = 'https://cdn.jsdelivr.net/gh/LaurAndreea10/codepen-portfolio@c02951956477eacc6cb791b932b30c41d6d1b7da/main.js';
+  const CODEPEN_COUNT = 82;
   const ACTIVE_RO = [
     ['ClientOps Suite Premium — status & demo alignment','Curăț starea proiectului astfel încât demo-ul, repo-ul și mesajele din portofoliu să spună același lucru.','verific demo-ul live, elimin ETA-ul vechi și aliniez CTA-urile cu starea reală.','Product polish'],
     ['Case study accessibility pass','Auditez case study-urile principale pentru navigare cu tastatura, focus vizibil și descrieri utile pentru capturi.','Alpis Fusion, ClientFlow și Link Video Editor — keyboard + focus + alt text.','Accessibility'],
@@ -33,6 +34,18 @@
     const note=document.querySelector('#now .now-note');
     if(note) note.textContent=en()?'A small, intentionally current list: what is active, why it matters, and the next concrete step.':'O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
   }
+  function fixProjectCounts(){
+    let s=document.getElementById('codepen-count-override');
+    if(!s){
+      s=document.createElement('style');
+      s.id='codepen-count-override';
+      document.head.appendChild(s);
+    }
+    s.textContent='@keyframes cnt1{to{--c1:'+CODEPEN_COUNT+'}}';
+    const scan=document.getElementById('scan-proj-count');
+    if(scan) scan.textContent=String(CODEPEN_COUNT);
+    document.querySelectorAll('[data-codepen-count]').forEach(el=>{el.textContent=String(CODEPEN_COUNT)});
+  }
   function styles(){
     if(document.getElementById('static-now-styles')) return;
     const s=document.createElement('style');
@@ -45,15 +58,15 @@
     if(!now||now.dataset.staticGuard) return;
     now.dataset.staticGuard='1';
     let busy=false;
-    new MutationObserver(()=>{ if(busy)return; busy=true; queueMicrotask(()=>{busy=false; if(document.querySelectorAll('#now-panel-active [data-static-now-item="active"]').length!==3||document.querySelectorAll('#now-panel-done [data-static-now-item="done"]').length!==2) restoreNow();}); }).observe(now,{childList:true,subtree:true});
-    new MutationObserver(restoreNow).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+    new MutationObserver(()=>{ if(busy)return; busy=true; queueMicrotask(()=>{busy=false; if(document.querySelectorAll('#now-panel-active [data-static-now-item="active"]').length!==3||document.querySelectorAll('#now-panel-done [data-static-now-item="done"]').length!==2) restoreNow(); fixProjectCounts();}); }).observe(now,{childList:true,subtree:true});
+    new MutationObserver(()=>{restoreNow();fixProjectCounts();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   }
   function init(){
-    styles(); restoreNow(); guard();
+    styles(); restoreNow(); fixProjectCounts(); guard();
     const script=document.createElement('script');
-    script.src=PREVIOUS_MAIN; script.async=true; script.onload=restoreNow; script.onerror=restoreNow; document.head.appendChild(script);
-    window.addEventListener('load',restoreNow,{once:true});
-    [300,900,1800,3500].forEach(ms=>setTimeout(restoreNow,ms));
+    script.src=PREVIOUS_MAIN; script.async=true; script.onload=()=>{restoreNow();fixProjectCounts();}; script.onerror=()=>{restoreNow();fixProjectCounts();}; document.head.appendChild(script);
+    window.addEventListener('load',()=>{restoreNow();fixProjectCounts();},{once:true});
+    [100,300,900,1800,3500,6000].forEach(ms=>setTimeout(()=>{restoreNow();fixProjectCounts();},ms));
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
 })();
