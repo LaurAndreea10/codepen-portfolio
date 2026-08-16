@@ -11,11 +11,11 @@ Caută a doua apariție a blocului `#github-stats` și șterge duplicatul. Păst
 În secțiunea Credibilitate, schimbă mesajul în:
 
 ```html
-64 proiecte live, 25 selectate pe acest site →
+82 proiecte live, 25 selectate pe acest site →
 Restul sunt experimente publice pe CodePen.
 ```
 
-În footer, schimbă `CodePen · 64 proiecte live` în:
+În footer, schimbă `CodePen · 82 proiecte live` în:
 
 ```html
 CodePen · 64 experimente publice
@@ -39,7 +39,7 @@ CodePen · 64 experimente publice
 
 ```html
 <title>Laura Andreea — Construiesc CRM-uri și dashboard-uri front-end (colaborări)</title>
-<meta name="description" content="Front-end CRM & dashboard developer disponibilă pentru colaborări punctuale. 64 proiecte live · Vite + React · UI/UX cu logică de produs. Bilingv RO/EN." />
+<meta name="description" content="Front-end CRM & dashboard developer disponibilă pentru colaborări punctuale. 82 proiecte live · Vite + React · UI/UX cu logică de produs. Bilingv RO/EN." />
 ```
 
 ## Commit recomandat
