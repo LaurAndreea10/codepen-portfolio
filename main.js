@@ -34,18 +34,49 @@
     const note=document.querySelector('#now .now-note');
     if(note) note.textContent=en()?'A small, intentionally current list: what is active, why it matters, and the next concrete step.':'O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
   }
-  function fixProjectCounts(){
-    let s=document.getElementById('codepen-count-override');
-    if(!s){
-      s=document.createElement('style');
-      s.id='codepen-count-override';
-      document.head.appendChild(s);
+
+  function installCountLock(){
+    let lock=document.getElementById('codepen-count-lock');
+    if(!lock){
+      lock=document.createElement('style');
+      lock.id='codepen-count-lock';
+      document.head.appendChild(lock);
     }
-    s.textContent='@keyframes cnt1{to{--c1:'+CODEPEN_COUNT+'}}';
-    const scan=document.getElementById('scan-proj-count');
-    if(scan) scan.textContent=String(CODEPEN_COUNT);
-    document.querySelectorAll('[data-codepen-count]').forEach(el=>{el.textContent=String(CODEPEN_COUNT)});
+    lock.textContent=`
+      html body #intro-overlay .s3 .num1{
+        animation:none!important;
+        counter-reset:c1 ${CODEPEN_COUNT}!important;
+      }
+      html body #intro-overlay .s3 .num1::before{
+        content:"${CODEPEN_COUNT}"!important;
+      }
+    `;
   }
+
+  function fixProjectCounts(){
+    installCountLock();
+
+    const legacy=document.getElementById('la-force-codepen-count-css');
+    if(legacy && legacy.textContent.includes('66')){
+      legacy.textContent=legacy.textContent.replace(/66/g,String(CODEPEN_COUNT));
+    }
+
+    const scan=document.getElementById('scan-proj-count');
+    if(scan && scan.textContent!==String(CODEPEN_COUNT)) scan.textContent=String(CODEPEN_COUNT);
+
+    document.querySelectorAll('[data-codepen-count]').forEach(el=>{
+      if(el.textContent!==String(CODEPEN_COUNT)) el.textContent=String(CODEPEN_COUNT);
+    });
+
+    document.querySelectorAll('strong,span,p,li,a,h1,h2,h3,h4').forEach(el=>{
+      if(el.childElementCount) return;
+      const t=el.textContent||'';
+      if(t==='66' || /66\s*(proiecte|projects|live)/i.test(t) || /CodePen\s*[·:-]?\s*66/i.test(t)){
+        el.textContent=t.replace(/66/g,String(CODEPEN_COUNT));
+      }
+    });
+  }
+
   function styles(){
     if(document.getElementById('static-now-styles')) return;
     const s=document.createElement('style');
@@ -53,20 +84,47 @@
     s.textContent='#now-panel-active .now-item>span:last-child{display:grid;gap:6px}#now .now-item-copy,#now .now-next{display:block;color:var(--muted,#aeb7c8);font-size:13px;line-height:1.5;max-width:900px}#now .now-next b{color:var(--text,#eef3fb);font-weight:600}#now-panel-active .now-tag{width:max-content;font-size:11px}';
     document.head.appendChild(s);
   }
+
   function guard(){
     const now=document.getElementById('now');
-    if(!now||now.dataset.staticGuard) return;
-    now.dataset.staticGuard='1';
-    let busy=false;
-    new MutationObserver(()=>{ if(busy)return; busy=true; queueMicrotask(()=>{busy=false; if(document.querySelectorAll('#now-panel-active [data-static-now-item="active"]').length!==3||document.querySelectorAll('#now-panel-done [data-static-now-item="done"]').length!==2) restoreNow(); fixProjectCounts();}); }).observe(now,{childList:true,subtree:true});
-    new MutationObserver(()=>{restoreNow();fixProjectCounts();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+    if(now && !now.dataset.staticGuard){
+      now.dataset.staticGuard='1';
+      let busy=false;
+      new MutationObserver(()=>{
+        if(busy)return;
+        busy=true;
+        queueMicrotask(()=>{
+          busy=false;
+          if(document.querySelectorAll('#now-panel-active [data-static-now-item="active"]').length!==3||document.querySelectorAll('#now-panel-done [data-static-now-item="done"]').length!==2) restoreNow();
+          fixProjectCounts();
+        });
+      }).observe(now,{childList:true,subtree:true});
+    }
+
+    new MutationObserver(()=>{ restoreNow(); fixProjectCounts(); })
+      .observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+
+    new MutationObserver(()=>{ fixProjectCounts(); })
+      .observe(document.documentElement,{childList:true,subtree:true,characterData:true});
   }
+
   function init(){
-    styles(); restoreNow(); fixProjectCounts(); guard();
+    styles();
+    restoreNow();
+    fixProjectCounts();
+    guard();
+
     const script=document.createElement('script');
-    script.src=PREVIOUS_MAIN; script.async=true; script.onload=()=>{restoreNow();fixProjectCounts();}; script.onerror=()=>{restoreNow();fixProjectCounts();}; document.head.appendChild(script);
-    window.addEventListener('load',()=>{restoreNow();fixProjectCounts();},{once:true});
-    [100,300,900,1800,3500,6000].forEach(ms=>setTimeout(()=>{restoreNow();fixProjectCounts();},ms));
+    script.src=PREVIOUS_MAIN;
+    script.async=true;
+    script.onload=()=>{ restoreNow(); fixProjectCounts(); };
+    script.onerror=()=>{ restoreNow(); fixProjectCounts(); };
+    document.head.appendChild(script);
+
+    window.addEventListener('load',()=>{ restoreNow(); fixProjectCounts(); },{once:true});
+    [50,100,250,500,900,1500,2500,4000,6500,10000].forEach(ms=>setTimeout(()=>{ restoreNow(); fixProjectCounts(); },ms));
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
 })();
