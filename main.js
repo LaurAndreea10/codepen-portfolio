@@ -156,7 +156,6 @@
 
     window.addEventListener('load',()=>{ restoreNow(); fixProjectCounts(); },{once:true});
     [100,400,1200,3000].forEach(ms=>setTimeout(fixProjectCounts,ms));
-    new MutationObserver(()=>{ fixProjectCounts(); }).observe(document.head,{childList:true,subtree:true});
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
