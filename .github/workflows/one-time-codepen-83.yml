@@ -1,0 +1,46 @@
+name: One-time CodePen 83 normalization
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Normalize static CodePen count
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          replacements = {
+              'var v1=82,v2=': 'var v1=83,v2=',
+              'id="scan-proj-count">82</strong>': 'id="scan-proj-count">83</strong>',
+              '82 proiecte live pe CodePen': '83 proiecte live pe CodePen',
+              '82 projects live on CodePen': '83 projects live on CodePen',
+              '82 proiecte CodePen': '83 proiecte CodePen',
+              '82 CodePen projects': '83 CodePen projects',
+              'CodePen · 82': 'CodePen · 83',
+          }
+          for old, new in replacements.items():
+              s = s.replace(old, new)
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit normalization
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "No static count changes needed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Normalize static CodePen count to 83"
+          git push
