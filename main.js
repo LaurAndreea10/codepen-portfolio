@@ -2,7 +2,19 @@
   'use strict';
 
   const PREVIOUS_MAIN = 'https://cdn.jsdelivr.net/gh/LaurAndreea10/codepen-portfolio@c02951956477eacc6cb791b932b30c41d6d1b7da/main.js';
-  const CODEPEN_COUNT = 82;
+
+  // Single source of truth for CodePen growth.
+  // 82 projects were already represented before this Pen was added.
+  const CODEPEN_BASE_COUNT = 82;
+  const CODEPEN_NEW_PROJECTS = [
+    {
+      id: '019d2b3a-2991-75d3-9c59-15de01ca8079',
+      label: 'CodePen #83',
+      url: 'https://codepen.io/editor/Laura-Andreea-the-typescripter/pen/019d2b3a-2991-75d3-9c59-15de01ca8079'
+    }
+  ];
+  const CODEPEN_COUNT = CODEPEN_BASE_COUNT + CODEPEN_NEW_PROJECTS.length;
+
   const ACTIVE_RO = [
     ['ClientOps Suite Premium — status & demo alignment','Curăț starea proiectului astfel încât demo-ul, repo-ul și mesajele din portofoliu să spună același lucru.','verific demo-ul live, elimin ETA-ul vechi și aliniez CTA-urile cu starea reală.','Product polish'],
     ['Case study accessibility pass','Auditez case study-urile principale pentru navigare cu tastatura, focus vizibil și descrieri utile pentru capturi.','Alpis Fusion, ClientFlow și Link Video Editor — keyboard + focus + alt text.','Accessibility'],
@@ -15,15 +27,18 @@
   ];
 
   function en(){ return document.documentElement.lang === 'en'; }
+
   function activeHtml(){
     const items = en() ? ACTIVE_EN : ACTIVE_RO;
     return items.map(x => `<li class="now-item now-item-active" data-static-now-item="active"><span class="now-status" aria-hidden="true">🔄</span><span><strong>${x[0]}</strong><span class="now-item-copy">${x[1]}</span><span class="now-next"><b>${en()?'Next step':'Pasul următor'}:</b> ${x[2]}</span><span class="now-tag">${x[3]}</span></span></li>`).join('');
   }
+
   function doneHtml(){
     return en()
       ? `<li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>LaurAi · Signal Orbit</strong> — completed and published as an accessible email signature studio with RO/EN, high contrast, reduced motion, version history and README. <a class="now-item-link" href="https://laurandreea10.github.io/LAURAI-SIGNAL-ORBIT/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>Email Alerts</strong> — published with RO/EN, accessibility, dark mode and version history. <a class="now-item-link" href="https://laurandreea10.github.io/Email-Alerts/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>MoonMail — Cosmic Receipt Email</strong> — completed and published email challenge. <a class="now-item-link" href="https://laurandreea10.github.io/MoonMail-Cosmic-Receipt-Email/" target="_blank" rel="noopener noreferrer">Open project</a></span></li>`
       : `<li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>LaurAi · Signal Orbit</strong> — finalizat și publicat ca studio accesibil pentru semnături email, cu RO/EN, contrast ridicat, reducerea mișcării, istoric de versiuni și README. <a class="now-item-link" href="https://laurandreea10.github.io/LAURAI-SIGNAL-ORBIT/" target="_blank" rel="noopener noreferrer">Deschide proiectul</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>Email Alerts</strong> — publicat cu RO/EN, accesibilitate, dark mode și istoric de versiuni. <a class="now-item-link" href="https://laurandreea10.github.io/Email-Alerts/" target="_blank" rel="noopener noreferrer">Deschide proiectul</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>MoonMail — Cosmic Receipt Email</strong> — challenge email finalizat și publicat. <a class="now-item-link" href="https://laurandreea10.github.io/MoonMail-Cosmic-Receipt-Email/" target="_blank" rel="noopener noreferrer">Deschide proiectul</a></span></li>`;
   }
+
   function restoreNow(){
     const active=document.querySelector('#now-panel-active .now-checklist');
     const done=document.querySelector('#now-panel-done .now-checklist');
@@ -35,23 +50,70 @@
     if(note) note.textContent=en()?'A small, intentionally current list: what is active, why it matters, and the next concrete step.':'O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
   }
 
-  function fixProjectCounts(){
-    // Keep the original intro animation for counters 2–4.
-    // Only force the first (CodePen) counter to the verified value 82.
+  function syncCodePenText(){
+    const count = String(CODEPEN_COUNT);
+
+    // Intro: only the CodePen counter is overridden; counters 2–4 keep their original animation.
     let style=document.getElementById('codepen-count-override');
     if(!style){
       style=document.createElement('style');
       style.id='codepen-count-override';
       document.head.appendChild(style);
     }
-    style.textContent=`#intro-overlay .s3 .num1::before{content:"${CODEPEN_COUNT}"!important;}`;
+    style.textContent=`#intro-overlay .s3 .num1::before{content:"${count}"!important;}`;
 
+    // Remove the historical CSS that used to force 66.
     const legacy=document.getElementById('la-force-codepen-count-css');
     if(legacy) legacy.remove();
 
     const scan=document.getElementById('scan-proj-count');
-    if(scan) scan.textContent=String(CODEPEN_COUNT);
-    document.querySelectorAll('[data-codepen-count]').forEach(el=>{ el.textContent=String(CODEPEN_COUNT); });
+    if(scan) scan.textContent=count;
+    document.querySelectorAll('[data-codepen-count]').forEach(el=>{ el.textContent=count; });
+
+    // Synchronize every visible CodePen metric/tab that still carries an older total.
+    document.querySelectorAll('strong,span,p,li,a,h1,h2,h3,h4,button').forEach(el=>{
+      if(el.childElementCount) return;
+      const text=el.textContent||'';
+      const context=(el.closest('[id*="codepen" i],[class*="codepen" i],[data-category*="codepen" i]')?.textContent||'') + ' ' + text;
+      if(/CodePen/i.test(context) && /\b(?:66|82)\b/.test(text)){
+        el.textContent=text.replace(/\b(?:66|82)\b/g,count);
+      }
+    });
+
+    // Keep SEO/social descriptions aligned where CodePen totals are mentioned.
+    document.querySelectorAll('meta[name="description"],meta[property="og:description"],meta[name="twitter:description"]').forEach(meta=>{
+      const value=meta.getAttribute('content')||'';
+      if(/CodePen/i.test(value) && /\b(?:66|82)\b/.test(value)){
+        meta.setAttribute('content',value.replace(/\b(?:66|82)\b/g,count));
+      }
+    });
+  }
+
+  function ensureLatestCodePenProof(){
+    const project=CODEPEN_NEW_PROJECTS.at(-1);
+    if(!project) return;
+
+    let link=document.getElementById('latest-codepen-project-link');
+    if(!link){
+      const scanCount=document.getElementById('scan-proj-count');
+      const list=scanCount?.closest('ul');
+      if(list){
+        const li=document.createElement('li');
+        li.id='latest-codepen-project-proof';
+        li.innerHTML=`<strong>${en()?'Latest CodePen':'Cel mai nou CodePen'}:</strong> <a id="latest-codepen-project-link" href="${project.url}" target="_blank" rel="noopener noreferrer">${project.label} ↗</a>`;
+        list.appendChild(li);
+        link=li.querySelector('a');
+      }
+    }
+    if(link){
+      link.href=project.url;
+      link.textContent=`${project.label} ↗`;
+    }
+  }
+
+  function fixProjectCounts(){
+    syncCodePenText();
+    ensureLatestCodePenProof();
   }
 
   function styles(){
@@ -94,6 +156,7 @@
 
     window.addEventListener('load',()=>{ restoreNow(); fixProjectCounts(); },{once:true});
     [100,400,1200,3000].forEach(ms=>setTimeout(fixProjectCounts,ms));
+    new MutationObserver(()=>{ fixProjectCounts(); }).observe(document.head,{childList:true,subtree:true});
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
