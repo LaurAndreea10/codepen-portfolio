@@ -4,12 +4,12 @@
   const PREVIOUS_MAIN = 'https://cdn.jsdelivr.net/gh/LaurAndreea10/codepen-portfolio@c02951956477eacc6cb791b932b30c41d6d1b7da/main.js';
 
   // Single source of truth for CodePen growth.
-  // 82 projects were already represented before this Pen was added.
-  const CODEPEN_BASE_COUNT = 82;
+  // 83 projects were already represented before this Pen was added.
+  const CODEPEN_BASE_COUNT = 83;
   const CODEPEN_NEW_PROJECTS = [
     {
       id: '019d2b3a-2991-75d3-9c59-15de01ca8079',
-      label: 'CodePen #83',
+      label: 'CodePen #84',
       url: 'https://codepen.io/editor/Laura-Andreea-the-typescripter/pen/019d2b3a-2991-75d3-9c59-15de01ca8079'
     }
   ];
@@ -80,16 +80,16 @@
       if(el.childElementCount) return;
       const text=el.textContent||'';
       const context=(el.closest('[id*="codepen" i],[class*="codepen" i],[data-category*="codepen" i]')?.textContent||'') + ' ' + text;
-      if(/CodePen/i.test(context) && /\b(?:66|82)\b/.test(text)){
-        el.textContent=text.replace(/\b(?:66|82)\b/g,count);
+      if(/CodePen/i.test(context) && /\b(?:66|82|83)\b/.test(text)){
+        el.textContent=text.replace(/\b(?:66|82|83)\b/g,count);
       }
     });
 
     // Keep SEO/social descriptions aligned where CodePen totals are mentioned.
     document.querySelectorAll('meta[name="description"],meta[property="og:description"],meta[name="twitter:description"]').forEach(meta=>{
       const value=meta.getAttribute('content')||'';
-      if(/CodePen/i.test(value) && /\b(?:66|82)\b/.test(value)){
-        meta.setAttribute('content',value.replace(/\b(?:66|82)\b/g,count));
+      if(/CodePen/i.test(value) && /\b(?:66|82|83)\b/.test(value)){
+        meta.setAttribute('content',value.replace(/\b(?:66|82|83)\b/g,count));
       }
     });
   }
