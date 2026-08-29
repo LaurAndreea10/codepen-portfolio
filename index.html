@@ -106,9 +106,18 @@
   <script>
     try {
       if (sessionStorage.getItem('la_intro_seen')) {
-        document.documentElement.style.setProperty('--intro-display', 'none');
+        document.documentElement.classList.add('intro-already-seen');
       }
     } catch(e) {}
+
+    // Independent safety net: the portfolio must never remain locked behind the intro.
+    window.__introSafetyTimer = setTimeout(function () {
+      var overlay = document.getElementById('intro-overlay');
+      var skip = document.getElementById('intro-skip');
+      if (document.body) document.body.classList.remove('intro-active');
+      if (overlay) overlay.style.setProperty('display', 'none', 'important');
+      if (skip) skip.style.setProperty('display', 'none', 'important');
+    }, 20000);
   </script>
 
   <!-- ====================================================
@@ -151,6 +160,9 @@
   </script>
 
   <style>
+    html.intro-already-seen #intro-overlay,
+    html.intro-already-seen #intro-skip { display: none !important; }
+    html.intro-already-seen body { overflow: auto !important; }
     body.intro-active { overflow: hidden !important; }
     #intro-overlay {
       position: fixed !important; top: 0 !important; left: 0 !important;
@@ -310,6 +322,11 @@
     #intro-overlay .s3 .num3::before{content:counter(c3)}
     #intro-overlay .s3 .num4{counter-reset:c4 var(--c4);animation:cnt4 1.5s 7.15s cubic-bezier(.2,.8,.2,1) forwards}
     #intro-overlay .s3 .num4::before{content:counter(c4)}
+    /* Real text values are the cross-browser source of truth; CSS counters are decorative only. */
+    #intro-overlay .s3 .num1::before,
+    #intro-overlay .s3 .num2::before,
+    #intro-overlay .s3 .num3::before,
+    #intro-overlay .s3 .num4::before{display:none!important}
     #intro-overlay .s4{animation:showStill 2.4s 9.0s both}
     #intro-overlay .s4 .quote{position:absolute;top:0;left:var(--pad);font-family:var(--display);font-size:clamp(120px,22vmin,260px);color:rgba(106,166,255,0.16);line-height:0.9;font-weight:600;pointer-events:none;opacity:0;animation:fadeUp 0.6s 9.05s forwards}
     #intro-overlay .s4 h2{font-family:var(--display);font-weight:500;font-size:var(--t-tag);line-height:1.08;letter-spacing:-0.025em;color:var(--fg);text-align:center;max-width:min(1500px,94vw);margin:0;display:flex;flex-wrap:wrap;justify-content:center;gap:0.25em 0.32em}
@@ -430,10 +447,10 @@
           <div class="scene s3">
             <div class="eyebrow">// proof of work</div>
             <div class="figs">
-              <div class="fig acc"><span class="radar"></span><span class="big"><span class="num1"></span></span><span class="lbl">CodePen &middot; Live</span><span class="meta">proiecte func&#x21B;ionale</span></div>
-              <div class="fig"><span class="radar"></span><span class="big"><span class="num2"></span><span class="plus">+</span></span><span class="lbl">GitHub &middot; Public</span><span class="meta">repo-uri publice</span></div>
-              <div class="fig"><span class="radar"></span><span class="big"><span class="num3"></span></span><span class="lbl">Alpis Fusion</span><span class="meta">module SaaS</span></div>
-              <div class="fig"><span class="radar"></span><span class="big"><span class="num4"></span><span class="plus">+</span></span><span class="lbl">Certific&#x103;ri</span><span class="meta">JS &middot; marketing &middot; data</span></div>
+              <div class="fig acc"><span class="radar"></span><span class="big"><span class="num1">84</span></span><span class="lbl">CodePen &middot; Live</span><span class="meta">proiecte func&#x21B;ionale</span></div>
+              <div class="fig"><span class="radar"></span><span class="big"><span class="num2">20</span><span class="plus">+</span></span><span class="lbl">GitHub &middot; Public</span><span class="meta">repo-uri publice</span></div>
+              <div class="fig"><span class="radar"></span><span class="big"><span class="num3">6</span></span><span class="lbl">Alpis Fusion</span><span class="meta">module SaaS</span></div>
+              <div class="fig"><span class="radar"></span><span class="big"><span class="num4">10</span><span class="plus">+</span></span><span class="lbl">Certific&#x103;ri</span><span class="meta">JS &middot; marketing &middot; data</span></div>
             </div>
           </div>
           <div class="scene s4">
@@ -590,6 +607,7 @@
           if(css&&css.parentNode)css.parentNode.removeChild(css);
         },550);
         try{sessionStorage.setItem(KEY,'1');}catch(e){}
+        if(window.__introSafetyTimer)clearTimeout(window.__introSafetyTimer);
         document.removeEventListener('keydown',onKey);
         if(typeof stopIntroReplay==='function')stopIntroReplay();
       }
