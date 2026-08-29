@@ -105,7 +105,7 @@
 
   <script>
     try {
-      if (sessionStorage.getItem('la_intro_seen')) {
+      if (sessionStorage.getItem('la_intro_seen') && !new URLSearchParams(location.search).has('intro')) {
         document.documentElement.classList.add('intro-already-seen');
       }
     } catch(e) {}
@@ -602,8 +602,9 @@
     (function(){
       'use strict';
       var KEY='la_intro_seen';
+      var forceIntro=new URLSearchParams(location.search).has('intro');
       try{
-        if(sessionStorage.getItem(KEY)){
+        if(sessionStorage.getItem(KEY)&&!forceIntro){
           var s=document.getElementById('intro-css');
           var o=document.getElementById('intro-overlay');
           var sk=document.getElementById('intro-skip');
