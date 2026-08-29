@@ -257,7 +257,7 @@
     #intro-overlay .scenes{position:absolute;inset:0;display:grid;place-items:center;z-index:25}
     #intro-overlay .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;text-align:center;padding:0 var(--pad)}
     @keyframes show{0%{opacity:0;transform:translateY(14px) scale(0.98)}10%{opacity:1;transform:translateY(0) scale(1)}85%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-10px) scale(1.02)}}
-    #intro-overlay .s1{animation:show 2.0s 1.0s both}
+    #intro-overlay .s1{animation:show 2.0s 0s both}
     #intro-overlay .s1 .slate{display:flex;flex-direction:column;align-items:stretch;gap:clamp(14px,2.6vmin,28px);border:1px solid var(--line-2);padding:clamp(28px,5vmin,52px) clamp(36px,7vmin,80px) clamp(32px,5.5vmin,56px);border-radius:6px;background:rgba(255,255,255,0.015);position:relative;min-width:min(420px,88vw);max-width:min(640px,92vw);backdrop-filter:blur(2px)}
     #intro-overlay .s1 .slate::before,#intro-overlay .s1 .slate::after{content:"";position:absolute;left:-1px;right:-1px;height:clamp(12px,2vmin,20px);background:repeating-linear-gradient(135deg,var(--fg) 0 14px,#000 14px 28px);opacity:0.9}
     #intro-overlay .s1 .slate::before{top:-1px} #intro-overlay .s1 .slate::after{bottom:-1px}
@@ -387,14 +387,11 @@
     }
     #intro-overlay .viewport{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
     #intro-overlay .stage{position:absolute!important;inset:0!important}
-    #intro-skip{position:fixed;bottom:calc(clamp(28px,6.5vmin,96px) + 18px);right:28px;z-index:2147483647;background:rgba(4,8,15,0.75);border:1px solid rgba(255,255,255,0.18);color:#8089a0;padding:9px 18px;border-radius:999px;cursor:pointer;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;transition:border-color .2s,color .2s;opacity:0;animation:intro-fade-in 0.4s ease 2s forwards;backdrop-filter:blur(6px)}
+    #intro-skip{position:fixed;bottom:calc(clamp(28px,6.5vmin,96px) + 18px);right:28px;z-index:2147483647;background:rgba(4,8,15,0.75);border:1px solid rgba(255,255,255,0.18);color:#c4cbd9;padding:9px 18px;border-radius:999px;cursor:pointer;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;transition:border-color .2s,color .2s;opacity:1;backdrop-filter:blur(6px)}
     #intro-skip:hover{border-color:#6aa6ff;color:#6aa6ff}
     @media (max-width:640px){#intro-skip{right:12px;left:12px;text-align:center;padding:14px 20px;font-size:13px;letter-spacing:0.14em;border-radius:12px;border-color:rgba(255,255,255,0.32);color:#c4cbd9;background:rgba(4,8,15,0.88)}}
     @keyframes intro-fade-in{from{opacity:0}to{opacity:1}}
     @media (prefers-reduced-motion:reduce){#intro-overlay,#intro-skip{display:none!important}body.intro-active{overflow:unset!important}}
-    /* Emergency-safe default: never gate access to the portfolio behind the cinematic intro. */
-    #intro-overlay,#intro-skip{display:none!important}
-    body.intro-active{overflow:auto!important}
   </style>
 
   <div id="intro-overlay" aria-hidden="true">
@@ -505,7 +502,7 @@
     </div>
     <div class="controls">
       <button id="replay">&#x21BB; Replay</button>
-      <a href="Intro%20Portofoliu%20Laura%20Andreea.html">Skip &rarr;</a>
+      <button type="button" onclick="window.__introDismiss&&window.__introDismiss()">Skip &rarr;</button>
     </div>
     <script>
     (function(){
@@ -615,15 +612,22 @@
         if(typeof stopIntroReplay==='function')stopIntroReplay();
       }
       window.__introDismiss=dismiss;
-      var timer=setTimeout(dismiss,18500);
+      var timer=setTimeout(dismiss,17500);
       function onKey(){clearTimeout(timer);dismiss();}
       document.addEventListener('keydown',onKey);
       var overlay=document.getElementById('intro-overlay');
       if(overlay){
+        overlay.addEventListener('click',function(e){
+          if(!e.target.closest('a, button')){clearTimeout(timer);dismiss();}
+        });
         overlay.addEventListener('touchstart',function(e){
           if(!e.target.closest('a, button')){clearTimeout(timer);dismiss();}
         },{passive:true});
       }
+      var finalScene=document.querySelector('#intro-overlay .s5');
+      if(finalScene)finalScene.addEventListener('animationend',function(e){
+        if(e.animationName==='showStill'){clearTimeout(timer);dismiss();}
+      },{once:true});
     })();
   </script>
 
