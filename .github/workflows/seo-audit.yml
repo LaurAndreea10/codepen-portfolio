@@ -1,0 +1,26 @@
+name: SEO and link audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '20 6 * * 0'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Generate sitemap
+        run: node scripts/generate-sitemap.mjs
+      - name: Confirm generated sitemap is committed
+        run: git diff --exit-code sitemap.xml
+      - name: Validate priority pages, metadata and internal links
+        run: node scripts/seo-audit.mjs
