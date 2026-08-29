@@ -395,7 +395,8 @@
     /* Stable Chrome intro: the original cinematic stage remains in the source,
        but is not executed as the access gate. */
     #intro-overlay .viewport,#intro-overlay>.controls{display:none!important}
-    #intro-overlay{display:grid!important;place-items:center!important;padding:24px!important}
+    #intro-overlay{display:grid!important;place-items:center!important;padding:24px!important;animation:introOverlayExit .45s ease 5.5s forwards}
+    body.intro-active{overflow:auto!important}
     .intro-safe-card{position:relative;z-index:2;width:min(760px,92vw);padding:clamp(30px,6vw,72px);border:1px solid rgba(106,166,255,.34);border-radius:24px;background:radial-gradient(circle at top,rgba(37,83,148,.3),rgba(4,8,15,.96) 62%);box-shadow:0 28px 90px rgba(0,0,0,.5);color:#f4f7ff;text-align:center;animation:introSafeIn .55s ease-out both}
     .intro-safe-kicker{margin:0 0 18px;color:#6aa6ff;font:600 12px/1.4 ui-monospace,monospace;letter-spacing:.28em;text-transform:uppercase}
     .intro-safe-card h1{margin:0;font:600 clamp(46px,10vw,104px)/.95 Georgia,serif;letter-spacing:-.055em}
@@ -408,6 +409,7 @@
     .intro-safe-button:hover,.intro-safe-button:focus-visible{border-color:#6aa6ff;color:#6aa6ff;outline:3px solid rgba(106,166,255,.3);outline-offset:3px}
     @keyframes introSafeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
     @keyframes introSafeProgress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+    @keyframes introOverlayExit{to{opacity:0;visibility:hidden;pointer-events:none}}
     @media(max-width:520px){.intro-safe-card{padding:34px 22px}.intro-safe-proof{display:grid;gap:8px}}
   </style>
 
@@ -418,7 +420,7 @@
       <p class="intro-safe-role">Front-end · CRM · Dashboard Developer</p>
       <div class="intro-safe-proof"><span><strong>84</strong> proiecte CodePen</span><span><strong>20+</strong> repo-uri publice</span><span><strong>RO / EN</strong></span></div>
       <div class="intro-safe-progress" aria-hidden="true"></div>
-      <button class="intro-safe-button" type="button" onclick="window.__introDismiss&&window.__introDismiss()">Intră în portofoliu →</button>
+      <button class="intro-safe-button" type="button" onclick="document.body.classList.remove('intro-active');var o=document.getElementById('intro-overlay');if(o)o.remove();var s=document.getElementById('intro-skip');if(s)s.remove();try{sessionStorage.setItem('la_intro_seen','1')}catch(e){}">Intră în portofoliu →</button>
     </section>
     <div class="viewport" hidden aria-hidden="true" style="display:none!important">
       <div class="stage" id="stage">
@@ -596,7 +598,7 @@
     document.addEventListener('visibilitychange',function(){if(document.hidden)stopIntroReplay();else scheduleIntroReplay();});
     </script>
   </div>
-  <button id="intro-skip" type="button" aria-label="Skip intro" onclick="window.__introDismiss&&window.__introDismiss()">SKIP &rarr;</button>
+  <button id="intro-skip" type="button" aria-label="Skip intro" onclick="document.body.classList.remove('intro-active');var o=document.getElementById('intro-overlay');if(o)o.remove();this.remove();try{sessionStorage.setItem('la_intro_seen','1')}catch(e){}">SKIP &rarr;</button>
 
   <script>
     (function(){
