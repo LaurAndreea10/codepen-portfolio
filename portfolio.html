@@ -14,6 +14,15 @@
   <link rel="alternate" hreflang="x-default" href="https://laurandreea10.github.io/codepen-portfolio/portfolio.html" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
+  <!-- Above-the-fold CSS: keeps the mobile hero stable while the full stylesheet loads. -->
+  <style>
+    :root{--bg:#071226;--bg-2:#0b1730;--panel:rgba(13,24,46,.78);--panel-2:rgba(255,255,255,.06);--text:#eef4ff;--muted:#9db0d4;--line:rgba(255,255,255,.1);--accent:#4f8cff;--accent-2:#8b5cf6;--shadow:0 20px 50px rgba(0,0,0,.35);--container:1280px}
+    *,*::before,*::after{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;overflow-x:hidden;background:radial-gradient(circle at top left,rgba(79,140,255,.18),transparent 26%),linear-gradient(180deg,var(--bg-2),var(--bg));color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}button{font:inherit}h1,h2,h3,p{margin:0}.container{width:min(var(--container),calc(100% - 32px));margin-inline:auto}.glass{border:1px solid var(--line);background:var(--panel);box-shadow:var(--shadow);backdrop-filter:blur(16px)}
+    .topbar{position:sticky;z-index:50;top:0;padding:14px 0;background:linear-gradient(to bottom,rgba(0,0,0,.24),transparent);backdrop-filter:blur(8px)}.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 18px;border-radius:999px}.brand,.nav-links{display:flex;align-items:center}.brand{gap:12px;font-weight:800}.nav-links{gap:10px;flex-wrap:wrap}.pill,.nav-links a{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--panel-2);color:var(--text)}
+    .hero{padding:34px 0 18px}.hero-card{position:relative;overflow:hidden;padding:32px;border:1px solid var(--line);border-radius:24px;background:radial-gradient(circle at top left,rgba(79,140,255,.2),transparent 30%),linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));box-shadow:var(--shadow)}.hero-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:24px;align-items:start}.eyebrow{display:inline-flex;margin-bottom:14px;color:var(--accent);font-size:.84rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}h1{max-width:12ch;font-size:clamp(2.2rem,5vw,4.6rem);line-height:.95;letter-spacing:-.04em}.hero-text{max-width:68ch;margin-top:18px;color:var(--muted);font-size:1.04rem;line-height:1.8}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border:1px solid transparent;border-radius:999px;font-weight:700}.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}.btn-secondary{border-color:var(--line);background:var(--panel-2);color:var(--text)}
+    @media(max-width:1080px){.hero-layout{grid-template-columns:1fr}}@media(max-width:760px){.container{width:min(100% - 20px,var(--container))}.topbar{padding:8px 0;backdrop-filter:none}.nav{gap:8px;padding:10px 12px;border-radius:18px}.nav-links{gap:6px}.pill,.nav-links a{padding:7px 10px;font-size:.78rem}.glass{backdrop-filter:none}.hero{padding:12px 0}.hero-card{padding:22px 18px;box-shadow:0 10px 28px rgba(0,0,0,.24)}h1{font-size:clamp(2rem,9vw,3rem)}.hero-text{font-size:.96rem;line-height:1.65}}
+  </style>
+
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Laura Andreea — Front-end CRM &amp; Dashboard Developer" />
   <meta property="og:description" content="CRM · Marketing · Front-end autodidact. Construiesc interfețe CRM care transformă procese în fluxuri clare. 84 proiecte live · Vite + React · GitHub Actions." />
@@ -30,7 +39,7 @@
   <!-- ====================================================
        FIX #3: PRELOAD LCP IMAGE — prima prioritate absoluta
        ==================================================== -->
-  <link rel="preload" as="image" href="alpis-fusion-demo-poster.svg" fetchpriority="high" />
+  <link rel="preload" as="image" href="alpis-fusion-demo-poster.svg" media="(min-width: 900px)" fetchpriority="high" />
 
   <!-- ====================================================
        FIX #4: FONTURI NON-BLOCKING
@@ -42,8 +51,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" /></noscript>
 
-  <link rel="preload" href="style.css" as="style" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="style.css" /></noscript>
 
   <script type="application/ld+json">
   {
@@ -253,8 +262,9 @@
             <div class="hero-preview-links" id="heroPreviewLinks" aria-label="Selecteaz&#x103; preview proiect"></div>
             <div class="hero-preview-wrap">
               <!--
-                FIX #2 + #3: LCP image optimizat
-                - fetchpriority="high" → browser o incarca prima
+                FIX #2 + #3: preview optimizat responsive
+                - preload cu prioritate mare doar pe desktop
+                - loading="lazy" + fetchpriority="low" pe mobil
                 - width + height explicite → zero CLS
                 - NO loading="lazy" pe LCP image
                 - decoding="async" → nu blocheaza main thread
@@ -266,7 +276,8 @@
                 alt="Preview Alpis Fusion CRM Premium"
                 width="800"
                 height="450"
-                fetchpriority="high"
+                loading="lazy"
+                fetchpriority="low"
                 decoding="async"
               />
               <div class="hero-preview-hint" id="heroPreviewHint">Preview-ul live nu s-a &icirc;nc&#x103;rcat. Po&#x21B;i folosi butoanele de mai jos pentru a deschide proiectul direct.</div>
@@ -401,7 +412,6 @@
               <li class="now-item now-item-active"><span class="now-status" aria-hidden="true">&#x1F504;</span><span><strong>ClientOps Suite case study</strong><span class="now-item-copy">Documentez problema, arhitectura, fluxul demonstrativ, modulele premium &#x219;i limit&#x103;rile.</span><span class="now-next"><b>Pasul urm&#x103;tor:</b> capturi, traseu de test &#x219;i linkuri directe spre demo &#x219;i cod.</span><span class="now-tag">Case study</span></span></li>
               <li class="now-item now-item-active"><span class="now-status" aria-hidden="true">&#x1F504;</span><span><strong>Real screenshots pass</strong><span class="now-item-copy">&Icirc;nlocuiesc posterele de prezentare cu dovezi vizuale reale.</span><span class="now-next"><b>Pasul urm&#x103;tor:</b> Alpis Fusion, ClientFlow &#x219;i ClientOps Suite Premium.</span><span class="now-tag">Visual proof</span></span></li>
               <li class="now-item now-item-active"><span class="now-status" aria-hidden="true">&#x1F504;</span><span><strong>Accessibility scorecard</strong><span class="now-item-copy">Construiesc un tabel WCAG verificabil pentru proiectele-cheie.</span><span class="now-next"><b>Pasul urm&#x103;tor:</b> tastatur&#x103;, focus, contrast, reduced motion, semantic&#x103; &#x219;i alt text.</span><span class="now-tag">Accessibility</span></span></li>
-              <li class="now-item now-item-active"><span class="now-status" aria-hidden="true">&#x1F504;</span><span><strong>Performance budget</strong><span class="now-item-copy">Stabilesc limite pentru imagini, JavaScript, iframe-uri &#x219;i timpul de &icirc;nc&#x103;rcare.</span><span class="now-next"><b>Pasul urm&#x103;tor:</b> baseline Lighthouse pentru pagina principal&#x103; &#x219;i trei case study-uri.</span><span class="now-tag">Performance</span></span></li>
               <li class="now-item now-item-active"><span class="now-status" aria-hidden="true">&#x1F504;</span><span><strong>Featured Challenges refresh</strong><span class="now-item-copy">Grupez challenge-urile recente &icirc;ntr-o colec&#x21B;ie coerent&#x103;.</span><span class="now-next"><b>Pasul urm&#x103;tor:</b> Email Alerts, MoonMail, Signal Orbit &#x219;i Bounce Signal.</span><span class="now-tag">Content curation</span></span></li>
               <li class="now-item now-item-active"><span class="now-status" aria-hidden="true">&#x1F504;</span><span><strong>Portfolio changelog</strong><span class="now-item-copy">Public un istoric cu data, proiectul &#x219;i modificarea efectuat&#x103;.</span><span class="now-next"><b>Pasul urm&#x103;tor:</b> importul actualiz&#x103;rilor recente &#x219;i linkuri spre proiecte.</span><span class="now-tag">Documentation</span></span></li>
               <li class="now-item now-item-active"><span class="now-status" aria-hidden="true">&#x1F504;</span><span><strong>Automated link checker</strong><span class="now-item-copy">Automatizez verificarea linkurilor interne, demo-urilor &#x219;i repository-urilor.</span><span class="now-next"><b>Pasul urm&#x103;tor:</b> workflow GitHub Actions cu raport pentru linkurile care e&#x219;ueaz&#x103;.</span><span class="now-tag">Automation</span></span></li>
@@ -412,6 +422,7 @@
           <div class="now-panel now-panel-hidden" id="now-panel-done" role="tabpanel" aria-labelledby="now-tab-done">
             <ul class="now-checklist">
               <li class="now-item now-item-done" data-today-completed="2026-08-30"><span class="now-status" aria-hidden="true">✅</span><span><strong>Intro și navigare portofoliu</strong> — am separat intro-ul cinematic de portofoliul complet și am adăugat tranziția sigură după 10 secunde, cu butonul Explorează activ.</span></li>
+              <li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Optimizare performanță mobilă</strong> — am prioritizat CSS-ul critic pentru hero, am amânat stilurile și posterul de sub primul ecran, am redus efectele costisitoare pe mobil și am izolat randarea secțiunilor lungi.</span></li>
               <li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Verificarea linkurilor live</strong> — am reparat adresa CV Scout și am confirmat răspuns HTTP 200 pentru toate cele 30 de destinații GitHub Pages.</span></li>
               <li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Aliniere SEO și indexare</strong> — am inclus portofoliul complet în sitemap și am aliniat referințele canonical și hreflang.</span></li>
               <li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Sincronizarea metricilor</strong> — am aliniat la 84 totalurile vizibile și valorile din metadata.</span></li>
