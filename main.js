@@ -52,8 +52,8 @@
 
   function performanceDoneHtml(){
     return en()
-      ? `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Mobile performance pass</strong> — prioritized critical hero CSS, deferred below-the-fold styles and poster loading, reduced mobile paint effects and enabled rendering containment for long sections.</span></li>`
-      : `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Optimizare performanță mobilă</strong> — am prioritizat CSS-ul critic pentru hero, am amânat stilurile și posterul de sub primul ecran, am redus efectele costisitoare pe mobil și am izolat randarea secțiunilor lungi.</span></li>`;
+      ? `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Mobile performance pass</strong> — stabilized the hero CSS and font metrics, deferred the below-the-fold poster, reduced mobile paint effects and enabled rendering containment for long sections.</span></li>`
+      : `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Optimizare performanță mobilă</strong> — am stabilizat CSS-ul și fonturile din hero, am amânat posterul de sub primul ecran, am redus efectele costisitoare pe mobil și am izolat randarea secțiunilor lungi.</span></li>`;
   }
 
   function doneHtml(){
