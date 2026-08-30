@@ -20,7 +20,6 @@
     ['ClientOps Suite case study','Documentez problema, arhitectura, fluxul demonstrativ, modulele premium și limitările demo-ului.','Capturi, traseu de test și legături directe spre demo și cod.','Case study'],
     ['Real screenshots pass','Înlocuiesc progresiv posterele de prezentare cu capturi și înregistrări reale din proiecte.','Alpis Fusion, ClientFlow și ClientOps Suite Premium.','Visual proof'],
     ['Accessibility scorecard','Construiesc un tabel WCAG verificabil pentru fiecare proiect-cheie.','Tastatură, focus, contrast, reduced motion, semantică și alternative text.','Accessibility'],
-    ['Performance budget','Stabilesc limite clare pentru imagini, JavaScript, iframe-uri și timpul de încărcare.','Baseline Lighthouse și buget pentru pagina principală și trei case study-uri.','Performance'],
     ['Featured Challenges refresh','Grupez cele mai recente challenge-uri într-o colecție vizibilă și coerentă.','Email Alerts, MoonMail, Signal Orbit și Bounce Signal.','Content curation'],
     ['Portfolio changelog','Public un istoric ușor de urmărit cu data, proiectul și modificarea efectuată.','Importul actualizărilor recente și legături spre proiectele afectate.','Documentation'],
     ['Automated link checker','Adaug verificare automată pentru linkurile interne, demo-urile și repository-urile externe.','Workflow GitHub Actions cu raport pentru linkurile care eșuează.','Automation'],
@@ -31,7 +30,6 @@
     ['ClientOps Suite case study','Document the problem, architecture, demo flow, premium modules and demo limitations.','Add screenshots, a test path and direct demo/source links.','Case study'],
     ['Real screenshots pass','Progressively replace presentation posters with real project screenshots and recordings.','Alpis Fusion, ClientFlow and ClientOps Suite Premium.','Visual proof'],
     ['Accessibility scorecard','Build a verifiable WCAG table for every key project.','Keyboard, focus, contrast, reduced motion, semantics and text alternatives.','Accessibility'],
-    ['Performance budget','Set clear limits for images, JavaScript, iframes and loading time.','Create a Lighthouse baseline and budget for the home page and three case studies.','Performance'],
     ['Featured Challenges refresh','Group the latest challenges into one visible, coherent collection.','Email Alerts, MoonMail, Signal Orbit and Bounce Signal.','Content curation'],
     ['Portfolio changelog','Publish an easy-to-follow history with date, project and completed change.','Import recent updates and link every affected project.','Documentation'],
     ['Automated link checker','Add automated checks for internal links, live demos and external repositories.','Create a GitHub Actions workflow with a failed-link report.','Automation'],
@@ -52,6 +50,12 @@
     return items.map(x => `<li class="now-item now-item-active" data-static-now-item="active"><span class="now-status" aria-hidden="true">🔄</span><span><strong>${x[0]}</strong><span class="now-item-copy">${x[1]}</span><span class="now-next"><b>${en()?'Next step':'Pasul următor'}:</b> ${x[2]}</span><span class="now-tag">${x[3]}</span></span></li>`).join('');
   }
 
+  function performanceDoneHtml(){
+    return en()
+      ? `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Mobile performance pass</strong> — prioritized critical hero CSS, deferred below-the-fold styles and poster loading, reduced mobile paint effects and enabled rendering containment for long sections.</span></li>`
+      : `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Optimizare performanță mobilă</strong> — am prioritizat CSS-ul critic pentru hero, am amânat stilurile și posterul de sub primul ecran, am redus efectele costisitoare pe mobil și am izolat randarea secțiunilor lungi.</span></li>`;
+  }
+
   function doneHtml(){
     return en()
       ? `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Portfolio consistency pass</strong> — ClientOps status, accessibility for three case studies and technical proof/README alignment completed.</span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status" aria-hidden="true">✅</span><span><strong>LAURAI / BOUNCE SIGNAL</strong> — completed and published as an interactive email-bounce signal experience. <a class="now-item-link" href="https://laurandreea10.github.io/LAURAI-BOUNCE-SIGNAL/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>LaurAi · Signal Orbit</strong> — completed and published as an accessible email signature studio with RO/EN, high contrast, reduced motion, version history and README. <a class="now-item-link" href="https://laurandreea10.github.io/LAURAI-SIGNAL-ORBIT/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>Email Alerts</strong> — published with RO/EN, accessibility, dark mode and version history. <a class="now-item-link" href="https://laurandreea10.github.io/Email-Alerts/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>MoonMail — Cosmic Receipt Email</strong> — completed and published email challenge. <a class="now-item-link" href="https://laurandreea10.github.io/MoonMail-Cosmic-Receipt-Email/" target="_blank" rel="noopener noreferrer">Open project</a></span></li>`
@@ -62,7 +66,7 @@
     const active=document.querySelector('#now-panel-active .now-checklist');
     const done=document.querySelector('#now-panel-done .now-checklist');
     if(active) active.innerHTML=activeHtml();
-    if(done) done.innerHTML=todayDoneHtml()+doneHtml();
+    if(done) done.innerHTML=todayDoneHtml()+performanceDoneHtml()+doneHtml();
     const title=document.getElementById('now-title');
     if(title) title.textContent=en()?'What I am working on now':'La ce lucrez acum';
     const note=document.querySelector('#now .now-note');
