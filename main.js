@@ -169,11 +169,28 @@
     }).observe(now,{childList:true,subtree:true});
   }
 
+  function setupProjectCollections(){
+    document.querySelectorAll('.collection-toggle[aria-controls]').forEach(button=>{
+      if(button.dataset.ready) return;
+      const list=document.getElementById(button.getAttribute('aria-controls'));
+      if(!list) return;
+      button.dataset.ready='1';
+      button.addEventListener('click',()=>{
+        const expanded=button.getAttribute('aria-expanded')==='true';
+        list.classList.toggle('is-expanded',!expanded);
+        button.setAttribute('aria-expanded',String(!expanded));
+        button.textContent=!expanded?button.dataset.hideLabel:button.dataset.showLabel;
+        if(expanded) list.scrollIntoView({block:'nearest'});
+      });
+    });
+  }
+
   function init(){
     styles();
     restoreNow();
     fixProjectCounts();
     guardNow();
+    setupProjectCollections();
 
     const script=document.createElement('script');
     script.src=PREVIOUS_MAIN;
