@@ -17,23 +17,17 @@
 
   const ACTIVE_RO = [
     ['Project Discovery & Filtering Upgrade','Fac proiectele mai ușor de găsit prin categorii, căutare, filtre și statusuri clare.','Inventar unic și eliminarea cardurilor duplicate sau învechite.','Portfolio UX'],
-    ['ClientOps Suite case study','Documentez problema, arhitectura, fluxul demonstrativ, modulele premium și limitările demo-ului.','Capturi, traseu de test și legături directe spre demo și cod.','Case study'],
-    ['Real screenshots pass','Înlocuiesc progresiv posterele de prezentare cu capturi și înregistrări reale din proiecte.','Alpis Fusion, ClientFlow și ClientOps Suite Premium.','Visual proof'],
     ['Accessibility scorecard','Construiesc un tabel WCAG verificabil pentru fiecare proiect-cheie.','Tastatură, focus, contrast, reduced motion, semantică și alternative text.','Accessibility'],
     ['Featured Challenges refresh','Grupez cele mai recente challenge-uri într-o colecție vizibilă și coerentă.','Email Alerts, MoonMail, Signal Orbit și Bounce Signal.','Content curation'],
     ['Portfolio changelog','Public un istoric ușor de urmărit cu data, proiectul și modificarea efectuată.','Importul actualizărilor recente și legături spre proiectele afectate.','Documentation'],
     ['Automated link checker','Adaug verificare automată pentru linkurile interne, demo-urile și repository-urile externe.','Workflow GitHub Actions cu raport pentru linkurile care eșuează.','Automation'],
-    ['Recruiter demo path','Construiesc un traseu ghidat de 60–90 de secunde prin cele mai relevante proiecte.','Alpis Fusion → ClientFlow → ClientOps Suite, cu dovezi și CTA final.','Recruiter UX']
   ];
   const ACTIVE_EN = [
     ['Project Discovery & Filtering Upgrade','Make projects easier to find through categories, search, filters and clear statuses.','Create one inventory and remove duplicate or stale cards.','Portfolio UX'],
-    ['ClientOps Suite case study','Document the problem, architecture, demo flow, premium modules and demo limitations.','Add screenshots, a test path and direct demo/source links.','Case study'],
-    ['Real screenshots pass','Progressively replace presentation posters with real project screenshots and recordings.','Alpis Fusion, ClientFlow and ClientOps Suite Premium.','Visual proof'],
     ['Accessibility scorecard','Build a verifiable WCAG table for every key project.','Keyboard, focus, contrast, reduced motion, semantics and text alternatives.','Accessibility'],
     ['Featured Challenges refresh','Group the latest challenges into one visible, coherent collection.','Email Alerts, MoonMail, Signal Orbit and Bounce Signal.','Content curation'],
     ['Portfolio changelog','Publish an easy-to-follow history with date, project and completed change.','Import recent updates and link every affected project.','Documentation'],
     ['Automated link checker','Add automated checks for internal links, live demos and external repositories.','Create a GitHub Actions workflow with a failed-link report.','Automation'],
-    ['Recruiter demo path','Build a guided 60–90 second route through the strongest projects.','Alpis Fusion → ClientFlow → ClientOps Suite, with proof and a final CTA.','Recruiter UX']
   ];
 
   function en(){ return document.documentElement.lang === 'en'; }
@@ -56,6 +50,12 @@
       : `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Optimizare performanță mobilă</strong> — am stabilizat CSS-ul și fonturile din hero, am amânat posterul de sub primul ecran, am redus efectele costisitoare pe mobil și am izolat randarea secțiunilor lungi.</span></li>`;
   }
 
+  function qualityDoneHtml(){
+    return en()
+      ? `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Portfolio quality pass</strong> — clarified the Top 3 route, reduced simultaneous project cards, added three real live-demo captures with measurable proof, reached Lighthouse Accessibility 100 and confirmed three consecutive mobile scores above 90: 97, 96 and 95.</span></li>`
+      : `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Quality pass portofoliu</strong> — am evidențiat traseul Top 3, am redus cardurile afișate simultan, am adăugat trei capturi reale cu dovezi măsurabile, am obținut Lighthouse Accessibility 100 și am confirmat trei scoruri mobile consecutive peste 90: 97, 96 și 95.</span></li>`;
+  }
+
   function doneHtml(){
     return en()
       ? `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Portfolio consistency pass</strong> — ClientOps status, accessibility for three case studies and technical proof/README alignment completed.</span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status" aria-hidden="true">✅</span><span><strong>LAURAI / BOUNCE SIGNAL</strong> — completed and published as an interactive email-bounce signal experience. <a class="now-item-link" href="https://laurandreea10.github.io/LAURAI-BOUNCE-SIGNAL/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>LaurAi · Signal Orbit</strong> — completed and published as an accessible email signature studio with RO/EN, high contrast, reduced motion, version history and README. <a class="now-item-link" href="https://laurandreea10.github.io/LAURAI-SIGNAL-ORBIT/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>Email Alerts</strong> — published with RO/EN, accessibility, dark mode and version history. <a class="now-item-link" href="https://laurandreea10.github.io/Email-Alerts/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>MoonMail — Cosmic Receipt Email</strong> — completed and published email challenge. <a class="now-item-link" href="https://laurandreea10.github.io/MoonMail-Cosmic-Receipt-Email/" target="_blank" rel="noopener noreferrer">Open project</a></span></li>`
@@ -66,7 +66,7 @@
     const active=document.querySelector('#now-panel-active .now-checklist');
     const done=document.querySelector('#now-panel-done .now-checklist');
     if(active) active.innerHTML=activeHtml();
-    if(done) done.innerHTML=todayDoneHtml()+performanceDoneHtml()+doneHtml();
+    if(done) done.innerHTML=todayDoneHtml()+qualityDoneHtml()+performanceDoneHtml()+doneHtml();
     const title=document.getElementById('now-title');
     if(title) title.textContent=en()?'What I am working on now':'La ce lucrez acum';
     const note=document.querySelector('#now .now-note');
