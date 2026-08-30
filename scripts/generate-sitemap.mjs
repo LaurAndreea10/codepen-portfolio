@@ -5,6 +5,7 @@ const today = new Date().toISOString().slice(0, 10);
 
 const pages = [
   ['', 'weekly', '1.0'],
+  ['portfolio.html', 'weekly', '1.0'],
   ['en/', 'weekly', '0.9'],
   ['alpis-fusion-crm.html', 'monthly', '0.9'],
   ['projects/clientflow.html', 'monthly', '0.9'],
@@ -42,10 +43,10 @@ if (missing.length) {
 
 const entries = pages.map(([path, changefreq, priority]) => {
   const url = `${origin}/${path}`;
-  const alternates = path === ''
-    ? `\n    <xhtml:link rel="alternate" hreflang="ro" href="${origin}/" />\n    <xhtml:link rel="alternate" hreflang="en" href="${origin}/en/" />\n    <xhtml:link rel="alternate" hreflang="x-default" href="${origin}/" />`
+  const alternates = path === 'portfolio.html'
+    ? `\n    <xhtml:link rel="alternate" hreflang="ro" href="${origin}/portfolio.html" />\n    <xhtml:link rel="alternate" hreflang="en" href="${origin}/en/" />\n    <xhtml:link rel="alternate" hreflang="x-default" href="${origin}/portfolio.html" />`
     : path === 'en/'
-      ? `\n    <xhtml:link rel="alternate" hreflang="ro" href="${origin}/" />\n    <xhtml:link rel="alternate" hreflang="en" href="${origin}/en/" />\n    <xhtml:link rel="alternate" hreflang="x-default" href="${origin}/" />`
+      ? `\n    <xhtml:link rel="alternate" hreflang="ro" href="${origin}/portfolio.html" />\n    <xhtml:link rel="alternate" hreflang="en" href="${origin}/en/" />\n    <xhtml:link rel="alternate" hreflang="x-default" href="${origin}/portfolio.html" />`
       : '';
   return `  <url>\n    <loc>${url}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>${alternates}\n  </url>`;
 }).join('\n\n');
