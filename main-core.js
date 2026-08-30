@@ -262,7 +262,7 @@
     if (els.heroPreviewDescription) els.heroPreviewDescription.textContent = slide.description[currentLang];
     if (els.heroPreviewType) els.heroPreviewType.textContent = slide.label;
     if (els.heroPreviewUrl) { els.heroPreviewUrl.href = slide.secondaryUrl; els.heroPreviewUrl.textContent = slide.secondaryUrl.replace(/^https?:\/\//, ''); }
-    if (els.heroPreviewOpen) { els.heroPreviewOpen.href = slide.primaryUrl; els.heroPreviewOpen.textContent = translations[currentLang].previewCaseStudy; }
+    if (els.heroPreviewOpen) { els.heroPreviewOpen.href = slide.primaryUrl; els.heroPreviewOpen.textContent = translations[currentLang].previewCaseStudy; els.heroPreviewOpen.setAttribute('aria-label', `${translations[currentLang].previewCaseStudy}: ${slide.title}`); }
     if (els.heroPreviewOpenSecondary) { els.heroPreviewOpenSecondary.href = slide.secondaryUrl; els.heroPreviewOpenSecondary.textContent = translations[currentLang].previewOpen; }
     if (els.heroPreviewCode) { els.heroPreviewCode.href = slide.codeUrl; els.heroPreviewCode.textContent = translations[currentLang].previewCode; }
     if (els.heroPreviewFrame) { showPreviewFallback(true); els.heroPreviewFrame.src = slide.frameUrl; }
