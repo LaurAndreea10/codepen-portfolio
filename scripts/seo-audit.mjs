@@ -1,7 +1,7 @@
 import { readFileSync, existsSync, statSync } from 'node:fs';
 
 const files = [
-  'index.html', 'en/index.html', 'alpis-fusion-crm.html',
+  'index.html', 'portfolio.html', 'en/index.html', 'alpis-fusion-crm.html',
   'projects/clientflow.html', 'projects/clientops-suite-premium.html',
   'tools/link-video-automation-pack.html'
 ];
