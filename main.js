@@ -16,8 +16,6 @@
   const CODEPEN_COUNT = CODEPEN_BASE_COUNT + CODEPEN_NEW_PROJECTS.length;
 
   const ACTIVE_RO = [
-    ['Live Project Health Check','Verific toate demo-urile, iframe-urile și CTA-urile pentru linkuri defecte, pagini nepublicate sau încărcare incompletă.','Alpis Fusion preview, hub-ul CodePen și cele mai noi proiecte GitHub Pages.','Quality assurance'],
-    ['Portfolio RO/EN Content Sync','Uniformizez titlurile, descrierile, statusurile și metricile între versiunile română și engleză.','Latest on GitHub, CRM Ecosystem, Proof of Work și Finalizat recent.','Bilingual maintenance'],
     ['Project Discovery & Filtering Upgrade','Fac proiectele mai ușor de găsit prin categorii, căutare, filtre și statusuri clare.','Inventar unic și eliminarea cardurilor duplicate sau învechite.','Portfolio UX'],
     ['ClientOps Suite case study','Documentez problema, arhitectura, fluxul demonstrativ, modulele premium și limitările demo-ului.','Capturi, traseu de test și legături directe spre demo și cod.','Case study'],
     ['Real screenshots pass','Înlocuiesc progresiv posterele de prezentare cu capturi și înregistrări reale din proiecte.','Alpis Fusion, ClientFlow și ClientOps Suite Premium.','Visual proof'],
@@ -29,8 +27,6 @@
     ['Recruiter demo path','Construiesc un traseu ghidat de 60–90 de secunde prin cele mai relevante proiecte.','Alpis Fusion → ClientFlow → ClientOps Suite, cu dovezi și CTA final.','Recruiter UX']
   ];
   const ACTIVE_EN = [
-    ['Live Project Health Check','Check every demo, iframe and CTA for broken links, unpublished pages or incomplete loading.','Alpis Fusion preview, the CodePen hub and the newest GitHub Pages projects.','Quality assurance'],
-    ['Portfolio RO/EN Content Sync','Align titles, descriptions, statuses and metrics across Romanian and English.','Latest on GitHub, CRM Ecosystem, Proof of Work and Recently completed.','Bilingual maintenance'],
     ['Project Discovery & Filtering Upgrade','Make projects easier to find through categories, search, filters and clear statuses.','Create one inventory and remove duplicate or stale cards.','Portfolio UX'],
     ['ClientOps Suite case study','Document the problem, architecture, demo flow, premium modules and demo limitations.','Add screenshots, a test path and direct demo/source links.','Case study'],
     ['Real screenshots pass','Progressively replace presentation posters with real project screenshots and recordings.','Alpis Fusion, ClientFlow and ClientOps Suite Premium.','Visual proof'],
@@ -43,6 +39,12 @@
   ];
 
   function en(){ return document.documentElement.lang === 'en'; }
+
+  function todayDoneHtml(){
+    return en()
+      ? `<li class="now-item now-item-done" data-today-completed="2026-08-30"><span class="now-status" aria-hidden="true">✅</span><span><strong>Intro and portfolio navigation</strong> — separated the cinematic intro from the full portfolio and added a reliable 10-second transition with an active Explore button.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Live link health</strong> — fixed the CV Scout URL and verified all 30 linked GitHub Pages destinations with HTTP 200 responses.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>SEO and indexing alignment</strong> — added the full portfolio to the sitemap and aligned canonical and hreflang references.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Portfolio metrics sync</strong> — aligned the visible and metadata project totals to 84.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>JavaScript cleanup</strong> — removed the hidden legacy cinematic code and replaced the fragile CDN chain with local main-core.js.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>EN accessibility parity</strong> — added light/dark theme, high contrast, visible focus and reduced-motion support to the English page.</span></li>`
+      : `<li class="now-item now-item-done" data-today-completed="2026-08-30"><span class="now-status" aria-hidden="true">✅</span><span><strong>Intro și navigare portofoliu</strong> — am separat intro-ul cinematic de portofoliul complet și am adăugat tranziția sigură după 10 secunde, cu butonul Explorează activ.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Verificarea linkurilor live</strong> — am reparat adresa CV Scout și am confirmat răspuns HTTP 200 pentru toate cele 30 de destinații GitHub Pages.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Aliniere SEO și indexare</strong> — am inclus portofoliul complet în sitemap și am aliniat referințele canonical și hreflang.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Sincronizarea metricilor</strong> — am aliniat la 84 totalurile vizibile și valorile din metadata.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Curățare JavaScript</strong> — am eliminat codul cinematic vechi, ascuns, și am înlocuit lanțul CDN fragil cu fișierul local main-core.js.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Paritate de accesibilitate EN</strong> — am adăugat temă light/dark, contrast ridicat, focus vizibil și suport reduced motion pe pagina engleză.</span></li>`;
+  }
 
   function activeHtml(){
     const items = en() ? ACTIVE_EN : ACTIVE_RO;
@@ -60,15 +62,15 @@
     const active=document.querySelector('#now-panel-active .now-checklist');
     const done=document.querySelector('#now-panel-done .now-checklist');
     if(active) active.innerHTML=activeHtml();
-    if(done) done.innerHTML=doneHtml();
+    if(done) done.innerHTML=todayDoneHtml()+doneHtml();
     const title=document.getElementById('now-title');
     if(title) title.textContent=en()?'What I am working on now':'La ce lucrez acum';
     const note=document.querySelector('#now .now-note');
     if(note) note.textContent=en()?'A small, intentionally current list: what is active, why it matters, and the next concrete step.':'O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
     const date=document.getElementById('now-datetime');
     if(date){
-      date.dateTime='2026-08-29';
-      date.textContent=en()?'29 August 2026':'29 August 2026';
+      date.dateTime='2026-08-30';
+      date.textContent='30 August 2026';
     }
   }
 
@@ -156,7 +158,7 @@
       busy=true;
       queueMicrotask(()=>{
         busy=false;
-        if(document.querySelectorAll('#now-panel-active [data-static-now-item="active"]').length!==3 || document.querySelectorAll('#now-panel-done [data-static-now-item="done"]').length!==4){
+        if(document.querySelectorAll('#now-panel-active [data-static-now-item="active"]').length!==(en()?ACTIVE_EN:ACTIVE_RO).length || !document.querySelector('#now-panel-done [data-today-completed="2026-08-30"]')){
           restoreNow();
         }
       });
