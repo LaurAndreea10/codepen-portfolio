@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const PREVIOUS_MAIN = 'https://cdn.jsdelivr.net/gh/LaurAndreea10/codepen-portfolio@c02951956477eacc6cb791b932b30c41d6d1b7da/main.js';
+  const PREVIOUS_MAIN = 'main-core.js';
 
   // Single source of truth for CodePen growth.
   // 83 projects were already represented before this Pen was added.
