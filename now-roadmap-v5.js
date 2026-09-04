@@ -37,6 +37,7 @@
       + '<div class="now-panel" id="now-panel-history" role="tabpanel" aria-labelledby="now-tab-history">'
       + '<p class="now-panel-head"><strong>Istoric recent:</strong> versiunea inițială este păstrată aici, nu eliminată.</p>'
       + '<ul class="now-list">'
+      + '<li>✅ <strong>ARCADE WORLD v33</strong> — HTML redus 527 KB → 19 KB, bundle-uri minificate automat și Lighthouse median 61 → 77; Accessibility 100.</li>'
       + '<li>✅ <strong><a href="release-timeline.html" style="color:inherit">Release Timeline v1.0</a></strong> — istoric public pentru versiuni, remedieri și decizii.</li>'
       + '<li>✅ <strong>Garden Match Masters v2.1</strong> — accesibilitate cu tastatura, focus, reduced motion, touch targets, manifest și offline cache.</li>'
       + '<li>✅ <strong>Quality automation + rezultate reale</strong> — trei rulări: ARCADE WORLD 61/100 performanță, Garden Match 78–79/100, Excel Quest 99–100/100; toate au Accessibility 100.</li>'
