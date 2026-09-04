@@ -16,26 +16,20 @@
   const CODEPEN_COUNT = CODEPEN_BASE_COUNT + CODEPEN_NEW_PROJECTS.length;
 
   const ACTIVE_RO = [
-    ['Project Discovery & Filtering Upgrade','Fac proiectele mai ușor de găsit prin categorii, căutare, filtre și statusuri clare.','Inventar unic și eliminarea cardurilor duplicate sau învechite.','Portfolio UX'],
-    ['Accessibility scorecard','Construiesc un tabel WCAG verificabil pentru fiecare proiect-cheie.','Tastatură, focus, contrast, reduced motion, semantică și alternative text.','Accessibility'],
-    ['Featured Challenges refresh','Grupez cele mai recente challenge-uri într-o colecție vizibilă și coerentă.','Email Alerts, MoonMail, Signal Orbit și Bounce Signal.','Content curation'],
-    ['Portfolio changelog','Public un istoric ușor de urmărit cu data, proiectul și modificarea efectuată.','Importul actualizărilor recente și legături spre proiectele afectate.','Documentation'],
-    ['Automated link checker','Adaug verificare automată pentru linkurile interne, demo-urile și repository-urile externe.','Workflow GitHub Actions cu raport pentru linkurile care eșuează.','Automation'],
+    ['Project Health Dashboard','Construiesc un panou care arată starea demo-urilor, a documentației și a accesibilității.','Conectarea rezultatelor din link checker și Lighthouse într-o singură vedere.','Observability'],
+    ['Case Study Story Mode','Transform Top 3 într-un traseu narativ scurt: problemă, decizie, implementare, rezultat.','Adăugarea unui mod de prezentare de 60–90 secunde pentru fiecare proiect.','Portfolio storytelling'],
   ];
   const ACTIVE_EN = [
-    ['Project Discovery & Filtering Upgrade','Make projects easier to find through categories, search, filters and clear statuses.','Create one inventory and remove duplicate or stale cards.','Portfolio UX'],
-    ['Accessibility scorecard','Build a verifiable WCAG table for every key project.','Keyboard, focus, contrast, reduced motion, semantics and text alternatives.','Accessibility'],
-    ['Featured Challenges refresh','Group the latest challenges into one visible, coherent collection.','Email Alerts, MoonMail, Signal Orbit and Bounce Signal.','Content curation'],
-    ['Portfolio changelog','Publish an easy-to-follow history with date, project and completed change.','Import recent updates and link every affected project.','Documentation'],
-    ['Automated link checker','Add automated checks for internal links, live demos and external repositories.','Create a GitHub Actions workflow with a failed-link report.','Automation'],
+    ['Project Health Dashboard','Build a panel showing demo, documentation and accessibility health.','Connect link checker and Lighthouse results in one view.','Observability'],
+    ['Case Study Story Mode','Turn the Top 3 into a short narrative: problem, decision, implementation and outcome.','Add a 60–90 second presentation mode for each project.','Portfolio storytelling'],
   ];
 
   function en(){ return document.documentElement.lang === 'en'; }
 
   function todayDoneHtml(){
     return en()
-      ? `<li class="now-item now-item-done" data-today-completed="2026-08-30"><span class="now-status" aria-hidden="true">✅</span><span><strong>Intro and portfolio navigation</strong> — separated the cinematic intro from the full portfolio and added a reliable 10-second transition with an active Explore button.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Live link health</strong> — fixed the CV Scout URL and verified all 30 linked GitHub Pages destinations with HTTP 200 responses.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>SEO and indexing alignment</strong> — added the full portfolio to the sitemap and aligned canonical and hreflang references.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Portfolio metrics sync</strong> — aligned the visible and metadata project totals to 84.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>JavaScript cleanup</strong> — removed the hidden legacy cinematic code and replaced the fragile CDN chain with local main-core.js.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>EN accessibility parity</strong> — added light/dark theme, high contrast, visible focus and reduced-motion support to the English page.</span></li>`
-      : `<li class="now-item now-item-done" data-today-completed="2026-08-30"><span class="now-status" aria-hidden="true">✅</span><span><strong>Intro și navigare portofoliu</strong> — am separat intro-ul cinematic de portofoliul complet și am adăugat tranziția sigură după 10 secunde, cu butonul Explorează activ.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Verificarea linkurilor live</strong> — am reparat adresa CV Scout și am confirmat răspuns HTTP 200 pentru toate cele 30 de destinații GitHub Pages.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Aliniere SEO și indexare</strong> — am inclus portofoliul complet în sitemap și am aliniat referințele canonical și hreflang.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Sincronizarea metricilor</strong> — am aliniat la 84 totalurile vizibile și valorile din metadata.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Curățare JavaScript</strong> — am eliminat codul cinematic vechi, ascuns, și am înlocuit lanțul CDN fragil cu fișierul local main-core.js.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Paritate de accesibilitate EN</strong> — am adăugat temă light/dark, contrast ridicat, focus vizibil și suport reduced motion pe pagina engleză.</span></li>`;
+      ? `<li class="now-item now-item-done" data-today-completed="2026-09-04"><span class="now-status" aria-hidden="true">✅</span><span><strong>Intro and portfolio navigation</strong> — separated the cinematic intro from the full portfolio and added a reliable 10-second transition with an active Explore button.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Live link health</strong> — fixed the CV Scout URL and verified all 30 linked GitHub Pages destinations with HTTP 200 responses.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>SEO and indexing alignment</strong> — added the full portfolio to the sitemap and aligned canonical and hreflang references.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Portfolio metrics sync</strong> — aligned the visible and metadata project totals to 84.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>JavaScript cleanup</strong> — removed the hidden legacy cinematic code and replaced the fragile CDN chain with local main-core.js.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>EN accessibility parity</strong> — added light/dark theme, high contrast, visible focus and reduced-motion support to the English page.</span></li>`
+      : `<li class="now-item now-item-done" data-today-completed="2026-09-04"><span class="now-status" aria-hidden="true">✅</span><span><strong>Intro și navigare portofoliu</strong> — am separat intro-ul cinematic de portofoliul complet și am adăugat tranziția sigură după 10 secunde, cu butonul Explorează activ.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Verificarea linkurilor live</strong> — am reparat adresa CV Scout și am confirmat răspuns HTTP 200 pentru toate cele 30 de destinații GitHub Pages.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Aliniere SEO și indexare</strong> — am inclus portofoliul complet în sitemap și am aliniat referințele canonical și hreflang.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Sincronizarea metricilor</strong> — am aliniat la 84 totalurile vizibile și valorile din metadata.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Curățare JavaScript</strong> — am eliminat codul cinematic vechi, ascuns, și am înlocuit lanțul CDN fragil cu fișierul local main-core.js.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Paritate de accesibilitate EN</strong> — am adăugat temă light/dark, contrast ridicat, focus vizibil și suport reduced motion pe pagina engleză.</span></li>`;
   }
 
   function activeHtml(){
@@ -56,6 +50,12 @@
       : `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Quality pass portofoliu</strong> — am evidențiat traseul Top 3, am redus cardurile afișate simultan, am adăugat trei capturi reale cu dovezi măsurabile, am obținut Lighthouse Accessibility 100 și am confirmat trei scoruri mobile consecutive peste 90: 97, 96 și 95.</span></li>`;
   }
 
+  function deliveryDoneHtml(){
+    return en()
+      ? `<li class="now-item now-item-done" data-delivery-completed="2026-09-04"><span class="now-status" aria-hidden="true">✅</span><span><strong>Portfolio delivery sprint</strong> — shipped unified discovery filters, deduplication, WCAG scorecard, Featured Challenges, a public changelog and automated link health checks; also fixed duplicate ClientFlow markup.</span></li>`
+      : `<li class="now-item now-item-done" data-delivery-completed="2026-09-04"><span class="now-status" aria-hidden="true">✅</span><span><strong>Sprint de implementare portofoliu</strong> — am livrat căutare și filtre unificate, deduplicare, scorecard WCAG, Featured Challenges, changelog public și verificarea automată a linkurilor; am reparat și marcajul duplicat ClientFlow.</span></li>`;
+  }
+
   function doneHtml(){
     return en()
       ? `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Portfolio consistency pass</strong> — ClientOps status, accessibility for three case studies and technical proof/README alignment completed.</span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status" aria-hidden="true">✅</span><span><strong>LAURAI / BOUNCE SIGNAL</strong> — completed and published as an interactive email-bounce signal experience. <a class="now-item-link" href="https://laurandreea10.github.io/LAURAI-BOUNCE-SIGNAL/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>LaurAi · Signal Orbit</strong> — completed and published as an accessible email signature studio with RO/EN, high contrast, reduced motion, version history and README. <a class="now-item-link" href="https://laurandreea10.github.io/LAURAI-SIGNAL-ORBIT/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>Email Alerts</strong> — published with RO/EN, accessibility, dark mode and version history. <a class="now-item-link" href="https://laurandreea10.github.io/Email-Alerts/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>MoonMail — Cosmic Receipt Email</strong> — completed and published email challenge. <a class="now-item-link" href="https://laurandreea10.github.io/MoonMail-Cosmic-Receipt-Email/" target="_blank" rel="noopener noreferrer">Open project</a></span></li>`
@@ -66,15 +66,15 @@
     const active=document.querySelector('#now-panel-active .now-checklist');
     const done=document.querySelector('#now-panel-done .now-checklist');
     if(active) active.innerHTML=activeHtml();
-    if(done) done.innerHTML=todayDoneHtml()+qualityDoneHtml()+performanceDoneHtml()+doneHtml();
+    if(done) done.innerHTML=todayDoneHtml()+deliveryDoneHtml()+qualityDoneHtml()+performanceDoneHtml()+doneHtml();
     const title=document.getElementById('now-title');
     if(title) title.textContent=en()?'What I am working on now':'La ce lucrez acum';
     const note=document.querySelector('#now .now-note');
     if(note) note.textContent=en()?'A small, intentionally current list: what is active, why it matters, and the next concrete step.':'O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
     const date=document.getElementById('now-datetime');
     if(date){
-      date.dateTime='2026-08-30';
-      date.textContent='30 August 2026';
+      date.dateTime='2026-09-04';
+      date.textContent='04 Septembrie 2026';
     }
   }
 
@@ -162,7 +162,7 @@
       busy=true;
       queueMicrotask(()=>{
         busy=false;
-        if(document.querySelectorAll('#now-panel-active [data-static-now-item="active"]').length!==(en()?ACTIVE_EN:ACTIVE_RO).length || !document.querySelector('#now-panel-done [data-today-completed="2026-08-30"]')){
+        if(document.querySelectorAll('#now-panel-active [data-static-now-item="active"]').length!==(en()?ACTIVE_EN:ACTIVE_RO).length || !document.querySelector('#now-panel-done [data-today-completed="2026-09-04"]')){
           restoreNow();
         }
       });
