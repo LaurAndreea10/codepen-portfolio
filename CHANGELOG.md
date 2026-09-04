@@ -5,6 +5,10 @@ Toate modificările importante ale portofoliului sunt documentate aici.
 ## 2026-09-04
 
 ### Adăugat
+- Project Health Dashboard v1.0 cu inventar, familii canonice și separare Core / Games / Experiments.
+- Proof Registry v1.0 pentru Alpis Fusion CRM, ClientFlow PRO și Link Video Editor Studio.
+- Game QA Audits v1.0 pentru ARCADE WORLD, Garden Match Masters și Excel Quest.
+- PROJECT-STATUS.md în cinci repository-uri canonice, cu variantele anterioare păstrate în istoric.
 - Audit GitHub pentru 97 de repository-uri și primul lot de maturizare pentru proiectele recente.
 - Istoric sincronizat pentru Poodle Coach & Care Premium v15, Bounce Signal v3.1 și MoonMail v1.1 în secțiunea „La ce lucrez”.
 - Focus nou: Project Health Dashboard și case studies verificabile.
