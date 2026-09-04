@@ -5,6 +5,15 @@ Toate modificările importante ale portofoliului sunt documentate aici.
 ## 2026-09-04
 
 ### Adăugat
+- Release Timeline public și linkuri Project Health/Releases în navigarea principală.
+- Workflow Lighthouse cu trei rulări pentru ARCADE WORLD, Garden Match Masters și Excel Quest.
+- Standard QUALITY comun pentru cele șase proiecte prioritare.
+- Taxonomie coerentă de topics GitHub în REPOSITORY-TOPICS.md.
+- Marcaj Historical version în 13 repository-uri și legătură către proiectul canonic.
+
+### Îmbunătățit
+- Garden Match Masters v2.1: tastatură, focus, reduced motion, touch targets, live regions, manifest PWA și cache offline.
+
 - Project Health Dashboard v1.0 cu inventar, familii canonice și separare Core / Games / Experiments.
 - Proof Registry v1.0 pentru Alpis Fusion CRM, ClientFlow PRO și Link Video Editor Studio.
 - Game QA Audits v1.0 pentru ARCADE WORLD, Garden Match Masters și Excel Quest.
