@@ -2,7 +2,7 @@
 (function(){
   'use strict';
 
-  var VERSION = 'now-roadmap-v5-2026-05-22';
+  var VERSION = 'now-roadmap-v5-2026-09-04-project-audit';
 
   function addStyles(){
     if (document.getElementById('now-roadmap-v5-styles')) return;
@@ -27,16 +27,19 @@
       + '<button class="now-tab" type="button" role="tab" aria-selected="false" aria-controls="now-panel-history" id="now-tab-history" data-now-tab="history">✅ Istoric</button>'
       + '</div>'
       + '<div class="now-panel is-active" id="now-panel-progress" role="tabpanel" aria-labelledby="now-tab-progress">'
-      + '<p class="now-panel-head"><strong>Focus curent:</strong> două module noi în Marketing OS, utile pentru marketing managers și echipe growth.</p>'
+      + '<p class="now-panel-head"><strong>Focus curent:</strong> maturizarea proiectelor existente prin accesibilitate, PWA, documentație și QA.</p>'
       + '<ul class="now-list">'
-      + '<li>🔄 <strong>Industry Benchmarks Dashboard</strong> — dashboard cu benchmarks pe canal, industrie și funnel stage. <a href="marketing-os.html#benchmarks" style="color:var(--accent,#4f8cff)">Deschide Marketing OS →</a> <span class="now-tag">Benchmarks</span> <span class="now-tag">Funnel stage</span></li>'
-      + '<li>🔄 <strong>UTM Builder v1.2</strong> — naming convention profiles + saved campaign templates. <a href="marketing-os.html#utm" style="color:var(--accent,#4f8cff)">Testează modulul →</a> <span class="now-tag">UTM</span> <span class="now-tag">Templates</span></li>'
-      + '<li>🧭 <strong>Direcție:</strong> Marketing OS rămâne hub-ul principal, iar micro-tool-urile noi intră ca module clare, nu ca proiecte separate pierdute.</li>'
+      + '<li>🔄 <strong>Project Health Dashboard</strong> — inventar pentru accesibilitate, PWA, README, changelog și mentenanță în proiectele publice. <span class="now-tag">QA</span> <span class="now-tag">GitHub</span></li>'
+      + '<li>🔄 <strong>Case studies verificabile</strong> — capturi reale, rezultate măsurabile și decizii tehnice pentru proiectele principale. <span class="now-tag">Proof of work</span></li>'
+      + '<li>🧭 <strong>Direcție:</strong> proiectele principale primesc prioritate; variantele și experimentele similare rămân în istoric, fără a dilua selecția Top 3.</li>'
       + '</ul>'
       + '</div>'
       + '<div class="now-panel" id="now-panel-history" role="tabpanel" aria-labelledby="now-tab-history">'
       + '<p class="now-panel-head"><strong>Istoric recent:</strong> versiunea inițială este păstrată aici, nu eliminată.</p>'
       + '<ul class="now-list">'
+      + '<li>✅ <strong>Poodle Coach &amp; Care Premium v15</strong> — suita de accesibilitate conectată în aplicație și în cache-ul offline; istoric de versiuni adăugat.</li>'
+      + '<li>✅ <strong>LAURAI / Bounce Signal v3.1</strong> — etichete pentru controale iconice, stare live a misiunii, theme color și changelog.</li>'
+      + '<li>✅ <strong>MoonMail v1.1</strong> — controale de limbă, temă și motion etichetate pentru tehnologii asistive; changelog adăugat.</li>'
       + '<li>✅ <strong>Link Video Editor Studio</strong> — Automation Pack export funcțional: ZIP, CLI script, Playwright și FFmpeg workflow.</li>'
       + '<li>✅ <strong>Alpis Fusion CRM Premium</strong> — case study extins cu Decision Log complet.</li>'
       + '<li>✅ <strong>Lighthouse CI audit</strong> — preload hints pentru style.css, main.js și imaginea hero.</li>'
@@ -54,7 +57,7 @@
     var title = now.querySelector('#now-title,.now-title,h2');
     if (title) title.textContent = 'La ce lucrez acum';
     var badge = now.querySelector('.now-badge');
-    if (badge) badge.innerHTML = 'Actualizat: <time datetime="2026-05-22">22 Mai 2026</time>';
+    if (badge) badge.innerHTML = 'Actualizat: <time datetime="2026-09-04">04 Septembrie 2026</time>';
     var shell = now.querySelector('.now-tabs-shell');
     if (!shell) {
       shell = document.createElement('div');
@@ -71,7 +74,7 @@
       shell.dataset.version = VERSION;
     }
     var tags = now.querySelector('.now-tags');
-    if (tags) tags.innerHTML = '<span class="now-tag">În curs</span><span class="now-tag">Istoric</span><span class="now-tag">Marketing OS</span><span class="now-tag">Benchmarks</span><span class="now-tag">UTM v1.2</span><span class="now-tag">GitHub Pages</span>';
+    if (tags) tags.innerHTML = '<span class="now-tag">În curs</span><span class="now-tag">Istoric</span><span class="now-tag">Project Health</span><span class="now-tag">Accesibilitate</span><span class="now-tag">PWA</span><span class="now-tag">GitHub Pages</span>';
     var note = now.querySelector('.now-note');
     if (note) note.textContent = 'Tabul „În curs” arată focusul curent, iar tabul „Istoric” păstrează livrările recente și versiunea inițială.';
   }
