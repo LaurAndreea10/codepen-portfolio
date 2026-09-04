@@ -39,7 +39,7 @@
       + '<ul class="now-list">'
       + '<li>✅ <strong><a href="release-timeline.html" style="color:inherit">Release Timeline v1.0</a></strong> — istoric public pentru versiuni, remedieri și decizii.</li>'
       + '<li>✅ <strong>Garden Match Masters v2.1</strong> — accesibilitate cu tastatura, focus, reduced motion, touch targets, manifest și offline cache.</li>'
-      + '<li>✅ <strong>Quality automation</strong> — trei rulări Lighthouse pentru ARCADE WORLD, Garden Match Masters și Excel Quest, la push și lunar.</li>'
+      + '<li>✅ <strong>Quality automation + rezultate reale</strong> — trei rulări: ARCADE WORLD 61/100 performanță, Garden Match 78–79/100, Excel Quest 99–100/100; toate au Accessibility 100.</li>'
       + '<li>✅ <strong>Standard QUALITY</strong> — release gates și evidence labels comune pentru Top 3 și cele trei jocuri auditate.</li>'
       + '<li>✅ <strong><a href="project-health.html" style="color:inherit">Project Health Dashboard v1.0</a></strong> — inventar pentru 97 de repository-uri, hartă canonică și standard comun de sănătate.</li>'
       + '<li>✅ <strong><a href="proof-registry.html" style="color:inherit">Proof Registry v1.0</a></strong> — dovezi și metrici nemăsurate marcate transparent pentru Top 3.</li>'
