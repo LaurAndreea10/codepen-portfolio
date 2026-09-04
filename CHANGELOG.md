@@ -13,6 +13,7 @@ Toate modificările importante ale portofoliului sunt documentate aici.
 - Marcaj Historical version în 13 repository-uri și legătură către proiectul canonic.
 
 ### Îmbunătățit
+- ARCADE WORLD v33: HTML redus de la ~527 KB la 19 KB, CSS/JS externalizat și minificat automat; performanță Lighthouse mediană 61 → 77, Accessibility 100.
 - Garden Match Masters v2.1: tastatură, focus, reduced motion, touch targets, live regions, manifest PWA și cache offline.
 
 - Project Health Dashboard v1.0 cu inventar, familii canonice și separare Core / Games / Experiments.
