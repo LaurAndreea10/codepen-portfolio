@@ -5,6 +5,9 @@ Toate modificările importante ale portofoliului sunt documentate aici.
 ## 2026-09-04
 
 ### Adăugat
+- Audit GitHub pentru 97 de repository-uri și primul lot de maturizare pentru proiectele recente.
+- Istoric sincronizat pentru Poodle Coach & Care Premium v15, Bounce Signal v3.1 și MoonMail v1.1 în secțiunea „La ce lucrez”.
+- Focus nou: Project Health Dashboard și case studies verificabile.
 - Căutare unificată, filtre pe categorie și status și contor live de rezultate.
 - Inventar deduplicat pentru colecțiile Marketing-Tech, CRM și Top 3.
 - Accessibility Scorecard pentru proiectele-cheie.
