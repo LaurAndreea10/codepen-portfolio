@@ -7,6 +7,7 @@ Toate modificările importante ale portofoliului sunt documentate aici.
 ### Adăugat
 - Release Timeline public și linkuri Project Health/Releases în navigarea principală.
 - Workflow Lighthouse cu trei rulări pentru ARCADE WORLD, Garden Match Masters și Excel Quest.
+- Baseline măsurat: ARCADE WORLD Performance 61 / Accessibility 100; Garden Match Performance 78–79 / Accessibility 100; Excel Quest Performance 99–100 / Accessibility 100.
 - Standard QUALITY comun pentru cele șase proiecte prioritare.
 - Taxonomie coerentă de topics GitHub în REPOSITORY-TOPICS.md.
 - Marcaj Historical version în 13 repository-uri și legătură către proiectul canonic.
