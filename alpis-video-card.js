@@ -83,7 +83,7 @@
   const VERSION_INTEGRATED = 'portfolio-enhancement-v3-integrated-2026-05-18';
   const VERSION_NEGOCIATOR = 'negociator-pro-card-2026-05-20';
   const VERSION_MARKETING_TECH_NEXT = 'marketing-os-benchmarks-utm-v12-2026-05-22-v2';
-  const VERSION_NOW_ROADMAP = 'now-roadmap-v5-2026-05-22';
+  const VERSION_NOW_ROADMAP = 'now-roadmap-v5-2026-09-04-project-audit';
 
   function loadCssFile(href){
     if (document.querySelector('link[href^="' + href + '"]')) return;
