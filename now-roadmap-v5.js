@@ -2,7 +2,7 @@
 (function(){
   'use strict';
 
-  var VERSION = 'now-roadmap-v5-2026-09-04-project-audit';
+  var VERSION = 'now-roadmap-v5-2026-09-05-indexing';
 
   function addStyles(){
     if (document.getElementById('now-roadmap-v5-styles')) return;
@@ -37,6 +37,7 @@
       + '<div class="now-panel" id="now-panel-history" role="tabpanel" aria-labelledby="now-tab-history">'
       + '<p class="now-panel-head"><strong>Istoric recent:</strong> versiunea inițială este păstrată aici, nu eliminată.</p>'
       + '<ul class="now-list">'
+      + '<li>✅ <strong>Indexare pagini publice</strong> — canonical, robots index/follow, metadate sociale, sitemap și reguli de crawl verificate pentru Project Health, Proof Registry, Game QA și Release Timeline.</li>'
       + '<li>✅ <strong>ARCADE WORLD v33</strong> — HTML redus 527 KB → 19 KB, bundle-uri minificate automat și Lighthouse median 61 → 77; Accessibility 100.</li>'
       + '<li>✅ <strong><a href="release-timeline.html" style="color:inherit">Release Timeline v1.0</a></strong> — istoric public pentru versiuni, remedieri și decizii.</li>'
       + '<li>✅ <strong>Garden Match Masters v2.1</strong> — accesibilitate cu tastatura, focus, reduced motion, touch targets, manifest și offline cache.</li>'
@@ -66,7 +67,7 @@
     var title = now.querySelector('#now-title,.now-title,h2');
     if (title) title.textContent = 'La ce lucrez acum';
     var badge = now.querySelector('.now-badge');
-    if (badge) badge.innerHTML = 'Actualizat: <time datetime="2026-09-04">04 Septembrie 2026</time>';
+    if (badge) badge.innerHTML = 'Actualizat: <time datetime="2026-09-05">05 Septembrie 2026</time>';
     var shell = now.querySelector('.now-tabs-shell');
     if (!shell) {
       shell = document.createElement('div');
