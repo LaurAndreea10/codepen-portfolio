@@ -2,6 +2,14 @@
 
 Toate modificările importante ale portofoliului sunt documentate aici.
 
+## 2026-09-05
+
+### SEO / Indexare
+- Patru pagini publice pregătite pentru indexare: Project Health, Proof Registry, Game QA Audits și Release Timeline.
+- Canonical, meta robots `index,follow`, descrieri, Open Graph și Twitter Cards adăugate.
+- Sitemap actualizat cu `lastmod`, frecvență și prioritate; reguli explicite de crawl adăugate în robots.txt.
+- Răspuns HTTP 200 și tipuri de conținut verificate pentru pagini, sitemap și robots.txt.
+
 ## 2026-09-04
 
 ### Adăugat
