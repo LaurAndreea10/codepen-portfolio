@@ -17,10 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check internal and external links
-        uses: lycheeverse/lychee-action@v2
+      - uses: actions/setup-node@v4
         with:
-          args: --verbose --no-progress --accept 200,206,429 --exclude-mail --exclude 'https://es-d-.*\.codepen\.dev/.*' '**/*.html' '**/*.md'
-          fail: true
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          node-version: 22
+      - name: Check public portfolio links
+        run: node scripts/link-health.mjs

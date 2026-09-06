@@ -1,9 +1,10 @@
 import { readFileSync, existsSync, statSync } from 'node:fs';
 
 const files = [
-  'index.html', 'portfolio.html', 'en/index.html', 'alpis-fusion-crm.html',
+  'portfolio.html', 'en/index.html', 'alpis-fusion-crm.html',
   'projects/clientflow.html', 'projects/clientops-suite-premium.html',
-  'tools/link-video-automation-pack.html'
+  'tools/link-video-automation-pack.html', 'project-health.html',
+  'proof-registry.html', 'game-audits.html', 'release-timeline.html'
 ];
 const budget = JSON.parse(readFileSync('performance-budget.json', 'utf8'));
 const failures = [];
