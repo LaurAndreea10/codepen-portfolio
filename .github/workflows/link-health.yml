@@ -20,7 +20,7 @@ jobs:
       - name: Check internal and external links
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --verbose --no-progress --accept 200,206,429 --exclude-mail '**/*.html' '**/*.md'
+          args: --verbose --no-progress --accept 200,206,429 --exclude-mail --exclude 'https://es-d-.*\.codepen\.dev/.*' '**/*.html' '**/*.md'
           fail: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
