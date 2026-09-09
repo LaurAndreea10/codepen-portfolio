@@ -2,6 +2,16 @@
 
 Toate modificările importante ale portofoliului sunt documentate aici.
 
+## 2026-09-09
+
+### Evolution proof system
+- Added the bilingual, accessible **Evolution Lab** with skill filters and before/after evidence for ALPis Fusion CRM, ClientFlow, Signal Garden, ARCADE WORLD, BUGFLOW and PulseBoard.
+- Added **One Product, Three Generations**, **Product Decisions Journal**, **Failure & Fix Archive**, Performance Rescue and Accessibility Transformation.
+- Published **LaurAi CRM Design System** with tokens, reusable component rules and Definition of Done.
+- Added the evidence methodology in `docs/EVOLUTION-PROOF.md`.
+- Linked the new experience from Romanian and English navigation, Proof of Work and the completed-work timeline.
+- Added canonical metadata, structured data and sitemap entries.
+
 ## 2026-09-05
 
 ### SEO / Indexare
