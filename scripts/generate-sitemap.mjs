@@ -36,7 +36,9 @@ const pages = [
   ['en/project-health.html', 'monthly', '0.7', '2026-09-06'],
   ['en/proof-registry.html', 'monthly', '0.7', '2026-09-06'],
   ['en/game-audits.html', 'monthly', '0.7', '2026-09-06'],
-  ['en/release-timeline.html', 'monthly', '0.7', '2026-09-06']
+  ['en/release-timeline.html', 'monthly', '0.7', '2026-09-06'],
+  ['evolution-lab.html', 'monthly', '0.9', '2026-09-09'],
+  ['design-system.html', 'monthly', '0.8', '2026-09-09']
 ];
 
 const pairs = new Map([
