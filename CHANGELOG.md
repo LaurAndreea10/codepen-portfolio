@@ -4,6 +4,13 @@ Toate modificările importante ale portofoliului sunt documentate aici.
 
 ## 2026-09-09
 
+### Portfolio Snapshot
+- Published an executive 60-second summary with Top 3 projects, measurable results and a concise evolution path.
+- Added Recruiter View, RO/EN, light/dark themes, high contrast, persistent preferences and accessible focus states.
+- Added copy-ready profile text and a one-page print/PDF layout.
+- Linked Snapshot from Romanian and English navigation, Evolution Lab and the completed-work timeline.
+- Added canonical metadata, structured data and sitemap automation.
+
 ### Evolution proof system
 - Added the bilingual, accessible **Evolution Lab** with skill filters and before/after evidence for ALPis Fusion CRM, ClientFlow, Signal Garden, ARCADE WORLD, BUGFLOW and PulseBoard.
 - Added **One Product, Three Generations**, **Product Decisions Journal**, **Failure & Fix Archive**, Performance Rescue and Accessibility Transformation.
