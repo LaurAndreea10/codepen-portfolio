@@ -39,7 +39,18 @@ const pages = [
   ['en/release-timeline.html', 'monthly', '0.7', '2026-09-06'],
   ['evolution-lab.html', 'monthly', '0.9', '2026-09-09'],
   ['design-system.html', 'monthly', '0.8', '2026-09-09'],
-  ['portfolio-summary.html', 'monthly', '0.9', '2026-09-09']
+  ['portfolio-summary.html', 'monthly', '0.9', '2026-09-09'],
+  ['growth-suite.html', 'monthly', '0.9', '2026-09-10'],
+  ['case-study-story.html', 'monthly', '0.7', '2026-09-10'],
+  ['guided-tour.html', 'monthly', '0.7', '2026-09-10'],
+  ['recruiter-kit.html', 'monthly', '0.7', '2026-09-10'],
+  ['ecosystem-map.html', 'monthly', '0.7', '2026-09-10'],
+  ['proof-dashboard.html', 'monthly', '0.7', '2026-09-10'],
+  ['what-i-learned.html', 'monthly', '0.7', '2026-09-10'],
+  ['before-after.html', 'monthly', '0.7', '2026-09-10'],
+  ['demo-scenarios.html', 'monthly', '0.7', '2026-09-10'],
+  ['accessibility-lab.html', 'monthly', '0.7', '2026-09-10'],
+  ['build-in-public.html', 'monthly', '0.7', '2026-09-10']
 ];
 
 const pairs = new Map([
