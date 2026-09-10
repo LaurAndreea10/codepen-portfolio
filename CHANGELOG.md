@@ -4,6 +4,18 @@ Toate modificările importante ale portofoliului sunt documentate aici.
 
 ## 2026-09-10
 
+### LaurAi Growth Suite
+- Published a central hub connecting ten evolution-focused experiences.
+- Added Case Study Story Mode for ALPis Fusion CRM, ClientFlow PRO and Link Video Editor Studio.
+- Added an accessible 90-second guided tour with progress, Previous/Next and arrow-key navigation.
+- Added Recruiter Kit with reusable profile copy, print and PDF layout.
+- Added Ecosystem Map, Proof Dashboard and What I Learned timeline.
+- Added Before/After gallery and role-based CRM Demo Scenarios.
+- Added Accessibility Lab with persistent light, high-contrast, large-text and simplified modes.
+- Added Build in Public journal connecting failures, fixes, evidence and lessons.
+- Integrated Growth Suite into the top portfolio strip, Snapshot, Evolution Lab, navigation and completed work.
+- Indexed every public page and synchronized the sitemap generator.
+
 ### Portfolio top integration
 - Promoted Portfolio Snapshot above the main hero as the first scannable recommendation.
 - Added a 60-second summary strip with verified portfolio indicators and a dedicated CTA.
