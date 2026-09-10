@@ -2,6 +2,14 @@
 
 Toate modificările importante ale portofoliului sunt documentate aici.
 
+## 2026-09-10
+
+### Portfolio top integration
+- Promoted Portfolio Snapshot above the main hero as the first scannable recommendation.
+- Added a 60-second summary strip with verified portfolio indicators and a dedicated CTA.
+- Added a Snapshot button to the hero actions and a direct link inside the 30-second panel.
+- Updated the completed-work timeline while preserving all earlier entries.
+
 ## 2026-09-09
 
 ### Portfolio Snapshot
