@@ -107,6 +107,12 @@
     ]
   }
   </script>
+  <style>
+    .snapshot-hero-strip{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;margin-bottom:16px;padding:16px 20px;border:1px solid rgba(101,226,162,.42);border-radius:20px;background:linear-gradient(120deg,rgba(101,226,162,.1),rgba(79,140,255,.12));box-shadow:0 16px 42px rgba(0,0,0,.2)}
+    .snapshot-hero-copy{display:flex;align-items:center;gap:14px;min-width:0}.snapshot-hero-mark{display:grid;place-items:center;flex:0 0 46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#65e2a2,#79aaff);color:#061522;font-weight:950}.snapshot-hero-strip strong{display:block;font-size:1.03rem}.snapshot-hero-strip p{margin:2px 0 0;color:var(--muted);font-size:.9rem}.snapshot-hero-proof{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.snapshot-proof-chip{padding:3px 8px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:.72rem}.snapshot-hero-cta{white-space:nowrap}
+    @media(max-width:680px){.snapshot-hero-strip{grid-template-columns:1fr}.snapshot-hero-cta{width:100%}.snapshot-hero-copy{align-items:flex-start}}
+    @media(prefers-reduced-motion:reduce){.snapshot-hero-strip{scroll-behavior:auto}}
+  </style>
 </head>
 <body>
 
@@ -237,6 +243,8 @@
         <span class="scan-footer-sep">&middot;</span>
         <span id="scan-exp">Experien&#x21B;&#x103; activ&#x103;: <strong id="scan-years"></strong></span>
         <span class="scan-footer-sep">&middot;</span>
+        <a href="portfolio-summary.html" onclick="document.getElementById('scan-panel').hidden=true">Rezumat 60 sec →</a>
+        <span class="scan-footer-sep">&middot;</span>
         <a href="#key-projects" onclick="document.getElementById('scan-panel').hidden=true">Vezi proiectele &rarr;</a>
       </div>
     </div>
@@ -244,6 +252,22 @@
 
   <header class="hero" id="home" aria-labelledby="hero-title">
     <div class="container">
+      <aside class="snapshot-hero-strip" aria-labelledby="snapshot-strip-title">
+        <div class="snapshot-hero-copy">
+          <span class="snapshot-hero-mark" aria-hidden="true">60″</span>
+          <div>
+            <strong id="snapshot-strip-title">Portfolio Snapshot · Rezumat executiv</strong>
+            <p>Profil, Top 3, competențe și rezultate măsurabile — într-o pagină ușor de scanat.</p>
+            <div class="snapshot-hero-proof" aria-label="Dovezi rapide">
+              <span class="snapshot-proof-chip">84 proiecte live</span>
+              <span class="snapshot-proof-chip">20+ repo-uri</span>
+              <span class="snapshot-proof-chip">Accessibility 100</span>
+              <span class="snapshot-proof-chip">RO / EN</span>
+            </div>
+          </div>
+        </div>
+        <a class="btn btn-primary snapshot-hero-cta" href="portfolio-summary.html" aria-label="Deschide rezumatul executiv al portofoliului">Deschide rezumatul de 60 secunde →</a>
+      </aside>
       <article class="hero-card glass">
         <div class="hero-layout">
           <div class="hero-main">
@@ -251,6 +275,7 @@
             <h1 id="hero-title">Construiesc interfe&#x21B;e CRM &#x219;i dashboard-uri care transform&#x103; procese complicate &icirc;n fluxuri clare</h1>
             <p class="hero-text" id="hero-text">Vin din CRM &#x219;i marketing, iar &icirc;n front-end m&#x103; concentrez pe produse unde structura, prioritizarea &#x219;i feedback-ul vizual ajut&#x103; utilizatorii s&#x103; &icirc;n&#x21B;eleag&#x103; mai repede ce au de f&#x103;cut &#x219;i s&#x103; ac&#x21B;ioneze f&#x103;r&#x103; fric&#x21B;iune.</p>
             <div class="hero-actions">
+              <a class="btn btn-secondary" id="heroCtaSnapshot" href="portfolio-summary.html" aria-label="Deschide Portfolio Snapshot">⚡ Rezumat 60 sec</a>
               <a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Propunere%20proiect" aria-label="Trimite email despre un proiect" id="heroCtaPrimary">Scrie-mi despre un proiect</a>
               <a class="btn btn-secondary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer" aria-label="Deschide proiectul Alpis Fusion CRM Premium" id="heroCtaSecondary">Deschide Alpis Fusion &rarr;</a>
             </div>
@@ -409,7 +434,7 @@
               <span class="eyebrow eyebrow-green">&#x26A1; Now</span>
               <h2 id="now-title" class="now-title">La ce lucrez acum</h2>
             </div>
-            <p class="now-badge">Actualizat: <time id="now-datetime" datetime="2026-09-09">09 Septembrie 2026</time></p>
+            <p class="now-badge">Actualizat: <time id="now-datetime" datetime="2026-09-10">10 Septembrie 2026</time></p>
           </div>
 
           <div class="now-tabs" role="tablist" aria-label="Activitate curent&#x103;">
@@ -426,6 +451,7 @@
 
           <div class="now-panel now-panel-hidden" id="now-panel-done" role="tabpanel" aria-labelledby="now-tab-done">
             <ul class="now-checklist">
+              <li class="now-item now-item-done" data-completed="2026-09-10"><span class="now-status" aria-hidden="true">✅</span><span><strong>Portfolio Snapshot în hero</strong> — rezumatul executiv este acum prima recomandare vizibilă în portofoliu, cu dovezi rapide, CTA dedicat și acces din panoul de 30 de secunde. <a class="now-item-link" href="portfolio-summary.html">Deschide Snapshot</a></span></li>
               <li class="now-item now-item-done" data-completed="2026-09-09"><span class="now-status" aria-hidden="true">✅</span><span><strong>Portfolio Snapshot</strong> — rezumat executiv de 60 de secunde cu Top 3, rezultate măsurabile, Recruiter View, RO/EN, teme, contrast, copiere și export PDF. <a class="now-item-link" href="portfolio-summary.html">Deschide rezumatul</a></span></li>
               <li class="now-item now-item-done" data-completed="2026-09-09"><span class="now-status" aria-hidden="true">✅</span><span><strong>Evolution Lab + CRM Design System</strong> — experiență interactivă before/after, trei generații de produs, Accessibility Transformation, Performance Rescue, jurnal de decizii și Failure &amp; Fix Archive. <a class="now-item-link" href="evolution-lab.html">Deschide dovezile evoluției</a></span></li>
               <li class="now-item now-item-done" data-static-now-item="done" data-completed="2026-09-08">
