@@ -4,6 +4,12 @@ Toate modificările importante ale portofoliului sunt documentate aici.
 
 ## 2026-09-10
 
+### Main portfolio integration — 10/10
+- Embedded all ten Growth Suite modules directly in the main portfolio as a responsive, accessible card grid.
+- Added visible implementation status and direct access to every experience.
+- Added a main-navigation anchor and skip link for keyboard and screen-reader users.
+- Preserved the standalone Growth Suite hub for focused exploration.
+
 ### LaurAi Growth Suite
 - Published a central hub connecting ten evolution-focused experiences.
 - Added Case Study Story Mode for ALPis Fusion CRM, ClientFlow PRO and Link Video Editor Studio.
