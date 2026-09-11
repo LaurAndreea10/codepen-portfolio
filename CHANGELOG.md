@@ -4,6 +4,11 @@ Toate modificările importante ale portofoliului sunt documentate aici.
 
 ## 2026-09-10
 
+### Experience-first positioning
+- Renamed Recruiter View to **Mod experiență / Experience View** because the portfolio documents experience rather than a job search.
+- Renamed the visible Recruiter Kit label to **Experience Kit** while preserving its stable URL.
+- Replaced the top-menu “10 puncte” item with **60"**, linking directly to Portfolio Snapshot.
+
 ### Main portfolio integration — 10/10
 - Embedded all ten Growth Suite modules directly in the main portfolio as a responsive, accessible card grid.
 - Added visible implementation status and direct access to every experience.
@@ -14,7 +19,7 @@ Toate modificările importante ale portofoliului sunt documentate aici.
 - Published a central hub connecting ten evolution-focused experiences.
 - Added Case Study Story Mode for ALPis Fusion CRM, ClientFlow PRO and Link Video Editor Studio.
 - Added an accessible 90-second guided tour with progress, Previous/Next and arrow-key navigation.
-- Added Recruiter Kit with reusable profile copy, print and PDF layout.
+- Added Experience Kit with reusable profile copy, print and PDF layout.
 - Added Ecosystem Map, Proof Dashboard and What I Learned timeline.
 - Added Before/After gallery and role-based CRM Demo Scenarios.
 - Added Accessibility Lab with persistent light, high-contrast, large-text and simplified modes.
@@ -32,7 +37,7 @@ Toate modificările importante ale portofoliului sunt documentate aici.
 
 ### Portfolio Snapshot
 - Published an executive 60-second summary with Top 3 projects, measurable results and a concise evolution path.
-- Added Recruiter View, RO/EN, light/dark themes, high contrast, persistent preferences and accessible focus states.
+- Added Experience View, RO/EN, light/dark themes, high contrast, persistent preferences and accessible focus states.
 - Added copy-ready profile text and a one-page print/PDF layout.
 - Linked Snapshot from Romanian and English navigation, Evolution Lab and the completed-work timeline.
 - Added canonical metadata, structured data and sitemap automation.
