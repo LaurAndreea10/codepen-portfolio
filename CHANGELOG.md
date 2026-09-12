@@ -2,6 +2,14 @@
 
 Toate modificările importante ale portofoliului sunt documentate aici.
 
+## 2026-09-12
+
+### BUGFLOW v10 — dovadă de evoluție
+- Evidențiat în partea de sus a portofoliului ca transformare de la demo vizual la produs local-first securizat și testat.
+- Adăugat acces direct la versiunea live din Portfolio Snapshot.
+- Documentate hardening-ul XSS, Mermaid 11.4.1 pin-uit, analiza O(V+E) în Web Worker, exportul robust, PWA și validarea accesibilității.
+- Actualizată secțiunea „La ce lucrez acum” cu dovezi tehnice verificabile.
+
 ## 2026-09-10
 
 ### Experience-first positioning
