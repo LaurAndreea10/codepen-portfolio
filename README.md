@@ -236,3 +236,11 @@ Drop a ⭐ on the repo and open the live portfolio — every project has an inte
 [![Live Demo](https://img.shields.io/badge/→_Open_portfolio-4f8cff?style=for-the-badge)](https://laurandreea10.github.io/codepen-portfolio/)
 
 </details>
+\n## Featured accessible game
+
+### LOOP — Cosmic Relay
+
+An accessible cosmic PWA with nine game modes, progressive difficulty, switch scanning, adjustable safe zones, haptics, local profiles and import/export progress.
+
+[Live game](https://laurandreea10.github.io/LOOP-Cosmic-Relay/) · [Bilingual case study](https://laurandreea10.github.io/codepen-portfolio/projects/loop-cosmic-relay.html) · [Repository](https://github.com/LaurAndreea10/LOOP-Cosmic-Relay)
+
