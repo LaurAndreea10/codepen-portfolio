@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-13 — LOOP Cosmic Relay
+
+- Adăugat **LOOP — Cosmic Relay** în categoria Games și în proiectele recente.
+- Integrat demo-ul GitHub Pages și linkul repository-ului.
+- Evidențiate cele 9 moduri, accesibilitatea, progresul persistent și suportul PWA.
+
 Toate modificările importante ale portofoliului sunt documentate aici.
 
 ## 2026-09-12
