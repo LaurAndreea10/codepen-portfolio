@@ -4,7 +4,12 @@ const files = [
   'index.html', 'portfolio.html', 'en/index.html', 'project-health.html',
   'proof-registry.html', 'game-audits.html', 'release-timeline.html',
   'accessibility-scorecard.html', 'en/project-health.html',
-  'en/proof-registry.html', 'en/game-audits.html', 'en/release-timeline.html'
+  'en/proof-registry.html', 'en/game-audits.html', 'en/release-timeline.html',
+  'evolution-lab.html', 'design-system.html', 'portfolio-summary.html',
+  'growth-suite.html', 'en/growth-suite.html', 'case-study-story.html',
+  'guided-tour.html', 'recruiter-kit.html', 'ecosystem-map.html',
+  'proof-dashboard.html', 'what-i-learned.html', 'before-after.html',
+  'demo-scenarios.html', 'accessibility-lab.html', 'build-in-public.html'
 ];
 const failures = [];
 const warnings = [];
@@ -16,7 +21,17 @@ for (const file of files) {
     if (/^(mailto:|tel:|#)/i.test(href)) continue;
     if (/^https?:/i.test(href)) {
       if (/codepen\.dev/i.test(href)) failures.push(`${file}: unstable CodePen preview → ${href}`);
-      else remote.add(href.split('#')[0]);
+      else {
+        const parsed = new URL(href);
+        const prefix = '/codepen-portfolio/';
+        if (parsed.hostname === 'laurandreea10.github.io' && parsed.pathname.startsWith(prefix)) {
+          const localPath = decodeURIComponent(parsed.pathname.slice(prefix.length));
+          const target = localPath.endsWith('/') ? `${localPath}index.html` : localPath;
+          if (target && !existsSync(target)) failures.push(`${file}: broken canonical link → ${href}`);
+        } else {
+          remote.add(href.split('#')[0]);
+        }
+      }
       continue;
     }
     const base = file.includes('/') ? file.slice(0, file.lastIndexOf('/') + 1) : '';

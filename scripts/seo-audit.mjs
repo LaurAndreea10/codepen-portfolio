@@ -4,7 +4,9 @@ const files = [
   'portfolio.html', 'en/index.html', 'alpis-fusion-crm.html',
   'projects/clientflow.html', 'projects/clientops-suite-premium.html',
   'tools/link-video-automation-pack.html', 'project-health.html',
-  'proof-registry.html', 'game-audits.html', 'release-timeline.html'
+  'proof-registry.html', 'game-audits.html', 'release-timeline.html',
+  'growth-suite.html', 'en/growth-suite.html', 'evolution-lab.html',
+  'design-system.html', 'portfolio-summary.html'
 ];
 const budget = JSON.parse(readFileSync('performance-budget.json', 'utf8'));
 const failures = [];

@@ -15,12 +15,8 @@
   ];
   const CODEPEN_COUNT = CODEPEN_BASE_COUNT + CODEPEN_NEW_PROJECTS.length;
 
-  const ACTIVE_RO = [
-    ['Case Study Story Mode','Transform Top 3 într-un traseu narativ scurt: problemă, decizie, implementare, rezultat.','Adăugarea unui mod de prezentare de 60–90 secunde pentru fiecare proiect.','Portfolio storytelling'],
-  ];
-  const ACTIVE_EN = [
-    ['Case Study Story Mode','Turn the Top 3 into a short narrative: problem, decision, implementation and outcome.','Add a 60–90 second presentation mode for each project.','Portfolio storytelling'],
-  ];
+  const ACTIVE_RO = [];
+  const ACTIVE_EN = [];
 
   function en(){ return document.documentElement.lang === 'en'; }
 
@@ -60,6 +56,12 @@
       : `<li class="now-item now-item-done" data-remediation-completed="2026-09-06"><span class="now-status" aria-hidden="true">✅</span><span><strong>Remediere completă audit săptămânal</strong> — linkuri stabile, status Lead Magnet, Top 3 unificat, HTML rezilient, accesibilitate pe paginile tehnice, paritate EN, Lighthouse mobil și SEO intro aliniate.</span></li>`;
   }
 
+  function growthSuiteDoneHtml(){
+    return en()
+      ? `<li class="now-item now-item-done" data-growth-suite-completed="2026-09-13"><span class="now-status" aria-hidden="true">✅</span><span><strong>Growth Suite weekly alignment</strong> — Story Mode moved to completed, public changelog and sitemap refreshed, shared RO/EN navigation and accessibility controls added, evidence dashboards extended and Lighthouse coverage expanded.</span></li>`
+      : `<li class="now-item now-item-done" data-growth-suite-completed="2026-09-13"><span class="now-status" aria-hidden="true">✅</span><span><strong>Aliniere săptămânală Growth Suite</strong> — Story Mode mutat la finalizat, changelog și sitemap actualizate, navigare comună RO/EN și controale de accesibilitate adăugate, dashboard-uri de dovezi extinse și acoperire Lighthouse mărită.</span></li>`;
+  }
+
   function doneHtml(){
     return en()
       ? `<li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Portfolio consistency pass</strong> — ClientOps status, accessibility for three case studies and technical proof/README alignment completed.</span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status" aria-hidden="true">✅</span><span><strong>LAURAI / BOUNCE SIGNAL</strong> — completed and published as an interactive email-bounce signal experience. <a class="now-item-link" href="https://laurandreea10.github.io/LAURAI-BOUNCE-SIGNAL/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>LaurAi · Signal Orbit</strong> — completed and published as an accessible email signature studio with RO/EN, high contrast, reduced motion, version history and README. <a class="now-item-link" href="https://laurandreea10.github.io/LAURAI-SIGNAL-ORBIT/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>Email Alerts</strong> — published with RO/EN, accessibility, dark mode and version history. <a class="now-item-link" href="https://laurandreea10.github.io/Email-Alerts/" target="_blank" rel="noopener noreferrer">Open project</a></span></li><li class="now-item now-item-done" data-static-now-item="done"><span class="now-status">✅</span><span><strong>MoonMail — Cosmic Receipt Email</strong> — completed and published email challenge. <a class="now-item-link" href="https://laurandreea10.github.io/MoonMail-Cosmic-Receipt-Email/" target="_blank" rel="noopener noreferrer">Open project</a></span></li>`
@@ -70,15 +72,15 @@
     const active=document.querySelector('#now-panel-active .now-checklist');
     const done=document.querySelector('#now-panel-done .now-checklist');
     if(active) active.innerHTML=activeHtml();
-    if(done) done.innerHTML=remediationDoneHtml()+todayDoneHtml()+deliveryDoneHtml()+qualityDoneHtml()+performanceDoneHtml()+doneHtml();
+    if(done) done.innerHTML=growthSuiteDoneHtml()+remediationDoneHtml()+todayDoneHtml()+deliveryDoneHtml()+qualityDoneHtml()+performanceDoneHtml()+doneHtml();
     const title=document.getElementById('now-title');
     if(title) title.textContent=en()?'What I am working on now':'La ce lucrez acum';
     const note=document.querySelector('#now .now-note');
     if(note) note.textContent=en()?'A small, intentionally current list: what is active, why it matters, and the next concrete step.':'O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
     const date=document.getElementById('now-datetime');
     if(date){
-      date.dateTime='2026-09-06';
-      date.textContent=en()?'06 September 2026':'06 Septembrie 2026';
+      date.dateTime='2026-09-13';
+      date.textContent=en()?'13 September 2026':'13 Septembrie 2026';
     }
   }
 
@@ -189,12 +191,26 @@
     });
   }
 
+  function setupGrowthSuite(){
+    const button=document.querySelector('.growth-suite-toggle');
+    const grid=document.getElementById('growth-suite-modules');
+    if(!button||!grid||button.dataset.ready) return;
+    button.dataset.ready='1';
+    button.addEventListener('click',()=>{
+      const expanded=button.getAttribute('aria-expanded')==='true';
+      grid.classList.toggle('is-expanded',!expanded);
+      button.setAttribute('aria-expanded',String(!expanded));
+      button.textContent=!expanded?button.dataset.hideLabel:button.dataset.showLabel;
+    });
+  }
+
   function init(){
     styles();
     restoreNow();
     fixProjectCounts();
     guardNow();
     setupProjectCollections();
+    setupGrowthSuite();
 
     const script=document.createElement('script');
     script.src=PREVIOUS_MAIN;
