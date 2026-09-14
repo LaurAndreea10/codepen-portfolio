@@ -2,7 +2,7 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
-  ["portfolio.html", "weekly", "1.0", "2026-09-13"],
+  ["portfolio.html", "weekly", "1.0", "2026-09-14"],
   ["en/", "weekly", "0.9", "2026-09-13"],
   ["alpis-fusion-crm.html", "monthly", "0.9", "2026-08-30"],
   ["projects/clientflow.html", "monthly", "0.9", "2026-08-30"],
