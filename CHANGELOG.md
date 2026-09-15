@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-09-15 — Tri-Link Quest
+
+- Publicat jocul accesibil 3-în-1 în ARCADE WORLD.
+- Adăugate campania cu 10 niveluri, dificultățile, PWA offline și progresul persistent.
+- Integrate recompensele, insigna Triple Crown și validarea securizată a evenimentelor iframe.
+- Publicat case study-ul, artwork-ul social și intrarea indexabilă în sitemap.
+
+
 ## 2026-09-13 — LOOP Cosmic Relay
 
 - Adăugat **LOOP — Cosmic Relay** în categoria Games și în proiectele recente.
