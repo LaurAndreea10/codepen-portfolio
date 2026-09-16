@@ -20,6 +20,20 @@
 
   function en(){ return document.documentElement.lang === 'en'; }
 
+  const STATIC_NOW_RO = { active: '', done: '', history: '', captured: false };
+
+  function captureStaticNowRo(){
+    if(STATIC_NOW_RO.captured) return;
+    const active=document.querySelector('#now-panel-active .now-checklist');
+    const done=document.querySelector('#now-panel-done .now-checklist');
+    const history=document.querySelector('#now-panel-history .now-history');
+    if(!active||!done||!history) return;
+    STATIC_NOW_RO.active=active.innerHTML;
+    STATIC_NOW_RO.done=done.innerHTML;
+    STATIC_NOW_RO.history=history.innerHTML;
+    STATIC_NOW_RO.captured=true;
+  }
+
   function todayDoneHtml(){
     return en()
       ? `<li class="now-item now-item-done" data-today-completed="2026-09-04"><span class="now-status" aria-hidden="true">✅</span><span><strong>Intro and portfolio navigation</strong> — separated the cinematic intro from the full portfolio and added a reliable 10-second transition with an active Explore button.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Live link health</strong> — fixed the CV Scout URL and verified all 30 linked GitHub Pages destinations with HTTP 200 responses.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>SEO and indexing alignment</strong> — added the full portfolio to the sitemap and aligned canonical and hreflang references.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>Portfolio metrics sync</strong> — aligned the visible and metadata project totals to 84.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>JavaScript cleanup</strong> — removed the hidden legacy cinematic code and replaced the fragile CDN chain with local main-core.js.</span></li><li class="now-item now-item-done"><span class="now-status" aria-hidden="true">✅</span><span><strong>EN accessibility parity</strong> — added light/dark theme, high contrast, visible focus and reduced-motion support to the English page.</span></li>`
@@ -69,33 +83,21 @@
   }
 
   function restoreNow(){
-    // The Romanian portfolio keeps the curated static HTML as its single source
-    // of truth. Replacing it here used to undo fresh repository updates after load.
-    if(!en()){
-      const title=document.getElementById('now-title');
-      if(title) title.textContent='La ce lucrez acum';
-      const note=document.querySelector('#now .now-note');
-      if(note) note.textContent='O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
-      const date=document.getElementById('now-datetime');
-      if(date){
-        date.dateTime='2026-09-16';
-        date.textContent='16 Septembrie 2026';
-      }
-      return;
-    }
-
+    if(en()||!STATIC_NOW_RO.captured) return;
     const active=document.querySelector('#now-panel-active .now-checklist');
     const done=document.querySelector('#now-panel-done .now-checklist');
-    if(active) active.innerHTML=activeHtml();
-    if(done) done.innerHTML=growthSuiteDoneHtml()+remediationDoneHtml()+todayDoneHtml()+deliveryDoneHtml()+qualityDoneHtml()+performanceDoneHtml()+doneHtml();
+    const history=document.querySelector('#now-panel-history .now-history');
+    if(active) active.innerHTML=STATIC_NOW_RO.active;
+    if(done) done.innerHTML=STATIC_NOW_RO.done;
+    if(history) history.innerHTML=STATIC_NOW_RO.history;
     const title=document.getElementById('now-title');
-    if(title) title.textContent='What I am working on now';
+    if(title) title.textContent='La ce lucrez acum';
     const note=document.querySelector('#now .now-note');
-    if(note) note.textContent='A small, intentionally current list: what is active, why it matters, and the next concrete step.';
+    if(note) note.textContent='O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
     const date=document.getElementById('now-datetime');
     if(date){
-      date.dateTime='2026-09-13';
-      date.textContent='13 September 2026';
+      date.dateTime='2026-09-16';
+      date.textContent='16 Septembrie 2026';
     }
   }
 
@@ -174,23 +176,8 @@
   }
 
   function guardNow(){
-    // The Romanian page is curated in portfolio.html and must not be observed
-    // or rewritten. Observing it caused a self-triggering mutation loop.
-    if(!en()) return;
-    const now=document.getElementById('now');
-    if(!now||now.dataset.staticGuard) return;
-    now.dataset.staticGuard='1';
-    let busy=false;
-    new MutationObserver(()=>{
-      if(busy) return;
-      busy=true;
-      queueMicrotask(()=>{
-        busy=false;
-        if(document.querySelectorAll('#now-panel-active [data-static-now-item="active"]').length!==(en()?ACTIVE_EN:ACTIVE_RO).length || !document.querySelector('#now-panel-done [data-remediation-completed="2026-09-06"]')){
-          restoreNow();
-        }
-      });
-    }).observe(now,{childList:true,subtree:true});
+    // main-core.js may translate this area; the curated Romanian snapshot is
+    // restored explicitly after load and language changes, without observers.
   }
 
   function setupProjectCollections(){
@@ -223,12 +210,16 @@
   }
 
   function init(){
+    captureStaticNowRo();
     styles();
     restoreNow();
     fixProjectCounts();
     guardNow();
     setupProjectCollections();
     setupGrowthSuite();
+
+    const languageButton=document.getElementById('langToggle');
+    if(languageButton) languageButton.addEventListener('click',()=>setTimeout(restoreNow,0));
 
     const script=document.createElement('script');
     script.src=PREVIOUS_MAIN;
