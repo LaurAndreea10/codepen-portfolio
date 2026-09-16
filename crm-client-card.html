@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Card CRM bilingv și accesibil — Laura Andreea</title>
+  <meta name="description" content="Componentă CRM mobile-first, bilingvă RO/EN și accesibilă, cu preferință de limbă salvată local.">
+  <meta name="theme-color" content="#071226">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/crm-client-card.html">
+  <style>
+    :root{color-scheme:dark;--bg:#071226;--panel:#0d1b33;--panel-2:#132440;--text:#eef4ff;--muted:#aab8d4;--line:#314769;--accent:#65e2a2;--accent-2:#79aaff;--focus:#ffd166;--ok-bg:#123c31;--ok-text:#8cf0bc;--shadow:0 24px 70px rgba(0,0,0,.38)}
+    *{box-sizing:border-box}
+    html{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+    body{min-height:100vh;margin:0;background:radial-gradient(circle at 15% 10%,rgba(79,140,255,.20),transparent 28rem),radial-gradient(circle at 85% 85%,rgba(101,226,162,.12),transparent 30rem),var(--bg)}
+    button,a{font:inherit}.skip-link{position:fixed;z-index:10;top:8px;left:8px;transform:translateY(-160%);padding:.75rem 1rem;border-radius:.7rem;background:var(--focus);color:#111;font-weight:800}.skip-link:focus{transform:none}
+    .shell{width:min(100% - 2rem,70rem);margin-inline:auto;padding:2rem 0 3rem}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:clamp(2rem,8vw,5rem)}
+    .brand{font-weight:900;letter-spacing:.04em}.back{color:var(--muted);text-underline-offset:.25rem}
+    main{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,410px);gap:clamp(2rem,7vw,6rem);align-items:center}
+    .eyebrow{margin:0 0 .8rem;color:var(--accent);font-size:.78rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+    h1{max-width:12ch;margin:0;font-size:clamp(2.25rem,7vw,5rem);line-height:.96;letter-spacing:-.055em}
+    .intro{max-width:60ch;margin:1.25rem 0 0;color:var(--muted);font-size:clamp(1rem,2vw,1.14rem);line-height:1.75}
+    .proof{display:flex;flex-wrap:wrap;gap:.55rem;margin:1.4rem 0 0;padding:0;list-style:none}.proof li{padding:.45rem .72rem;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:.78rem}
+    .demo{position:relative}.demo::before{position:absolute;inset:-1.2rem;border:1px solid rgba(121,170,255,.18);border-radius:2rem;content:"";transform:rotate(2deg)}
+    .client-card{position:relative;min-width:280px;max-width:100%;padding:clamp(1.3rem,5vw,2rem);border:1px solid var(--line);border-radius:1.5rem;background:linear-gradient(155deg,rgba(19,36,64,.98),rgba(9,24,47,.98));box-shadow:var(--shadow)}
+    .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}.avatar{display:grid;place-items:center;width:3rem;height:3rem;border-radius:1rem;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#071226;font-weight:950}
+    h2{margin:.2rem 0 0;font-size:1.35rem}.client-meta{margin:.25rem 0 0;color:var(--muted);font-size:.88rem}
+    .status-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:1.6rem 0 0;padding:1rem;border:1px solid var(--line);border-radius:1rem;background:rgba(255,255,255,.035)}
+    .label{color:var(--muted);font-size:.82rem}.status{display:inline-flex;align-items:center;gap:.45rem;padding:.38rem .65rem;border:1px solid rgba(140,240,188,.36);border-radius:999px;background:var(--ok-bg);color:var(--ok-text);font-size:.82rem}.status::before{content:"✓";font-weight:950}
+    .last-contact{margin:1rem 0 0;color:var(--muted);line-height:1.5}.actions{display:grid;grid-template-columns:1fr auto;gap:.75rem;margin-top:1.5rem}
+    .btn{min-height:48px;padding:.75rem 1rem;border:1px solid var(--line);border-radius:.9rem;cursor:pointer;font-weight:850}.btn-primary{border-color:transparent;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#061522}.btn-secondary{background:transparent;color:var(--text)}
+    :where(button,a):focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+    .notice{min-height:1.5em;margin:.85rem 0 0;color:var(--accent);font-size:.82rem}
+    footer{margin-top:clamp(3rem,8vw,6rem);padding-top:1.3rem;border-top:1px solid var(--line);color:var(--muted);font-size:.83rem}
+    @media(max-width:760px){.shell{width:min(100% - 1.25rem,70rem);padding-top:1rem}.topbar{margin-bottom:2.5rem}main{grid-template-columns:1fr}.intro{line-height:1.6}.demo{width:100%;max-width:420px;margin-inline:auto}.demo::before{display:none}.actions{grid-template-columns:1fr}.btn{width:100%}}
+    @media(max-width:340px){.shell{width:calc(100% - .75rem)}.client-card{min-width:0;padding:1rem}.status-row{align-items:flex-start;flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#demo">Sari la demonstrație</a>
+  <div class="shell">
+    <header class="topbar">
+      <span class="brand">LAURAI · CRM LAB</span>
+      <a class="back" href="portfolio.html">← <span data-i18n="portfolio">Portofoliu</span></a>
+    </header>
+    <main>
+      <section aria-labelledby="page-title">
+        <p class="eyebrow" data-i18n="eyebrow">Componentă de portofoliu</p>
+        <h1 id="page-title" data-i18n="title">Card CRM bilingv și accesibil</h1>
+        <p class="intro" data-i18n="intro">Un micro-flow ClientFlow construit mobile-first: traduceri separate de interfață, stare clară fără dependență exclusivă de culoare și preferință de limbă persistentă.</p>
+        <ul class="proof" aria-label="Caracteristici">
+          <li>RO / EN</li><li>WCAG-minded</li><li>LocalStorage</li><li>320px ready</li>
+        </ul>
+      </section>
+      <section class="demo" id="demo" aria-label="Demonstrație card CRM">
+        <article class="client-card" aria-labelledby="client-name">
+          <div class="card-top">
+            <div>
+              <h2 id="client-name">Atelier Nova</h2>
+              <p class="client-meta" data-i18n="segment">Client premium · Design</p>
+            </div>
+            <span class="avatar" aria-hidden="true">AN</span>
+          </div>
+          <div class="status-row">
+            <span class="label" id="status-label" data-i18n="statusLabel">Status client</span>
+            <strong class="status" aria-describedby="status-label" data-i18n="status">Activ</strong>
+          </div>
+          <p class="last-contact" data-i18n="lastContact">Ultimul contact: astăzi, 09:30</p>
+          <div class="actions">
+            <button class="btn btn-primary" type="button" data-i18n="openClient">Deschide clientul</button>
+            <button class="btn btn-secondary" id="language-toggle" type="button" aria-label="Switch interface to English" aria-pressed="false">EN</button>
+          </div>
+          <p class="notice" id="language-status" role="status" aria-live="polite"></p>
+        </article>
+      </section>
+    </main>
+    <footer><span data-i18n="footer">Exercițiu practic Front-end · HTML semantic, CSS responsive și JavaScript fără dependențe.</span></footer>
+  </div>
+  <script>
+    (() => {
+      "use strict";
+      const STORAGE_KEY = "laurai.crmCard.language";
+      const translations = {
+        ro:{portfolio:"Portofoliu",eyebrow:"Componentă de portofoliu",title:"Card CRM bilingv și accesibil",intro:"Un micro-flow ClientFlow construit mobile-first: traduceri separate de interfață, stare clară fără dependență exclusivă de culoare și preferință de limbă persistentă.",segment:"Client premium · Design",statusLabel:"Status client",status:"Activ",lastContact:"Ultimul contact: astăzi, 09:30",openClient:"Deschide clientul",footer:"Exercițiu practic Front-end · HTML semantic, CSS responsive și JavaScript fără dependențe.",changed:"Limba interfeței a fost schimbată în română.",toggle:"Schimbă interfața în engleză"},
+        en:{portfolio:"Portfolio",eyebrow:"Portfolio component",title:"Accessible bilingual CRM card",intro:"A mobile-first ClientFlow micro-flow: translations separated from the interface, a status that does not rely on color alone, and a persistent language preference.",segment:"Premium client · Design",statusLabel:"Client status",status:"Active",lastContact:"Last contact: today, 09:30",openClient:"Open client",footer:"Practical front-end exercise · Semantic HTML, responsive CSS and dependency-free JavaScript.",changed:"The interface language was changed to English.",toggle:"Switch interface to Romanian"}
+      };
+      const toggle = document.querySelector("#language-toggle");
+      const live = document.querySelector("#language-status");
+      const stored = localStorage.getItem(STORAGE_KEY);
+      let currentLanguage = stored === "en" ? "en" : "ro";
+      function updateLanguage(announce=false){
+        const copy = translations[currentLanguage];
+        document.documentElement.lang = currentLanguage;
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+          const key = el.dataset.i18n;
+          if (copy[key]) el.textContent = copy[key];
+        });
+        const next = currentLanguage === "ro" ? "en" : "ro";
+        toggle.textContent = next.toUpperCase();
+        toggle.setAttribute("aria-label", copy.toggle);
+        toggle.setAttribute("aria-pressed", String(currentLanguage === "en"));
+        document.title = currentLanguage === "ro" ? "Card CRM bilingv și accesibil — Laura Andreea" : "Accessible bilingual CRM card — Laura Andreea";
+        if (announce) live.textContent = copy.changed;
+      }
+      toggle.addEventListener("click", () => {
+        currentLanguage = currentLanguage === "ro" ? "en" : "ro";
+        localStorage.setItem(STORAGE_KEY,currentLanguage);
+        updateLanguage(true);
+      });
+      updateLanguage(false);
+    })();
+  </script>
+</body>
+</html>
