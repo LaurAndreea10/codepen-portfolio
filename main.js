@@ -69,18 +69,33 @@
   }
 
   function restoreNow(){
+    // The Romanian portfolio keeps the curated static HTML as its single source
+    // of truth. Replacing it here used to undo fresh repository updates after load.
+    if(!en()){
+      const title=document.getElementById('now-title');
+      if(title) title.textContent='La ce lucrez acum';
+      const note=document.querySelector('#now .now-note');
+      if(note) note.textContent='O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
+      const date=document.getElementById('now-datetime');
+      if(date){
+        date.dateTime='2026-09-16';
+        date.textContent='16 Septembrie 2026';
+      }
+      return;
+    }
+
     const active=document.querySelector('#now-panel-active .now-checklist');
     const done=document.querySelector('#now-panel-done .now-checklist');
     if(active) active.innerHTML=activeHtml();
     if(done) done.innerHTML=growthSuiteDoneHtml()+remediationDoneHtml()+todayDoneHtml()+deliveryDoneHtml()+qualityDoneHtml()+performanceDoneHtml()+doneHtml();
     const title=document.getElementById('now-title');
-    if(title) title.textContent=en()?'What I am working on now':'La ce lucrez acum';
+    if(title) title.textContent='What I am working on now';
     const note=document.querySelector('#now .now-note');
-    if(note) note.textContent=en()?'A small, intentionally current list: what is active, why it matters, and the next concrete step.':'O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
+    if(note) note.textContent='A small, intentionally current list: what is active, why it matters, and the next concrete step.';
     const date=document.getElementById('now-datetime');
     if(date){
       date.dateTime='2026-09-13';
-      date.textContent=en()?'13 September 2026':'13 Septembrie 2026';
+      date.textContent='13 September 2026';
     }
   }
 
