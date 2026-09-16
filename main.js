@@ -174,6 +174,9 @@
   }
 
   function guardNow(){
+    // The Romanian page is curated in portfolio.html and must not be observed
+    // or rewritten. Observing it caused a self-triggering mutation loop.
+    if(!en()) return;
     const now=document.getElementById('now');
     if(!now||now.dataset.staticGuard) return;
     now.dataset.staticGuard='1';
