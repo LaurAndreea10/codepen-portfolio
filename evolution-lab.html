@@ -22,7 +22,7 @@
 .practice-progress{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.86rem}
 .practice-progress meter{width:150px;height:12px;accent-color:var(--accent)}
 .practice-card{position:relative;overflow:hidden}
-.practice-card::after{position:absolute;top:16px;right:16px;padding:5px 9px;border:1px solid rgba(101,226,162,.42);border-radius:999px;background:rgba(101,226,162,.1);color:#65e2a2;content:"01 · COMPLETE";font-size:.68rem;font-weight:900;letter-spacing:.08em}
+.practice-card::after{position:absolute;top:16px;right:16px;padding:5px 9px;border:1px solid rgba(101,226,162,.42);border-radius:999px;background:rgba(101,226,162,.1);color:#65e2a2;content:attr(data-badge);font-size:.68rem;font-weight:900;letter-spacing:.08em}
 .practice-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0}
 .practice-step{padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025)}
 .practice-step strong{display:block;margin-bottom:5px;color:var(--accent);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase}
@@ -68,10 +68,10 @@
 <section id="practice-lab" aria-labelledby="practice-title"><div class="wrap">
 <div class="practice-head">
 <div><span class="eyebrow">Practice Lab · progres aplicat</span><h2 id="practice-title"><span data-lang="ro">Exerciții transformate în dovezi de portofoliu</span><span data-lang="en">Exercises turned into portfolio evidence</span></h2><p class="sub"><span data-lang="ro">Fiecare sesiune pornește de la un concept, produce o componentă funcțională și documentează verificările.</span><span data-lang="en">Each session starts from one concept, produces a working component and records its checks.</span></p></div>
-<div class="practice-progress"><span><span data-lang="ro">Nivel: fundație aplicată</span><span data-lang="en">Level: applied foundations</span></span><meter min="0" max="6" value="1">1 / 6</meter></div>
+<div class="practice-progress"><span><span data-lang="ro">Nivel: interfețe determinate de stare</span><span data-lang="en">Level: state-driven interfaces</span></span><meter min="0" max="6" value="2">2 / 6</meter></div>
 </div>
 <div class="grid">
-<article class="card practice-card" data-cat="a11y">
+<article class="card practice-card" data-cat="a11y" data-badge="01 · COMPLETE">
 <span class="kicker">Exercițiul 01 · CRM · RO/EN · Accessibility</span>
 <h3><span data-lang="ro">Card CRM bilingv și accesibil</span><span data-lang="en">Accessible bilingual CRM card</span></h3>
 <p><span data-lang="ro">De la structură HTML minimală la o componentă ClientFlow publicată, responsive și verificabilă.</span><span data-lang="en">From minimal HTML to a published, responsive and verifiable ClientFlow component.</span></p>
@@ -84,7 +84,20 @@
 <p><strong><span data-lang="ro">Problemă → soluție:</span><span data-lang="en">Problem → solution:</span></strong> <span data-lang="ro">statusul trebuia să rămână clar fără dependență de culoare; soluția combină text, simbol și semantică accesibilă.</span><span data-lang="en">the status had to remain clear without relying on color; the solution combines text, iconography and accessible semantics.</span></p>
 <div class="practice-actions"><a class="btn" href="crm-client-card.html"><span data-lang="ro">Deschide rezultatul</span><span data-lang="en">Open result</span></a><a class="btn secondary" href="https://github.com/LaurAndreea10/codepen-portfolio/blob/main/crm-client-card.html" target="_blank" rel="noopener noreferrer">GitHub</a></div>
 </article>
-<article class="card"><span class="kicker">Next · Progressive difficulty</span><h3><span data-lang="ro">Nivelul următor</span><span data-lang="en">Next level</span></h3><p><span data-lang="ro">Următoarele exerciții vor adăuga stări loading/empty/error, filtre accesibile, Browser APIs și persistență structurată.</span><span data-lang="en">The next exercises will add loading/empty/error states, accessible filters, Browser APIs and structured persistence.</span></p><ul><li>Keyboard-first filters</li><li>Browser APIs</li><li>Offline behavior</li><li>Mobile checks</li></ul></article>
+<article class="card practice-card" data-cat="a11y" data-badge="02 · COMPLETE">
+<span class="kicker">Exercițiul 02 · Dashboard · State UI · Accessibility</span>
+<h3><span data-lang="ro">Stări dinamice pentru dashboard</span><span data-lang="en">Dynamic dashboard states</span></h3>
+<p><span data-lang="ro">Widget CRM funcțional pentru loading, success, empty și error, cu testare directă în interfață.</span><span data-lang="en">Working CRM widget for loading, success, empty and error, with direct in-interface testing.</span></p>
+<div class="practice-steps">
+<div class="practice-step"><strong><span data-lang="ro">Exercițiu</span><span data-lang="en">Exercise</span></strong><span><span data-lang="ro">Patru stări reale într-un singur widget.</span><span data-lang="en">Four real states in one widget.</span></span></div>
+<div class="practice-step"><strong>Concept</strong><span><span data-lang="ro">Randare determinată de o singură stare.</span><span data-lang="en">Rendering driven by a single state.</span></span></div>
+<div class="practice-step"><strong><span data-lang="ro">Dovadă</span><span data-lang="en">Evidence</span></strong><span>aria-busy · aria-live · semantic list · 320px</span></div>
+<div class="practice-step"><strong><span data-lang="ro">Rezultat</span><span data-lang="en">Outcome</span></strong><span>sessionStorage · retry flow · RO/EN</span></div>
+</div>
+<p><strong><span data-lang="ro">Problemă → soluție:</span><span data-lang="en">Problem → solution:</span></strong> <span data-lang="ro">dashboard-urile par incomplete când tratează doar succesul; componenta documentează și face testabile toate stările importante.</span><span data-lang="en">dashboards feel incomplete when they only handle success; the component documents and makes every important state testable.</span></p>
+<div class="practice-actions"><a class="btn" href="dashboard-activity-states.html"><span data-lang="ro">Deschide rezultatul</span><span data-lang="en">Open result</span></a><a class="btn secondary" href="https://github.com/LaurAndreea10/codepen-portfolio/blob/main/dashboard-activity-states.html" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article class="card"><span class="kicker">Next · Browser APIs</span><h3><span data-lang="ro">Nivelul următor</span><span data-lang="en">Next level</span></h3><p><span data-lang="ro">Următorul exercițiu va conecta o funcție reală de browser la o interfață accesibilă și va trata explicit permisiunile și fallback-ul.</span><span data-lang="en">The next exercise will connect a real browser feature to an accessible interface and explicitly handle permissions and fallback behavior.</span></p><ul><li>Browser API</li><li>Permission states</li><li>Accessible fallback</li><li>Mobile behavior</li></ul></article>
 </div></div></section>
 
 <section><div class="wrap"><div class="callout"><span class="eyebrow">Declarație de evoluție</span><h2>De la experimente interactive la produse verificabile.</h2><p>Construiesc CRM-uri, dashboard-uri și experiențe accesibile de la idee până la publicare, măsurând performanța și păstrând deciziile și versiunile care arată cum am ajuns la rezultat.</p><a class="btn" href="portfolio.html#now">Vezi ce am finalizat</a></div></div></section>
