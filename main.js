@@ -9,7 +9,7 @@
   const CODEPEN_NEW_PROJECTS = [
     {
       id: '019d2b3a-2991-75d3-9c59-15de01ca8079',
-      label: 'CodePen #84',
+      label: 'Latest CodePen',
       url: 'https://codepen.io/editor/Laura-Andreea-the-typescripter/pen/019d2b3a-2991-75d3-9c59-15de01ca8079'
     }
   ];
