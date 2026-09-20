@@ -96,8 +96,8 @@
     if(note) note.textContent='O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
     const date=document.getElementById('now-datetime');
     if(date){
-      date.dateTime='2026-09-16';
-      date.textContent='16 Septembrie 2026';
+      date.dateTime='2026-09-20';
+      date.textContent='20 Septembrie 2026';
     }
   }
 
