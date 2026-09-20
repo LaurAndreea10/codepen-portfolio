@@ -6,7 +6,8 @@ const files = [
   'tools/link-video-automation-pack.html', 'project-health.html',
   'proof-registry.html', 'game-audits.html', 'release-timeline.html',
   'growth-suite.html', 'en/growth-suite.html', 'evolution-lab.html',
-  'design-system.html', 'portfolio-summary.html'
+  'design-system.html', 'portfolio-summary.html', 'proof-pack.html',
+  'mobile-test-lab.html', 'projects/tri-link-quest.html'
 ];
 const budget = JSON.parse(readFileSync('performance-budget.json', 'utf8'));
 const failures = [];

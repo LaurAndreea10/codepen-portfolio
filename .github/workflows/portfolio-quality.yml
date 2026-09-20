@@ -1,0 +1,28 @@
+name: Portfolio quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "35 6 * * 0"
+
+permissions:
+  contents: read
+
+jobs:
+  evidence-and-parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Generate canonical sitemap
+        run: node scripts/generate-sitemap.mjs
+      - name: Confirm generated files are committed
+        run: git diff --exit-code sitemap.xml
+      - name: Validate evidence, RO/EN parity and accessibility hooks
+        run: node scripts/portfolio-quality.mjs
+      - name: Validate SEO and internal links
+        run: node scripts/seo-audit.mjs
