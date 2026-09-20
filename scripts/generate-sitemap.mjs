@@ -2,8 +2,8 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
-  ["portfolio.html", "weekly", "1.0", "2026-09-14"],
-  ["en/", "weekly", "0.9", "2026-09-13"],
+  ["portfolio.html", "weekly", "1.0", "2026-09-20"],
+  ["en/", "weekly", "0.9", "2026-09-20"],
   ["alpis-fusion-crm.html", "monthly", "0.9", "2026-08-30"],
   ["projects/clientflow.html", "monthly", "0.9", "2026-08-30"],
   ["projects/alpis-impactpath.html", "monthly", "0.9", "2026-04-20"],
@@ -27,17 +27,17 @@ const pages = [
   ["insights/single-file-la-vite-react.html", "monthly", "0.7", "2026-05-23"],
   ["insights/flow-builder-vs-kanban.html", "monthly", "0.7", "2026-05-23"],
   ["insights/ce-as-documenta.html", "monthly", "0.6", "2026-05-23"],
-  ["project-health.html", "monthly", "0.8", "2026-09-13"],
+  ["project-health.html", "monthly", "0.8", "2026-09-20"],
   ["proof-registry.html", "monthly", "0.7", "2026-09-13"],
   ["game-audits.html", "monthly", "0.7", "2026-09-06"],
   ["release-timeline.html", "monthly", "0.7", "2026-09-06"],
   ["lead-magnet-landing.html", "monthly", "0.7", "2026-09-06"],
   ["accessibility-scorecard.html", "monthly", "0.7", "2026-09-06"],
-  ["en/project-health.html", "monthly", "0.7", "2026-09-06"],
+  ["en/project-health.html", "monthly", "0.7", "2026-09-20"],
   ["en/proof-registry.html", "monthly", "0.7", "2026-09-06"],
   ["en/game-audits.html", "monthly", "0.7", "2026-09-06"],
   ["en/release-timeline.html", "monthly", "0.7", "2026-09-06"],
-  ["evolution-lab.html", "monthly", "0.9", "2026-09-13"],
+  ["evolution-lab.html", "monthly", "0.9", "2026-09-16"],
   ["design-system.html", "monthly", "0.8", "2026-09-13"],
   ["portfolio-summary.html", "monthly", "0.9", "2026-09-14"],
   ["growth-suite.html", "monthly", "0.9", "2026-09-13"],
@@ -52,6 +52,9 @@ const pages = [
   ["demo-scenarios.html", "monthly", "0.7", "2026-09-13"],
   ["accessibility-lab.html", "monthly", "0.7", "2026-09-13"],
   ["build-in-public.html", "monthly", "0.7", "2026-09-13"],
+  ["projects/tri-link-quest.html", "monthly", "0.8", "2026-09-15"],
+  ["crm-client-card.html", "monthly", "0.75", "2026-09-16"],
+  ["dashboard-activity-states.html", "monthly", "0.75", "2026-09-18"],
 ];
 
 const pairs = new Map([
