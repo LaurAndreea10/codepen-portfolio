@@ -7,7 +7,7 @@
 Joc de alergare printre platforme suspendate, inspirat de conceptul **SkyDreams** creat de Frank Force / Killed By A Pixel pentru JS1024 (2026). Această versiune este o implementare nouă, extinsă, într-un singur fișier HTML, fără dependențe.
 
 - Trei lumi și ecrane de capitol: Grădina zorilor, Furtuna electrică și Templul neon.
-- Moduri Story, Endless, Zen, Daily, Time Attack, Collect și Custom.
+- Moduri Poveste, Fără sfârșit, Zen, Provocarea zilei, Contra cronometru, Colectare și Personalizat (Story, Endless, Zen, Daily, Time Attack, Collect, Custom).
 - Salt dublu, dash, scut, stele, combo, misiuni și record local.
 - Editor de pistă 8 × 7 și link de distribuire care include codul și platformele.
 - RO/EN, dark/light, contrast ridicat, mișcare redusă, viteză reglabilă, taste configurabile, asistență la salt și controale tactile.
