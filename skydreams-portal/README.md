@@ -7,10 +7,11 @@
 Joc de alergare printre platforme suspendate, inspirat de conceptul **SkyDreams** creat de Frank Force / Killed By A Pixel pentru JS1024 (2026). Această versiune este o implementare nouă, extinsă, într-un singur fișier HTML, fără dependențe.
 
 - Trei lumi și ecrane de capitol: Grădina zorilor (platforme fragile), Furtuna electrică (cristale electrice) și Templul neon (porți cu un culoar deschis).
-- Nouă moduri: Poveste, Fără sfârșit, Zen, Provocarea zilei, Contra cronometru, Colectare, Personalizat, Cursă Sprint și Campionat. Daily are traseu comun pe zi, obiectiv la 120 și record local; Sprint se termină la 180; Campionatul are trei manșe și podium local.
+- Unsprezece moduri: Poveste, Fără sfârșit, Zen, Provocarea zilei, Contra cronometru, Colectare, Personalizat, Cursă Sprint, Campionat, Cloud Maze și Daily Maze. Daily are traseu comun pe zi, obiectiv la 120 și record local; Sprint se termină la 180; Campionatul are trei manșe și podium local.
 - Salt dublu, avânt, scut, stele, combo, misiuni și record local. Cristalele pot fi sparte pentru stele, zidurile fisurate cer două lovituri, blocurile se mișcă, iar cutremurele anunță culoarele care cedează. În Poveste, sparge cele trei nuclee de pe culoarul 4 pentru a deschide portalul; dacă le ratezi, reiei secvența finală păstrând nucleele deja sparte.
+- Cloud Maze are trei etape deterministe de 11 × 11, cheie și poartă, ziduri de spart din două lovituri, cufere și cutremur; Daily Maze folosește data UTC. Săgețile/WASD și butoanele tactile controlează personajul, X sparge un zid în direcția privită, H arată următorul pas. Poți dezactiva limita de timp și efectul cutremurului sau afișa întreaga hartă; fiecare rând are și reprezentare textuală. Progresul și recordul sunt locale.
 - Editor de pistă 8 × 7 și link de distribuire care include codul și platformele.
-- Alegere RO/EN la prima deschidere și oricând din meniu; shop cu monede câștigate în joc, urmă luminoasă, aspect auriu și scut la start. Dark/light, contrast ridicat, mișcare redusă, viteză reglabilă, taste configurabile, asistență la salt și controale tactile.
+- Alegere RO/EN la prima deschidere și oricând din meniu; shop cu monede câștigate în joc, urmă luminoasă, aspect auriu, scut la start, hartă permanentă, portal strălucitor și stabilizator seismic. Dark/light, contrast ridicat, mișcare redusă, viteză reglabilă, taste configurabile, asistență la salt și controale tactile.
 - **Mod text pe ture:** alege culoarul, citește platformele următoare și avansează câte un pas; saltul acoperă trei platforme. Nu cere reflexe rapide. Activează-l din „Setări și accesibilitate”.
 
 ### Comenzi
@@ -32,10 +33,11 @@ Pe pagina publicată, jocul poate fi instalat și jucat offline după prima înc
 A sky-platform runner inspired by the **SkyDreams** concept created by Frank Force / Killed By A Pixel for JS1024 (2026). This is a new, expanded single-file HTML implementation with no dependencies.
 
 - Three worlds with chapter screens: Dawn Garden (fragile tiles), Electric Storm (electric crystals) and Neon Temple (single-lane gates).
-- Nine modes: Story, Endless, Zen, Daily, Time Attack, Collect, Custom, Sprint Race and Championship. Daily uses a shared daily seed and a 120-distance goal; Sprint ends at 180; Championship spans three heats with a local podium.
+- Eleven modes: Story, Endless, Zen, Daily, Time Attack, Collect, Custom, Sprint Race, Championship, Cloud Maze and Daily Maze. Daily uses a shared daily seed and a 120-distance goal; Sprint ends at 180; Championship spans three heats with a local podium.
 - Double jump, dash, shield, stars, combos, missions and a locally saved best score. Break crystals for stars, hit cracked walls twice, dodge moving blocks and watch announced earthquake lanes. In Story mode, break three cores in lane 4 to open the portal; missed cores remain available on the repeated final section.
+- Cloud Maze has three deterministic 11 × 11 stages, a key and gate, two-hit breakable walls, chests and an earthquake; Daily Maze uses the UTC date. Use arrows/WASD or touch buttons, X to break a wall and H for a step hint. Optional unlimited time and full-map display, plus a text map. Progress and records stay local.
 - An 8 × 7 course editor; shared links include both the course code and tile pattern.
-- First-run RO/EN choice and menu switching; local coin shop for a glowing trail, gold skin and starting shield. Dark/light, high contrast, reduced motion, adjustable speed, remappable keys, jump assist and touch controls.
+- First-run RO/EN choice and menu switching; local coin shop for a glowing trail, gold skin, starting shield, permanent map, glowing portal and quake stabilizer. Dark/light, high contrast, reduced motion, adjustable speed, remappable keys, jump assist and touch controls.
 - **Turn-based text mode:** choose a lane, read upcoming tiles and advance one step at a time. A jump covers three tiles. Enable it under “Settings and accessibility”.
 
 ### Controls
