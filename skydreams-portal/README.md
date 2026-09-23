@@ -7,10 +7,10 @@
 Joc de alergare printre platforme suspendate, inspirat de conceptul **SkyDreams** creat de Frank Force / Killed By A Pixel pentru JS1024 (2026). Această versiune este o implementare nouă, extinsă, într-un singur fișier HTML, fără dependențe.
 
 - Trei lumi și ecrane de capitol: Grădina zorilor (platforme fragile), Furtuna electrică (cristale electrice) și Templul neon (porți cu un culoar deschis).
-- Moduri Poveste, Fără sfârșit, Zen, Provocarea zilei, Contra cronometru, Colectare și Personalizat (Story, Endless, Zen, Daily, Time Attack, Collect, Custom).
+- Nouă moduri: Poveste, Fără sfârșit, Zen, Provocarea zilei, Contra cronometru, Colectare, Personalizat, Cursă Sprint și Campionat. Daily are traseu comun pe zi, obiectiv la 120 și record local; Sprint se termină la 180; Campionatul are trei manșe și podium local.
 - Salt dublu, avânt, scut, stele, combo, misiuni și record local. Cristalele pot fi sparte pentru stele, zidurile fisurate cer două lovituri, blocurile se mișcă, iar cutremurele anunță culoarele care cedează. În Poveste, sparge cele trei nuclee de pe culoarul 4 pentru a deschide portalul; dacă le ratezi, reiei secvența finală păstrând nucleele deja sparte.
 - Editor de pistă 8 × 7 și link de distribuire care include codul și platformele.
-- RO/EN, dark/light, contrast ridicat, mișcare redusă, viteză reglabilă, taste configurabile, asistență la salt și controale tactile.
+- Alegere RO/EN la prima deschidere și oricând din meniu; shop cu monede câștigate în joc, urmă luminoasă, aspect auriu și scut la start. Dark/light, contrast ridicat, mișcare redusă, viteză reglabilă, taste configurabile, asistență la salt și controale tactile.
 - **Mod text pe ture:** alege culoarul, citește platformele următoare și avansează câte un pas; saltul acoperă trei platforme. Nu cere reflexe rapide. Activează-l din „Setări și accesibilitate”.
 
 ### Comenzi
@@ -32,10 +32,10 @@ Pe pagina publicată, jocul poate fi instalat și jucat offline după prima înc
 A sky-platform runner inspired by the **SkyDreams** concept created by Frank Force / Killed By A Pixel for JS1024 (2026). This is a new, expanded single-file HTML implementation with no dependencies.
 
 - Three worlds with chapter screens: Dawn Garden (fragile tiles), Electric Storm (electric crystals) and Neon Temple (single-lane gates).
-- Story, Endless, Zen, Daily, Time Attack, Collect and Custom modes.
+- Nine modes: Story, Endless, Zen, Daily, Time Attack, Collect, Custom, Sprint Race and Championship. Daily uses a shared daily seed and a 120-distance goal; Sprint ends at 180; Championship spans three heats with a local podium.
 - Double jump, dash, shield, stars, combos, missions and a locally saved best score. Break crystals for stars, hit cracked walls twice, dodge moving blocks and watch announced earthquake lanes. In Story mode, break three cores in lane 4 to open the portal; missed cores remain available on the repeated final section.
 - An 8 × 7 course editor; shared links include both the course code and tile pattern.
-- RO/EN, dark/light, high contrast, reduced motion, adjustable speed, remappable keys, jump assist and touch controls.
+- First-run RO/EN choice and menu switching; local coin shop for a glowing trail, gold skin and starting shield. Dark/light, high contrast, reduced motion, adjustable speed, remappable keys, jump assist and touch controls.
 - **Turn-based text mode:** choose a lane, read upcoming tiles and advance one step at a time. A jump covers three tiles. Enable it under “Settings and accessibility”.
 
 ### Controls
@@ -60,3 +60,7 @@ On the published page, the game can be installed and played offline after its fi
 - **Offline:** încarcă pagina publicată online, apoi dezactivează conexiunea și redeschide jocul din aceeași adresă sau din aplicația instalată. Funcția depinde de suportul browserului pentru service workers.
 
 **EN:** Repeat these checks for both languages on portrait and landscape phones. With NVDA/Chrome or TalkBack/Chrome, verify lane selection, upcoming tiles, jump, advance, pause, chapter changes and replay. Load online first, then reopen offline to check the service worker. These are acceptance checks, not a claim of completed testing with physical devices or screen readers.
+
+## Arcade World
+
+SkyDreams Portal apare ca joc extern în ARCADE WORLD. Poate fi deschis în hub sau într-un tab separat; progresul și shop-ul SkyDreams rămân locale jocului. / SkyDreams Portal appears as an external game in ARCADE WORLD, with an in-hub launcher and a separate tab option. SkyDreams progress and shop stay local to the game.
