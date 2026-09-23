@@ -51,3 +51,12 @@ A sky-platform runner inspired by the **SkyDreams** concept created by Frank For
 On the published page, the game can be installed and played offline after its first complete load. Settings and the best score are stored in the browser. Open `index.html` directly to play. Use “Share course” on the published page to share a custom course.
 
 **Accessibility:** text mode uses semantic buttons, an HTML list and live status messages. The Canvas game includes text hazard cues. Practical testing with screen readers and players with varied needs is still necessary; universal compatibility is not claimed.
+
+## QA / Testare practică
+
+- **RO/EN:** comută limba în meniu și în timpul jocului; verifică modurile, indicațiile și etichetele comenzilor.
+- **Telefon:** verifică orientările portret și peisaj, comenzile tactile, panoul de setări, zonele de siguranță și modul text la lățimi de aproximativ 360–412 px.
+- **Cititor de ecran:** activează modul text și parcurge cu NVDA + Chrome sau TalkBack + Chrome: alegerea culoarului, lista următoarelor platforme, saltul, avansarea, pauza, schimbarea capitolului și reluarea. Verifică anunțurile fără a depinde de Canvas.
+- **Offline:** încarcă pagina publicată online, apoi dezactivează conexiunea și redeschide jocul din aceeași adresă sau din aplicația instalată. Funcția depinde de suportul browserului pentru service workers.
+
+**EN:** Repeat these checks for both languages on portrait and landscape phones. With NVDA/Chrome or TalkBack/Chrome, verify lane selection, upcoming tiles, jump, advance, pause, chapter changes and replay. Load online first, then reopen offline to check the service worker. These are acceptance checks, not a claim of completed testing with physical devices or screen readers.
