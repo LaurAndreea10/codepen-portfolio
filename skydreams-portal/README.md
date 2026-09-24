@@ -18,9 +18,9 @@ Joc de alergare printre platforme suspendate, inspirat de conceptul **SkyDreams*
 
 | Acțiune | Tastatură | Mobil |
 | --- | --- | --- |
-| Stânga / dreapta | ← / → sau A / D, configurabile | Butoane sau glisare orizontală; atingere pe pistă pentru salt |
-| Salt | Spațiu / ↑ sau W, configurabil | SARI |
-| Dash | X, configurabil | ⇥ |
+| Stânga / dreapta | ← / → sau A / D, configurabile | Butoane sau glisare ← → pe pistă |
+| Salt | Spațiu / ↑ sau W, configurabil | Glisează ↑ sau atinge pista; SARI rămâne disponibil |
+| Dash | X, configurabil | Glisează ↓ sau apasă ⇥ |
 | Pauză | P / Esc | Butonul de pauză |
 | Pas în modul text | Enter sau butonul „Avansează” | Butonul „Avansează” |
 
@@ -44,9 +44,9 @@ A sky-platform runner inspired by the **SkyDreams** concept created by Frank For
 
 | Action | Keyboard | Mobile |
 | --- | --- | --- |
-| Left / right | ← / → or A / D, remappable | Buttons or horizontal swipe; tap the course to jump |
-| Jump | Space / ↑ or W, remappable | JUMP |
-| Dash | X, remappable | ⇥ |
+| Left / right | ← / → or A / D, remappable | Buttons or swipe ← → on the course |
+| Jump | Space / ↑ or W, remappable | Swipe ↑ or tap the course; JUMP button remains available |
+| Dash | X, remappable | Swipe ↓ or tap ⇥ |
 | Pause | P / Esc | Pause button |
 | Text-mode step | Enter or “Advance” | “Advance” button |
 
