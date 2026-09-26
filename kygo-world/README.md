@@ -1,28 +1,24 @@
 # Kygo World · Insulele din Nori
 
-Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`; nu are build sau biblioteci externe. Imaginile `sky-islands.jpg` și `kygo-sprite.webp` trebuie să rămână lângă fișier.
+Joc browser RO/EN cu Kygo, un pudel toy roșcat. Un singur `index.html`, fără build și fără biblioteci (doar fontul Fredoka din Google Fonts, cu fallback de sistem). Imaginile `kygo-hero.webp` și `sky-islands-sm.webp` trebuie să rămână lângă fișier (`kygo-sprite.webp` e folosit ca rezervă).
 
 ## Moduri
 
-- **Poveste:** patru lumi tematice cu pericole distincte, 30 de pași și trei benzi de iarbă. Kygo aleargă automat; schimbi banda pentru lăbuțe și trei relicve, sari peste obstacole, folosești scutul și magnetul, treci prin puncte de control și o furtună finală. La două intersecții alegi ramura Cer, Grădină sau Potecă; ramurile laterale oferă bonusuri. Furtuna finală schimbă banda sigură în timp. Colecția completă oferă o insignă. Viteza poveștii se reglează separat; în modul fără eșec sare automat peste obstacole.
-- **Cursă:** trei piste, săritură peste pietre, alunecare sub arcade, rampe și lăbuțe.
-- **Campionat:** trei manșe consecutive; **Endless:** urmărește recordul.
-- **Labirint:** cheie, poartă, indiciu, dificultăți, ceață opțională și provocare zilnică fără cronometru.
-- **Comoară:** trei chei pe insule; **Grădină / Zen:** colecție, flori, udat, anotimpuri și joacă; **Duo:** Kygo și pasărea prietenă adună opt lăbuțe; fiecare trebuie să contribuie cu minimum două pentru insignă și bonus.
+- **Poveste:** runner pseudo-3D prin 4 lumi (Marea Norilor, Cascadele, Podul Florilor, Castelul Lăbuțelor), fiecare cu cer, drum, decor, obstacole și muzică proprii. Trei benzi, săritură, alunecare, obstacole joase / înalte / ziduri, lăbuțe cu multiplicator de combo, scut, magnet, lăbuțe duble, viață în plus, 3 relicve, 2 steaguri (continui de la steag după game over), 2 rânduri de portaluri (Cer / Potecă / Grădină) și furtuna finală cu fulgere anunțate pe bandă. 1–3 stele pe lume.
+- **Cursă:** 50 de lăbuțe pe pista însorită, cu rampe. **Campionat:** 3 manșe tot mai rapide. **Endless:** lumile se schimbă la fiecare 700 m, viteza crește, record de distanță.
+- **Labirint:** labirint zilnic din garduri vii, cu lumină, licurici, ceață opțională și indiciu cu firimituri luminoase.
+- **Comoară:** nuferi pe apă animată, nuferi care se scufundă, pod mobil, piatră peste care sari, minge de împins, 3 chei. Pe telefon tabla se rotește pe verticală.
+- **Grădină / Zen / Duo:** mișcare liberă (ține apăsat și trage), flori care cresc, minge cu fizică, fântână, fluturi, particule de anotimp; Zen are bule, Duo are pasărea (IJKL).
 
-## Costume și muzică\n\nCinci variante vizuale (clasic, nori, valuri, flori, regal) se pot echipa sau cumpăra cu lăbuțe. Selecția persistă local. Muzica sintetică este opțională și are tonuri diferite pentru fiecare lume; sunetele și muzica au comenzi separate.\n\n## Comenzi
+## Comenzi
 
 | Acțiune | Tastatură | Mobil |
 | --- | --- | --- |
-| Poveste | Pornire cu Start; deplasare automată | Start pe scenă; atinge Sari pentru salt |\n| Alte moduri | Săgeți / WASD | Swipe, butoane ținute apăsate sau joystick opțional |
-| Săritură / acțiune | Spațiu | Atingere pe scenă sau butonul Acțiune |
-| Cursă: schimbă pista | Stânga / Dreapta | Swipe stânga / dreapta |
-| Cursă: sari / alunecă | Sus / Jos | Swipe sus / jos |
-| Prietenul din Duo | IJKL | Al doilea set de butoane |
-| Pauză | P | Butonul Pauză |
+| Runner: bandă | ← → / A D | Swipe stânga / dreapta |
+| Runner: sari / alunecă | ↑ / Spațiu, ↓ | Atingere / swipe sus, swipe jos |
+| Labirint, Comoară | Săgeți / WASD (ține apăsat) | Swipe și ține, butoane |
+| Grădină | Săgeți / WASD | Ține apăsat și trage |
+| Pasărea (Duo) | IJKL | Al doilea set de butoane |
+| Pauză | P / Esc | ❚❚ |
 
-Setări: limbă, temă, contrast, mișcare redusă, sensibilitate swipe, viteză separată pentru Poveste și Cursă, mod fără eșec, vibrație, sunet și muzică opționale, comenzi pentru mâna stângă, scanare cu un buton, hartă text pe ture. Progresul se salvează local pe dispozitiv.
-
-## Testare
-
-Sintaxa JavaScript este verificată cu `node --check`. Verificarea logicii simulează finalizarea unui nivel Poveste, adunarea cheilor în Comoară, rezolvarea labirintului și pornirea celorlalte moduri. Testarea vizuală directă pe un telefon rămâne recomandată.
+Setări: limbă, temă, contrast ridicat (și în canvas), mișcare redusă, mod fără eșec cu asistență automată, sensibilitate swipe, viteze, efecte sonore și muzică sintetizată (Web Audio), vibrație, mâna stângă, joystick, scanare cu un buton, hartă text, butoane pe desktop. Progresul (`kygo-world-v2`) e compatibil cu versiunea anterioară și rămâne local.
