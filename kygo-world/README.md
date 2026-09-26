@@ -4,7 +4,7 @@ Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`; nu are bu
 
 ## Moduri
 
-- **Poveste:** Kygo aleargă automat prin patru lumi pe iarbă, sare singur peste pietre și adună lăbuțe; atinge scena sau butonul Sari pentru un salt manual.
+- **Poveste:** patru lumi tematice cu pericole distincte, 30 de pași și trei benzi de iarbă. Kygo aleargă automat; schimbi banda pentru lăbuțe și trei relicve, sari peste obstacole, folosești scutul și magnetul, treci prin puncte de control și o furtună finală. Colecția completă oferă o insignă. Viteza poveștii se reglează separat; în modul fără eșec sare automat peste obstacole.
 - **Cursă:** trei piste, săritură peste pietre, alunecare sub arcade, rampe și lăbuțe.
 - **Campionat:** trei manșe consecutive; **Endless:** urmărește recordul.
 - **Labirint:** cheie, poartă, indiciu, dificultăți, ceață opțională și provocare zilnică fără cronometru.
@@ -21,7 +21,7 @@ Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`; nu are bu
 | Prietenul din Duo | IJKL | Al doilea set de butoane |
 | Pauză | P | Butonul Pauză |
 
-Setări: limbă, temă, contrast, mișcare redusă, sensibilitate swipe, viteză, mod fără eșec, vibrație și sunet opționale, comenzi pentru mâna stângă, scanare cu un buton, hartă text pe ture. Progresul se salvează local pe dispozitiv.
+Setări: limbă, temă, contrast, mișcare redusă, sensibilitate swipe, viteză separată pentru Poveste și Cursă, mod fără eșec, vibrație și sunet opționale, comenzi pentru mâna stângă, scanare cu un buton, hartă text pe ture. Progresul se salvează local pe dispozitiv.
 
 ## Testare
 
