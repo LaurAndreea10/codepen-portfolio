@@ -4,7 +4,7 @@ Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`; nu are bu
 
 ## Moduri
 
-- **Poveste:** patru lumi, nuferi, pod temporar, platformă mobilă, obstacole, steag de control și jucării recuperate.
+- **Poveste:** Kygo aleargă automat prin patru lumi pe iarbă, sare singur peste pietre și adună lăbuțe; atinge scena sau butonul Sari pentru un salt manual.
 - **Cursă:** trei piste, săritură peste pietre, alunecare sub arcade, rampe și lăbuțe.
 - **Campionat:** trei manșe consecutive; **Endless:** urmărește recordul.
 - **Labirint:** cheie, poartă, indiciu, dificultăți, ceață opțională și provocare zilnică fără cronometru.
@@ -14,7 +14,7 @@ Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`; nu are bu
 
 | Acțiune | Tastatură | Mobil |
 | --- | --- | --- |
-| Deplasare | Săgeți / WASD | Swipe, butoane ținute apăsate sau joystick opțional |
+| Poveste | Pornire cu Start; deplasare automată | Start pe scenă; atinge Sari pentru salt |\n| Alte moduri | Săgeți / WASD | Swipe, butoane ținute apăsate sau joystick opțional |
 | Săritură / acțiune | Spațiu | Atingere pe scenă sau butonul Acțiune |
 | Cursă: schimbă pista | Stânga / Dreapta | Swipe stânga / dreapta |
 | Cursă: sari / alunecă | Sus / Jos | Swipe sus / jos |
