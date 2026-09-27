@@ -9,6 +9,7 @@ Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub c
 - Salvare și restaurare a progresului prin cod sau fișier JSON. / Backup and restore by code or file.
 - Ghid nemodal în 4 pași la prima intrare și butonul „Continuă aventura”. / First-run guide and Continue button.
 - Mișcări mai naturale: Kygo alunecă lin între benzi și celule, sare pe o traiectorie de arc fără întârziere, se înclină în viraje, se turtește la aterizare, trapează în alergare, se întoarce spre direcția de mers și respiră când stă; totul se oprește cu „Mișcare redusă”. Randare la 60 fps pe desktop. / Natural motion.
+- Efecte și sunete: scântei și „+N 🦴” la fiecare recompensă, praf la săritură și aterizare, scuturare și scântei roșii la obstacole, confetti la gardieni; sunete generate în browser (clinchet de os, săritură, lovitură, scut, magnet, lătrat la victorie) și muzică cu melodie și bas pe fiecare lume. Oasele plutesc, obstacolele din față pulsează. Totul respectă „Mișcare redusă” și setările de sunet. / Effects and sound.
 - Statistici și 15 realizări. / Stats and 15 achievements. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/ed06ec603ea22afeb6f5980b24140b9a44834096)
 - Performanță: sprite-ul lui Kygo 346 KB → 61 KB, fundalul jocului în WebP (406 KB → 168 KB). / Lighter images.
 
