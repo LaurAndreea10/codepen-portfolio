@@ -39,7 +39,7 @@ const pages = [
   ["en/proof-registry.html", "monthly", "0.7", "2026-09-20"],
   ["en/game-audits.html", "monthly", "0.7", "2026-09-06"],
   ["en/release-timeline.html", "monthly", "0.7", "2026-09-06"],
-  ["evolution-lab.html", "monthly", "0.9", "2026-09-13"],
+  ["evolution-lab.html", "monthly", "0.9", "2026-09-25"],
   ["design-system.html", "monthly", "0.8", "2026-09-13"],
   ["portfolio-summary.html", "monthly", "0.9", "2026-09-14"],
   ["growth-suite.html", "monthly", "0.9", "2026-09-13"],
