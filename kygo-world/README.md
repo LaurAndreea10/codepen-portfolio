@@ -6,20 +6,24 @@ Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`, fără bu
 
 ## Moduri
 
-- **Poveste:** patru lumi cu 30 de pași și trei benzi de iarbă. Kygo aleargă automat; schimbi banda, sari peste obstacole, aduni lăbuțe și relicve, alegi ramuri și înfrunți câte un șef cu tipar de benzi sigure în fiecare lume. Un obiect ascuns pe lume deblochează un costum la final. Finalizarea acordă până la trei stele.
+- **Poveste:** patru lumi cu 30 de pași și trei benzi de iarbă. Kygo aleargă automat; schimbi banda, sari peste obstacole, aduni oase și relicve, alegi ramuri și înfrunți câte un șef cu tipar de benzi sigure în fiecare lume. Un obiect ascuns pe lume deblochează un costum la final. Finalizarea acordă până la trei stele.
 - **Provocarea zilei:** un traseu Poveste stabil pentru ziua curentă. Minimum două relicve acordă un bonus o dată pe zi.
 - **Contra cronometru:** încheie traseul Poveste în 30 de secunde; cel mai bun timp este salvat separat pentru fiecare ediție.
 - **Explorare liberă:** deplasare manuală înainte/înapoi pe iarbă, cu schimbarea benzii și săritură.
-- **Traseu creat:** pune până la 40 de lăbuțe sau pietre pe trei benzi, joacă traseul, exportă și importă cod JSON validat. Progresul Poveștii nu este schimbat.
+- **Traseu creat:** pune până la 40 de oase sau pietre pe trei benzi, joacă traseul, exportă și importă cod JSON validat. Progresul Poveștii nu este schimbat.
 - **Cursă**, **Campionat**, **Endless**, **Labirint**, **Comoară**, **Grădină / Zen** și **Duo** oferă provocări distincte. Labirintul are și provocare zilnică.
 
 ## Ediții de sărbătoare
 
 Edițiile pornesc automat după data locală a dispozitivului: **Paște ortodox** de luni din Săptămâna Mare până luni după Înviere (intervalul se încheie marți la 00:00), **Halloween** 24–31 octombrie și **Crăciun** 24 decembrie–6 ianuarie. În meniu apare numărătoarea inversă până la următoarea ediție sau până la încheierea celei active; în joc apare cronometrul ediției active. Celelalte ediții nu pot fi selectate în afara perioadei lor. Poți alege Clasic în timpul evenimentului; trecerea automată se face la următoarea schimbare de perioadă. Fiecare ediție are decor, sunete sintetice și progres separat în cele patru lumi. Halloween cere spargerea dovlecilor cu „Sparge!”, de Paște aduni ouă, iar de Crăciun cadouri. Trei din cele cinci obiective ale nivelului acordă insigna ediției.
 
+## Recompensele lui Kygo
+
+Oasele 🦴 sunt recompensa și moneda de joc: le culegi pe traseu, le primești pentru misiuni și le folosești pentru mingea, papionul, zgarda sau florile din grădina lui Kygo. Biscuiții 🍪 de pe traseu acordă câte două oase. Soldul deja salvat sub cheia internă `coins` este păstrat și afișat ca oase; progresul nu este resetat. Editorul acceptă în continuare codurile JSON vechi cu tipul intern `paw`, dar afișează obiectul ca os.
+
 ## Costume, captură și sunet
 
-Cinci costume vizuale (clasic, nori, valuri, flori, regal) se pot echipa, cumpăra cu lăbuțe sau debloca prin găsirea obiectului ascuns din fiecare lume. Captura scenei se descarcă local ca PNG. Sunetul are volum reglabil; muzica sintetică și efectele au comenzi separate. Setările și progresul se păstrează în LocalStorage pe dispozitiv.
+Cinci costume vizuale (clasic, nori, valuri, flori, regal) se pot echipa, cumpăra cu oase sau debloca prin găsirea obiectului ascuns din fiecare lume. Captura scenei se descarcă local ca PNG. Sunetul are volum reglabil; muzica sintetică și efectele au comenzi separate. Setările și progresul se păstrează în LocalStorage pe dispozitiv.
 
 Pe mobil, alegerea modului sau atingerea butonului Start concentrează ecranul pe joc. Bara de sus păstrează Pauză și Meniu. Instrucțiunile stau în afara imaginii.
 
