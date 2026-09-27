@@ -89,7 +89,7 @@ try {
         ]) {
           await page.clock.setFixedTime(date);
           await page.reload({ waitUntil: "networkidle" });
-          if (await page.locator(`#edition option[value="${edition}"]`).isDisabled()) {
+          if (await page.locator(`#edition option[value="${edition}"]`).evaluate((option) => option.disabled)) {
             failures.push(`Kygo World: ${edition} is unavailable during its scheduled window`);
           }
           await page.locator("#edition").selectOption(edition);
@@ -106,7 +106,7 @@ try {
         await page.clock.setFixedTime(new Date(2026, 8, 27, 12));
         await page.reload({ waitUntil: "networkidle" });
         await page.waitForTimeout(1200);
-        if (!(await page.locator('#edition option[value="halloween"]').isDisabled())) {
+        if (!(await page.locator('#edition option[value="halloween"]').evaluate((option) => option.disabled))) {
           const observedDate = await page.evaluate(() => new Date().toISOString());
           failures.push(`Kygo World: Halloween remains available outside its scheduled window (${observedDate})`);
         }
