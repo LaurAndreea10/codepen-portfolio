@@ -82,7 +82,16 @@ try {
 
       if (width === 390 && target.name === "Kygo World") {
         await page.locator("#safe").check();
-        for (const edition of ["halloween", "easter", "christmas"]) {
+        for (const [edition, date] of [
+          ["halloween", new Date(2026, 9, 26, 12)],
+          ["easter", new Date(2026, 3, 10, 12)],
+          ["christmas", new Date(2026, 11, 26, 12)]
+        ]) {
+          await page.clock.setFixedTime(date);
+          await page.reload({ waitUntil: "networkidle" });
+          if (await page.locator(`#edition option[value="${edition}"]`).isDisabled()) {
+            failures.push(`Kygo World: ${edition} is unavailable during its scheduled window`);
+          }
           await page.locator("#edition").selectOption(edition);
           await page.locator('[data-mode="story"]').click();
           await page.locator("#startOverlay").tap();
@@ -93,6 +102,11 @@ try {
             await page.screenshot({ path: "audit-artifacts/recent-projects/kygo-world-playing-390.png" });
           }
           await page.locator("#focusExit").click();
+        }
+        await page.clock.setFixedTime(new Date(2026, 8, 27, 12));
+        await page.reload({ waitUntil: "networkidle" });
+        if (!(await page.locator('#edition option[value="halloween"]').isDisabled())) {
+          failures.push("Kygo World: Halloween remains available outside its scheduled window");
         }
         for (const gameMode of ["dash", "championship", "endless", "maze", "treasure", "garden", "duo", "zen"]) {
           await page.locator(`[data-mode="${gameMode}"]`).click();
