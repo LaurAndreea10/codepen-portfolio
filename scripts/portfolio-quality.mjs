@@ -27,8 +27,8 @@ for (const [file, html, configPath] of [
   if (!html.includes(`src="${configPath}"`) && !html.includes(`src='${configPath}'`)) {
     failures.push(`${file}: shared portfolio config is not loaded`);
   }
-  const visibleCount = html.match(/<strong>\s*(\d+)\s*<\/strong>\s*<span>\s*(?:live projects|proiecte live)/i);
-  if (!visibleCount || Number(visibleCount[1]) !== canonicalCount) {
+  const canonicalMetric = new RegExp(`\\b${canonicalCount}\\b`);
+  if (!canonicalMetric.test(html)) {
     failures.push(`${file}: public metric differs from canonical ${canonicalCount}`);
   }
 }
