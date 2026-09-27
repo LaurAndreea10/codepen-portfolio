@@ -2,8 +2,8 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
-  ["portfolio.html", "weekly", "1.0", "2026-09-20"],
-  ["en/", "weekly", "0.9", "2026-09-20"],
+  ["portfolio.html", "weekly", "1.0", "2026-09-27"],
+  ["en/", "weekly", "0.9", "2026-09-27"],
   ["alpis-fusion-crm.html", "monthly", "0.9", "2026-08-30"],
   ["projects/clientflow.html", "monthly", "0.9", "2026-08-30"],
   ["projects/alpis-impactpath.html", "monthly", "0.9", "2026-04-20"],
@@ -15,7 +15,7 @@ const pages = [
   ["insights.html", "weekly", "0.8", "2026-04-25"],
   ["changelog.html", "weekly", "0.7", "2026-09-20"],
   ["proof-pack.html", "monthly", "0.9", "2026-09-20"],
-  ["mobile-test-lab.html", "monthly", "0.8", "2026-09-20"],
+  ["mobile-test-lab.html", "monthly", "0.8", "2026-09-27"],
   ["uses.html", "monthly", "0.6", "2026-05-15"],
   ["campaignpilot.html", "monthly", "0.7", "2026-05-10"],
   ["Campaign%20ROI%20Calculator.html", "monthly", "0.7", "2026-05-10"],
@@ -54,6 +54,11 @@ const pages = [
   ["demo-scenarios.html", "monthly", "0.7", "2026-09-13"],
   ["accessibility-lab.html", "monthly", "0.7", "2026-09-13"],
   ["build-in-public.html", "monthly", "0.7", "2026-09-13"],
+  ["clipboard-crm-summary.html", "monthly", "0.75", "2026-09-21"],
+  ["dashboard-activity-filter.html", "monthly", "0.75", "2026-09-23"],
+  ["skydreams-portal/", "monthly", "0.8", "2026-09-27"],
+  ["kygo-world/", "monthly", "0.8", "2026-09-27"],
+  ["crm-accessible-form.html", "monthly", "0.75", "2026-09-25"],
 ];
 
 const pairs = new Map([
