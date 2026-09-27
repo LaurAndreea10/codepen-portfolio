@@ -105,8 +105,10 @@ try {
         }
         await page.clock.setFixedTime(new Date(2026, 8, 27, 12));
         await page.reload({ waitUntil: "networkidle" });
+        await page.waitForTimeout(1200);
         if (!(await page.locator('#edition option[value="halloween"]').isDisabled())) {
-          failures.push("Kygo World: Halloween remains available outside its scheduled window");
+          const observedDate = await page.evaluate(() => new Date().toISOString());
+          failures.push(`Kygo World: Halloween remains available outside its scheduled window (${observedDate})`);
         }
         for (const gameMode of ["dash", "championship", "endless", "maze", "treasure", "garden", "duo", "zen"]) {
           await page.locator(`[data-mode="${gameMode}"]`).click();
