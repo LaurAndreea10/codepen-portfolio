@@ -12,7 +12,9 @@
     if(!first||document.getElementById('portfolio-tools'))return;
     const tools=document.createElement('div'); tools.id='portfolio-tools'; tools.className='portfolio-tools glass';
     tools.innerHTML=`<div class="portfolio-tools-grid"><label>${t().search}<input id="portfolio-search" type="search" autocomplete="off" placeholder="${t().placeholder}"></label><label>${t().category}<select id="portfolio-category"><option value="">${t().all}</option><option value="crm">CRM</option><option value="marketing">Marketing-Tech</option><option value="challenge">Challenges</option></select></label><label>${t().status}<select id="portfolio-status"><option value="">${t().all}</option><option value="live">${t().live}</option><option value="case-study">${t().caseStudy}</option><option value="soon">${t().soon}</option></select></label></div><p class="portfolio-results" id="portfolio-results" role="status" aria-live="polite"></p>`;
-    first.parentElement.insertBefore(tools,first);
+    const productsStart=document.getElementById('crm-projects');
+    if(productsStart){const wrap=document.createElement('div');wrap.className='container';wrap.appendChild(tools);productsStart.parentElement.insertBefore(wrap,productsStart);}
+    else first.parentElement.insertBefore(tools,first);
     const cards=[...document.querySelectorAll('#marketing-tech .project-card,#crm-projects .project-card,#key-projects .project-card')];
     const seen=new Set();
     cards.forEach(card=>{
@@ -37,7 +39,7 @@
     [search,category,status].forEach(el=>el.addEventListener(el===search?'input':'change',apply)); apply();
   }
   function addFeatured(){
-    const now=document.getElementById('now'); if(!now||document.getElementById('featured-challenges'))return;
+    const now=document.getElementById('games')||document.getElementById('now'); if(!now||document.getElementById('featured-challenges'))return;
     const items=[
       ['Email Alerts','Alerte email bilingve, dark mode și accesibilitate.','https://laurandreea10.github.io/Email-Alerts/'],
       ['MoonMail','Receipt email cosmic, construit ca challenge vizual.','https://laurandreea10.github.io/MoonMail-Cosmic-Receipt-Email/'],

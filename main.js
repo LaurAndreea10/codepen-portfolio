@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const PREVIOUS_MAIN = 'main-core.js?v=20260904-carousel';
+  const PREVIOUS_MAIN = 'main-core.js?v=20260927-regroup';
 
   // Single source of truth for CodePen growth.
   // 83 projects were already represented before this Pen was added.
@@ -20,7 +20,7 @@
 
   function en(){ return document.documentElement.lang === 'en'; }
 
-  const STATIC_NOW_RO = { active: '', done: '', history: '', captured: false };
+  const STATIC_NOW_RO = { active: '', done: '', history: '', dateTime: '', dateLabel: '', captured: false };
 
   function captureStaticNowRo(){
     if(STATIC_NOW_RO.captured) return;
@@ -31,6 +31,8 @@
     STATIC_NOW_RO.active=active.innerHTML;
     STATIC_NOW_RO.done=done.innerHTML;
     STATIC_NOW_RO.history=history.innerHTML;
+    const staticDate=document.getElementById('now-datetime');
+    if(staticDate){ STATIC_NOW_RO.dateTime=staticDate.getAttribute('datetime')||''; STATIC_NOW_RO.dateLabel=staticDate.textContent; }
     STATIC_NOW_RO.captured=true;
   }
 
@@ -94,10 +96,9 @@
     if(title) title.textContent='La ce lucrez acum';
     const note=document.querySelector('#now .now-note');
     if(note) note.textContent='O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
-    const date=document.getElementById('now-datetime');
-    if(date){
-      date.dateTime='2026-09-20';
-      date.textContent='20 Septembrie 2026';
+    const badge=document.querySelector('#now .now-badge');
+    if(badge&&STATIC_NOW_RO.dateTime){
+      badge.innerHTML=`Actualizat: <time id="now-datetime" datetime="${STATIC_NOW_RO.dateTime}">${STATIC_NOW_RO.dateLabel}</time>`;
     }
   }
 
