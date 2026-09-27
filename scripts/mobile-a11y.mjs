@@ -94,8 +94,20 @@ try {
           }
           await page.locator("#focusExit").click();
         }
+        for (const gameMode of ["dash", "championship", "endless", "maze", "treasure", "garden", "duo", "zen"]) {
+          await page.locator(`[data-mode="${gameMode}"]`).click();
+          await page.locator("#startOverlay").tap();
+          if (!(await page.locator("body").evaluate((body) => body.classList.contains("playing") && body.classList.contains("game-focus")))) {
+            failures.push(`Kygo World: ${gameMode} does not start on mobile`);
+          }
+          await page.locator("#focusExit").click();
+        }
         await page.locator("#language").selectOption("en");
         if ((await page.locator("html").getAttribute("lang")) !== "en") failures.push("Kygo World: English language toggle failed");
+        await page.locator("#contrast").click();
+        await page.locator("#motion").click();
+        if ((await page.locator("#contrast").getAttribute("aria-pressed")) !== "true") failures.push("Kygo World: high contrast toggle failed");
+        if ((await page.locator("#motion").getAttribute("aria-pressed")) !== "true") failures.push("Kygo World: reduced-motion toggle failed");
         const editions = await page.evaluate(() => JSON.parse(localStorage.getItem("kygo-world-v2") || "{}").editionLevels);
         if (!editions || !["halloween", "easter", "christmas"].every((edition) => edition in editions)) {
           failures.push("Kygo World: edition-specific progress keys are missing");
