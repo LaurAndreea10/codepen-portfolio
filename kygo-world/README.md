@@ -1,6 +1,8 @@
 # Kygo World · Insulele din Nori
 
-**Build documentat:** `2026.09.27`. Numărul identifică starea publică și nu reprezintă un scor de calitate.
+**Build documentat:** `2026.09.27.3` (reperele funcționale sunt grupate în v1.0–v1.4). Numărul identifică starea publică și nu reprezintă un scor de calitate.
+
+[Istoricul versiunilor](CHANGELOG.md) include etapele importante și commiturile GitHub cu codul exact; jocul îl afișează și în meniul „Istoricul versiunilor”. Istoricul complet rămâne în commiturile repository-ului.
 
 Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`, fără build sau biblioteci externe. Imaginile `sky-islands.jpg` și `kygo-sprite.webp` rămân lângă fișier.
 
