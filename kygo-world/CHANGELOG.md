@@ -8,6 +8,7 @@ Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub c
 - Cursă cu fantoma în Cursă, Campionat și Endless: traseu cu seed, reluarea celei mai bune ture și cod de fantomă pentru prieteni. / Ghost races with shareable codes.
 - Salvare și restaurare a progresului prin cod sau fișier JSON. / Backup and restore by code or file.
 - Ghid nemodal în 4 pași la prima intrare și butonul „Continuă aventura”. / First-run guide and Continue button.
+- Mișcări mai naturale: Kygo alunecă lin între benzi și celule, sare pe o traiectorie de arc fără întârziere, se înclină în viraje, se turtește la aterizare, trapează în alergare, se întoarce spre direcția de mers și respiră când stă; totul se oprește cu „Mișcare redusă”. Randare la 60 fps pe desktop. / Natural motion.
 - Statistici și 15 realizări. / Stats and 15 achievements. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/ed06ec603ea22afeb6f5980b24140b9a44834096)
 - Performanță: sprite-ul lui Kygo 346 KB → 61 KB, fundalul jocului în WebP (406 KB → 168 KB). / Lighter images.
 
