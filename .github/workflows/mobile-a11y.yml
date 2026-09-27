@@ -1,0 +1,43 @@
+name: Recent projects mobile accessibility
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "skydreams-portal/**"
+      - "kygo-world/**"
+      - "en/index.html"
+      - "data/portfolio-evidence.json"
+      - "scripts/mobile-a11y.mjs"
+      - ".github/workflows/mobile-a11y.yml"
+  pull_request:
+    paths:
+      - "skydreams-portal/**"
+      - "kygo-world/**"
+      - "en/index.html"
+      - "data/portfolio-evidence.json"
+      - "scripts/mobile-a11y.mjs"
+  schedule:
+    - cron: "20 7 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-a11y:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install browser audit tools
+        run: |
+          npm install --no-save playwright@1.55.0 @axe-core/playwright@4.10.2
+          npx playwright install --with-deps chromium
+      - name: Wait for GitHub Pages deployment
+        if: github.event_name == 'push'
+        run: sleep 90
+      - name: Audit 360, 390 and 412 px
+        run: node scripts/mobile-a11y.mjs
