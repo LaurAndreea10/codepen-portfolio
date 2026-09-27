@@ -8,7 +8,7 @@ Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub c
 - Cursă cu fantoma în Cursă, Campionat și Endless: traseu cu seed, reluarea celei mai bune ture și cod de fantomă pentru prieteni. / Ghost races with shareable codes.
 - Salvare și restaurare a progresului prin cod sau fișier JSON. / Backup and restore by code or file.
 - Ghid nemodal în 4 pași la prima intrare și butonul „Continuă aventura”. / First-run guide and Continue button.
-- Statistici și 15 realizări. / Stats and 15 achievements.
+- Statistici și 15 realizări. / Stats and 15 achievements. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/ed06ec603ea22afeb6f5980b24140b9a44834096)
 - Performanță: sprite-ul lui Kygo 346 KB → 61 KB, fundalul jocului în WebP (406 KB → 168 KB). / Lighter images.
 
 ## 2026-09-27 · v1.4 · 100 de niveluri / 100 levels
