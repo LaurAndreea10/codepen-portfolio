@@ -89,6 +89,9 @@ try {
           if (!(await page.locator("body").evaluate((body) => body.classList.contains("playing") && body.classList.contains("game-focus")))) {
             failures.push(`Kygo World: ${edition} does not enter the focused playing state after mobile Start`);
           }
+          if (edition === "halloween") {
+            await page.screenshot({ path: "audit-artifacts/recent-projects/kygo-world-playing-390.png" });
+          }
           await page.locator("#focusExit").click();
         }
         await page.locator("#language").selectOption("en");
@@ -104,6 +107,7 @@ try {
         await page.locator("#mode").selectOption("story");
         await page.locator("#start").click();
         if (await page.locator("#overlay").isVisible()) failures.push("SkyDreams Portal: Story did not open after Start");
+        await page.screenshot({ path: "audit-artifacts/recent-projects/skydreams-story-390.png" });
         await page.keyboard.press("Escape");
         await page.locator("#menuEn").click();
         if ((await page.locator("html").getAttribute("lang")) !== "en") failures.push("SkyDreams Portal: English language toggle failed");
