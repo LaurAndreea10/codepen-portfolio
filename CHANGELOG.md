@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-09-27 — Audit săptămânal și proiecte recente
+
+- Sincronizate metrica publică, dovezile RO/EN și datele sitemap-ului; verificările locale SEO și Portfolio Quality trec.
+- Extinsă acoperirea Lighthouse mobil pentru SkyDreams Portal, Kygo World și Revenue Landscape. Scorurile noi rămân de confirmat după o rulare completă.
+- Adăugat skip link pentru tastatură în SkyDreams și protocol de regresie pentru jocurile recente.
+
+## 2026-09-21–26 — Practice Lab și jocuri
+
+- Publicate Clipboard CRM Summary (21 septembrie), Dashboard Activity Filter și SkyDreams Portal (23 septembrie), Kygo World (24 septembrie) și CRM Accessible Form (25 septembrie).
+- Kygo World a primit patru lumi, moduri suplimentare, ediții Halloween/Paște/Crăciun și ajustări pentru Start și ecranul focalizat pe mobil până pe 26 septembrie.
+- Revenue Landscape a fost integrat în portofoliu ca vizualizare izometrică în Canvas 2D.
+
 ## 2026-09-15 — Tri-Link Quest
 
 - Publicat jocul accesibil 3-în-1 în ARCADE WORLD.

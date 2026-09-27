@@ -1,5 +1,9 @@
 name: Recent projects mobile accessibility
 
+concurrency:
+  group: recent-mobile-a11y-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [main]
@@ -41,3 +45,10 @@ jobs:
         run: sleep 90
       - name: Audit 360, 390 and 412 px
         run: node scripts/mobile-a11y.mjs
+      - name: Publish real mobile captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: recent-projects-mobile-390
+          path: audit-artifacts/recent-projects/*.png
+          if-no-files-found: warn

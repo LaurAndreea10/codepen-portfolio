@@ -1,5 +1,7 @@
 # Kygo World · Insulele din Nori
 
+**Build documentat:** `2026.09.27`. Numărul identifică starea publică și nu reprezintă un scor de calitate.
+
 Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`, fără build sau biblioteci externe. Imaginile `sky-islands.jpg` și `kygo-sprite.webp` rămân lângă fișier.
 
 ## Moduri
@@ -36,4 +38,4 @@ Setări: limbă, temă, contrast, mișcare redusă, sensibilitate swipe, viteze 
 
 ## Testare
 
-`node test-mobile.cjs` verifică pornirea tactilă, reluarea, obiectivele sezoniere, traseul creat, provocarea zilnică, explorarea liberă, timpul limită și restul modurilor. Testarea directă pe telefon este recomandată pentru performanță și aspect.
+Workflow-ul „Recent projects mobile accessibility” verifică versiunea publică la 360, 390 și 412 px, inclusiv Start pe touch pentru cele trei ediții, ecranul focalizat, RO/EN și cheile progresului separat. Capturile reale de 390 px sunt atașate rulării. Testarea directă pe telefon rămâne necesară pentru performanță, sunet și gesturi.

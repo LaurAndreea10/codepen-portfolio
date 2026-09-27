@@ -1,5 +1,9 @@
 name: SEO and link audit
 
+concurrency:
+  group: seo-audit-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [main]

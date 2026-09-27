@@ -1,5 +1,7 @@
 # SkyDreams Portal
 
+**Build documentat / documented build:** `2026.09.27` (service worker cache `v12`). Acesta nu implică un scor Lighthouse confirmat pentru versiunea nouă. / This does not imply a confirmed Lighthouse score for the new build.
+
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/skydreams-portal/) · [Portofoliu / Portfolio](https://laurandreea10.github.io/codepen-portfolio/portfolio.html)
 
 ## RO

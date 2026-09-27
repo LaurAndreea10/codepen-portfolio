@@ -1,5 +1,6 @@
 import { chromium } from "playwright";
 import AxeBuilder from "@axe-core/playwright";
+import { mkdir } from "node:fs/promises";
 
 const targets = [
   { name: "SkyDreams Portal", url: "https://laurandreea10.github.io/codepen-portfolio/skydreams-portal/" },
@@ -9,6 +10,7 @@ const targets = [
 const widths = [360, 390, 412];
 const failures = [];
 const warnings = [];
+await mkdir("audit-artifacts/recent-projects", { recursive: true });
 const browser = await chromium.launch({ headless: true });
 
 try {
@@ -29,6 +31,13 @@ try {
         failures.push(`${target.name} @ ${width}px: HTTP ${response?.status() ?? "no response"}`);
         await context.close();
         continue;
+      }
+
+      if (width === 390) {
+        await page.screenshot({
+          path: `audit-artifacts/recent-projects/${target.name.toLowerCase().replaceAll(" ", "-")}-390.png`,
+          fullPage: true
+        });
       }
 
       const layout = await page.evaluate(() => ({
@@ -70,6 +79,35 @@ try {
         };
       });
       if (!focus.ok) failures.push(`${target.name} @ ${width}px: first keyboard target lacks a visible focus indicator (${focus.label})`);
+
+      if (width === 390 && target.name === "Kygo World") {
+        await page.locator("#safe").check();
+        for (const edition of ["halloween", "easter", "christmas"]) {
+          await page.locator("#edition").selectOption(edition);
+          await page.locator('[data-mode="story"]').click();
+          await page.locator("#startOverlay").tap();
+          if (!(await page.locator("body").evaluate((body) => body.classList.contains("playing") && body.classList.contains("game-focus")))) {
+            failures.push(`Kygo World: ${edition} does not enter the focused playing state after mobile Start`);
+          }
+          await page.locator("#focusExit").click();
+        }
+        await page.locator("#language").selectOption("en");
+        if ((await page.locator("html").getAttribute("lang")) !== "en") failures.push("Kygo World: English language toggle failed");
+        const editions = await page.evaluate(() => JSON.parse(localStorage.getItem("kygo-world-v2") || "{}").editionLevels);
+        if (!editions || !["halloween", "easter", "christmas"].every((edition) => edition in editions)) {
+          failures.push("Kygo World: edition-specific progress keys are missing");
+        }
+      }
+
+      if (width === 390 && target.name === "SkyDreams Portal") {
+        if (await page.locator("#languageFirst").isVisible()) await page.locator("#chooseRo").click();
+        await page.locator("#mode").selectOption("story");
+        await page.locator("#start").click();
+        if (await page.locator("#overlay").isVisible()) failures.push("SkyDreams Portal: Story did not open after Start");
+        await page.keyboard.press("Escape");
+        await page.locator("#menuEn").click();
+        if ((await page.locator("html").getAttribute("lang")) !== "en") failures.push("SkyDreams Portal: English language toggle failed");
+      }
 
       console.log(`PASS ${target.name} @ ${width}px — axe serious/critical 0, no horizontal overflow`);
       await context.close();
