@@ -2,6 +2,15 @@
 
 Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub cu codul exact al acelei versiuni. Istoricul complet al tuturor modificărilor rămâne în GitHub. Datele sunt în fusul Europe/Bucharest. / This file summarizes major milestones; linked commits preserve the exact code.
 
+## 2026-09-27 · v1.5 · Aplicație, gardieni și fantome / App, guardians and ghosts
+- Joc instalabil (PWA) care merge offline: manifest, iconițe și service worker; paginile se actualizează din rețea, imaginile rămân în cache. / Installable offline app.
+- Gardieni la fiecare 10 niveluri: zonă finală de 7 pași, bandă sigură mai rapidă, bară de viață și 10 gardieni diferiți. / A guardian every 10 levels.
+- Cursă cu fantoma în Cursă, Campionat și Endless: traseu cu seed, reluarea celei mai bune ture și cod de fantomă pentru prieteni. / Ghost races with shareable codes.
+- Salvare și restaurare a progresului prin cod sau fișier JSON. / Backup and restore by code or file.
+- Ghid nemodal în 4 pași la prima intrare și butonul „Continuă aventura”. / First-run guide and Continue button.
+- Statistici și 15 realizări. / Stats and 15 achievements.
+- Performanță: sprite-ul lui Kygo 346 KB → 61 KB, fundalul jocului în WebP (406 KB → 168 KB). / Lighter images.
+
 ## 2026-09-27 · v1.4 · 100 de niveluri / 100 levels
 - Story are 100 de niveluri în 25 de capitole, cu trasee generate după nivel, obstacole graduale și bonus la fiecare 10 niveluri. Progresul existent rămâne salvat. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/cc3dbb74f0dd3afb80526851864d068ea7e31898)
 - Ecran de rezultat cu „Următorul nivel”, „Reîncearcă nivelul” și „Joacă din nou”. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/5a6a0c6ffa4e9fdaef859712c7b8502597fed79f)

@@ -81,6 +81,9 @@ try {
       if (!focus.ok) failures.push(`${target.name} @ ${width}px: first keyboard target lacks a visible focus indicator (${focus.label})`);
 
       if (width === 390 && target.name === "Kygo World") {
+        if (!(await page.locator("#coach").isVisible())) failures.push("Kygo World: first-run guide is not shown");
+        const manifestOk = await page.evaluate(async () => (await fetch(document.querySelector('link[rel="manifest"]').href)).ok);
+        if (!manifestOk) failures.push("Kygo World: web app manifest is not reachable");
         await page.locator("#safe").check();
         for (const [edition, date] of [
           ["halloween", new Date(2026, 9, 26, 12)],
