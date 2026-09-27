@@ -15,7 +15,7 @@ Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`, fără bu
 
 ## Ediții de sărbătoare
 
-Din meniu alegi **Halloween**, **Paște** sau **Crăciun**. Fiecare are decor, sunete sintetice și progres separat în cele patru lumi. Halloween cere spargerea dovlecilor cu butonul „Sparge!”; de Paște aduni ouă, iar de Crăciun cadouri. Trei din cele cinci obiective ale nivelului acordă insigna ediției.
+Edițiile pornesc automat după data locală a dispozitivului: **Paște ortodox** de luni din Săptămâna Mare până luni după Înviere (intervalul se încheie marți la 00:00), **Halloween** 24–31 octombrie și **Crăciun** 24 decembrie–6 ianuarie. În meniu apare numărătoarea inversă până la următoarea ediție sau până la încheierea celei active; în joc apare cronometrul ediției active. Celelalte ediții nu pot fi selectate în afara perioadei lor. Poți alege Clasic în timpul evenimentului; trecerea automată se face la următoarea schimbare de perioadă. Fiecare ediție are decor, sunete sintetice și progres separat în cele patru lumi. Halloween cere spargerea dovlecilor cu „Sparge!”, de Paște aduni ouă, iar de Crăciun cadouri. Trei din cele cinci obiective ale nivelului acordă insigna ediției.
 
 ## Costume, captură și sunet
 
@@ -38,4 +38,4 @@ Setări: limbă, temă, contrast, mișcare redusă, sensibilitate swipe, viteze 
 
 ## Testare
 
-Workflow-ul „Recent projects mobile accessibility” verifică versiunea publică la 360, 390 și 412 px, inclusiv Start pe touch pentru cele trei ediții, ecranul focalizat, RO/EN și cheile progresului separat. Capturile reale de 390 px sunt atașate rulării. Testarea directă pe telefon rămâne necesară pentru performanță, sunet și gesturi.
+Workflow-ul „Recent projects mobile accessibility” verifică versiunea publică la 360, 390 și 412 px, inclusiv Start pe touch, ecranul focalizat, RO/EN și cheile progresului separat. Calendarul edițiilor este verificat separat cu date simulate în testul logic; verificările browser ale fiecărei ediții trebuie rulate în intervalul ei sau cu ceas controlat. Capturile reale de 390 px sunt atașate rulării. Testarea directă pe telefon rămâne necesară pentru performanță, sunet și gesturi.
