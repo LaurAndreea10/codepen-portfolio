@@ -107,6 +107,7 @@ try {
         await page.locator("#mode").selectOption("story");
         await page.locator("#start").click();
         if (await page.locator("#overlay").isVisible()) failures.push("SkyDreams Portal: Story did not open after Start");
+        await page.waitForTimeout(2300);
         await page.screenshot({ path: "audit-artifacts/recent-projects/skydreams-story-390.png" });
         await page.keyboard.press("Escape");
         await page.locator("#menuEn").click();
