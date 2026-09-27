@@ -10,6 +10,9 @@ Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub c
 - Ghid nemodal în 4 pași la prima intrare și butonul „Continuă aventura”. / First-run guide and Continue button.
 - Mișcări mai naturale: Kygo alunecă lin între benzi și celule, sare pe o traiectorie de arc fără întârziere, se înclină în viraje, se turtește la aterizare, trapează în alergare, se întoarce spre direcția de mers și respiră când stă; totul se oprește cu „Mișcare redusă”. Randare la 60 fps pe desktop. / Natural motion.
 - Efecte și sunete: scântei și „+N 🦴” la fiecare recompensă, praf la săritură și aterizare, scuturare și scântei roșii la obstacole, confetti la gardieni; sunete generate în browser (clinchet de os, săritură, lovitură, scut, magnet, lătrat la victorie) și muzică cu melodie și bas pe fiecare lume. Oasele plutesc, obstacolele din față pulsează. Totul respectă „Mișcare redusă” și setările de sunet. / Effects and sound.
+- Harta nivelurilor: toate cele 100 de niveluri pe 25 de capitole, cu stele, gardieni și finaluri; orice nivel deblocat se poate rejuca fără să scadă progresul. / Level map with safe replays.
+- Finaluri distincte pentru fiecare dintre cele 25 de capitole: poveste proprie, amintire în album și obiectul capitolului la linia de sosire. / 25 distinct chapter endings.
+- Buton „Salvează progresul ca fișier” în hartă și după fiecare final de capitol. / Backup file shortcut.
 - Statistici și 15 realizări. / Stats and 15 achievements. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/ed06ec603ea22afeb6f5980b24140b9a44834096)
 - Performanță: sprite-ul lui Kygo 346 KB → 61 KB, fundalul jocului în WebP (406 KB → 168 KB). / Lighter images.
 
