@@ -54,6 +54,11 @@ const pages = [
   ["demo-scenarios.html", "monthly", "0.7", "2026-09-13"],
   ["accessibility-lab.html", "monthly", "0.7", "2026-09-13"],
   ["build-in-public.html", "monthly", "0.7", "2026-09-13"],
+  ["clipboard-crm-summary.html", "monthly", "0.75", "2026-09-21"],
+  ["dashboard-activity-filter.html", "monthly", "0.75", "2026-09-23"],
+  ["skydreams-portal/", "monthly", "0.8", "2026-09-23"],
+  ["kygo-world/", "monthly", "0.7", "2026-09-27"],
+  ["crm-accessible-form.html", "monthly", "0.75", "2026-09-25"],
 ];
 
 const pairs = new Map([
