@@ -47,6 +47,8 @@ with sync_playwright() as p:
     check('Nu am putut' in pg.inner_text('#status') and not pg.is_disabled('#send'),'a delivery error is shown and the button works again')
     reply.update(status=200,body='{"success":"false"}'); pg.click('#send'); pg.wait_for_timeout(400)
     check('Nu am putut' in pg.inner_text('#status'),'a rejection from FormSubmit is not reported as success')
+    reply.update(status=200,body='{"success":"false","message":"This form needs Activation. We\'ve sent you an email containing an \'Activate Form\' link."}'); pg.click('#send'); pg.wait_for_timeout(400)
+    check('nu este încă activat' in pg.inner_text('#status'),'a not-yet-activated form says so clearly instead of a generic error')
     pg.close()
     # --- Portofoliu RO și EN
     items={'items':[{'name':'Ana','quote':'Fiica mea a învățat ceasul jucându-se aici.','approved':True},{'name':'<b>Test</b>','quote':'<img src=x onerror="window.hacked=1"> joc frumos','approved':True},{'name':'Nepublicat','quote':'Acest mesaj nu are acord.','approved':False}]}
