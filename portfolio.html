@@ -22,6 +22,7 @@
     .topbar{position:sticky;z-index:50;top:0;padding:14px 0;background:linear-gradient(to bottom,rgba(0,0,0,.24),transparent);backdrop-filter:blur(8px)}.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 18px;border-radius:999px}.brand,.nav-links{display:flex;align-items:center}.brand{gap:12px;font-weight:800}.nav-links{gap:10px;flex-wrap:wrap}.pill,.nav-links a{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--panel-2);color:var(--text)}
     .hero{padding:34px 0 18px}.hero-card{position:relative;overflow:hidden;padding:32px;border:1px solid var(--line);border-radius:24px;background:radial-gradient(circle at top left,rgba(79,140,255,.2),transparent 30%),linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));box-shadow:var(--shadow)}.hero-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:24px;align-items:start}.eyebrow{display:inline-flex;margin-bottom:14px;color:var(--accent);font-size:.84rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}h1{max-width:12ch;font-size:clamp(2.2rem,5vw,4.6rem);line-height:.95;letter-spacing:-.04em}.hero-text{max-width:68ch;margin-top:18px;color:var(--muted);font-size:1.04rem;line-height:1.8}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border:1px solid transparent;border-radius:999px;font-weight:700}.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}.btn-secondary{border-color:var(--line);background:var(--panel-2);color:var(--text)}
     @media(max-width:1080px){.hero-layout{grid-template-columns:1fr}}@media(max-width:760px){.container{width:min(100% - 20px,var(--container))}.topbar{padding:8px 0;backdrop-filter:none}.nav{gap:8px;padding:10px 12px;border-radius:18px}.nav-links{gap:6px}.pill,.nav-links a{padding:7px 10px;font-size:.78rem}.glass{backdrop-filter:none}.hero{padding:12px 0}.hero-card{padding:22px 18px;box-shadow:0 10px 28px rgba(0,0,0,.24)}h1{font-size:clamp(2rem,9vw,3rem)}.hero-text{font-size:.96rem;line-height:1.65}}
+  .garden-feedback-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:1rem}.garden-feedback-list figure{margin:0;padding:1rem;background:var(--panel-2);border:1px solid var(--line);border-radius:1rem}.garden-feedback-list blockquote{margin:0 0 .75rem;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6}.garden-feedback-list figcaption{font-weight:700;color:var(--accent)}
   </style>
 
   <meta property="og:type" content="website" />
@@ -973,6 +974,15 @@
         </div>
       </div>
     </section>
+    <section class="container" id="curious-garden-opinions" aria-labelledby="garden-opinions-title" data-approved-feedback="curious-garden/approved-feedback.json" style="padding:3rem 0">
+      <div class="glass" style="border-radius:24px;padding:clamp(1rem,3vw,2rem)">
+        <span class="eyebrow">Grădina Curioasă · Feedback</span>
+        <h2 id="garden-opinions-title" style="margin:.4rem 0 1rem">Păreri despre joc</h2>
+        <p data-feedback-empty style="color:var(--muted);line-height:1.6">Încă nu sunt păreri publicate. Mesajele apar aici numai după acordul autorului și verificare.</p>
+        <div data-feedback-list class="garden-feedback-list" aria-live="polite"></div>
+        <a class="btn btn-secondary" href="curious-garden/feedback.html" style="margin-top:1rem">Scrie-ți părerea</a>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -988,6 +998,7 @@
     </div>
   </footer>
 
+  <script src="curious-garden/feedback-display.js" defer></script>
   <!-- FIX #6: main.js defer (era deja corect) -->
   <script src="portfolio-config.js?v=20260919" defer></script>
   <script src="main.js?v=20260919-curated" defer></script>
