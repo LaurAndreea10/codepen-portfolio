@@ -79,6 +79,13 @@ Codul original al jocului din acest director este disponibil sub [licența MIT](
 
 Fonturile OpenDyslexic din `fonts/` sunt distribuite separat sub [SIL Open Font License 1.1](fonts/OFL-LICENSE.txt), cu numele rezervat OpenDyslexic. Licența MIT nu înlocuiește licența fonturilor. Fișierele media și mărcile sau elementele deținute de terți nu sunt relicențiate prin această licență.
 
+## Opinii / Feedback
+
+- [Formular pentru părinți](feedback.html): trimite mesajul direct din pagină prin FormSubmit către `andreealaurap@gmail.com`, fără aplicația de e-mail. La prima folosire, Laura trebuie să activeze adresa din mesajul de confirmare FormSubmit; până atunci livrarea nu este verificată.
+- Numai mesajele cu acord explicit de publicare pot apărea în [portofoliul RO](../portfolio.html#curious-garden-opinions) și [EN](../en/#garden-feedback). Publicarea este manuală, după verificare. Nu publica date despre copii.
+- Pentru a aproba un mesaj, adaugă în `approved-feedback.json` un obiect `{"name":"Pseudonim","quote":"Textul aprobat","approved":true}` în lista `items`. Nu copia adrese de e-mail, data nașterii sau alte date personale. Mesajele fără acord rămân private și nu se adaugă în fișier.
+- `feedback-display.js` afișează numai intrările aprobate, ca text simplu, fără interpretarea HTML-ului. Pagina de feedback nu păstrează mesajul în browser; acesta este procesat de FormSubmit pentru livrare.
+
 ## English
 
 Curious Garden is a learning game for ages 3–12 in Romanian, English, Hungarian and Ukrainian. It has nine screens (a versus mode against a locally computed, adaptive robot, adventures with generated mazes, numbers, letters, clock, money, silhouette puzzles, branching stories, twelve worlds, age-based activities, a sticker and garden collection, and a birthday workshop), a parent report with time limits, and accessibility options including a dyslexia-friendly font, colour-blind mode and single-switch navigation. It works offline, stores data only in the browser, and is covered by automated Playwright tests in GitHub Actions. Original game code is MIT-licensed; OpenDyslexic fonts remain under SIL OFL 1.1.
