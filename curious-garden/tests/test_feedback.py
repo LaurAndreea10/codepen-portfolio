@@ -49,6 +49,13 @@ with sync_playwright() as p:
     check('Nu am putut' in pg.inner_text('#status'),'a rejection from FormSubmit is not reported as success')
     reply.update(status=200,body='{"success":"false","message":"This form needs Activation. We\'ve sent you an email containing an \'Activate Form\' link."}'); pg.click('#send'); pg.wait_for_timeout(400)
     check('nu este încă activat' in pg.inner_text('#status'),'a not-yet-activated form says so clearly instead of a generic error')
+    check(pg.is_visible('#classicSend'),'after a failure, a “send via the FormSubmit page” button appears')
+    posted=[]
+    pg.route('https://formsubmit.co/plugaru.laura10@gmail.com',lambda r:(posted.append(r.request.post_data or ''),r.fulfill(status=200,content_type='text/html',body='<p>FormSubmit page</p>')))
+    pg.fill('#opinion','Mesaj trimis prin formularul clasic.'); pg.click('#classicSend'); pg.wait_for_timeout(600)
+    check(len(posted)==1 and 'formularul+clasic' in posted[0].replace('%20','+') and '_next=' in posted[0],'classic fallback posts to FormSubmit with the message and a return link')
+    pg.goto(URL+'feedback.html?sent=1'); pg.wait_for_timeout(150)
+    check('Mulțumesc' in pg.inner_text('#status'),'returning from FormSubmit shows a thank-you message')
     pg.close()
     # --- Portofoliu RO și EN
     items={'items':[{'name':'Ana','quote':'Fiica mea a învățat ceasul jucându-se aici.','approved':True},{'name':'<b>Test</b>','quote':'<img src=x onerror="window.hacked=1"> joc frumos','approved':True},{'name':'Nepublicat','quote':'Acest mesaj nu are acord.','approved':False}]}
