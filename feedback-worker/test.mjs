@@ -4,22 +4,23 @@ import worker from './worker.js';
 const ORIGIN = 'https://laurandreea10.github.io';
 const env = { GITHUB_TOKEN: 'test-token', GITHUB_REPO: 'LaurAndreea10/codepen-portfolio', ALLOWED_ORIGINS: ORIGIN };
 let calls = [];
-let upstreamOk = true;
+let upstreamOk = true, mailOk = true;
 globalThis.fetch = async (url, init) => {
   calls.push({ url, init });
-  return new Response('{}', { status: upstreamOk ? 201 : 500 });
+  if (String(url).startsWith('https://api.resend.com/')) return new Response('{"id":"mail-1"}', { status: mailOk ? 200 : 500 });
+  return new Response(JSON.stringify({ html_url: 'https://github.com/LaurAndreea10/codepen-portfolio/issues/42' }), { status: upstreamOk ? 201 : 500 });
 };
 
 let failures = 0, n = 0, ip = 0;
 function check(ok, msg) { n++; console.log(`${ok ? 'OK  ' : 'FAIL'} ${msg}`); if (!ok) failures++; }
 const good = { text: 'Copilul meu a învățat ceasul jucându-se. Mulțumim!', name: 'Ana, mama lui R.', role: 'parent', rating: 5, lang: 'ro', project: 'curious-garden', consent: true, elapsed: 9000, website: '' };
-function post(data, { origin = ORIGIN, sameIp = false } = {}) {
+function post(data, { origin = ORIGIN, sameIp = false, envOverride = env } = {}) {
   if (!sameIp) ip++;
   return worker.fetch(new Request('https://gradina-feedback.example.workers.dev/', {
     method: 'POST',
     headers: { Origin: origin, 'Content-Type': 'application/json', 'CF-Connecting-IP': `10.0.0.${sameIp ? 250 : ip}` },
     body: typeof data === 'string' ? data : JSON.stringify(data)
-  }), env);
+  }), envOverride);
 }
 const errorOf = async r => (await r.json()).error;
 
@@ -58,6 +59,28 @@ check(JSON.stringify(statuses) === '[200,200,200,429]', `rate limit: 3 per 10 mi
 upstreamOk = false;
 check((await post(good)).status === 502, 'GitHub errors are reported, not hidden');
 check((await worker.fetch(new Request('https://x/', { method: 'POST', headers: { Origin: ORIGIN }, body: '{}' }), { ALLOWED_ORIGINS: ORIGIN })).status === 500, 'missing configuration is reported');
+
+// --- Notificare pe e-mail (Resend)
+const mailEnv = { ...env, RESEND_API_KEY: 're_test', NOTIFY_EMAIL: 'laura@example.com' };
+upstreamOk = true; mailOk = true; calls = [];
+const withMail = await post({ ...good, text: 'Jocul e <b>minunat</b> & copilul râde mult.' }, { envOverride: mailEnv });
+const mail = calls.find(c => String(c.url).startsWith('https://api.resend.com/'));
+check(withMail.status === 200 && calls.length === 2 && !!mail, 'with e-mail configured: one issue + one e-mail');
+const m = mail ? JSON.parse(mail.init.body) : {};
+check(JSON.stringify(m.to) === '["laura@example.com"]' && mail?.init.headers.Authorization === 'Bearer re_test', 'e-mail goes only to the configured address, key stays server-side');
+check((m.subject || '').startsWith('Părere nouă (5★): Jocul e') , 'subject shows stars and the start of the opinion');
+check((m.html || '').includes('&lt;b&gt;minunat&lt;/b&gt; &amp;') && !(m.html || '').includes('<b>minunat'), 'opinion text is escaped in the e-mail HTML');
+check((m.text || '').includes('issues/42') && (m.html || '').includes('issues/42'), 'e-mail links to the issue for approval');
+calls = []; await post(good);
+check(calls.length === 1 && !calls.some(c => String(c.url).includes('resend')), 'without e-mail configuration nothing is e-mailed');
+mailOk = false; calls = [];
+check((await post(good, { envOverride: mailEnv })).status === 200, 'an e-mail failure does not lose the opinion (issue still created)');
+upstreamOk = false; mailOk = true; calls = [];
+const onlyMail = await post(good, { envOverride: mailEnv });
+const m2 = JSON.parse(calls.find(c => String(c.url).includes('resend'))?.init.body || '{}');
+check(onlyMail.status === 200 && (m2.text || '').includes('doar în acest e-mail'), 'if GitHub fails, the opinion still arrives by e-mail');
+mailOk = false;
+check((await post(good, { envOverride: mailEnv })).status === 502, 'if both fail, the visitor is told it did not go through');
 
 console.log(`\n${n - failures}/${n} checks passed`);
 process.exit(failures ? 1 : 0);

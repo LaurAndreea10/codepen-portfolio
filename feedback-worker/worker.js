@@ -5,6 +5,8 @@
 //   GITHUB_TOKEN     (secret) token fine-grained, doar repo-ul codepen-portfolio, permisiunea Issues: Read and write
 //   GITHUB_REPO      LaurAndreea10/codepen-portfolio
 //   ALLOWED_ORIGINS  https://laurandreea10.github.io
+//   RESEND_API_KEY   (secret, opțional) cheie Resend, ca să primești fiecare părere pe e-mail
+//   NOTIFY_EMAIL     (opțional) adresa ta de e-mail, aceeași cu cea a contului Resend
 //
 // Un Issue nou primește etichetele „feedback” și „pending”. Portofoliul arată doar Issue-urile
 // cu eticheta „approved”, pusă de tine după ce citești părerea.
@@ -108,7 +110,49 @@ export default {
       },
       body: JSON.stringify({ title: `Părere: ${text.slice(0, 50)}${text.length > 50 ? '…' : ''}`, body, labels: ['feedback', 'pending'] })
     });
-    if (!response.ok) return json({ error: 'upstream' }, 502, cors);
+    let issueUrl = '';
+    if (response.ok) issueUrl = (await response.json().catch(() => ({}))).html_url || '';
+
+    // E-mail de notificare (GitHub nu te anunță despre Issue-urile create chiar de contul tău).
+    const mailed = await notify(env, entry, issueUrl);
+    if (!response.ok && !mailed) return json({ error: 'upstream' }, 502, cors);
     return json({ ok: true }, 200, cors);
   }
 };
+
+const ROLE_RO = { parent: 'părinte', teacher: 'profesor', developer: 'dezvoltator', other: 'altceva' };
+const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+async function notify(env, entry, issueUrl) {
+  if (!env.RESEND_API_KEY || !env.NOTIFY_EMAIL) return false;
+  const stars = entry.rating ? '★'.repeat(entry.rating) + '☆'.repeat(5 - entry.rating) : 'fără stele';
+  const who = [entry.name || 'fără semnătură', ROLE_RO[entry.role]].join(', ');
+  const next = issueUrl
+    ? `Ca s-o publici în portofoliu, deschide Issue-ul și adaugă eticheta „approved”: ${issueUrl}`
+    : 'Issue-ul nu a putut fi creat pe GitHub; părerea există doar în acest e-mail.';
+  const text = [`„${entry.text}”`, '', `— ${who}`, `Stele: ${stars}`, `Limba: ${entry.lang} · ${entry.date}`, '', next].join('\n');
+  const html = `<div style="font-family:system-ui,sans-serif;max-width:560px;line-height:1.55;color:#193147">`
+    + `<p style="font-size:13px;color:#667">Părere nouă din Grădina Curioasă</p>`
+    + `<blockquote style="margin:0;padding:12px 16px;border-left:4px solid #ffc978;background:#fffdf5;font-size:17px">${escapeHtml(entry.text)}</blockquote>`
+    + `<p>— ${escapeHtml(who)}<br><span style="color:#c77d00;letter-spacing:2px">${stars}</span><br><span style="color:#667">Limba: ${escapeHtml(entry.lang)} · ${escapeHtml(entry.date)}</span></p>`
+    + (issueUrl
+      ? `<p><a href="${escapeHtml(issueUrl)}" style="display:inline-block;background:#193147;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none">Deschide Issue-ul</a></p><p style="font-size:13px;color:#667">Adaugă eticheta „approved” ca să apară în portofoliu. Fără ea, părerea rămâne nepublicată.</p>`
+      : `<p style="color:#a4262c">Issue-ul nu a putut fi creat pe GitHub; părerea există doar în acest e-mail.</p>`)
+    + `</div>`;
+  try {
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: env.NOTIFY_FROM || 'Grădina Curioasă <onboarding@resend.dev>',
+        to: [env.NOTIFY_EMAIL],
+        subject: `Părere nouă${entry.rating ? ` (${entry.rating}★)` : ''}: ${entry.text.slice(0, 60)}${entry.text.length > 60 ? '…' : ''}`,
+        text,
+        html
+      })
+    });
+    return r.ok;
+  } catch {
+    return false;
+  }
+}
