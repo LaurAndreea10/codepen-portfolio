@@ -66,6 +66,12 @@ Testele rulează automat în GitHub Actions (`.github/workflows/curious-garden-t
 
 Traducerile în maghiară și ucraineană merită verificate de vorbitori nativi.
 
+## Licență / License
+
+Codul original al jocului din acest director este disponibil sub [licența MIT](LICENSE), © 2026 Laura Andreea Plugaru. Păstrează nota de copyright și textul licenței în copiile sau porțiunile substanțiale redistribuite.
+
+Fonturile OpenDyslexic din `fonts/` sunt distribuite separat sub [SIL Open Font License 1.1](fonts/OFL-LICENSE.txt), cu numele rezervat OpenDyslexic. Licența MIT nu înlocuiește licența fonturilor. Fișierele media și mărcile sau elementele deținute de terți nu sunt relicențiate prin această licență.
+
 ## English
 
-Curious Garden is a learning game for ages 3–12 in Romanian, English, Hungarian and Ukrainian. It has eight screens (adventures with generated mazes, numbers, letters, clock, money, silhouette puzzles, branching stories, twelve worlds, age-based activities, a sticker and garden collection, and a birthday workshop), a parent report with time limits, and accessibility options including a dyslexia-friendly font, colour-blind mode and single-switch navigation. It works offline, stores data only in the browser, and is covered by automated Playwright tests in GitHub Actions.
+Curious Garden is a learning game for ages 3–12 in Romanian, English, Hungarian and Ukrainian. It has eight screens (adventures with generated mazes, numbers, letters, clock, money, silhouette puzzles, branching stories, twelve worlds, age-based activities, a sticker and garden collection, and a birthday workshop), a parent report with time limits, and accessibility options including a dyslexia-friendly font, colour-blind mode and single-switch navigation. It works offline, stores data only in the browser, and is covered by automated Playwright tests in GitHub Actions. Original game code is MIT-licensed; OpenDyslexic fonts remain under SIL OFL 1.1.
