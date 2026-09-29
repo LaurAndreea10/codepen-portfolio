@@ -2,6 +2,9 @@
 
 Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub cu codul exact al acelei versiuni. Istoricul complet al tuturor modificărilor rămâne în GitHub. Datele sunt în fusul Europe/Bucharest. / This file summarizes major milestones; linked commits preserve the exact code.
 
+## 2026-09-29 · v1.4.1 · Încărcare mai rapidă / Faster loading
+- Imaginile au dimensiunea folosită efectiv în joc (828 KB → 348 KB la prima încărcare; Lighthouse performanță 79 → 95), cu aceeași scenă desenată. Bifele și glisoarele din Setări au zone de atingere mai mari. / Images resized to what the game draws; larger touch targets in Settings. [Cod / Code](COMMIT)
+
 ## 2026-09-27 · v1.4 · 100 de niveluri / 100 levels
 - Story are 100 de niveluri în 25 de capitole, cu trasee generate după nivel, obstacole graduale și bonus la fiecare 10 niveluri. Progresul existent rămâne salvat. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/cc3dbb74f0dd3afb80526851864d068ea7e31898)
 - Ecran de rezultat cu „Următorul nivel”, „Reîncearcă nivelul” și „Joacă din nou”. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/5a6a0c6ffa4e9fdaef859712c7b8502597fed79f)
