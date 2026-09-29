@@ -16,6 +16,7 @@ Joc educativ pentru copii de 3–12 ani, în română, engleză, maghiară și u
 | 12 lumi | Poveste, provocarea zilei, Constructor, Împreună, Liniștit, Eveniment |
 | Activități | Jocuri scurte pe vârstă, 8 sărbători, album, setări pentru adult |
 | Colecția | Abțibilduri de aranjat pe pajiște, grădina care înflorește, 17 insigne |
+| Contra Robo | X și 0, Memory și Bețișoarele (Nim) contra unui robot calculat local, care se adaptează la copil |
 | Aniversare | Tort sau brioșă, decorațiuni, felicitare salvabilă |
 
 Bia, buburuza, însoțește copilul: îl salută, îl laudă și îl încurajează după greșeli.
@@ -44,6 +45,7 @@ Profilurile și progresul sunt în `localStorage`, pe dispozitivul jucătorului.
 - `expansion.js` — profiluri, lumi, activități extra, album, setări, voce (`gardenSpeak`).
 - `premium.js` — cele 12 lumi. `arcade.js` — aventurile și labirinturile. `learning.js` — Numere, Match, Culori.
 - `home.js` — meniul și ecranele (`gardenGo`); CSS-ul din `home.css` arată doar ecranul activ.
+- `versus.js` — Contra lui Robo: minimax la X și 0, memorie imperfectă la Memory, strategia optimă la Nim; nivelul crește după 2 victorii la rând ale copilului și scade după 2 înfrângeri. Fără server și fără costuri.
 - `discover.js` — Descoperă. `rewards.js` — abțibilduri, grădină, insigne, Bia, sunete, statistici. `parents.js` — raport, timp, import, accesibilitate.
 - `sw.js`, `manifest.webmanifest`, iconițe — instalare și joc offline.
 - `fonts/` — OpenDyslexic (licență SIL OFL, în `fonts/OFL-LICENSE.txt`).
@@ -60,6 +62,7 @@ python3 -m http.server 8000        # din rădăcina repo-ului
 pip install playwright && python -m playwright install chromium
 python curious-garden/tests/test_core.py
 python curious-garden/tests/test_features.py
+python curious-garden/tests/test_versus.py
 ```
 
 Testele rulează automat în GitHub Actions (`.github/workflows/curious-garden-tests.yml`) la fiecare modificare din `curious-garden/`. Dacă adaugi fișiere noi, trece-le în lista `FILES` din `sw.js` și crește numărul din `CACHE`.
@@ -74,4 +77,4 @@ Fonturile OpenDyslexic din `fonts/` sunt distribuite separat sub [SIL Open Font 
 
 ## English
 
-Curious Garden is a learning game for ages 3–12 in Romanian, English, Hungarian and Ukrainian. It has eight screens (adventures with generated mazes, numbers, letters, clock, money, silhouette puzzles, branching stories, twelve worlds, age-based activities, a sticker and garden collection, and a birthday workshop), a parent report with time limits, and accessibility options including a dyslexia-friendly font, colour-blind mode and single-switch navigation. It works offline, stores data only in the browser, and is covered by automated Playwright tests in GitHub Actions. Original game code is MIT-licensed; OpenDyslexic fonts remain under SIL OFL 1.1.
+Curious Garden is a learning game for ages 3–12 in Romanian, English, Hungarian and Ukrainian. It has nine screens (a versus mode against a locally computed, adaptive robot, adventures with generated mazes, numbers, letters, clock, money, silhouette puzzles, branching stories, twelve worlds, age-based activities, a sticker and garden collection, and a birthday workshop), a parent report with time limits, and accessibility options including a dyslexia-friendly font, colour-blind mode and single-switch navigation. It works offline, stores data only in the browser, and is covered by automated Playwright tests in GitHub Actions. Original game code is MIT-licensed; OpenDyslexic fonts remain under SIL OFL 1.1.

@@ -1,11 +1,11 @@
 // Grădina Curioasă — service worker pentru joc offline.
 // Strategie: întâi rețeaua (versiunea nouă apare imediat după publicare),
 // iar fără internet se folosește copia salvată.
-const CACHE = 'gradina-curioasa-v2';
+const CACHE = 'gradina-curioasa-v3';
 const FILES = [
   './', 'index.html',
   'expansion.css', 'premium.css', 'arcade.css', 'home.css', 'learning.css', 'extras.css',
-  'i18n.js', 'art.js', 'expansion.js', 'premium.js', 'arcade.js', 'home.js', 'learning.js', 'discover.js', 'rewards.js', 'parents.js',
+  'i18n.js', 'art.js', 'expansion.js', 'premium.js', 'arcade.js', 'home.js', 'learning.js', 'discover.js', 'rewards.js', 'parents.js', 'versus.js',
   'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png',
   'fonts/opendyslexic-latin-400-normal.woff2', 'fonts/opendyslexic-latin-700-normal.woff2'
 ];

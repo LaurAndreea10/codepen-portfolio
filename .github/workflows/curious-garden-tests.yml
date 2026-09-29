@@ -49,6 +49,12 @@ jobs:
           GARDEN_SHOTS: ${{ runner.temp }}/garden-shots
         run: python curious-garden/tests/test_features.py
 
+      - name: Versus Robo tests (opponent behaviour)
+        env:
+          GARDEN_URL: http://localhost:8000/curious-garden/
+          GARDEN_SHOTS: ${{ runner.temp }}/garden-shots
+        run: python curious-garden/tests/test_versus.py
+
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4

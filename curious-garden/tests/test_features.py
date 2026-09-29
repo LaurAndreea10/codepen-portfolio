@@ -37,7 +37,7 @@ with sync_playwright() as p:
     pg.on('pageerror',lambda e:errs.append(str(e))); pg.on('console',lambda m:m.type=='error' and errs.append(m.text))
     pg.goto(URL); pg.wait_for_timeout(300)
     pg.fill('#dob',dob(7)); pg.fill('#nickname','Ana'); pg.click('#start'); pg.wait_for_timeout(700)
-    check(pg.locator('.garden-nav button').count()==8,'menu has 8 screens')
+    check(pg.locator('.garden-nav button').count()==9,'menu has 9 screens')
     check(pg.locator('.guide-bubble.show').count()==1 and 'Ana' in pg.inner_text('.guide-bubble'),'Bia greets the child by name')
     vis=lambda: pg.evaluate("[...document.querySelectorAll('#app [data-view]')].filter(e=>e.offsetParent).map(e=>e.dataset.view)")
     for v in ['discover','collection']:
@@ -66,7 +66,7 @@ with sync_playwright() as p:
     for _ in range(10):
         pcs=pg.locator('#discover .puzzle-piece')
         if pcs.count()==0: break
-        key=pcs.first.get_attribute('data-key'); pcs.first.click(); pg.locator(f'#discover .puzzle-slot[data-key="{key}"]:not(.filled)').first.click(force=True); pg.wait_for_timeout(60)
+        key=pcs.first.get_attribute('data-key'); pcs.first.click(); pg.locator(f'#discover .puzzle-slot[data-key="{key}"]:not(.filled)').first.dispatch_event('click'); pg.wait_for_timeout(60)
     check('Ai construit' in pg.inner_text('#discover .learning-feedback'),'puzzle completes')
     pg.screenshot(path=SHOTS+'n-puzzle.png',full_page=True)
     # tale
@@ -194,7 +194,7 @@ with sync_playwright() as p:
     pg.select_option('#lang','ro')
     # offline cache contains new files
     pg.wait_for_timeout(500)
-    cached=pg.evaluate("caches.open('gradina-curioasa-v2').then(c=>c.keys()).then(k=>k.map(r=>r.url.split('/').pop()))")
+    cached=pg.evaluate("caches.keys().then(ks=>caches.open(ks.filter(k=>k.startsWith('gradina-curioasa')).sort().pop())).then(c=>c.keys()).then(k=>k.map(r=>r.url.split('/').pop()))")
     check(all(f in cached for f in ['discover.js','rewards.js','parents.js','i18n.js','art.js','extras.css','opendyslexic-latin-400-normal.woff2']),'offline cache includes all new files')
     check(not errs,f'no console errors {errs[:3]}')
     br.close()
