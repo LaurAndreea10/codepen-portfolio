@@ -80,7 +80,7 @@ Fonturile OpenDyslexic din `fonts/` sunt distribuite separat sub [SIL Open Font 
 
 ## Opinii / Feedback
 
-- [Formular pentru părinți](feedback.html): trimite mesajul direct din pagină prin FormSubmit către `andreealaurap@gmail.com`, fără aplicația de e-mail. La prima folosire, Laura trebuie să activeze adresa din mesajul de confirmare FormSubmit; până atunci livrarea nu este verificată.
+- [Formular pentru părinți](feedback.html): trimite mesajul direct din pagină prin FormSubmit către `plugaru.laura10@gmail.com`, fără aplicația de e-mail. La prima folosire, Laura trebuie să activeze adresa din mesajul de confirmare FormSubmit; până atunci livrarea nu este verificată.
 - Numai mesajele cu acord explicit de publicare pot apărea în [portofoliul RO](../portfolio.html#curious-garden-opinions) și [EN](../en/#garden-feedback). Publicarea este manuală, după verificare. Nu publica date despre copii.
 - Pentru a aproba un mesaj, adaugă în `approved-feedback.json` un obiect `{"name":"Pseudonim","quote":"Textul aprobat","approved":true}` în lista `items`. Nu copia adrese de e-mail, data nașterii sau alte date personale. Mesajele fără acord rămân private și nu se adaugă în fișier.
 - `feedback-display.js` afișează numai intrările aprobate, ca text simplu, fără interpretarea HTML-ului. Pagina de feedback nu păstrează mesajul în browser; acesta este procesat de FormSubmit pentru livrare.
