@@ -37,6 +37,7 @@ with sync_playwright() as p:
         at=p2.evaluate("document.getElementById('app').dataset.view")
         ok=at==v
         if v=='activities': ok=ok and p2.inner_text('#gameTitle').strip()!=''
+        elif v=='studio': ok=ok and p2.locator(f'#studio[data-craft={m}]').count()==1
         elif v=='worlds': ok=ok and p2.locator('#grandAdventure .world-grid button[aria-pressed=true]').count()==1
         else: ok=ok and p2.locator(f'[data-view={v}] button[aria-pressed=true]').count()>=1
         check(ok,f'age {age}: Game of the day “{name}” opens {v}/{m}')

@@ -41,7 +41,7 @@ with sync_playwright() as p:
     pg=br.new_page(viewport={'width':390,'height':844}); pg.on('pageerror',lambda e:errs.append(str(e)))
     pg.goto(URL); start(pg,10)
     check(pg.locator(f'{S} .lang-tabs button').count()==6,'age 10: all six games')
-    check(pg.locator('.garden-nav button').count()==10,'menu has the new Languages screen')
+    check(pg.locator('.garden-nav button[data-go=languages]').count()==1,'menu has the Languages screen')
     for t,sample in [('fr','🇫🇷'),('de','🇩🇪'),('es','🇪🇸'),('en','🇬🇧')]:
         pg.click(f'{S} .lang-targets button:has-text("{sample}")'); pg.wait_for_timeout(80)
         w=pg.inner_text(f'{S} .lang-word'); lg=pg.get_attribute(f'{S} .lang-stage','lang')

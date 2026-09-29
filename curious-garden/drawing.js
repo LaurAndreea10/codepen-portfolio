@@ -1,0 +1,180 @@
+// Grădina Curioasă — Atelierul de desen: desen liber, colorează (liber sau după cod), unește punctele, pixel art.
+// Totul rămâne pe dispozitiv: galeria are cel mult 8 desene mici, salvate în localStorage pe profil.
+(()=>{
+const COLORS=[['red','#e53935'],['orange','#fb8c00'],['yellow','#fdd835'],['green','#43a047'],['lightgreen','#a5d6a7'],['blue','#1e88e5'],['lightblue','#90caf9'],['purple','#8e24aa'],['pink','#f48fb1'],['brown','#8d6e63'],['black','#212121'],['white','#ffffff']];
+const HEX=Object.fromEntries(COLORS);
+const T={
+ro:{title:'Atelierul de desen',intro:'Desenează liber, colorează, unește punctele sau copiază un model. Desenele frumoase le păstrezi în galerie.',free:'Desen liber',color:'Colorează',dots:'Unește punctele',pixel:'Pixel art',listen:'🔊 Ascultă',palette:'Culori',colorNow:'Culoarea: {c}',
+freeHelp:'Alege o culoare și desenează cu degetul sau cu mouse-ul. Găleata umple o zonă închisă, oglinda desenează la fel și în partea cealaltă.',brush:'Pensulă',bucket:'Găleată',stamp:'Ștampile',eraser:'Radieră',mirror:'Oglindă',size:'Grosime',thin:'Subțire',medium:'Mediu',thick:'Gros',undo:'Înapoi',clear:'Foaie nouă',save:'Salvează în galerie',download:'Descarcă',fileName:'desen-gradina-curioasa',canvasLabel:'Foaie de desen. Desenează cu degetul, cu creionul sau cu mouse-ul.',emptyCanvas:'Desenează ceva mai întâi.',saved:'Desenul e în galerie! 🖼️',galleryTitle:'Galeria mea',galleryEmpty:'Aici apar desenele salvate. Le poți descărca sau șterge oricând.',galleryFull:'Salvat! Galeria păstrează cele mai noi 8 desene.',storageFull:'Nu mai e loc pentru desene. Șterge unul din galerie.',delete:'Șterge',drawingN:'Desenul {n}',
+colorHelp:'Alege o culoare, apoi atinge o zonă din desen.',codeHelp:'Colorează după cod: fiecare număr are culoarea lui din legendă.',codeHelpOld:'Calculează ce scrie în fiecare zonă, apoi folosește culoarea rezultatului din legendă.',codeToggle:'🔢 Colorează după cod',freeToggle:'🎨 Colorează liber',zone:'Zona {i} din {n}',filled:'colorată cu {c}',empty:'necolorată',wrongColor:'Hmm, zona asta are alt număr. Uită-te în legendă.',pageDone:'Gata! Ce desen frumos! 🎨',nextPage:'Altă pagină',legend:'Legenda',
+p_flower:'Floarea',p_house:'Casa',p_fish:'Peștele',p_butterfly:'Fluturele',p_rocket:'Racheta',p_ladybug:'Buburuza',
+dotsHelp:'Atinge punctele în ordine, începând cu {a}. Linia desenează o formă ascunsă.',dotsStep:'Numără din {s} în {s}: {a}, {b}, {c}…',nextDot:'Caută punctul {n}.',dot:'Punctul {n}',dotsDone:'Ai desenat {name}! 🎉',again:'Alt desen',
+s_house:'o casă',s_heart:'o inimă',s_fish:'un pește',s_star:'o stea',s_rocket:'o rachetă',s_tree:'un brad',
+pixelHelp:'Copiază modelul: alege o culoare și atinge pătrățelele. Poți trage cu degetul peste ele.',pixelMirror:'Provocare: desenează modelul în oglindă ↔. Ce e în stânga ajunge în dreapta.',model:'Model',yours:'Desenul tău',check:'Verifică',pixelLeft:'Mai sunt {n} pătrățele diferite. Le-am marcat cu roșu.',pixelDone:'Perfect! Ai copiat modelul. 🟩',cell:'Rândul {r}, coloana {c}: {v}',
+colors:{red:'roșu',orange:'portocaliu',yellow:'galben',green:'verde',lightgreen:'verde deschis',blue:'albastru',lightblue:'bleu',purple:'mov',pink:'roz',brown:'maro',black:'negru',white:'alb'}},
+en:{title:'Drawing studio',intro:'Draw freely, colour in, join the dots or copy a pattern. Keep the drawings you like in your gallery.',free:'Free drawing',color:'Colour in',dots:'Join the dots',pixel:'Pixel art',listen:'🔊 Listen',palette:'Colours',colorNow:'Colour: {c}',
+freeHelp:'Pick a colour and draw with your finger or the mouse. The bucket fills a closed area; the mirror draws the same on the other side.',brush:'Brush',bucket:'Bucket',stamp:'Stamps',eraser:'Eraser',mirror:'Mirror',size:'Size',thin:'Thin',medium:'Medium',thick:'Thick',undo:'Undo',clear:'New sheet',save:'Save to gallery',download:'Download',fileName:'curious-garden-drawing',canvasLabel:'Drawing sheet. Draw with your finger, a stylus or the mouse.',emptyCanvas:'Draw something first.',saved:'Your drawing is in the gallery! 🖼️',galleryTitle:'My gallery',galleryEmpty:'Saved drawings appear here. You can download or delete them any time.',galleryFull:'Saved! The gallery keeps the newest 8 drawings.',storageFull:'There is no room for more drawings. Delete one from the gallery.',delete:'Delete',drawingN:'Drawing {n}',
+colorHelp:'Pick a colour, then tap a part of the picture.',codeHelp:'Colour by number: each number has its colour in the key.',codeHelpOld:'Work out what each area says, then use the colour of the answer from the key.',codeToggle:'🔢 Colour by number',freeToggle:'🎨 Free colouring',zone:'Area {i} of {n}',filled:'coloured {c}',empty:'not coloured',wrongColor:'Hmm, this area has another number. Look at the key.',pageDone:'Done! What a lovely picture! 🎨',nextPage:'Another page',legend:'Key',
+p_flower:'Flower',p_house:'House',p_fish:'Fish',p_butterfly:'Butterfly',p_rocket:'Rocket',p_ladybug:'Ladybird',
+dotsHelp:'Tap the dots in order, starting with {a}. The line draws a hidden shape.',dotsStep:'Count in {s}s: {a}, {b}, {c}…',nextDot:'Look for dot {n}.',dot:'Dot {n}',dotsDone:'You drew {name}! 🎉',again:'Another picture',
+s_house:'a house',s_heart:'a heart',s_fish:'a fish',s_star:'a star',s_rocket:'a rocket',s_tree:'a fir tree',
+pixelHelp:'Copy the pattern: pick a colour and tap the squares. You can drag your finger across them.',pixelMirror:'Challenge: draw the pattern mirrored ↔. What is on the left goes on the right.',model:'Pattern',yours:'Your drawing',check:'Check',pixelLeft:'{n} squares are still different. They are marked in red.',pixelDone:'Perfect! You copied the pattern. 🟩',cell:'Row {r}, column {c}: {v}',
+colors:{red:'red',orange:'orange',yellow:'yellow',green:'green',lightgreen:'light green',blue:'blue',lightblue:'light blue',purple:'purple',pink:'pink',brown:'brown',black:'black',white:'white'}},
+hu:{title:'Rajzműhely',intro:'Rajzolj szabadon, színezz, kösd össze a pontokat vagy másolj le egy mintát. A kedvenc rajzaidat a galériában tarthatod.',free:'Szabad rajz',color:'Színező',dots:'Pontösszekötő',pixel:'Pixelkép',listen:'🔊 Meghallgatom',palette:'Színek',colorNow:'Szín: {c}',
+freeHelp:'Válassz színt, és rajzolj az ujjaddal vagy az egérrel. A vödör kitölt egy zárt részt, a tükör a másik oldalra is ugyanazt rajzolja.',brush:'Ecset',bucket:'Vödör',stamp:'Nyomdák',eraser:'Radír',mirror:'Tükör',size:'Vastagság',thin:'Vékony',medium:'Közepes',thick:'Vastag',undo:'Vissza',clear:'Új lap',save:'Mentés a galériába',download:'Letöltés',fileName:'kivancsi-kert-rajz',canvasLabel:'Rajzlap. Rajzolj az ujjaddal, érintőtollal vagy egérrel.',emptyCanvas:'Előbb rajzolj valamit.',saved:'A rajz a galériában van! 🖼️',galleryTitle:'Az én galériám',galleryEmpty:'Itt jelennek meg a mentett rajzok. Bármikor letöltheted vagy törölheted őket.',galleryFull:'Mentve! A galéria a legújabb 8 rajzot őrzi meg.',storageFull:'Nincs több hely a rajzoknak. Törölj egyet a galériából.',delete:'Törlés',drawingN:'{n}. rajz',
+colorHelp:'Válassz színt, majd érintsd meg a kép egy részét.',codeHelp:'Színezz szám szerint: minden számnak megvan a színe a jelmagyarázatban.',codeHelpOld:'Számold ki, mi áll az egyes részeken, majd használd az eredmény színét.',codeToggle:'🔢 Színezés szám szerint',freeToggle:'🎨 Szabad színezés',zone:'{i}. rész / {n}',filled:'színe: {c}',empty:'nincs kiszínezve',wrongColor:'Hmm, ennek a résznek más a száma. Nézd meg a jelmagyarázatot.',pageDone:'Kész! Milyen szép kép! 🎨',nextPage:'Másik lap',legend:'Jelmagyarázat',
+p_flower:'Virág',p_house:'Ház',p_fish:'Hal',p_butterfly:'Pillangó',p_rocket:'Rakéta',p_ladybug:'Katica',
+dotsHelp:'Érintsd meg a pontokat sorban, {a}-tól kezdve. A vonal egy rejtett formát rajzol.',dotsStep:'Számolj {s}-esével: {a}, {b}, {c}…',nextDot:'Keresd a(z) {n}. pontot.',dot:'{n}. pont',dotsDone:'Megrajzoltad: {name}! 🎉',again:'Másik kép',
+s_house:'egy ház',s_heart:'egy szív',s_fish:'egy hal',s_star:'egy csillag',s_rocket:'egy rakéta',s_tree:'egy fenyőfa',
+pixelHelp:'Másold le a mintát: válassz színt, és érintsd meg a négyzeteket. Az ujjadat végig is húzhatod rajtuk.',pixelMirror:'Kihívás: rajzold le a mintát tükrözve ↔. Ami bal oldalon van, jobbra kerül.',model:'Minta',yours:'A te rajzod',check:'Ellenőrzés',pixelLeft:'Még {n} négyzet eltér. Pirossal jelöltem őket.',pixelDone:'Tökéletes! Lemásoltad a mintát. 🟩',cell:'{r}. sor, {c}. oszlop: {v}',
+colors:{red:'piros',orange:'narancs',yellow:'sárga',green:'zöld',lightgreen:'világoszöld',blue:'kék',lightblue:'világoskék',purple:'lila',pink:'rózsaszín',brown:'barna',black:'fekete',white:'fehér'}},
+uk:{title:'Майстерня малювання',intro:'Малюй вільно, розфарбовуй, з’єднуй крапки або копіюй візерунок. Найкращі малюнки зберігай у галереї.',free:'Вільне малювання',color:'Розмальовка',dots:'З’єднай крапки',pixel:'Піксель-арт',listen:'🔊 Послухати',palette:'Кольори',colorNow:'Колір: {c}',
+freeHelp:'Обери колір і малюй пальцем або мишкою. Відерце заливає замкнену ділянку, дзеркало малює те саме з іншого боку.',brush:'Пензлик',bucket:'Відерце',stamp:'Штампики',eraser:'Гумка',mirror:'Дзеркало',size:'Товщина',thin:'Тонко',medium:'Середньо',thick:'Товсто',undo:'Назад',clear:'Новий аркуш',save:'Зберегти в галерею',download:'Завантажити',fileName:'cikavyi-sad-malyunok',canvasLabel:'Аркуш для малювання. Малюй пальцем, стилусом або мишкою.',emptyCanvas:'Спершу щось намалюй.',saved:'Малюнок у галереї! 🖼️',galleryTitle:'Моя галерея',galleryEmpty:'Тут з’являться збережені малюнки. Їх можна завантажити або видалити будь-коли.',galleryFull:'Збережено! Галерея зберігає 8 найновіших малюнків.',storageFull:'Більше немає місця для малюнків. Видали один із галереї.',delete:'Видалити',drawingN:'Малюнок {n}',
+colorHelp:'Обери колір, а потім торкнися частини малюнка.',codeHelp:'Розфарбуй за числами: кожне число має свій колір у легенді.',codeHelpOld:'Обчисли, що написано в кожній частині, і візьми колір відповіді з легенди.',codeToggle:'🔢 Розфарбувати за числами',freeToggle:'🎨 Вільне розфарбовування',zone:'Частина {i} з {n}',filled:'колір: {c}',empty:'не розфарбована',wrongColor:'Хм, у цієї частини інше число. Поглянь у легенду.',pageDone:'Готово! Який гарний малюнок! 🎨',nextPage:'Інша сторінка',legend:'Легенда',
+p_flower:'Квітка',p_house:'Будиночок',p_fish:'Рибка',p_butterfly:'Метелик',p_rocket:'Ракета',p_ladybug:'Сонечко',
+dotsHelp:'Торкайся крапок по черзі, починаючи з {a}. Лінія намалює приховану фігуру.',dotsStep:'Лічи по {s}: {a}, {b}, {c}…',nextDot:'Шукай крапку {n}.',dot:'Крапка {n}',dotsDone:'Ти намалював(-ла) {name}! 🎉',again:'Інший малюнок',
+s_house:'будиночок',s_heart:'серце',s_fish:'рибку',s_star:'зірку',s_rocket:'ракету',s_tree:'ялинку',
+pixelHelp:'Скопіюй візерунок: обери колір і торкайся квадратиків. Можна провести по них пальцем.',pixelMirror:'Виклик: намалюй візерунок у дзеркальному відображенні ↔. Що зліва — стає справа.',model:'Зразок',yours:'Твій малюнок',check:'Перевірити',pixelLeft:'Ще {n} квадратиків відрізняються. Вони позначені червоним.',pixelDone:'Чудово! Ти скопіював(-ла) візерунок. 🟩',cell:'Рядок {r}, стовпчик {c}: {v}',
+colors:{red:'червоний',orange:'помаранчевий',yellow:'жовтий',green:'зелений',lightgreen:'світло-зелений',blue:'синій',lightblue:'блакитний',purple:'фіолетовий',pink:'рожевий',brown:'коричневий',black:'чорний',white:'білий'}}};
+const tx=(k,v={})=>String(T[lang]?.[k]??T.en[k]??k).replace(/\{(\w+)\}/g,(_,x)=>v[x]??'');
+const cname=k=>(T[lang]?.colors||T.en.colors)[k]||k;
+const E=(tag,text='',cls='')=>{const e=document.createElement(tag);e.textContent=text;if(cls)e.className=cls;return e},B=(text,fn,cls)=>{const b=E('button',text,cls);b.type='button';b.onclick=fn;return b};
+const NS='http://www.w3.org/2000/svg',S=(tag,attrs={})=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e};
+const uid=()=>localStorage.getItem('garden_active')||'default',key=()=>`garden_drawing_${uid()}`;
+const read=()=>{try{return JSON.parse(localStorage.getItem(key()))||{}}catch{return {}}},save=d=>{try{localStorage.setItem(key(),JSON.stringify(d));return true}catch{return false}};
+const age=()=>ageOf(profile.dob),rand=n=>Math.floor(Math.random()*n);
+const section=E('section','','card studio drawing');section.id='drawing';section.dataset.view='drawing';$('app').insertBefore(section,$('birthday'));
+let mode=null,stage,status,galleryBox,token=0,current='red';
+const say=(msg,good=true)=>{status.textContent=msg;status.classList.toggle('bad',!good)};
+const listen=text=>B(tx('listen'),()=>gardenSpeak(text,true),'speak-btn');
+const help=text=>{const p=E('p',text,'studio-help');stage.append(p);if(age()<=6)stage.append(listen(text))};
+
+// Paleta: butoane rotunde, fiecare cu numele culorii pentru cititorul de ecran.
+function palette(keys,labelFor){const row=E('div','','palette');row.setAttribute('role','group');row.setAttribute('aria-label',tx('palette'));const name=E('p','','palette-name');if(!keys.includes(current))current=keys[0];
+const paint=()=>{row.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===current));name.textContent=tx('colorNow',{c:cname(current)})};
+keys.forEach(k=>{const b=B(labelFor?labelFor(k):'',()=>{current=k;paint()},labelFor?'swatch legend-swatch':'swatch');b.dataset.c=k;b.style.setProperty('--sw',HEX[k]);b.setAttribute('aria-label',(labelFor?labelFor(k)+' · ':'')+cname(k));b.title=cname(k);row.append(b)});paint();return [row,name]}
+
+// ——— Galeria
+function thumb(src,w,h){const c=document.createElement('canvas');c.width=400;c.height=Math.round(400*h/w);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(src,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.72)}
+function saveImage(url){const d=read();d.gallery=Array.isArray(d.gallery)?d.gallery:[];d.gallery.unshift({img:url,t:new Date().toLocaleDateString('en-CA')});let full=false;if(d.gallery.length>8){d.gallery.length=8;full=true}if(!save(d)){say(tx('storageFull'),false);return false}say(full?tx('galleryFull'):tx('saved'));drawGallery();return true}
+function drawGallery(){if(!galleryBox)return;const list=read().gallery||[];galleryBox.replaceChildren();if(!list.length){galleryBox.append(E('p',tx('galleryEmpty'),'small'));return}const grid=E('div','','draw-gallery');
+list.forEach((it,i)=>{const f=E('figure'),img=E('img'),label=tx('drawingN',{n:i+1});img.src=it.img;img.alt=`${label} · ${it.t}`;const row=E('div','','gallery-actions'),a=E('a','⬇️','btn');a.href=it.img;a.download=`${tx('fileName')}-${i+1}.jpg`;a.setAttribute('aria-label',`${tx('download')} · ${label}`);const del=B('🗑️',()=>{const d=read();d.gallery.splice(i,1);save(d);drawGallery()});del.setAttribute('aria-label',`${tx('delete')} · ${label}`);row.append(a,del);f.append(img,E('figcaption',it.t),row);grid.append(f)});galleryBox.append(grid)}
+
+// ——— Desen liber pe canvas
+const W=800,H=560,STAMPS=['🌸','⭐','🐞','🌈','🦋','🐶','🍎','☀️'];
+let tool='brush',size=14,stamp='🌸',mirror=false,paper=null,undo=[],dirty=false;
+function floodFill(g,x,y,hex){const img=g.getImageData(0,0,W,H),d=img.data,i0=(y*W+x)*4,t=[d[i0],d[i0+1],d[i0+2]],f=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));
+if(Math.abs(t[0]-f[0])+Math.abs(t[1]-f[1])+Math.abs(t[2]-f[2])<8)return;const same=i=>Math.abs(d[i]-t[0])+Math.abs(d[i+1]-t[1])+Math.abs(d[i+2]-t[2])<=90,seen=new Uint8Array(W*H),st=[x,y];
+while(st.length){const cy=st.pop(),cx=st.pop();let lx=cx;while(lx>=0&&!seen[cy*W+lx]&&same((cy*W+lx)*4))lx--;lx++;let up=false,down=false;
+for(let x2=lx;x2<W;x2++){const p=cy*W+x2;if(seen[p]||!same(p*4))break;seen[p]=1;const i=p*4;d[i]=f[0];d[i+1]=f[1];d[i+2]=f[2];d[i+3]=255;
+if(cy>0){const q=p-W,ok=!seen[q]&&same(q*4);if(ok&&!up){st.push(x2,cy-1);up=true}else if(!ok)up=false}
+if(cy<H-1){const q=p+W,ok=!seen[q]&&same(q*4);if(ok&&!down){st.push(x2,cy+1);down=true}else if(!ok)down=false}}}g.putImageData(img,0,0)}
+function free(){help(tx('freeHelp'));const [pal,pname]=palette(COLORS.map(c=>c[0]));
+const tools=E('div','','draw-tools'),tb=[['brush','🖌️'],['bucket','🪣'],['stamp','🌟'],['eraser','🧽']].map(([k,i])=>{const b=B(`${i} ${tx(k)}`,()=>{tool=k;paintTools()});b.dataset.tool=k;return b});const mirrorBtn=B('🪞 '+tx('mirror'),()=>{mirror=!mirror;paintTools()});tools.append(...tb,mirrorBtn);
+const sizes=E('div','','draw-tools sizes');sizes.setAttribute('role','group');sizes.setAttribute('aria-label',tx('size'));const sb=[['thin',6],['medium',14],['thick',28]].map(([k,v])=>{const b=B(tx(k),()=>{size=v;paintTools()});b.dataset.size=v;b.prepend(E('span','','size-dot'));b.firstChild.style.setProperty('--d',Math.round(v/2+4)+'px');return b});sizes.append(...sb);
+const stamps=E('div','','draw-tools stamps');stamps.setAttribute('role','group');stamps.setAttribute('aria-label',tx('stamp'));const stb=STAMPS.map(s=>{const b=B(s,()=>{stamp=s;tool='stamp';paintTools()},'stamp-btn');b.dataset.stamp=s;b.setAttribute('aria-label',`${tx('stamp')} ${s}`);return b});stamps.append(...stb);
+const wrap=E('div','','draw-wrap'),cv=E('canvas','','draw-canvas');cv.width=W;cv.height=H;cv.setAttribute('role','img');cv.setAttribute('aria-label',tx('canvasLabel'));wrap.append(cv);const g=cv.getContext('2d',{willReadFrequently:true});
+if(paper)g.putImageData(paper,0,0);else{g.fillStyle='#fff';g.fillRect(0,0,W,H)}
+const keep=()=>{paper=g.getImageData(0,0,W,H)},snap=()=>{undo.push(g.getImageData(0,0,W,H));if(undo.length>8)undo.shift()};
+const undoBtn=B('↩️ '+tx('undo'),()=>{if(!undo.length)return;g.putImageData(undo.pop(),0,0);keep();paintTools()}),clearBtn=B('📄 '+tx('clear'),()=>{snap();g.fillStyle='#fff';g.fillRect(0,0,W,H);keep();dirty=false;paintTools()});
+const saveBtn=B('🖼️ '+tx('save'),()=>{if(!dirty){say(tx('emptyCanvas'),false);return}if(saveImage(thumb(cv,W,H))){gardenCelebrate('draw-free');dirty=false}},'primary');
+const dl=E('a','⬇️ '+tx('download'),'btn');dl.href='#';dl.onclick=()=>{dl.href=cv.toDataURL('image/png');dl.download=`${tx('fileName')}.png`};
+const actions=E('div','','draw-tools');actions.append(undoBtn,clearBtn,saveBtn,dl);
+function paintTools(){tb.forEach(b=>b.setAttribute('aria-pressed',b.dataset.tool===tool));sb.forEach(b=>b.setAttribute('aria-pressed',+b.dataset.size===size));stb.forEach(b=>b.setAttribute('aria-pressed',tool==='stamp'&&b.dataset.stamp===stamp));mirrorBtn.setAttribute('aria-pressed',mirror);wrap.classList.toggle('mirror',mirror);undoBtn.disabled=!undo.length;sizes.style.visibility=tool==='bucket'?'hidden':''}
+let last=null;const pos=e=>{const r=cv.getBoundingClientRect();return [(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]};
+const line=(a,b)=>{g.strokeStyle=tool==='eraser'?'#ffffff':HEX[current];g.lineWidth=tool==='eraser'?size*1.8:size;g.lineCap=g.lineJoin='round';g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();if(mirror){g.beginPath();g.moveTo(W-a[0],a[1]);g.lineTo(W-b[0],b[1]);g.stroke()}};
+const stampAt=([x,y])=>{g.font=`${size*2+36}px "Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif`;g.textAlign='center';g.textBaseline='middle';g.fillText(stamp,x,y)};
+cv.onpointerdown=e=>{e.preventDefault();try{cv.setPointerCapture(e.pointerId)}catch{}const p=pos(e);snap();dirty=true;
+if(tool==='bucket'){floodFill(g,Math.min(W-1,Math.max(0,p[0]|0)),Math.min(H-1,Math.max(0,p[1]|0)),HEX[current]);if(mirror)floodFill(g,Math.min(W-1,Math.max(0,(W-p[0])|0)),Math.min(H-1,Math.max(0,p[1]|0)),HEX[current]);keep();paintTools();window.gardenSound?.('pop');return}
+if(tool==='stamp'){stampAt(p);if(mirror)stampAt([W-p[0],p[1]]);keep();paintTools();window.gardenSound?.('pop');return}last=p;line(p,p);paintTools()};
+cv.onpointermove=e=>{if(!last)return;const evs=e.getCoalescedEvents?.()||[e];for(const ev of evs.length?evs:[e]){const p=pos(ev);line(last,p);last=p}};
+cv.onpointerup=cv.onpointercancel=()=>{if(last){last=null;keep()}};
+stage.append(pal,pname,tools,sizes,stamps,wrap,actions);paintTools()}
+
+// ——— Pagini de colorat (desene proprii, SVG)
+const R=(tag,a,c)=>({tag,a,c}),D=(tag,a)=>({tag,a,deco:true});
+const starPts=(cx,cy,ro,ri,n=5)=>Array.from({length:n*2},(_,k)=>{const an=(-90+180/n*k)*Math.PI/180,r=k%2?ri:ro;return [Math.round(cx+r*Math.cos(an)),Math.round(cy+r*Math.sin(an))]});
+const poly=pts=>pts.map(p=>p.join(',')).join(' ');
+const PAGES={
+flower:[R('rect',{x:0,y:0,width:200,height:150},'lightblue'),R('rect',{x:0,y:150,width:200,height:50},'lightgreen'),R('circle',{cx:168,cy:32,r:18},'yellow'),R('rect',{x:96,y:90,width:8,height:74},'green'),R('ellipse',{cx:78,cy:128,rx:18,ry:8,transform:'rotate(-30 78 128)'},'green'),R('ellipse',{cx:122,cy:122,rx:18,ry:8,transform:'rotate(30 122 122)'},'green'),
+...Array.from({length:6},(_,k)=>{const an=k*60,cx=Math.round(100+24*Math.cos(an*Math.PI/180)),cy=Math.round(68+24*Math.sin(an*Math.PI/180));return R('ellipse',{cx,cy,rx:15,ry:10,transform:`rotate(${an} ${cx} ${cy})`},k%2?'purple':'pink')}),R('circle',{cx:100,cy:68,r:12},'orange')],
+house:[R('rect',{x:0,y:0,width:200,height:140},'lightblue'),R('rect',{x:0,y:140,width:200,height:60},'green'),R('circle',{cx:30,cy:30,r:16},'yellow'),R('ellipse',{cx:150,cy:35,rx:26,ry:12},'white'),R('rect',{x:124,y:50,width:14,height:30},'brown'),R('rect',{x:50,y:90,width:100,height:70},'orange'),R('polygon',{points:'40,92 100,45 160,92'},'red'),R('rect',{x:89,y:118,width:22,height:42},'brown'),R('rect',{x:60,y:102,width:22,height:20},'lightblue'),R('rect',{x:118,y:102,width:22,height:20},'lightblue'),R('polygon',{points:'89,160 111,160 124,200 76,200'},'yellow')],
+fish:[R('rect',{x:0,y:0,width:200,height:200},'blue'),R('path',{d:'M0 172 Q50 156 100 172 T200 166 V200 H0 Z'},'yellow'),R('path',{d:'M170 172 q-12 -20 0 -40 q12 -20 0 -40 l8 0 q12 20 0 40 q-12 20 0 40 z'},'green'),R('polygon',{points:'48,100 14,74 14,126'},'red'),R('ellipse',{cx:98,cy:100,rx:54,ry:32},'orange'),R('polygon',{points:'84,72 104,48 116,74'},'red'),R('ellipse',{cx:108,cy:100,rx:6,ry:27},'white'),R('circle',{cx:132,cy:92,r:7},'black'),R('circle',{cx:166,cy:58,r:8},'lightblue'),R('circle',{cx:178,cy:34,r:6},'lightblue'),R('circle',{cx:160,cy:20,r:5},'lightblue')],
+butterfly:[R('rect',{x:0,y:0,width:200,height:200},'lightblue'),R('path',{d:'M0 176 Q100 160 200 176 V200 H0 Z'},'green'),R('ellipse',{cx:68,cy:76,rx:34,ry:26,transform:'rotate(-25 68 76)'},'purple'),R('ellipse',{cx:132,cy:76,rx:34,ry:26,transform:'rotate(25 132 76)'},'purple'),R('ellipse',{cx:74,cy:126,rx:24,ry:18,transform:'rotate(25 74 126)'},'pink'),R('ellipse',{cx:126,cy:126,rx:24,ry:18,transform:'rotate(-25 126 126)'},'pink'),R('circle',{cx:62,cy:72,r:9},'yellow'),R('circle',{cx:138,cy:72,r:9},'yellow'),R('circle',{cx:74,cy:128,r:7},'orange'),R('circle',{cx:126,cy:128,r:7},'orange'),R('ellipse',{cx:100,cy:102,rx:7,ry:38},'brown'),R('circle',{cx:100,cy:60,r:9},'black'),D('path',{d:'M96 53 Q86 32 76 28'}),D('path',{d:'M104 53 Q114 32 124 28'})],
+rocket:[R('rect',{x:0,y:0,width:200,height:200},'purple'),R('polygon',{points:poly(starPts(30,40,10,4))},'yellow'),R('polygon',{points:poly(starPts(168,36,9,4))},'yellow'),R('polygon',{points:poly(starPts(170,120,8,3))},'yellow'),R('circle',{cx:40,cy:150,r:16},'green'),R('path',{d:'M80 80 Q100 28 120 80 Z'},'red'),R('rect',{x:80,y:80,width:40,height:70},'white'),R('circle',{cx:100,cy:102,r:11},'lightblue'),R('polygon',{points:'80,118 58,156 80,150'},'orange'),R('polygon',{points:'120,118 142,156 120,150'},'orange'),R('polygon',{points:'86,150 100,188 114,150'},'yellow')],
+ladybug:[R('rect',{x:0,y:0,width:200,height:200},'lightgreen'),R('path',{d:'M18 165 Q70 30 186 40 Q150 175 18 165 Z'},'green'),R('circle',{cx:100,cy:70,r:18},'black'),R('circle',{cx:93,cy:61,r:4},'white'),R('circle',{cx:107,cy:61,r:4},'white'),R('circle',{cx:100,cy:112,r:42},'red'),D('path',{d:'M100 72 V154'}),R('circle',{cx:82,cy:98,r:8},'black'),R('circle',{cx:118,cy:98,r:8},'black'),R('circle',{cx:80,cy:128,r:7},'black'),R('circle',{cx:120,cy:128,r:7},'black')]};
+const PAGE_ICON={flower:'🌸',house:'🏠',fish:'🐟',butterfly:'🦋',rocket:'🚀',ladybug:'🐞'};
+let pageId='flower',fills={},codeMode=null,labels=null;
+const STROKE={stroke:'#23303d','stroke-width':'2.5','stroke-linejoin':'round','stroke-linecap':'round'};
+function colorPage(){const a=age(),code=a>=6&&codeMode!==false,regs=PAGES[pageId].filter(r=>!r.deco),keys=[...new Set(regs.map(r=>r.c))];
+const pick=E('div','','learning-tabs page-picker');Object.keys(PAGES).forEach(id=>{const b=B(`${PAGE_ICON[id]} ${tx('p_'+id)}`,()=>{pageId=id;fills={};labels=null;render()});b.setAttribute('aria-pressed',id===pageId);pick.append(b)});stage.append(pick);
+if(a>=6){const t=B(code?tx('freeToggle'):tx('codeToggle'),()=>{codeMode=!code;fills={};labels=null;render()},'code-toggle');stage.append(t)}
+help(code?(a>=9?tx('codeHelpOld'):tx('codeHelp')):tx('colorHelp'));
+// Legenda: numerele 1..k; pentru 9+ ani zonele au calcule al căror rezultat e numărul.
+if(code&&!labels)labels=regs.map(r=>{const n=keys.indexOf(r.c)+1;if(a<9)return String(n);if(n>1&&Math.random()<.5){const x=1+rand(n-1);return `${x}+${n-x}`}const y=1+rand(5);return `${n+y}−${y}`});
+const [pal,pname]=code?palette(keys,k=>String(keys.indexOf(k)+1)):palette(COLORS.map(c=>c[0]));if(code){pal.classList.add('color-legend');pal.setAttribute('aria-label',tx('legend'))}stage.append(pal,pname);
+const box=E('div','','color-page'),svg=S('svg',{viewBox:'0 0 200 200',role:'group','aria-label':tx('p_'+pageId)});box.append(svg);stage.append(box);
+const done=()=>regs.every((_,i)=>fills[i]);let finished=done();const els=[];
+PAGES[pageId].forEach(r=>{if(r.deco){svg.append(S(r.tag,{...r.a,...STROKE,fill:'none','pointer-events':'none'}));return}const i=els.length,el=S(r.tag,{...r.a,...STROKE,fill:HEX[fills[i]]||'#ffffff',tabindex:'0',role:'button','data-region':i,'data-target':r.c});els.push(el);svg.append(el)});
+const aria=i=>{els[i].setAttribute('aria-label',`${tx('zone',{i:i+1,n:els.length})}${code&&!fills[i]?' · '+labels[i]:''} · ${fills[i]?tx('filled',{c:cname(fills[i])}):tx('empty')}`)};
+const texts=[];const placeLabels=()=>{if(!code)return;els.forEach((el,i)=>{if(fills[i])return;let bb;try{bb=el.getBBox()}catch{return}if(!bb.width)return;const t=S('text',{x:bb.x+bb.width/2,y:bb.y+bb.height/2,class:'region-label','font-size':labels[i].length>2?8:10});t.textContent=labels[i];texts[i]=t;svg.append(t)})};
+const tap=i=>{const el=els[i];if(code&&current!==regs[i].c){gardenMiss('draw-code');say(tx('wrongColor'),false);el.classList.remove('shake');el.getBoundingClientRect();el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),450);return}
+fills[i]=current;el.setAttribute('fill',HEX[current]);texts[i]?.remove();aria(i);window.gardenSound?.('pop');status.textContent='';if(!finished&&done()){finished=true;gardenCelebrate(code?'draw-code':'draw-color');say(tx('pageDone'))}};
+els.forEach((el,i)=>{aria(i);el.addEventListener('click',()=>tap(i));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tap(i)}})});
+const actions=E('div','','draw-tools'),ids=Object.keys(PAGES);
+actions.append(B('🖼️ '+tx('save'),()=>{const clone=svg.cloneNode(true);clone.querySelectorAll('.region-label').forEach(t=>t.remove());clone.setAttribute('xmlns',NS);clone.setAttribute('width','400');clone.setAttribute('height','400');const img=new Image();img.onload=()=>{try{if(saveImage(thumb(img,400,400)))gardenCelebrate('draw-free')}catch{say(tx('storageFull'),false)}};img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(clone))},'primary'),B('➡️ '+tx('nextPage'),()=>{pageId=ids[(ids.indexOf(pageId)+1)%ids.length];fills={};labels=null;render()}));stage.append(actions);
+requestAnimationFrame(placeLabels)}
+
+// ——— Unește punctele
+const heartPts=n=>Array.from({length:n},(_,k)=>{const t=Math.PI*2*k/n,x=16*Math.sin(t)**3,y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);return [Math.round(100+5.2*x),Math.round(88-5.2*y)]});
+const DOTS={house:()=>[[40,170],[40,90],[100,35],[160,90],[160,170]],heart:n=>heartPts(n),fish:()=>[[20,70],[55,95],[90,62],[135,66],[172,100],[135,134],[90,138],[55,105],[20,130]],star:()=>starPts(100,108,84,36),rocket:()=>[[100,18],[126,60],[126,130],[148,168],[118,152],[82,152],[52,168],[74,130],[74,60]],tree:()=>[[100,18],[142,68],[120,68],[156,112],[128,112],[166,158],[110,158],[110,186],[90,186],[90,158],[34,158],[72,112],[44,112],[80,68],[58,68]]};
+const DOT_COLOR={house:'orange',heart:'red',fish:'orange',star:'yellow',rocket:'lightblue',tree:'green'};
+let dotSet=null,dotShape=null,dotK=0,dotStep=1;
+function dots(){const a=age(),set=a<=5?[['house',0],['heart',8],['fish',0]]:a<=8?[['star',0],['fish',0],['rocket',0],['heart',12]]:[['tree',0],['star',0],['heart',16],['rocket',0]];
+if(dotSet!==set.map(x=>x[0]).join()||!dotShape){dotSet=set.map(x=>x[0]).join();dotShape=set[0];dotK=0;dotStep=a>=9?[2,3,5,10][rand(4)]:1}
+const [name,n]=dotShape,pts=DOTS[name](n),lab=k=>(k+1)*dotStep;
+help(dotStep>1?`${tx('dotsHelp',{a:lab(0)})} ${tx('dotsStep',{s:dotStep,a:lab(0),b:lab(1),c:lab(2)})}`:tx('dotsHelp',{a:lab(0)}));
+const box=E('div','','color-page dots-page'),svg=S('svg',{viewBox:'0 0 200 200',role:'group','aria-label':tx('dots')});box.append(svg);stage.append(box);
+const fillShape=S('polygon',{points:poly(pts),fill:'none',stroke:'none'}),line=S('polyline',{points:'',fill:'none',stroke:'#1e88e5','stroke-width':'3','stroke-linejoin':'round','stroke-linecap':'round'});svg.append(fillShape,line);
+const cx=pts.reduce((s,p)=>s+p[0],0)/pts.length,cy=pts.reduce((s,p)=>s+p[1],0)/pts.length;
+const groups=pts.map(([x,y],k)=>{const g=S('g',{class:'dot-g',tabindex:'0',role:'button','aria-label':tx('dot',{n:lab(k)}),'data-label':lab(k)});let dx=x-cx,dy=y-cy;const len=Math.hypot(dx,dy)||1;dx=dx/len*13;dy=dy/len*13;
+g.append(S('circle',{cx:x,cy:y,r:14,class:'hit'}),S('circle',{cx:x,cy:y,r:5,class:'pt'}));const t=S('text',{x:x+dx,y:y+dy,class:'dot-label'});t.textContent=lab(k);g.append(t);svg.append(g);return g});
+const paint=()=>{line.setAttribute('points',poly(pts.slice(0,dotK).concat(dotK===pts.length?[pts[0]]:[])));groups.forEach((g,k)=>{g.classList.toggle('done',k<dotK);g.classList.toggle('next',k===dotK);g.classList.toggle('pulse',k===dotK&&a<=6)});if(dotK===pts.length){fillShape.setAttribute('fill',HEX[DOT_COLOR[name]]);fillShape.setAttribute('stroke','#23303d');fillShape.setAttribute('stroke-width','2')}};
+const tap=k=>{if(dotK>=pts.length)return;if(k!==dotK){if(a>5)gardenMiss('draw-dots');say(tx('nextDot',{n:lab(dotK)}),false);return}dotK++;window.gardenSound?.('pop');status.textContent='';paint();if(dotK===pts.length){gardenCelebrate('draw-dots');say(tx('dotsDone',{name:tx('s_'+name)}))}};
+groups.forEach((g,k)=>{g.addEventListener('click',()=>tap(k));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tap(k)}})});paint();
+const actions=E('div','','draw-tools');actions.append(B('➡️ '+tx('again'),()=>{const i=set.findIndex(x=>x[0]===name);dotShape=set[(i+1)%set.length];dotK=0;dotStep=a>=9?[2,3,5,10][rand(4)]:1;render()}));stage.append(actions)}
+
+// ——— Pixel art: copiază modelul (9+ ani: în oglindă)
+const PX={
+heart6:['.r..r.','rrrrrr','rrrrrr','.rrrr.','..rr..','......'],sun6:['..yy..','.yyyy.','yyyyyy','yyyyyy','.yyyy.','..yy..'],tree6:['..gg..','.gggg.','gggggg','.gggg.','..nn..','..nn..'],
+heart:['........','.rr..rr.','rrrrrrrr','rrrrrrrr','.rrrrrr.','..rrrr..','...rr...','........'],
+flower:['...kk...','..kyyk..','...kk...','....g...','..g.g...','...gg...','....g...','mmmmmmmm'],
+tree:['...gg...','..gggg..','.gggggg.','..gggg..','.gggggg.','gggggggg','...nn...','...nn...'],
+house:['...rr...','..rrrr..','.rrrrrr.','rrrrrrrr','.oooooo.','.lloonn.','.lloonn.','.oooonn.'],
+smiley:['..yyyy..','.yyyyyy.','yyxyyxyy','yyyyyyyy','yxyyyyxy','yyxxxxyy','.yyyyyy.','..yyyy..'],
+fish:['........','...bb...','.bbbbb.b','bxbbbbbb','.bbbbb.b','...bb...','........','llllllll']};
+const PXC={'.':'white',r:'red',o:'orange',y:'yellow',g:'green',m:'lightgreen',b:'blue',l:'lightblue',p:'purple',k:'pink',n:'brown',x:'black'};
+let pxId=null,pxGrid=null,pxDone=false,painting=false;addEventListener('pointerup',()=>{painting=false});addEventListener('pointercancel',()=>{painting=false});
+function pixel(){const a=age(),list=a<=5?['heart6','sun6','tree6']:['heart','flower','tree','house','smiley','fish'],flip=a>=9;
+if(!list.includes(pxId)){pxId=list[rand(list.length)];pxGrid=null}const pat=PX[pxId],n=pat.length,target=pat.flatMap(row=>(flip?[...row].reverse():[...row]).map(ch=>PXC[ch]));if(!pxGrid||pxGrid.length!==n*n){pxGrid=Array(n*n).fill('white');pxDone=false}
+help(flip?tx('pixelMirror'):tx('pixelHelp'));const keys=[...new Set(target)].filter(k=>k!=='white').concat('white');const [pal,pname]=palette(keys);stage.append(pal,pname);
+const pair=E('div','','pixel-pair'),mk=(title,cls)=>{const f=E('figure','','px-fig');f.append(E('figcaption',title));const g=E('div','',`px-grid ${cls}`);g.style.setProperty('--n',n);f.append(g);pair.append(f);return g};
+const model=mk(tx('model')+(flip?' ↔':''),'model'),mine=mk(tx('yours'),'mine');model.setAttribute('role','img');model.setAttribute('aria-label',tx('model'));
+pat.flatMap(row=>[...row]).forEach(ch=>{const c=E('span','','px-cell');c.style.background=HEX[PXC[ch]];model.append(c)});
+mine.setAttribute('role','group');mine.setAttribute('aria-label',tx('yours'));
+const cells=pxGrid.map((col,i)=>{const b=B('',()=>paintCell(i),'px-cell');b.dataset.i=i;mine.append(b);return b});
+const upd=i=>{const c=cells[i];c.style.background=HEX[pxGrid[i]];c.dataset.c=pxGrid[i];c.setAttribute('aria-label',tx('cell',{r:Math.floor(i/n)+1,c:i%n+1,v:cname(pxGrid[i])}))};cells.forEach((_,i)=>upd(i));
+const diff=()=>target.reduce((s,t,i)=>s+(pxGrid[i]!==t),0);
+function paintCell(i){if(pxGrid[i]===current)return;pxGrid[i]=current;cells[i].classList.remove('wrong');upd(i);if(!pxDone&&diff()===0){pxDone=true;gardenCelebrate('draw-pixel');say(tx('pixelDone'))}}
+mine.addEventListener('pointerdown',e=>{painting=true;try{e.target.releasePointerCapture?.(e.pointerId)}catch{}});mine.addEventListener('pointermove',e=>{if(!painting)return;const c=document.elementFromPoint(e.clientX,e.clientY)?.closest?.('.mine .px-cell');if(c)paintCell(+c.dataset.i)});
+stage.append(pair);const actions=E('div','','draw-tools');
+actions.append(B('✔️ '+tx('check'),()=>{const d=diff();if(!d){say(tx('pixelDone'));if(!pxDone){pxDone=true;gardenCelebrate('draw-pixel')}return}cells.forEach((c,i)=>c.classList.toggle('wrong',pxGrid[i]!==target[i]));say(tx('pixelLeft',{n:d}),false);gardenMiss('draw-pixel')},'primary'),B('➡️ '+tx('again'),()=>{const i=list.indexOf(pxId);pxId=list[(i+1)%list.length];pxGrid=null;render()}));stage.append(actions)}
+
+function render(){if(!profile||$('app').hidden)return;token++;section.replaceChildren();const back=E('div','','draw-tools');back.append(B(['← Toate atelierele','← All workshops','← Összes műhely','← Усі майстерні'][Math.max(0,['ro','en','hu','uk'].indexOf(lang))],()=>gardenGo('studio'),'studio-back'));section.append(back);const head=E('div','','versus-head');head.append(gardenArt('art',72),E('div'));head.lastChild.append(E('h2',tx('title')),E('p',tx('intro')));section.append(head);
+if(!['free','color','dots','pixel'].includes(mode))mode=age()<=5?'color':'free';
+const tabs=E('div','','learning-tabs');[['free','🖌️'],['color','🖍️'],['dots','✏️'],['pixel','🟥']].forEach(([k,i])=>{const b=B(`${i} ${tx(k)}`,()=>{mode=k;render()});b.setAttribute('aria-pressed',mode===k);tabs.append(b)});section.append(tabs);
+stage=E('div','','learning-stage studio-stage');status=E('div','','learning-feedback');status.setAttribute('role','status');status.setAttribute('aria-live','polite');section.append(stage,status);
+({free,color:colorPage,dots,pixel})[mode]();galleryBox=E('div','','draw-gallery-box');section.append(E('h3',tx('galleryTitle')),galleryBox);drawGallery()}
+document.addEventListener('garden:open',e=>{const {view,mode:m}=e.detail||{};if(view!=='drawing')return;mode=m;render()});
+gardenOn(r=>{if(r==='start'||r==='switch'){paper=null;undo=[];dirty=false;fills={};labels=null;pxGrid=null;pxId=null;dotShape=null;codeMode=null;mode=null}render()});if(profile)render();
+})();
