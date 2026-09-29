@@ -9,14 +9,14 @@ Joc educativ pentru copii de 3–12 ani, în română, engleză, maghiară și u
 
 | Ecran | Ce conține |
 | --- | --- |
-| Acasă | Plăci mari către fiecare ecran, numărătoarea până la aniversare |
+| Acasă | „Jocul zilei” (altul în fiecare zi, potrivit vârstei), plăci mari către fiecare ecran, numărătoarea până la aniversare |
 | Aventuri | Labirinturi generate pentru unicorn și mașini, atelierul de brioșe, lansarea rachetei |
 | Numere | Ordonarea numerelor, perechi Match, culori (cu mod pentru daltonism) |
 | Descoperă | Litere, ceasul analogic, bani, puzzle pe siluetă, povești cu 7 finaluri |
 | 12 lumi | Poveste, provocarea zilei, Constructor, Împreună, Liniștit, Eveniment |
-| Activități | Jocuri scurte pe vârstă, 8 sărbători, album, setări pentru adult |
-| Colecția | Abțibilduri de aranjat pe pajiște, grădina care înflorește, 17 insigne |
-| Limbi străine | Engleză, franceză, germană, spaniolă: Ascultă și atinge, Memory cu cuvinte, Scrie cuvântul, Propoziții, Dialoguri, Cuvintele zilei (repetare spațiată), 8 teme de vocabular, pronunție |
+| Activități | Jocuri scurte pe vârstă, 8 sărbători (Paștele ortodox în RO/UK, cel catolic în HU/EN), album, setări pentru adult |
+| Colecția | Abțibilduri de aranjat pe pajiște, grădina care înflorește, 17 insigne, fiecare cu diplomă de tipărit (`diploma.html`, salvabilă ca PDF) |
+| Limbi străine | Engleză, franceză, germană, spaniolă: Ascultă și atinge, Memory cu cuvinte, Scrie cuvântul, Propoziții, Dialoguri, Cuvintele zilei (repetare spațiată), 12 teme de vocabular (inclusiv mâncare, vreme, familie, transport), pronunție |
 | Contra Robo | X și 0, Memory și Bețișoarele (Nim) contra unui robot calculat local, care se adaptează la copil |
 | Aniversare | Tort sau brioșă, decorațiuni, felicitare salvabilă |
 
@@ -33,7 +33,7 @@ Bia, buburuza, însoțește copilul: îl salută, îl laudă și îl încurajeaz
 
 ## Accesibilitate
 
-Font OpenDyslexic, text mai mare, contrast ridicat, mod pentru daltonism, reduce motion, navigare completă din tastatură, cititor de ecran și navigare cu un singur buton (switch), cu viteză reglabilă. Citirea vocală pornește automat pentru 3–5 ani.
+Pe tabletă ținută orizontal, meniul încape pe un rând și tablele de joc se potrivesc pe înălțimea ecranului. Font OpenDyslexic, text mai mare, contrast ridicat, mod pentru daltonism, reduce motion, navigare completă din tastatură, cititor de ecran și navigare cu un singur buton (switch), cu viteză reglabilă. Citirea vocală pornește automat pentru 3–5 ani.
 
 ## Date
 
@@ -51,6 +51,7 @@ Profilurile și progresul sunt în `localStorage`, pe dispozitivul jucătorului.
 - `versus.js` — Contra lui Robo: minimax la X și 0, memorie imperfectă la Memory, strategia optimă la Nim; nivelul crește după 2 victorii la rând ale copilului și scade după 2 înfrângeri. Fără server și fără costuri.
 - `discover.js` — Descoperă. `rewards.js` — abțibilduri, grădină, insigne, Bia, sunete, statistici. `parents.js` — raport, timp, import, accesibilitate.
 - `feedback.js` — intrarea „Scrie-ți părerea” din Setări, care deschide `feedback.html` în limba jocului (RO sau EN).
+- `aproba.html` — pregătește o părere aprobată pentru portofoliu (nu publică și nu trimite nimic). `diploma.html` — diplomă A4 pentru o insignă, în 4 limbi.
 - `sw.js`, `manifest.webmanifest`, iconițe — instalare și joc offline.
 - `fonts/` — OpenDyslexic (licență SIL OFL, în `fonts/OFL-LICENSE.txt`).
 - `media/` — video demo pentru studiul de caz.
@@ -69,6 +70,7 @@ python curious-garden/tests/test_features.py
 python curious-garden/tests/test_versus.py
 python curious-garden/tests/test_languages.py
 python curious-garden/tests/test_feedback.py
+python curious-garden/tests/test_polish.py
 ```
 
 Testele rulează automat în GitHub Actions (`.github/workflows/curious-garden-tests.yml`) la fiecare modificare din `curious-garden/`. Dacă adaugi fișiere noi, trece-le în lista `FILES` din `sw.js` și crește numărul din `CACHE`.
@@ -85,7 +87,7 @@ Fonturile OpenDyslexic din `fonts/` sunt distribuite separat sub [SIL Open Font 
 
 - [Formular pentru părinți](feedback.html): trimite mesajul direct din pagină prin Web3Forms la adresa asociată cheii de acces (plugaru.laura10@gmail.com), fără aplicația de e-mail și fără activare. Cheia publică stă în `feedback.html` (`W3F_KEY`); permite doar trimiterea de mesaje către Laura. FormSubmit a fost înlocuit pentru că returna erori de server.
 - Numai mesajele cu acord explicit de publicare pot apărea în [portofoliul RO](../portfolio.html#curious-garden-opinions) și [EN](../en/#garden-feedback). Publicarea este manuală, după verificare. Nu publica date despre copii.
-- Pentru a aproba un mesaj, adaugă în `approved-feedback.json` un obiect `{"name":"Pseudonim","quote":"Textul aprobat","approved":true}` în lista `items`. Nu copia adrese de e-mail, data nașterii sau alte date personale. Mesajele fără acord rămân private și nu se adaugă în fișier.
+- Cel mai simplu: deschide [`aproba.html`](aproba.html), lipește e-mailul primit, verifică textul (linkurile, e-mailurile și telefoanele sunt scoase automat) și copiază fișierul complet în `approved-feedback.json` pe GitHub. Fără acord de publicare pagina nu generează nimic. Manual: adaugă în `approved-feedback.json` un obiect `{"name":"Pseudonim","quote":"Textul aprobat","approved":true}` în lista `items`. Nu copia adrese de e-mail, data nașterii sau alte date personale. Mesajele fără acord rămân private și nu se adaugă în fișier.
 - `feedback-display.js` afișează numai intrările aprobate, ca text simplu, fără interpretarea HTML-ului. Pagina de feedback nu păstrează mesajul în browser; acesta este procesat de Web3Forms pentru livrare.
 
 ## English

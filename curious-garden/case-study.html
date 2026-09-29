@@ -36,6 +36,7 @@ video{width:100%;height:auto;border-radius:1rem;border:2px solid var(--edge);bac
 ul{padding-left:1.2rem}
 footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--edge);font-size:.9rem;color:var(--muted)}
 [hidden]{display:none!important}
+.garden-feedback-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:.8rem}.garden-feedback-list figure{margin:0;padding:1rem;background:var(--panel);border:1px solid var(--edge);border-radius:1rem}.garden-feedback-list blockquote{margin:0 0 .6rem;color:var(--ink);line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}.garden-feedback-list figcaption{font-weight:700;color:var(--accent)}
 </style>
 </head>
 <body>
@@ -58,8 +59,8 @@ footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--edge);font-si
   <div class="stats">
     <div class="stat"><b>0</b><span>server, conturi, dependențe sau pas de build</span></div>
     <div class="stat"><b>4</b><span>limbi: română, engleză, maghiară, ucraineană</span></div>
-    <div class="stat"><b>151</b><span>verificări automate în browser, la fiecare push</span></div>
-    <div class="stat"><b>84 KB</b><span>tot codul, comprimat (HTML, CSS, JS)</span></div>
+    <div class="stat"><b>169</b><span>verificări automate în browser, la fiecare push</span></div>
+    <div class="stat"><b>108 KB</b><span>tot codul, comprimat (HTML, CSS, JS)</span></div>
   </div>
 
   <h2>Contextul</h2>
@@ -114,6 +115,9 @@ footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--edge);font-si
     <tr><td>Teste</td><td>Manuale</td><td>151 de verificări la fiecare push</td></tr>
   </table></div>
 
+  <h2>Ce spun părinții</h2>
+  <div data-approved-feedback="approved-feedback.json"><p data-feedback-empty>Încă nu sunt păreri publicate. Apar aici automat, după acordul autorului și aprobare.</p><div data-feedback-list class="garden-feedback-list"></div><p><a class="btn" href="feedback.html">Scrie-ți părerea</a></p></div>
+
   <h2>Ce urmează</h2>
   <ul>
     <li>Voce înregistrată în română, în locul sintezei vocale.</li>
@@ -133,8 +137,8 @@ footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--edge);font-si
   <div class="stats">
     <div class="stat"><b>0</b><span>servers, accounts, dependencies or build steps</span></div>
     <div class="stat"><b>4</b><span>languages: Romanian, English, Hungarian, Ukrainian</span></div>
-    <div class="stat"><b>151</b><span>automated browser checks on every push</span></div>
-    <div class="stat"><b>84 KB</b><span>all code, compressed (HTML, CSS, JS)</span></div>
+    <div class="stat"><b>169</b><span>automated browser checks on every push</span></div>
+    <div class="stat"><b>108 KB</b><span>all code, compressed (HTML, CSS, JS)</span></div>
   </div>
 
   <h2>Context</h2>
@@ -189,6 +193,9 @@ footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--edge);font-si
     <tr><td>Tests</td><td>Manual</td><td>151 checks on every push</td></tr>
   </table></div>
 
+  <h2>What parents say</h2>
+  <div data-approved-feedback="approved-feedback.json"><p data-feedback-empty>No opinions have been published yet. They appear here automatically, with the writer’s consent and after approval.</p><div data-feedback-list class="garden-feedback-list"></div><p><a class="btn" href="feedback.html?lang=en">Share your feedback</a></p></div>
+
   <h2>What’s next</h2>
   <ul>
     <li>Recorded Romanian voice instead of speech synthesis.</li>
@@ -202,5 +209,6 @@ footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--edge);font-si
 (()=>{const btns=document.querySelectorAll('[data-set]');function set(l){document.documentElement.lang=l;document.querySelectorAll('main[data-lang]').forEach(m=>m.hidden=m.dataset.lang!==l);btns.forEach(b=>b.setAttribute('aria-pressed',b.dataset.set===l));document.title=l==='ro'?'Grădina Curioasă · Studiu de caz':'Curious Garden · Case study'}
 btns.forEach(b=>b.onclick=()=>set(b.dataset.set));const q=new URLSearchParams(location.search).get('lang');if(q==='en'||(!q&&(navigator.language||'').slice(0,2)!=='ro'&&document.referrer.includes('/en/')))set('en')})();
 </script>
+<script src="feedback-display.js" defer></script>
 </body>
 </html>
