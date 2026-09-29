@@ -1,0 +1,58 @@
+name: Curious Garden tests
+
+# Rulează testele din browser pentru Grădina Curioasă la fiecare schimbare a jocului.
+on:
+  push:
+    paths:
+      - 'curious-garden/**'
+      - '.github/workflows/curious-garden-tests.yml'
+  pull_request:
+    paths:
+      - 'curious-garden/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Playwright and Chromium
+        run: |
+          pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+
+      - name: Serve the repository
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /dev/null 2>&1 &
+          sleep 2
+
+      - name: Core tests (setup, screens, fixes, offline)
+        env:
+          GARDEN_URL: http://localhost:8000/curious-garden/
+          GARDEN_SHOTS: ${{ runner.temp }}/garden-shots
+        run: python curious-garden/tests/test_core.py
+
+      - name: Feature tests (new games, maze, rewards, parents, accessibility, languages)
+        env:
+          GARDEN_URL: http://localhost:8000/curious-garden/
+          GARDEN_SHOTS: ${{ runner.temp }}/garden-shots
+        run: python curious-garden/tests/test_features.py
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: curious-garden-screenshots
+          path: ${{ runner.temp }}/garden-shots
+          if-no-files-found: ignore

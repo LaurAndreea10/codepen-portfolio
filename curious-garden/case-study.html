@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grădina Curioasă · Studiu de caz</title>
+<meta name="description" content="Studiu de caz: cum am transformat un joc educativ pentru copii de 3–12 ani într-o aplicație accesibilă, offline, în 4 limbi, fără server și fără dependențe.">
+<meta property="og:title" content="Grădina Curioasă · Studiu de caz">
+<meta property="og:description" content="Audit, decizii de design pentru copii, accesibilitate, PWA și teste automate, fără backend.">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/curious-garden/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#0b1828;--panel:#132538;--ink:#f6f6ed;--muted:#c5d3d8;--edge:#35506a;--accent:#ffc978;--good:#9be6ba;--bad:#ff9b9b;color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f4f8f2;--panel:#fffdf5;--ink:#193147;--muted:#405c67;--edge:#c9d8d2;--accent:#9b4f12;--good:#176a48;--bad:#a4262c;color-scheme:light}}
+:root[data-theme="dark"]{--bg:#0b1828;--panel:#132538;--ink:#f6f6ed;--muted:#c5d3d8;--edge:#35506a;--accent:#ffc978;--good:#9be6ba;--bad:#ff9b9b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:860px;margin:auto;padding:1.5rem 16px 4rem}
+header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.brand{font-weight:800}.lang{display:flex;gap:.4rem}
+button,.btn{font:inherit;border:2px solid var(--edge);background:var(--panel);color:var(--ink);border-radius:.8rem;padding:.55rem .9rem;cursor:pointer;text-decoration:none;display:inline-block;min-height:44px}
+button[aria-pressed=true],.btn.primary{background:var(--accent);border-color:var(--accent);color:#152234;font-weight:800}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) button[aria-pressed=true],:root:not([data-theme="dark"]) .btn.primary{color:#fff}}
+button:focus-visible,.btn:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:800;color:var(--accent)}
+h1{font-size:clamp(2rem,6vw,3.2rem);line-height:1.1;margin:.3rem 0 .6rem}h2{font-size:1.5rem;margin:2.5rem 0 .6rem}h3{font-size:1.1rem;margin:1.4rem 0 .3rem}
+p,li{color:var(--muted)}strong{color:var(--ink)}
+.lead{font-size:1.15rem}
+.links{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0 1.5rem}
+video{width:100%;height:auto;border-radius:1rem;border:2px solid var(--edge);background:#000;display:block}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin:1.5rem 0}
+.stat{background:var(--panel);border:1px solid var(--edge);border-radius:1rem;padding:1rem}.stat b{display:block;font-size:1.8rem;color:var(--accent);line-height:1.1}.stat span{font-size:.9rem;color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:1rem;padding:1rem 1.2rem;margin:.8rem 0}
+.card h3{margin-top:0}.problem{color:var(--bad);font-weight:700}.fix{color:var(--good);font-weight:700}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.95rem}th,td{text-align:left;padding:.55rem .5rem;border-bottom:1px solid var(--edge);vertical-align:top}th{color:var(--ink)}td{color:var(--muted)}
+ul{padding-left:1.2rem}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--edge);font-size:.9rem;color:var(--muted)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="brand btn" href="./">✦ Grădina Curioasă</a>
+  <div class="lang" role="group" aria-label="Limba / Language">
+    <button type="button" data-set="ro" aria-pressed="true">RO</button>
+    <button type="button" data-set="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+
+<main lang="ro" data-lang="ro">
+  <div class="eyebrow">Studiu de caz · Front-end · Design pentru copii</div>
+  <h1>Grădina Curioasă</h1>
+  <p class="lead">Un joc educativ pentru copii de 3–12 ani, în 4 limbi, care merge offline și nu are nevoie de server, conturi sau reclame. Studiul descrie cum am trecut de la un prototip cu multe jocuri la o aplicație gândită pentru copii, părinți și accesibilitate.</p>
+  <div class="links"><a class="btn primary" href="./">Joacă jocul</a><a class="btn" href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/curious-garden">Cod sursă</a></div>
+  <video src="media/demo.mp4" poster="media/demo-poster.jpg" controls muted playsinline preload="metadata" aria-label="Demonstrație de 17 secunde: labirintul unicornului, ceasul, puzzle-ul pe siluetă și colecția de abțibilduri"></video>
+
+  <div class="stats">
+    <div class="stat"><b>0</b><span>server, conturi, dependențe sau pas de build</span></div>
+    <div class="stat"><b>4</b><span>limbi: română, engleză, maghiară, ucraineană</span></div>
+    <div class="stat"><b>96</b><span>verificări automate în browser, la fiecare push</span></div>
+    <div class="stat"><b>84 KB</b><span>tot codul, comprimat (HTML, CSS, JS)</span></div>
+  </div>
+
+  <h2>Contextul</h2>
+  <p>Jocul crescuse prin adăugiri succesive: patru aventuri, jocuri de numere și culori, 12 lumi, evenimente și un atelier aniversar. Totul era pe o singură pagină lungă, iar fiecare modul nou își lega logica de butoanele modulelor anterioare. Datele stau doar în <code>localStorage</code>, pe dispozitivul copilului.</p>
+
+  <h2>Ce am găsit la audit</h2>
+  <div class="card"><h3>Răspunsul corect stătea mereu pe aceeași poziție</h3><p><span class="problem">Problema:</span> în poveștile din lumi, butoanele apăreau exact în ordinea secvenței, iar la numărare și fracții opțiunile erau sortate, deci răspunsul ieșea aproape mereu la mijloc. Un copil putea „câștiga” apăsând de la stânga la dreapta.</p><p><span class="fix">Soluția:</span> amestecare Fisher-Yates peste tot, plus un test care verifică pe 30 de runde că răspunsul corect ajunge pe poziții diferite.</p></div>
+  <div class="card"><h3>Unele jocuri își arătau singure răspunsul</h3><p><span class="problem">Problema:</span> „Alege traseul” afișa chiar săgeata corectă, iar „Ține minte” lăsa simbolul pe ecran. Trei activități diferite aveau exact aceeași mecanică.</p><p><span class="fix">Soluția:</span> traseul folosește acum o hartă 3×3, memoria ascunde simbolul după „Am reținut!”, iar construcțiile, ordinea și „Găsește intrusul” au devenit exerciții distincte.</p></div>
+  <div class="card"><h3>Tema era aleasă după gen</h3><p><span class="problem">Problema:</span> fetele primeau automat unicorni, băieții mașini. Întrebarea despre gen era adresată copilului.</p><p><span class="fix">Soluția:</span> copilul își alege lumea preferată. Profilurile vechi se convertesc automat, fără pierderi.</p></div>
+  <div class="card"><h3>Cei mici nu puteau citi instrucțiunile</h3><p><span class="problem">Problema:</span> citirea vocală era oprită implicit și ascunsă în setările pentru adulți, deși copiii de 3–5 ani nu citesc.</p><p><span class="fix">Soluția:</span> vocea pornește singură pentru 3–5 ani, fiecare instrucțiune are 🔊, iar butoanele dispar dacă dispozitivul nu are voce pentru limba aleasă.</p></div>
+  <div class="card"><h3>Setările pentru adulți erau protejate de „3 + 4”</h3><p><span class="problem">Problema:</span> un copil de 6 ani ajungea ușor la „Șterge toate datele”.</p><p><span class="fix">Soluția:</span> o înmulțire aleatorie (ex. 8 × 7) la fiecare deschidere.</p></div>
+  <div class="card"><h3>Codul era fragil</h3><p><span class="problem">Problema:</span> cinci scripturi își suprascriau în lanț butoanele de start și limbă. Un click pe profil declanșa trei re-randări separate.</p><p><span class="fix">Soluția:</span> un singur eveniment comun, <code>garden:change</code>, plus <code>garden:win</code> și <code>garden:miss</code> pentru orice reușită sau greșeală. Modulele noi (recompense, raport) doar ascultă, fără să atingă jocurile.</p></div>
+
+  <h2>Ce am construit</h2>
+  <h3>Pentru copii</h3>
+  <ul>
+    <li><strong>8 ecrane cu meniu</strong>, în loc de o pagină lungă, cu ilustrații SVG proprii pentru aventuri și cele 12 lumi.</li>
+    <li><strong>Labirinturi generate</strong> pentru unicorn și mașini: fiecare nivel are harta lui, verificată cu BFS ca să existe mereu drum, iar personajul chiar se mișcă pe traseu.</li>
+    <li><strong>Jocuri noi</strong>: litere pe trei niveluri, ceasul analogic, bani cu moneda fiecărei limbi, puzzle pe siluetă cu drag &amp; drop sau atingere, povești cu 7 finaluri.</li>
+    <li><strong>Recompense fără presiune</strong>: abțibilduri de aranjat pe o pajiște, o grădină care înflorește la fiecare 6 reușite, insigne și Bia, buburuza care încurajează după greșeli, nu doar după reușite.</li>
+  </ul>
+  <h3>Pentru părinți</h3>
+  <ul>
+    <li><strong>Raport</strong> pe 7 abilități, cu zonele unde copilul se blochează și timpul de joc din ultima săptămână.</li>
+    <li><strong>Activități fără ecran</strong>, alese după abilitatea care are nevoie de exercițiu.</li>
+    <li><strong>Limită zilnică de timp</strong> cu o pauză blândă, plus export și import al progresului între dispozitive.</li>
+  </ul>
+  <h3>Accesibilitate</h3>
+  <ul>
+    <li>Font pentru dislexie, text mai mare, mod pentru daltonism cu modele pe culori, contrast ridicat și „reduce motion”.</li>
+    <li><strong>Navigare cu un singur buton (switch)</strong>: evidențierea trece singură între butoane, iar copilul confirmă cu Space, Enter sau un buton mare.</li>
+    <li>Tot jocul merge din tastatură, cu etichete pentru cititoare de ecran.</li>
+  </ul>
+  <h3>Tehnic</h3>
+  <ul>
+    <li>PWA: instalare pe tabletă și joc offline, cu service worker „întâi rețeaua”, ca versiunile noi să apară imediat.</li>
+    <li>Teste Playwright în GitHub Actions, rulate la fiecare modificare a jocului, cu capturi de ecran ca artefacte.</li>
+  </ul>
+
+  <h2>Înainte și după</h2>
+  <div class="table-wrap"><table>
+    <tr><th></th><th>Înainte</th><th>După</th></tr>
+    <tr><td>Navigare</td><td>O pagină lungă, secțiuni ascunse în „Mai multe”</td><td>8 ecrane, câte unul activ</td></tr>
+    <tr><td>Corectitudine</td><td>Răspunsuri ghicibile după poziție</td><td>Opțiuni amestecate, verificate automat</td></tr>
+    <tr><td>Cei de 3–5 ani</td><td>Instrucțiuni doar în scris</td><td>Voce automată și 🔊 peste tot</td></tr>
+    <tr><td>Limbi</td><td>RO, EN</td><td>RO, EN, HU, UK</td></tr>
+    <tr><td>Offline</td><td>Nu</td><td>Da, instalabil</td></tr>
+    <tr><td>Părinți</td><td>Export de profil</td><td>Raport, limită de timp, idei, import</td></tr>
+    <tr><td>Teste</td><td>Manuale</td><td>96 de verificări la fiecare push</td></tr>
+  </table></div>
+
+  <h2>Ce urmează</h2>
+  <ul>
+    <li>Voce înregistrată în română, în locul sintezei vocale.</li>
+    <li>Verificarea traducerilor în maghiară și ucraineană de vorbitori nativi.</li>
+    <li>Sesiuni de testare cu copii și părinți, ca deciziile să se bazeze pe observații reale.</li>
+  </ul>
+  <footer><a class="btn" href="../">← Înapoi la portofoliu</a></footer>
+</main>
+
+<main lang="en" data-lang="en" hidden>
+  <div class="eyebrow">Case study · Front-end · Designing for children</div>
+  <h1>Curious Garden</h1>
+  <p class="lead">A learning game for children aged 3–12, in 4 languages, that works offline and needs no server, accounts or ads. This case study shows how a prototype with many games became an app designed for children, parents and accessibility.</p>
+  <div class="links"><a class="btn primary" href="./">Play the game</a><a class="btn" href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/curious-garden">Source code</a></div>
+  <video src="media/demo.mp4" poster="media/demo-poster.jpg" controls muted playsinline preload="metadata" aria-label="17-second demo: unicorn maze, clock, silhouette puzzle and sticker collection"></video>
+
+  <div class="stats">
+    <div class="stat"><b>0</b><span>servers, accounts, dependencies or build steps</span></div>
+    <div class="stat"><b>4</b><span>languages: Romanian, English, Hungarian, Ukrainian</span></div>
+    <div class="stat"><b>96</b><span>automated browser checks on every push</span></div>
+    <div class="stat"><b>84 KB</b><span>all code, compressed (HTML, CSS, JS)</span></div>
+  </div>
+
+  <h2>Context</h2>
+  <p>The game had grown feature by feature: four adventures, number and colour games, 12 worlds, events and a birthday workshop. Everything lived on one long page, and each new module hooked its logic onto the buttons of earlier modules. Data stays only in <code>localStorage</code>, on the child’s device.</p>
+
+  <h2>What the audit found</h2>
+  <div class="card"><h3>The right answer sat in the same position</h3><p><span class="problem">Problem:</span> in world stories, buttons appeared in the exact order of the sequence, and counting and fraction options were sorted, so the answer was nearly always in the middle. A child could “win” by tapping left to right.</p><p><span class="fix">Fix:</span> Fisher-Yates shuffling everywhere, plus a test that checks over 30 rounds that the correct answer lands in different positions.</p></div>
+  <div class="card"><h3>Some games showed their own answer</h3><p><span class="problem">Problem:</span> “Choose the route” displayed the correct arrow, and “Remember” left the symbol on screen. Three different activities shared the exact same mechanic.</p><p><span class="fix">Fix:</span> routes now use a 3×3 map, memory hides the symbol after “I remember it!”, and building, ordering and “odd one out” became distinct exercises.</p></div>
+  <div class="card"><h3>The theme was chosen by gender</h3><p><span class="problem">Problem:</span> girls automatically got unicorns, boys got cars. The gender question was addressed to the child.</p><p><span class="fix">Fix:</span> the child picks their favourite world. Old profiles convert automatically, with nothing lost.</p></div>
+  <div class="card"><h3>Young children couldn’t read the instructions</h3><p><span class="problem">Problem:</span> voice reading was off by default and hidden in the adult settings, although 3–5 year olds don’t read.</p><p><span class="fix">Fix:</span> voice turns on automatically for ages 3–5, every instruction has 🔊, and the buttons disappear when the device has no voice for the chosen language.</p></div>
+  <div class="card"><h3>Adult settings were protected by “3 + 4”</h3><p><span class="problem">Problem:</span> a 6-year-old could easily reach “Delete all data”.</p><p><span class="fix">Fix:</span> a random multiplication (e.g. 8 × 7) every time.</p></div>
+  <div class="card"><h3>The code was fragile</h3><p><span class="problem">Problem:</span> five scripts overwrote the start and language buttons in a chain. One profile click triggered three separate re-renders.</p><p><span class="fix">Fix:</span> one shared event, <code>garden:change</code>, plus <code>garden:win</code> and <code>garden:miss</code> for every success or mistake. New modules (rewards, report) only listen, without touching the games.</p></div>
+
+  <h2>What I built</h2>
+  <h3>For children</h3>
+  <ul>
+    <li><strong>8 screens with a menu</strong> instead of one long page, with custom SVG illustrations for the adventures and the 12 worlds.</li>
+    <li><strong>Generated mazes</strong> for the unicorn and cars: each level has its own map, checked with BFS so a path always exists, and the character really moves along it.</li>
+    <li><strong>New games</strong>: letters on three levels, an analog clock, money in each language’s currency, a silhouette puzzle with drag &amp; drop or tap, stories with 7 endings.</li>
+    <li><strong>Pressure-free rewards</strong>: stickers to arrange on a meadow, a garden that blooms every 6 successes, badges, and Bia the ladybug, who encourages after mistakes, not only after wins.</li>
+  </ul>
+  <h3>For parents</h3>
+  <ul>
+    <li><strong>A report</strong> across 7 skills, showing where the child gets stuck and play time over the last week.</li>
+    <li><strong>Screen-free activities</strong>, chosen for the skill that needs practice.</li>
+    <li><strong>A daily time limit</strong> with a gentle break, plus progress export and import between devices.</li>
+  </ul>
+  <h3>Accessibility</h3>
+  <ul>
+    <li>Dyslexia-friendly font, larger text, colour-blind mode with patterns, high contrast and reduced motion.</li>
+    <li><strong>Single-switch navigation</strong>: the highlight moves between buttons by itself, and the child confirms with Space, Enter or a large button.</li>
+    <li>The whole game works from the keyboard, with labels for screen readers.</li>
+  </ul>
+  <h3>Technical</h3>
+  <ul>
+    <li>PWA: installable on tablets and playable offline, with a network-first service worker so new versions show up immediately.</li>
+    <li>Playwright tests in GitHub Actions, run on every change to the game, with screenshots as artifacts.</li>
+  </ul>
+
+  <h2>Before and after</h2>
+  <div class="table-wrap"><table>
+    <tr><th></th><th>Before</th><th>After</th></tr>
+    <tr><td>Navigation</td><td>One long page, sections hidden under “More”</td><td>8 screens, one active at a time</td></tr>
+    <tr><td>Correctness</td><td>Answers guessable by position</td><td>Shuffled options, checked automatically</td></tr>
+    <tr><td>Ages 3–5</td><td>Written instructions only</td><td>Automatic voice and 🔊 everywhere</td></tr>
+    <tr><td>Languages</td><td>RO, EN</td><td>RO, EN, HU, UK</td></tr>
+    <tr><td>Offline</td><td>No</td><td>Yes, installable</td></tr>
+    <tr><td>Parents</td><td>Profile export</td><td>Report, time limit, ideas, import</td></tr>
+    <tr><td>Tests</td><td>Manual</td><td>96 checks on every push</td></tr>
+  </table></div>
+
+  <h2>What’s next</h2>
+  <ul>
+    <li>Recorded Romanian voice instead of speech synthesis.</li>
+    <li>Native-speaker review of the Hungarian and Ukrainian translations.</li>
+    <li>Testing sessions with children and parents, so decisions rest on real observation.</li>
+  </ul>
+  <footer><a class="btn" href="../en/">← Back to the portfolio</a></footer>
+</main>
+</div>
+<script>
+(()=>{const btns=document.querySelectorAll('[data-set]');function set(l){document.documentElement.lang=l;document.querySelectorAll('main[data-lang]').forEach(m=>m.hidden=m.dataset.lang!==l);btns.forEach(b=>b.setAttribute('aria-pressed',b.dataset.set===l));document.title=l==='ro'?'Grădina Curioasă · Studiu de caz':'Curious Garden · Case study'}
+btns.forEach(b=>b.onclick=()=>set(b.dataset.set));const q=new URLSearchParams(location.search).get('lang');if(q==='en'||(!q&&(navigator.language||'').slice(0,2)!=='ro'&&document.referrer.includes('/en/')))set('en')})();
+</script>
+</body>
+</html>
