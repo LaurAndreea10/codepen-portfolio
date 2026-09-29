@@ -5,10 +5,14 @@ on:
   push:
     paths:
       - 'curious-garden/**'
+      - 'feedback-worker/**'
+      - 'testimonials.js'
       - '.github/workflows/curious-garden-tests.yml'
   pull_request:
     paths:
       - 'curious-garden/**'
+      - 'feedback-worker/**'
+      - 'testimonials.js'
   workflow_dispatch:
 
 permissions:
@@ -54,6 +58,15 @@ jobs:
           GARDEN_URL: http://localhost:8000/curious-garden/
           GARDEN_SHOTS: ${{ runner.temp }}/garden-shots
         run: python curious-garden/tests/test_versus.py
+
+      - name: Feedback Worker tests (validation, privacy, rate limit)
+        run: node feedback-worker/test.mjs
+
+      - name: Feedback form and portfolio opinions tests
+        env:
+          GARDEN_URL: http://localhost:8000/curious-garden/
+          GARDEN_SHOTS: ${{ runner.temp }}/garden-shots
+        run: python curious-garden/tests/test_feedback.py
 
       - name: Upload screenshots
         if: always()
