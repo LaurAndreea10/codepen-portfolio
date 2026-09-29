@@ -244,3 +244,8 @@ An accessible cosmic PWA with nine game modes, progressive difficulty, switch sc
 
 [Live game](https://laurandreea10.github.io/LOOP-Cosmic-Relay/) · [Bilingual case study](https://laurandreea10.github.io/codepen-portfolio/projects/loop-cosmic-relay.html) · [Repository](https://github.com/LaurAndreea10/LOOP-Cosmic-Relay)
 
+
+### Grădina Curioasă / Curious Garden
+
+- [Joacă / Play](https://gradina-curioasa.plugaru-laura10.chatgpt.site/) — joc educativ RO/EN pentru 3–12 ani, cu 12 lumi, patru aventuri interactive, profiluri locale, evenimente sezoniere și atelier aniversar.
+- [Arcade World](https://laurandreea10.github.io/ARCADE-WORLD/) — acces din catalogul de jocuri.
