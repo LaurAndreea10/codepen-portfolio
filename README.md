@@ -247,5 +247,5 @@ An accessible cosmic PWA with nine game modes, progressive difficulty, switch sc
 
 ### Grădina Curioasă / Curious Garden
 
-- [Joacă / Play](https://gradina-curioasa.plugaru-laura10.chatgpt.site/) · [Cod sursă / Source](https://github.com/LaurAndreea10/codepen-portfolio/tree/main/curious-garden/) — joc educativ RO/EN pentru 3–12 ani, cu 12 lumi, patru aventuri interactive, profiluri locale, evenimente sezoniere și atelier aniversar.
+- [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/curious-garden/) · [Cod sursă / Source](https://github.com/LaurAndreea10/codepen-portfolio/tree/main/curious-garden/) — joc educativ RO/EN pentru 3–12 ani, cu 12 lumi, patru aventuri interactive, profiluri locale, evenimente sezoniere și atelier aniversar.
 - [Arcade World](https://laurandreea10.github.io/ARCADE-WORLD/) — acces din catalogul de jocuri.
