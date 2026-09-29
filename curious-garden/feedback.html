@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scrie-ți părerea · Grădina Curioasă</title>
+<meta name="description" content="Părinții pot trimite o opinie despre Grădina Curioasă. Opiniile apar în portofoliu numai după aprobare.">
+<style>
+:root{color-scheme:dark;font:1rem/1.55 system-ui,sans-serif;--bg:#0b1828;--panel:#172b40;--ink:#f6f6ed;--muted:#c5d3d8;--line:#6f8b9e;--accent:#ffc978}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink)}.wrap{max-width:740px;margin:auto;padding:1.25rem 1rem 4rem}header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}a{color:var(--accent)}button,select,input,textarea{font:inherit}button,select,input,textarea{border:2px solid var(--line);border-radius:.75rem;background:var(--panel);color:var(--ink);padding:.7rem;min-height:48px}button{cursor:pointer;background:var(--accent);border-color:var(--accent);color:#172535;font-weight:800}button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:4px solid var(--accent);outline-offset:3px}h1{font-size:clamp(2rem,6vw,3rem);line-height:1.15}p{color:var(--muted)}form{display:grid;gap:1rem;background:var(--panel);padding:clamp(1rem,4vw,1.5rem);border:1px solid var(--line);border-radius:1.25rem}label{font-weight:700;display:grid;gap:.4rem}textarea{width:100%;min-height:140px;resize:vertical}.check{display:flex;align-items:start;gap:.7rem}.check input{width:1.3rem;height:1.3rem;min-height:0;flex:none;margin-top:.25rem}.note{font-size:.95rem}.status{min-height:2rem;font-weight:700}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body><a class="sr" href="#main">Skip to content</a><div class="wrap">
+<header><a href="./" id="back">Înapoi la joc</a><label for="language" id="langLabel">Limba / Language <select id="language" aria-label="Language"><option value="ro">Română</option><option value="en">English</option></select></label></header>
+<main id="main"><h1 id="title">Scrie-ți părerea</h1>
+<p id="intro">Această pagină este pentru părinți și adulți. Spune-mi cum ți s-a părut Grădina Curioasă. Nu include numele, data nașterii sau alte date ale copilului.</p>
+<form id="opinionForm">
+<label><span id="nameLabel">Pseudonim (opțional, maximum 40 de caractere)</span><input id="name" maxlength="40" autocomplete="off"></label>
+<label><span id="opinionLabel">Părerea ta</span><textarea id="opinion" required minlength="10" maxlength="1000"></textarea></label>
+<label class="check"><input type="checkbox" id="publish"><span id="publishLabel">Sunt de acord ca părerea mea și pseudonimul ales să poată fi publicate în portofoliu după verificare. Dacă nu bifez, mesajul rămâne privat.</span></label>
+<p class="note" id="privacy">La apăsarea butonului se deschide aplicația ta de e-mail cu mesajul pregătit. Verifică-l și apasă Trimite acolo. Această pagină nu salvează mesajul. Publicarea se face numai după aprobarea Laurei.</p>
+<button type="submit" id="send">Deschide e-mailul pregătit</button>
+<div class="status" id="status" role="status" aria-live="polite"></div>
+</form>
+<p id="fallback">Nu se deschide aplicația de e-mail? Scrie direct la <a href="mailto:andreealaurap@gmail.com?subject=Parere%20Gradina%20Curioasa">andreealaurap@gmail.com</a>.</p>
+</main></div>
+<script>
+const copy={
+ro:{back:'Înapoi la joc',title:'Scrie-ți părerea',intro:'Această pagină este pentru părinți și adulți. Spune-mi cum ți s-a părut Grădina Curioasă. Nu include numele, data nașterii sau alte date ale copilului.',nameLabel:'Pseudonim (opțional, maximum 40 de caractere)',opinionLabel:'Părerea ta',publishLabel:'Sunt de acord ca părerea mea și pseudonimul ales să poată fi publicate în portofoliu după verificare. Dacă nu bifez, mesajul rămâne privat.',privacy:'La apăsarea butonului se deschide aplicația ta de e-mail cu mesajul pregătit. Verifică-l și apasă Trimite acolo. Această pagină nu salvează mesajul. Publicarea se face numai după aprobarea Laurei.',send:'Deschide e-mailul pregătit',status:'E-mailul este pregătit. Trimite-l din aplicația de e-mail pentru a ajunge la Laura.',fallback:'Nu se deschide aplicația de e-mail? Scrie direct la '},
+en:{back:'Back to game',title:'Share your feedback',intro:'This page is for parents and adults. Tell me what you think of Curious Garden. Do not include a child’s name, date of birth, or other personal details.',nameLabel:'Display name (optional, 40 characters maximum)',opinionLabel:'Your feedback',publishLabel:'I agree that my feedback and chosen display name may be published in the portfolio after review. If unchecked, the message stays private.',privacy:'The button opens your email app with a draft message. Check it and press Send there. This page does not save your message. Laura reviews feedback before publication.',send:'Open email draft',status:'Your email draft is ready. Send it from your email app to reach Laura.',fallback:'Email app not opening? Write directly to '}};
+const $=id=>document.getElementById(id);
+function translate(){const t=copy[$('language').value];document.documentElement.lang=$('language').value;for(const id of ['back','title','intro','nameLabel','opinionLabel','publishLabel','privacy','send'])$(id).textContent=t[id];$('fallback').firstChild.textContent=t.fallback;$('status').textContent=''}
+$('language').addEventListener('change',translate);
+$('opinionForm').addEventListener('submit',e=>{e.preventDefault();const name=$('name').value.trim(),opinion=$('opinion').value.trim();if(opinion.length<10){$('opinion').focus();return}const consent=$('publish').checked,subject='Grădina Curioasă — părere'+(consent?' / acord publicare':' / mesaj privat');const body=['Mesaj de la un adult / Message from an adult','Pseudonim / Display name: '+(name||'Anonim / Anonymous'),'Acord pentru publicare / Permission to publish: '+(consent?'DA / YES':'NU / NO'),'','Părerea / Feedback:',opinion,'','Nu includ date despre copil / No child data included.'].join('\n');$('status').textContent=copy[$('language').value].status;location.href='mailto:andreealaurap@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body)});
+</script></body></html>
