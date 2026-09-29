@@ -54,11 +54,13 @@ with sync_playwright() as p:
     pg.click('#discover .learning-tabs button:has-text("Puzzle")'); pg.wait_for_timeout(80)
     pieces=pg.locator('#discover .puzzle-piece').count(); slots=pg.locator('#discover .puzzle-slot').count()
     check(pieces>=3 and slots>=3,f'puzzle has {pieces} pieces and {slots} slots')
+    pg.evaluate("document.querySelector('.guide').style.display='none';document.querySelector('#discover .puzzle-wrap').scrollIntoView({block:'center'})")
     k0=pg.get_attribute('#discover .puzzle-piece >> nth=0','data-key')
     wrong=pg.locator(f'#discover .puzzle-slot:not([data-key="{k0}"])')
     if wrong.count():
-        pg.locator('#discover .puzzle-piece').first.click(); wrong.first.click(force=True); check('nu se potrivește' in pg.inner_text('#discover .learning-feedback'),'wrong slot is rejected with a gentle message')
+        pg.locator('#discover .puzzle-piece').first.click(); wrong.first.dispatch_event('click'); check('nu se potrivește' in pg.inner_text('#discover .learning-feedback'),'wrong slot is rejected with a gentle message')
     # drag one piece by mouse
+    pg.evaluate("document.querySelectorAll('#discover .puzzle-piece').forEach(x=>x.setAttribute('aria-pressed','false'))")
     pc=pg.locator('#discover .puzzle-piece').first; key=pc.get_attribute('data-key'); target=pg.locator(f'#discover .puzzle-slot[data-key="{key}"]:not(.filled)').first
     pb=pc.bounding_box(); tb=target.bounding_box()
     pg.mouse.move(pb['x']+pb['width']/2,pb['y']+pb['height']/2); pg.mouse.down(); pg.mouse.move(pb['x']+30,pb['y']+30,steps=4); pg.mouse.move(tb['x']+tb['width']/2,tb['y']+tb['height']/2,steps=8); pg.mouse.up(); pg.wait_for_timeout(100)

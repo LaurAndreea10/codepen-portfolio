@@ -27,7 +27,7 @@ Bia, buburuza, însoțește copilul: îl salută, îl laudă și îl încurajeaz
 - Activități fără ecran, alese după abilitatea care are nevoie de exercițiu.
 - Limită zilnică de timp cu o pauză blândă; un adult poate adăuga 15 minute.
 - Export și import al progresului complet între dispozitive.
-- „Scrie-ți părerea”: părerile ajung, după aprobare, în secțiunea Păreri din portofoliu (vezi `../feedback-worker/README.md`).
+- „Scrie-ți părerea”: deschide `feedback.html`, care trimite mesajul pe e-mail prin FormSubmit (vezi secțiunea Opinii / Feedback).
 - Voce, sunete sintetizate, fără animații, ritm liniștit.
 
 ## Accesibilitate
@@ -48,7 +48,7 @@ Profilurile și progresul sunt în `localStorage`, pe dispozitivul jucătorului.
 - `home.js` — meniul și ecranele (`gardenGo`); CSS-ul din `home.css` arată doar ecranul activ.
 - `versus.js` — Contra lui Robo: minimax la X și 0, memorie imperfectă la Memory, strategia optimă la Nim; nivelul crește după 2 victorii la rând ale copilului și scade după 2 înfrângeri. Fără server și fără costuri.
 - `discover.js` — Descoperă. `rewards.js` — abțibilduri, grădină, insigne, Bia, sunete, statistici. `parents.js` — raport, timp, import, accesibilitate.
-- `feedback.js` — formularul „Scrie-ți părerea” din Setări; adresa Worker-ului se pune în `ENDPOINT`.
+- `feedback.js` — intrarea „Scrie-ți părerea” din Setări, care deschide `feedback.html` în limba jocului (RO sau EN).
 - `sw.js`, `manifest.webmanifest`, iconițe — instalare și joc offline.
 - `fonts/` — OpenDyslexic (licență SIL OFL, în `fonts/OFL-LICENSE.txt`).
 - `media/` — video demo pentru studiul de caz.
@@ -66,7 +66,6 @@ python curious-garden/tests/test_core.py
 python curious-garden/tests/test_features.py
 python curious-garden/tests/test_versus.py
 python curious-garden/tests/test_feedback.py
-node feedback-worker/test.mjs
 ```
 
 Testele rulează automat în GitHub Actions (`.github/workflows/curious-garden-tests.yml`) la fiecare modificare din `curious-garden/`. Dacă adaugi fișiere noi, trece-le în lista `FILES` din `sw.js` și crește numărul din `CACHE`.
