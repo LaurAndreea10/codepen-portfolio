@@ -37,7 +37,7 @@ with sync_playwright() as p:
     pg.on('pageerror',lambda e:errs.append(str(e))); pg.on('console',lambda m:m.type=='error' and errs.append(m.text))
     pg.goto(URL); pg.wait_for_timeout(300)
     pg.fill('#dob',dob(7)); pg.fill('#nickname','Ana'); pg.click('#start'); pg.wait_for_timeout(700)
-    check(pg.locator('.garden-nav button').count()==9,'menu has 9 screens')
+    check(pg.locator('.garden-nav button').count()==10,'menu has 10 screens')
     check(pg.locator('.guide-bubble.show').count()==1 and 'Ana' in pg.inner_text('.guide-bubble'),'Bia greets the child by name')
     vis=lambda: pg.evaluate("[...document.querySelectorAll('#app [data-view]')].filter(e=>e.offsetParent).map(e=>e.dataset.view)")
     for v in ['discover','collection']:
@@ -143,7 +143,7 @@ with sync_playwright() as p:
     check(pg.locator('.guide-bubble.show').count()==1,'Bia encourages after several mistakes')
     # ---- Parents
     open_settings(pg)
-    check(pg.locator('.modal-layer .report-table tr').count()==8,'report shows 7 skills')
+    check(pg.locator('.modal-layer .report-table tr').count()==9,'report shows 8 skills')
     check('Ceasul' in pg.inner_text('.modal-layer .settings-section >> nth=0'),'report lists where the child gets stuck (clock)')
     check(pg.locator('.modal-layer .time-col').count()==7,'7-day play-time chart')
     check(pg.locator('.modal-layer .ideas li').count()==3,'3 offline activity ideas')
