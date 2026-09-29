@@ -27,7 +27,7 @@ Bia, buburuza, însoțește copilul: îl salută, îl laudă și îl încurajeaz
 - Activități fără ecran, alese după abilitatea care are nevoie de exercițiu.
 - Limită zilnică de timp cu o pauză blândă; un adult poate adăuga 15 minute.
 - Export și import al progresului complet între dispozitive.
-- „Scrie-ți părerea”: deschide `feedback.html`, care trimite mesajul pe e-mail prin FormSubmit (vezi secțiunea Opinii / Feedback).
+- „Scrie-ți părerea”: deschide `feedback.html`, care trimite mesajul pe e-mail prin Web3Forms (vezi secțiunea Opinii / Feedback).
 - Voce, sunete sintetizate, fără animații, ritm liniștit.
 
 ## Accesibilitate
@@ -80,10 +80,10 @@ Fonturile OpenDyslexic din `fonts/` sunt distribuite separat sub [SIL Open Font 
 
 ## Opinii / Feedback
 
-- [Formular pentru părinți](feedback.html): trimite mesajul direct din pagină prin FormSubmit către `plugaru.laura10@gmail.com`, fără aplicația de e-mail. La prima folosire, Laura trebuie să activeze adresa din mesajul de confirmare FormSubmit; până atunci livrarea nu este verificată.
+- [Formular pentru părinți](feedback.html): trimite mesajul direct din pagină prin Web3Forms la adresa asociată cheii de acces (plugaru.laura10@gmail.com), fără aplicația de e-mail și fără activare. Cheia publică stă în `feedback.html` (`W3F_KEY`); permite doar trimiterea de mesaje către Laura. FormSubmit a fost înlocuit pentru că returna erori de server.
 - Numai mesajele cu acord explicit de publicare pot apărea în [portofoliul RO](../portfolio.html#curious-garden-opinions) și [EN](../en/#garden-feedback). Publicarea este manuală, după verificare. Nu publica date despre copii.
 - Pentru a aproba un mesaj, adaugă în `approved-feedback.json` un obiect `{"name":"Pseudonim","quote":"Textul aprobat","approved":true}` în lista `items`. Nu copia adrese de e-mail, data nașterii sau alte date personale. Mesajele fără acord rămân private și nu se adaugă în fișier.
-- `feedback-display.js` afișează numai intrările aprobate, ca text simplu, fără interpretarea HTML-ului. Pagina de feedback nu păstrează mesajul în browser; acesta este procesat de FormSubmit pentru livrare.
+- `feedback-display.js` afișează numai intrările aprobate, ca text simplu, fără interpretarea HTML-ului. Pagina de feedback nu păstrează mesajul în browser; acesta este procesat de Web3Forms pentru livrare.
 
 ## English
 
