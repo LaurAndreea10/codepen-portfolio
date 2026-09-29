@@ -21,7 +21,9 @@ Profilurile, data nașterii și progresul sunt păstrate în `localStorage` pe d
 
 Deschide `index.html` într-un browser modern sau rulează un server static în acest director, de exemplu `python3 -m http.server 8080`. Nu sunt necesare dependențe sau build.
 
-Fișierele CSS și JavaScript au legături relative. Această copie din repository păstrează codul sursă vizibil și poate fi servită direct prin GitHub Pages.
+Fișierele CSS și JavaScript au legături relative. Directorul `curious-garden/` din GitHub este sursa publică principală. GitHub Pages servește direct aceleași fișiere. Pentru o lansare nouă, actualizează acest director, verifică jocurile, apoi copiază exact fișierele în proiectul Sites și publică aceeași versiune. Linkul Sites din Arcade World și portofoliu rămâne funcțional; compară fișierele înainte de lansare. Sincronizarea este manuală, nu automată.
+
+În Numere, Match și Culori, provocările cresc gradual. Secțiunea „Pentru adulți” arată nivelurile terminate pentru profilul curent.
 
 ## English
 
