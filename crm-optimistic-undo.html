@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CRM Undo Lab — Actualizare optimistă accesibilă | Laura Andreea</title>
+<meta name="description" content="Componentă CRM bilingvă pentru actualizare optimistă, anulare temporizată, feedback accesibil și persistență locală.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/crm-optimistic-undo.html">
+<style>
+:root{--bg:#061225;--panel:#10213d;--panel2:#172d50;--text:#f3f7ff;--muted:#b8c8e4;--line:#38527b;--green:#6fe7ad;--blue:#82b2ff;--amber:#ffd166;--danger:#ff9caf;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(circle at 10% 0,#1c3b6c 0,transparent 36%),var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}a{color:var(--blue)}button{font:inherit;min-height:48px;border:1px solid var(--line);border-radius:12px;padding:11px 16px;background:#122747;color:var(--text);cursor:pointer}button:hover:not(:disabled){border-color:var(--blue)}button:disabled{cursor:not-allowed;opacity:.65}:focus-visible{outline:3px solid var(--amber);outline-offset:3px}.skip{position:absolute;left:12px;top:-80px;background:#fff;color:#000;padding:12px;z-index:10}.skip:focus{top:12px}.wrap{width:min(920px,calc(100% - 32px));margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0}.brand{font-weight:900;text-decoration:none;color:var(--text)}.hero{padding:48px 0 24px}.eyebrow{color:var(--green);font-size:.82rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.hero h1{margin:.2em 0;font-size:clamp(2rem,7vw,4rem);line-height:1}.hero p{max-width:720px;color:var(--muted)}.lab{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:20px;padding:14px 0 60px}.panel,.task-card{border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,rgba(23,45,80,.94),rgba(9,23,45,.96));padding:22px;box-shadow:0 25px 60px rgba(0,0,0,.2)}.task-card h2,.panel h2{margin-top:0}.client{color:var(--muted)}.status-line{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px;border-radius:14px;background:#0a1930}.badge{padding:5px 9px;border-radius:999px;background:rgba(130,178,255,.14);color:var(--blue);font-size:.78rem;font-weight:900}.badge.done{background:rgba(111,231,173,.14);color:var(--green)}.primary{width:100%;margin-top:18px;background:linear-gradient(135deg,#4f8cff,#745be8);border-color:transparent;font-weight:900}.undo{margin-top:16px;padding:16px;border:1px solid rgba(255,209,102,.45);border-radius:16px;background:rgba(255,209,102,.08)}.undo-row{display:flex;justify-content:space-between;align-items:center;gap:14px}.undo-message{font-weight:800}.undo button{background:#2b2443;border-color:var(--amber);white-space:nowrap}.timer{height:8px;margin-top:12px;border-radius:999px;background:#263a5d;overflow:hidden}.timer-bar{height:100%;width:100%;background:linear-gradient(90deg,var(--amber),var(--danger));transform-origin:left}.live{min-height:1.6em;margin:14px 0 0;color:var(--green);font-weight:800}.steps{list-style:none;padding:0;margin:0;display:grid;gap:10px}.steps li{padding:12px;border-left:3px solid var(--blue);border-radius:0 12px 12px 0;background:#0a1930;color:var(--muted)}.state-box{margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#0a1930;font:14px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--green);white-space:pre-wrap}.secondary{width:100%;margin-top:14px;background:transparent}footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted)}[hidden]{display:none!important}
+@media(max-width:720px){.lab{grid-template-columns:1fr}.hero{padding-top:28px}}
+@media(max-width:420px){.wrap{width:min(100% - 20px,920px)}.task-card,.panel{padding:16px}.top{align-items:flex-start}.status-line,.undo-row{align-items:flex-start;flex-direction:column}.undo button{width:100%}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Sari la conținut / Skip to content</a>
+<header class="wrap top"><a class="brand" href="evolution-lab.html">LAURAI / PRACTICE LAB II</a><button id="lang" type="button" aria-label="Switch to English">EN</button></header>
+<main id="main" class="wrap">
+<section class="hero"><span class="eyebrow" data-i18n="kicker">Exercițiul 07 · CRM · Optimistic UI</span><h1 data-i18n="title">Actualizare CRM cu „Anulează”</h1><p data-i18n="lead">Finalizează instant o sarcină și păstrează o fereastră sigură de cinci secunde pentru revenire.</p></section>
+<div class="lab">
+<section class="task-card" aria-labelledby="task-title" data-task-id="follow-up-01">
+<p class="client" data-i18n="client">Client · Atelier Nova</p><h2 id="task-title">Follow-up Atelier Nova</h2>
+<div class="status-line"><span data-i18n="statusLabel">Stare</span><strong id="task-status" class="badge">În desfășurare</strong></div>
+<button class="primary" id="complete-task" type="button" data-i18n="complete">Marchează ca finalizată</button>
+<div id="undo-notice" class="undo" hidden>
+<div class="undo-row"><span id="undo-message" class="undo-message"></span><button id="undo-button" type="button" data-i18n="undo">Anulează</button></div>
+<div class="timer" aria-hidden="true"><div id="timer-bar" class="timer-bar"></div></div>
+</div>
+<p id="live-status" class="live" role="status" aria-live="polite" aria-atomic="true"></p>
+</section>
+<aside class="panel" aria-labelledby="proof-title"><h2 id="proof-title" data-i18n="proofTitle">Dovadă tehnică</h2><ul class="steps"><li data-i18n="step1">Actualizare optimistă imediată</li><li data-i18n="step2">Un singur temporizator activ</li><li data-i18n="step3">Revenire completă în localStorage</li><li data-i18n="step4">Anunțuri accesibile fără spam</li></ul><pre id="state-preview" class="state-box" aria-label="Current state"></pre><button id="reset-demo" class="secondary" type="button" data-i18n="reset">Resetează demonstrația</button></aside>
+</div>
+</main>
+<footer><div class="wrap"><a href="evolution-lab.html#practice-lab-advanced" data-i18n="back">Înapoi la Evolution Lab</a></div></footer>
+<script>
+(()=>{"use strict";
+const STORAGE_KEY="crm-task-state",LANG_KEY="practice-lab-undo-lang",UNDO_MS=5000;
+const copy={
+ro:{kicker:"Exercițiul 07 · CRM · Optimistic UI",title:"Actualizare CRM cu „Anulează”",lead:"Finalizează instant o sarcină și păstrează o fereastră sigură de cinci secunde pentru revenire.",client:"Client · Atelier Nova",statusLabel:"Stare",open:"În desfășurare",done:"Finalizată",complete:"Marchează ca finalizată",completed:"Sarcina este finalizată",undo:"Anulează",undoWindow:"Sarcină finalizată. Poți anula timp de 5 secunde.",undone:"Modificarea a fost anulată.",committed:"Sarcina a rămas finalizată.",proofTitle:"Dovadă tehnică",step1:"Actualizare optimistă imediată",step2:"Un singur temporizator activ",step3:"Revenire completă în localStorage",step4:"Anunțuri accesibile fără spam",reset:"Resetează demonstrația",resetDone:"Demonstrația a fost resetată.",back:"Înapoi la Evolution Lab",langLabel:"Switch to English"},
+en:{kicker:"Exercise 07 · CRM · Optimistic UI",title:'CRM update with "Undo"',lead:"Complete a task instantly while preserving a safe five-second window to revert it.",client:"Client · Atelier Nova",statusLabel:"Status",open:"In progress",done:"Completed",complete:"Mark as completed",completed:"The task is completed",undo:"Undo",undoWindow:"Task completed. You can undo for 5 seconds.",undone:"The change was undone.",committed:"The task remains completed.",proofTitle:"Technical evidence",step1:"Immediate optimistic update",step2:"Only one active timer",step3:"Complete localStorage rollback",step4:"Accessible announcements without spam",reset:"Reset demonstration",resetDone:"The demonstration was reset.",back:"Back to Evolution Lab",langLabel:"Schimbă în română"}};
+const statusNode=document.querySelector("#task-status"),completeButton=document.querySelector("#complete-task"),notice=document.querySelector("#undo-notice"),undoButton=document.querySelector("#undo-button"),undoMessage=document.querySelector("#undo-message"),live=document.querySelector("#live-status"),timerBar=document.querySelector("#timer-bar"),preview=document.querySelector("#state-preview"),langButton=document.querySelector("#lang");
+let language=localStorage.getItem(LANG_KEY)==="en"?"en":"ro",taskState=loadState(),previousState=null,undoTimer=null,deadline=0;
+function loadState(){try{const value=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{"status":"open"}');return value&&["open","done"].includes(value.status)?{status:value.status}:{status:"open"}}catch(error){return{status:"open"}}}
+function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(taskState))}
+function stopTimer(){if(undoTimer!==null){clearInterval(undoTimer);undoTimer=null}}
+function render(){const t=copy[language],done=taskState.status==="done";statusNode.textContent=done?t.done:t.open;statusNode.classList.toggle("done",done);completeButton.disabled=done;completeButton.textContent=done?t.completed:t.complete;preview.textContent=JSON.stringify(taskState,null,2)}
+function finishUndoWindow(){stopTimer();previousState=null;notice.hidden=true;timerBar.style.transform="scaleX(0)";live.textContent=copy[language].committed}
+function tick(){const remaining=Math.max(0,deadline-Date.now()),ratio=remaining/UNDO_MS;timerBar.style.transform="scaleX("+ratio+")";if(remaining<=0)finishUndoWindow()}
+function completeTask(){stopTimer();previousState={...taskState};taskState={status:"done"};saveState();render();deadline=Date.now()+UNDO_MS;notice.hidden=false;undoMessage.textContent=copy[language].undoWindow;live.textContent=copy[language].undoWindow;timerBar.style.transform="scaleX(1)";undoTimer=setInterval(tick,100);undoButton.focus()}
+function undoChange(){if(!previousState)return;stopTimer();taskState={...previousState};previousState=null;saveState();notice.hidden=true;render();live.textContent=copy[language].undone;completeButton.focus()}
+function resetDemo(){stopTimer();previousState=null;taskState={status:"open"};saveState();notice.hidden=true;render();live.textContent=copy[language].resetDone;completeButton.focus()}
+function applyLanguage(){const t=copy[language];document.documentElement.lang=language;document.querySelectorAll("[data-i18n]").forEach(node=>{const value=t[node.dataset.i18n];if(typeof value==="string")node.textContent=value});langButton.textContent=language==="ro"?"EN":"RO";langButton.setAttribute("aria-label",t.langLabel);localStorage.setItem(LANG_KEY,language);if(!notice.hidden)undoMessage.textContent=t.undoWindow;render()}
+completeButton.addEventListener("click",completeTask);undoButton.addEventListener("click",undoChange);document.querySelector("#reset-demo").addEventListener("click",resetDemo);langButton.addEventListener("click",()=>{language=language==="ro"?"en":"ro";applyLanguage()});addEventListener("pagehide",stopTimer);applyLanguage();
+})();
+</script>
+</body>
+</html>
