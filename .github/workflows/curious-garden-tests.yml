@@ -101,6 +101,12 @@ jobs:
           GARDEN_SHOTS: ${{ runner.temp }}/garden-shots
         run: python curious-garden/tests/test_privacy.py
 
+      - name: Toys tests (puzzle, bricks, match)
+        env:
+          GARDEN_URL: http://localhost:8000/curious-garden/
+          GARDEN_SHOTS: ${{ runner.temp }}/garden-shots
+        run: python curious-garden/tests/test_toys.py
+
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4

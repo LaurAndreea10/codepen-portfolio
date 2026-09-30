@@ -37,7 +37,7 @@ with sync_playwright() as p:
     pg.on('pageerror',lambda e:errs.append(str(e))); pg.on('console',lambda m:m.type=='error' and errs.append(m.text))
     pg.goto(URL); pg.wait_for_timeout(300)
     pg.fill('#dob',dob(7)); pg.fill('#nickname','Ana'); pg.click('#start'); pg.wait_for_timeout(700)
-    check(pg.locator('.garden-nav button').count()==11,'menu has 11 screens (incl. Workshops)')
+    check(pg.locator('.garden-nav button').count()==12,'menu has 12 screens (incl. Workshops and Toys)')
     check(pg.locator('.guide-bubble.show').count()==1 and 'Ana' in pg.inner_text('.guide-bubble'),'Bia greets the child by name')
     vis=lambda: pg.evaluate("[...document.querySelectorAll('#app [data-view]')].filter(e=>e.offsetParent).map(e=>e.dataset.view)")
     for v in ['discover','collection']:

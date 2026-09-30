@@ -239,7 +239,7 @@ with sync_playwright() as p:
     pg.click(f'{S} .hub-filter button[data-cat=all]')
     try: pg.wait_for_function("[...document.querySelectorAll('#studio .craft-card-icon img.tw')].every(i=>i.complete&&i.naturalWidth>0)",timeout=5000)
     except Exception: pass
-    check(pg.evaluate("document.querySelectorAll('.garden-nav .ni img.tw').length")==11 and pg.evaluate("[...document.querySelectorAll('#studio .craft-card-icon img.tw')].every(i=>i.complete&&i.naturalWidth>0)"),'Twemoji icons load in the menu and on the workshop cards')
+    check(pg.evaluate("document.querySelectorAll('.garden-nav .ni img.tw').length")==12 and pg.evaluate("[...document.querySelectorAll('#studio .craft-card-icon img.tw')].every(i=>i.complete&&i.naturalWidth>0)"),'Twemoji icons load in the menu and on the workshop cards')
     # 6–8 ani: o problemă, 4 unelte, explicația „De ce?”, runda de 5 și stelele
     pg.evaluate("gardenCrafts.open('doctor')"); pg.click(f'{S} .learning-tabs button:nth-child(2)'); pg.wait_for_timeout(50)
     check(pg.locator(f'{S} .round-bar span').count()==5 and pg.locator(f'{S} .craft-tool').count()==4,'age 7: rounds of 5 problems with 4 tools each')
