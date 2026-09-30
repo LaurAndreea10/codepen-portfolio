@@ -1,0 +1,39 @@
+# Grădina Curioasă — istoricul versiunilor / Version history
+
+Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub cu codul exact al acelei versiuni. Istoricul complet rămâne în commiturile repository-ului. Datele sunt în fusul Europe/Bucharest.
+
+This file summarises the major milestones; each link opens the GitHub commit with the exact code of that version.
+
+## 2026-09-30 · v1.8 · Fermă, cules fructe și animale / Farm, fruit picking and animals
+- **Ferma**: de la grâu la pâine, de la vacă la brânză și de la găină la ouă; utilajul potrivit (tractor, combină, găleata de muls, foarfeca de tuns oi); calcule cu ouă, cofraje, făină și rânduri de porumb. / Farm: wheat to bread, cow to cheese, hen to eggs; the right machine or tool; maths with eggs, boxes, flour and corn rows.
+- **Cules fructe**: 3–5 ani culeg doar merele roșii, coapte; 6–8 ani culeg exact câte fructe de un fel li se cer; 9+ ani umplu coșul până la o greutate exactă, în grame. Plus întrebări despre anotimpuri. / Fruit picking: ripe apples only (3–5), an exact count of one fruit (6–8), an exact weight in grams (9+), plus seasons.
+- **Animale**: hrana potrivită, puii animalelor, sunetele lor și calcule (picioare, ouă, fân). Notă de siguranță pentru animalele adevărate. / Animals: the right food, baby animals, animal sounds and maths, with a safety note for real animals.
+- Atelierele au acum 12 meserii; motorul lor acceptă activități proprii pe fiecare atelier. / The Workshops screen now has 12 jobs. [Cod / Code](COMMIT)
+
+## 2026-09-29 · v1.7 · Ateliere / Workshops
+- Ecran nou „Ateliere” cu Desen (desen liber, colorează după cod, unește punctele, pixel art, galerie), Muzică (xilofon, cântece, repetă melodia, sus sau jos, ritmuri; sunete Web Audio), Olărit, Croșetat, Grădinărit, Construcții, Doctor, Service și Gătit. / New Workshops screen with drawing, music and 7 jobs. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/0f6b8ec07f5d57648d108da1f73da1369ddd4e13)
+
+## 2026-09-29 · v1.6 · Jocul zilei și diplome / Game of the day and certificates
+- „Jocul zilei” pe Acasă, diplome A4 pentru insigne, pagina de aprobare a părerilor, 4 teme noi de vocabular, Paștele catolic pentru HU/EN, aspect pentru tabletă pe orizontală. / Game of the day, printable certificates, feedback approval page, new vocabulary themes, Western Easter for HU/EN, tablet landscape layout. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/792752e49fa0751f128dd7a8dffe73e049850096)
+
+## 2026-09-29 · v1.5 · Limbi străine / Foreign languages
+- Engleză, franceză, germană și spaniolă prin joc: ascultă și atinge, memory, scrie cuvântul, propoziții, dialoguri, cuvintele zilei cu repetare spațiată. / English, French, German and Spanish through games with spaced repetition. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/d304a5fc9c3d67fb7884812d947a51fc16c4dbb9)
+
+## 2026-09-29 · v1.4 · Părerea părinților / Parent feedback
+- Formularul „Scrie-ți părerea” din zona pentru părinți; mesajele ajung pe e-mail prin Web3Forms, iar în portofoliu apar doar părerile aprobate, cu acord de publicare. / Parent feedback form with moderated, consented opinions in the portfolio. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/1277839411bcf3562f3dd905385d63ee60de7c0d) · [Web3Forms](https://github.com/LaurAndreea10/codepen-portfolio/commit/d206fe4eda8159ba88d56a04c727cf2f9fa020d9)
+
+## 2026-09-29 · v1.3 · Contra lui Robo / Versus Robo
+- X și 0, Memory și Bețișoarele contra unui robot calculat local, care se adaptează la copil. Fără server și fără costuri. / Tic-tac-toe, Memory and Nim against an adaptive local robot. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/bdb013167dbcec9c5e30ca75280aeab6062d3859)
+- Licența MIT pentru codul jocului. / MIT licence for the game code. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/5b810312c8edda91865e5186c14e2331e8c24b79)
+
+## 2026-09-29 · v1.2 · Jocuri noi și 4 limbi / New games and 4 languages
+- Jocuri noi, recompense (abțibilduri, grădina, insigne), zona pentru părinți, accesibilitate, maghiară și ucraineană, teste automate în GitHub Actions. / New games, rewards, parent area, accessibility, Hungarian and Ukrainian, CI tests. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/971dcacace732662329d6607e505f0af51d2081f)
+
+## 2026-09-29 · v1.1 · Ecrane, voce, offline / Screens, voice, offline
+- Răspunsuri care nu mai sunt previzibile, ecrane separate, citire vocală și joc offline. / Unpredictable answers, separate screens, read-aloud and offline play. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/418b4bece6d80e3fd27cbee661bb899ab45dc363)
+
+## 2026-09-29 · v1.0 · Niveluri de învățare / Learning levels
+- Niveluri de învățare mai bune și progresul pentru adult. / Better learning levels and adult progress. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/961917ec58d4ba0b82c8b1bd038e43508cc20097)
+
+## Cum revii la o versiune / How to restore
+Deschide commitul dorit și inspectează fișierele din acel punct. Pentru a reveni, creează un commit nou care restaurează fișierele alese; nu reseta ramura principală și nu șterge progresul salvat de copii în browser. / Open a linked commit to inspect the exact files, then restore selected files in a new commit.

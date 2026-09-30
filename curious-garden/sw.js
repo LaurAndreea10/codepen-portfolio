@@ -1,7 +1,7 @@
 // Grădina Curioasă — service worker pentru joc offline.
 // Strategie: întâi rețeaua (versiunea nouă apare imediat după publicare),
 // iar fără internet se folosește copia salvată.
-const CACHE = 'gradina-curioasa-v10';
+const CACHE = 'gradina-curioasa-v11';
 const FILES = [
   './', 'index.html', 'diploma.html', 'feedback.html', 'approved-feedback.json', 'feedback-display.js',
   'expansion.css', 'premium.css', 'arcade.css', 'home.css', 'learning.css', 'extras.css',

@@ -23,7 +23,7 @@ with sync_playwright() as p:
     # Meniul și hub-ul
     check(pg.locator('.garden-nav button[data-go=studio]').count()==1,'menu has the Workshops screen')
     pg.click('.garden-nav button[data-go=studio]'); pg.wait_for_timeout(100)
-    check(pg.locator('#studio .craft-card').count()==9,'hub lists 9 workshops')
+    check(pg.locator('#studio .craft-card').count()==12,'hub lists 12 workshops')
     pg.click('#studio .craft-card[data-craft=drawing]'); pg.wait_for_timeout(150)
     check(pg.evaluate("document.getElementById('app').dataset.view")=='drawing' and pg.get_attribute('.garden-nav button[data-go=studio]','aria-pressed')=='true','Drawing opens from the hub and the menu keeps Workshops highlighted')
     # Desen liber: o linie pe foaie, apoi în galerie
@@ -117,9 +117,9 @@ with sync_playwright() as p:
 
     # ——— Ateliere cu pași, unelte, calcule
     pg=page(10); pg.evaluate("gardenGo('studio')")
-    for k in ['garden','build','doctor','service','cooking']:
+    for k in ['garden','farm','build','doctor','service','cooking']:
         pg.evaluate(f"gardenCrafts.open('{k}')"); pg.wait_for_timeout(80); S='#studio'
-        if k in ('doctor','service','cooking','build'): check(pg.locator(f'{S} .craft-safety').count()==1,f'{k}: safety note is shown')
+        if k in ('doctor','service','cooking','build','farm'): check(pg.locator(f'{S} .craft-safety').count()==1,f'{k}: safety note is shown')
         steps=pg.locator(f'{S} .craft-choice'); n=steps.count()
         pg.locator(f'{S} .craft-choice[data-step="{n-1}"]').dispatch_event('click'); miss=status(pg,S)
         for i in range(n): pg.locator(f'{S} .craft-choice[data-step="{i}"]').dispatch_event('click')
@@ -134,6 +134,39 @@ with sync_playwright() as p:
         pg.evaluate("gardenCrafts.open('build')"); pg.wait_for_timeout(50)
         for i in range(pg.locator('#studio .craft-choice').count()): pg.locator(f'#studio .craft-choice[data-step="{i}"]').dispatch_event('click')
         check(pg.locator('#studio .house-svg polygon').count()==1,'finished house has its roof')
+    # Animale: hrană (cu mai multe răspunsuri bune), pui, sunete, calcule
+    pg.evaluate("gardenCrafts.open('animals')"); pg.wait_for_timeout(80); S='#studio'
+    check(pg.locator(f'{S} .craft-safety').count()==1 and pg.locator(f'{S} .learning-tabs button').count()==4,'animals: safety note and 4 activities')
+    for i,name in [(1,'food'),(2,'babies'),(3,'sounds')]:
+        pg.click(f'{S} .learning-tabs button:nth-child({i})'); pg.wait_for_timeout(50)
+        ans=pg.get_attribute(f'{S} .studio-stage','data-answer'); others=[t for t in pg.eval_on_selector_all(f'{S} .craft-tool','bs=>bs.map(b=>b.dataset.tool)') if t!=ans]
+        pg.click(f'{S} .craft-tool[data-tool={others[0]}]'); miss='Corect' not in status(pg,S)
+        pg.click(f'{S} .craft-tool[data-tool={ans}]')
+        check(miss and 'Corect' in status(pg,S),f'animals: {name} question')
+    check(wins(pg,'craft-animals')==3,'animal answers are counted for the report')
+    pg.click(f'{S} .learning-tabs button:nth-child(4)'); ans=pg.get_attribute(f'{S} .studio-stage','data-answer'); pg.click(f'{S} .craft-answer:text-is("{ans}")')
+    check('Corect' in status(pg,S),'animals: age-10 maths question')
+    # Cules fructe, 10 ani: coș cu greutate exactă
+    pg.evaluate("gardenCrafts.open('picking')"); pg.wait_for_timeout(80)
+    check(pg.get_attribute(f'{S} .studio-stage','data-mode')=='weight','age 10: fruit picking asks for an exact weight')
+    target=int(pg.get_attribute(f'{S} .studio-stage','data-target'))
+    ws=pg.eval_on_selector_all(f'{S} .orchard .fruit','bs=>bs.map(b=>+b.dataset.w)')
+    heavy=max(range(len(ws)),key=lambda i:ws[i]); sel=None
+    import itertools
+    for r in range(1,len(ws)+1):
+        for comb in itertools.combinations(range(len(ws)),r):
+            if sum(ws[i] for i in comb)==target: sel=comb; break
+        if sel: break
+    over=[i for i in range(len(ws))]; total=0; picked=[]
+    for i in sorted(range(len(ws)),key=lambda i:-ws[i]):
+        if total>target: break
+        pg.click(f'{S} .orchard .fruit[data-i="{i}"]'); total+=ws[i]; picked.append(i)
+    check('Prea greu' in status(pg,S),'too much fruit: take something out')
+    for _ in picked: pg.click(f'{S} .fruit-basket .fruit >> nth=0')
+    for i in sel: pg.click(f'{S} .orchard .fruit[data-i="{i}"]')
+    check('Coșul e plin' in status(pg,S) and wins(pg,'craft-picking')==1,'exact weight fills the basket')
+    pg.click(f'{S} .learning-tabs button:nth-child(2)'); ans=pg.get_attribute(f'{S} .studio-stage','data-answer'); pg.click(f'{S} .craft-tool[data-tool={ans}]')
+    check('Corect' in status(pg,S) and wins(pg,'craft-picking')==2,'fruit seasons question')
     # Olărit: coacere liberă și comandă
     pg.evaluate("gardenCrafts.open('pottery')"); pg.wait_for_timeout(80); S='#studio'
     pg.click(f'{S} .pot-bake'); pg.wait_for_timeout(200)
@@ -167,6 +200,12 @@ with sync_playwright() as p:
     check(pg.locator('#studio .craft-choice').count()==4,'age 4: planting has 4 steps')
     pg.click('#studio .learning-tabs button:nth-child(2)'); check(pg.locator('#studio .craft-tool').count()==3,'age 4: 3 tool choices')
     pg.evaluate("gardenCrafts.open('pottery')"); check(pg.locator('#studio .page-picker').count()==0,'age 4: pottery has no orders')
+    pg.evaluate("gardenCrafts.open('picking')"); pg.wait_for_timeout(50)
+    check(pg.get_attribute('#studio .studio-stage','data-mode')=='ripe','age 4: pick only the ripe apples')
+    pg.click('#studio .orchard .fruit[data-fruit=green] >> nth=0'); check('încă verde' in status(pg,'#studio'),'age 4: green apples are left to grow')
+    n=pg.locator('#studio .orchard .fruit[data-fruit=apple]').count()
+    for _ in range(n): pg.click('#studio .orchard .fruit[data-fruit=apple]:visible >> nth=0')
+    check('Coșul e plin' in status(pg,'#studio'),f'age 4: all {n} red apples picked')
     pg.evaluate("gardenGo('drawing')"); pg.wait_for_timeout(80)
     check(pg.get_attribute('#drawing .learning-tabs button:nth-child(2)','aria-pressed')=='true' and pg.locator('#drawing .code-toggle').count()==0,'age 4: drawing opens on free colouring')
     pg.click('#drawing .learning-tabs button:nth-child(4)'); check(pg.locator('#drawing .px-grid.mine .px-cell').count()==36,'age 4: 6×6 pixel art')
@@ -177,6 +216,15 @@ with sync_playwright() as p:
     pg.select_option('#lang','hu'); pg.wait_for_timeout(200)
     check(pg.inner_text('#studio h2')=='Műhelyek és mesterségek','Hungarian workshop hub')
     pg.screenshot(path=SHOTS+'s-hub-hu.png')
+    pg.close()
+    pg=page(7); pg.evaluate("gardenGo('studio');gardenCrafts.open('picking')"); pg.wait_for_timeout(80); S='#studio'
+    want=pg.get_attribute(f'{S} .studio-stage','data-want'); t=int(pg.get_attribute(f'{S} .studio-stage','data-target'))
+    check(pg.get_attribute(f'{S} .studio-stage','data-mode')=='count' and 3<=t<=6,f'age 7: pick exactly {t} of one fruit')
+    pg.click(f'{S} .orchard .fruit:not([data-fruit={want}]) >> nth=0'); check('Caută' in status(pg,S),'age 7: other fruit gives a hint')
+    for _ in range(t): pg.click(f'{S} .orchard .fruit[data-fruit={want}]:visible >> nth=0')
+    check('Coșul e plin' in status(pg,S) and pg.locator(f'{S} .fruit-basket .fruit').count()==t,'age 7: exact count fills the basket')
+    pg.evaluate("gardenCrafts.open('farm')"); pg.click(f'{S} .learning-tabs button:nth-child(3)'); ans=pg.get_attribute(f'{S} .studio-stage','data-answer'); pg.click(f'{S} .craft-answer:text-is("{ans}")')
+    check('Corect' in status(pg,S),'age 7: egg boxes question')
     pg.close()
     check(not errs,f'no page errors {errs[:3]}')
 print('\nFAILURES:',len(fails))
