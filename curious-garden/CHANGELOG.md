@@ -8,7 +8,7 @@ This file summarises the major milestones; each link opens the GitHub commit wit
 - Ecran nou în meniu, „Jucării” 🧸 (12 ecrane în total). / New Toys screen in the menu.
 - **Puzzle** cu piese tăiate din 6 scene desenate în joc: 2×2 cu imagine ajutătoare pentru cei mici, 3×2 și 3×3, iar de la 9 ani 4×4 fără imagine și cu piese rotite. / Jigsaw puzzles from 6 in-game scenes, with rotated pieces for 9+.
 - **Lego**: cărămizi 1×1–1×4 în 6 culori care cad una peste alta; copiază modelul, atinge exact un număr de știfturi (de la 9 ani și o înălțime exactă) sau construiește liber și salvează. / Brick building: copy the model, hit an exact stud count, or build freely.
-- **Potrivește**: umbre, culori și numărare pentru 3–5 ani; pui de animale, litere mari–mici (chirilice în ucraineană) pentru 6–8 ani; înmulțiri, contrarii, fracții–procente și ceasuri pentru 9+. Insignă nouă „Prietenul jucăriilor”. / Matching themes by age and a new Toy friend badge. [Cod / Code](COMMIT)
+- **Potrivește**: umbre, culori și numărare pentru 3–5 ani; pui de animale, litere mari–mici (chirilice în ucraineană) pentru 6–8 ani; înmulțiri, contrarii, fracții–procente și ceasuri pentru 9+. Insignă nouă „Prietenul jucăriilor”. / Matching themes by age and a new Toy friend badge. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/f7b7525d2c52691b0f5f9aecc6e12cdd7bd81f22)
 
 ## 2026-09-30 · v1.12 · Date pe dispozitiv, feedback la îndemână / Data on device, feedback at hand
 - Pe ecranul de configurare, înainte de data nașterii, apare chenarul „🔒 Datele rămân pe acest dispozitiv”: fără cont, fără server, fără reclame. / A visible “your data stays on this device” notice on the setup screen.
