@@ -4,7 +4,7 @@ Joc educativ pentru copii de 3–12 ani, în română, engleză, maghiară și u
 
 - [Joacă pe GitHub Pages](https://laurandreea10.github.io/codepen-portfolio/curious-garden/)
 - [Studiu de caz](https://laurandreea10.github.io/codepen-portfolio/curious-garden/case-study.html)
-- [Istoricul versiunilor](CHANGELOG.md) (v1.0–v1.9, cu link spre codul exact al fiecărei versiuni)
+- [Istoricul versiunilor](CHANGELOG.md) (v1.0–v1.10, cu link spre codul exact al fiecărei versiuni)
 
 ## Ecrane
 
@@ -20,7 +20,7 @@ Joc educativ pentru copii de 3–12 ani, în română, engleză, maghiară și u
 | Limbi străine | Engleză, franceză, germană, spaniolă: Ascultă și atinge, Memory cu cuvinte, Scrie cuvântul, Propoziții, Dialoguri, Cuvintele zilei (repetare spațiată), 12 teme de vocabular (inclusiv mâncare, vreme, familie, transport), pronunție |
 | Contra Robo | X și 0, Memory și Bețișoarele (Nim) contra unui robot calculat local, care se adaptează la copil |
 | Ateliere | Filtre (Creație, Natură, Meserii), „Recomandat azi”, stele și eticheta NOU pe fiecare card. 12 meserii: **Desen** (desen liber cu găleată, oglindă și ștampile; colorează liber sau după cod/calcule; unește punctele numărând din 2, 3, 5 sau 10; pixel art, în oglindă de la 9 ani; galerie cu 8 desene), **Muzică** (xilofon/pian/flaut cu tastele 1–8, 5 cântece din domeniul public de cântat după lumini, repetă melodia, sus sau jos, ritmuri pe 4 instrumente), **Olărit** (roata olarului, glazuri, modele, cuptor, comenzi de la clienți), **Croșetat** (fulare cu modele de culori), **Grădinărit**, **Ferma** (de la grâu la pâine, de la vacă la brânză, ouă; utilaje; calcule cu cofraje și făină), **Cules fructe** (3–5 ani: doar merele coapte; 6–8 ani: un număr exact de fructe; 9+ ani: coș cu greutate exactă în grame; anotimpurile fructelor), **Animale** (hrana potrivită, puii, sunetele, calcule), **Construcții**, **Doctor** (ursulețul Tedi), **Service** (telefon, bicicletă, mașină) și **Gătit**, fiecare cu pași de ordonat, unelte de ales și calcule pe vârstă, în runde de 5 provocări (3 la pași) cu 1–3 stele. După fiecare răspuns bun apare explicația „De ce?”; de la 9 ani, uneltele devin o „Comandă a zilei” cu trei probleme de potrivit deodată. La fermă, animale, construcții, doctor, service și gătit apare o notă de siguranță. |
-| Aniversare | Tort sau brioșă, decorațiuni, felicitare salvabilă |
+| Aniversare | Tort sau brioșă, decorațiuni, felicitare salvabilă. **De ziua copilului** (cu 2 zile înainte și 3 zile după) se deschide petrecerea: pe Acasă apare „La mulți ani, {nume}!”, iar lângă tort apar **🎈 Baloane** (3–5 ani: umflă 3 baloane; 6–8 ani: comandă pe culori, balonul se sparge dacă îl umfli prea tare; 9+ ani: aer în ml, apăsări exacte) și **🏠 Camera de petrecere** (decorațiuni puse unde atinge copilul, baloanele umflate atârnă din tavan, bannerul cu numele; 6–8 ani după listă, 9+ ani cu buget în lei; poza petrecerii se poate salva). În rest, un adult le poate previzualiza. |
 
 Toate sunetele din Atelierul de muzică sunt sintetizate cu Web Audio: fără fișiere audio și fără înregistrări.
 
@@ -57,7 +57,8 @@ Profilurile și progresul sunt în `localStorage`, pe dispozitivul jucătorului.
 - `feedback.js` — intrarea „Scrie-ți părerea” din Setări, care deschide `feedback.html` în limba jocului (RO sau EN).
 - `aproba.html` — pregătește o părere aprobată pentru portofoliu (nu publică și nu trimite nimic). `diploma.html` — diplomă A4 pentru o insignă, în 4 limbi.
 - `drawing.js` — Atelierul de desen (canvas, pagini SVG proprii, galerie `garden_drawing_<id>`). `music.js` — Atelierul de muzică (Web Audio). `crafts.js` — hub-ul Ateliere și cele 10 meserii de acolo (`garden_crafts_<id>`); fiecare atelier are activități de tip pași (`order`), alegere (`match`/`tool`), calcule (`math`) sau proprii (olărit, croșetat, cules). Stilurile lor sunt în `studio.css`.
-- `emoji.js` și `emoji/` — pictogramele mari (meniu, carduri, unelte, fructe) folosesc imagini [Twemoji](https://github.com/jdecked/twemoji) locale, ca să arate la fel pe orice telefon; dacă o imagine lipsește, rămâne emoji-ul sistemului. Grafică sub CC-BY 4.0 (`emoji/LICENSE.txt`); sunt incluse doar cele ~330 de pictograme folosite.
+- `party.js` — petrecerea de ziua copilului (baloane, camera de petrecere), salvată pe an în `garden_party_<id>_<an>`.
+- `emoji.js` și `emoji/` — pictogramele mari (meniu, carduri, unelte, fructe) folosesc imagini [Twemoji](https://github.com/jdecked/twemoji) locale, ca să arate la fel pe orice telefon; dacă o imagine lipsește, rămâne emoji-ul sistemului. Grafică sub CC-BY 4.0 (`emoji/LICENSE.txt`); sunt incluse doar cele ~340 de pictograme folosite. Când adaugi emoji noi: `npm pack @twemoji/svg@15.0.0 && tar xzf twemoji-svg-15.0.0.tgz && node scripts/twemoji-sync.mjs ./package`.
 - `traduceri.html` — verificarea traducerilor HU/UK cu DeepL (vezi mai jos).
 - `sw.js`, `manifest.webmanifest`, iconițe — instalare și joc offline.
 - `fonts/` — OpenDyslexic (licență SIL OFL, în `fonts/OFL-LICENSE.txt`).
@@ -79,6 +80,7 @@ python curious-garden/tests/test_languages.py
 python curious-garden/tests/test_feedback.py
 python curious-garden/tests/test_polish.py
 python curious-garden/tests/test_studio.py
+python curious-garden/tests/test_party.py
 ```
 
 Testele rulează automat în GitHub Actions (`.github/workflows/curious-garden-tests.yml`) la fiecare modificare din `curious-garden/`. Dacă adaugi fișiere noi, trece-le în lista `FILES` din `sw.js` și crește numărul din `CACHE`. Notează fiecare etapă importantă în [`CHANGELOG.md`](CHANGELOG.md), cu linkul spre commit.

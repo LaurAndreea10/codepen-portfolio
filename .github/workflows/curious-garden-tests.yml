@@ -83,6 +83,12 @@ jobs:
           GARDEN_SHOTS: ${{ runner.temp }}/garden-shots
         run: python curious-garden/tests/test_studio.py
 
+      - name: Birthday party tests (balloons, party room, birthday window)
+        env:
+          GARDEN_URL: http://localhost:8000/curious-garden/
+          GARDEN_SHOTS: ${{ runner.temp }}/garden-shots
+        run: python curious-garden/tests/test_party.py
+
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4

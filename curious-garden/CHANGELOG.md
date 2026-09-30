@@ -4,6 +4,12 @@ Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub c
 
 This file summarises the major milestones; each link opens the GitHub commit with the exact code of that version.
 
+## 2026-09-30 · v1.10 · Petrecerea de ziua copilului / Birthday party
+- De ziua copilului (cu 2 zile înainte, 3 zile după) se deschide petrecerea: mesaj „La mulți ani” cu numele copilului pe Acasă și trei activități în Atelierul aniversar: **Tortul**, **🎈 Baloane** și **🏠 Camera de petrecere**. / On the child’s birthday a party opens with the cake, balloons and a party room.
+- Baloane pe vârste: 3–5 ani umflă 3 baloane fără să se spargă; 6–8 ani respectă o comandă pe culori, iar balonul umflat prea tare se sparge; 9+ ani lucrează cu aer în ml și apăsări exacte. / Age-based balloon challenges.
+- Camera de petrecere: decorațiuni puse unde atinge copilul (sau cu butonul „Pune în cameră”), baloanele umflate atârnă din tavan, banner cu numele; 6–8 ani după listă, 9+ ani cu buget în lei; poza petrecerii se poate salva ca PNG. / Party room with list or budget challenges and a downloadable photo.
+- În afara zilei de naștere, baloanele și camera sunt blocate; un adult le poate previzualiza. Insignă nouă „Gazda petrecerii”. / Locked outside the birthday window with an adult preview; new “Party host” badge. [Cod / Code](COMMIT)
+
 ## 2026-09-30 · v1.9 · Mai ușor de ales, mai mult de învățat / Easier to choose, more to learn
 - **Ghidare fără să eliminăm nimic**: filtre în Ateliere (Creație, Natură, Meserii), „Recomandat azi”, eticheta NOU pentru atelierele neîncercate și stelele obținute pe fiecare card. Pe Acasă, „Sugestiile lui Bia”: continuă ultima activitate, un atelier nou și abilitatea care are nevoie de exercițiu. / Guidance without removing anything: filters, today’s pick, NEW labels, best stars, and Bia’s ideas on Home.
 - **Activități mai adânci**: runde de 5 provocări (3 la pași) cu 1–3 stele; explicația „De ce?” după fiecare unealtă sau hrană aleasă corect (peste 60 de explicații, în 4 limbi); de la 9 ani, „Comanda zilei” cu trei probleme de potrivit deodată. / Rounds with stars, “Why?” explanations, and a three-problem job list for ages 9+.
