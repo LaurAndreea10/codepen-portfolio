@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-09-30 — Odyssey Quest v2.0.0
+
+- RO: joc educativ cu 12 mecanici, 120 probe și 11 moduri, PWA, accesibilitate, profiluri și backup; integrat în catalog, RO/EN, finalizat recent (maximum cinci) și istoric.
+- EN: learning adventure with 12 mechanics, 120 trials and 11 modes, PWA, accessibility, profiles and backup; added to catalogue, RO/EN pages, recent completions (five maximum) and history.
+
 ## 2026-09-27 — Audit săptămânal și proiecte recente
 
 - Sincronizate metrica publică, dovezile RO/EN și datele sitemap-ului; verificările locale SEO și Portfolio Quality trec.

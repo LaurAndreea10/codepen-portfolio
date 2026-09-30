@@ -266,3 +266,12 @@ Seven editable Excel Quest & CRM design materials, with documented AI assistance
 - Infografic CRM / CRM infographic: https://canva.link/ms8gtpxn95cxqkz
 - Ghid Excel / Excel guide: https://canva.link/o9fn6tcta2re2wd
 - Studiu de caz reutilizabil / Reusable case study: https://canva.link/85g35ofppw7s4bp
+
+
+## Odyssey Quest · 2026-09-30
+
+[Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/odyssey-quest/) · [Documentație / Docs](odyssey-quest/README.md)
+
+12 episoade, 120 de probe, 11 moduri, RO/EN, profiluri locale, recompense, atelier și PWA offline.
+
+12 episodes, 120 trials, 11 modes, RO/EN, local profiles, rewards, workshop and offline PWA.
