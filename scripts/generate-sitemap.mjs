@@ -2,8 +2,8 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
-  ["portfolio.html", "weekly", "1.0", "2026-09-27"],
-  ["en/", "weekly", "0.9", "2026-09-27"],
+  ["portfolio.html", "weekly", "1.0", "2026-09-30"],
+  ["en/", "weekly", "0.9", "2026-09-30"],
   ["alpis-fusion-crm.html", "monthly", "0.9", "2026-08-30"],
   ["projects/clientflow.html", "monthly", "0.9", "2026-08-30"],
   ["projects/alpis-impactpath.html", "monthly", "0.9", "2026-04-20"],
@@ -39,7 +39,7 @@ const pages = [
   ["en/proof-registry.html", "monthly", "0.7", "2026-09-27"],
   ["en/game-audits.html", "monthly", "0.7", "2026-09-06"],
   ["en/release-timeline.html", "monthly", "0.7", "2026-09-06"],
-  ["evolution-lab.html", "monthly", "0.9", "2026-09-13"],
+  ["evolution-lab.html", "monthly", "0.9", "2026-09-30"],
   ["design-system.html", "monthly", "0.8", "2026-09-13"],
   ["portfolio-summary.html", "monthly", "0.9", "2026-09-14"],
   ["growth-suite.html", "monthly", "0.9", "2026-09-13"],
@@ -59,6 +59,9 @@ const pages = [
   ["skydreams-portal/", "monthly", "0.8", "2026-09-27"],
   ["kygo-world/", "monthly", "0.8", "2026-09-27"],
   ["crm-accessible-form.html", "monthly", "0.75", "2026-09-25"],
+  ["crm-json-backup.html", "monthly", "0.75", "2026-09-28"],
+  ["crm-optimistic-undo.html", "monthly", "0.75", "2026-09-30"],
+  ["canva-collection.html", "monthly", "0.6", "2026-09-30"],
 ];
 
 const pairs = new Map([
