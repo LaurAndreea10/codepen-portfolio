@@ -244,3 +244,25 @@ An accessible cosmic PWA with nine game modes, progressive difficulty, switch sc
 
 [Live game](https://laurandreea10.github.io/LOOP-Cosmic-Relay/) · [Bilingual case study](https://laurandreea10.github.io/codepen-portfolio/projects/loop-cosmic-relay.html) · [Repository](https://github.com/LaurAndreea10/LOOP-Cosmic-Relay)
 
+
+### Grădina Curioasă / Curious Garden
+
+- [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/curious-garden/) · [Cod sursă / Source](https://github.com/LaurAndreea10/codepen-portfolio/tree/main/curious-garden/) · [Studiu de caz / Case study](https://laurandreea10.github.io/codepen-portfolio/curious-garden/case-study.html) — joc educativ pentru 3–12 ani în RO/EN/HU/UK, cu 12 lumi, labirinturi generate, jocuri noi, recompense, raport pentru părinți, accesibilitate, mod offline și teste automate.
+- [Arcade World](https://laurandreea10.github.io/ARCADE-WORLD/) — acces din catalogul de jocuri.
+
+
+## Colecție Canva / Canva collection
+
+[RO](https://laurandreea10.github.io/codepen-portfolio/canva-collection.html) · [EN](https://laurandreea10.github.io/codepen-portfolio/canva-collection.html?lang=en)
+
+Șapte materiale editabile Excel Quest & CRM, cu asistență AI documentată. Colecția este separată de contorizarea aplicațiilor live.
+
+Seven editable Excel Quest & CRM design materials, with documented AI assistance. This collection is separate from the live-app count.
+
+- Carusel Excel Quest / Excel Quest carousel: https://canva.link/0gwodnr0lqil4xp
+- Story Excel Quest / Excel Quest story: https://canva.link/3cj0bie3oa1wcmq
+- Ghid vizual / Visual guide: https://canva.link/809kiypih93j4m6
+- Prezentare Excel Quest / Excel Quest presentation: https://canva.link/2lqgfbcvgkueavx
+- Infografic CRM / CRM infographic: https://canva.link/ms8gtpxn95cxqkz
+- Ghid Excel / Excel guide: https://canva.link/o9fn6tcta2re2wd
+- Studiu de caz reutilizabil / Reusable case study: https://canva.link/85g35ofppw7s4bp

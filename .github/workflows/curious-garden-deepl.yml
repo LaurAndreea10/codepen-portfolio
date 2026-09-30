@@ -1,0 +1,78 @@
+name: Curious Garden DeepL translations
+
+# Rulează manual: Actions → Curious Garden DeepL translations → Run workflow.
+# review = compară traducerile HU/UK cu DeepL și salvează raportul pentru curious-garden/traduceri.html
+# apply  = scrie traducerile DeepL în joc (fără cele din translations/keep.json), rulează testele și publică
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'review sau apply'
+        required: true
+        default: review
+        type: choice
+        options: [review, apply]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: curious-garden-deepl
+  cancel-in-progress: false
+
+jobs:
+  deepl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check the DeepL key
+        env:
+          DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
+        run: |
+          if [ -z "$DEEPL_AUTH_KEY" ]; then
+            echo "::error::Add the DEEPL_AUTH_KEY secret: Settings → Secrets and variables → Actions → New repository secret."
+            exit 1
+          fi
+
+      - name: Translate with DeepL (${{ inputs.mode }})
+        env:
+          DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
+        run: node scripts/deepl-translate.mjs --mode=${{ inputs.mode }}
+
+      - name: Check JavaScript syntax
+        if: inputs.mode == 'apply'
+        run: for f in curious-garden/*.js; do node --check "$f"; done
+
+      - name: Set up Python
+        if: inputs.mode == 'apply'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run the game tests before publishing
+        if: inputs.mode == 'apply'
+        env:
+          GARDEN_URL: http://localhost:8000/curious-garden/
+        run: |
+          pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+          python -m http.server 8000 --bind 127.0.0.1 > /dev/null 2>&1 &
+          sleep 2
+          for t in core features versus languages feedback polish studio; do python curious-garden/tests/test_$t.py; done
+
+      - name: Commit the result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add curious-garden
+          if git diff --cached --quiet; then echo "Nothing to commit"; exit 0; fi
+          git commit -m "Curious Garden: DeepL translations (${{ inputs.mode }})"
+          git push

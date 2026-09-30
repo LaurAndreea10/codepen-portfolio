@@ -2,11 +2,12 @@
    - Pages: network first, so a new version is visible as soon as it is online; cached copy when offline.
    - Images, icons, manifest: served from cache, refreshed in the background.
    Bump VERSION whenever the list of core files changes. */
-const VERSION = "kygo-world-2026.09.27.4";
+const VERSION = "kygo-world-2026.09.30.1";
 const CORE = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
+  "./manifest-en.webmanifest",
   "./kygo-sprite.webp",
   "./sky-islands.webp",
   "./icons/icon-192.png",
@@ -28,10 +29,10 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-function store(request, response) {
+async function store(request, response) {
   if (response && response.ok && response.type === "basic") {
-    const copy = response.clone();
-    caches.open(VERSION).then((cache) => cache.put(request, copy));
+    const cache = await caches.open(VERSION);
+    await cache.put(request, response.clone());
   }
   return response;
 }
@@ -39,22 +40,19 @@ function store(request, response) {
 self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.method !== "GET" || !request.url.startsWith(self.registration.scope)) return;
-
   if (request.mode === "navigate") {
-    event.respondWith(
-      fetch(request)
-        .then((response) => store("./index.html", response))
-        .catch(() => caches.match("./index.html").then((cached) => cached || caches.match("./")))
-    );
+    const response = fetch(request).then(async (r) => {
+      if (!r.ok) throw new Error("Navigation unavailable");
+      await store(new URL("index.html", self.registration.scope).href, r);
+      return r;
+    }).catch(() => caches.open(VERSION).then((cache) => cache.match("./index.html").then((r) => r || cache.match("./"))));
+    event.respondWith(response);
+    event.waitUntil(response.then(() => {}));
     return;
   }
-
-  event.respondWith(
-    caches.match(request, { ignoreSearch: true }).then((cached) => {
-      const fresh = fetch(request)
-        .then((response) => store(request, response))
-        .catch(() => cached);
-      return cached || fresh;
-    })
-  );
+  const fresh = fetch(request).then((r) => store(request, r)).catch(() => undefined);
+  event.waitUntil(fresh.then(() => {}));
+  event.respondWith(caches.open(VERSION).then(async (cache) =>
+    await cache.match(request, { ignoreSearch: true }) || await fresh || Response.error()
+  ));
 });

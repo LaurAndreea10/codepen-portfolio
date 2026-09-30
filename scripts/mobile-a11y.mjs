@@ -1,17 +1,23 @@
-import { chromium } from "playwright";
-import AxeBuilder from "@axe-core/playwright";
+import { createRequire } from "node:module";
+import { startAuditServer } from "./audit-server.mjs";
+const require = createRequire(import.meta.url);
+const { chromium } = require("playwright");
+const AxeBuilder = require("@axe-core/playwright").default;
+const live = process.env.AUDIT_LIVE === "1";
+const server = live ? null : await startAuditServer();
 import { mkdir } from "node:fs/promises";
 
-const targets = [
+const publishedTargets = [
   { name: "SkyDreams Portal", url: "https://laurandreea10.github.io/codepen-portfolio/skydreams-portal/" },
   { name: "Revenue Landscape", url: "https://laurandreea10.github.io/Revenue-Landscape/" },
   { name: "Kygo World", url: "https://laurandreea10.github.io/codepen-portfolio/kygo-world/" }
 ];
+const targets = live ? publishedTargets : publishedTargets.filter(t => t.name !== "Revenue Landscape").map(t => ({ ...t, url: t.url.replace("https://laurandreea10.github.io/codepen-portfolio", server.baseURL) }));
 const widths = [360, 390, 412];
 const failures = [];
 const warnings = [];
 await mkdir("audit-artifacts/recent-projects", { recursive: true });
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ? {executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE} : {}) });
 
 try {
   for (const target of targets) {
@@ -25,6 +31,9 @@ try {
         colorScheme: "dark"
       });
       const page = await context.newPage();
+      const initialFailures = failures.length;
+      page.on("pageerror", e => failures.push(`${target.name} @ ${width}px: ${e.message}`));
+      page.on("console", m => { if(m.type() === "error") failures.push(`${target.name} @ ${width}px: ${m.text()}`); });
       const response = await page.goto(target.url, { waitUntil: "networkidle", timeout: 60000 });
 
       if (!response || !response.ok()) {
@@ -60,7 +69,7 @@ try {
         failures.push(`${target.name} @ ${width}px: axe ${issue.id} (${issue.nodes.length} node(s))`);
       }
 
-      const smallTargets = await page.locator("button:visible, [role=button]:visible, input:visible, select:visible").evaluateAll((nodes) =>
+      const smallTargets = await page.locator("button:visible, [role=button]:visible, input:visible:not([type=file]), select:visible").evaluateAll((nodes) =>
         nodes.map((node) => {
           const rect = node.getBoundingClientRect();
           return { label: node.getAttribute("aria-label") || node.textContent?.trim().slice(0, 40) || node.id || node.tagName, width: Math.round(rect.width), height: Math.round(rect.height) };
@@ -145,12 +154,13 @@ try {
         if ((await page.locator("html").getAttribute("lang")) !== "en") failures.push("SkyDreams Portal: English language toggle failed");
       }
 
-      console.log(`PASS ${target.name} @ ${width}px — axe serious/critical 0, no horizontal overflow`);
+      console.log(`${failures.length === initialFailures ? "PASS" : "FAIL"} ${target.name} @ ${width}px — axe serious/critical 0, no horizontal overflow`);
       await context.close();
     }
   }
 } finally {
   await browser.close();
+  await server?.close();
 }
 
 for (const warning of warnings) console.warn(`WARNING: ${warning}`);

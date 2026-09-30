@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Aprobă o părere · Grădina Curioasă</title>
+<style>
+:root{color-scheme:dark;font:1rem/1.55 system-ui,sans-serif;--bg:#0b1828;--panel:#172b40;--ink:#f6f6ed;--muted:#c5d3d8;--line:#6f8b9e;--accent:#ffc978;--good:#9be6ba;--bad:#ff9b9b}
+@media (prefers-color-scheme:light){:root{color-scheme:light;--bg:#f4f8f2;--panel:#fffdf5;--ink:#193147;--muted:#405c67;--line:#9fb5b0;--accent:#9b4f12;--good:#176a48;--bad:#a4262c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink)}.wrap{max-width:760px;margin:auto;padding:1.25rem 1rem 4rem}
+a{color:var(--accent)}h1{font-size:clamp(1.7rem,6vw,2.4rem);margin:.4rem 0}h2{font-size:1.2rem;margin:1.6rem 0 .4rem}p{color:var(--muted)}
+label{display:grid;gap:.35rem;font-weight:700;margin:.8rem 0}
+textarea,input{font:inherit;width:100%;border:2px solid var(--line);border-radius:.75rem;background:var(--panel);color:var(--ink);padding:.7rem}textarea{min-height:130px;resize:vertical}
+button,.btn{font:inherit;display:inline-block;border:2px solid var(--accent);border-radius:.9rem;background:var(--accent);color:#152234;font-weight:800;padding:.7rem 1.1rem;min-height:48px;cursor:pointer;text-decoration:none;margin:.3rem .3rem .3rem 0}
+button.secondary{background:transparent;color:var(--ink);border-color:var(--line)}
+button:focus-visible,.btn:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.badge{display:inline-block;padding:.3rem .7rem;border-radius:999px;font-weight:800}.ok{background:color-mix(in srgb,var(--good) 25%,transparent);color:var(--good)}.no{background:color-mix(in srgb,var(--bad) 25%,transparent);color:var(--bad)}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--panel);border:1px solid var(--line);border-radius:.75rem;padding:.8rem;font-size:.9rem}
+.status{font-weight:700;color:var(--good);min-height:1.5rem}.warn{color:var(--bad);font-weight:700}
+ol li{margin:.3rem 0;color:var(--muted)}[hidden]{display:none!important}
+</style>
+</head>
+<body><div class="wrap">
+<a href="./">← Înapoi la joc</a>
+<h1>Aprobă o părere</h1>
+<p>Pagina doar pregătește textul: nu publică nimic singură și nu trimite date nicăieri. Publicarea se face când salvezi fișierul pe GitHub.</p>
+
+<label for="mail">1. Lipește aici e-mailul primit de la Web3Forms</label>
+<textarea id="mail" placeholder="name&#10;Mihai&#10;message&#10;Copilul meu adoră labirintul…&#10;publication_consent&#10;YES / DA"></textarea>
+<button type="button" id="parse">Extrage părerea</button>
+
+<div id="result" hidden>
+  <h2>2. Verifică</h2>
+  <p>Acord de publicare: <span id="consent" class="badge"></span></p>
+  <p id="consentWarn" class="warn" hidden>Autorul nu a fost de acord cu publicarea. Mesajul rămâne privat, așa că nu se generează nimic pentru portofoliu.</p>
+  <label for="name">Pseudonim (maximum 40 de caractere)</label>
+  <input id="name" maxlength="40">
+  <label for="quote">Textul care apare în portofoliu (îl poți corecta)</label>
+  <textarea id="quote" maxlength="1000"></textarea>
+  <p id="cleaned" class="warn" hidden>Am scos automat linkuri, adrese de e-mail sau numere de telefon. Verifică textul.</p>
+  <button type="button" id="build">Pregătește fișierul</button>
+</div>
+
+<div id="output" hidden>
+  <h2>3. Publică</h2>
+  <ol>
+    <li>Apasă „Copiază fișierul complet”.</li>
+    <li>Deschide fișierul pe GitHub, apasă creionul ✏️, șterge tot și lipește.</li>
+    <li>Apasă „Commit changes”. În 2–3 minute părerea apare în portofoliu.</li>
+  </ol>
+  <pre id="full"></pre>
+  <button type="button" id="copy">Copiază fișierul complet</button>
+  <a class="btn" id="edit" href="https://github.com/LaurAndreea10/codepen-portfolio/edit/main/curious-garden/approved-feedback.json" target="_blank" rel="noopener noreferrer">Deschide fișierul pe GitHub</a>
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+</div>
+</div>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const CONTACT=/https?:\/\/\S+|www\.\S+|[\w.+-]+@[\w-]+\.[\w.]+|(?:\+?\d[\s.-]?){8,}/gi;
+// Web3Forms trimite câmpurile ca „cheie” pe un rând și valoarea dedesubt, sau „cheie: valoare”.
+function field(text,names){const lines=text.replace(/\r/g,'').split('\n').map(l=>l.trim());for(let i=0;i<lines.length;i++){const low=lines[i].toLowerCase().replace(/\*/g,'');for(const n of names){if(low===n||low===n+':'){const out=[];for(let j=i+1;j<lines.length;j++){const next=lines[j].toLowerCase().replace(/[:*]/g,'').trim();if(KEYS.includes(next))break;if(lines[j]||out.length)out.push(lines[j])}return out.join('\n').trim()}if(low.startsWith(n+':'))return lines[i].slice(lines[i].indexOf(':')+1).trim()}}return ''}
+const KEYS=['name','message','publication_consent','publication consent','subject','from_name','from name','botcheck','email','nume','mesaj'];
+let current=null;
+$('parse').onclick=()=>{const text=$('mail').value;const name=field(text,['name','nume']),message=field(text,['message','mesaj']),consentRaw=field(text,['publication_consent','publication consent']);const consent=/yes|da/i.test(consentRaw)&&!/no \/ nu|^no$|^nu$/i.test(consentRaw);$('result').hidden=false;$('output').hidden=true;$('consent').textContent=consentRaw||'necunoscut';$('consent').className='badge '+(consent?'ok':'no');$('consentWarn').hidden=consent;const cleaned=message.replace(CONTACT,'').replace(/[ \t]+/g,' ').trim();$('cleaned').hidden=cleaned===message.trim();$('name').value=(name&&!/^anonim/i.test(name)?name:'Anonim').replace(CONTACT,'').slice(0,40);$('quote').value=cleaned.slice(0,1000);$('build').disabled=!consent;current={consent}};
+$('build').onclick=async()=>{if(!current?.consent)return;const quote=$('quote').value.replace(CONTACT,'').trim(),name=$('name').value.replace(CONTACT,'').trim().slice(0,40)||'Anonim';if(quote.length<10){$('status').textContent='Textul e prea scurt.';return}let items=[];try{const r=await fetch('approved-feedback.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(Array.isArray(j.items))items=j.items}}catch{}items=items.filter(x=>x&&x.quote!==quote);items.unshift({name,quote,approved:true});$('full').textContent=JSON.stringify({items},null,2);$('output').hidden=false;$('status').textContent='';$('output').scrollIntoView({behavior:'smooth'})};
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText($('full').textContent);$('status').textContent='Copiat! Acum deschide fișierul pe GitHub și lipește.'}catch{const r=document.createRange();r.selectNodeContents($('full'));const s=getSelection();s.removeAllRanges();s.addRange(r);$('status').textContent='Textul e selectat: apasă Copiere din meniul telefonului.'}};
+})();
+</script>
+</body></html>

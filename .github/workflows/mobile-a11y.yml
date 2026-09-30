@@ -13,6 +13,8 @@ on:
       - "en/index.html"
       - "data/portfolio-evidence.json"
       - "scripts/mobile-a11y.mjs"
+      - "scripts/kygo-world-tests.mjs"
+      - "scripts/audit-server.mjs"
       - ".github/workflows/mobile-a11y.yml"
   pull_request:
     paths:
@@ -21,6 +23,8 @@ on:
       - "en/index.html"
       - "data/portfolio-evidence.json"
       - "scripts/mobile-a11y.mjs"
+      - "scripts/kygo-world-tests.mjs"
+      - "scripts/audit-server.mjs"
   schedule:
     - cron: "20 7 * * 0"
   workflow_dispatch:
@@ -40,15 +44,14 @@ jobs:
         run: |
           npm install --no-save playwright@1.55.0 @axe-core/playwright@4.10.2
           npx playwright install --with-deps chromium
-      - name: Wait for GitHub Pages deployment
-        if: github.event_name == 'push'
-        run: sleep 90
       - name: Audit 360, 390 and 412 px
         run: node scripts/mobile-a11y.mjs
+      - name: Kygo gameplay, backup and offline regression
+        run: node scripts/kygo-world-tests.mjs
       - name: Publish real mobile captures
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: recent-projects-mobile-390
-          path: audit-artifacts/recent-projects/*.png
+          path: audit-artifacts/**/*.png
           if-no-files-found: warn

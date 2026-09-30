@@ -2,6 +2,18 @@
 
 Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub cu codul exact al acelei versiuni. Istoricul complet al tuturor modificărilor rămâne în GitHub. Datele sunt în fusul Europe/Bucharest. / This file summarizes major milestones; linked commits preserve the exact code.
 
+## 2026-09-30 · v1.5.1 · Corectări și verificări / Fixes and regression checks
+- Reconciliere cu v1.4.1: sprite optimizat și zone de atingere mărite păstrate. / Preserve the latest loading and touch improvements.
+- Backup JSON/cod validat complet înainte de înlocuire; datele invalide nu șterg salvarea. / Validate backups before replacing progress.
+- Scanare și joystick disponibile în ecranul mobil; focus pe scenă la Start, tastatură funcțională. / Keep assistive controls available during mobile play.
+- Limbă, temă, contrast și mișcare redusă persistente; alt EN și manifest EN. / Persistent preferences and English app metadata.
+- Calendar Europe/Bucharest și animații decorative oprite la mișcare redusă. / Consistent Romanian seasonal windows and reduced decorative motion.
+- Service worker cu operații de cache urmărite până la finalizare și mesaj pentru erori de pregătire offline. / Reliable cache writes and offline error state.
+- Playwright testează checkout-ul: progres, gardieni, finaluri, backup, fantome și offline, mobil și desktop. / Checkout-based regression tests. [PR #80](https://github.com/LaurAndreea10/codepen-portfolio/pull/80)
+
+## 2026-09-29 · v1.4.1 · Încărcare mai rapidă / Faster loading
+- Imaginile au dimensiunea folosită efectiv în joc (828 KB → 348 KB la prima încărcare; Lighthouse performanță 79 → 95), cu aceeași scenă desenată. Bifele și glisoarele din Setări au zone de atingere mai mari. / Images resized to what the game draws; larger touch targets in Settings. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/db840adda2cb7dfb440e5a14601fef8d1ce4cc32)
+
 ## 2026-09-27 · v1.5 · Aplicație, gardieni și fantome / App, guardians and ghosts
 - Joc instalabil (PWA) care merge offline: manifest, iconițe și service worker; paginile se actualizează din rețea, imaginile rămân în cache. / Installable offline app.
 - Gardieni la fiecare 10 niveluri: zonă finală de 7 pași, bandă sigură mai rapidă, bară de viață și 10 gardieni diferiți. / A guardian every 10 levels.
