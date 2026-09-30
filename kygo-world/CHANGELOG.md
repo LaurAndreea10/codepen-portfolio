@@ -2,8 +2,31 @@
 
 Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub cu codul exact al acelei versiuni. Istoricul complet al tuturor modificărilor rămâne în GitHub. Datele sunt în fusul Europe/Bucharest. / This file summarizes major milestones; linked commits preserve the exact code.
 
+## 2026-09-30 · v1.5.1 · Corectări și verificări / Fixes and regression checks
+- Reconciliere cu v1.4.1: sprite optimizat și zone de atingere mărite păstrate. / Preserve the latest loading and touch improvements.
+- Backup JSON/cod validat complet înainte de înlocuire; datele invalide nu șterg salvarea. / Validate backups before replacing progress.
+- Scanare și joystick disponibile în ecranul mobil; focus pe scenă la Start, tastatură funcțională. / Keep assistive controls available during mobile play.
+- Limbă, temă, contrast și mișcare redusă persistente; alt EN și manifest EN. / Persistent preferences and English app metadata.
+- Calendar Europe/Bucharest și animații decorative oprite la mișcare redusă. / Consistent Romanian seasonal windows and reduced decorative motion.
+- Service worker cu operații de cache urmărite până la finalizare și mesaj pentru erori de pregătire offline. / Reliable cache writes and offline error state.
+- Playwright testează checkout-ul: progres, gardieni, finaluri, backup, fantome și offline, mobil și desktop. / Checkout-based regression tests. [PR #80](https://github.com/LaurAndreea10/codepen-portfolio/pull/80)
+
 ## 2026-09-29 · v1.4.1 · Încărcare mai rapidă / Faster loading
 - Imaginile au dimensiunea folosită efectiv în joc (828 KB → 348 KB la prima încărcare; Lighthouse performanță 79 → 95), cu aceeași scenă desenată. Bifele și glisoarele din Setări au zone de atingere mai mari. / Images resized to what the game draws; larger touch targets in Settings. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/db840adda2cb7dfb440e5a14601fef8d1ce4cc32)
+
+## 2026-09-27 · v1.5 · Aplicație, gardieni și fantome / App, guardians and ghosts
+- Joc instalabil (PWA) care merge offline: manifest, iconițe și service worker; paginile se actualizează din rețea, imaginile rămân în cache. / Installable offline app.
+- Gardieni la fiecare 10 niveluri: zonă finală de 7 pași, bandă sigură mai rapidă, bară de viață și 10 gardieni diferiți. / A guardian every 10 levels.
+- Cursă cu fantoma în Cursă, Campionat și Endless: traseu cu seed, reluarea celei mai bune ture și cod de fantomă pentru prieteni. / Ghost races with shareable codes.
+- Salvare și restaurare a progresului prin cod sau fișier JSON. / Backup and restore by code or file.
+- Ghid nemodal în 4 pași la prima intrare și butonul „Continuă aventura”. / First-run guide and Continue button.
+- Mișcări mai naturale: Kygo alunecă lin între benzi și celule, sare pe o traiectorie de arc fără întârziere, se înclină în viraje, se turtește la aterizare, trapează în alergare, se întoarce spre direcția de mers și respiră când stă; totul se oprește cu „Mișcare redusă”. Randare la 60 fps pe desktop. / Natural motion.
+- Efecte și sunete: scântei și „+N 🦴” la fiecare recompensă, praf la săritură și aterizare, scuturare și scântei roșii la obstacole, confetti la gardieni; sunete generate în browser (clinchet de os, săritură, lovitură, scut, magnet, lătrat la victorie) și muzică cu melodie și bas pe fiecare lume. Oasele plutesc, obstacolele din față pulsează. Totul respectă „Mișcare redusă” și setările de sunet. / Effects and sound.
+- Harta nivelurilor: toate cele 100 de niveluri pe 25 de capitole, cu stele, gardieni și finaluri; orice nivel deblocat se poate rejuca fără să scadă progresul. / Level map with safe replays.
+- Finaluri distincte pentru fiecare dintre cele 25 de capitole: poveste proprie, amintire în album și obiectul capitolului la linia de sosire. / 25 distinct chapter endings.
+- Buton „Salvează progresul ca fișier” în hartă și după fiecare final de capitol. / Backup file shortcut.
+- Statistici și 15 realizări. / Stats and 15 achievements. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/ed06ec603ea22afeb6f5980b24140b9a44834096)
+- Performanță: sprite-ul lui Kygo 346 KB → 61 KB, fundalul jocului în WebP (406 KB → 168 KB). / Lighter images.
 
 ## 2026-09-27 · v1.4 · 100 de niveluri / 100 levels
 - Story are 100 de niveluri în 25 de capitole, cu trasee generate după nivel, obstacole graduale și bonus la fiecare 10 niveluri. Progresul existent rămâne salvat. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/cc3dbb74f0dd3afb80526851864d068ea7e31898)

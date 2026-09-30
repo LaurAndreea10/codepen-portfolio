@@ -1,10 +1,10 @@
 # Kygo World · Insulele din Nori
 
-**Build documentat:** `2026.09.29.1` (reperele funcționale sunt grupate în v1.0–v1.4). Numărul identifică starea publică și nu reprezintă un scor de calitate.
+**Build documentat:** `2026.09.30.1` (reperele funcționale sunt grupate în v1.0–v1.5.1). Numărul identifică buildul din această ramură și nu reprezintă un scor de calitate.
 
 [Istoricul versiunilor](CHANGELOG.md) include etapele importante și commiturile GitHub cu codul exact; jocul îl afișează și în meniul „Istoricul versiunilor”. Istoricul complet rămâne în commiturile repository-ului.
 
-Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`, fără build sau biblioteci externe. Imaginile `sky-islands.jpg` și `kygo-sprite.webp` rămân lângă fișier.
+Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`, fără build sau biblioteci externe. Imaginile de joc `sky-islands.webp` și `kygo-sprite.webp` rămân lângă fișier.
 
 ## Moduri
 
@@ -17,7 +17,7 @@ Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`, fără bu
 
 ## Ediții de sărbătoare
 
-Edițiile pornesc automat după data locală a dispozitivului: **Paște ortodox** de luni din Săptămâna Mare până luni după Înviere (intervalul se încheie marți la 00:00), **Halloween** 24–31 octombrie și **Crăciun** 24 decembrie–6 ianuarie. În meniu apare numărătoarea inversă până la următoarea ediție sau până la încheierea celei active; în joc apare cronometrul ediției active. Celelalte ediții nu pot fi selectate în afara perioadei lor. Poți alege Clasic în timpul evenimentului; trecerea automată se face la următoarea schimbare de perioadă. Fiecare ediție are decor, sunete sintetice și progres separat pentru cele 100 de niveluri. Halloween cere spargerea dovlecilor cu „Sparge!”, de Paște aduni ouă, iar de Crăciun cadouri. Trei din cele cinci obiective ale nivelului acordă insigna ediției.
+Edițiile pornesc automat după calendarul Europe/Bucharest, indiferent de fusul dispozitivului: **Paște ortodox** de luni din Săptămâna Mare până luni după Înviere (intervalul se încheie marți la 00:00), **Halloween** 24–31 octombrie și **Crăciun** 24 decembrie–6 ianuarie. În meniu apare numărătoarea inversă până la următoarea ediție sau până la încheierea celei active; în joc apare cronometrul ediției active. Celelalte ediții nu pot fi selectate în afara perioadei lor. Poți alege Clasic în timpul evenimentului; trecerea automată se face la următoarea schimbare de perioadă. Fiecare ediție are decor, sunete sintetice și progres separat pentru cele 100 de niveluri. Halloween cere spargerea dovlecilor cu „Sparge!”, de Paște aduni ouă, iar de Crăciun cadouri. Trei din cele cinci obiective ale nivelului acordă insigna ediției.
 
 ## Recompensele lui Kygo
 
@@ -42,6 +42,21 @@ Pe mobil, alegerea modului sau atingerea butonului Start concentrează ecranul p
 
 Setări: limbă, temă, contrast, mișcare redusă, sensibilitate swipe, viteze separate, mod fără eșec, vibrație, sunet, muzică, volum, comenzi pentru mâna stângă, scanare cu un buton și hartă text pe ture.
 
+## v1.5 și v1.5.1
+
+PWA cu manifest RO/EN, iconițe și service worker; pe HTTPS sau localhost, jocul este disponibil offline după pregătirea cache-ului. Problemele de înregistrare sunt afișate în cardul aplicației. Gardienii de la nivelurile 10–100 au o zonă finală de șapte pași; bara lor indică traversarea zonei. Harta permite rejucarea nivelurilor deblocate fără pierderea progresului maxim. Cele 25 de capitole au finaluri și amintiri distincte. Sunt disponibile statistici, 15 realizări și fantome cu traseu determinat prin seed în modurile de cursă.
+
+Backupul poate fi descărcat ca JSON sau copiat ca cod `KYGO1:`. Importul validează forma completă și limitele datelor înainte de confirmarea înlocuirii; salvările vechi primesc valori implicite pentru câmpurile lipsă. Un import invalid păstrează progresul existent. Preferințele de limbă, temă, contrast și mișcare redusă persistă. Ghidul poate fi închis sau revăzut și rămâne disponibil la migrarea salvărilor anterioare v1.5.
+
 ## Testare
 
-Workflow-ul „Recent projects mobile accessibility” verifică versiunea publică la 360, 390 și 412 px, inclusiv Start pe touch, ecranul focalizat, RO/EN și cheile progresului separat. Calendarul edițiilor este verificat separat cu date simulate în testul logic; verificările browser ale fiecărei ediții trebuie rulate în intervalul ei sau cu ceas controlat. Capturile reale de 390 px sunt atașate rulării. Testarea directă pe telefon rămâne necesară pentru performanță, sunet și gesturi.
+```sh
+npm install --no-save playwright@1.55.0 @axe-core/playwright@4.10.2
+npx playwright install chromium
+node scripts/mobile-a11y.mjs
+node scripts/kygo-world-tests.mjs
+```
+
+Ambele scripturi pornesc un server local și testează checkout-ul, inclusiv în PR. Auditul mobil verifică SkyDreams și Kygo la 360/390/412 px. `AUDIT_LIVE=1 node scripts/mobile-a11y.mjs` permite separat verificarea celor trei pagini publicate, inclusiv Revenue Landscape, aflat într-un alt repository.
+
+Suita Kygo verifică 360/390/412/1280 px: ghid, manifest și iconițe, pornirea modurilor, keyboard, gesturi, accesibilitate axe în joc, preferințe persistente, calendar și progres pe ediții, cele 100 de tranziții de nivel în modul fără eșec, gardieni/finaluri, rejucare, import/export JSON și cod, respingerea datelor invalide, fantome și pornire offline. Accesul la starea internă este injectat doar în HTML-ul servit de serverul de test; nu există în jocul publicat. Testul celor 100 de niveluri verifică logica progresiei, nu dificultatea prin joc manual. Testarea pe telefon fizic rămâne necesară pentru sunet, haptics și performanță.
