@@ -4,6 +4,11 @@ Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub c
 
 This file summarises the major milestones; each link opens the GitHub commit with the exact code of that version.
 
+## 2026-09-30 · v1.12 · Date pe dispozitiv, feedback la îndemână / Data on device, feedback at hand
+- Pe ecranul de configurare, înainte de data nașterii, apare chenarul „🔒 Datele rămân pe acest dispozitiv”: fără cont, fără server, fără reclame. / A visible “your data stays on this device” notice on the setup screen.
+- Pe toate ecranele jocului, o bară subțire cu „🔒 Datele rămân pe acest dispozitiv” și „💬 Scrie-ți părerea · pentru părinți”. / A slim bar on every screen with the privacy note and the feedback button.
+- Fereastra cu detalii explică ce se salvează, unde, ce se trimite (doar părerea din formular) și cum se exportă progresul; un adult poate șterge toate datele jocului de pe dispozitiv, după întrebarea pentru adulți și o confirmare. / Details dialog with an adult-gated “delete all data” option. [Cod / Code](COMMIT)
+
 ## 2026-09-30 · v1.11 · Festivaluri de sărbători și calendarul de Advent / Holiday festivals and Advent calendar
 - Mărțișor, Paște, Ziua Pământului, 1 Iunie, prima zi de școală și Halloween devin festivaluri de mai multe zile: în fiecare zi se deschide o provocare nouă (găsește, continuă șirul, memory, calcule pe vârstă, decorează), cu o recompensă pentru colecția festivalului. Zilele pierdute rămân deschise până la final. / Multi-day holiday festivals with a new challenge every day.
 - Crăciun: calendar de Advent cu 24 de ferestre (1–24 decembrie, deschise până pe 7 ianuarie). Fiecare fereastră aduce o provocare și un glob pentru bradul copilului; la final apare steaua. Perioada evenimentului de Crăciun începe acum pe 1 decembrie. / Christmas Advent calendar with ornaments for the child’s tree.

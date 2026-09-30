@@ -4,7 +4,7 @@ Joc educativ pentru copii de 3–12 ani, în română, engleză, maghiară și u
 
 - [Joacă pe GitHub Pages](https://laurandreea10.github.io/codepen-portfolio/curious-garden/)
 - [Studiu de caz](https://laurandreea10.github.io/codepen-portfolio/curious-garden/case-study.html)
-- [Istoricul versiunilor](CHANGELOG.md) (v1.0–v1.11, cu link spre codul exact al fiecărei versiuni)
+- [Istoricul versiunilor](CHANGELOG.md) (v1.0–v1.12, cu link spre codul exact al fiecărei versiuni)
 
 ## Ecrane
 
@@ -42,7 +42,7 @@ Pe tabletă ținută orizontal, meniul încape pe un rând și tablele de joc se
 
 ## Date
 
-Profilurile și progresul sunt în `localStorage`, pe dispozitivul jucătorului. Cheile per copil au forma `garden_<modul>_<id>`, iar exportul le include pe toate.
+Profilurile și progresul sunt în `localStorage`, pe dispozitivul jucătorului. Mențiunea „🔒 Datele rămân pe acest dispozitiv” apare pe ecranul de configurare (înainte de data nașterii) și ca buton pe toate ecranele jocului; detaliile spun ce se salvează, unde, ce se trimite (doar părerea din formularul de feedback) și cum se face exportul. Tot acolo, un adult poate șterge toate datele jocului de pe dispozitiv, după întrebarea pentru adulți și o confirmare. Butonul „💬 Scrie-ți părerea” stă lângă mențiune, pe toate ecranele. Cheile per copil au forma `garden_<modul>_<id>`, iar exportul le include pe toate.
 
 ## Structură
 
@@ -58,6 +58,7 @@ Profilurile și progresul sunt în `localStorage`, pe dispozitivul jucătorului.
 - `feedback.js` — intrarea „Scrie-ți părerea” din Setări, care deschide `feedback.html` în limba jocului (RO sau EN).
 - `aproba.html` — pregătește o părere aprobată pentru portofoliu (nu publică și nu trimite nimic). `diploma.html` — diplomă A4 pentru o insignă, în 4 limbi.
 - `drawing.js` — Atelierul de desen (canvas, pagini SVG proprii, galerie `garden_drawing_<id>`). `music.js` — Atelierul de muzică (Web Audio). `crafts.js` — hub-ul Ateliere și cele 10 meserii de acolo (`garden_crafts_<id>`); fiecare atelier are activități de tip pași (`order`), alegere (`match`/`tool`), calcule (`math`) sau proprii (olărit, croșetat, cules). Stilurile lor sunt în `studio.css`.
+- `privacy.js` — mențiunea despre datele de pe dispozitiv, fereastra cu detalii, ștergerea datelor și butonul de feedback.
 - `holidays.js` — festivalurile de sărbători și calendarul de Advent (`garden_festival_<id>_<sărbătoare>_<an>`).
 - `party.js` — petrecerea de ziua copilului (baloane, camera de petrecere), salvată pe an în `garden_party_<id>_<an>`.
 - `emoji.js` și `emoji/` — pictogramele mari (meniu, carduri, unelte, fructe) folosesc imagini [Twemoji](https://github.com/jdecked/twemoji) locale, ca să arate la fel pe orice telefon; dacă o imagine lipsește, rămâne emoji-ul sistemului. Grafică sub CC-BY 4.0 (`emoji/LICENSE.txt`); sunt incluse doar cele ~340 de pictograme folosite. Când adaugi emoji noi: `npm pack @twemoji/svg@15.0.0 && tar xzf twemoji-svg-15.0.0.tgz && node scripts/twemoji-sync.mjs ./package`.
@@ -84,6 +85,7 @@ python curious-garden/tests/test_polish.py
 python curious-garden/tests/test_studio.py
 python curious-garden/tests/test_party.py
 python curious-garden/tests/test_holidays.py   # data e simulată cu page.clock
+python curious-garden/tests/test_privacy.py
 ```
 
 Testele rulează automat în GitHub Actions (`.github/workflows/curious-garden-tests.yml`) la fiecare modificare din `curious-garden/`. Dacă adaugi fișiere noi, trece-le în lista `FILES` din `sw.js` și crește numărul din `CACHE`. Notează fiecare etapă importantă în [`CHANGELOG.md`](CHANGELOG.md), cu linkul spre commit.
