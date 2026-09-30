@@ -8,6 +8,7 @@ This file summarises the major milestones; each link opens the GitHub commit wit
 - De ziua copilului (cu 2 zile înainte, 3 zile după) se deschide petrecerea: mesaj „La mulți ani” cu numele copilului pe Acasă și trei activități în Atelierul aniversar: **Tortul**, **🎈 Baloane** și **🏠 Camera de petrecere**. / On the child’s birthday a party opens with the cake, balloons and a party room.
 - Baloane pe vârste: 3–5 ani umflă 3 baloane fără să se spargă; 6–8 ani respectă o comandă pe culori, iar balonul umflat prea tare se sparge; 9+ ani lucrează cu aer în ml și apăsări exacte. / Age-based balloon challenges.
 - Camera de petrecere: decorațiuni puse unde atinge copilul (sau cu butonul „Pune în cameră”), baloanele umflate atârnă din tavan, banner cu numele; 6–8 ani după listă, 9+ ani cu buget în lei; poza petrecerii se poate salva ca PNG. / Party room with list or budget challenges and a downloadable photo.
+- Urarea și bannerul folosesc numele salvat la configurarea profilului (se schimbă odată cu profilul); fără nume, apare simplu „La mulți ani!”. / Greeting and banner use the profile’s saved nickname, or a plain “Happy birthday!”.
 - În afara zilei de naștere, baloanele și camera sunt blocate; un adult le poate previzualiza. Insignă nouă „Gazda petrecerii”. / Locked outside the birthday window with an adult preview; new “Party host” badge. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/318b33c24cb864d99da28437e6abdcb1207c1d54)
 
 ## 2026-09-30 · v1.9 · Mai ușor de ales, mai mult de învățat / Easier to choose, more to learn
