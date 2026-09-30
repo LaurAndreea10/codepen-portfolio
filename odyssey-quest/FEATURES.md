@@ -22,4 +22,4 @@ The 120 trials are variations of 12 mechanics, not 120 individually authored sto
 
 No hosted opinion inbox, cloud sync, public leaderboard, online multiplayer, automated search indexing guarantee or real-device accessibility certification is included. Local opinions are explicitly marked as local. These services would need a separate configuration and consent model.
 
-Portfolio and Arcade modifications are included in the integration patches. Publication was not performed: the Git connection lacked credentials for the portfolio; automatic review rejected the Arcade push pending explicit destination authorization.
+Published to codepen-portfolio and ARCADE-WORLD on 2026-09-30 after explicit user authorization. Version 2.0.1 corrects automatic switch scanning, the memory hint and maze descriptions.

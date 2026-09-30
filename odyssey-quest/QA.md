@@ -33,4 +33,5 @@ Public release checks for portfolio and Arcade are recorded separately after pub
 - The local RO portfolio shows Odyssey in recent completions (five entries) and history; EN includes the play link.
 - The Arcade mobile More panel exposes Odyssey even when the legacy mTab function is absent. Its floating controls are moved above the tab bar.
 - The virtual-origin iframe test accepts the correct frame’s score and ignores a message from the parent window, then removes the iframe URL on close.
-- Publication remains blocked; no public HTTP availability is claimed.
+- Publication completed through GitHub on 2026-09-30. Pages deployment availability is checked separately.
+- Version 2.0.1 regression: the solved trial includes Next in automatic scanning. Full 120-trial, axe, layout and offline checks pass again.
