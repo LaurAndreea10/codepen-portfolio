@@ -174,7 +174,7 @@ function render(){if(!profile||$('app').hidden)return;token++;section.replaceChi
 if(!['free','color','dots','pixel'].includes(mode))mode=age()<=5?'color':'free';
 const tabs=E('div','','learning-tabs');[['free','🖌️'],['color','🖍️'],['dots','✏️'],['pixel','🟥']].forEach(([k,i])=>{const b=B(`${i} ${tx(k)}`,()=>{mode=k;render()});b.setAttribute('aria-pressed',mode===k);tabs.append(b)});section.append(tabs);
 stage=E('div','','learning-stage studio-stage');status=E('div','','learning-feedback');status.setAttribute('role','status');status.setAttribute('aria-live','polite');section.append(stage,status);
-({free,color:colorPage,dots,pixel})[mode]();galleryBox=E('div','','draw-gallery-box');section.append(E('h3',tx('galleryTitle')),galleryBox);drawGallery()}
+try{localStorage.setItem(`garden_last_${uid()}`,JSON.stringify({view:'drawing',mode}))}catch{}({free,color:colorPage,dots,pixel})[mode]();galleryBox=E('div','','draw-gallery-box');section.append(E('h3',tx('galleryTitle')),galleryBox);drawGallery()}
 document.addEventListener('garden:open',e=>{const {view,mode:m}=e.detail||{};if(view!=='drawing')return;mode=m;render()});
 gardenOn(r=>{if(r==='start'||r==='switch'){paper=null;undo=[];dirty=false;fills={};labels=null;pxGrid=null;pxId=null;dotShape=null;codeMode=null;mode=null}render()});if(profile)render();
 })();

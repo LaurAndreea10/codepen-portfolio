@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Traduceri DeepL · Grădina Curioasă</title>
+<style>
+:root{color-scheme:dark;font:1rem/1.5 system-ui,sans-serif;--bg:#0b1828;--panel:#172b40;--ink:#f6f6ed;--muted:#c5d3d8;--line:#6f8b9e;--accent:#ffc978;--good:#9be6ba}
+@media (prefers-color-scheme:light){:root{color-scheme:light;--bg:#f4f8f2;--panel:#fffdf5;--ink:#193147;--muted:#405c67;--line:#9fb5b0;--accent:#9b4f12;--good:#176a48}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink)}.wrap{max-width:980px;margin:auto;padding:1.25rem 1rem 4rem}
+a{color:var(--accent)}h1{font-size:clamp(1.6rem,5vw,2.3rem);margin:.4rem 0}p,li{color:var(--muted)}
+.bar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:1rem 0;position:sticky;top:0;background:var(--bg);padding:.5rem 0;z-index:2}
+button,select,input[type=search]{font:inherit;min-height:44px;border-radius:.7rem;border:2px solid var(--line);background:var(--panel);color:var(--ink);padding:.4rem .8rem}button.primary{background:var(--accent);color:#152234;border-color:var(--accent);font-weight:800}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:top;padding:.55rem .5rem;border-bottom:1px solid var(--line)}th{font-size:.85rem;color:var(--muted)}td.en{color:var(--muted)}td small{display:block;color:var(--muted);font-size:.75rem}
+tr.kept td{opacity:.55}label{display:flex;gap:.4rem;align-items:center;cursor:pointer;min-height:44px}input[type=checkbox]{width:22px;height:22px}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--panel);border:1px solid var(--line);border-radius:.7rem;padding:.7rem;max-height:220px;overflow:auto}
+@media(max-width:700px){thead{display:none}tr{display:grid;border-bottom:1px solid var(--line);padding:.4rem 0}td{border:0;padding:.2rem .3rem}}
+</style>
+</head>
+<body><div class="wrap">
+<a href="./">← Înapoi la joc</a>
+<h1>Traduceri maghiară și ucraineană cu DeepL</h1>
+<p>Pagina arată doar textele unde traducerea DeepL diferă de cea actuală din joc. Bifează „Păstrez varianta actuală” unde nu vrei schimbarea, apoi salvează lista pe GitHub și pornește aplicarea.</p>
+<ol>
+<li>În GitHub: <strong>Actions → Curious Garden DeepL translations → Run workflow</strong>, cu modul <em>review</em>. Raportul apare aici după 1–2 minute.</li>
+<li>Verifică aici și bifează ce păstrezi. Apasă „Copiază lista”, apoi „Salvează keep.json pe GitHub”.</li>
+<li>Pornește același workflow cu modul <em>apply</em>. Traducerile DeepL intră în joc, iar testele rulează automat înainte de publicare.</li>
+</ol>
+<p id="summary">Se încarcă raportul…</p>
+<div class="bar"><select id="lang" aria-label="Limba"><option value="">Toate limbile</option><option value="hu">Maghiară</option><option value="uk">Ucraineană</option></select>
+<input type="search" id="q" placeholder="Caută…" aria-label="Caută în texte">
+<button type="button" class="primary" id="copy">Copiază lista</button>
+<a id="save" href="https://github.com/LaurAndreea10/codepen-portfolio/new/main/curious-garden/translations?filename=keep.json" target="_blank" rel="noopener noreferrer">Salvează keep.json pe GitHub</a> <a href="https://github.com/LaurAndreea10/codepen-portfolio/edit/main/curious-garden/translations/keep.json" target="_blank" rel="noopener noreferrer">(sau editează-l, dacă există)</a>
+<span id="status" role="status" aria-live="polite"></span></div>
+<table><thead><tr><th>Engleză</th><th>Acum în joc</th><th>DeepL</th><th>Păstrez</th></tr></thead><tbody id="rows"></tbody></table>
+<h2>keep.json</h2><pre id="out">{"keep":[]}</pre>
+</div>
+<script>
+(()=>{
+const $=id=>document.getElementById(id),E=(t,x='',c='')=>{const e=document.createElement(t);e.textContent=x;if(c)e.className=c;return e};let data=null;const keep=new Set();
+const out=()=>{$('out').textContent=JSON.stringify({keep:[...keep]},null,1)};
+function draw(){const lg=$('lang').value,q=$('q').value.toLowerCase();$('rows').replaceChildren();(data?.items||[]).filter(i=>(!lg||i.lang===lg)&&(!q||(i.en+i.ours+i.deepl).toLowerCase().includes(q))).forEach(i=>{const tr=E('tr');tr.classList.toggle('kept',keep.has(i.id));const en=E('td',i.en,'en');en.append(E('small',`${i.file} · ${i.lang.toUpperCase()} · ${i.where}`));const cb=E('input');cb.type='checkbox';cb.checked=keep.has(i.id);cb.onchange=()=>{cb.checked?keep.add(i.id):keep.delete(i.id);tr.classList.toggle('kept',cb.checked);out()};const l=E('label');l.append(cb,E('span','Păstrez varianta actuală'));const td=E('td');td.append(l);tr.append(en,E('td',i.ours),E('td',i.deepl),td);$('rows').append(tr)})}
+fetch('translations/deepl-review.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(j=>{data=j;(j.items||[]).forEach(i=>{if(i.kept)keep.add(i.id)});$('summary').textContent=`Raport din ${new Date(j.generated).toLocaleString('ro-RO')}: ${j.total} texte verificate, ${j.different} diferite de DeepL.`;out();draw()}).catch(()=>{$('summary').textContent='Încă nu există un raport. Pornește workflow-ul în modul review (pasul 1).'});
+$('lang').onchange=draw;$('q').oninput=draw;
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText($('out').textContent);$('status').textContent='Copiat!'}catch{$('status').textContent='Selectează textul de jos și copiază-l.'}};
+})();
+</script>
+</body></html>

@@ -4,13 +4,13 @@ Joc educativ pentru copii de 3–12 ani, în română, engleză, maghiară și u
 
 - [Joacă pe GitHub Pages](https://laurandreea10.github.io/codepen-portfolio/curious-garden/)
 - [Studiu de caz](https://laurandreea10.github.io/codepen-portfolio/curious-garden/case-study.html)
-- [Istoricul versiunilor](CHANGELOG.md) (v1.0–v1.8, cu link spre codul exact al fiecărei versiuni)
+- [Istoricul versiunilor](CHANGELOG.md) (v1.0–v1.9, cu link spre codul exact al fiecărei versiuni)
 
 ## Ecrane
 
 | Ecran | Ce conține |
 | --- | --- |
-| Acasă | „Jocul zilei” (altul în fiecare zi, potrivit vârstei), plăci mari către fiecare ecran, numărătoarea până la aniversare |
+| Acasă | „Jocul zilei” (altul în fiecare zi, potrivit vârstei), „Sugestiile lui Bia” (continuă ultima activitate, un atelier nou, abilitatea care are nevoie de exercițiu), plăci mari către fiecare ecran, numărătoarea până la aniversare |
 | Aventuri | Labirinturi generate pentru unicorn și mașini, atelierul de brioșe, lansarea rachetei |
 | Numere | Ordonarea numerelor, perechi Match, culori (cu mod pentru daltonism) |
 | Descoperă | Litere, ceasul analogic, bani, puzzle pe siluetă, povești cu 7 finaluri |
@@ -19,7 +19,7 @@ Joc educativ pentru copii de 3–12 ani, în română, engleză, maghiară și u
 | Colecția | Abțibilduri de aranjat pe pajiște, grădina care înflorește, 17 insigne, fiecare cu diplomă de tipărit (`diploma.html`, salvabilă ca PDF) |
 | Limbi străine | Engleză, franceză, germană, spaniolă: Ascultă și atinge, Memory cu cuvinte, Scrie cuvântul, Propoziții, Dialoguri, Cuvintele zilei (repetare spațiată), 12 teme de vocabular (inclusiv mâncare, vreme, familie, transport), pronunție |
 | Contra Robo | X și 0, Memory și Bețișoarele (Nim) contra unui robot calculat local, care se adaptează la copil |
-| Ateliere | 12 meserii: **Desen** (desen liber cu găleată, oglindă și ștampile; colorează liber sau după cod/calcule; unește punctele numărând din 2, 3, 5 sau 10; pixel art, în oglindă de la 9 ani; galerie cu 8 desene), **Muzică** (xilofon/pian/flaut cu tastele 1–8, 5 cântece din domeniul public de cântat după lumini, repetă melodia, sus sau jos, ritmuri pe 4 instrumente), **Olărit** (roata olarului, glazuri, modele, cuptor, comenzi de la clienți), **Croșetat** (fulare cu modele de culori), **Grădinărit**, **Ferma** (de la grâu la pâine, de la vacă la brânză, ouă; utilaje; calcule cu cofraje și făină), **Cules fructe** (3–5 ani: doar merele coapte; 6–8 ani: un număr exact de fructe; 9+ ani: coș cu greutate exactă în grame; anotimpurile fructelor), **Animale** (hrana potrivită, puii, sunetele, calcule), **Construcții**, **Doctor** (ursulețul Tedi), **Service** (telefon, bicicletă, mașină) și **Gătit**, fiecare cu pași de ordonat, unelte de ales și calcule pe vârstă. La fermă, animale, construcții, doctor, service și gătit apare o notă de siguranță. |
+| Ateliere | Filtre (Creație, Natură, Meserii), „Recomandat azi”, stele și eticheta NOU pe fiecare card. 12 meserii: **Desen** (desen liber cu găleată, oglindă și ștampile; colorează liber sau după cod/calcule; unește punctele numărând din 2, 3, 5 sau 10; pixel art, în oglindă de la 9 ani; galerie cu 8 desene), **Muzică** (xilofon/pian/flaut cu tastele 1–8, 5 cântece din domeniul public de cântat după lumini, repetă melodia, sus sau jos, ritmuri pe 4 instrumente), **Olărit** (roata olarului, glazuri, modele, cuptor, comenzi de la clienți), **Croșetat** (fulare cu modele de culori), **Grădinărit**, **Ferma** (de la grâu la pâine, de la vacă la brânză, ouă; utilaje; calcule cu cofraje și făină), **Cules fructe** (3–5 ani: doar merele coapte; 6–8 ani: un număr exact de fructe; 9+ ani: coș cu greutate exactă în grame; anotimpurile fructelor), **Animale** (hrana potrivită, puii, sunetele, calcule), **Construcții**, **Doctor** (ursulețul Tedi), **Service** (telefon, bicicletă, mașină) și **Gătit**, fiecare cu pași de ordonat, unelte de ales și calcule pe vârstă, în runde de 5 provocări (3 la pași) cu 1–3 stele. După fiecare răspuns bun apare explicația „De ce?”; de la 9 ani, uneltele devin o „Comandă a zilei” cu trei probleme de potrivit deodată. La fermă, animale, construcții, doctor, service și gătit apare o notă de siguranță. |
 | Aniversare | Tort sau brioșă, decorațiuni, felicitare salvabilă |
 
 Toate sunetele din Atelierul de muzică sunt sintetizate cu Web Audio: fără fișiere audio și fără înregistrări.
@@ -57,6 +57,8 @@ Profilurile și progresul sunt în `localStorage`, pe dispozitivul jucătorului.
 - `feedback.js` — intrarea „Scrie-ți părerea” din Setări, care deschide `feedback.html` în limba jocului (RO sau EN).
 - `aproba.html` — pregătește o părere aprobată pentru portofoliu (nu publică și nu trimite nimic). `diploma.html` — diplomă A4 pentru o insignă, în 4 limbi.
 - `drawing.js` — Atelierul de desen (canvas, pagini SVG proprii, galerie `garden_drawing_<id>`). `music.js` — Atelierul de muzică (Web Audio). `crafts.js` — hub-ul Ateliere și cele 10 meserii de acolo (`garden_crafts_<id>`); fiecare atelier are activități de tip pași (`order`), alegere (`match`/`tool`), calcule (`math`) sau proprii (olărit, croșetat, cules). Stilurile lor sunt în `studio.css`.
+- `emoji.js` și `emoji/` — pictogramele mari (meniu, carduri, unelte, fructe) folosesc imagini [Twemoji](https://github.com/jdecked/twemoji) locale, ca să arate la fel pe orice telefon; dacă o imagine lipsește, rămâne emoji-ul sistemului. Grafică sub CC-BY 4.0 (`emoji/LICENSE.txt`); sunt incluse doar cele ~330 de pictograme folosite.
+- `traduceri.html` — verificarea traducerilor HU/UK cu DeepL (vezi mai jos).
 - `sw.js`, `manifest.webmanifest`, iconițe — instalare și joc offline.
 - `fonts/` — OpenDyslexic (licență SIL OFL, în `fonts/OFL-LICENSE.txt`).
 - `media/` — video demo pentru studiul de caz.
@@ -81,7 +83,17 @@ python curious-garden/tests/test_studio.py
 
 Testele rulează automat în GitHub Actions (`.github/workflows/curious-garden-tests.yml`) la fiecare modificare din `curious-garden/`. Dacă adaugi fișiere noi, trece-le în lista `FILES` din `sw.js` și crește numărul din `CACHE`. Notează fiecare etapă importantă în [`CHANGELOG.md`](CHANGELOG.md), cu linkul spre commit.
 
-Traducerile în maghiară și ucraineană merită verificate de vorbitori nativi.
+## Traduceri cu DeepL
+
+Traducerile în maghiară și ucraineană pot fi verificate și actualizate cu [DeepL API Free](https://www.deepl.com/pro-api) (gratuit până la 500.000 de caractere pe lună), pornind de la textul în engleză:
+
+1. Fă un cont DeepL API Free și copiază cheia (se termină în `:fx`).
+2. În GitHub: **Settings → Secrets and variables → Actions → New repository secret**, cu numele `DEEPL_AUTH_KEY`. Cheia nu intră niciodată în cod.
+3. **Actions → Curious Garden DeepL translations → Run workflow**, cu modul `review`. Scriptul `scripts/deepl-translate.mjs` găsește ~2.800 de texte HU/UK și salvează diferențele în `translations/deepl-review.json`.
+4. Deschide [`traduceri.html`](traduceri.html): vezi engleza, varianta actuală și DeepL una lângă alta. Bifează ce vrei să păstrezi și salvează lista ca `translations/keep.json`.
+5. Rulează workflow-ul cu modul `apply`: traducerile DeepL intră în joc, se verifică sintaxa, rulează toate testele și abia apoi se publică.
+
+Local: `node scripts/deepl-translate.mjs --mode=extract` listează textele fără cheie. Înlocuitorii `{n}` și `${...}` sunt protejați, ca DeepL să nu-i traducă. O verificare finală de la un vorbitor nativ rămâne recomandată.
 
 ## Licență / License
 
@@ -98,4 +110,4 @@ Fonturile OpenDyslexic din `fonts/` sunt distribuite separat sub [SIL Open Font 
 
 ## English
 
-Curious Garden is a learning game for ages 3–12 in Romanian, English, Hungarian and Ukrainian. It has eleven screens (a Workshops area with drawing, music, farm, fruit picking, animals, pottery, crochet, gardening, building, doctor, repair-shop and cooking activities, a foreign-languages area teaching English, French, German and Spanish, a versus mode against a locally computed, adaptive robot, adventures with generated mazes, numbers, letters, clock, money, silhouette puzzles, branching stories, twelve worlds, age-based activities, a sticker and garden collection, and a birthday workshop), a parent report with time limits, and accessibility options including a dyslexia-friendly font, colour-blind mode and single-switch navigation. It works offline, stores data only in the browser, and is covered by automated Playwright tests in GitHub Actions. A [version history](CHANGELOG.md) links every milestone to its exact commit. Original game code is MIT-licensed; OpenDyslexic fonts remain under SIL OFL 1.1.
+Curious Garden is a learning game for ages 3–12 in Romanian, English, Hungarian and Ukrainian. It has eleven screens (a Workshops area with drawing, music, farm, fruit picking, animals, pottery, crochet, gardening, building, doctor, repair-shop and cooking activities, a foreign-languages area teaching English, French, German and Spanish, a versus mode against a locally computed, adaptive robot, adventures with generated mazes, numbers, letters, clock, money, silhouette puzzles, branching stories, twelve worlds, age-based activities, a sticker and garden collection, and a birthday workshop), a parent report with time limits, and accessibility options including a dyslexia-friendly font, colour-blind mode and single-switch navigation. It works offline, stores data only in the browser, and is covered by automated Playwright tests in GitHub Actions. A [version history](CHANGELOG.md) links every milestone to its exact commit; Hungarian and Ukrainian texts can be reviewed and updated with DeepL through a manual GitHub Actions workflow. Large icons use local Twemoji graphics (CC-BY 4.0). Original game code is MIT-licensed; OpenDyslexic fonts remain under SIL OFL 1.1.

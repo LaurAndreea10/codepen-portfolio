@@ -23,7 +23,7 @@ with sync_playwright() as p:
     open_settings(pg); pg.click('.modal-layer summary:has-text("Scrie-ți părerea")')
     check(pg.get_attribute('.feedback-link','href')=='feedback.html?lang=ro','parents’ area (after the adult gate) opens the feedback page in Romanian')
     pg.keyboard.press('Escape'); pg.evaluate("document.querySelectorAll('.modal-layer').forEach(x=>x.remove())")
-    pg.select_option('#lang','hu'); pg.wait_for_timeout(150); open_settings(pg); pg.click('.modal-layer summary:has-text("Írd meg")')
+    pg.select_option('#lang','hu'); pg.wait_for_timeout(150); open_settings(pg); pg.click('.modal-layer details:has(.feedback-link) summary')
     check(pg.get_attribute('.feedback-link','href')=='feedback.html?lang=en','Hungarian/Ukrainian players get the English form (the page is RO/EN)')
     pg.close()
     # --- Pagina feedback.html

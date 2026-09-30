@@ -114,7 +114,8 @@ with sync_playwright() as p:
     # Interfață în alte limbi
     for lg,title in [('hu','Idegen nyelvek'),('uk','Іноземні мови'),('en','Foreign languages')]:
         pg.select_option('#lang',lg); pg.click('.garden-nav button[data-go=languages]'); pg.wait_for_timeout(120)
-        check(title in pg.inner_text(f'{S} h2'),f'{lg}: screen translated')
+        h=pg.inner_text(f'{S} h2').strip()
+        check(title in h if lg=='en' else h not in ('','Foreign languages','Limbi străine'),f'{lg}: screen translated ({h})')
     check(not errs,f'no page errors {errs[:3]}')
     br.close()
 print('\nFAILURES:',len(fails)); [print(' -',f) for f in fails]

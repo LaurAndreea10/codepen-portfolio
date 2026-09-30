@@ -4,6 +4,12 @@ Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub c
 
 This file summarises the major milestones; each link opens the GitHub commit with the exact code of that version.
 
+## 2026-09-30 · v1.9 · Mai ușor de ales, mai mult de învățat / Easier to choose, more to learn
+- **Ghidare fără să eliminăm nimic**: filtre în Ateliere (Creație, Natură, Meserii), „Recomandat azi”, eticheta NOU pentru atelierele neîncercate și stelele obținute pe fiecare card. Pe Acasă, „Sugestiile lui Bia”: continuă ultima activitate, un atelier nou și abilitatea care are nevoie de exercițiu. / Guidance without removing anything: filters, today’s pick, NEW labels, best stars, and Bia’s ideas on Home.
+- **Activități mai adânci**: runde de 5 provocări (3 la pași) cu 1–3 stele; explicația „De ce?” după fiecare unealtă sau hrană aleasă corect (peste 60 de explicații, în 4 limbi); de la 9 ani, „Comanda zilei” cu trei probleme de potrivit deodată. / Rounds with stars, “Why?” explanations, and a three-problem job list for ages 9+.
+- **Grafică**: pictogramele mari folosesc imagini Twemoji locale (arată la fel pe orice telefon), scene colorate pe atelier, animații pentru răspunsul corect și stele (dezactivate la „mișcare redusă”). / Local Twemoji icons, themed scenes per workshop, gentle answer animations.
+- **Traduceri cu DeepL**: scriptul `scripts/deepl-translate.mjs`, workflow-ul manual „Curious Garden DeepL translations” (review/apply, cu testele rulate înainte de publicare) și pagina `traduceri.html` pentru verificare. Cheia DeepL stă doar în secretele GitHub. / DeepL review/apply workflow for Hungarian and Ukrainian. [Cod / Code](COMMIT)
+
 ## 2026-09-30 · v1.8 · Fermă, cules fructe și animale / Farm, fruit picking and animals
 - **Ferma**: de la grâu la pâine, de la vacă la brânză și de la găină la ouă; utilajul potrivit (tractor, combină, găleata de muls, foarfeca de tuns oi); calcule cu ouă, cofraje, făină și rânduri de porumb. / Farm: wheat to bread, cow to cheese, hen to eggs; the right machine or tool; maths with eggs, boxes, flour and corn rows.
 - **Cules fructe**: 3–5 ani culeg doar merele roșii, coapte; 6–8 ani culeg exact câte fructe de un fel li se cer; 9+ ani umplu coșul până la o greutate exactă, în grame. Plus întrebări despre anotimpuri. / Fruit picking: ripe apples only (3–5), an exact count of one fruit (6–8), an exact weight in grams (9+), plus seasons.

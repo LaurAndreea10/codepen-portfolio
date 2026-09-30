@@ -185,7 +185,8 @@ with sync_playwright() as p:
     raw=re.compile(r'^[a-z]+[A-Z][A-Za-z]+$')
     for lg,homeword in [('hu','Kezdőlap'),('uk','Головна'),('en','Home')]:
         pg.select_option('#lang',lg); pg.wait_for_timeout(200)
-        check(homeword in pg.inner_text('.garden-nav'),f'{lg}: menu translated')
+        hw=pg.inner_text('.garden-nav button[data-go=home]').strip()
+        check(hw==homeword if lg=='en' else hw not in ('','Home','Acasă'),f'{lg}: menu translated ({hw})')
         bad=set()
         for v in ['home','adventures','learning','discover','worlds','activities','collection','birthday']:
             pg.click(f'.garden-nav button[data-go={v}]'); pg.wait_for_timeout(80)

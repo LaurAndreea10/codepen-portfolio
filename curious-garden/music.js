@@ -121,7 +121,7 @@ function render(){if(!profile||$('app').hidden)return;token++;stopAll();onStop=n
 if(!['play','songs','echo','ear','beats'].includes(mode))mode=age()<=5?'play':'songs';
 const tabs=E('div','','learning-tabs');[['play','🎹'],['songs','🎵'],['echo','🔁'],['ear','👂'],['beats','🥁']].forEach(([k,i])=>{const b=B(`${i} ${tx(k)}`,()=>{mode=k;render()});b.setAttribute('aria-pressed',mode===k);tabs.append(b)});section.append(tabs);
 stage=E('div','','learning-stage studio-stage');status=E('div','','learning-feedback');status.setAttribute('role','status');status.setAttribute('aria-live','polite');section.append(stage,status);
-if(!(window.AudioContext||window.webkitAudioContext))stage.append(E('p',tx('noAudio'),'warn'));({play,songs,echo,ear,beats})[mode]()}
+if(!(window.AudioContext||window.webkitAudioContext))stage.append(E('p',tx('noAudio'),'warn'));try{localStorage.setItem(`garden_last_${uid()}`,JSON.stringify({view:'music',mode}))}catch{}({play,songs,echo,ear,beats})[mode]()}
 // Oprește sunetele când copilul pleacă de pe ecran.
 new MutationObserver(()=>{if($('app').dataset.view!=='music'){token++;stopAll()}}).observe($('app'),{attributes:true,attributeFilter:['data-view']});
 const KEYS='12345678',KEYS2='asdfghjk';

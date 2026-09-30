@@ -14,6 +14,15 @@ def start(pg,age):
     pg.evaluate("window.gardenMusicFast=true;document.body.classList.add('quiet');document.querySelectorAll('.bia-bubble').forEach(e=>e.remove())")
 def wins(pg,g): return pg.evaluate(f"(()=>{{const d=gardenRewards.read();return (d.stats&&d.stats['{g}']&&d.stats['{g}'].w)||0}})()")
 def status(pg,sel): return pg.inner_text(f'{sel} .learning-feedback')
+def solve_pairs(pg,S,wrong_first=False):
+    probs=pg.locator(f'{S} .pair-problem'); missed=False
+    for i in range(probs.count()):
+        answers=probs.nth(i).get_attribute('data-answers').split(','); probs.nth(i).click()
+        tools=pg.eval_on_selector_all(f'{S} .pair-tools .craft-tool:not([disabled])','bs=>bs.map(b=>b.dataset.tool)')
+        if wrong_first and i==0:
+            w=[t for t in tools if t not in answers][0]; pg.click(f'{S} .pair-tools .craft-tool[data-tool={w}]'); missed='Nu chiar' in status(pg,S)
+        pg.click(f'{S} .pair-tools .craft-tool[data-tool={[t for t in answers if t in tools][0]}]')
+    return missed
 with sync_playwright() as p:
     br=p.chromium.launch(); errs=[]
     def page(age):
@@ -125,8 +134,10 @@ with sync_playwright() as p:
         for i in range(n): pg.locator(f'{S} .craft-choice[data-step="{i}"]').dispatch_event('click')
         check('înainte' in miss and 'ordinea bună' in status(pg,S) and wins(pg,'craft-'+k)==1,f'{k}: {n} steps in order')
         pg.click(f'{S} .learning-tabs button:nth-child(2)'); pg.wait_for_timeout(50)
-        ans=pg.get_attribute(f'{S} .studio-stage','data-answer'); pg.click(f'{S} .craft-tool[data-tool={ans}]')
-        check('Corect' in status(pg,S) and wins(pg,'craft-'+k)==2,f'{k}: right tool chosen')
+        check(pg.locator(f'{S} .pair-problem').count()==3,f'{k}: age 10 gets a job list with 3 problems')
+        missed=solve_pairs(pg,S,wrong_first=(k=='service'))
+        check('Toate trei' in status(pg,S) and wins(pg,'craft-'+k)==2 and pg.locator(f'{S} .pair-problem.right').count()==3,f'{k}: every problem matched with its tool')
+        if k=='service': check(missed,'service: a wrong tool in the job list is refused')
         pg.click(f'{S} .learning-tabs button:nth-child(3)'); pg.wait_for_timeout(50)
         ans=pg.get_attribute(f'{S} .studio-stage','data-answer'); pg.click(f'{S} .craft-answer:text-is("{ans}")')
         check('Corect' in status(pg,S),f'{k}: age-10 maths question answered')
@@ -137,13 +148,15 @@ with sync_playwright() as p:
     # Animale: hrană (cu mai multe răspunsuri bune), pui, sunete, calcule
     pg.evaluate("gardenCrafts.open('animals')"); pg.wait_for_timeout(80); S='#studio'
     check(pg.locator(f'{S} .craft-safety').count()==1 and pg.locator(f'{S} .learning-tabs button').count()==4,'animals: safety note and 4 activities')
-    for i,name in [(1,'food'),(2,'babies'),(3,'sounds')]:
+    solve_pairs(pg,S); check('Toate trei' in status(pg,S),'animals: age 10 feeds three animals in one job list')
+    for i,name in [(2,'babies'),(3,'sounds')]:
         pg.click(f'{S} .learning-tabs button:nth-child({i})'); pg.wait_for_timeout(50)
         ans=pg.get_attribute(f'{S} .studio-stage','data-answer'); others=[t for t in pg.eval_on_selector_all(f'{S} .craft-tool','bs=>bs.map(b=>b.dataset.tool)') if t!=ans]
         pg.click(f'{S} .craft-tool[data-tool={others[0]}]'); miss='Corect' not in status(pg,S)
         pg.click(f'{S} .craft-tool[data-tool={ans}]')
         check(miss and 'Corect' in status(pg,S),f'animals: {name} question')
     check(wins(pg,'craft-animals')==3,'animal answers are counted for the report')
+    check(pg.locator(f'{S} .craft-why').count()==0,'babies and sounds need no explanation')
     pg.click(f'{S} .learning-tabs button:nth-child(4)'); ans=pg.get_attribute(f'{S} .studio-stage','data-answer'); pg.click(f'{S} .craft-answer:text-is("{ans}")')
     check('Corect' in status(pg,S),'animals: age-10 maths question')
     # Cules fructe, 10 ani: coș cu greutate exactă
@@ -212,12 +225,34 @@ with sync_playwright() as p:
     pg.evaluate("gardenGo('music')"); pg.wait_for_timeout(50); pg.click('#music .learning-tabs button:nth-child(3)')
     check(pg.locator('#music .xylo .bar').count()==4,'age 4: echo uses 4 bars')
     pg.select_option('#lang','uk'); pg.wait_for_timeout(200); pg.evaluate("gardenGo('studio')"); pg.evaluate("gardenCrafts.open(null)"); pg.wait_for_timeout(80)
-    check(pg.inner_text('#studio h2')=='Майстерні та професії','Ukrainian workshop hub')
+    h=pg.inner_text('#studio h2'); check(h not in ('','Workshops and jobs','Ateliere și meserii') and any('\u0400'<=c<='\u04ff' for c in h),f'Ukrainian workshop hub ({h})')
     pg.select_option('#lang','hu'); pg.wait_for_timeout(200)
-    check(pg.inner_text('#studio h2')=='Műhelyek és mesterségek','Hungarian workshop hub')
+    h=pg.inner_text('#studio h2'); check(h not in ('','Workshops and jobs','Ateliere și meserii') and not any('\u0400'<=c<='\u04ff' for c in h),f'Hungarian workshop hub ({h})')
     pg.screenshot(path=SHOTS+'s-hub-hu.png')
     pg.close()
-    pg=page(7); pg.evaluate("gardenGo('studio');gardenCrafts.open('picking')"); pg.wait_for_timeout(80); S='#studio'
+    pg=page(7); pg.evaluate("gardenGo('studio')"); pg.wait_for_timeout(80); S='#studio'
+    # Hub ghidat: filtre, recomandarea zilei, NOU
+    check(pg.locator(f'{S} .hub-filter button').count()==4 and pg.locator(f'{S} .craft-card.recommended').count()==1 and pg.locator(f'{S} .craft-card').first.get_attribute('class').count('recommended')==1,'hub: 4 filters and today’s pick shown first')
+    check(pg.locator(f'{S} .craft-badge:not(.rec)').count()==11,'hub: untried workshops are marked NEW')
+    pg.click(f'{S} .hub-filter button[data-cat=nature]'); cards=pg.eval_on_selector_all(f'{S} .craft-card','bs=>bs.map(b=>b.dataset.craft).sort()')
+    check(cards==['animals','farm','garden','picking'],f'hub: Nature filter shows garden, farm, fruit, animals ({cards})')
+    pg.click(f'{S} .hub-filter button[data-cat=all]')
+    try: pg.wait_for_function("[...document.querySelectorAll('#studio .craft-card-icon img.tw')].every(i=>i.complete&&i.naturalWidth>0)",timeout=5000)
+    except Exception: pass
+    check(pg.evaluate("document.querySelectorAll('.garden-nav .ni img.tw').length")==11 and pg.evaluate("[...document.querySelectorAll('#studio .craft-card-icon img.tw')].every(i=>i.complete&&i.naturalWidth>0)"),'Twemoji icons load in the menu and on the workshop cards')
+    # 6–8 ani: o problemă, 4 unelte, explicația „De ce?”, runda de 5 și stelele
+    pg.evaluate("gardenCrafts.open('doctor')"); pg.click(f'{S} .learning-tabs button:nth-child(2)'); pg.wait_for_timeout(50)
+    check(pg.locator(f'{S} .round-bar span').count()==5 and pg.locator(f'{S} .craft-tool').count()==4,'age 7: rounds of 5 problems with 4 tools each')
+    for r in range(5):
+        ans=pg.get_attribute(f'{S} .studio-stage','data-answer')
+        if r==0:
+            w=[t for t in pg.eval_on_selector_all(f'{S} .craft-tool','bs=>bs.map(b=>b.dataset.tool)') if t!=ans][0]; pg.click(f'{S} .craft-tool[data-tool={w}]')
+        pg.click(f'{S} .craft-tool[data-tool={ans}]')
+        if r==0: check(pg.locator(f'{S} .craft-why').count()==1,'a correct answer explains why')
+        if r<4: pg.click(f'{S} .craft-next')
+    check(pg.get_attribute(f'{S} .studio-stage','data-stars')=='2' and pg.locator(f'{S} .round-stars').count()==1,'round of 5 ends with stars (one mistake → 2 stars)')
+    pg.click(f'{S} .studio-back'); check('⭐⭐☆' in pg.inner_text(f'{S} .craft-card[data-craft=doctor]'),'best stars appear on the workshop card')
+    pg.evaluate("gardenCrafts.open('picking')"); pg.wait_for_timeout(80)
     want=pg.get_attribute(f'{S} .studio-stage','data-want'); t=int(pg.get_attribute(f'{S} .studio-stage','data-target'))
     check(pg.get_attribute(f'{S} .studio-stage','data-mode')=='count' and 3<=t<=6,f'age 7: pick exactly {t} of one fruit')
     pg.click(f'{S} .orchard .fruit:not([data-fruit={want}]) >> nth=0'); check('Caută' in status(pg,S),'age 7: other fruit gives a hint')
@@ -225,6 +260,12 @@ with sync_playwright() as p:
     check('Coșul e plin' in status(pg,S) and pg.locator(f'{S} .fruit-basket .fruit').count()==t,'age 7: exact count fills the basket')
     pg.evaluate("gardenCrafts.open('farm')"); pg.click(f'{S} .learning-tabs button:nth-child(3)'); ans=pg.get_attribute(f'{S} .studio-stage','data-answer'); pg.click(f'{S} .craft-answer:text-is("{ans}")')
     check('Corect' in status(pg,S),'age 7: egg boxes question')
+    # Sugestiile lui Bia pe Acasă: continuă, nou, de exersat
+    pg.click('.garden-nav button[data-go=home]'); pg.evaluate("gardenGo('studio');gardenGo('home')"); pg.wait_for_timeout(100)
+    kinds=pg.eval_on_selector_all('.bia-idea','bs=>bs.map(b=>b.dataset.kind)')
+    check(kinds==['continue','new','practice'],f'Home shows Bia’s ideas: continue, new, practise ({kinds})')
+    pg.click('.bia-idea[data-kind=continue]'); pg.wait_for_timeout(100)
+    check(pg.evaluate("document.getElementById('app').dataset.view")=='studio' and pg.get_attribute('#studio','data-craft')=='farm','Continue reopens the last workshop')
     pg.close()
     check(not errs,f'no page errors {errs[:3]}')
 print('\nFAILURES:',len(fails))
