@@ -1,7 +1,7 @@
 // Grădina Curioasă — pictograme la fel pe orice dispozitiv: emoji-urile decorative mari devin imagini Twemoji locale.
 // Twemoji © Twitter/X și colaboratorii, grafică sub licența CC-BY 4.0 (https://github.com/jdecked/twemoji).
 (()=>{
-const SEL='.party-item-icon,.party-placed,.craft-big,.craft-card-icon,.craft-head-icon,.craft-tool-icon,.quick-icon,.daily-icon,.bia-idea-icon,.garden-nav .ni,.fruit>span,.craft-show,.round-stars,.pair-tool,.craft-scene .craft-big';
+const SEL='.fest-item,.fest-day-icon,.advent-orn,.fest-opt,.fest-cell,.party-item-icon,.party-placed,.craft-big,.craft-card-icon,.craft-head-icon,.craft-tool-icon,.quick-icon,.daily-icon,.bia-idea-icon,.garden-nav .ni,.fruit>span,.craft-show,.round-stars,.pair-tool,.craft-scene .craft-big';
 const RE=/(?:[#*0-9]\u{FE0F}?\u{20E3}|[\u{1F1E6}-\u{1F1FF}]{2}|\p{Extended_Pictographic}[\u{FE0F}\u{1F3FB}-\u{1F3FF}]?(?:\u{200D}\p{Extended_Pictographic}[\u{FE0F}\u{1F3FB}-\u{1F3FF}]?)*)/gu;
 const code=e=>{const cps=[...e].map(c=>c.codePointAt(0).toString(16));return (cps.includes('200d')?cps:cps.filter(c=>c!=='fe0f')).join('-')};
 const off=()=>document.body.classList.contains('native-emoji');

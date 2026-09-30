@@ -4,7 +4,7 @@ Joc educativ pentru copii de 3–12 ani, în română, engleză, maghiară și u
 
 - [Joacă pe GitHub Pages](https://laurandreea10.github.io/codepen-portfolio/curious-garden/)
 - [Studiu de caz](https://laurandreea10.github.io/codepen-portfolio/curious-garden/case-study.html)
-- [Istoricul versiunilor](CHANGELOG.md) (v1.0–v1.10, cu link spre codul exact al fiecărei versiuni)
+- [Istoricul versiunilor](CHANGELOG.md) (v1.0–v1.11, cu link spre codul exact al fiecărei versiuni)
 
 ## Ecrane
 
@@ -16,6 +16,7 @@ Joc educativ pentru copii de 3–12 ani, în română, engleză, maghiară și u
 | Descoperă | Litere, ceasul analogic, bani, puzzle pe siluetă, povești cu 7 finaluri |
 | 12 lumi | Poveste, provocarea zilei, Constructor, Împreună, Liniștit, Eveniment |
 | Activități | Jocuri scurte pe vârstă, 8 sărbători (Paștele ortodox în RO/UK, cel catolic în HU/EN), album, setări pentru adult |
+| Festivaluri | În fiecare zi a unei sărbători (Mărțișor, Paște, Ziua Pământului, 1 Iunie, prima zi de școală, Halloween) se deschide o provocare nouă: găsește obiectele, continuă șirul, memory, calcule pe vârstă, decorează (dovleac, ou, mărțișor, planetă, zmeu, ghiozdan). Zilele pierdute rămân deschise până la finalul sărbătorii; fiecare zi aduce o recompensă în colecția festivalului. De Crăciun, **calendarul de Advent**: 24 de ferestre (1–24 decembrie, deschise până pe 7 ianuarie), fiecare cu o provocare și un glob pentru bradul copilului. Anunț pe Acasă; în afara sărbătorilor, un adult poate previzualiza din Activități. |
 | Colecția | Abțibilduri de aranjat pe pajiște, grădina care înflorește, 17 insigne, fiecare cu diplomă de tipărit (`diploma.html`, salvabilă ca PDF) |
 | Limbi străine | Engleză, franceză, germană, spaniolă: Ascultă și atinge, Memory cu cuvinte, Scrie cuvântul, Propoziții, Dialoguri, Cuvintele zilei (repetare spațiată), 12 teme de vocabular (inclusiv mâncare, vreme, familie, transport), pronunție |
 | Contra Robo | X și 0, Memory și Bețișoarele (Nim) contra unui robot calculat local, care se adaptează la copil |
@@ -57,6 +58,7 @@ Profilurile și progresul sunt în `localStorage`, pe dispozitivul jucătorului.
 - `feedback.js` — intrarea „Scrie-ți părerea” din Setări, care deschide `feedback.html` în limba jocului (RO sau EN).
 - `aproba.html` — pregătește o părere aprobată pentru portofoliu (nu publică și nu trimite nimic). `diploma.html` — diplomă A4 pentru o insignă, în 4 limbi.
 - `drawing.js` — Atelierul de desen (canvas, pagini SVG proprii, galerie `garden_drawing_<id>`). `music.js` — Atelierul de muzică (Web Audio). `crafts.js` — hub-ul Ateliere și cele 10 meserii de acolo (`garden_crafts_<id>`); fiecare atelier are activități de tip pași (`order`), alegere (`match`/`tool`), calcule (`math`) sau proprii (olărit, croșetat, cules). Stilurile lor sunt în `studio.css`.
+- `holidays.js` — festivalurile de sărbători și calendarul de Advent (`garden_festival_<id>_<sărbătoare>_<an>`).
 - `party.js` — petrecerea de ziua copilului (baloane, camera de petrecere), salvată pe an în `garden_party_<id>_<an>`.
 - `emoji.js` și `emoji/` — pictogramele mari (meniu, carduri, unelte, fructe) folosesc imagini [Twemoji](https://github.com/jdecked/twemoji) locale, ca să arate la fel pe orice telefon; dacă o imagine lipsește, rămâne emoji-ul sistemului. Grafică sub CC-BY 4.0 (`emoji/LICENSE.txt`); sunt incluse doar cele ~340 de pictograme folosite. Când adaugi emoji noi: `npm pack @twemoji/svg@15.0.0 && tar xzf twemoji-svg-15.0.0.tgz && node scripts/twemoji-sync.mjs ./package`.
 - `traduceri.html` — verificarea traducerilor HU/UK cu DeepL (vezi mai jos).
@@ -81,6 +83,7 @@ python curious-garden/tests/test_feedback.py
 python curious-garden/tests/test_polish.py
 python curious-garden/tests/test_studio.py
 python curious-garden/tests/test_party.py
+python curious-garden/tests/test_holidays.py   # data e simulată cu page.clock
 ```
 
 Testele rulează automat în GitHub Actions (`.github/workflows/curious-garden-tests.yml`) la fiecare modificare din `curious-garden/`. Dacă adaugi fișiere noi, trece-le în lista `FILES` din `sw.js` și crește numărul din `CACHE`. Notează fiecare etapă importantă în [`CHANGELOG.md`](CHANGELOG.md), cu linkul spre commit.

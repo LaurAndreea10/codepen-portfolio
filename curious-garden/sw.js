@@ -1,11 +1,11 @@
 // Grădina Curioasă — service worker pentru joc offline.
 // Strategie: întâi rețeaua (versiunea nouă apare imediat după publicare),
 // iar fără internet se folosește copia salvată.
-const CACHE = 'gradina-curioasa-v13';
+const CACHE = 'gradina-curioasa-v14';
 const FILES = [
   './', 'index.html', 'diploma.html', 'feedback.html', 'approved-feedback.json', 'feedback-display.js',
   'expansion.css', 'premium.css', 'arcade.css', 'home.css', 'learning.css', 'extras.css',
-  'i18n.js', 'art.js', 'expansion.js', 'premium.js', 'arcade.js', 'home.js', 'learning.js', 'discover.js', 'rewards.js', 'parents.js', 'versus.js', 'languages.js','drawing.js','music.js','crafts.js','emoji.js','party.js','studio.css', 'feedback.js',
+  'i18n.js', 'art.js', 'expansion.js', 'premium.js', 'arcade.js', 'home.js', 'learning.js', 'discover.js', 'rewards.js', 'parents.js', 'versus.js', 'languages.js','drawing.js','music.js','crafts.js','emoji.js','party.js','holidays.js','studio.css', 'feedback.js',
   'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png',
   'fonts/opendyslexic-latin-400-normal.woff2', 'fonts/opendyslexic-latin-700-normal.woff2'
 ];

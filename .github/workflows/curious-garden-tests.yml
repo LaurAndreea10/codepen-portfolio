@@ -89,6 +89,12 @@ jobs:
           GARDEN_SHOTS: ${{ runner.temp }}/garden-shots
         run: python curious-garden/tests/test_party.py
 
+      - name: Holiday festivals and Advent calendar tests (simulated dates)
+        env:
+          GARDEN_URL: http://localhost:8000/curious-garden/
+          GARDEN_SHOTS: ${{ runner.temp }}/garden-shots
+        run: python curious-garden/tests/test_holidays.py
+
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4

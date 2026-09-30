@@ -4,6 +4,11 @@ Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub c
 
 This file summarises the major milestones; each link opens the GitHub commit with the exact code of that version.
 
+## 2026-09-30 · v1.11 · Festivaluri de sărbători și calendarul de Advent / Holiday festivals and Advent calendar
+- Mărțișor, Paște, Ziua Pământului, 1 Iunie, prima zi de școală și Halloween devin festivaluri de mai multe zile: în fiecare zi se deschide o provocare nouă (găsește, continuă șirul, memory, calcule pe vârstă, decorează), cu o recompensă pentru colecția festivalului. Zilele pierdute rămân deschise până la final. / Multi-day holiday festivals with a new challenge every day.
+- Crăciun: calendar de Advent cu 24 de ferestre (1–24 decembrie, deschise până pe 7 ianuarie). Fiecare fereastră aduce o provocare și un glob pentru bradul copilului; la final apare steaua. Perioada evenimentului de Crăciun începe acum pe 1 decembrie. / Christmas Advent calendar with ornaments for the child’s tree.
+- Anunț pe Acasă în perioada sărbătorii, buton „Festivalul” pe cardurile din Activități (previzualizare pentru adulți în rest), album cu obiectele decorate, insignă nouă „Spiritul sărbătorilor”. Teste noi cu data simulată. / Home banner, adult preview, holiday album, new badge, tests with simulated dates. [Cod / Code](COMMIT)
+
 ## 2026-09-30 · v1.10 · Petrecerea de ziua copilului / Birthday party
 - De ziua copilului (cu 2 zile înainte, 3 zile după) se deschide petrecerea: mesaj „La mulți ani” cu numele copilului pe Acasă și trei activități în Atelierul aniversar: **Tortul**, **🎈 Baloane** și **🏠 Camera de petrecere**. / On the child’s birthday a party opens with the cake, balloons and a party room.
 - Baloane pe vârste: 3–5 ani umflă 3 baloane fără să se spargă; 6–8 ani respectă o comandă pe culori, iar balonul umflat prea tare se sparge; 9+ ani lucrează cu aer în ml și apăsări exacte. / Age-based balloon challenges.
