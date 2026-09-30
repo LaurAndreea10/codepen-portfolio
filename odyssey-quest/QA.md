@@ -1,3 +1,7 @@
+## 2.1 checks
+
+Full 120-trial browser regression, mobile layout, axe and offline reload pass. The real two-browser WebRTC test did not establish a connection: this environment produced SDP without ICE candidates. Online duel and peer backup are experimental and not verified end to end. The UI detects missing routes and reports the block. Real Internet NAT traversal remains dependent on network configuration. Cloud sync and physical assistive-device tests are not claimed.
+
 # Verification · 2026-09-30
 
 ## Passed

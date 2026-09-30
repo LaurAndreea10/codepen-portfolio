@@ -1,3 +1,7 @@
+## 2.1 Connected expedition / Expediție conectată
+
+Five persistent fictional decisions affect the ending. WebRTC peers exchange offer/answer codes privately; host invites identical seeded trials. Scores are exchanged directly and are not certified. Backup transfer requires an explicit send and accept. No cloud storage or public matchmaking. STUN: Cloudflare; no TURN fallback. Feedback opens a public GitHub issue draft, requires a GitHub account and submission by the player.
+
 # Odyssey Quest · v2.0.0
 
 **RO** — Aventură educativă cu 12 insule, 120 de probe și 11 moduri de joc. Inspirată din traseul lui Odiseu; povestea este o adaptare simplificată, harta este simbolică.

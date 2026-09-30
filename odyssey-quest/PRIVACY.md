@@ -1,3 +1,7 @@
+## Connected mode / Mod conectat
+
+Optional WebRTC uses Cloudflare STUN for network discovery and exposes connection metadata/IP addresses to peers and the STUN service. No TURN relay or app server stores progress. Send backup shares all three local profiles, preferences and their local opinions with the connected peer; accept replaces the receiving device’s local game state. Narrative choices stay local and are not included in that backup. Exchange signaling codes privately and connect only to a trusted person. GitHub feedback is public after the player submits it; GitHub account and privacy terms apply. No email delivery is used.
+
 # Confidențialitate / Privacy
 
 Actualizat / Updated: 2026-09-30 · v2.0.0

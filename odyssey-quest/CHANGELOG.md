@@ -1,3 +1,9 @@
+## 2.1.0 — 2026-09-30
+
+- Fictional narrative choices and persistent endings.
+- Optional WebRTC duel, seeded invitations, explicit validated device backup transfer.
+- Reviewed GitHub issue feedback; no email or automatic publication.
+
 # 2.0.1 — 2026-09-30
 
 - Scanarea include Următorul și prelungirea timerului; elimină referințele la butoane înlocuite.

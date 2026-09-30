@@ -1,3 +1,7 @@
+## 2.1 implementation
+
+Branching fictional choices: five decisions, three outcome families and a Circe delay. Direct WebRTC duel: manual signaling, identical seeded challenge invitations and peer scores. Explicit validated backup transfer between connected devices. Centralized feedback via reviewed public GitHub issues. Automatic cloud sync and a hosted private inbox are not included.
+
 # Release scope / Funcții v2.0.0
 
 | Area | Delivered |
