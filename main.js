@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const PREVIOUS_MAIN = 'main-core.js?v=20260930-odyssey';
+  const PREVIOUS_MAIN = 'main-core.js?v=20261001-odyssey';
 
   // Single source of truth for CodePen growth.
   // 83 projects were already represented before this Pen was added.

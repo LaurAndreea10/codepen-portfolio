@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Odyssey Quest · Studiu de caz</title>
+<meta name="description" content="Studiu de caz: cum am transformat un quiz cu 12 întrebări într-o aventură educativă cu 120 de probe, 11 moduri, accesibilitate, PWA offline și duel WebRTC, fără server și fără dependențe.">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/odyssey-quest/case-study.html">
+<meta property="og:title" content="Odyssey Quest · Studiu de caz">
+<meta property="og:description" content="120 de probe din 12 mecanici, accesibilitate fără reacții rapide, progres local validat și duel direct între dispozitive.">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/odyssey-quest/social.png">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#071c29">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#071c29;--panel:#102b3c;--ink:#f4f1e8;--muted:#bfd0d8;--edge:#2c4c60;--accent:#ffd397;--sea:#a2e3f8;--good:#9be6ba;--bad:#ffa3a3;color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f5f2ea;--panel:#fffdf7;--ink:#10293a;--muted:#3e5967;--edge:#cfd8d6;--accent:#94530f;--sea:#145f7a;--good:#176a48;--bad:#a4262c;color-scheme:light}}
+:root[data-theme="dark"]{--bg:#071c29;--panel:#102b3c;--ink:#f4f1e8;--muted:#bfd0d8;--edge:#2c4c60;--accent:#ffd397;--sea:#a2e3f8;--good:#9be6ba;--bad:#ffa3a3}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:880px;margin:auto;padding:1.5rem 16px 4rem}
+header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.brand{font-weight:800;letter-spacing:.06em}.lang{display:flex;gap:.4rem}
+button,.btn{font:inherit;border:2px solid var(--edge);background:var(--panel);color:var(--ink);border-radius:.8rem;padding:.55rem .9rem;cursor:pointer;text-decoration:none;display:inline-block;min-height:44px}
+button[aria-pressed=true],.btn.primary{background:var(--accent);border-color:var(--accent);color:#10293a;font-weight:800}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) button[aria-pressed=true],:root:not([data-theme="dark"]) .btn.primary{color:#fff}}
+button:focus-visible,.btn:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+a{color:var(--sea)}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:800;color:var(--accent)}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(2.2rem,7vw,3.6rem);line-height:1.05;margin:.3rem 0 .7rem}
+h2{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:1.7rem;margin:2.6rem 0 .6rem}h3{font-size:1.08rem;margin:1.4rem 0 .3rem}
+p,li{color:var(--muted)}strong{color:var(--ink)}code{font-size:.92em;color:var(--ink)}
+.lead{font-size:1.15rem}
+.links{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0 1.5rem}
+figure{margin:1.2rem 0}figure img{width:100%;height:auto;display:block;border-radius:1rem;border:2px solid var(--edge);background:#000}
+figcaption{font-size:.9rem;color:var(--muted);margin-top:.4rem}
+.pair{display:grid;grid-template-columns:2fr 1fr;gap:.8rem;align-items:start}
+@media (max-width:600px){.pair{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin:1.5rem 0}
+.stat{background:var(--panel);border:1px solid var(--edge);border-radius:1rem;padding:1rem}.stat b{display:block;font-size:1.8rem;color:var(--accent);line-height:1.1}.stat span{font-size:.9rem;color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:1rem;padding:1rem 1.2rem;margin:.8rem 0}
+.card h3{margin-top:0}.problem{color:var(--bad);font-weight:700}.fix{color:var(--good);font-weight:700}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.95rem}th,td{text-align:left;padding:.55rem .5rem;border-bottom:1px solid var(--edge);vertical-align:top}th{color:var(--ink)}td{color:var(--muted)}
+ul{padding-left:1.2rem}
+.honest{border-left:4px solid var(--accent)}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--edge);font-size:.9rem;color:var(--muted);display:flex;gap:.6rem;flex-wrap:wrap}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="brand btn" href="./">⛵ ODYSSEY QUEST</a>
+  <div class="lang" role="group" aria-label="Limba / Language">
+    <button type="button" data-set="ro" aria-pressed="true">RO</button>
+    <button type="button" data-set="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+
+<main lang="ro" data-lang="ro">
+  <div class="eyebrow">Studiu de caz · Joc educativ · Accesibilitate</div>
+  <h1>Odyssey Quest</h1>
+  <p class="lead">O aventură educativă despre călătoria lui Odiseu: 12 insule, 120 de probe și 11 moduri de joc, în română și engleză. Merge offline, se instalează ca aplicație și nu are server, conturi sau dependențe la rulare. Studiul arată cum un quiz cu 12 întrebări a devenit un joc complet, fără să pierd din vedere accesibilitatea și datele jucătorului.</p>
+  <div class="links">
+    <a class="btn primary" href="./">Joacă Odyssey Quest</a>
+    <a class="btn" href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/odyssey-quest">Cod sursă</a>
+    <a class="btn" href="CHANGELOG.md">Istoricul versiunilor</a>
+  </div>
+  <figure><img src="media/hero.webp" width="1280" height="800" alt="Ecranul de start Odyssey Quest: titlul „Marea te cheamă. Itaca te așteaptă.”, o corabie stilizată la apus și contoarele de progres." loading="eager"><figcaption>Ecranul de start, cu progresul jucătorului și harta simbolică a celor 12 insule.</figcaption></figure>
+
+  <div class="stats">
+    <div class="stat"><b>120</b><span>probe progresive, din 12 mecanici diferite</span></div>
+    <div class="stat"><b>11</b><span>moduri de joc, de la Poveste la Duo și Atelier</span></div>
+    <div class="stat"><b>0</b><span>server, conturi, tracking sau dependențe la rulare</span></div>
+    <div class="stat"><b>33 KB</b><span>tot codul, comprimat (HTML, CSS, JS)</span></div>
+  </div>
+
+  <h2>Contextul</h2>
+  <p>Versiunea 1.0 era un singur fișier HTML: 12 întrebări despre Odiseea, o hartă simbolică, RO/EN și temă luminoasă/întunecată. Funcționa, dar era un quiz. Am vrut ca fiecare insulă să se joace altfel, ca jocul să fie accesibil și pentru cine nu poate reacționa rapid, iar progresul să rămână al jucătorului, fără cont.</p>
+
+  <h2>Deciziile importante</h2>
+  <div class="card">
+    <h3>120 de probe fără 120 de niveluri scrise de mână</h3>
+    <p><span class="problem">Provocarea:</span> 120 de probe scrise individual ar fi fost greu de întreținut și imposibil de testat complet.</p>
+    <p><span class="fix">Soluția:</span> 12 mecanici (perechi, labirint, vânt, culoare sigur, ingrediente, profeție, secvență, curenți, provizii, plută, cronologie, arc), fiecare cu 10 variații deterministe. Aceeași probă, dificultate și „sămânță” dau mereu același puzzle, așa că doi jucători pot primi exact aceleași probe, iar testele pot verifica toate cele 360 de variante.</p>
+  </div>
+  <div class="card">
+    <h3>Niciun moment în care trebuie să fii rapid</h3>
+    <p><span class="problem">Provocarea:</span> multe jocuri pun presiune pe timp de reacție, ceea ce exclude jucătorii cu dizabilități motorii.</p>
+    <p><span class="fix">Soluția:</span> toate jocurile sunt pe ture. Timerul e oprit implicit; dacă e pornit, se poate pune pe pauză, prelungi, și se suspendă singur când tabul e ascuns sau setările sunt deschise. Chiar și arcul din Itaca se țintește cu butoane sau slider, nu cu reflexe.</p>
+  </div>
+  <div class="card">
+    <h3>Recompense care nu se pot „farma”</h3>
+    <p><span class="problem">Provocarea:</span> dacă rejucarea unei probe dă din nou scoici, magazinul își pierde sensul.</p>
+    <p><span class="fix">Soluția:</span> fiecare recompensă are un ID legat de probă, mod, sămânță și rundă. O probă din Poveste se plătește o singură dată; magazinul acceptă doar scoici câștigate, fără plăți și fără cont.</p>
+  </div>
+  <div class="card">
+    <h3>Datele stau la jucător, dar se pot muta</h3>
+    <p><span class="problem">Provocarea:</span> fără server, progresul trăiește doar în browser și se poate pierde sau strica.</p>
+    <p><span class="fix">Soluția:</span> trei profiluri locale, backup JSON validat strict la import, respingerea fișierelor corupte și migrarea automată a progresului din v1. În 2.1, backupul se poate transfera direct între dispozitive, doar după „Trimite” pe unul și „Acceptă” pe celălalt.</p>
+  </div>
+  <div class="card">
+    <h3>Duel între două dispozitive, fără server propriu</h3>
+    <p><span class="problem">Provocarea:</span> un mod multiplayer cere de obicei un backend, conturi și costuri.</p>
+    <p><span class="fix">Soluția:</span> conexiune WebRTC directă, cu coduri schimbate manual printr-un canal privat. Gazda invită partenerul la aceleași probe, cu aceeași dificultate. Fără server TURN, unele rețele blochează legătura, iar jocul explică asta clar și propune alternativa: aceeași rețea Wi-Fi sau export/import JSON.</p>
+  </div>
+  <div class="card">
+    <h3>Literatură și ficțiune, separate cinstit</h3>
+    <p><span class="problem">Provocarea:</span> un joc „inspirat din Odiseea” poate amesteca ușor povestea reală cu invenții.</p>
+    <p><span class="fix">Soluția:</span> harta poate fi parcursă în ordinea călătoriei sau în ordinea în care poemul o povestește (cărțile 9–12 sunt retrospective). Modul „Ce-ar fi dacă?” și cele cinci alegeri narative din 2.1 sunt marcate explicit ca ficțiune și nu se amestecă cu progresul probelor.</p>
+  </div>
+
+  <h2>Cum arată o probă</h2>
+  <div class="pair">
+    <figure><img src="media/maze.webp" width="1152" height="894" alt="Proba Ciclopului: un labirint 5×5 cu stânci, corabia în colțul din stânga sus și steagul în dreapta jos, cu butoane săgeți dedesubt." loading="lazy"><figcaption>Ciclopul: labirint pe grilă, cu săgeți de la tastatură sau butoane.</figcaption></figure>
+    <figure><img src="media/mobile.webp" width="780" height="1688" alt="Proba Sirenelor pe telefon: o secvență de patru simboluri de repetat și butoanele simbolurilor dedesubt." loading="lazy"><figcaption>Sirenele, pe un ecran de 390 px.</figcaption></figure>
+  </div>
+
+  <h2>Ce am construit</h2>
+  <h3>Joc</h3>
+  <ul>
+    <li><strong>11 moduri</strong>: Poveste, Explorare liberă, Călătorie scurtă, Daily Quest, Challenge, Campionat local, Zen, Quiz literar, Navigator, Doi jucători (duel sau cooperare pe același dispozitiv) și Atelier.</li>
+    <li><strong>Atelierul povestitorului</strong>: jucătorul își scrie propriile întrebări bilingve și rute de insule, validate înainte de joc și afișate doar ca text, nu ca HTML.</li>
+    <li><strong>Expediții săptămânale și zilnice</strong>, calculate pe fusul orar București, cu arhivă jucabilă.</li>
+    <li><strong>Jurnal de bord, glosar de personaje, insigne, artefacte</strong> și trei stiluri de corabie cumpărate cu scoici.</li>
+  </ul>
+  <h3>Accesibilitate</h3>
+  <ul>
+    <li>Tot jocul merge din tastatură, cu focus vizibil și link „Sari la joc”.</li>
+    <li><strong>Scanare automată pentru switch</strong>: evidențierea trece singură între butoane, iar Space sau Enter confirmă.</li>
+    <li>Contrast ridicat, text la 100/115/130%, mișcare redusă, ecran simplificat și limbaj pentru copii.</li>
+    <li>Gesturile swipe din labirint au mereu echivalent în butoane; sunetul și vibrația sunt opționale.</li>
+  </ul>
+  <h3>Tehnic</h3>
+  <ul>
+    <li>JavaScript simplu, fără framework: motorul de joc (<code>engine.js</code>) e separat de interfață, deci poate fi testat în Node, fără browser.</li>
+    <li>PWA cu service worker limitat la folderul jocului și cache pe versiuni; actualizarea nu întrerupe o partidă.</li>
+    <li>O ediție HTML complet autonomă, generată de un script Python fără dependențe, care merge deschisă direct de pe disc.</li>
+    <li>Fonturi de simboluri găzduite local (Noto Emoji, licență OFL), fără cereri către servicii externe.</li>
+  </ul>
+
+  <h2>Testare</h2>
+  <ul>
+    <li><strong>Motor</strong>: toate cele 120 de tranziții de progres, recompense repetate, magazin, 360 de variante de puzzle, validarea backupului, migrarea v1 și limitele de dată.</li>
+    <li><strong>Browser (Playwright, Chromium)</strong>: toate cele 120 de probe rezolvate prin butoanele reale, toate modurile, profiluri, preferințe, pauză, timer, export/import, offline și layout la 390 și 320 px cu text la 130%.</li>
+    <li><strong>Accesibilitate</strong>: scan axe-core WCAG 2.1 AA fără erori în vederea de joc.</li>
+    <li><strong>Mod conectat</strong>: alegeri, finaluri, duel WebRTC între două pagini și transfer de backup acceptat.</li>
+  </ul>
+  <div class="card honest">
+    <h3>Ce nu este încă verificat</h3>
+    <p>Duelul WebRTC a fost testat între două browsere pe același calculator, nu între rețele diferite. Cititoarele de ecran reale (TalkBack, VoiceOver), un switch fizic, instalarea pe Android și sunetul pe toate browserele cer încă testare pe dispozitive. Scanul axe nu înseamnă certificare completă de accesibilitate.</p>
+  </div>
+
+  <h2>Evoluția</h2>
+  <div class="table-wrap"><table>
+    <tr><th></th><th>1.0</th><th>2.0</th><th>2.1</th></tr>
+    <tr><td>Conținut</td><td>12 întrebări</td><td>120 de probe, 12 mecanici</td><td>+ 5 alegeri narative cu finaluri</td></tr>
+    <tr><td>Moduri</td><td>1</td><td>11</td><td>+ duel între dispozitive</td></tr>
+    <tr><td>Progres</td><td>Local, un profil</td><td>3 profiluri, backup validat, migrare</td><td>+ transfer direct între dispozitive</td></tr>
+    <tr><td>Offline</td><td>Fișier unic</td><td>PWA + ediție autonomă</td><td>La fel</td></tr>
+    <tr><td>Feedback</td><td>Nu</td><td>Păreri salvate local</td><td>+ issue GitHub, trimis de jucător</td></tr>
+    <tr><td>Teste</td><td>Manuale</td><td>Motor + 120 de probe în browser</td><td>+ teste pentru modul conectat</td></tr>
+  </table></div>
+
+  <h2>Ce urmează</h2>
+  <ul>
+    <li>Testarea duelului între rețele diferite și pe telefoane reale.</li>
+    <li>Sesiuni cu TalkBack și VoiceOver, ca ordinea de citire să fie verificată de oameni, nu doar de unelte.</li>
+    <li>Observarea unor jucători reali, ca dificultatea să se bazeze pe date, nu pe presupuneri.</li>
+  </ul>
+  <footer><a class="btn" href="../portfolio.html">← Înapoi la portofoliu</a><a class="btn" href="README.md">Documentație</a><a class="btn" href="PRIVACY.md">Confidențialitate</a></footer>
+</main>
+
+<main lang="en" data-lang="en" hidden>
+  <div class="eyebrow">Case study · Learning game · Accessibility</div>
+  <h1>Odyssey Quest</h1>
+  <p class="lead">A learning adventure about Odysseus’s voyage: 12 islands, 120 trials and 11 game modes, in Romanian and English. It works offline, installs as an app and has no server, accounts or runtime dependencies. This case study shows how a 12-question quiz became a full game while keeping accessibility and the player’s data in focus.</p>
+  <div class="links">
+    <a class="btn primary" href="./?lang=en">Play Odyssey Quest</a>
+    <a class="btn" href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/odyssey-quest">Source code</a>
+    <a class="btn" href="CHANGELOG.md">Version history</a>
+  </div>
+  <figure><img src="media/hero.webp" width="1280" height="800" alt="Odyssey Quest start screen: the title “The sea is calling. Ithaca awaits.” in Romanian, a stylised ship at sunset and progress counters." loading="lazy"><figcaption>The start screen, with the player’s progress and the symbolic map of the 12 islands.</figcaption></figure>
+
+  <div class="stats">
+    <div class="stat"><b>120</b><span>progressive trials from 12 different mechanics</span></div>
+    <div class="stat"><b>11</b><span>game modes, from Story to Duo and Workshop</span></div>
+    <div class="stat"><b>0</b><span>servers, accounts, tracking or runtime dependencies</span></div>
+    <div class="stat"><b>33 KB</b><span>all code, compressed (HTML, CSS, JS)</span></div>
+  </div>
+
+  <h2>Context</h2>
+  <p>Version 1.0 was a single HTML file: 12 questions about the Odyssey, a symbolic map, RO/EN and light/dark themes. It worked, but it was a quiz. I wanted every island to play differently, the game to be accessible to people who cannot react quickly, and progress to belong to the player, with no account.</p>
+
+  <h2>Key decisions</h2>
+  <div class="card">
+    <h3>120 trials without 120 hand-written levels</h3>
+    <p><span class="problem">Challenge:</span> 120 individually written trials would be hard to maintain and impossible to test fully.</p>
+    <p><span class="fix">Solution:</span> 12 mechanics (pairs, maze, wind, safe lane, ingredients, prophecy, sequence, currents, supplies, raft, chronology, bow), each with 10 deterministic variations. The same trial, difficulty and seed always give the same puzzle, so two players can get identical trials and tests can check all 360 variants.</p>
+  </div>
+  <div class="card">
+    <h3>Nothing ever requires speed</h3>
+    <p><span class="problem">Challenge:</span> many games pressure reaction time, which excludes players with motor disabilities.</p>
+    <p><span class="fix">Solution:</span> every game is turn-based. The timer is off by default; when on, it can be paused or extended, and it suspends itself when the tab is hidden or settings are open. Even the bow at Ithaca is aimed with buttons or a slider, not reflexes.</p>
+  </div>
+  <div class="card">
+    <h3>Rewards that cannot be farmed</h3>
+    <p><span class="problem">Challenge:</span> if replaying a trial pays shells again, the shop loses its meaning.</p>
+    <p><span class="fix">Solution:</span> each reward has an ID tied to trial, mode, seed and round. A Story trial pays once; the shop accepts only earned shells, with no payments and no account.</p>
+  </div>
+  <div class="card">
+    <h3>Data stays with the player, but can move</h3>
+    <p><span class="problem">Challenge:</span> without a server, progress lives only in the browser and can be lost or corrupted.</p>
+    <p><span class="fix">Solution:</span> three local profiles, a JSON backup strictly validated on import, rejection of corrupt files and automatic migration of v1 progress. In 2.1, a backup can move directly between devices, only after “Send” on one and “Accept” on the other.</p>
+  </div>
+  <div class="card">
+    <h3>A duel between two devices, with no server of my own</h3>
+    <p><span class="problem">Challenge:</span> multiplayer usually needs a backend, accounts and running costs.</p>
+    <p><span class="fix">Solution:</span> a direct WebRTC connection, with codes exchanged manually through a private channel. The host invites the partner to identical trials at the same difficulty. Without a TURN server some networks block the link, and the game says so plainly and offers the alternative: the same Wi-Fi network or JSON export/import.</p>
+  </div>
+  <div class="card">
+    <h3>Literature and fiction, honestly separated</h3>
+    <p><span class="problem">Challenge:</span> a game “inspired by the Odyssey” can easily blur the real story with invention.</p>
+    <p><span class="fix">Solution:</span> the map can follow the voyage order or the order in which the poem tells it (Books 9–12 are a flashback). The “What if?” mode and the five narrative choices in 2.1 are explicitly marked as fiction and kept apart from trial progress.</p>
+  </div>
+
+  <h2>What a trial looks like</h2>
+  <div class="pair">
+    <figure><img src="media/maze.webp" width="1152" height="894" alt="The Cyclops trial: a 5×5 maze with rocks, the ship in the top-left corner and the flag in the bottom-right, with arrow buttons below." loading="lazy"><figcaption>The Cyclops: a grid maze, played with arrow keys or buttons (Romanian interface).</figcaption></figure>
+    <figure><img src="media/mobile.webp" width="780" height="1688" alt="The Sirens trial on a phone: a four-symbol sequence to repeat and symbol buttons below." loading="lazy"><figcaption>The Sirens, on a 390 px screen.</figcaption></figure>
+  </div>
+
+  <h2>What I built</h2>
+  <h3>Game</h3>
+  <ul>
+    <li><strong>11 modes</strong>: Story, Free exploration, Short voyage, Daily Quest, Challenge, Local tournament, Zen, Literary quiz, Navigator, Two players (duel or cooperation on one device) and Workshop.</li>
+    <li><strong>Storyteller’s workshop</strong>: players write their own bilingual questions and island routes, validated before play and rendered as text, never as HTML.</li>
+    <li><strong>Weekly and daily expeditions</strong>, computed in the Bucharest time zone, with a playable archive.</li>
+    <li><strong>Ship’s log, character glossary, badges, artifacts</strong> and three ship styles bought with shells.</li>
+  </ul>
+  <h3>Accessibility</h3>
+  <ul>
+    <li>The whole game works from the keyboard, with visible focus and a “Skip to game” link.</li>
+    <li><strong>Automatic switch scanning</strong>: the highlight moves between buttons by itself and Space or Enter confirms.</li>
+    <li>High contrast, 100/115/130% text, reduced motion, simplified screen and child-friendly wording.</li>
+    <li>Maze swipes always have button equivalents; sound and vibration are opt-in.</li>
+  </ul>
+  <h3>Technical</h3>
+  <ul>
+    <li>Plain JavaScript, no framework: the game engine (<code>engine.js</code>) is separate from the interface, so it can be tested in Node without a browser.</li>
+    <li>A PWA with a service worker scoped to the game folder and versioned caches; updates never interrupt a game in progress.</li>
+    <li>A fully self-contained HTML edition, generated by a dependency-free Python script, that opens straight from disk.</li>
+    <li>Locally hosted symbol fonts (Noto Emoji, OFL licence), with no requests to outside services.</li>
+  </ul>
+
+  <h2>Testing</h2>
+  <ul>
+    <li><strong>Engine</strong>: all 120 progress transitions, repeated rewards, shop, 360 puzzle variants, backup validation, v1 migration and date boundaries.</li>
+    <li><strong>Browser (Playwright, Chromium)</strong>: all 120 trials solved through the real buttons, every mode, profiles, preferences, pause, timer, export/import, offline and layout at 390 and 320 px with 130% text.</li>
+    <li><strong>Accessibility</strong>: axe-core WCAG 2.1 AA scan with zero violations in the game view.</li>
+    <li><strong>Connected mode</strong>: choices, endings, WebRTC duel between two pages and an accepted backup transfer.</li>
+  </ul>
+  <div class="card honest">
+    <h3>What is not verified yet</h3>
+    <p>The WebRTC duel was tested between two browsers on the same computer, not across different networks. Real screen readers (TalkBack, VoiceOver), a physical switch, Android installation and audio across browsers still need device testing. An axe scan is not a full accessibility certification.</p>
+  </div>
+
+  <h2>How it evolved</h2>
+  <div class="table-wrap"><table>
+    <tr><th></th><th>1.0</th><th>2.0</th><th>2.1</th></tr>
+    <tr><td>Content</td><td>12 questions</td><td>120 trials, 12 mechanics</td><td>+ 5 narrative choices with endings</td></tr>
+    <tr><td>Modes</td><td>1</td><td>11</td><td>+ device-to-device duel</td></tr>
+    <tr><td>Progress</td><td>Local, one profile</td><td>3 profiles, validated backup, migration</td><td>+ direct device transfer</td></tr>
+    <tr><td>Offline</td><td>Single file</td><td>PWA + self-contained edition</td><td>Same</td></tr>
+    <tr><td>Feedback</td><td>None</td><td>Opinions saved locally</td><td>+ GitHub issue, submitted by the player</td></tr>
+    <tr><td>Tests</td><td>Manual</td><td>Engine + 120 trials in the browser</td><td>+ connected-mode tests</td></tr>
+  </table></div>
+
+  <h2>What’s next</h2>
+  <ul>
+    <li>Testing the duel across different networks and on real phones.</li>
+    <li>Sessions with TalkBack and VoiceOver, so reading order is checked by people, not only by tools.</li>
+    <li>Watching real players, so difficulty rests on evidence rather than assumptions.</li>
+  </ul>
+  <footer><a class="btn" href="../en/">← Back to the portfolio</a><a class="btn" href="README.md">Documentation</a><a class="btn" href="PRIVACY.md">Privacy</a></footer>
+</main>
+</div>
+<script>
+(()=>{const btns=document.querySelectorAll('[data-set]');function set(l){document.documentElement.lang=l;document.querySelectorAll('main[data-lang]').forEach(m=>m.hidden=m.dataset.lang!==l);btns.forEach(b=>b.setAttribute('aria-pressed',b.dataset.set===l));document.title=l==='ro'?'Odyssey Quest · Studiu de caz':'Odyssey Quest · Case study'}
+btns.forEach(b=>b.onclick=()=>set(b.dataset.set));const q=new URLSearchParams(location.search).get('lang');if(q==='en'||(!q&&(navigator.language||'').slice(0,2)!=='ro'&&document.referrer.includes('/en/')))set('en')})();
+</script>
+</body>
+</html>

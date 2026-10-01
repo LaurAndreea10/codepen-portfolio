@@ -149,13 +149,14 @@
         { title: 'Recruiter / reviewer quick path', body: 'I am building a faster path for visitors: top 3 projects, proof-of-work, GitHub, live demos and contact visible in 30–60 seconds.', tag: 'Portfolio UX' }
       ],
       done: [
-{"title": "Odyssey Quest — The Voyage Home", "body": "12 episodes, 120 trials, 11 modes, RO/EN, local profiles, rewards, workshop and offline PWA.", "tag": "Sep 2026", "link": {"href": "odyssey-quest/", "label": "Open"}},
+{"title": "Odyssey Quest 2.1 — case study", "body": "12 islands, 120 trials, 11 modes, RO/EN, accessible with no quick reactions, offline PWA and, since 2.1, a WebRTC duel between devices. Case study with key decisions, testing and what is not verified yet.", "tag": "Oct 2026", "link": {"href": "odyssey-quest/case-study.html?lang=en", "label": "Read the case study"}},
 {"title": "Curious Garden — The Grand Adventure", "body": "Twelve educational worlds, local profiles, accessible games and offline play.", "tag": "Sep 2026", "link": {"href": "curious-garden/", "label": "Open"}},
 {"title": "Kygo World — seasonal editions", "body": "Four worlds with seasonal editions and mobile controls. Real-device validation remains in progress.", "tag": "Sep 2026", "link": {"href": "kygo-world/", "label": "Open"}},
 {"title": "Practice Lab — three exercises", "body": "Clipboard CRM Summary, Dashboard Activity Filter and CRM Accessible Form.", "tag": "Sep 2026", "link": {"href": "crm-accessible-form.html", "label": "Open"}},
 {"title": "SkyDreams Portal", "body": "Three worlds, eleven modes, Cloud Maze, Daily Maze, shop and accessible turn-based alternative.", "tag": "Sep 2026", "link": {"href": "skydreams-portal/", "label": "Open"}}
 ],
       history: [
+        { label: 'October 2026', items: ['Odyssey Quest 2.1.1 — case study, consistent version labels and clearer WebRTC connection messages'] },
         { label: 'September 2026', items: ['Odyssey Quest — 120 trials, 11 modes and offline PWA completed on September 30'] },
         { label: 'Week of June 7, 2026', items: ['Portfolio v2 — moved to Recently shipped', 'CRM & Dashboard UX polish — moved to Recently shipped', 'GitHub repo cleanup — moved to Recently shipped', 'Accessibility pass — moved to Recently shipped'] },
         { label: 'Week of June 2, 2026', items: ['SURF RUN — added to Recently shipped with GitHub Pages link', 'Portfolio — CodePen count updated to 66 live projects'] },

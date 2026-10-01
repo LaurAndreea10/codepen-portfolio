@@ -270,8 +270,8 @@ Seven editable Excel Quest & CRM design materials, with documented AI assistance
 
 ## Odyssey Quest · 2026-09-30
 
-[Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/odyssey-quest/) · [Documentație / Docs](odyssey-quest/README.md)
+[Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/odyssey-quest/) · [Studiu de caz / Case study](odyssey-quest/case-study.html) · [Documentație / Docs](odyssey-quest/README.md)
 
-12 episoade, 120 de probe, 11 moduri, RO/EN, profiluri locale, recompense, atelier și PWA offline.
+12 insule, 120 de probe, 11 moduri, RO/EN, accesibil fără reacții rapide, PWA offline și, din 2.1, duel WebRTC între dispozitive.
 
-12 episodes, 120 trials, 11 modes, RO/EN, local profiles, rewards, workshop and offline PWA.
+12 islands, 120 trials, 11 modes, RO/EN, accessible with no quick reactions, offline PWA and, since 2.1, a WebRTC duel between devices.
