@@ -1,8 +1,4 @@
-## 2.1 Connected expedition / Expediție conectată
-
-Five persistent fictional decisions affect the ending. WebRTC peers exchange offer/answer codes privately; host invites identical seeded trials. Scores are exchanged directly and are not certified. Backup transfer requires an explicit send and accept. No cloud storage or public matchmaking. STUN: Cloudflare; no TURN fallback. Feedback opens a public GitHub issue draft, requires a GitHub account and submission by the player.
-
-# Odyssey Quest · v2.0.0
+# Odyssey Quest · v2.1.1
 
 **RO** — Aventură educativă cu 12 insule, 120 de probe și 11 moduri de joc. Inspirată din traseul lui Odiseu; povestea este o adaptare simplificată, harta este simbolică.
 
@@ -10,7 +6,7 @@ Five persistent fictional decisions affect the ending. WebRTC peers exchange off
 
 ## Play / Joacă
 
-Open `index.html` from a local HTTP server or GitHub Pages. `python3 -m http.server 8000` then visit `http://localhost:8000`. The separate `odyssey-quest.html` deliverable is a self-contained edition that can be opened directly offline. Installability and the service worker need HTTPS or localhost; an offline installation requires one successful online visit.
+Open `index.html` from a local HTTP server or GitHub Pages. `python3 -m http.server 8000` then visit `http://localhost:8000`. The separate `standalone.html` deliverable (rebuilt with `python3 build.py`) is a self-contained edition that can be opened directly offline. Installability and the service worker need HTTPS or localhost; an offline installation requires one successful online visit.
 
 ## Modes / Moduri
 
@@ -43,7 +39,17 @@ Tab and Enter/Space for buttons; arrow keys in the maze when focus is in the gam
 
 Three local profiles. State uses `odyssey-quest-v2`; v1 progress migrates to completed chapters (10 trials each). Story rewards cannot be farmed by retrying. Other reward IDs include mode, seed and round index. Store skins cost earned shells only, with no purchases or account. JSON backup validation rejects malformed data; v1 backups are accepted. Names and opinions may be in a backup. Daily reward history retains up to 400 dates; scores keep the latest 30 runs; opinions keep 50 entries. Back up before clearing browser data. Switching profiles begins a new story round.
 
-Opinions stay local and can be exported. They are **not delivered to the author**. There is no hosted feedback collection, cloud sync, public ranking or online multiplayer in this package.
+Opinions saved in the opinion panel stay local and can be exported; they are **not delivered to the author automatically**. To send feedback, the player can open a prefilled GitHub issue (see Connected expedition). There is no hosted feedback inbox, cloud sync or public ranking. The only online multiplayer is the experimental direct WebRTC duel described below.
+
+## Connected expedition / Expediție conectată (2.1)
+
+**Choices.** Five persistent fictional decisions change the account and the ending. They are separate from the poem, from trial progress and from backups.
+
+**WebRTC duel (experimental).** Two devices exchange offer/answer codes manually through a private channel. The host can invite the partner to identical seeded trials at the same difficulty; scores are exchanged directly and are not certified. STUN: Cloudflare. There is no TURN relay, so strict networks (mobile data, school or office Wi-Fi) may block the connection; the game then explains the block and suggests the same Wi-Fi network or JSON export/import. See `QA.md` for what was and was not verified.
+
+**Device transfer.** Sending a backup requires an explicit send on one device and an explicit accept on the other; the incoming state is validated before it replaces local data.
+
+**Feedback.** “Send feedback to the author” opens a prefilled public GitHub issue. A GitHub account is required and nothing is published until the player submits it. No email is used.
 
 ## Workshop schema
 
@@ -55,7 +61,7 @@ Up to 50 questions. A route contains 1–24 comma-separated island numbers from 
 
 ## PWA
 
-Manifest includes 192/512px icons. Service worker is scoped to this game directory, uses a versioned cache and removes only earlier Odyssey caches. Core files, privacy/docs and v1 archive are precached. Network-first responses fall back to cached files. Updating does not force reload during a game; close all game tabs to activate a waiting version.
+Manifest includes 192/512px icons. Service worker is scoped to this game directory, uses a versioned cache and removes only earlier Odyssey caches. Core files, privacy/docs and the v1.0.0 and v2.0.1 archives are precached. Network-first responses fall back to cached files. Updating does not force reload during a game; close all game tabs to activate a waiting version.
 
 ## Verification
 
@@ -73,4 +79,4 @@ A small subset of Noto Emoji provides symbols when system fonts lack them. The O
 
 ## History
 
-`versions/v1.0.0.html` preserves the original quiz edition. `CHANGELOG.md` records changes. Git history provides version control after publishing. See `PRIVACY.md` and `LICENSE`.
+`versions/v1.0.0.html` preserves the original quiz edition and `versions/v2.0.1.html` the last edition before connected play. `CHANGELOG.md` records changes. Git history provides version control after publishing. See `PRIVACY.md` and `LICENSE`.

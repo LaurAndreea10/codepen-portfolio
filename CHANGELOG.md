@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-01 — Odyssey Quest v2.1.1
+
+- RO: versiune unificată în tot jocul, mesaje clare pentru conexiunea WebRTC, linkuri accesibile și fără JavaScript, documentație reorganizată pentru expediția conectată (2.1).
+- EN: one version number across the game, clear WebRTC connection messages, links that work without JavaScript, documentation reorganized for the connected expedition (2.1).
+
 ## 2026-09-30 — Odyssey Quest v2.0.0
 
 - RO: joc educativ cu 12 mecanici, 120 probe și 11 moduri, PWA, accesibilitate, profiluri și backup; integrat în catalog, RO/EN, finalizat recent (maximum cinci) și istoric.

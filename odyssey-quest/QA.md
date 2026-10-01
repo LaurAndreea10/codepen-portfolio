@@ -1,7 +1,3 @@
-## 2.1 checks
-
-Full 120-trial browser regression, mobile layout, axe and offline reload pass. The real two-browser WebRTC test did not establish a connection: this environment produced SDP without ICE candidates. Online duel and peer backup are experimental and not verified end to end. The UI detects missing routes and reports the block. Real Internet NAT traversal remains dependent on network configuration. Cloud sync and physical assistive-device tests are not claimed.
-
 # Verification · 2026-09-30
 
 ## Passed
@@ -39,3 +35,15 @@ Public release checks for portfolio and Arcade are recorded separately after pub
 - The virtual-origin iframe test accepts the correct frame’s score and ignores a message from the parent window, then removes the iframe URL on close.
 - Publication completed through GitHub on 2026-09-30. Pages deployment availability is checked separately.
 - Version 2.0.1 regression: the solved trial includes Next in automatic scanning. Full 120-trial, axe, layout and offline checks pass again.
+
+## 2.1 checks
+
+Full 120-trial browser regression, mobile layout, axe and offline reload pass. The real two-browser WebRTC test did not establish a connection: this environment produced SDP without ICE candidates. Online duel and peer backup are experimental and not verified end to end. The UI detects missing routes and reports the block. Real Internet NAT traversal remains dependent on network configuration. Cloud sync and physical assistive-device tests are not claimed.
+
+## 2.1.1 checks · 2026-10-01
+
+- `node tests/engine.cjs`: pass.
+- `tests/browser.cjs` (Chromium, Playwright): all 120 trials, all modes, profiles, preferences, backup, 390/320px layout, offline reload, no runtime errors: pass.
+- `tests/expedition.cjs`: choices, endings, feedback URL, transfer guard, EN: pass.
+- `tests/connected.cjs`: two Chromium pages on the same machine connected over WebRTC, exchanged a score and accepted a backup: pass. This confirms the code path locally; connections between different networks without TURN are still not verified.
+- Header, footer, version note and service-worker cache all read 2.1.1 in `index.html` and the rebuilt `standalone.html`; no link without text in either edition.

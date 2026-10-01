@@ -1,8 +1,4 @@
-## 2.1 implementation
-
-Branching fictional choices: five decisions, three outcome families and a Circe delay. Direct WebRTC duel: manual signaling, identical seeded challenge invitations and peer scores. Explicit validated backup transfer between connected devices. Centralized feedback via reviewed public GitHub issues. Automatic cloud sync and a hosted private inbox are not included.
-
-# Release scope / Funcții v2.0.0
+# Release scope / Funcții v2.1.1
 
 | Area | Delivered |
 |---|---|
@@ -20,10 +16,13 @@ Branching fictional choices: five decisions, three outcome families and a Circe 
 | Data | Versioned v2 backup, v1 migration, validated import, corrupt-file rejection, local reports/rankings/opinions |
 | Offline | Self-contained HTML; separate PWA package with manifest, icons, scoped versioned worker and local symbol fonts |
 | Documentation | RO/EN README, changelog, privacy notice, MIT code license, font OFL license, archived v1 |
+| Connected (2.1) | Five fictional choices with persistent endings; experimental direct WebRTC duel with seeded invitations; validated device-to-device backup transfer; GitHub issue feedback |
 | Verification | Node state tests; 120-trial Playwright run; layout/axe/offline checks; prepared portfolio and Arcade launcher checks |
 
 The 120 trials are variations of 12 mechanics, not 120 individually authored story chapters. Atmosphere options change the map presentation; they do not introduce real-time weather simulation. The imaginary edition presents an explicitly fictional alternative ending; it is not a full branching narrative campaign.
 
-No hosted opinion inbox, cloud sync, public leaderboard, online multiplayer, automated search indexing guarantee or real-device accessibility certification is included. Local opinions are explicitly marked as local. These services would need a separate configuration and consent model.
+No hosted opinion inbox, cloud sync, public leaderboard, matchmaking or relayed (TURN) multiplayer, automated search indexing guarantee or real-device accessibility certification is included. Local opinions are explicitly marked as local. These services would need a separate configuration and consent model.
 
 Published to codepen-portfolio and ARCADE-WORLD on 2026-09-30 after explicit user authorization. Version 2.0.1 corrects automatic switch scanning, the memory hint and maze descriptions.
+
+Version 2.1.1 aligns version labels, adds no-JavaScript link text, clarifies WebRTC failure messages and reorganizes documentation.

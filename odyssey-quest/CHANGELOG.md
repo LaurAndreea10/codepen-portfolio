@@ -1,16 +1,17 @@
-## 2.1.0 — 2026-09-30
-
-- Fictional narrative choices and persistent endings.
-- Optional WebRTC duel, seeded invitations, explicit validated device backup transfer.
-- Reviewed GitHub issue feedback; no email or automatic publication.
-
-# 2.0.1 — 2026-09-30
-
-- Scanarea include Următorul și prelungirea timerului; elimină referințele la butoane înlocuite.
-- Indiciu corect pentru perechi și descriere textuală a zidurilor labirintului.
-- Automatic scanning includes Next and timer extension; maze walls and directions have accessible labels.
-
 # Changelog / Istoricul versiunilor
+
+## 2.1.1 — 2026-10-01
+- RO: numărul versiunii este același peste tot (antet, subsol, jurnal, cache-ul PWA); linkurile „Sari la joc” și „Confidențialitate” au text și fără JavaScript; mesaje clare când duelul WebRTC nu se poate conecta (rețea blocată, conexiune întreruptă, cod invalid, așteptare prea lungă); nota despre păreri indică acum trimiterea prin GitHub; documentația este reorganizată și actualizată pentru 2.1.
+- EN: one consistent version number (header, footer, log, PWA cache); “Skip to game” and “Privacy” links have text without JavaScript; clear messages when the WebRTC duel cannot connect (blocked network, interrupted link, invalid code, long wait); the opinions note now points to GitHub feedback; documentation reorganized and updated for 2.1.
+
+## 2.1.0 — 2026-09-30
+- RO: alegeri narative fictive cu finaluri persistente; duel WebRTC opțional cu invitații cu sămânță comună; transfer explicit și validat al backupului între dispozitive; feedback prin issue GitHub revizuit de jucător, fără e-mail sau publicare automată.
+- EN: fictional narrative choices and persistent endings; optional WebRTC duel with seeded invitations; explicit validated device backup transfer; feedback through a player-reviewed GitHub issue, with no email or automatic publication.
+
+## 2.0.1 — 2026-09-30
+- RO: scanarea automată include Următorul și prelungirea timerului; indiciu corect pentru perechi; descriere textuală a zidurilor labirintului; eliminarea referințelor la butoane înlocuite.
+- EN: automatic scanning includes Next and timer extension; correct pairs hint; maze walls and directions have accessible labels; references to replaced buttons removed.
+- Arhivă / Archive: `versions/v2.0.1.html`.
 
 ## 2.0.0 — 2026-09-30
 - RO: 12 mecanici, 120 probe progresive, 11 moduri; profiluri, magazin, insigne, jurnal și glosar; atelier, rute și coduri reproductibile; evenimente săptămânale; opțiuni de accesibilitate; PWA; backup v2 și migrare v1; teste și documentație.
