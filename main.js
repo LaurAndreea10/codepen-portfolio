@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const PREVIOUS_MAIN = 'main-core.js?v=20261001-odyssey';
+  const PREVIOUS_MAIN = 'main-core.js?v=20261001-slidestorm';
 
   // Single source of truth for CodePen growth.
   // 83 projects were already represented before this Pen was added.
@@ -96,8 +96,8 @@
     if(note) note.textContent='O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
     const date=document.getElementById('now-datetime');
     if(date){
-      date.dateTime='2026-09-30';
-      date.textContent='30 Septembrie 2026';
+      date.dateTime='2026-10-01';
+      date.textContent='1 Octombrie 2026';
     }
   }
 
@@ -235,3 +235,4 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
   else init();
 })();
+
