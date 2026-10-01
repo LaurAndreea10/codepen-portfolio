@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-01 — SlideStorm Arena v2.0.0
+
+- RO: 100 de niveluri, 8 sporturi, 11 moduri, constructor de trasee, progres local validat și opțiuni de accesibilitate. Testarea practică pe mobil rămâne de confirmat. Integrat în catalog, paginile RO/EN, Finalizat recent (maxim cinci) și Istoric; versiunea originală păstrată.
+- EN: 100 levels, eight sports, eleven modes, route builder and validated local progress. Real-device mobile validation remains unverified. Integrated in the catalogue, RO/EN pages, recent work and history; original version retained.
+
 ## 2026-10-01 — Odyssey Quest v2.1.1
 
 - RO: versiune unificată în tot jocul, mesaje clare pentru conexiunea WebRTC, linkuri accesibile și fără JavaScript, documentație reorganizată pentru expediția conectată (2.1); studiu de caz nou, legat din portofoliu RO/EN.
@@ -139,3 +144,4 @@ Toate modificările importante ale portofoliului sunt documentate aici.
 - Lighthouse Accessibility 100 și trei scoruri mobile consecutive peste 90: 97, 96 și 95.
 - Metrici sincronizate la 84 proiecte live.
 - Paritate RO/EN pentru temă, contrast și reduced motion.
+

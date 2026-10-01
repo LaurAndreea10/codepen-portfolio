@@ -2,10 +2,11 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
+  ["slidestorm-arena/", "monthly", "0.7", "2026-10-01"],
   ["odyssey-quest/", "monthly", "0.7", "2026-10-01"],
   ["odyssey-quest/case-study.html", "monthly", "0.7", "2026-10-01"],
-  ["portfolio.html", "weekly", "1.0", "2026-09-30"],
-  ["en/", "weekly", "0.9", "2026-09-30"],
+  ["portfolio.html", "weekly", "1.0", "2026-10-01"],
+  ["en/", "weekly", "0.9", "2026-10-01"],
   ["alpis-fusion-crm.html", "monthly", "0.9", "2026-08-30"],
   ["projects/clientflow.html", "monthly", "0.9", "2026-08-30"],
   ["projects/alpis-impactpath.html", "monthly", "0.9", "2026-04-20"],
@@ -15,7 +16,7 @@ const pages = [
   ["process.html", "monthly", "0.8", "2026-05-15"],
   ["work-with-me.html", "monthly", "0.8", "2026-05-20"],
   ["insights.html", "weekly", "0.8", "2026-04-25"],
-  ["changelog.html", "weekly", "0.7", "2026-09-30"],
+  ["changelog.html", "weekly", "0.7", "2026-10-01"],
   ["proof-pack.html", "monthly", "0.9", "2026-09-20"],
   ["mobile-test-lab.html", "monthly", "0.8", "2026-09-27"],
   ["uses.html", "monthly", "0.6", "2026-05-15"],
@@ -116,3 +117,4 @@ const entries = pages
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries}\n</urlset>\n`;
 writeFileSync("sitemap.xml", xml);
 console.log(`Generated sitemap.xml with ${pages.length} canonical URLs.`);
+

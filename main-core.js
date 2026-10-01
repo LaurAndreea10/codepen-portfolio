@@ -76,6 +76,7 @@
   }
 
   const shippedRo = [
+{"title": "SlideStorm Arena v2.0.0", "body": "100 de niveluri, 8 sporturi, 11 moduri, constructor de trasee, progres local validat și opțiuni de accesibilitate. Testarea practică pe mobil rămâne de confirmat.", "tag": "Oct 2026", "link": {"href": "slidestorm-arena/", "label": "Joacă"}},
     { title: 'Portfolio v2 — case studies & proof-of-work', body: 'portofoliul a fost repoziționat ca proof-of-work: problemă, decizie UX, implementare, rezultat și link live.', tag: 'Iun 2026', link: { href: 'alpis-fusion-crm.html', label: 'Vezi case study' } },
     { title: 'CRM & Dashboard UX polish', body: 'statusuri mai clare, microcopy, empty states, focus states și flow-uri mai ușor de urmărit pentru proiectele CRM.', tag: 'Iun 2026' },
     { title: 'GitHub repo cleanup', body: 'README-uri, descrieri, demo links și structură repo actualizate pentru verificare mai ușoară.', tag: 'Iun 2026', link: { href: 'https://github.com/LaurAndreea10', label: 'Vezi GitHub' } },
@@ -98,6 +99,7 @@
   ];
 
   const shippedEn = [
+{"title": "SlideStorm Arena v2.0.0", "body": "100 levels, eight sports, eleven modes, route builder and validated local progress. Real-device mobile validation remains unverified.", "tag": "Oct 2026", "link": {"href": "slidestorm-arena/?lang=en", "label": "Play"}},
     { title: 'Portfolio v2 — case studies & proof-of-work', body: 'the portfolio was repositioned as proof-of-work: problem, UX decision, implementation, outcome and live link.', tag: 'Jun 2026', link: { href: 'alpis-fusion-crm.html', label: 'View case study' } },
     { title: 'CRM & Dashboard UX polish', body: 'clearer statuses, better microcopy, empty states, focus states and easier-to-follow flows for CRM projects.', tag: 'Jun 2026' },
     { title: 'GitHub repo cleanup', body: 'README files, descriptions, demo links and repository structure updated for easier verification.', tag: 'Jun 2026', link: { href: 'https://github.com/LaurAndreea10', label: 'View GitHub' } },
@@ -132,6 +134,7 @@
       ],
       done: shippedRo,
       history: [
+{"label": "Octombrie 2026", "items": ["SlideStorm Arena v2.0.0 — 100 niveluri, 8 sporturi, constructor și progres validat; testare mobilă practică în curs"]},
         { label: 'Săpt. 7 Iunie 2026', items: ['Portfolio v2 — trecut la Finalizat recent', 'CRM & Dashboard UX polish — trecut la Finalizat recent', 'GitHub repo cleanup — trecut la Finalizat recent', 'Accessibility pass — trecut la Finalizat recent'] },
         { label: 'Săpt. 2 Iunie 2026', items: ['SURF RUN — adăugat la Finalizat recent cu link GitHub Pages', 'Portofoliu — număr CodePen actualizat la 66 proiecte live'] },
         { label: 'Săpt. 31 Mai 2026', items: ['PulseBoard — roadmap finalizat', 'Career Toolkit — suită carieră livrată cu deploy live', 'ClientOps Suite Premium — demo live livrat', 'Excel Quest V2 — UX reluare + dashboard progres livrate'] }
@@ -149,6 +152,7 @@
         { title: 'Recruiter / reviewer quick path', body: 'I am building a faster path for visitors: top 3 projects, proof-of-work, GitHub, live demos and contact visible in 30–60 seconds.', tag: 'Portfolio UX' }
       ],
       done: [
+{"title": "SlideStorm Arena v2.0.0", "body": "100 levels, eight sports, eleven modes, route builder and validated local progress. Real-device mobile validation remains unverified.", "tag": "Oct 2026", "link": {"href": "slidestorm-arena/?lang=en", "label": "Play"}},
 {"title": "Odyssey Quest 2.1 — case study", "body": "12 islands, 120 trials, 11 modes, RO/EN, accessible with no quick reactions, offline PWA and, since 2.1, a WebRTC duel between devices. Case study with key decisions, testing and what is not verified yet.", "tag": "Oct 2026", "link": {"href": "odyssey-quest/case-study.html?lang=en", "label": "Read the case study"}},
 {"title": "Curious Garden — The Grand Adventure", "body": "Twelve educational worlds, local profiles, accessible games and offline play.", "tag": "Sep 2026", "link": {"href": "curious-garden/", "label": "Open"}},
 {"title": "Kygo World — seasonal editions", "body": "Four worlds with seasonal editions and mobile controls. Real-device validation remains in progress.", "tag": "Sep 2026", "link": {"href": "kygo-world/", "label": "Open"}},
@@ -156,8 +160,8 @@
 {"title": "SkyDreams Portal", "body": "Three worlds, eleven modes, Cloud Maze, Daily Maze, shop and accessible turn-based alternative.", "tag": "Sep 2026", "link": {"href": "skydreams-portal/", "label": "Open"}}
 ],
       history: [
-        { label: 'October 2026', items: ['Odyssey Quest 2.1.1 — case study, consistent version labels and clearer WebRTC connection messages'] },
-        { label: 'September 2026', items: ['Odyssey Quest — 120 trials, 11 modes and offline PWA completed on September 30'] },
+        { label: 'October 2026', items: ['SlideStorm Arena v2.0.0 — 100 levels, eight sports, builder and validated progress; real-device mobile validation pending','Odyssey Quest 2.1.1 — case study, consistent version labels and clearer WebRTC connection messages'] },
+        { label: 'September 2026', items: ['SkyDreams Portal — three worlds, eleven modes, Cloud Maze, Daily Maze and accessible turn-based alternative','Odyssey Quest — 120 trials, 11 modes and offline PWA completed on September 30'] },
         { label: 'Week of June 7, 2026', items: ['Portfolio v2 — moved to Recently shipped', 'CRM & Dashboard UX polish — moved to Recently shipped', 'GitHub repo cleanup — moved to Recently shipped', 'Accessibility pass — moved to Recently shipped'] },
         { label: 'Week of June 2, 2026', items: ['SURF RUN — added to Recently shipped with GitHub Pages link', 'Portfolio — CodePen count updated to 66 live projects'] },
         { label: 'Week of May 31, 2026', items: ['PulseBoard — roadmap shipped', 'Career Toolkit — career suite shipped with live deploy', 'ClientOps Suite Premium — live demo shipped', 'Excel Quest V2 — resume UX + progress dashboard shipped'] }
@@ -375,7 +379,7 @@
     const activePanel = els.nowSection.querySelector('#now-panel-active .now-checklist');
     if (activePanel) { activePanel.innerHTML = ''; copy.active.forEach(entry => activePanel.appendChild(buildNowItem(entry, false))); }
     const donePanel = els.nowSection.querySelector('#now-panel-done .now-checklist');
-    if (donePanel) { donePanel.innerHTML = ''; copy.done.forEach(entry => donePanel.appendChild(buildNowItem(entry, true))); }
+    if (donePanel) { donePanel.innerHTML = ''; copy.done.slice(0, 5).forEach(entry => donePanel.appendChild(buildNowItem(entry, true))); }
     const historyPanel = els.nowSection.querySelector('#now-panel-history .now-history');
     if (historyPanel) {
       historyPanel.innerHTML = '';
@@ -616,3 +620,4 @@
   document.addEventListener('visibilitychange', () => document.hidden ? stopAutoplay() : startAutoplay());
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initPortfolioCore); else initPortfolioCore();
 })();
+
