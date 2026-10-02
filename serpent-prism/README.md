@@ -37,7 +37,7 @@ Tests use DOM/Canvas and AudioContext stubs to verify logic and audio routing. T
 
 ## History
 
-Versions 1.0.0–1.4.0 are documented from the development iterations on 2026-10-02. The first GitHub portfolio publication contains the current 1.4.0 source; older source snapshots are retained in the original Site history, not fabricated as GitHub tags.
+Versions 1.0.0–1.4.0 are documented from the development iterations on 2026-10-02. The first GitHub portfolio publication contained the 1.4.0 source; older source snapshots are retained in the original Site history, not fabricated as GitHub tags.
 
 ## v1.5.0 — Ghid și progresie / Guide and progression
 
