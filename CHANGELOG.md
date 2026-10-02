@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-02 — SlideStorm Arena v2.4.0
+
+- RO: muzică adaptivă, ceață și vânt ca reguli opționale, cameră adaptată pe mobil, tobogane noi pe traseu, fotografie de final și studiu de caz nou; legat din catalog, portofoliul RO/EN și sitemap.
+- EN: adaptive music, optional fog and wind rules, an adaptive mobile camera, new slide stretches, a finish photo and a new case study; linked from the catalogue, the RO/EN portfolio and the sitemap.
+
 ## 2026-10-02 — SlideStorm Arena v2.3.0
 
 - RO: sunete și peisaje — efecte sonore și ambianțe generate în browser, ciclu zi–noapte, plajă cu nisip în zona cu palmieri, peisaj diferit la fiecare nivel, repere noi și efecte vizuale; regulile și salvările neschimbate. Catalog, RO/EN, Finalizat recent și Istoric actualizate.

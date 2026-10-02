@@ -3,6 +3,7 @@ import { existsSync, writeFileSync } from "node:fs";
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
   ["slidestorm-arena/", "monthly", "0.7", "2026-10-02"],
+  ["slidestorm-arena/case-study.html", "monthly", "0.7", "2026-10-02"],
   ["odyssey-quest/", "monthly", "0.7", "2026-10-02"],
   ["odyssey-quest/case-study.html", "monthly", "0.7", "2026-10-01"],
   ["portfolio.html", "weekly", "1.0", "2026-10-02"],
