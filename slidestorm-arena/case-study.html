@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SlideStorm Arena · Studiu de caz</title>
+<meta name="description" content="Studiu de caz: cum am transformat un joc canvas plat într-un parc acvatic cu 10 teme, zi–noapte, sunet procedural și vreme care schimbă jocul, fără să modific regulile sau salvările.">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/slidestorm-arena/case-study.html">
+<meta property="og:title" content="SlideStorm Arena · Studiu de caz">
+<meta property="og:description" content="Grafică, sunet și peisaje adăugate în straturi separate, verificate prin rulări identice înainte și după.">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/slidestorm-arena/media/hero.webp">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#071521">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#071521;--panel:#102738;--ink:#f4fbff;--muted:#b4ccd9;--edge:#345366;--accent:#69ead6;--sea:#ffb467;--good:#9be6ba;--bad:#ffa3a3;color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#eaf4f8;--panel:#ffffff;--ink:#102c3e;--muted:#36576a;--edge:#95adbc;--accent:#006b61;--sea:#914100;--good:#176a48;--bad:#a4262c;color-scheme:light}}
+:root[data-theme="dark"]{--bg:#071521;--panel:#102738;--ink:#f4fbff;--muted:#b4ccd9;--edge:#345366;--accent:#69ead6;--sea:#ffb467;--good:#9be6ba;--bad:#ffa3a3}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:880px;margin:auto;padding:1.5rem 16px 4rem}
+header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.brand{font-weight:800;letter-spacing:.06em}.lang{display:flex;gap:.4rem}
+button,.btn{font:inherit;border:2px solid var(--edge);background:var(--panel);color:var(--ink);border-radius:.8rem;padding:.55rem .9rem;cursor:pointer;text-decoration:none;display:inline-block;min-height:44px}
+button[aria-pressed=true],.btn.primary{background:var(--accent);border-color:var(--accent);color:#10293a;font-weight:800}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) button[aria-pressed=true],:root:not([data-theme="dark"]) .btn.primary{color:#fff}}
+button:focus-visible,.btn:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+a{color:var(--sea)}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:800;color:var(--accent)}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(2.2rem,7vw,3.6rem);line-height:1.05;margin:.3rem 0 .7rem}
+h2{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:1.7rem;margin:2.6rem 0 .6rem}h3{font-size:1.08rem;margin:1.4rem 0 .3rem}
+p,li{color:var(--muted)}strong{color:var(--ink)}code{font-size:.92em;color:var(--ink)}
+.lead{font-size:1.15rem}
+.links{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0 1.5rem}
+figure{margin:1.2rem 0}figure img{width:100%;height:auto;display:block;border-radius:1rem;border:2px solid var(--edge);background:#000}
+figcaption{font-size:.9rem;color:var(--muted);margin-top:.4rem}
+.pair{display:grid;grid-template-columns:2fr 1fr;gap:.8rem;align-items:start}
+@media (max-width:600px){.pair{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin:1.5rem 0}
+.stat{background:var(--panel);border:1px solid var(--edge);border-radius:1rem;padding:1rem}.stat b{display:block;font-size:1.8rem;color:var(--accent);line-height:1.1}.stat span{font-size:.9rem;color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:1rem;padding:1rem 1.2rem;margin:.8rem 0}
+.card h3{margin-top:0}.problem{color:var(--bad);font-weight:700}.fix{color:var(--good);font-weight:700}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.95rem}th,td{text-align:left;padding:.55rem .5rem;border-bottom:1px solid var(--edge);vertical-align:top}th{color:var(--ink)}td{color:var(--muted)}
+ul{padding-left:1.2rem}
+.honest{border-left:4px solid var(--accent)}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--edge);font-size:.9rem;color:var(--muted);display:flex;gap:.6rem;flex-wrap:wrap}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="brand btn" href="./">🌊 SLIDESTORM ARENA</a>
+  <div class="lang" role="group" aria-label="Limba / Language">
+    <button type="button" data-set="ro" aria-pressed="true">RO</button>
+    <button type="button" data-set="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+
+<main lang="ro" data-lang="ro">
+  <div class="eyebrow">Studiu de caz · Joc canvas · Sunet procedural</div>
+  <h1>SlideStorm Arena</h1>
+  <p class="lead">Un parc acvatic sportiv în browser: 100 de niveluri, 8 sporturi și 11 moduri, în română și engleză. Studiul arată cum am trecut de la forme plate la 10 lumi cu zi și noapte, sunet și vreme, în patru versiuni din aceeași zi, fără să modific regulile sau salvările jucătorilor.</p>
+  <div class="links">
+    <a class="btn primary" href="./">Joacă SlideStorm Arena</a>
+    <a class="btn" href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/slidestorm-arena">Cod sursă</a>
+    <a class="btn" href="CHANGELOG.md">Istoricul versiunilor</a>
+  </div>
+  <figure><img src="media/hero.webp" width="1280" height="799" alt="Plaja cu palmieri ziua: toboganul cu apă, cristale de energie, o barieră în dungi, umbrele de plajă și turnuri de tobogane în depărtare." loading="eager"><figcaption>Capitolul 1, ziua: nisip, mare la orizont, obiecte desenate care își păstrează simbolurile.</figcaption></figure>
+
+  <div class="stats">
+    <div class="stat"><b>10</b><span>teme de capitol, fiecare cu decor și repere proprii</span></div>
+    <div class="stat"><b>25+</b><span>efecte sonore generate în browser, fără fișiere audio</span></div>
+    <div class="stat"><b>11</b><span>moduri verificate cu rezultate identice înainte și după</span></div>
+    <div class="stat"><b>0</b><span>modificări în reguli, scoruri sau formatul salvării</span></div>
+  </div>
+
+  <h2>Contextul</h2>
+  <p>Versiunea 2.0 avea deja conținutul: 100 de niveluri, 8 sporturi, constructor de trasee, camere online și opțiuni de accesibilitate. Grafica rămăsese însă cea din prima versiune: dreptunghiuri, romburi și simboluri text pe un fundal plat, cu trei palete repetate pe zece capitole. Pe mobil, imaginea se întindea vertical. Voiam ca jocul să arate și să sune ca un parc acvatic, fără să risc nimic din ce funcționa deja.</p>
+  <figure><img src="media/before-after.webp" width="1290" height="400" alt="Comparație: în stânga, versiunea 2.0 cu traseu plat și simboluri text; în dreapta, versiunea 2.4 cu plajă, tub transparent, cristale desenate și indicatorul ramificației." loading="lazy"><figcaption>Aceeași scenă, înainte și după.</figcaption></figure>
+
+  <h2>Deciziile importante</h2>
+  <div class="card">
+    <h3>Grafica și sunetul nu au voie să atingă regulile</h3>
+    <p><span class="problem">Provocarea:</span> logica jocului, salvarea validată și testele erau stabile. O rescriere a desenului putea strica, fără să se vadă, coliziuni, scoruri sau migrarea salvărilor.</p>
+    <p><span class="fix">Soluția:</span> desenul și sunetul trăiesc în scripturi separate, care doar citesc starea jocului. Rendererul înlocuiește o singură funcție, <code>draw()</code>. Stratul audio ascultă evenimente vizuale și își ține preferințele sub o cheie proprie. Un test automat refuză orice reatribuire a funcțiilor de joc în aceste straturi.</p>
+  </div>
+  <div class="card">
+    <h3>Dovada că nimic nu s-a schimbat</h3>
+    <p><span class="problem">Provocarea:</span> „arată la fel de jucabil” nu e o dovadă.</p>
+    <p><span class="fix">Soluția:</span> la fiecare versiune am rulat aceleași comenzi pe 11 moduri, în versiunea veche și în cea nouă, și am comparat scorul, reușitele, distanța, banda și starea fiecărui obiect de pe traseu. Rezultatele trebuie să fie identice. Singura excepție sunt regulile noi de vreme din 2.4, care sunt opționale și au testele lor.</p>
+  </div>
+  <div class="card">
+    <h3>Indicatoare fidele regulilor</h3>
+    <p><span class="problem">Provocarea:</span> un indicator desenat „frumos”, dar mai larg decât regula reală, îl păcălește pe jucător.</p>
+    <p><span class="fix">Soluția:</span> zona verde a fiecărui sport e calculată din aceeași condiție ca aruncarea: sub 0,28 la golf, în jurul centrului la bowling, iar la tir se îngustează după fiecare reușită. Portarul de handbal arată exact faza în care aruncarea trece, iar valul apare pe banda pe care lovește.</p>
+  </div>
+  <div class="card">
+    <h3>Sunet fără fișiere</h3>
+    <p><span class="problem">Provocarea:</span> fișierele audio ar fi crescut dimensiunea, ar fi complicat cache-ul offline și ar fi adus licențe de verificat.</p>
+    <p><span class="fix">Soluția:</span> toate sunetele sunt sintetizate cu Web Audio din oscilatoare și zgomot filtrat: efecte pentru fiecare acțiune, ambianțe după loc și oră, plus o muzică adaptivă pe capitole care adaugă straturi în arenă. Sunetul pornește doar la cererea jucătorului.</p>
+  </div>
+  <div class="card">
+    <h3>Performanță pe telefoane modeste</h3>
+    <p><span class="problem">Provocarea:</span> prima variantă a noii grafici dubla timpul pe cadru pe un profil de telefon încetinit.</p>
+    <p><span class="fix">Soluția:</span> am măsurat fiecare strat separat. Fundalul se desenează o dată pe un canvas propriu, care se reîmprospătează doar la schimbarea capitolului sau a orei. Strălucirile sunt sprite-uri din cache, iar calitatea Auto coboară singură. Pe desktop jocul rulează la 60 fps, ca înainte.</p>
+  </div>
+
+  <h2>Ce am construit</h2>
+  <figure><img src="media/day-night.webp" width="1290" height="808" alt="Aceeași plajă la zori, zi, apus și noapte: cerul, soarele și luna se schimbă, iar noaptea apar felinare pe balustradă și licurici." loading="lazy"><figcaption>Ciclul zi–noapte: zori, zi, apus, noapte.</figcaption></figure>
+  <figure><img src="media/arenas.webp" width="1290" height="808" alt="Patru arene: poartă de handbal cu portar, poartă de polo pe apă cu pasa 1 din 2, gaură de golf cu steag și indicator, țintă de tir." loading="lazy"><figcaption>Ținte și indicatoare diferite pentru fiecare sport.</figcaption></figure>
+  <div class="pair">
+    <figure><img src="media/weather.webp" width="1290" height="399" alt="În stânga, ceață densă care ascunde obiectele îndepărtate; în dreapta, un avertisment de rafală cu săgeți spre stânga." loading="lazy"><figcaption>Vremea opțională schimbă jocul: ceață și vânt.</figcaption></figure>
+    <figure><img src="media/mobile-photo.webp" width="1290" height="521" alt="În stânga, jocul pe un ecran de telefon fără întindere; în dreapta, fotografia de final cu scorul, nivelul, sportul și ora." loading="lazy"><figcaption>Camera adaptată pe mobil și fotografia de final.</figcaption></figure>
+  </div>
+  <ul>
+    <li><strong>Lumi</strong>: 10 teme cu repere (turnuri de tobogane, far, mori de vânt, vulcan, roată panoramică), aranjare diferită la fiecare nivel și viață în peisaj.</li>
+    <li><strong>Traseu</strong>: tobogan cu pereți și apă în mișcare; porțiuni în tub transparent, spirală, pod suspendat sau coborâre în pereche; ramificația marcată vizibil.</li>
+    <li><strong>Vreme</strong>: ploaie, furtună, valuri, plus ceață și vânt ca reguli opționale, cu avertisment vizual, text și sunet.</li>
+    <li><strong>Sunet</strong>: efecte, ambianțe și muzică adaptivă, cu volume separate.</li>
+    <li><strong>Accesibilitate</strong>: fiecare obiect are formă și simbol, nu doar culoare. Mișcarea redusă oprește efectele animate, iar contrastul ridicat folosește forme plate.</li>
+  </ul>
+
+  <h2>Testare</h2>
+  <ul>
+    <li><strong>Teste automate</strong>: logica jocului, salvările (inclusiv migrarea din v1), API-ul camerelor online și verificări pentru straturile de grafică și sunet.</li>
+    <li><strong>Echivalență</strong>: aceleași comenzi pe 11 moduri, cu rezultate identice între versiuni.</li>
+    <li><strong>Reguli noi</strong>: ceața adaugă +5 la energie; vântul anunță direcția corectă și te mută cu o bandă, iar săritura te ține pe loc.</li>
+    <li><strong>Browser</strong>: Chromium headless, fără erori în consolă; capturi pentru toate capitolele, momentele zilei, arene, contrast și ecrane de 390 px, tabletă și landscape; toate efectele sonore redate fără erori.</li>
+  </ul>
+  <div class="card honest">
+    <h3>Ce nu este verificat încă</h3>
+    <p>Sunetul, performanța și controlul tactil nu au fost testate pe telefoane reale. Cititoarele de ecran (TalkBack, VoiceOver) nu au fost încercate cu oameni. Măsurătorile de performanță vin dintr-un profil de telefon simulat, fără GPU, care e mai pesimist decât un dispozitiv real.</p>
+  </div>
+
+  <h2>Evoluția</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Evoluția versiunilor"><table>
+    <tr><th></th><th>2.0</th><th>2.2</th><th>2.3</th><th>2.4</th></tr>
+    <tr><td>Grafică</td><td>Forme plate, 3 palete</td><td>10 teme, tobogan 3D, ținte pe sport</td><td>Zi–noapte, plajă, repere</td><td>Tobogane noi, cameră pe mobil</td></tr>
+    <tr><td>Sunet</td><td>Un bip</td><td>Același</td><td>Efecte și ambianțe</td><td>+ muzică adaptivă</td></tr>
+    <tr><td>Vreme</td><td>Decor</td><td>Ploaie, fulgere</td><td>Același</td><td>+ ceață și vânt opționale</td></tr>
+    <tr><td>Reguli</td><td>—</td><td>Neschimbate</td><td>Neschimbate</td><td>Neschimbate implicit</td></tr>
+  </table></div>
+
+  <h2>Ce urmează</h2>
+  <ul>
+    <li>Sesiuni pe telefoane reale, pentru sunet, atingere și performanță.</li>
+    <li>Verificare cu TalkBack și VoiceOver a descrierilor și a avertismentelor de vreme.</li>
+    <li>Observarea unor jucători reali, ca dificultatea ceții și a vântului să se bazeze pe date.</li>
+  </ul>
+  <footer><a class="btn" href="../portfolio.html">← Înapoi la portofoliu</a><a class="btn" href="README.md">Documentație</a></footer>
+</main>
+
+<main lang="en" data-lang="en" hidden>
+  <div class="eyebrow">Case study · Canvas game · Procedural sound</div>
+  <h1>SlideStorm Arena</h1>
+  <p class="lead">A browser water-park sports game: 100 levels, eight sports and eleven modes, in Romanian and English. This case study shows how flat shapes became ten worlds with day and night, sound and weather, across four releases in one day, without changing the rules or players’ saves.</p>
+  <div class="links">
+    <a class="btn primary" href="./?lang=en">Play SlideStorm Arena</a>
+    <a class="btn" href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/slidestorm-arena">Source code</a>
+    <a class="btn" href="CHANGELOG.md">Version history</a>
+  </div>
+  <figure><img src="media/hero.webp" width="1280" height="799" alt="The palm beach by day: the water slide, energy crystals, a striped barrier, beach umbrellas and slide towers in the distance." loading="lazy"><figcaption>Chapter 1 by day: sand, sea on the horizon and drawn objects that keep their symbols.</figcaption></figure>
+
+  <div class="stats">
+    <div class="stat"><b>10</b><span>chapter themes, each with its own scenery and landmarks</span></div>
+    <div class="stat"><b>25+</b><span>sound effects generated in the browser, no audio files</span></div>
+    <div class="stat"><b>11</b><span>modes checked for identical results before and after</span></div>
+    <div class="stat"><b>0</b><span>changes to rules, scores or the save format</span></div>
+  </div>
+
+  <h2>Context</h2>
+  <p>Version 2.0 already had the content: 100 levels, eight sports, a route builder, online rooms and accessibility options. The graphics were still those of the first release: rectangles, diamonds and text symbols on a flat background, with three palettes repeated across ten chapters. On phones the picture stretched vertically. I wanted the game to look and sound like a water park without risking anything that already worked.</p>
+  <figure><img src="media/before-after.webp" width="1290" height="400" alt="Comparison: on the left, version 2.0 with a flat route and text symbols; on the right, version 2.4 with a beach, a transparent tube, drawn crystals and the fork sign." loading="lazy"><figcaption>The same scene, before and after.</figcaption></figure>
+
+  <h2>Key decisions</h2>
+  <div class="card">
+    <h3>Graphics and sound may not touch the rules</h3>
+    <p><span class="problem">Challenge:</span> the game logic, validated save and tests were stable. Rewriting the drawing code could quietly break collisions, scores or save migration.</p>
+    <p><span class="fix">Solution:</span> drawing and sound live in separate scripts that only read game state. The renderer replaces a single function, <code>draw()</code>. The audio layer listens to visual events and keeps its preferences under its own key. An automated test rejects any reassignment of game functions in these layers.</p>
+  </div>
+  <div class="card">
+    <h3>Proof that nothing changed</h3>
+    <p><span class="problem">Challenge:</span> “it still plays the same” is not evidence.</p>
+    <p><span class="fix">Solution:</span> for every release I ran the same inputs through 11 modes in the old and new versions and compared score, goals, distance, lane and the state of every route object. They have to match exactly. The only exception is the optional weather rules in 2.4, which have their own tests.</p>
+  </div>
+  <div class="card">
+    <h3>Meters that match the rules</h3>
+    <p><span class="problem">Challenge:</span> a meter drawn “nicely” but wider than the real rule misleads the player.</p>
+    <p><span class="fix">Solution:</span> each sport’s green zone is computed from the same condition as the throw: below 0.28 for golf, around the centre for bowling, and narrowing after each target hit. The handball keeper shows exactly when the shot will pass, and the wave appears on the lane it hits.</p>
+  </div>
+  <div class="card">
+    <h3>Sound without files</h3>
+    <p><span class="problem">Challenge:</span> audio files would add size, complicate the offline cache and bring licences to check.</p>
+    <p><span class="fix">Solution:</span> every sound is synthesised with Web Audio from oscillators and filtered noise: effects for each action, ambiences by place and time of day, and adaptive per-chapter music that adds layers in the arena. Sound only starts when the player turns it on.</p>
+  </div>
+  <div class="card">
+    <h3>Performance on modest phones</h3>
+    <p><span class="problem">Challenge:</span> the first version of the new graphics doubled frame time on a throttled phone profile.</p>
+    <p><span class="fix">Solution:</span> I measured each layer separately. The background is painted once onto its own canvas and only refreshed when the chapter or time of day changes. Glows are cached sprites, and Auto quality steps down by itself. Desktop still runs at 60 fps, as before.</p>
+  </div>
+
+  <h2>What I built</h2>
+  <figure><img src="media/day-night.webp" width="1290" height="808" alt="The same beach at dawn, day, sunset and night: the sky, sun and moon change, and at night lamps on the rail and fireflies appear." loading="lazy"><figcaption>The day–night cycle: dawn, day, sunset, night.</figcaption></figure>
+  <figure><img src="media/arenas.webp" width="1290" height="808" alt="Four arenas: a handball goal with a keeper, a water polo goal with pass 1 of 2, a mini-golf hole with a flag and meter, an archery target." loading="lazy"><figcaption>Different targets and meters for every sport.</figcaption></figure>
+  <div class="pair">
+    <figure><img src="media/weather.webp" width="1290" height="399" alt="On the left, thick fog hiding distant objects; on the right, a gust warning with arrows pointing left." loading="lazy"><figcaption>Optional weather that changes play: fog and wind.</figcaption></figure>
+    <figure><img src="media/mobile-photo.webp" width="1290" height="521" alt="On the left, the game on a phone screen without stretching; on the right, the finish photo with score, level, sport and time of day." loading="lazy"><figcaption>The adaptive mobile camera and the finish photo.</figcaption></figure>
+  </div>
+  <ul>
+    <li><strong>Worlds</strong>: 10 themes with landmarks (slide towers, lighthouse, windmills, volcano, Ferris wheel), a different layout for every level and a living landscape.</li>
+    <li><strong>Route</strong>: a walled slide with flowing water; transparent tube, spiral, suspended bridge or twin descent stretches; a clearly marked fork.</li>
+    <li><strong>Weather</strong>: rain, storm and waves, plus fog and wind as optional rules, each announced visually, in text and with sound.</li>
+    <li><strong>Sound</strong>: effects, ambiences and adaptive music with separate volumes.</li>
+    <li><strong>Accessibility</strong>: every object has a shape and a symbol, not just a colour. Reduced motion turns animated effects off, and high contrast uses flat shapes.</li>
+  </ul>
+
+  <h2>Testing</h2>
+  <ul>
+    <li><strong>Automated tests</strong>: game logic, saves (including v1 migration), the online rooms API, and checks for the graphics and sound layers.</li>
+    <li><strong>Equivalence</strong>: the same inputs through 11 modes give identical results across releases.</li>
+    <li><strong>New rules</strong>: fog adds +5 per energy; wind announces the right direction and pushes one lane, and jumping holds the lane.</li>
+    <li><strong>Browser</strong>: headless Chromium with no console errors; screenshots of every chapter, time of day, arena, high contrast, and 390 px, tablet and landscape screens; every sound effect plays without errors.</li>
+  </ul>
+  <div class="card honest">
+    <h3>What is not verified yet</h3>
+    <p>Sound, performance and touch control have not been tested on real phones. Screen readers (TalkBack, VoiceOver) have not been tried with people. Performance figures come from a simulated phone profile without a GPU, which is more pessimistic than a real device.</p>
+  </div>
+
+  <h2>How it evolved</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Version history"><table>
+    <tr><th></th><th>2.0</th><th>2.2</th><th>2.3</th><th>2.4</th></tr>
+    <tr><td>Graphics</td><td>Flat shapes, 3 palettes</td><td>10 themes, 3D slide, per-sport targets</td><td>Day–night, beach, landmarks</td><td>New slide stretches, mobile camera</td></tr>
+    <tr><td>Sound</td><td>One beep</td><td>Same</td><td>Effects and ambiences</td><td>+ adaptive music</td></tr>
+    <tr><td>Weather</td><td>Decoration</td><td>Rain, lightning</td><td>Same</td><td>+ optional fog and wind</td></tr>
+    <tr><td>Rules</td><td>—</td><td>Unchanged</td><td>Unchanged</td><td>Unchanged by default</td></tr>
+  </table></div>
+
+  <h2>What’s next</h2>
+  <ul>
+    <li>Sessions on real phones for sound, touch and performance.</li>
+    <li>Checking descriptions and weather warnings with TalkBack and VoiceOver.</li>
+    <li>Watching real players, so fog and wind difficulty rests on evidence.</li>
+  </ul>
+  <footer><a class="btn" href="../en/">← Back to the portfolio</a><a class="btn" href="README.md">Documentation</a></footer>
+</main>
+</div>
+<script>
+(()=>{const btns=document.querySelectorAll('[data-set]');function set(l){document.documentElement.lang=l;document.querySelectorAll('main[data-lang]').forEach(m=>m.hidden=m.dataset.lang!==l);btns.forEach(b=>b.setAttribute('aria-pressed',b.dataset.set===l));document.title=l==='ro'?'SlideStorm Arena · Studiu de caz':'SlideStorm Arena · Case study'}
+btns.forEach(b=>b.onclick=()=>set(b.dataset.set));const q=new URLSearchParams(location.search).get('lang');if(q==='en'||(!q&&(navigator.language||'').slice(0,2)!=='ro'&&document.referrer.includes('/en/')))set('en')})();
+</script>
+</body>
+</html>
