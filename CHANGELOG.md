@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-02 — Serpent Prism v1.4.0
+
+- RO: publicat codul jocului, istoricul 1.0.0–1.4.0 și tutorialul; integrat în catalog, RO/EN, Finalizat recent (maximum cinci), Istoric, README și sitemap.
+- EN: published game source, history 1.0.0–1.4.0 and tutorial; integrated in catalogue, RO/EN, recent work (five maximum), history, README and sitemap.
+- [Istoric / History](serpent-prism/CHANGELOG.md). Verificările logicii și audio au trecut; validarea pe dispozitive reale rămâne neconfirmată.
+
+
 ## 2026-10-02 — SlideStorm Arena v2.4.0
 
 - RO: muzică adaptivă, ceață și vânt ca reguli opționale, cameră adaptată pe mobil, tobogane noi pe traseu, fotografie de final și studiu de caz nou; legat din catalog, portofoliul RO/EN și sitemap.

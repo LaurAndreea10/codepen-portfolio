@@ -1,0 +1,46 @@
+# Serpent Prism — Changelog
+
+Toate iterațiile au fost realizate la 2026-10-02. Etichetele inițiale v1.0–v1.4 sunt normalizate aici la 1.0.0–1.4.0; nu reprezintă taguri GitHub create anterior.
+
+All iterations were implemented on 2026-10-02. Initial v1.0–v1.4 labels are normalized here to 1.0.0–1.4.0; they are not historical GitHub tags.
+
+## 1.4.0 — 2026-10-02
+
+**RO — Arenă unificată și tutorial.** Traseul bilelor înconjoară șarpele; butonul Lansează este în colțul arenei. Ecran mai mare, panouri dedesubt, traiectorie sugerată și tutorial Despre joc în cinci pași RO/EN.
+
+**EN — Unified arena and tutorial.** The orb route surrounds the snake; Launch sits in the arena corner. Larger arena, panels below, suggested trajectory and a five-step RO/EN About the game tutorial.
+
+## 1.3.0 — 2026-10-02
+
+**RO — Armonizare și sunet.** Modul și scorurile au fost integrate în panoul jocului. Efecte Web Audio pentru colectare, lansare, combinații și rezultate; ambianță discretă, buton de sunet și volume separate. Sunetul pornește după o interacțiune.
+
+**EN — Visual harmony and audio.** Mode and scores moved into the game panel. Web Audio effects for collection, launch, matches and results; quiet ambience, a sound toggle and separate volumes. Audio starts after an interaction.
+
+## 1.2.0 — 2026-10-02
+
+**RO — Elemente adaptate din SlideStorm.** Șase decoruri, pereți și reflexii pe canal, apă animată, lumină zi/apus/noapte, vreme decorativă, calitate adaptivă și ecran de joc focalizat.
+
+**EN — Elements adapted from SlideStorm.** Six environments, channel walls and reflections, animated water, day/sunset/night lighting, decorative weather, adaptive quality and focused game view.
+
+## 1.1.0 — 2026-10-02
+
+**RO — Mod Ușor și volum vizual.** Mod Ușor implicit, colectare asistată, țintă sugerată, mișcare la comandă și țintire care oprește timpul. Bile cu efect 3D în Canvas 2D, umbre, corp continuu și deplasare interpolată.
+
+**EN — Easy mode and visual depth.** Default Easy mode, assisted collection, suggested targets, movement on command and aiming that stops time. 3D-like Canvas 2D orbs, shadows, connected body and interpolated movement.
+
+## 1.0.0 — 2026-10-02
+
+**RO — Prima versiune.** Snake cu muniție în coadă și potriviri de minimum trei bile. Șase moduri, RO/EN, dark/light, simboluri pentru culori, contrast, mișcare redusă, mod textual pe ture, progres local și magazin cosmetic.
+
+**EN — Initial release.** Snake with tail ammunition and matches of at least three orbs. Six modes, RO/EN, dark/light, color symbols, contrast, reduced motion, text-based turns, local progress and cosmetic shop.
+
+## Publicare în portofoliu / Portfolio publication — 2026-10-02
+
+- Codul v1.4.0 adăugat în `serpent-prism/`; catalog, pagini RO/EN, Finalizat recent (maximum cinci), Istoric, README și sitemap actualizate.
+- Published v1.4.0 source in `serpent-prism/`; catalogue, RO/EN pages, recent work (five maximum), history, README and sitemap updated.
+
+## Verificări și limite / Checks and limits
+
+Verificate automat: moduri, colectare/lansare, combinații, provocare zilnică deterministă, salvare locală, tutorial și pauză/reluare, evenimente audio și mute/volum. Grafica este Canvas 2D cu efect de volum, nu un motor WebGL. Testarea vizuală pe telefon, redarea audio reală și folosirea unui cititor de ecran real rămân de confirmat.
+
+Automated checks cover modes, collection/launch, cascades, seeded daily layout, local persistence, tutorial and pause/resume, audio events and mute/volume. Graphics use Canvas 2D depth effects, not WebGL. Real-device visual/audio and screen-reader validation remain unverified.
