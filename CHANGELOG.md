@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-02 — SlideStorm Arena v2.2.0
+
+- RO: grafică nouă — 10 teme de capitol, tobogan cu apă în mișcare, obiecte desenate cu simbolurile păstrate, ținte și indicatoare fidele regulilor pentru cele 8 sporturi, vreme și calitate adaptivă; regulile și salvările neschimbate. Catalog, RO/EN, Finalizat recent și Istoric actualizate.
+- EN: new graphics — 10 chapter themes, flowing-water slide, drawn route elements that keep their symbols, rule-accurate targets and meters for all 8 sports, weather and adaptive quality; rules and saves unchanged. Catalogue, RO/EN pages, recent work and history updated.
+
 ## 2026-10-02 — Odyssey Quest v2.1.2
 
 - RO: arhivă v2.0.1, etichete accesibile, metadate SEO și istoric EN aliniate; standalone reconstruit; structura existentă și integrările recente păstrate.
