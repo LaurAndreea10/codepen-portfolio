@@ -47,3 +47,11 @@ Full 120-trial browser regression, mobile layout, axe and offline reload pass. T
 - `tests/expedition.cjs`: choices, endings, feedback URL, transfer guard, EN: pass.
 - `tests/connected.cjs`: two Chromium pages on the same machine connected over WebRTC, exchanged a score and accepted a backup: pass. This confirms the code path locally; connections between different networks without TURN are still not verified.
 - Header, footer, version note and service-worker cache all read 2.1.1 in `index.html` and the rebuilt `standalone.html`; no link without text in either edition.
+
+## 2.1.2 alignment checks · 2026-10-02
+
+- Engine regression rerun: 120 progression transitions, duplicate rewards, shop, 360 deterministic puzzles, seeded plans, backup validation, v1 migration, Romanian date boundaries and workshop schema: pass.
+- Syntax checks for app.js, i18n.js, main-core.js and main.js: pass.
+- Static checks: archive v2.0.1 labels, live/standalone v2.1.2, JSON-LD date, Romanian fallback accessible names, July/August EN history, five static recent completions, unique catalogue IDs and sitemap XML: pass.
+- Standalone rebuilt from the current sources and corrected archive. This patch does not claim a new full browser/axe/offline run or real-device certification; the previous browser results remain recorded above.
+

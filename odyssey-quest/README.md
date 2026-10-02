@@ -1,4 +1,4 @@
-# Odyssey Quest · v2.1.1
+# Odyssey Quest · v2.1.2
 
 **RO** — Aventură educativă cu 12 insule, 120 de probe și 11 moduri de joc. Inspirată din traseul lui Odiseu; povestea este o adaptare simplificată, harta este simbolică.
 
