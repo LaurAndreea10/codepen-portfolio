@@ -2,6 +2,9 @@
 
 ## 2026-10-02 — Serpent Prism v1.5.0
 
+- Validare în Chromium: 5 viewporturi, touch, audio-context/mute, fullscreen, progres după reload, RO/EN și axe. Rularea [37048441400](https://github.com/LaurAndreea10/codepen-portfolio/actions/runs/37048441400) a trecut; telefonul fizic și cititorul de ecran real rămân neconfirmate.
+- Corectat meniul care rămânea vizibil în ecranul focalizat pe mobil.
+
 - RO: Primul nivel ghidat, fără presiune de timp până la prima potrivire; bonusuri pentru combo-uri și porți, niveluri cu două trasee, rezultate de rundă și progres păstrat. Bile și controale mai mari; verificare automată touch/mobil și axe prin GitHub Actions.
 - EN: Guided first level with time frozen until the first match; combo and gate bonuses, dual-route levels, round results and saved progress. Larger orbs and controls; automated touch/mobile and axe checks through GitHub Actions.
 - [Changelog](serpent-prism/CHANGELOG.md) · [Browser/mobile workflow](https://github.com/LaurAndreea10/codepen-portfolio/actions/workflows/serpent-prism.yml).
