@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-02 — Serpent Prism v1.5.0
+
+- RO: Primul nivel ghidat, fără presiune de timp până la prima potrivire; bonusuri pentru combo-uri și porți, niveluri cu două trasee, rezultate de rundă și progres păstrat. Bile și controale mai mari; verificare automată touch/mobil și axe prin GitHub Actions.
+- EN: Guided first level with time frozen until the first match; combo and gate bonuses, dual-route levels, round results and saved progress. Larger orbs and controls; automated touch/mobile and axe checks through GitHub Actions.
+- [Changelog](serpent-prism/CHANGELOG.md) · [Browser/mobile workflow](https://github.com/LaurAndreea10/codepen-portfolio/actions/workflows/serpent-prism.yml).
+
+
 ## 2026-10-02 — Serpent Prism v1.4.0
 
 - RO: publicat codul jocului, istoricul 1.0.0–1.4.0 și tutorialul; integrat în catalog, RO/EN, Finalizat recent (maximum cinci), Istoric, README și sitemap.

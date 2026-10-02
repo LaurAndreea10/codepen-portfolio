@@ -295,7 +295,7 @@ RO — 100 de niveluri, 8 sporturi, 11 moduri, constructor de trasee, progres lo
 
 EN — 100 levels, eight sports, eleven modes, route builder and validated local progress. v2.2.0 adds new graphics (10 themes, per-sport targets, weather, adaptive quality); v2.3.0 adds sound, a day–night cycle and new scenery; v2.4.0 brings music, fog and wind, a mobile camera, new slides and a finish photo. Real-device mobile validation remains unverified.
 
-## Serpent Prism · v1.4.0 · 2026-10-02
+## Serpent Prism · v1.5.0 · 2026-10-02
 
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/serpent-prism/) · [README](serpent-prism/README.md) · [Changelog](serpent-prism/CHANGELOG.md)
 
@@ -304,3 +304,5 @@ RO: Zuma × Snake într-o singură arenă, șase moduri, tutorial bilingv, Ușor
 EN: Zuma × Snake in one arena, six modes, bilingual tutorial, default Easy assistance, audio and local progress.
 
 Verificările automate ale logicii și rutării audio au trecut; testarea reală pe mobil și cu cititor de ecran rămâne de confirmat. / Logic and audio routing checks pass; real-device mobile and screen-reader validation remain unverified.
+
+Serpent Prism v1.5.0: primul nivel ghidat, obiective progresive, rezultate și regresie automată mobilă. / Guided first level, progressive goals, results and automated mobile regression.

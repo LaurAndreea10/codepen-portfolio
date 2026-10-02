@@ -1,0 +1,36 @@
+name: Serpent Prism browser and mobile checks
+on:
+  push:
+    branches: [main]
+    paths: ['serpent-prism/**', '.github/workflows/serpent-prism.yml']
+  pull_request:
+    paths: ['serpent-prism/**', '.github/workflows/serpent-prism.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Core and audio routing
+        run: |
+          node --check serpent-prism/game.js
+          node serpent-prism/test-core.cjs
+          node serpent-prism/test-audio.cjs
+      - name: Install browser tools
+        run: |
+          npm install --no-save playwright@1.55.0 @axe-core/playwright@4.10.2
+          npx playwright install --with-deps chromium
+      - name: Mobile, desktop, touch and accessibility regression
+        run: node serpent-prism/test-browser.mjs
+      - name: Save screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: serpent-prism-mobile-report
+          path: audit-artifacts/serpent-prism/
+          if-no-files-found: warn

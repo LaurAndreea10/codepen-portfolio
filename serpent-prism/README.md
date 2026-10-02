@@ -1,4 +1,4 @@
-# Serpent Prism · v1.4.0
+# Serpent Prism · v1.5.0
 
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/serpent-prism/) · [Changelog](CHANGELOG.md) · [Istoric public / Public history](changelog.html)
 
@@ -38,3 +38,13 @@ Tests use DOM/Canvas and AudioContext stubs to verify logic and audio routing. T
 ## History
 
 Versions 1.0.0–1.4.0 are documented from the development iterations on 2026-10-02. The first GitHub portfolio publication contains the current 1.4.0 source; older source snapshots are retained in the original Site history, not fabricated as GitHub tags.
+
+## v1.5.0 — Ghid și progresie / Guide and progression
+
+Primul nivel ghidat, fără presiune de timp până la prima potrivire; bonusuri pentru combo-uri și porți, niveluri cu două trasee, rezultate de rundă și progres păstrat. Bile și controale mai mari; verificare automată touch/mobil și axe prin GitHub Actions.
+
+Guided first level with time frozen until the first match; combo and gate bonuses, dual-route levels, round results and saved progress. Larger orbs and controls; automated touch/mobile and axe checks through GitHub Actions.
+
+Nivelul ghidat se poate relua din Despre joc. Bonusurile sunt opționale; eliminarea șirului permite continuarea. / Replay the guide from About. Bonuses are optional; clearing the chain allows progression.
+
+[Browser/mobile workflow](https://github.com/LaurAndreea10/codepen-portfolio/actions/workflows/serpent-prism.yml) runs real browser tests at five viewports, dispatched touch input, audio-context activation, axe checks and screenshots. It does not replace physical-device, audible playback or screen-reader testing.
