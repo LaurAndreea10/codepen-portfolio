@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Async Resilience Lab — Dashboard CRM | Laura Andreea</title>
+<meta name="description" content="Widget CRM bilingv cu AbortController, retry, protecție împotriva răspunsurilor întârziate și stare accesibilă de încărcare.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/dashboard-async-resilience.html">
+<style>
+:root{--bg:#061225;--panel:#10213d;--panel2:#172d50;--text:#f3f7ff;--muted:#b8c8e4;--line:#38527b;--green:#6fe7ad;--blue:#82b2ff;--amber:#ffd166;--danger:#ff9caf;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(circle at 10% 0,#1c3b6c 0,transparent 36%),var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}a{color:var(--blue)}button,select{min-height:48px;border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:#122747;color:var(--text);font:inherit}button{cursor:pointer}button:hover:not(:disabled){border-color:var(--blue)}button:disabled{cursor:not-allowed;opacity:.62}:focus-visible{outline:3px solid var(--amber);outline-offset:3px}.skip{position:absolute;left:12px;top:-80px;background:#fff;color:#000;padding:12px;z-index:10}.skip:focus{top:12px}.wrap{width:min(980px,calc(100% - 32px));margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0}.brand{font-weight:900;text-decoration:none;color:var(--text)}.hero{padding:46px 0 22px}.eyebrow{color:var(--green);font-size:.82rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.hero h1{margin:.2em 0;font-size:clamp(2rem,7vw,4rem);line-height:1}.hero p{max-width:760px;color:var(--muted)}.lab{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(270px,.75fr);gap:20px;padding:14px 0 60px}.panel{border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,rgba(23,45,80,.94),rgba(9,23,45,.96));padding:22px;box-shadow:0 25px 60px rgba(0,0,0,.2)}.panel h2{margin-top:0}.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}.field{display:grid;gap:7px}.field label{color:var(--muted);font-size:.88rem;font-weight:800}.clients{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.clients button[aria-pressed=true]{background:linear-gradient(135deg,#4f8cff,#745be8);border-color:transparent;font-weight:900}.activity-panel[aria-busy=true]{opacity:.75}.status{min-height:1.6em;color:var(--green);font-weight:850}.status.error{color:var(--danger)}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.primary{background:linear-gradient(135deg,#4f8cff,#745be8);border-color:transparent;font-weight:900}.activities{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:10px}.activities li{padding:14px;border-left:3px solid var(--blue);border-radius:0 13px 13px 0;background:#0a1930}.activities strong{display:block}.activities span{color:var(--muted);font-size:.9rem}.proof{list-style:none;padding:0;margin:0;display:grid;gap:10px}.proof li{padding:12px;border-left:3px solid var(--green);border-radius:0 12px 12px 0;background:#0a1930;color:var(--muted)}.request-log{margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#0a1930;color:var(--green);font:14px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap}footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted)}[hidden]{display:none!important}
+@media(max-width:740px){.lab{grid-template-columns:1fr}.hero{padding-top:28px}}
+@media(max-width:420px){.wrap{width:min(100% - 20px,980px)}.panel{padding:16px}.top,.controls,.clients,.actions{align-items:stretch;grid-template-columns:1fr;flex-direction:column}.clients button,.actions button{width:100%}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Sari la conținut / Skip to content</a>
+<header class="wrap top"><a class="brand" href="evolution-lab.html">LAURAI / PRACTICE LAB II</a><button id="lang" type="button" aria-label="Switch to English">EN</button></header>
+<main id="main" class="wrap">
+<section class="hero"><span class="eyebrow" data-i18n="kicker">Exercițiul 08 · Dashboard · Async resilience</span><h1 data-i18n="title">Activitate CRM fără răspunsuri întârziate</h1><p data-i18n="lead">Schimbă rapid clientul, simulează rețele lente și erori, apoi observă cum interfața păstrează doar răspunsul relevant.</p></section>
+<div class="lab">
+<section id="activity-panel" class="panel activity-panel" aria-labelledby="activity-title" aria-busy="false">
+<h2 id="activity-title" data-i18n="widgetTitle">Activitate recentă</h2>
+<div class="controls"><div class="field"><label for="demo-mode" data-i18n="modeLabel">Mod demonstrație</label><select id="demo-mode"><option value="random" data-i18n="modeRandom">Aleatoriu</option><option value="success" data-i18n="modeSuccess">Succes</option><option value="error" data-i18n="modeError">Eroare</option><option value="slow" data-i18n="modeSlow">Lent</option></select></div></div>
+<div class="clients" aria-label="Clienți" data-i18n-aria="clientsLabel"><button type="button" data-client="nova" aria-pressed="false">Atelier Nova</button><button type="button" data-client="lumen" aria-pressed="false">Lumen Studio</button></div>
+<p id="status" class="status" role="status" aria-live="polite" aria-atomic="true" data-i18n="ready">Alege un client pentru a încărca activitatea.</p>
+<div class="actions"><button id="retry" class="primary" type="button" hidden data-i18n="retry">Reîncearcă</button><button id="cancel" type="button" disabled data-i18n="cancel">Anulează cererea</button></div>
+<ul id="activities" class="activities" aria-label="Activitate client" data-i18n-aria="activitiesLabel"></ul>
+</section>
+<aside class="panel" aria-labelledby="proof-title"><h2 id="proof-title" data-i18n="proofTitle">Dovadă tehnică</h2><ul class="proof"><li data-i18n="proof1">Cererea precedentă este anulată automat.</li><li data-i18n="proof2">Doar ultimul requestId poate actualiza interfața.</li><li data-i18n="proof3">AbortError este ignorată, erorile reale primesc Retry.</li><li data-i18n="proof4">aria-busy și aria-live expun starea fără a bloca navigarea.</li></ul><pre id="request-log" class="request-log" aria-label="Request state">requestId: 0
+state: idle</pre></aside>
+</div>
+</main>
+<footer><div class="wrap"><a href="evolution-lab.html#practice-lab-advanced" data-i18n="back">Înapoi la Evolution Lab</a></div></footer>
+<script>
+(()=>{"use strict";
+const LANG_KEY="async-resilience-lang";
+const copy={
+ro:{kicker:"Exercițiul 08 · Dashboard · Async resilience",title:"Activitate CRM fără răspunsuri întârziate",lead:"Schimbă rapid clientul, simulează rețele lente și erori, apoi observă cum interfața păstrează doar răspunsul relevant.",widgetTitle:"Activitate recentă",modeLabel:"Mod demonstrație",modeRandom:"Aleatoriu",modeSuccess:"Succes",modeError:"Eroare",modeSlow:"Lent",clientsLabel:"Clienți",activitiesLabel:"Activitate client",ready:"Alege un client pentru a încărca activitatea.",loading:"Se încarcă activitatea pentru {client}…",loaded:"Activitatea pentru {client} a fost încărcată.",failed:"Nu am putut încărca activitatea. Poți reîncerca.",cancelled:"Cererea a fost anulată.",retry:"Reîncearcă",cancel:"Anulează cererea",proofTitle:"Dovadă tehnică",proof1:"Cererea precedentă este anulată automat.",proof2:"Doar ultimul requestId poate actualiza interfața.",proof3:"AbortError este ignorată, erorile reale primesc Retry.",proof4:"aria-busy și aria-live expun starea fără a bloca navigarea.",back:"Înapoi la Evolution Lab",langLabel:"Switch to English",call:"Apel de verificare",email:"E-mail trimis",note:"Notă de proiect",today:"astăzi",yesterday:"ieri"},
+en:{kicker:"Exercise 08 · Dashboard · Async resilience",title:"CRM activity without stale responses",lead:"Switch clients quickly, simulate slow networks and errors, then watch the interface keep only the relevant response.",widgetTitle:"Recent activity",modeLabel:"Demo mode",modeRandom:"Random",modeSuccess:"Success",modeError:"Error",modeSlow:"Slow",clientsLabel:"Clients",activitiesLabel:"Client activity",ready:"Choose a client to load activity.",loading:"Loading activity for {client}…",loaded:"Activity for {client} loaded.",failed:"The activity could not be loaded. You can retry.",cancelled:"The request was cancelled.",retry:"Retry",cancel:"Cancel request",proofTitle:"Technical evidence",proof1:"The previous request is cancelled automatically.",proof2:"Only the latest requestId may update the interface.",proof3:"AbortError is ignored; real errors get a Retry path.",proof4:"aria-busy and aria-live expose state without blocking navigation.",back:"Back to Evolution Lab",langLabel:"Schimbă în română",call:"Review call",email:"Email sent",note:"Project note",today:"today",yesterday:"yesterday"}};
+const names={nova:"Atelier Nova",lumen:"Lumen Studio"};
+const panel=document.querySelector("#activity-panel"),statusNode=document.querySelector("#status"),list=document.querySelector("#activities"),retryButton=document.querySelector("#retry"),cancelButton=document.querySelector("#cancel"),modeSelect=document.querySelector("#demo-mode"),langButton=document.querySelector("#lang"),log=document.querySelector("#request-log");
+let language=localStorage.getItem(LANG_KEY)==="en"?"en":"ro",activeController=null,latestRequestId=0,lastClientId=null;
+const format=(value,client)=>value.replace("{client}",client);
+function createAbortError(){try{return new DOMException("Aborted","AbortError")}catch(error){const abortError=new Error("Aborted");abortError.name="AbortError";return abortError}}
+function fetchActivities(clientId,signal,mode){
+return new Promise((resolve,reject)=>{
+const delay=mode==="slow"?2600:650+Math.random()*700;
+const outcome=mode==="random"?(Math.random()<.72?"success":"error"):mode;
+const timer=setTimeout(()=>{if(outcome==="error")reject(new Error("NETWORK_ERROR"));else resolve([{type:"call",when:"today"},{type:"email",when:"today"},{type:"note",when:"yesterday"}])},delay);
+signal.addEventListener("abort",()=>{clearTimeout(timer);reject(createAbortError())},{once:true});
+});
+}
+function setStatus(message,isError=false){statusNode.textContent=message;statusNode.classList.toggle("error",isError)}
+function renderActivities(items){list.replaceChildren();const t=copy[language];items.forEach(item=>{const li=document.createElement("li"),strong=document.createElement("strong"),span=document.createElement("span");strong.textContent=t[item.type];span.textContent=t[item.when];li.append(strong,span);list.append(li)})}
+function updateLog(id,state,clientId){log.textContent="requestId: "+id+"\nclient: "+(clientId||"—")+"\nstate: "+state}
+async function loadActivities(clientId){
+if(activeController)activeController.abort();
+const controller=new AbortController(),requestId=++latestRequestId;
+activeController=controller;lastClientId=clientId;
+document.querySelectorAll("[data-client]").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.client===clientId)));
+panel.setAttribute("aria-busy","true");retryButton.hidden=true;cancelButton.disabled=false;list.replaceChildren();
+setStatus(format(copy[language].loading,names[clientId]));updateLog(requestId,"loading",clientId);
+try{
+const items=await fetchActivities(clientId,controller.signal,modeSelect.value);
+if(requestId!==latestRequestId)return;
+renderActivities(items);setStatus(format(copy[language].loaded,names[clientId]));updateLog(requestId,"success",clientId);
+}catch(error){
+if(error.name==="AbortError"){if(requestId===latestRequestId){setStatus(copy[language].cancelled);updateLog(requestId,"cancelled",clientId)}return}
+if(requestId!==latestRequestId)return;
+setStatus(copy[language].failed,true);retryButton.hidden=false;updateLog(requestId,"error",clientId);
+}finally{
+if(requestId===latestRequestId){panel.setAttribute("aria-busy","false");cancelButton.disabled=true;activeController=null}
+}
+}
+function cancelActive(){if(activeController)activeController.abort()}
+function applyLanguage(){
+const t=copy[language];document.documentElement.lang=language;
+document.querySelectorAll("[data-i18n]").forEach(node=>{const value=t[node.dataset.i18n];if(value)node.textContent=value});
+document.querySelectorAll("[data-i18n-aria]").forEach(node=>{const value=t[node.dataset.i18nAria];if(value)node.setAttribute("aria-label",value)});
+langButton.textContent=language==="ro"?"EN":"RO";langButton.setAttribute("aria-label",t.langLabel);localStorage.setItem(LANG_KEY,language);
+if(lastClientId&&panel.getAttribute("aria-busy")==="false"&&!list.children.length&&!retryButton.hidden)setStatus(t.failed,true);
+}
+document.querySelectorAll("[data-client]").forEach(button=>button.addEventListener("click",()=>loadActivities(button.dataset.client)));
+retryButton.addEventListener("click",()=>{if(lastClientId)loadActivities(lastClientId)});
+cancelButton.addEventListener("click",cancelActive);
+langButton.addEventListener("click",()=>{language=language==="ro"?"en":"ro";applyLanguage()});
+addEventListener("pagehide",cancelActive);applyLanguage();
+})();
+</script>
+</body>
+</html>
