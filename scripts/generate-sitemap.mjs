@@ -42,7 +42,7 @@ const pages = [
   ["en/proof-registry.html", "monthly", "0.7", "2026-09-27"],
   ["en/game-audits.html", "monthly", "0.7", "2026-09-06"],
   ["en/release-timeline.html", "monthly", "0.7", "2026-09-06"],
-  ["evolution-lab.html", "monthly", "0.9", "2026-09-30"],
+  ["evolution-lab.html", "monthly", "0.9", "2026-10-02"],
   ["design-system.html", "monthly", "0.8", "2026-09-13"],
   ["portfolio-summary.html", "monthly", "0.9", "2026-09-14"],
   ["growth-suite.html", "monthly", "0.9", "2026-09-13"],
@@ -66,6 +66,7 @@ const pages = [
   ["crm-optimistic-undo.html", "monthly", "0.75", "2026-09-30"],
   ["canva-collection.html", "monthly", "0.6", "2026-10-02"],
   ["en/canva-collection.html", "monthly", "0.6", "2026-10-02"],
+  ["dashboard-async-resilience.html", "monthly", "0.75", "2026-10-02"],
 ];
 
 const pairs = new Map([
