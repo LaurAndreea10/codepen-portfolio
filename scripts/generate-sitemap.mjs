@@ -5,8 +5,8 @@ const pages = [
   ["slidestorm-arena/", "monthly", "0.7", "2026-10-01"],
   ["odyssey-quest/", "monthly", "0.7", "2026-10-01"],
   ["odyssey-quest/case-study.html", "monthly", "0.7", "2026-10-01"],
-  ["portfolio.html", "weekly", "1.0", "2026-10-01"],
-  ["en/", "weekly", "0.9", "2026-10-01"],
+  ["portfolio.html", "weekly", "1.0", "2026-10-02"],
+  ["en/", "weekly", "0.9", "2026-10-02"],
   ["alpis-fusion-crm.html", "monthly", "0.9", "2026-08-30"],
   ["projects/clientflow.html", "monthly", "0.9", "2026-08-30"],
   ["projects/alpis-impactpath.html", "monthly", "0.9", "2026-04-20"],
@@ -64,10 +64,13 @@ const pages = [
   ["crm-accessible-form.html", "monthly", "0.75", "2026-09-25"],
   ["crm-json-backup.html", "monthly", "0.75", "2026-09-28"],
   ["crm-optimistic-undo.html", "monthly", "0.75", "2026-09-30"],
-  ["canva-collection.html", "monthly", "0.6", "2026-09-30"],
+  ["canva-collection.html", "monthly", "0.6", "2026-10-02"],
+  ["en/canva-collection.html", "monthly", "0.6", "2026-10-02"],
 ];
 
 const pairs = new Map([
+  ["canva-collection.html", ["canva-collection.html", "en/canva-collection.html"]],
+  ["en/canva-collection.html", ["canva-collection.html", "en/canva-collection.html"]],
   ["portfolio.html", ["portfolio.html", "en/"]],
   ["en/", ["portfolio.html", "en/"]],
   ["project-health.html", ["project-health.html", "en/project-health.html"]],

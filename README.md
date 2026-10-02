@@ -253,11 +253,11 @@ An accessible cosmic PWA with nine game modes, progressive difficulty, switch sc
 
 ## Colecție Canva / Canva collection
 
-[RO](https://laurandreea10.github.io/codepen-portfolio/canva-collection.html) · [EN](https://laurandreea10.github.io/codepen-portfolio/canva-collection.html?lang=en)
+[RO](https://laurandreea10.github.io/codepen-portfolio/canva-collection.html) · [EN](https://laurandreea10.github.io/codepen-portfolio/en/canva-collection.html)
 
-Șapte materiale editabile Excel Quest & CRM, cu asistență AI documentată. Colecția este separată de contorizarea aplicațiilor live.
+14 materiale de design pentru educație, CRM și marketing, inclusiv șase drafturi asistate de AI. Pagini de colecție separate RO și EN; contribuțiile manuale personale rămân de documentat. Colecția este separată de contorizarea aplicațiilor live.
 
-Seven editable Excel Quest & CRM design materials, with documented AI assistance. This collection is separate from the live-app count.
+14 design materials for education, CRM and marketing, including six AI-assisted drafts. Separate RO and EN collection pages; personal manual contributions remain to be documented. This collection is separate from the live-app count.
 
 - Carusel Excel Quest / Excel Quest carousel: https://canva.link/0gwodnr0lqil4xp
 - Story Excel Quest / Excel Quest story: https://canva.link/3cj0bie3oa1wcmq
@@ -266,6 +266,13 @@ Seven editable Excel Quest & CRM design materials, with documented AI assistance
 - Infografic CRM / CRM infographic: https://canva.link/ms8gtpxn95cxqkz
 - Ghid Excel / Excel guide: https://canva.link/o9fn6tcta2re2wd
 - Studiu de caz reutilizabil / Reusable case study: https://canva.link/85g35ofppw7s4bp
+- Șablon de raport CRM · RO/EN: https://www.canva.com/d/mQXyxSnI06wwPmA
+- Carusel social media · RO/EN: https://www.canva.com/d/cUT5L_Mwx8U4lvX
+- Story social media · RO/EN: https://www.canva.com/d/CqbCV0r9GlNvsl1
+- Post pătrat: https://www.canva.com/d/Jh2gvDtVdcih_-v
+- Cover LinkedIn: https://www.canva.com/d/IDayN8mvmHn-RXN
+- Prezentare SaaS · RO/EN: https://www.canva.com/d/eU6lc8_WmIuVhcU
+- Raport lunar de marketing · RO/EN: https://www.canva.com/d/N0vn8ha5duXGAkl
 
 
 ## Odyssey Quest · 2026-09-30
