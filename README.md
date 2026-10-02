@@ -287,10 +287,10 @@ An accessible cosmic PWA with nine game modes, progressive difficulty, switch sc
 
 
 
-## SlideStorm Arena · 2026-10-01
+## SlideStorm Arena · v2.2.0 · 2026-10-02
 
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/slidestorm-arena/) · [README](slidestorm-arena/README.md) · [Istoric / History](slidestorm-arena/CHANGELOG.md)
 
-RO — 100 de niveluri, 8 sporturi, 11 moduri, constructor de trasee, progres local validat și opțiuni de accesibilitate. Testarea practică pe mobil rămâne de confirmat.
+RO — 100 de niveluri, 8 sporturi, 11 moduri, constructor de trasee, progres local validat și opțiuni de accesibilitate. v2.2.0 aduce grafică nouă (10 teme, ținte pentru fiecare sport, vreme, calitate adaptivă). Testarea practică pe mobil rămâne de confirmat.
 
-EN — 100 levels, eight sports, eleven modes, route builder and validated local progress. Real-device mobile validation remains unverified.
+EN — 100 levels, eight sports, eleven modes, route builder and validated local progress. v2.2.0 adds new graphics (10 themes, per-sport targets, weather, adaptive quality). Real-device mobile validation remains unverified.

@@ -1,4 +1,4 @@
-# SlideStorm Arena · v2.0.0
+# SlideStorm Arena · v2.2.0
 
 **RO** — Parc sportiv în browser, fără dependențe în client. Structură: Joc → Niveluri → Shop → Progres → Setări → Despre / Istoric.
 
@@ -10,6 +10,7 @@
 - Story, Race, Daily, Championship, Zen, Challenge, Training, Explore, Local Party, Custom Route and Online Room.
 - Lane forks, breakable sandcastles, sluice switches, springboards, treasures and wave hazards.
 - Cosmetic Shop, inventory, daily/weekly missions, local race ghosts, sport stats and 100-entry round history.
+- Canvas graphics (v2.2.0): ten chapter themes, walled slide with flowing water, drawn route elements that keep their symbols, distinct targets and rule-accurate meters for all eight sports, weather and particles, HiDPI; the Quality setting (Auto/Low/High) scales effects. Rendering lives in a separate script and never changes game state.
 - RO/EN, light/dark, high contrast, reduced motion, separate steering/jump/aim assistance, adjustable speed and difficulty.
 - Step-by-step mode stops real-time progression; keyboard remapping, gamepad, swipe, buttons and a directional touch pad.
 - Versioned JSON backups, v1 migration, import preview, strict nested validation, previous-save recovery and route JSON exchange.

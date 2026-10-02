@@ -36,3 +36,7 @@ evaluate("state.extra.opts.steps=false;state.extra.opts.timerOff=true;state.extr
 // Keyboard-accessible file inputs retain native behavior; translated labels exist.
 assert(!html.includes('.file input{display:none}'));assert(html.includes('id="editorImport" aria-label='));
 console.log('PASS: immediate lane description, sport-specific spoken instructions, custom-length traversal and accessible import markup.');
+
+// v2.2.0 graphics layer: separate script, parses, and only replaces the canvas renderer.
+{const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);assert.equal(scripts.length,2);const gfx=scripts[1];new vm.Script(gfx);assert.match(gfx,/\bdraw = function/);for(const fn of ['start','update','action','shoot','finish','next','targetLane','meter','normalize','save','hud','timeLimit'])assert.doesNotMatch(gfx,new RegExp('(^|[^.\\w])'+fn+'\\s*=(?!=)'),fn+' must not be reassigned by the graphics layer');assert.doesNotMatch(gfx,/localStorage/);for(const kind of ['energy','barrier','castle','switch','ramp','treasure'])assert.ok(gfx.includes("'"+kind+"'"),kind);assert.match(html,/history3:'Grafică nouă/);assert.match(html,/history3:'New graphics/);
+console.log('PASS: graphics layer parses, replaces only draw(), keeps saves untouched and draws every route element kind.')}
