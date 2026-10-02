@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-02 — SlideStorm Arena v2.3.0
+
+- RO: sunete și peisaje — efecte sonore și ambianțe generate în browser, ciclu zi–noapte, plajă cu nisip în zona cu palmieri, peisaj diferit la fiecare nivel, repere noi și efecte vizuale; regulile și salvările neschimbate. Catalog, RO/EN, Finalizat recent și Istoric actualizate.
+- EN: sound and scenery — browser-generated effects and ambiences, day–night cycle, sandy beach in the palm zone, a different landscape for every level, new landmarks and visual effects; rules and saves unchanged. Catalogue, RO/EN pages, recent work and history updated.
+
 ## 2026-10-02 — SlideStorm Arena v2.2.0
 
 - RO: grafică nouă — 10 teme de capitol, tobogan cu apă în mișcare, obiecte desenate cu simbolurile păstrate, ținte și indicatoare fidele regulilor pentru cele 8 sporturi, vreme și calitate adaptivă; regulile și salvările neschimbate. Catalog, RO/EN, Finalizat recent și Istoric actualizate.
