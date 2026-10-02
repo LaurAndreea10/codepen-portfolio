@@ -253,6 +253,8 @@ An accessible cosmic PWA with nine game modes, progressive difficulty, switch sc
 
 ## Colecție Canva / Canva collection
 
+[Joacă Excel Quest / Play Excel Quest](https://laurandreea10.github.io/Excel-Quest/enhanced-pro-v2.html) — acces direct din cele patru materiale Excel pe paginile colecției. Limba se schimbă în joc prin controlul RO/EN. / Direct access from the four Excel materials on the collection pages. Select the language using the game's RO/EN control.
+
 [RO](https://laurandreea10.github.io/codepen-portfolio/canva-collection.html) · [EN](https://laurandreea10.github.io/codepen-portfolio/en/canva-collection.html)
 
 14 materiale de design pentru educație, CRM și marketing, inclusiv șase drafturi asistate de AI. Pagini de colecție separate RO și EN; contribuțiile manuale personale rămân de documentat. Colecția este separată de contorizarea aplicațiilor live.
