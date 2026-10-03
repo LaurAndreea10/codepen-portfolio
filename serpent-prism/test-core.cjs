@@ -4,3 +4,5 @@ const elements={},stored={};const sandbox={console,Math,Date,JSON,Number,Array,w
 
 S.state.progress.level=12;assert.equal(S.chooseLevel(13),false);assert.equal(S.chooseLevel(5),true);assert.equal(S.state.world,"dune");assert.equal(S.state.progress.level,12);assert.equal(S.chooseLevel(9),true);assert.equal(S.state.world,"neon");assert.equal(S.state.chains.length,2);S.start();S.state.prefs.motion=false;{const before=JSON.stringify(S.state.snake[0]);S.collect();assert(S.state.collecting);const frozen=S.state.chains[0].head;S.advance(10);assert.equal(S.state.chains[0].head,frozen);S.pause();S.collectionStep();assert.equal(JSON.stringify(S.state.snake[0]),before);S.pause();for(let i=0;i<140&&S.state.collecting;i++)S.collectionStep();assert(!S.state.collecting);assert.notEqual(JSON.stringify(S.state.snake[0]),before);console.log("PASS: assisted collection moves the head, freezes the route and respects pause; locked levels rejected; world selection retains highest unlocked level");
 }
+
+elements.collect.onclick({type:"click"});assert(S.state.collecting);for(let i=0;i<140&&S.state.collecting;i++)S.collectionStep();assert.equal(elements.easy.disabled,false);

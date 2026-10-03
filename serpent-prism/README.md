@@ -1,4 +1,4 @@
-# Serpent Prism · v1.5.0
+# Serpent Prism · v1.6.0
 
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/serpent-prism/) · [Changelog](CHANGELOG.md) · [Istoric public / Public history](changelog.html)
 
