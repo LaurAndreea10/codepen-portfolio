@@ -1,5 +1,5 @@
 'use strict';
-const CACHE='serpent-prism-1.9.0-r3',SHELL=['./','./index.html','./style.css','./game.js','./pwa.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./changelog.html'];
+const CACHE='serpent-prism-2.0.0-r1',SHELL=['./','./index.html','./style.css','./game.js','./pwa.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./changelog.html'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL))));
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('serpent-prism-')&&key!==CACHE).map(key=>caches.delete(key)))),self.clients.claim()])));
 self.addEventListener('message',e=>{if(e.data?.type==='ACTIVATE_UPDATE')self.skipWaiting()});

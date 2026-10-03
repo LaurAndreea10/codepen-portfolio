@@ -1,5 +1,14 @@
 # Serpent Prism — Changelog
 
+## 2.0.0 — 2026-10-03
+
+**RO.** Interfață „Prism Glass”: fundal de pagină care preia culorile decorului curent, panouri de sticlă mată, logo-prismă animat, titluri Fraunces și cifre JetBrains Mono, scor care „sare” la fiecare punct, selector de moduri segmentat, butonul Lansează cu puls, bile de sticlă și în panoul de muniție (următoarea lovitură evidențiată), atelier cu mostre de culoare, bară de progres curcubeu, ecran de rezultat animat cu stele, dialoguri și ghid restilizate. Tema luminoasă, contrastul ridicat și mișcarea redusă au variante proprii; pe telefon, rezultatul apare centrat pe ecran.
+
+**EN.** “Prism Glass” interface: page backdrop tinted by the current scene, frosted glass panels, animated prism logo, Fraunces headings and JetBrains Mono numerals, score bump on every gain, segmented mode switcher, pulsing Launch button, glass orbs in the ammunition panel (next shot highlighted), skin swatches in the workshop, rainbow progress bar, animated result card with stars, restyled dialogs and guide. Light theme, high contrast and reduced motion have their own variants; on phones the result card is centred on screen.
+
+- Fonts load from Google Fonts; offline play falls back to system fonts. Service-worker cache renamed so installed copies pick up the new shell.
+- Game logic, controls and saved progress unchanged; core, audio and five-viewport browser/axe checks pass locally.
+
 ## 1.9.0 — 2026-10-03
 
 - Mobile game view opens on Start, with wider arena, compact controls and a menu that pauses play.

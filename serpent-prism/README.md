@@ -1,4 +1,4 @@
-# Serpent Prism · v1.9.0
+# Serpent Prism · v2.0.0
 
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/serpent-prism/) · [Changelog](CHANGELOG.md) · [Istoric public / Public history](changelog.html)
 
@@ -76,3 +76,10 @@ RO: Start intră în vederea compactă pe mobil. Meniu joc pune pauză și revin
 EN: Start opens the compact mobile game view. Game menu pauses and returns to options. Story has handcrafted formations and finales at 4/8/12/100; Puzzle offers three solvable configurations with 4/2/4 shots. Progress backup exports JSON; import validates and previews level/stars before explicit application. Highest progress, stars and owned skins merge; an active round is excluded.
 
 Offline/PWA: first visit must be online and complete service-worker setup. The game shell and changelog are cached within serpent-prism/ only; portfolio and external links require internet. Install is offered when supported; otherwise use the browser install/add-to-home-screen menu. Updates wait for the Update button before activating. Local browser data and backups remain the only progress storage. Physical-phone installation and real screen-reader use remain unverified.
+
+
+## v2.0.0 — 2026-10-03
+
+RO: Interfață „Prism Glass”: fundal de pagină care preia culorile decorului curent, panouri de sticlă mată, logo-prismă animat, titluri Fraunces și cifre JetBrains Mono, scor care „sare” la fiecare punct, selector de moduri segmentat, butonul Lansează cu puls, bile de sticlă și în panoul de muniție (următoarea lovitură evidențiată), atelier cu mostre de culoare, bară de progres curcubeu, ecran de rezultat animat cu stele, dialoguri și ghid restilizate. Tema luminoasă, contrastul ridicat și mișcarea redusă au variante proprii; pe telefon, rezultatul apare centrat pe ecran.
+
+EN: “Prism Glass” interface: page backdrop tinted by the current scene, frosted glass panels, animated prism logo, Fraunces headings and JetBrains Mono numerals, score bump on every gain, segmented mode switcher, pulsing Launch button, glass orbs in the ammunition panel (next shot highlighted), skin swatches in the workshop, rainbow progress bar, animated result card with stars, restyled dialogs and guide. Light theme, high contrast and reduced motion have their own variants; on phones the result card is centred on screen.
