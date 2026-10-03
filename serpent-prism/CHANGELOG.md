@@ -1,5 +1,12 @@
 # Serpent Prism — Changelog
 
+## 1.6.0 — 2026-10-03
+
+- Assisted collection travels to visible arena orbs; the outer route freezes until arrival. Tap an orb or use Collect.
+- Aqua levels 1–4, Dune 5–8, Neon 9–100 with two routes.
+- RO/EN map: locked levels, replay, continue and preserved highest unlocked level.
+- Turn-based and reduced-motion collection resolve without animation.
+
 ## 1.5.0 — 2026-10-02
 
 **RO.** Primul nivel ghidat, fără presiune de timp până la prima potrivire; bonusuri pentru combo-uri și porți, niveluri cu două trasee, rezultate de rundă și progres păstrat. Bile și controale mai mari; verificare automată touch/mobil și axe prin GitHub Actions.

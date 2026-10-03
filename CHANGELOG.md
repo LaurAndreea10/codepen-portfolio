@@ -183,3 +183,6 @@ Toate modificările importante ale portofoliului sunt documentate aici.
 - Paritate RO/EN pentru temă, contrast și reduced motion.
 
 
+
+
+Serpent Prism v1.6.0 (2026-10-03): assisted collection moves the snake to arena orbs; Aqua/Dune/Neon story worlds; accessible RO/EN level map and replay without losing unlocked progress. Reduced motion and turn-based collection resolve immediately.

@@ -48,3 +48,6 @@ Guided first level with time frozen until the first match; combo and gate bonuse
 Nivelul ghidat se poate relua din Despre joc. Bonusurile sunt opționale; eliminarea șirului permite continuarea. / Replay the guide from About. Bonuses are optional; clearing the chain allows progression.
 
 [Browser/mobile workflow](https://github.com/LaurAndreea10/codepen-portfolio/actions/workflows/serpent-prism.yml) runs real browser tests at five viewports, dispatched touch input, audio-context activation, axe checks and screenshots. It does not replace physical-device, audible playback or screen-reader testing.
+
+
+Serpent Prism v1.6.0 (2026-10-03): assisted collection moves the snake to arena orbs; Aqua/Dune/Neon story worlds; accessible RO/EN level map and replay without losing unlocked progress. Reduced motion and turn-based collection resolve immediately.

@@ -306,3 +306,6 @@ EN: Zuma × Snake in one arena, six modes, bilingual tutorial, default Easy assi
 Verificările automate ale logicii și rutării audio au trecut; testarea reală pe mobil și cu cititor de ecran rămâne de confirmat. / Logic and audio routing checks pass; real-device mobile and screen-reader validation remain unverified.
 
 Serpent Prism v1.5.0: primul nivel ghidat, obiective progresive, rezultate și regresie automată mobilă. / Guided first level, progressive goals, results and automated mobile regression.
+
+
+Serpent Prism v1.6.0 (2026-10-03): assisted collection moves the snake to arena orbs; Aqua/Dune/Neon story worlds; accessible RO/EN level map and replay without losing unlocked progress. Reduced motion and turn-based collection resolve immediately.
