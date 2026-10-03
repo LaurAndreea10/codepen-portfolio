@@ -6,6 +6,7 @@
 
 **EN.** “Prism Glass” interface: page backdrop tinted by the current scene, frosted glass panels, animated prism logo, Fraunces headings and JetBrains Mono numerals, score bump on every gain, segmented mode switcher, pulsing Launch button, glass orbs in the ammunition panel (next shot highlighted), skin swatches in the workshop, rainbow progress bar, animated result card with stars, restyled dialogs and guide. Light theme, high contrast and reduced motion have their own variants; on phones the result card is centred on screen.
 
+- Updates apply automatically: the offline cache now checks the network first, activates new versions immediately and reloads the open page once (unless a round is in progress, then the update button appears). Offline play still uses the cached copy.
 - Fonts load from Google Fonts; offline play falls back to system fonts. Service-worker cache renamed so installed copies pick up the new shell.
 - Game logic, controls and saved progress unchanged; core, audio and five-viewport browser/axe checks pass locally.
 
