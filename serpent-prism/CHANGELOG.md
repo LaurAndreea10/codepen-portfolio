@@ -1,5 +1,12 @@
 # Serpent Prism — Changelog
 
+## 1.7.0 — 2026-10-03
+
+- Collection path and destination highlight, tap to reroute, explicit cancellation.
+- Aqua slowdown waves, Dune wall countdown, Neon cross-route matching gate.
+- No-time-pressure option, persisted best stars, free cosmetic milestones and once-per-day daily reward.
+- RO/EN labels, textual status and reduced-motion support retained.
+
 ## 1.6.0 — 2026-10-03
 
 - Assisted collection travels to visible arena orbs; the outer route freezes until arrival. Tap an orb or use Collect.

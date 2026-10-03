@@ -1,4 +1,4 @@
-# Serpent Prism · v1.6.0
+# Serpent Prism · v1.7.0
 
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/serpent-prism/) · [Changelog](CHANGELOG.md) · [Istoric public / Public history](changelog.html)
 
@@ -51,3 +51,12 @@ Nivelul ghidat se poate relua din Despre joc. Bonusurile sunt opționale; elimin
 
 
 Serpent Prism v1.6.0 (2026-10-03): assisted collection moves the snake to arena orbs; Aqua/Dune/Neon story worlds; accessible RO/EN level map and replay without losing unlocked progress. Reduced motion and turn-based collection resolve immediately.
+
+
+## v1.7.0 — 2026-10-03
+
+RO: Destinație și drum evidențiate; atingere pentru schimbarea destinației și oprire explicită. Aqua încetinește bilele 4s/12s; Dune avertizează cu 2s înainte de mutarea zidului; fiecare a treia lansare reușită în Neon trimite o bilă spre o pereche de aceeași culoare de pe celălalt traseu, dacă există. Fără presiune de timp oprește avansarea traseului.
+
+EN: Highlighted collection route/destination, tap to reroute and explicit stop. Aqua slows orbs for 4s/12s; Dune warns 2s before moving its wall; every third successful Neon shot echoes into a matching pair on the other route, when available. No-time-pressure setting stops route advancement.
+
+Stars: 1 for clearing; 2 with a ×2 cascade; 3 with a ×2 cascade plus the level bonus, or at least four matches on levels without a combo/gate bonus. Best stars persist; new stars award five prisms each. Free skins at 6/15/30 total stars. Daily goal: clear the seeded cascade chain with a ×2 cascade; 15 prisms once per local calendar day. Rewards and progress are local to this browser. No server verification or account synchronization.

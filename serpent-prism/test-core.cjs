@@ -6,3 +6,14 @@ S.state.progress.level=12;assert.equal(S.chooseLevel(13),false);assert.equal(S.c
 }
 
 elements.collect.onclick({type:"click"});assert(S.state.collecting);for(let i=0;i<140&&S.state.collecting;i++)S.collectionStep();assert.equal(elements.easy.disabled,false);
+{
+S.state.prefs.motion=false;S.state.progress.level=12;S.chooseLevel(1);S.state.progress.guideDone=true;S.start();S.collect();const destination=S.state.destination;for(const f of S.state.food){if(f!==destination){S.collect(f);if(S.state.destination!==destination)break}}assert.notEqual(S.state.destination,destination);S.cancelCollection();assert.equal(S.state.collecting,false);assert.equal(elements.cancelCollect.hidden,true);
+const h=S.state.chains[0].head;S.advance(1);const slow=S.state.chains[0].head-h;S.advance(5);const h2=S.state.chains[0].head;S.advance(1);assert(S.state.chains[0].head-h2>slow);S.state.prefs.relaxed=true;const hold=S.state.chains[0].head;S.advance(100);assert.equal(S.state.chains[0].head,hold);S.state.prefs.relaxed=false;
+S.chooseLevel(5);S.start();S.advance(10);assert(S.worldStatus().includes('Atenție'));
+S.chooseLevel(9);S.start();S.state.chains[1].orbs=[0,0,1,1];S.neonLink(0,0);S.neonLink(0,0);assert.equal(S.state.chains[1].orbs.length,4);S.neonLink(0,0);assert.equal(S.state.chains[1].orbs.length,2);
+const win=()=>{for(let i=0;i<60&&S.state.state==='playing';i++){S.collect();for(let j=0;j<140&&S.state.collecting;j++)S.collectionStep();S.shoot()}assert.equal(S.state.state,'won')};
+S.chooseLevel(2);S.start();win();assert.equal(S.state.progress.stars[2],3);const wallet=S.state.progress.wallet;S.chooseLevel(2);S.start();win();assert.equal(S.state.progress.wallet,wallet);assert(S.state.progress.level>=12);
+S.setMode('daily');S.start();win();assert(S.state.maxCombo>=2);assert(S.state.dailyReward);const dailyWallet=S.state.progress.wallet;S.start();win();assert.equal(S.state.progress.wallet,dailyWallet);assert.equal(S.state.dailyReward,false);
+S.state.progress.stars={1:3,2:3,3:3,4:3};S.chooseLevel(2);S.start();win();assert(S.state.progress.skins.includes('ocean'));
+console.log('PASS: collection rerouting/cancel; Aqua slowdown; Dune warning; Neon cross-route match; relaxed route; three stars, free skin and replay-safe daily/story rewards');
+}

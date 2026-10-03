@@ -309,3 +309,6 @@ Serpent Prism v1.5.0: primul nivel ghidat, obiective progresive, rezultate și r
 
 
 Serpent Prism v1.6.0 (2026-10-03): assisted collection moves the snake to arena orbs; Aqua/Dune/Neon story worlds; accessible RO/EN level map and replay without losing unlocked progress. Reduced motion and turn-based collection resolve immediately.
+
+
+Serpent Prism v1.7.0 — 2026-10-03: collection route/rerouting/cancel; Aqua waves, Dune warnings, Neon matching gate; stars, cosmetic milestones, daily rewards and no-time-pressure preference (RO/EN).
