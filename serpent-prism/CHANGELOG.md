@@ -1,5 +1,14 @@
 # Serpent Prism — Changelog
 
+## 1.8.0 — 2026-10-03
+
+**RO.** Grafică refăcută: bile de sticlă cu reflexii și rostogolire, decoruri animate pe straturi (raze și bule Aqua, dune și soare, furtună cu fulgere, recif de corali, nori, grilă Neon), traseu 3D, portal-vârtej și semnal de pericol lângă final. Mișcare naturală: șarpele alunecă fluid între celule, cu ondulare, clipit și limbă; bilele lansate zboară până în șir, golurile se închid lin, iar combinațiile explodează în cascadă cu particule și scor plutitor. Mișcarea redusă și contrastul ridicat păstrează afișarea statică.
+
+**EN.** Graphics overhaul: glass orbs with reflections and rolling, layered animated scenery (Aqua light rays and bubbles, dunes and sun, storm lightning, coral reef, clouds, Neon grid), bevelled 3D route, vortex portal and end-of-route danger glow. Natural motion: the snake glides smoothly between cells with slither, blinking and tongue flicks; launched orbs fly into the chain, gaps close smoothly and combos burst in sequence with particles and floating score. Reduced motion and high contrast keep a static presentation.
+
+- Background, panel and route cached once per scene; live layers drawn on top. Measured ~60 fps in headless Chromium at 1300×900; physical-device performance not verified.
+- Game logic, controls and saved progress unchanged.
+
 ## 1.7.0 — 2026-10-03
 
 - Collection path and destination highlight, tap to reroute, explicit cancellation.

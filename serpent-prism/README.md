@@ -1,4 +1,4 @@
-# Serpent Prism · v1.7.0
+# Serpent Prism · v1.8.0
 
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/serpent-prism/) · [Changelog](CHANGELOG.md) · [Istoric public / Public history](changelog.html)
 
@@ -60,3 +60,10 @@ RO: Destinație și drum evidențiate; atingere pentru schimbarea destinației �
 EN: Highlighted collection route/destination, tap to reroute and explicit stop. Aqua slows orbs for 4s/12s; Dune warns 2s before moving its wall; every third successful Neon shot echoes into a matching pair on the other route, when available. No-time-pressure setting stops route advancement.
 
 Stars: 1 for clearing; 2 with a ×2 cascade; 3 with a ×2 cascade plus the level bonus, or at least four matches on levels without a combo/gate bonus. Best stars persist; new stars award five prisms each. Free skins at 6/15/30 total stars. Daily goal: clear the seeded cascade chain with a ×2 cascade; 15 prisms once per local calendar day. Rewards and progress are local to this browser. No server verification or account synchronization.
+
+
+## v1.8.0 — 2026-10-03
+
+RO: Grafică refăcută: bile de sticlă cu reflexii și rostogolire, decoruri animate pe straturi (raze și bule Aqua, dune și soare, furtună cu fulgere, recif de corali, nori, grilă Neon), traseu 3D, portal-vârtej și semnal de pericol lângă final. Mișcare naturală: șarpele alunecă fluid între celule, cu ondulare, clipit și limbă; bilele lansate zboară până în șir, golurile se închid lin, iar combinațiile explodează în cascadă cu particule și scor plutitor. Mișcarea redusă și contrastul ridicat păstrează afișarea statică.
+
+EN: Graphics overhaul: glass orbs with reflections and rolling, layered animated scenery (Aqua light rays and bubbles, dunes and sun, storm lightning, coral reef, clouds, Neon grid), bevelled 3D route, vortex portal and end-of-route danger glow. Natural motion: the snake glides smoothly between cells with slither, blinking and tongue flicks; launched orbs fly into the chain, gaps close smoothly and combos burst in sequence with particles and floating score. Reduced motion and high contrast keep a static presentation.
