@@ -1,0 +1,6 @@
+'use strict';
+const CACHE='serpent-prism-1.9.0',SHELL=['./','./index.html','./style.css','./game.js','./pwa.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./changelog.html'];
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL))));
+self.addEventListener('activate',e=>e.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('serpent-prism-')&&key!==CACHE).map(key=>caches.delete(key)))),self.clients.claim()])));
+self.addEventListener('message',e=>{if(e.data?.type==='ACTIVATE_UPDATE')self.skipWaiting()});
+self.addEventListener('fetch',e=>{const url=new URL(e.request.url),scope=new URL(self.registration.scope);if(e.request.method!=='GET'||url.origin!==scope.origin||!url.pathname.startsWith(scope.pathname))return;if(e.request.mode==='navigate'){const relative=url.pathname.slice(scope.pathname.length);if(relative===''||relative==='index.html')e.respondWith(caches.open(CACHE).then(async cache=>await cache.match(new URL('./index.html',scope).href)||fetch(e.request)));return}const names=new Set(SHELL.map(path=>new URL(path,scope).pathname));if(names.has(url.pathname))e.respondWith(caches.open(CACHE).then(async cache=>await cache.match(url.href,{ignoreSearch:true})||fetch(e.request)))});

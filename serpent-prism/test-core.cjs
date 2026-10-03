@@ -17,3 +17,9 @@ S.setMode('daily');S.start();win();assert(S.state.maxCombo>=2);assert(S.state.da
 S.state.progress.stars={1:3,2:3,3:3,4:3};S.chooseLevel(2);S.start();win();assert(S.state.progress.skins.includes('ocean'));
 console.log('PASS: collection rerouting/cancel; Aqua slowdown; Dune warning; Neon cross-route match; relaxed route; three stars, free skin and replay-safe daily/story rewards');
 }
+{
+for(const level of [4,8,12,100]){S.state.progress.level=100;S.chooseLevel(level);assert.equal(S.state.chains.length,2);assert.equal(S.state.goal,'goalDual')}
+assert.notEqual(JSON.stringify(S.storyLayout(5)),JSON.stringify(S.storyLayout(7)));
+S.setMode('puzzle');for(let n=0;n<3;n++){elements.puzzleChoice.onchange({target:{value:String(n)}});S.start();const count=S.state.snake.length;for(let i=0;i<4&&S.state.state==='playing';i++){S.suggestTarget();S.shoot()}assert.equal(S.state.state,'won');assert(S.state.snake.length>=3);assert(S.state.snake.length<count)}
+const data=JSON.parse(S.exportBackup());const snapshot=S.exportBackup();for(const field of ['best','wallet','level','skins','skin','stars','daily']){const malformed=JSON.parse(snapshot);malformed.progress[field]=null;assert.throws(()=>S.importBackup(malformed));assert.equal(S.exportBackup(),snapshot)}for(const value of [null,'1',Infinity,-1]){const malformed=JSON.parse(snapshot);malformed.progress.best=value;assert.throws(()=>S.importBackup(malformed))}const bad=JSON.parse(snapshot);bad.prefs.motion='false';assert.throws(()=>S.importBackup(bad));const day=JSON.parse(snapshot);day.progress.daily={'2026-02-31':true};assert.throws(()=>S.importBackup(day));data.progress.level=1;S.importBackup(data);assert.equal(S.state.progress.level,100);assert.equal(S.state.state,'ready');assert.equal(JSON.parse(S.exportBackup()).schema,1);console.log('PASS: handcrafted finales, all three limited-ammo puzzles, backup roundtrip, rejected partial/malformed fields and merge without progress loss');
+}

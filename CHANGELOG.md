@@ -189,3 +189,6 @@ Serpent Prism v1.6.0 (2026-10-03): assisted collection moves the snake to arena 
 
 
 Serpent Prism v1.7.0 — 2026-10-03: collection route/rerouting/cancel; Aqua waves, Dune warnings, Neon matching gate; stars, cosmetic milestones, daily rewards and no-time-pressure preference (RO/EN).
+
+
+Serpent Prism v1.9.0 — 2026-10-03: compact mobile arena and controls, handcrafted formations/finales and three limited-ammo puzzles, validated JSON progress merge, offline PWA shell and explicit update activation. RO/EN and accessibility retained; prior versions preserved.

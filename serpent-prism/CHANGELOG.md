@@ -1,5 +1,13 @@
 # Serpent Prism — Changelog
 
+## 1.9.0 — 2026-10-03
+
+- Mobile game view opens on Start, with wider arena, compact controls and a menu that pauses play.
+- Handcrafted story formations and finales at levels 4, 8, 12 and 100; three solvable limited-ammo puzzles.
+- Validated JSON export/import, preview and merge retaining unlocked levels, best stars and owned cosmetics. No active-round restore.
+- Scoped offline PWA shell, install icons and explicit update activation. Initial online visit required; installation depends on browser support.
+- RO/EN, reduced motion, high contrast and textual turn controls preserved.
+
 ## 1.8.0 — 2026-10-03
 
 **RO.** Grafică refăcută: bile de sticlă cu reflexii și rostogolire, decoruri animate pe straturi (raze și bule Aqua, dune și soare, furtună cu fulgere, recif de corali, nori, grilă Neon), traseu 3D, portal-vârtej și semnal de pericol lângă final. Mișcare naturală: șarpele alunecă fluid între celule, cu ondulare, clipit și limbă; bilele lansate zboară până în șir, golurile se închid lin, iar combinațiile explodează în cascadă cu particule și scor plutitor. Mișcarea redusă și contrastul ridicat păstrează afișarea statică.

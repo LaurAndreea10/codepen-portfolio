@@ -1,4 +1,4 @@
-# Serpent Prism · v1.8.0
+# Serpent Prism · v1.9.0
 
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/serpent-prism/) · [Changelog](CHANGELOG.md) · [Istoric public / Public history](changelog.html)
 
@@ -67,3 +67,12 @@ Stars: 1 for clearing; 2 with a ×2 cascade; 3 with a ×2 cascade plus the level
 RO: Grafică refăcută: bile de sticlă cu reflexii și rostogolire, decoruri animate pe straturi (raze și bule Aqua, dune și soare, furtună cu fulgere, recif de corali, nori, grilă Neon), traseu 3D, portal-vârtej și semnal de pericol lângă final. Mișcare naturală: șarpele alunecă fluid între celule, cu ondulare, clipit și limbă; bilele lansate zboară până în șir, golurile se închid lin, iar combinațiile explodează în cascadă cu particule și scor plutitor. Mișcarea redusă și contrastul ridicat păstrează afișarea statică.
 
 EN: Graphics overhaul: glass orbs with reflections and rolling, layered animated scenery (Aqua light rays and bubbles, dunes and sun, storm lightning, coral reef, clouds, Neon grid), bevelled 3D route, vortex portal and end-of-route danger glow. Natural motion: the snake glides smoothly between cells with slither, blinking and tongue flicks; launched orbs fly into the chain, gaps close smoothly and combos burst in sequence with particles and floating score. Reduced motion and high contrast keep a static presentation.
+
+
+## v1.9.0 — Mobil, niveluri și salvare / Mobile, levels and backup
+
+RO: Start intră în vederea compactă pe mobil. Meniu joc pune pauză și revine la opțiuni. Povestea are formații create special și finale la 4/8/12/100; Puzzle oferă trei configurații rezolvabile cu 4/2/4 lansări. Backup progres exportă JSON; importul validează fișierul, arată nivelul și stelele și cere aplicare explicită. Progresul maxim, stelele și aspectele deținute se combină; o rundă în desfășurare nu este inclusă.
+
+EN: Start opens the compact mobile game view. Game menu pauses and returns to options. Story has handcrafted formations and finales at 4/8/12/100; Puzzle offers three solvable configurations with 4/2/4 shots. Progress backup exports JSON; import validates and previews level/stars before explicit application. Highest progress, stars and owned skins merge; an active round is excluded.
+
+Offline/PWA: first visit must be online and complete service-worker setup. The game shell and changelog are cached within serpent-prism/ only; portfolio and external links require internet. Install is offered when supported; otherwise use the browser install/add-to-home-screen menu. Updates wait for the Update button before activating. Local browser data and backups remain the only progress storage. Physical-phone installation and real screen-reader use remain unverified.
