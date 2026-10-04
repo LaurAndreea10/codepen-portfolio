@@ -70,6 +70,8 @@ const pages = [
   ["canva-collection.html", "monthly", "0.6", "2026-10-02"],
   ["en/canva-collection.html", "monthly", "0.6", "2026-10-02"],
   ["dashboard-async-resilience.html", "monthly", "0.75", "2026-10-02"],
+  ["curious-garden/", "weekly", "0.85", "2026-10-03"],
+  ["curious-garden/case-study.html", "monthly", "0.75", "2026-10-01"],
 ];
 
 const pairs = new Map([
