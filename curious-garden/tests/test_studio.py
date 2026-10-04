@@ -173,7 +173,7 @@ with sync_playwright() as p:
     over=[i for i in range(len(ws))]; total=0; picked=[]
     for i in sorted(range(len(ws)),key=lambda i:-ws[i]):
         if total>target: break
-        pg.click(f'{S} .orchard .fruit[data-i="{i}"]'); total+=ws[i]; picked.append(i)
+        pg.locator(f'{S} .orchard .fruit[data-i="{i}"]').dispatch_event('click'); total+=ws[i]; picked.append(i)
     check('Prea greu' in status(pg,S),'too much fruit: take something out')
     for _ in picked: pg.click(f'{S} .fruit-basket .fruit >> nth=0')
     for i in sel: pg.click(f'{S} .orchard .fruit[data-i="{i}"]')
