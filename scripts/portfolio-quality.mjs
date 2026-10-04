@@ -33,7 +33,18 @@ for (const [file, html, configPath] of [
   }
 }
 
-for (const page of ["portfolio.html", "en/", "proof-pack.html", "mobile-test-lab.html", "skydreams-portal/", "kygo-world/"]) {
+const freshnessChecks = [
+  ["portfolio-config.js", configSource, /updated:\s*["']2026-10-04["']/],
+  ["portfolio.html", ro, /Serpent Prism v2\.0\.0/],
+  ["portfolio.html", ro, /datetime=["']2026-10-04["']/],
+  ["en/index.html", en, /Serpent Prism v2\.0\.0/],
+  ["en/index.html", en, /Now · updated 4 October 2026/]
+];
+for (const [file, source, pattern] of freshnessChecks) {
+  if (!pattern.test(source)) failures.push(`${file}: October version/date drift`);
+}
+
+for (const page of ["portfolio.html", "en/", "proof-pack.html", "mobile-test-lab.html", "skydreams-portal/", "kygo-world/", "serpent-prism/", "slidestorm-arena/", "odyssey-quest/", "curious-garden/", "canva-collection.html", "en/canva-collection.html"]) {
   if (!sitemap.includes(`/codepen-portfolio/${page}`)) failures.push(`Sitemap missing: ${page}`);
 }
 
