@@ -4,8 +4,14 @@ import { mkdir } from "node:fs/promises";
 
 const targets = [
   { name: "SkyDreams Portal", url: "https://laurandreea10.github.io/codepen-portfolio/skydreams-portal/" },
-  { name: "Revenue Landscape", url: "https://laurandreea10.github.io/Revenue-Landscape/" },
-  { name: "Kygo World", url: "https://laurandreea10.github.io/codepen-portfolio/kygo-world/" }
+  { name: "Revenue Landscape", url: "https://laurandreea10.github.io/Revenue-Landscape/", controls: ["#lang", "#theme", "#contrast"] },
+  { name: "Kygo World", url: "https://laurandreea10.github.io/codepen-portfolio/kygo-world/" },
+  { name: "Serpent Prism", url: "https://laurandreea10.github.io/codepen-portfolio/serpent-prism/", controls: ["#lang", "#theme", "#contrast", "#motion"] },
+  { name: "SlideStorm Arena", url: "https://laurandreea10.github.io/codepen-portfolio/slidestorm-arena/", controls: ["#lang", "#theme", "#contrast", "#motion"] },
+  { name: "Odyssey Quest", url: "https://laurandreea10.github.io/codepen-portfolio/odyssey-quest/", controls: ["#language", "#theme", "#highContrast", "#reduceMotion"] },
+  { name: "Curious Garden", url: "https://laurandreea10.github.io/codepen-portfolio/curious-garden/", controls: ["#lang", "#theme", "#contrast"] },
+  { name: "Canva Collection RO", url: "https://laurandreea10.github.io/codepen-portfolio/canva-collection.html", controls: ["#theme", "#contrast"] },
+  { name: "Canva Collection EN", url: "https://laurandreea10.github.io/codepen-portfolio/en/canva-collection.html", controls: ["#theme", "#contrast"] }
 ];
 const widths = [360, 390, 412];
 const failures = [];
@@ -54,6 +60,24 @@ try {
       if (!layout.reducedMotion) failures.push(`${target.name} @ ${width}px: reduced-motion preference not exposed`);
       if (!layout.title.trim()) failures.push(`${target.name}: missing document title`);
       if (!["ro", "en"].includes(layout.language.toLowerCase())) warnings.push(`${target.name}: unexpected html lang "${layout.language}"`);
+
+      const hasReducedMotionCss = await page.evaluate(() => {
+        const inspect = (rules) => Array.from(rules || []).some((rule) => {
+          if (rule.media?.mediaText?.includes("prefers-reduced-motion")) return true;
+          try { return inspect(rule.cssRules); } catch { return false; }
+        });
+        return Array.from(document.styleSheets).some((sheet) => {
+          try { return inspect(sheet.cssRules); } catch { return false; }
+        });
+      });
+      if (!hasReducedMotionCss) failures.push(`${target.name}: missing prefers-reduced-motion stylesheet rule`);
+
+      for (const selector of target.controls || []) {
+        const control = page.locator(selector).first();
+        if (await control.count() === 0) {
+          failures.push(`${target.name}: missing display/accessibility control ${selector}`);
+        }
+      }
 
       const axe = await new AxeBuilder({ page }).analyze();
       for (const issue of axe.violations.filter((item) => ["critical", "serious"].includes(item.impact))) {
@@ -155,4 +179,4 @@ if (failures.length) {
   console.error(`Mobile accessibility gate failed (${failures.length}):\n- ${failures.join("\n- ")}`);
   process.exit(1);
 }
-console.log(`Mobile accessibility gate passed for ${targets.length} projects × ${widths.length} viewports.`);
+console.log(`Mobile accessibility gate passed for ${targets.length} pages × ${widths.length} viewports.`);
