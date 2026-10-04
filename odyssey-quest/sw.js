@@ -1,4 +1,4 @@
-const CACHE='odyssey-quest-v2.1.2';
+const CACHE='odyssey-quest-v2.1.2-r2';
 const FILES=['./','index.html','style.css','data.js','i18n.js','engine.js','app.js','expedition.js','icon.svg','icon-192.png','icon-512.png','manifest.webmanifest','social.png','README.md','CHANGELOG.md','PRIVACY.md','versions/v1.0.0.html','versions/v2.0.1.html','fonts/noto-emoji-7-400-normal.woff2','fonts/noto-emoji-emoji-400-normal.woff2','fonts/noto-emoji-9-400-normal.woff2','fonts/noto-emoji-4-400-normal.woff2','fonts/noto-emoji-0-400-normal.woff2','fonts/noto-emoji-1-400-normal.woff2','fonts/noto-emoji-10-400-normal.woff2','fonts/noto-emoji-6-400-normal.woff2','fonts/noto-emoji-5-400-normal.woff2','fonts/noto-emoji-2-400-normal.woff2','fonts/noto-emoji-8-400-normal.woff2','fonts/noto-emoji-3-400-normal.woff2'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES))));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('odyssey-quest-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
