@@ -1,5 +1,5 @@
 'use strict';
-const CACHE='serpent-prism-2.0.0-r2',SHELL=['./','./index.html','./style.css','./game.js','./pwa.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./changelog.html'];
+const CACHE='serpent-prism-2.0.0-r3',SHELL=['./','./index.html','./style.css','./game.js','./pwa.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./changelog.html'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL.map(p=>new Request(p,{cache:'reload'})))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil((async()=>{const old=(await caches.keys()).filter(key=>key.startsWith('serpent-prism-')&&key!==CACHE);await Promise.all(old.map(key=>caches.delete(key)));await self.clients.claim();if(old.length){for(const client of await self.clients.matchAll({type:'window'}))client.navigate(client.url).catch(()=>{})}})()));
 self.addEventListener('message',e=>{if(e.data?.type==='ACTIVATE_UPDATE')self.skipWaiting()});
