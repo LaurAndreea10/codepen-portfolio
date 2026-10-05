@@ -192,3 +192,9 @@ Serpent Prism v1.7.0 — 2026-10-03: collection route/rerouting/cancel; Aqua wav
 
 
 Serpent Prism v1.9.0 — 2026-10-03: compact mobile arena and controls, handcrafted formations/finales and three limited-ammo puzzles, validated JSON progress merge, offline PWA shell and explicit update activation. RO/EN and accessibility retained; prior versions preserved.
+
+
+
+## 2026-10-05 — Tic Tac Toe Ultimate 3.1
+
+Catalogue entry 4 updated to the GitHub Pages game; project page, RO completed/history and EN recent releases aligned. Generated puzzles, championship and backup documented. Mobile/screen-reader/offline manual verification remains pending.
