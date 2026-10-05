@@ -44,7 +44,7 @@ for (const [file, source, pattern] of freshnessChecks) {
   if (!pattern.test(source)) failures.push(`${file}: October version/date drift`);
 }
 
-for (const page of ["portfolio.html", "en/", "proof-pack.html", "mobile-test-lab.html", "skydreams-portal/", "kygo-world/", "serpent-prism/", "slidestorm-arena/", "odyssey-quest/", "curious-garden/", "canva-collection.html", "en/canva-collection.html"]) {
+for (const page of ["portfolio.html", "en/", "proof-pack.html", "mobile-test-lab.html", "skydreams-portal/", "kygo-world/", "serpent-prism/", "pentarena/", "slidestorm-arena/", "odyssey-quest/", "curious-garden/", "canva-collection.html", "en/canva-collection.html"]) {
   if (!sitemap.includes(`/codepen-portfolio/${page}`)) failures.push(`Sitemap missing: ${page}`);
 }
 

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a1322">
+<title>PentArena — cinci sporturi arcade | Laura Andreea</title>
+<meta name="description" content="PentArena: baschet, fotbal, air hockey, volei și biliard împotriva unui AI sau a unui prieten. Carieră în trei ligi, provocare zilnică, reluări, RO/EN și joc offline.">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/pentarena/">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="PentArena — cinci sporturi arcade">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/pentarena/">
+<meta property="og:description" content="Basketball, football, air hockey, volleyball and pool. Career leagues, daily challenge, local two-player, RO/EN, offline.">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/pentarena/icon-512.png">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"PentArena","url":"https://laurandreea10.github.io/codepen-portfolio/pentarena/","inLanguage":["ro","en"],"gamePlatform":"Web browser","applicationCategory":"Game","operatingSystem":"Any with a modern browser","genre":["Sports","Arcade"],"numberOfPlayers":{"@type":"QuantitativeValue","minValue":1,"maxValue":2},"author":{"@type":"Person","name":"Laura Andreea Plugaru"},"version":"2.0.0"}</script>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preload" href="fonts/fraunces-latin-800-italic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Sari la conținut</a>
+<div id="menu">
+  <header class="top">
+    <div class="brand"><h1 class="logo">Pent<i>Arena</i></h1><span class="ver">v2.0.0</span></div>
+    <nav class="tools" aria-label="Meniu">
+      <button class="ibtn" id="langBtn" type="button" lang="en">EN</button>
+      <button class="ibtn" id="statsBtn" type="button" data-i18n="stats">Statistici</button>
+      <button class="ibtn" id="shopBtn" type="button" data-i18n="shop">Vestiar</button>
+      <button class="ibtn" id="helpBtn" type="button" data-i18n="help">Controale</button>
+      <button class="ibtn" id="setBtn" type="button" data-i18n="settings">Setări</button>
+      <button class="ibtn" id="backupBtn" type="button" data-i18n="backup">Backup</button>
+      <button class="ibtn" id="installBtn" type="button" hidden></button>
+      <button class="ibtn" id="updateApp" type="button" hidden></button>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div>
+        <h2 id="heroTitle">Cinci probe. <em>Un singur campion.</em></h2>
+        <p data-i18n="heroSub"></p>
+        <div class="chips"><span class="tag" data-i18n="tag1"></span><span class="tag" data-i18n="tag2"></span><span class="tag" data-i18n="tag3"></span><span class="tag" data-i18n="tag4"></span></div>
+      </div>
+      <div class="panel">
+        <div class="lvl"><div class="badge" id="lvlBadge" aria-hidden="true">1</div><div class="meta"><div class="row"><span class="lbl" id="lvlLabel"></span><span class="coins" id="coins"></span></div><div class="bar" role="progressbar" id="xpBar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div><span class="lbl" id="xpText"></span></div></div>
+        <div class="row"><span class="lbl" id="diffLbl" data-i18n="diff"></span><div class="seg" role="group" aria-labelledby="diffLbl" id="diffSeg"><button type="button" data-v="easy"></button><button type="button" data-v="normal"></button><button type="button" data-v="hard"></button></div></div>
+        <div class="row"><span class="lbl" id="plLbl" data-i18n="players"></span><div class="seg" role="group" aria-labelledby="plLbl" id="plSeg"><button type="button" data-v="1"></button><button type="button" data-v="2"></button></div></div>
+        <button class="cta" id="tourBtn" type="button"><span data-i18n="startTour"></span><small data-i18n="tourLen"></small></button>
+        <div class="stats3"><div class="stat"><b id="stW">0</b><span data-i18n="wins"></span></div><div class="stat"><b id="stT">0</b><span data-i18n="tours"></span></div><div class="stat"><b id="stA">0</b><span data-i18n="achs"></span></div></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="dailyTitle">
+      <h2 class="sec" id="dailyTitle" data-i18n="daily"></h2>
+      <div class="daily"><div class="date" id="dailyDate"></div><div><h3 id="dailySport"></h3><p id="dailyCond"></p><p id="dailyStatus"></p></div><button class="play" id="dailyBtn" type="button" data-i18n="dailyAccept"></button></div>
+    </section>
+
+    <section aria-labelledby="pickTitle">
+      <h2 class="sec" id="pickTitle" data-i18n="pick"></h2>
+      <p class="secsub" data-i18n="pickSub"></p>
+      <div class="grid" id="cards"></div>
+    </section>
+
+    <section aria-labelledby="careerTitle">
+      <h2 class="sec" id="careerTitle" data-i18n="career"></h2>
+      <p class="secsub" data-i18n="careerSub"></p>
+      <div class="leagues" id="leagues"></div>
+    </section>
+
+    <section aria-labelledby="achTitle">
+      <h2 class="sec" id="achTitle" data-i18n="achs"></h2>
+      <div class="ach" id="achList"></div>
+    </section>
+  </main>
+  <footer><span data-i18n="foot"></span><span><a href="../portfolio.html" data-i18n="portfolio"></a> · <a href="changelog.html" data-i18n="history"></a> · <a href="README.md">README</a></span><p id="offlineStatus" role="status" aria-live="polite"></p></footer>
+</div>
+
+<div id="game" hidden>
+  <div class="board">
+    <button class="gbtn" id="pauseBtn" type="button" aria-label="Pauză">II</button>
+    <div class="sc p"><span id="nmP">TU</span><b id="hsP">0</b></div>
+    <div class="mid"><h2 class="nm" id="hName"></h2><div class="inf" id="hInfo"></div><div class="clk" id="hClock"></div></div>
+    <div class="sc a"><b id="hsA">0</b><span id="nmA">AI</span></div>
+    <button class="gbtn" id="exitBtn" type="button" aria-label="Meniu">✕</button>
+  </div>
+  <div id="stage">
+    <canvas id="cv" width="960" height="600" role="img" aria-label="PentArena"></canvas>
+    <div class="touch"><button id="btnSpr" type="button" hidden></button><button id="btnAct" type="button" hidden></button></div>
+    <button id="skipReplay" type="button" hidden data-i18n="skipReplay"></button>
+  </div>
+  <p class="hint" id="hint"></p>
+  <div class="overlay" id="pauseOv" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+      <h2 id="pauseTitle" data-i18n="paused"></h2>
+      <p class="hint" id="pauseHint"></p>
+      <div class="btns"><button class="btn pri" id="resBtn" type="button" data-i18n="resume"></button><button class="btn" id="rstBtn" type="button" data-i18n="restart"></button><button class="btn" id="menuBtn" type="button" data-i18n="menu"></button></div>
+    </div>
+  </div>
+  <div class="overlay" id="resOv" hidden><div class="modal" id="resBox" role="dialog" aria-modal="true" aria-labelledby="resTitle"></div></div>
+</div>
+
+<dialog id="dlgStats" aria-labelledby="statsTitle"><div class="dbody"><div class="dhead"><h2 id="statsTitle" data-i18n="stats"></h2><button class="btn" type="button" data-close data-i18n="close"></button></div><div id="statsBody"></div></div></dialog>
+<dialog id="dlgShop" aria-labelledby="shopTitle"><div class="dbody"><div class="dhead"><h2 id="shopTitle" data-i18n="shop"></h2><button class="btn" type="button" data-close data-i18n="close"></button></div><p class="coins" id="shopCoins"></p><h3 class="lbl" data-i18n="skins"></h3><div class="shop" id="shopSkins"></div><h3 class="lbl" data-i18n="trails"></h3><div class="shop" id="shopTrails"></div></div></dialog>
+<dialog id="dlgHelp" aria-labelledby="helpTitle"><div class="dbody"><div class="dhead"><h2 id="helpTitle" data-i18n="help"></h2><button class="btn" type="button" data-close data-i18n="close"></button></div><div class="help" id="helpBody"></div></div></dialog>
+<dialog id="dlgSet" aria-labelledby="setTitle"><div class="dbody"><div class="dhead"><h2 id="setTitle" data-i18n="settings"></h2><button class="btn" type="button" data-close data-i18n="close"></button></div>
+  <label class="field"><span data-i18n="length"></span><select id="optLen"><option value="0"></option><option value="1"></option><option value="2"></option></select></label>
+  <label class="check"><input type="checkbox" id="optMods"><span data-i18n="mods"></span></label><p class="hint" style="text-align:left" data-i18n="modsHelp"></p>
+  <label class="check"><input type="checkbox" id="optReplay"><span data-i18n="replays"></span></label>
+  <label class="check"><input type="checkbox" id="optSound"><span data-i18n="sound"></span></label>
+  <label class="field"><span data-i18n="volume"></span><input type="range" id="optVol" min="0" max="100" step="5"></label>
+  <label class="check"><input type="checkbox" id="optContrast"><span data-i18n="contrast"></span></label>
+  <label class="check"><input type="checkbox" id="optMotion"><span data-i18n="motion"></span></label>
+</div></dialog>
+<dialog id="dlgBackup" aria-labelledby="bkTitle"><div class="dbody"><div class="dhead"><h2 id="bkTitle" data-i18n="backup"></h2><button class="btn" type="button" data-close data-i18n="close"></button></div>
+  <p data-i18n="backupHelp"></p><div class="btns" style="justify-content:flex-start"><button class="btn pri" id="exportBackup" type="button" data-i18n="exportBackup"></button></div>
+  <label class="field"><span data-i18n="importBackup"></span><input type="file" id="backupFile" accept="application/json,.json"></label>
+  <p id="backupStatus" role="status" aria-live="polite"></p><div class="btns" style="justify-content:flex-start"><button class="btn" id="applyBackup" type="button" disabled data-i18n="applyBackup"></button></div>
+</div></dialog>
+<div id="toasts"></div>
+<p id="live" class="sr" role="status" aria-live="polite" aria-atomic="true"></p>
+<script src="game.js"></script>
+<script src="pwa.js"></script>
+</body>
+</html>

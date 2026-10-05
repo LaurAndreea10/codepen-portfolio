@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-05 — PentArena v2.0.0
+
+- RO: joc nou în portofoliu — baschet, fotbal, air hockey, volei și biliard contra AI sau 2 jucători pe același ecran; carieră în 3 ligi, provocare zilnică, reluări, bonusuri, vestiar, 16 realizări, PWA offline cu fonturi locale. Integrat în catalog, portofoliul RO/EN, Finalizat recent, Istoric, README, sitemap, Lighthouse și workflow propriu.
+- EN: new portfolio game — basketball, football, air hockey, volleyball and pool against the AI or two players on one screen; 3-league career, daily challenge, replays, power-ups, locker, 16 achievements, offline PWA with self-hosted fonts. Linked from the catalogue, RO/EN portfolio, recent work, history, README, sitemap, Lighthouse and its own workflow.
+- [Istoric / History](pentarena/CHANGELOG.md) · [Browser/mobile workflow](https://github.com/LaurAndreea10/codepen-portfolio/actions/workflows/pentarena.yml). Testele locale au trecut; telefonul fizic și cititorul de ecran rămân neconfirmate.
+
 ## 2026-10-02 — Serpent Prism v1.5.0
 
 - Validare în Chromium: 5 viewporturi, touch, audio-context/mute, fullscreen, progres după reload, RO/EN și axe. Rularea [37048441400](https://github.com/LaurAndreea10/codepen-portfolio/actions/runs/37048441400) a trecut; telefonul fizic și cititorul de ecran real rămân neconfirmate.

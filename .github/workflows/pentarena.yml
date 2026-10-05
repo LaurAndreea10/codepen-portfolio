@@ -1,0 +1,37 @@
+name: PentArena browser and mobile checks
+on:
+  push:
+    branches: [main]
+    paths: ['pentarena/**', '.github/workflows/pentarena.yml']
+  pull_request:
+    paths: ['pentarena/**', '.github/workflows/pentarena.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Core simulation (5 sports, AI, 2P, progression, backup)
+        run: |
+          node --check pentarena/game.js
+          node --check pentarena/pwa.js
+          node --check pentarena/sw.js
+          node pentarena/test-core.cjs
+      - name: Install browser tools
+        run: |
+          npm install --no-save playwright@1.55.0 @axe-core/playwright@4.10.2
+          npx playwright install --with-deps chromium
+      - name: Desktop, mobile, multitouch, offline and accessibility regression
+        run: node pentarena/test-browser.mjs
+      - name: Save screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pentarena-mobile-report
+          path: audit-artifacts/pentarena/
+          if-no-files-found: warn

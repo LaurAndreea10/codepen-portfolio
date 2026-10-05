@@ -7,6 +7,7 @@ const targets = [
   { name: "Revenue Landscape", url: "https://laurandreea10.github.io/Revenue-Landscape/", controls: ["#lang", "#theme", "#contrast"] },
   { name: "Kygo World", url: "https://laurandreea10.github.io/codepen-portfolio/kygo-world/" },
   { name: "Serpent Prism", url: "https://laurandreea10.github.io/codepen-portfolio/serpent-prism/", controls: ["#lang", "#theme", "#contrast", "#motion"] },
+  { name: "PentArena", url: "https://laurandreea10.github.io/codepen-portfolio/pentarena/", controls: ["#langBtn"] },
   { name: "SlideStorm Arena", url: "https://laurandreea10.github.io/codepen-portfolio/slidestorm-arena/", controls: ["#lang", "#theme", "#contrast", "#motion"] },
   { name: "Odyssey Quest", url: "https://laurandreea10.github.io/codepen-portfolio/odyssey-quest/", controls: ["#language", "#theme", "#highContrast", "#reduceMotion"] },
   { name: "Curious Garden", url: "https://laurandreea10.github.io/codepen-portfolio/curious-garden/", controls: ["#lang", "#theme", "#contrast"] },

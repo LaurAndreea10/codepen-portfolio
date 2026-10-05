@@ -2,14 +2,16 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
+  ["pentarena/", "monthly", "0.7", "2026-10-05"],
+  ["pentarena/changelog.html", "monthly", "0.6", "2026-10-05"],
   ["serpent-prism/", "monthly", "0.7", "2026-10-03"],
   ["serpent-prism/changelog.html", "monthly", "0.6", "2026-10-03"],
   ["slidestorm-arena/", "monthly", "0.7", "2026-10-02"],
   ["slidestorm-arena/case-study.html", "monthly", "0.7", "2026-10-02"],
   ["odyssey-quest/", "monthly", "0.7", "2026-10-02"],
   ["odyssey-quest/case-study.html", "monthly", "0.7", "2026-10-01"],
-  ["portfolio.html", "weekly", "1.0", "2026-10-03"],
-  ["en/", "weekly", "0.9", "2026-10-03"],
+  ["portfolio.html", "weekly", "1.0", "2026-10-05"],
+  ["en/", "weekly", "0.9", "2026-10-05"],
   ["alpis-fusion-crm.html", "monthly", "0.9", "2026-08-30"],
   ["projects/clientflow.html", "monthly", "0.9", "2026-08-30"],
   ["projects/alpis-impactpath.html", "monthly", "0.9", "2026-04-20"],
@@ -19,7 +21,7 @@ const pages = [
   ["process.html", "monthly", "0.8", "2026-05-15"],
   ["work-with-me.html", "monthly", "0.8", "2026-05-20"],
   ["insights.html", "weekly", "0.8", "2026-04-25"],
-  ["changelog.html", "weekly", "0.7", "2026-10-03"],
+  ["changelog.html", "weekly", "0.7", "2026-10-05"],
   ["proof-pack.html", "monthly", "0.9", "2026-09-20"],
   ["mobile-test-lab.html", "monthly", "0.8", "2026-09-27"],
   ["uses.html", "monthly", "0.6", "2026-05-15"],
