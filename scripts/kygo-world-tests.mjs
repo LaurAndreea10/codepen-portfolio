@@ -107,10 +107,29 @@ try {
       await run('endReplay()');
       check(await run('saved.level===100'), 'replay does not reduce frontier');
       const backup = await run('backupData()');
-      for (const invalid of [{coins:0,level:1,best:null},{coins:0,level:1,settings:[]},{coins:0,level:1,editionCompleted:{classic:null}},{coins:0,level:1.5},{coins:0,level:1,stars:{'classic-1':4}},{coins:0,level:1,customCourse:[null]}]) {
-        await run(`restoreFrom(${JSON.stringify(JSON.stringify(invalid))})`);
-        check(await run('JSON.parse(localStorage.getItem(storeKey)).level===100'), 'invalid backup leaves progress untouched');
+      const storedBeforeInvalid = await run('localStorage.getItem(storeKey)');
+      const invalidBackups = [
+        {coins:0,level:1,best:null}, {coins:0,level:1,settings:[]},
+        {coins:0,level:1,editionCompleted:{classic:null}}, {coins:0,level:1.5},
+        {coins:0,level:1,stars:{'classic-1':4}}, {coins:0,level:1,customCourse:[null]},
+        ...['best','stars','bestTrial','editionLevels','editionCompleted','dogRewards','stats','settings','ui','ghosts'].flatMap(key =>
+          [null, [], 'invalid'].map(value => ({coins:0,level:1,[key]:value}))),
+        ...[{editionLevels:{easter:0}}, {editionCompleted:{christmas:[101]}},
+          {dogRewards:{biscuits:null}}, {stats:{runs:'1'}}, {settings:{speed:null}},
+          {ui:{motion:'false'}}, {ghosts:{dash:{ev:null}}},
+          {customCourse:[{x:'5',y:3,type:'paw'}]}, {customCourse:[{x:true,y:3,type:'paw'}]},
+          {app:null}].map(fields => ({coins:0,level:1,...fields}))
+      ];
+      for (const invalid of invalidBackups) {
+        for (const text of [JSON.stringify(invalid), 'KYGO1:'+Buffer.from(JSON.stringify(invalid)).toString('base64')]) {
+          await run(`restoreFrom(${JSON.stringify(text)})`);
+          check(await run('localStorage.getItem(storeKey)') === storedBeforeInvalid, 'invalid backup preserves the complete stored progress');
+          check(await run("(()=>{renderUi();return saved.level===100})()"), 'invalid backup leaves live state renderable');
+        }
       }
+      check(await run("(()=>{const s=normalizeSave({coins:7,level:9,edition:'easter',editionLevels:{classic:3}},true);return s.level===9&&s.editionLevels.easter===9&&s.editionLevels.classic===3&&Array.isArray(s.editionCompleted.easter)&&s.best!==null&&s.settings.speed===65})()"), 'legacy partial save receives complete defaults and preserves active progress');
+      check(await run("normalizeSave({coins:0,level:9,editionLevels:{classic:1}},true).level===1"), 'explicit edition level remains authoritative');
+      check(await run("(()=>{const prior=saved;try{saved=normalizeSave({coins:0,level:1,best:null,settings:[],editionCompleted:{classic:null}},false);renderUi();return saved.best!==null&&Array.isArray(saved.editionCompleted.classic)}finally{saved=prior;renderUi()}})()"), 'corrupt local save recovers to renderable defaults');
       // Exercise the actual file upload and download controls.
       await page.locator('#saveFile').setInputFiles({name:'backup.json',mimeType:'application/json',buffer:Buffer.from(backup)});
       await page.waitForFunction(() => !!window.__kygoEval);

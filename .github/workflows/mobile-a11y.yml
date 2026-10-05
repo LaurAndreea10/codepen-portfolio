@@ -14,6 +14,7 @@ on:
       - "data/portfolio-evidence.json"
       - "scripts/mobile-a11y.mjs"
       - "scripts/kygo-world-tests.mjs"
+      - "scripts/kygo-save-tests.mjs"
       - "scripts/audit-server.mjs"
       - ".github/workflows/mobile-a11y.yml"
   pull_request:
@@ -24,6 +25,7 @@ on:
       - "data/portfolio-evidence.json"
       - "scripts/mobile-a11y.mjs"
       - "scripts/kygo-world-tests.mjs"
+      - "scripts/kygo-save-tests.mjs"
       - "scripts/audit-server.mjs"
   schedule:
     - cron: "20 7 * * 0"
@@ -40,6 +42,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Kygo save shape and atomic rejection
+        run: node scripts/kygo-save-tests.mjs
       - name: Install browser audit tools
         run: |
           npm install --no-save playwright@1.55.0 @axe-core/playwright@4.10.2

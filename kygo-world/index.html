@@ -321,13 +321,15 @@ function normalizeSave(data,strict=false){
   for(const k of ['best','stars','bestTrial','editionLevels','editionCompleted','dogRewards','stats','settings','ui','ghosts'])if(k in data&&!object(data[k]))bad();
   for(const k of ['best','stars','bestTrial'])if(object(data[k]))for(const [key,v] of Object.entries(data[k])){if(key.length<=60&&key!=='__proto__'&&key!=='constructor'&&num(v,0,k==='stars'?3:1e9,k==='stars'))out[k][key]=v;else bad()}
   if(object(data.editionLevels))for(const e of editions)if(e in data.editionLevels){if(num(data.editionLevels[e],1,MAX_LEVEL,true))out.editionLevels[e]=data.editionLevels[e];else bad()}
-  if(!object(data.editionLevels)||out.edition==='classic'&&out.editionLevels.classic===1&&out.level>1)out.editionLevels[out.edition]=out.level;
+  // Legacy saves may omit the active edition inside a partial editionLevels map.
+  // Explicit per-edition progress is authoritative, including level 1.
+  if(!object(data.editionLevels)||!(out.edition in data.editionLevels))out.editionLevels[out.edition]=out.level;
   if(object(data.editionCompleted))for(const e of editions)if(e in data.editionCompleted){if(list(data.editionCompleted[e],v=>num(v,1,MAX_LEVEL,true),100))out.editionCompleted[e]=[...new Set(data.editionCompleted[e])];else bad()}
   if(!out.editionCompleted[out.edition].length&&out.completed.length)out.editionCompleted[out.edition]=out.completed;
   out.level=out.editionLevels[out.edition];out.completed=[...out.editionCompleted[out.edition]];
   if(object(data.dogRewards))for(const k of ['biscuits','frisbees'])if(k in data.dogRewards){if(num(data.dogRewards[k],0,1e9,true))out.dogRewards[k]=data.dogRewards[k];else bad()}
   if(object(data.stats))for(const k in out.stats)if(k in data.stats){if(num(data.stats[k]))out.stats[k]=data.stats[k];else bad()}
-  if('customCourse' in data){const course=validCourse(data.customCourse);if(course)out.customCourse=course;else bad()}
+  if('customCourse' in data){const typed=list(data.customCourse,a=>object(a)&&num(a.x,1,25,true)&&num(a.y,2,4,true),40),course=typed?validCourse(data.customCourse):null;if(course)out.customCourse=course;else bad()}
   if(object(data.settings))for(const k in out.settings)if(k in data.settings){const v=data.settings[k],bounds={sensitivity:[12,65],speed:[35,100],storySpeed:[450,1150],volume:[0,100]};if(bounds[k]?num(v,...bounds[k]):k==='difficulty'?['easy','normal','hard'].includes(v):typeof v==='boolean')out.settings[k]=v;else bad()}
   if(object(data.ui))for(const k in out.ui)if(k in data.ui){const v=data.ui[k];if(k==='language'?['ro','en'].includes(v):k==='theme'?['dark','light'].includes(v):typeof v==='boolean')out.ui[k]=v;else bad()}
   if(object(data.ghosts))for(const k of ['dash','championship','endless'])if(k in data.ghosts){if(validGhost(data.ghosts[k])&&data.ghosts[k].mode===k)out.ghosts[k]=data.ghosts[k];else bad()}
@@ -449,7 +451,7 @@ function b64dec(b){const bin=atob(b.replace(/\s+/g,'')),bytes=new Uint8Array(bin
 function backupData(){persist();return JSON.stringify({...progressSnapshot(),exportedAt:new Date().toISOString(),app:'kygo-world',appVersion:document.querySelector('meta[name="application-version"]')?.content||''})}
 function restoreFrom(text){
   let data;try{text=String(text||'').trim();if(text.length>4e6)throw Error('size');data=JSON.parse(text.startsWith('KYGO1:')?b64dec(text.slice(6)):text)}catch{status('saveInvalid');return}
-  try{if(data?.app&&data.app!=='kygo-world')throw Error('app');data=normalizeSave(data,true)}catch{status('saveInvalid');return}
+  try{if(data&&typeof data==='object'&&'app' in data&&data.app!=='kygo-world')throw Error('app');data=normalizeSave(data,true)}catch{status('saveInvalid');return}
   if(!confirm(t('importAsk')))return;
   delete data.exportedAt;delete data.app;delete data.appVersion;
   try{localStorage.setItem(storeKey,JSON.stringify(data))}catch{status('saveInvalid');return}

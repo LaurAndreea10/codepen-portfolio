@@ -2,6 +2,11 @@
 
 Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub cu codul exact al acelei versiuni. Istoricul complet al tuturor modificărilor rămâne în GitHub. Datele sunt în fusul Europe/Bucharest. / This file summarizes major milestones; linked commits preserve the exact code.
 
+## 2026-10-05 · v1.5.1 · Validare suplimentară / Additional validation
+- Backupurile resping coordonate nested cu tip greșit și identificatori de aplicație invalizi. / Reject incorrectly typed course coordinates and invalid app identifiers.
+- Salvările vechi cu o hartă parțială a edițiilor păstrează nivelul ediției active; un nivel explicit din hartă are prioritate. / Preserve active progress in legacy partial edition maps; explicit edition levels take precedence.
+- Regresiile verifică JSON și cod, progresul complet nemodificat la respingere, randarea și recuperarea salvărilor locale corupte. Cache offline reîmprospătat. / Regression coverage for JSON/code rejection, unchanged complete progress, rendering and corrupt local saves; refreshed offline cache.
+
 ## 2026-09-30 · v1.5.1 · Corectări și verificări / Fixes and regression checks
 - Reconciliere cu v1.4.1: sprite optimizat și zone de atingere mărite păstrate. / Preserve the latest loading and touch improvements.
 - Backup JSON/cod validat complet înainte de înlocuire; datele invalide nu șterg salvarea. / Validate backups before replacing progress.

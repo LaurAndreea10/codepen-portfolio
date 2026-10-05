@@ -2,7 +2,7 @@
    - Pages: network first, so a new version is visible as soon as it is online; cached copy when offline.
    - Images, icons, manifest: served from cache, refreshed in the background.
    Bump VERSION whenever the list of core files changes. */
-const VERSION = "kygo-world-2026.09.30.1";
+const VERSION = "kygo-world-2026.10.05.1";
 const CORE = [
   "./",
   "./index.html",
