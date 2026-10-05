@@ -12,7 +12,7 @@ try{
   for(let i=0;i<50;i++){try{if((await fetch(origin)).ok)break;}catch{}await new Promise(r=>setTimeout(r,100));}
   browser=await chromium.launch();await mkdir(out,{recursive:true});
   for(const [width,height] of [[360,800],[390,844],[844,390],[1440,1000]]){
-    const mobile=width<900,context=await browser.newContext({viewport:{width,height},isMobile:mobile,hasTouch:mobile,acceptDownloads:true});
+    console.log('VIEWPORT',width,height);const mobile=width<900,context=await browser.newContext({viewport:{width,height},isMobile:mobile,hasTouch:mobile,acceptDownloads:true});
     const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!/favicon/.test(m.text()))errors.push(m.text());});
     await page.goto(origin+'/pentarena/');await page.waitForFunction(()=>window.PentArena&&navigator.serviceWorker.controller,null,{timeout:15000});
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'no horizontal scroll on menu');
@@ -33,6 +33,57 @@ try{
       await page.locator('#pauseBtn').click();assert.equal(await page.locator('#pauseOv').isVisible(),true);await page.keyboard.press('Escape');assert.equal(await page.locator('#pauseOv').isVisible(),false);
       await page.locator('#exitBtn').click();await page.locator('#menuBtn').click();assert.equal(await page.locator('#menu').isVisible(),true);
     }
+    console.log('PASS sports',width);
+    // all five sports survive reload with engine positions and score restored on pause
+    for(const key of ['basket','football','hockey','volley','billiards']){
+      await page.locator(`.play[data-k="${key}"]`).click();await page.waitForTimeout(200);await page.locator('#pauseBtn').click();
+      const checkpoint=await page.evaluate(()=>{PentArena.writeCheckpoint();return JSON.parse(localStorage.getItem('pentarena-match-v1'));});
+      await page.reload();await page.waitForFunction(()=>window.PentArena);assert.equal(await page.locator('#resumePanel').isVisible(),true,key+' saved panel');
+      await page.locator('#resumeMatch').click();assert.equal(await page.evaluate(()=>PentArena.game.paused),true);assert.equal(await page.evaluate(()=>PentArena.game.sport.key),key);
+      assert.deepEqual(await page.evaluate(()=>PentArena.game.sport.score),checkpoint.sport.score);
+      const ball=checkpoint.sport.b||checkpoint.sport.k||checkpoint.sport.cue;assert.deepEqual(await page.evaluate(()=>{const s=PentArena.game.sport,b=s.b||s.k||s.cue;return [b.x,b.y];}),[ball.x,ball.y],'ball position restored');
+      if(key==='billiards')assert.equal(await page.evaluate(()=>PentArena.game.sport.cue===PentArena.game.sport.balls.find(b=>b.n===0)),true);
+      await page.locator('#resBtn').click();await page.waitForTimeout(200);await page.locator('#exitBtn').click();await page.locator('#menuBtn').click();
+    }
+    // practical football training is completed with a charged keyboard shot and no XP
+    const trainingXP=await page.evaluate(()=>PentArena.store.xp);await page.locator('[data-training="football"]').click();
+    await page.keyboard.down('Space');await page.waitForTimeout(850);await page.keyboard.up('Space');
+    await page.waitForFunction(()=>PentArena.game.trainingComplete);assert.equal(await page.evaluate(()=>PentArena.store.xp),trainingXP);
+    await page.locator('#exitBtn').click();await page.locator('#menuBtn').click();
+    // configurable controls and tactical styles persist
+    await page.locator('#setBtn').click();await page.locator('#optStyle').selectOption('defensive');await page.locator('#optTouchSide').selectOption('left');
+    await page.locator('#optTouchSize').fill('140');await page.locator('#optEffects').uncheck();await page.locator('#optFxVol').fill('0');await page.locator('#dlgSet [data-close]').click();
+    await page.locator('.play[data-k="football"]').click();assert.equal(await page.evaluate(()=>PentArena.M.style),'defensive');
+    assert.equal(await page.locator('.touch').evaluate(el=>el.classList.contains('left')),true);if(mobile){const field=await page.locator('#cv').boundingBox();await page.touchscreen.tap(field.x+field.width*.3,field.y+field.height*.5);const r=await page.locator('#btnAct').boundingBox();assert(r.width>=120);}
+    assert.equal(await page.locator('#playFeedback').isVisible(),true);await page.locator('#exitBtn').click();await page.locator('#menuBtn').click();
+    await page.locator('#setBtn').click();await page.locator('#optStyle').selectOption('balanced');await page.locator('#optTouchSize').fill('100');await page.locator('#optTouchSide').selectOption('right');
+    await page.locator('#optEffects').check();await page.locator('#optFxVol').fill('100');await page.locator('#dlgSet [data-close]').click();
+    // enlarged court, paused guide, focus trap, fullscreen and mute
+    await page.locator('.play[data-k="football"]').click();
+    const field=await page.locator('#cv').boundingBox();
+    const stage=await page.locator('#stage').boundingBox();
+    assert(field.x>=stage.x-1&&field.y>=stage.y-1&&field.x+field.width<=stage.x+stage.width+1&&field.y+field.height<=stage.y+stage.height+1,'court fits without cropping');
+    assert.equal(await page.locator('#menu').isVisible(),false);
+    if(width===844)assert(field.height>=370,'landscape court uses nearly full height');
+    await page.locator('#gameHelp').click();assert.equal(await page.evaluate(()=>PentArena.game.paused),true);
+    const time=await page.evaluate(()=>PentArena.game.sport.time);await page.waitForTimeout(300);assert.equal(await page.evaluate(()=>PentArena.game.sport.time),time,'guide freezes match');
+    await page.locator('#guideClose').focus();await page.keyboard.press('Tab');assert.equal(await page.evaluate(()=>document.activeElement.id),'guideNext','guide traps focus');
+    await page.locator('#guideNext').click();await page.locator('#guideNext').click();await page.locator('#guideNext').click();
+    assert.equal(await page.evaluate(()=>PentArena.game.paused),false);assert.equal(await page.evaluate(()=>document.activeElement.id),'cv');
+    await page.locator('#soundGame').click();assert.equal(await page.evaluate(()=>PentArena.store.prefs.sound),false);await page.locator('#soundGame').click();
+    await page.locator('#fullBtn').click();if(await page.evaluate(()=>!!document.fullscreenElement))await page.locator('#fullBtn').click();
+    await page.locator('#exitBtn').click();await page.locator('#menuBtn').click();
+    assert.equal(await page.evaluate(()=>document.body.classList.contains('playing')),false);
+    console.log('PASS guide/fullscreen',width);
+    // theme and practice persist; a practice result cannot change competitive progress
+    await page.locator('#setBtn').click();await page.locator('#optTheme').selectOption('light');await page.locator('#optPractice').check();await page.locator('#dlgSet [data-close]').click();
+    assert.equal(await page.evaluate(()=>document.body.classList.contains('light')),true);
+    const lightAxe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();assert.deepEqual(serious(lightAxe),[],'light menu axe');
+    await page.reload();await page.waitForFunction(()=>window.PentArena);assert.equal(await page.evaluate(()=>PentArena.store.prefs.practice),true);
+    const before=await page.evaluate(()=>JSON.stringify(PentArena.store));await page.locator('.play[data-k="volley"]').click();await page.evaluate(()=>{PentArena.game.sport.score=[7,0];PentArena.game.sport.over=true;});
+    await page.waitForSelector('#resOv:not([hidden])');assert.equal(await page.evaluate(()=>JSON.stringify(PentArena.store)),before);await page.locator('#rMenu').click();
+    await page.locator('#setBtn').click();await page.locator('#optPractice').uncheck();await page.locator('#optTheme').selectOption('dark');await page.locator('#dlgSet [data-close]').click();
+    console.log('PASS theme/practice',width);
     // result screen and rewards persist after reload
     await page.locator('.play[data-k="volley"]').click();await page.evaluate(()=>{const s=PentArena.game.sport;s.score=[7,2];s.over=true;});
     await page.waitForSelector('#resOv:not([hidden])',{timeout:5000});assert((await page.locator('#resTitle').textContent()).length>0);
@@ -68,11 +119,16 @@ try{
     await page.locator('#dailyBtn').click();const dk=await page.evaluate(()=>PentArena.dailyFor(PentArena.todayKey()).sport);assert.equal(await page.evaluate(()=>PentArena.game.sport.key),dk);await page.locator('#exitBtn').click();await page.locator('#menuBtn').click();
     await page.locator('#tourBtn').click();for(let i=0;i<5;i++){await page.evaluate(()=>{const s=PentArena.game.sport;s.score=[3,0];s.over=true;});await page.waitForSelector('#resOv:not([hidden])');await page.locator('#rNext').click();}
     assert((await page.locator('#resTitle').textContent()).length>0);assert.equal(await page.evaluate(()=>PentArena.store.tours),1);await page.locator('#fMenu').click();
+    // weekly challenge reward is available only after all five AI wins and persists without duplication
+    await page.evaluate(()=>{for(const key of PentArena.SPORT_KEYS){PentArena.startQuick(key);PentArena.finishMatch(PentArena.run,{key,score:[8,0]});}document.getElementById('exitBtn').click();document.getElementById('menuBtn').click();});
+    const weeklyCoins=await page.evaluate(()=>PentArena.store.coins);await page.locator('#claimWeekly').click();assert.equal(await page.evaluate(()=>PentArena.store.coins),weeklyCoins+200);
+    assert.equal(await page.locator('#claimWeekly').isDisabled(),true);await page.reload();await page.waitForFunction(()=>window.PentArena);assert.equal(await page.locator('#claimWeekly').isDisabled(),true);
     // offline
     await context.setOffline(true);await page.reload();await page.waitForFunction(()=>window.PentArena);assert.equal(await page.evaluate(()=>PentArena.store.tours),1);
     await page.locator('.play[data-k="billiards"]').click();assert.equal(await page.evaluate(()=>PentArena.game.sport.key),'billiards');await context.setOffline(false);
     await page.screenshot({path:`${out}/${width}x${height}-pool.png`});
-    assert.deepEqual(errors,[]);reports.push({width,height,checks:'menu, 5 sports start/pause/exit, result + persistence, 2P multitouch/keys, locker, stats, settings, RO/EN, backup, daily, tournament, offline, axe'});
+    assert.deepEqual(errors,[]);reports.push({width,height,checks:'5 engine reloads and paused resume, guided charged-shot training, configurable touch and styles, one-time weekly reward, enlarged court, guide pause/focus, fullscreen, mute, light theme axe, practice persistence/no rewards, menu, 5 sports start/pause/exit, result + persistence, 2P multitouch/keys, locker, stats, settings, RO/EN, backup, daily, tournament, offline, axe'});
     await context.close();}
   await writeFile(`${out}/report.json`,JSON.stringify(reports,null,2));console.log('PASS: PentArena browser regression at four viewports');
 }finally{if(browser)await browser.close();server.kill();}
+

@@ -1,5 +1,25 @@
 # PentArena — Changelog
 
+## 2.3.0 — 2026-10-05
+
+**RO.** Continuarea partidei cu scor și pozițiile mingilor restaurate pe pauză; antrenament ghidat cu obiective detectate din joc; provocare săptămânală cu recompensă unică; AI echilibrat, defensiv și ofensiv; indicii de putere, posesie și timing; butoane tactile ajustabile, efecte vizuale și volum al efectelor configurabile.
+
+- Partida se salvează la intervale de o secundă și la ascunderea paginii. Salvările incompatibile, expirate sau cu structuri invalide sunt respinse fără a șterge progresul. Reluarea păstrează și turneul/cariera în curs.
+- Exerciții: primul coș, șut încărcat, ricoșeu de margine, spike și introducerea unei bile; fără recompense competitive.
+- Săptămâna începe luni. Cinci victorii contra AI, una la fiecare sport, deblochează 200 XP, 200 monede și urma Scântei, o singură dată.
+- Dimensiunea butoanelor: 80–140%; poziție stânga/dreapta. Mișcarea redusă dezactivează particulele, tremuratul și urmele.
+- Intrările tactile și tastatura se resetează la schimbarea partidei. Pauza oprește și reluările. Cache offline 2.3.0-r1.
+
+**EN.** Resume matches with scores and ball positions restored on pause; practical training with objectives detected from gameplay; a weekly challenge with a one-time reward; balanced, defensive and offensive AI; power, possession and timing cues; adjustable touch buttons, visual effects and sound-effects volume. Saves run once per second and when hiding the page; invalid, expired or incompatible snapshots are rejected without clearing progression. Tournament/career position and pool cue-ball identity are restored. Weekly progress starts Monday; practice and two-player games do not count. Input resets between matches and pause also stops replays. Offline cache 2.3.0-r1.
+
+
+## 2.2.0 — 2026-10-05
+
+**RO.** Teren extins după alegerea probei, scor lateral pe mobil orizontal, fullscreen opțional, ghid în trei pași cu pauză, antrenament fără timer la baschet/fotbal, mute în meci și temă dark/light/automată. Backupuri vechi compatibile; validare nested mai strictă. Antrenamentul nu oferă recompense sau statistici competitive. Revenirea la meniu restaurează focusul; dialogurile de joc rețin focusul. Resetarea progresului cere confirmare. Cache offline 2.2.0-r1.
+
+**EN.** Expanded court after event selection, side scoreboard on landscape phones, optional fullscreen, paused three-step guide, untimed basketball/football practice, in-match mute and dark/light/system theme. Compatible old backups and stricter nested validation. Practice cannot award rewards or competitive stats. Returning to the menu restores focus; game dialogs trap focus. Progress reset requires confirmation. Offline cache 2.2.0-r1.
+
+
 ## 2.1.0 — 2026-10-05
 
 **RO.** Teren pe verticală pentru telefoanele ținute în picioare: fotbalul, air hockey-ul și biliardul se rotesc automat (poarta ta jos, a adversarului sus) și ocupă tot ecranul în loc de o bandă îngustă. Textele, numerele bilelor și bannerele rămân drepte; atingerile, multitouch-ul pentru 2 jucători (J1 jos, J2 sus) și săgețile urmează direcțiile de pe ecran. Baschetul și voleiul rămân pe orizontală, pentru că sunt văzute din lateral, și păstrează sugestia de rotire. Cache-ul offline a fost redenumit ca instalările existente să primească noua versiune.
@@ -37,3 +57,4 @@ Verificare / Verification: `test-core.cjs` (headless simulation of all sports, A
 ## 1.0.0 — 2026-10-05
 
 - Prima versiune, ca artefact de sine stătător: cinci sporturi contra AI, turneu Pentatlon, trei dificultăți, 8 realizări, RO/EN. / First version as a standalone artifact: five sports against the AI, Pentathlon tournament, three difficulties, 8 achievements, RO/EN.
+
