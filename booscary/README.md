@@ -1,5 +1,20 @@
 # Halloween BooScary
 
+## v3.0.0 — 2026-10-05
+
+- Activity launcher with focused mobile view, return navigation and accessible optional sound control.
+- Continuous free brush, adjustable width, whole-stroke/spot eraser, closed carved contours, face templates, dots/stripes/stars, undo and keyboard alternatives.
+- Animated lantern with adjustable flame intensity, steady-light toggle and prefers-reduced-motion support.
+- Halloween Memory (4–6 pairs), face matching, three solvable lantern mazes with keyboard/directional controls, and deterministic daily decoration model.
+- Local XP/levels, coins, daily missions and once-per-day bonus; ribbon, halo and hat unlocks.
+- Named pumpkins, v2-compatible gallery migration, PNG (1200×960) and SVG export.
+- Complete version-3 JSON backup: gallery, XP/coins/accessories/daily progress and v1 best score. Strict nested validation precedes writes; storage failure rolls back written keys. Files are capped at 64 MiB. Local storage availability still depends on browser quota.
+- Earlier challenge, modes, local score key and the v1/v2 history below retained.
+
+Validation: 314 logic checks and both test-browser.cjs/test-v3.cjs passed in Chromium. Coverage includes drawing, contour, eraser, undo, naming, gallery reload, real PNG signature, Memory, face matching, BFS paths through all three mazes, model matching, XP persistence, daily reward once, purchases, JSON roundtrip, five nested-invalid backups, simulated storage failure rollback, large activity view, RO/EN, reduced motion and no overflow at 360/390/1280 px. Touch is emulated. Physical-device, audible quality and real screen-reader checks remain pending.
+
+Run with Playwright: `node booscary/test-browser.cjs` and `node booscary/test-v3.cjs`. Optionally set BOOSCARY_BROWSER to a Chromium executable.
+
 ## v2.0.0 — 2026-10-05
 
 - Six modes: classic, marathon, daily deterministic challenge, survival (three lives), same-device duel, free practice.
