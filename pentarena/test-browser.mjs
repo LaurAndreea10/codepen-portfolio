@@ -24,6 +24,7 @@ try{
     for(const key of ['basket','football','hockey','volley','billiards']){
       await page.locator(`.play[data-k="${key}"]`).click();await page.waitForFunction(k=>PentArena.game&&PentArena.game.sport.key===k,key);
       assert.equal(await page.locator('#game').isVisible(),true);await page.waitForTimeout(400);
+      if(key==="football"&&height>width){const r2=await page.locator("#cv").boundingBox();assert(r2.height>r2.width,"football field is vertical in portrait");}
       if(key==="football"){assert.equal(await page.locator("#btnAct").isVisible(),mobile,`kick button only on touch (${width}x${height})`);}
       const box=await page.locator('#cv').boundingBox();assert(box.width>=200);
       if(mobile){await page.touchscreen.tap(box.x+box.width*.3,box.y+box.height*.5);}else{await page.mouse.move(box.x+box.width*.3,box.y+box.height*.5);await page.mouse.click(box.x+box.width*.3,box.y+box.height*.55);}
@@ -40,11 +41,13 @@ try{
     // two players: multitouch moves both air hockey mallets
     await page.locator('#plSeg button[data-v="2"]').click();await page.locator('.play[data-k="hockey"]').click();await page.waitForTimeout(300);
     assert.equal(await page.evaluate(()=>PentArena.M.two),true);assert.equal(await page.locator('#nmA').textContent(),await page.evaluate(()=>PentArena.store.prefs.lang==='ro'?'J2':'P2'));
-    if(mobile){const r=await page.locator('#cv').boundingBox(),cdp=await context.newCDPSession(page),before=await page.evaluate(()=>PentArena.game.sport.m.map(m=>[m.x,m.y]));
-      const L={x:r.x+r.width*.2,y:r.y+r.height*.2},R={x:r.x+r.width*.8,y:r.y+r.height*.8};
-      await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...L,id:1},{...R,id:2}]});for(let i=0;i<6;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:L.x,y:L.y+i,id:1},{x:R.x,y:R.y-i,id:2}]});await page.waitForTimeout(60);}
-      const after=await page.evaluate(()=>PentArena.game.sport.m.map(m=>[m.x,m.y]));await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
-      assert(after[0][1]<before[0][1]-20,'P1 mallet followed the left finger');assert(after[1][1]>before[1][1]+20,'P2 mallet followed the right finger');}
+    if(mobile){const r=await page.locator('#cv').boundingBox(),cdp=await context.newCDPSession(page),rot=await page.evaluate(()=>PentArena.rotated);
+      if(height>width)assert.equal(rot,true,'portrait phone rotates air hockey');
+      const A=rot?{x:r.x+r.width*.35,y:r.y+r.height*.8}:{x:r.x+r.width*.2,y:r.y+r.height*.4},B=rot?{x:r.x+r.width*.65,y:r.y+r.height*.2}:{x:r.x+r.width*.8,y:r.y+r.height*.6};
+      const logical=p=>{const u=(p.x-r.x)/r.width,v=(p.y-r.y)/r.height;return rot?{x:960-v*960,y:u*600}:{x:u*960,y:v*600};};
+      await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...A,id:1},{...B,id:2}]});for(let i=0;i<10;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:A.x,y:A.y+i*.2,id:1},{x:B.x,y:B.y-i*.2,id:2}]});await page.waitForTimeout(50);}
+      const m=await page.evaluate(()=>PentArena.game.sport.m.map(x=>({x:x.x,y:x.y})));await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+      const ea=logical(A),eb=logical(B);assert(Math.hypot(m[0].x-ea.x,m[0].y-ea.y)<45,`P1 mallet follows its finger ${JSON.stringify([m[0],ea])}`);assert(Math.hypot(m[1].x-eb.x,m[1].y-eb.y)<45,`P2 mallet follows its finger ${JSON.stringify([m[1],eb])}`);}
     else{await page.keyboard.down('KeyW');await page.keyboard.down('ArrowDown');await page.waitForTimeout(300);await page.keyboard.up('KeyW');await page.keyboard.up('ArrowDown');const m=await page.evaluate(()=>PentArena.game.sport.m.map(x=>x.y));assert(m[0]<290&&m[1]>310,'both players move with their own keys');}
     await page.locator('#exitBtn').click();await page.locator('#menuBtn').click();await page.locator('#plSeg button[data-v="1"]').click();
     // dialogs, shop, settings, language

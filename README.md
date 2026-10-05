@@ -277,13 +277,13 @@ An accessible cosmic PWA with nine game modes, progressive difficulty, switch sc
 - Raport lunar de marketing · RO/EN: https://www.canva.com/d/N0vn8ha5duXGAkl
 
 
-## PentArena · v2.0.0 · 2026-10-05
+## PentArena · v2.1.0 · 2026-10-05
 
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/pentarena/) · [README](pentarena/README.md) · [Istoric / History](pentarena/CHANGELOG.md)
 
-RO — Cinci sporturi arcade (baschet, fotbal, air hockey, volei, biliard) contra AI sau în doi pe același ecran: carieră în trei ligi, provocare zilnică, reluări, bonusuri, vestiar, 16 realizări și PWA offline. Testele automate de logică și browser (4 viewporturi, touch, multitouch, offline, axe) trec; telefonul real și cititorul de ecran rămân de confirmat.
+RO — Cinci sporturi arcade (baschet, fotbal, air hockey, volei, biliard) contra AI sau în doi pe același ecran: carieră în trei ligi, provocare zilnică, reluări, bonusuri, vestiar, 16 realizări și PWA offline; din 2.1, teren pe verticală pe telefon. Testele automate de logică și browser (4 viewporturi, touch, multitouch, offline, axe) trec; telefonul real și cititorul de ecran rămân de confirmat.
 
-EN — Five arcade sports (basketball, football, air hockey, volleyball, pool) against the AI or a friend on one screen: three-league career, daily challenge, replays, power-ups, locker, 16 achievements and an offline PWA. Automated logic and browser checks (4 viewports, touch, multitouch, offline, axe) pass; real phones and screen readers remain unverified.
+EN — Five arcade sports (basketball, football, air hockey, volleyball, pool) against the AI or a friend on one screen: three-league career, daily challenge, replays, power-ups, locker, 16 achievements and an offline PWA; since 2.1 a vertical field on portrait phones. Automated logic and browser checks (4 viewports, touch, multitouch, offline, axe) pass; real phones and screen readers remain unverified.
 
 ## Odyssey Quest · 2026-09-30
 

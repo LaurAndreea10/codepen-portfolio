@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-05 — PentArena v2.1.0
+
+- RO: teren pe verticală pe telefon pentru fotbal, air hockey și biliard (poarta ta jos), cu text drept, atingeri și multitouch corecte; baschetul și voleiul rămân pe orizontală.
+- EN: vertical field on portrait phones for football, air hockey and pool (your goal at the bottom), with upright text and correct touch and multitouch; basketball and volleyball stay landscape.
+- [Istoric / History](pentarena/CHANGELOG.md). Testele locale au trecut; telefonul fizic rămâne neconfirmat.
+
 ## 2026-10-05 — PentArena v2.0.0
 
 - RO: joc nou în portofoliu — baschet, fotbal, air hockey, volei și biliard contra AI sau 2 jucători pe același ecran; carieră în 3 ligi, provocare zilnică, reluări, bonusuri, vestiar, 16 realizări, PWA offline cu fonturi locale. Integrat în catalog, portofoliul RO/EN, Finalizat recent, Istoric, README, sitemap, Lighthouse și workflow propriu.

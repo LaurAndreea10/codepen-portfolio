@@ -1,5 +1,13 @@
 # PentArena — Changelog
 
+## 2.1.0 — 2026-10-05
+
+**RO.** Teren pe verticală pentru telefoanele ținute în picioare: fotbalul, air hockey-ul și biliardul se rotesc automat (poarta ta jos, a adversarului sus) și ocupă tot ecranul în loc de o bandă îngustă. Textele, numerele bilelor și bannerele rămân drepte; atingerile, multitouch-ul pentru 2 jucători (J1 jos, J2 sus) și săgețile urmează direcțiile de pe ecran. Baschetul și voleiul rămân pe orizontală, pentru că sunt văzute din lateral, și păstrează sugestia de rotire. Cache-ul offline a fost redenumit ca instalările existente să primească noua versiune.
+
+**EN.** Vertical field for phones held upright: football, air hockey and pool rotate automatically (your goal at the bottom, the opponent at the top) and fill the screen instead of a thin strip. Text, ball numbers and banners stay upright; touches, two-player multitouch (P1 bottom, P2 top) and arrow keys follow on-screen directions. Basketball and volleyball stay landscape because they are side views, and keep the rotate hint. Offline cache renamed so installed copies pick up the new version.
+
+Verificare / Verification: new core check for screen-relative keys when rotated; browser regression now asserts a vertical field at 360×800 and 390×844 and checks that each finger drives its own mallet in both orientations. Real phones still unverified.
+
 ## 2.0.0 — 2026-10-05
 
 **RO.** PentArena intră în portofoliu ca joc complet, nu doar ca demo:

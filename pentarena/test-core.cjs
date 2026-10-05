@@ -5,7 +5,7 @@ const sandbox={console,Math,Date,JSON,Number,Array,Object,Set,Map,Error,isFinite
   localStorage:{getItem:k=>stored[k]??null,setItem:(k,v)=>{stored[k]=String(v);}}};
 sandbox.window=sandbox;sandbox.globalThis=sandbox;vm.createContext(sandbox);
 vm.runInContext(fs.readFileSync(path.join(__dirname,'game.js'),'utf8'),sandbox);
-const PA=sandbox.PentArena;assert(PA&&PA.VERSION==='2.0.0');
+const PA=sandbox.PentArena;assert(PA&&PA.VERSION==='2.1.0');
 const ctx=new Proxy({},{get:(_,k)=>k==='createRadialGradient'||k==='createLinearGradient'?()=>({addColorStop(){}}):k==='measureText'?()=>({width:10}):()=>{},set:()=>true});
 const reset=()=>{PA.store=PA.freshStore();};
 const DT=1/60;
@@ -32,7 +32,7 @@ for(const diff of ['easy','normal','hard'])for(const key of PA.SPORT_KEYS){const
 console.log('PASS: all five sports finish vs AI on easy/normal/hard —',summary.join(' | '));
 // 2. AI is a real opponent: wins hockey and volley against an idle player, scores in football
 for(const key of ['hockey','volley']){const {s}=play(key,{diff:'normal',bot:false,cap:400});assert(s.over&&s.score[1]>s.score[0],`${key} AI should beat an idle player`);}
-{const {s}=play('football',{diff:'hard',bot:false});assert(s.score[1]>=1,'football AI should score vs idle player');}
+{let goals=0;for(let i=0;i<3;i++)goals+=play('football',{diff:'hard',bot:false}).s.score[1];assert(goals>=3,'football AI should score vs idle player');}
 console.log('PASS: AI beats an idle player in hockey/volley and scores in football');
 // 3. two-player mode runs every sport with both sides human
 for(const key of PA.SPORT_KEYS){const {s}=play(key,{players:2,cap:25});assert.equal(PA.M.two,true);assert(!s.over||key==='basket'||key==='billiards'||true);}
@@ -80,4 +80,9 @@ console.log('PASS: local two-player mode runs every sport');
   for(const [field,val] of [['xp',-1],['coins','9'],['skin','gold'],['ach',['nope']],['prefs',null],['leagues',{bronze:'x'}],['dailyDone',{'2026-02-31':true}]]){const bad=JSON.parse(json);bad.progress[field]=val;assert.throws(()=>PA.validateStore(bad),`${field} should be rejected`);}
   assert.throws(()=>PA.validateStore(null));assert.throws(()=>PA.validateStore({app:'other',progress:back}));
   console.log('PASS: locker purchases and validated backup round-trip');}
+// 12. portrait rotation maps keyboard directions to the rotated field
+{PA.store.prefs.players=1;const g=PA.startQuick('football'),s=g.sport;s.pause=0;PA.rotated=true;const x0=s.t[0].x,y0=s.t[0].y;
+  for(let i=0;i<20;i++){PA.keys.add('ArrowUp');PA.step(DT);}PA.keys.delete('ArrowUp');assert(s.t[0].x>x0+40,'screen up = toward the opponent goal');
+  const y1=s.t[0].y;for(let i=0;i<20;i++){PA.keys.add('ArrowRight');PA.step(DT);}PA.keys.delete('ArrowRight');assert(s.t[0].y>y1+40,'screen right = logical +y');
+  const c=PA.ctl(0);assert.equal(c.kx,0);s.draw(ctx);PA.rotated=false;console.log('PASS: portrait rotation keeps keyboard directions screen-relative');}
 console.log('ALL PENTARENA CORE CHECKS PASSED');

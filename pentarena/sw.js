@@ -1,5 +1,5 @@
 'use strict';
-const CACHE='pentarena-2.0.0-r1',SHELL=['./','./index.html','./style.css','./game.js','./pwa.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./changelog.html',
+const CACHE='pentarena-2.1.0-r1',SHELL=['./','./index.html','./style.css','./game.js','./pwa.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./changelog.html',
 './fonts/fraunces-latin-800-normal.woff2','./fonts/fraunces-latin-ext-800-normal.woff2','./fonts/fraunces-latin-800-italic.woff2','./fonts/fraunces-latin-ext-800-italic.woff2',
 './fonts/inter-latin-400-normal.woff2','./fonts/inter-latin-ext-400-normal.woff2','./fonts/inter-latin-600-normal.woff2','./fonts/inter-latin-ext-600-normal.woff2',
 './fonts/jetbrains-mono-latin-700-normal.woff2','./fonts/jetbrains-mono-latin-ext-700-normal.woff2'];

@@ -1,4 +1,4 @@
-# PentArena · v2.0.0
+# PentArena · v2.1.0
 
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/pentarena/) · [Changelog](CHANGELOG.md) · [Istoric public / Public history](changelog.html)
 
@@ -10,6 +10,7 @@ Cinci sporturi arcade într-un singur canvas: **baschet, fotbal, air hockey, vol
 - **2 jucători:** J1 cu W A S D + Space (Shift sprint), J2 cu săgeți + Enter (Shift dreapta sprint). Pe ecran tactil, fiecare jucător își folosește jumătatea de teren. Baschetul și biliardul se joacă pe ture.
 - **Modificatori** (opționali în meciul rapid, impuși de ligi): vânt și coș mobil la baschet, bonusuri pe masa de air hockey, gol de aur la fotbal.
 - **Progres local:** XP, niveluri, monede, vestiar cosmetic, 16 realizări, statistici pe sport, backup JSON validat.
+- **Telefon pe verticală:** fotbalul, air hockey-ul și biliardul se rotesc automat ca terenul să umple ecranul, cu poarta ta jos; textul rămâne drept, iar săgețile urmează direcțiile de pe ecran.
 - **Accesibilitate:** tastatură, mouse și touch la toate probele; anunțuri de scor pentru cititoare de ecran; contrast ridicat; mișcare redusă (fără tremurat, particule și reluări).
 
 ## EN
@@ -20,6 +21,7 @@ Five arcade sports on one canvas: **basketball, football, air hockey, volleyball
 - **Two players:** P1 on W A S D + Space (Shift sprint), P2 on arrows + Enter (right Shift sprint). On touch screens each player uses their half. Basketball and pool alternate turns.
 - **Modifiers** (optional in quick play, set by each league): basketball wind and moving hoop, air-hockey power-ups, football golden goal.
 - **Local progress:** XP, levels, coins, cosmetic locker, 16 achievements, per-sport stats, validated JSON backup.
+- **Portrait phones:** football, air hockey and pool rotate automatically so the field fills the screen with your goal at the bottom; text stays upright and arrow keys follow screen directions.
 - **Accessibility:** keyboard, mouse and touch in every event; screen-reader score announcements; high contrast; reduced motion (no shake, particles or replays).
 
 ## Structure
