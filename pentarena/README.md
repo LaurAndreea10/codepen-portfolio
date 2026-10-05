@@ -1,8 +1,11 @@
-# PentArena · v2.2.0
+# PentArena · v2.3.0
 
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/pentarena/) · [Changelog](CHANGELOG.md) · [Istoric public / Public history](changelog.html)
 
 ## RO
+
+Continuarea partidei cu scor și pozițiile mingilor restaurate pe pauză; antrenament ghidat cu obiective detectate din joc; provocare săptămânală cu recompensă unică; AI echilibrat, defensiv și ofensiv; indicii de putere, posesie și timing; butoane tactile ajustabile, efecte vizuale și volum al efectelor configurabile.
+
 
 Teren extins după alegerea probei, scor lateral pe mobil orizontal, fullscreen opțional, ghid în trei pași cu pauză, antrenament fără timer la baschet/fotbal, mute în meci și temă dark/light/automată. Backupuri vechi compatibile; validare nested mai strictă.
 
@@ -17,6 +20,9 @@ Cinci sporturi arcade într-un singur canvas: **baschet, fotbal, air hockey, vol
 - **Accesibilitate:** tastatură, mouse și touch la toate probele; anunțuri de scor pentru cititoare de ecran; contrast ridicat; mișcare redusă (fără tremurat, particule și reluări).
 
 ## EN
+
+Resume matches with scores and ball positions restored on pause; practical training with objectives detected from gameplay; a weekly challenge with a one-time reward; balanced, defensive and offensive AI; power, possession and timing cues; adjustable touch buttons, visual effects and sound-effects volume.
+
 
 Expanded court after event selection, side scoreboard on landscape phones, optional fullscreen, paused three-step guide, untimed basketball/football practice, in-match mute and dark/light/system theme. Compatible old backups and stricter nested validation.
 
@@ -54,3 +60,7 @@ The checks prove logic, layout at the tested widths, touch emulation and automat
 
 Fonts: Fraunces, Inter and JetBrains Mono under the SIL Open Font License (see `fonts/`).
 
+
+## Checkpoints and weekly progress
+
+Match snapshots stay on this device, are restored paused, and expire after seven days (daily matches expire when the day changes). Version or progression mismatches discard only the snapshot. Transient held inputs and replay buffers are cleared. Pool restores the cue ball as the same object referenced in the balls array. Completed match snapshots are removed before rewards are applied. JSON progression backups preserve weekly rewards, training completion and the new preferences; old backups receive safe defaults.
