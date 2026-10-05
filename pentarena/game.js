@@ -1,8 +1,8 @@
 'use strict';
-/* PentArena v2.1.0 — five arcade sports on one canvas. No libraries.
+/* PentArena v2.2.0 — five arcade sports on one canvas. No libraries.
    Sections: core · i18n · audio · fx · input · sports (basket, football, hockey, volley, pool) · progression · UI. */
 (function(root){
-const VERSION='2.1.0';
+const VERSION='2.2.0';
 const W=960,H=600,TAU=Math.PI*2;
 const clamp=(v,a,b)=>v<a?a:v>b?b:v,rand=(a,b)=>a+Math.random()*(b-a),hyp=Math.hypot;
 function gauss(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(TAU*v);}
@@ -104,19 +104,23 @@ a_first:'First win',ad_first:'Win any match',a_swish:'Swish',ad_swish:'Score in 
 a_penta:'Pentathlete',ad_penta:'Win at least once in every sport',a_champ:'Champion',ad_champ:'Win the Pentathlon tournament',a_clean:'Clean table',ad_clean:'Win at pool without the opponent potting a ball',a_mara:'Marathoner',ad_mara:'Play 25 matches',
 a_spike:'The Hammer',ad_spike:'Make 4 spikes in one volleyball match',a_power:'Collector',ad_power:'Take 3 power-ups in one air hockey match',a_golden:'Pure gold',ad_golden:'Win with a golden goal',a_duo:'Together',ad_duo:'Play a two-player match',
 a_run:'On a run',ad_run:'Pot 4 balls in a single turn',a_daily3:'Loyal',ad_daily3:'Complete 3 daily challenges',a_league:'Promoted',ad_league:'Win a league',a_legend:'Legend',ad_legend:'Win the Gold League'}};
+Object.assign(I18N.ro,{fullscreen:'Ecran complet',leaveFull:'Ieși din ecran complet',fullUnavailable:'Ecranul complet nu este disponibil. Terenul folosește spațiul ferestrei.',gameHelp:'Despre această probă',practice:'Antrenament',practiceHelp:'Fără presiunea timerului la baschet și fotbal. Fără XP, monede sau statistici competitive.',ready:'Începe să joci',stepN:(n,t)=>`Pasul ${n} din ${t}`,objective:'Obiectiv',controls:'Controale',tip:'Sfat',nextTip:'Următorul pas',theme:'Temă',dark:'Întunecată',light:'Luminoasă',auto:'După dispozitiv',mute:'Oprește sunetul',unmute:'Pornește sunetul',resetProgress:'Resetează progresul',resetAsk:'Ștergi progresul, realizările și monedele de pe acest dispozitiv? Exportă mai întâi un backup dacă vrei să le păstrezi.',resetDone:'Progres resetat.',goal_basket:'Înscrie mai multe puncte decât adversarul în seria de aruncări.',goal_football:'Marchează mai multe goluri decât adversarul.',goal_hockey:'Trimite pucul în poarta adversă până atingi scorul țintă.',goal_volley:'Trimite mingea peste fileu și câștigă raliurile până la scorul țintă.',goal_billiards:'Introdu grupa ta de bile, apoi bila 8, fără fault la lovitura finală.',tip_basket:'O aruncare fără atingerea inelului aduce bonus. În antrenament ai timp să reglezi unghiul.',tip_football:'Apropie-te de minge înainte de șut. Ține apăsat pentru mai multă putere.',tip_hockey:'Păstrează crosa între puc și poarta ta; folosește marginile pentru ricoșeu.',tip_volley:'Apropie-te de fileu și sari la momentul potrivit pentru un spike.',tip_billiards:'Urmărește linia de țintire. Shift permite reglarea fină din tastatură.'});
+Object.assign(I18N.en,{fullscreen:'Fullscreen',leaveFull:'Exit fullscreen',fullUnavailable:'Fullscreen is unavailable. The court uses the available window.',gameHelp:'About this event',practice:'Practice',practiceHelp:'No shot clock in basketball or match timer in football. No competitive XP, coins or stats.',ready:'Start playing',stepN:(n,t)=>`Step ${n} of ${t}`,objective:'Objective',controls:'Controls',tip:'Tip',nextTip:'Next step',theme:'Theme',dark:'Dark',light:'Light',auto:'Follow device',mute:'Mute sound',unmute:'Enable sound',resetProgress:'Reset progress',resetAsk:'Delete progress, achievements and coins on this device? Export a backup first if you want to keep them.',resetDone:'Progress reset.',goal_basket:'Score more points than your opponent across the shooting rounds.',goal_football:'Score more goals than your opponent.',goal_hockey:'Send the puck into the opponent’s goal until you reach the target score.',goal_volley:'Send the ball over the net and win rallies up to the target score.',goal_billiards:'Pot your group, then the 8 ball, without fouling the final shot.',tip_basket:'A shot without touching the rim earns a bonus. Practice gives you time to adjust the angle.',tip_football:'Get close to the ball before shooting. Hold for more power.',tip_hockey:'Keep your mallet between the puck and your goal; use the sides for rebounds.',tip_volley:'Approach the net and time your jump for a spike.',tip_billiards:'Follow the aiming line. Shift enables fine keyboard adjustment.'});
 let LANG='ro';
 function tr(k,...a){const d=I18N[LANG];let v=d&&d[k]!=null?d[k]:(I18N.en[k]!=null?I18N.en[k]:k);return typeof v==='function'?v(...a):v;}
 
 /* ================= store ================= */
 const STORE_KEY='pentarena-v2';
 function freshStore(){return{schema:1,xp:0,coins:0,stats:{},ex:{swish:0,spike:0,power:0,potted:0,golden:0,daily:0,duo:0},ach:[],won:[],tours:0,leagues:{bronze:'open',silver:'locked',gold:'locked'},dailyDone:{},skins:['cyan'],skin:'cyan',trails:['none'],trail:'none',
-  prefs:{lang:'ro',diff:'normal',players:1,sound:true,vol:70,len:1,mods:true,replay:true,contrast:false,motion:false}};}
+  prefs:{lang:'ro',diff:'normal',players:1,sound:true,vol:70,len:1,mods:true,replay:true,contrast:false,motion:false,theme:'dark',practice:false}};}
 let ST=freshStore();
-const isNum=v=>typeof v==='number'&&isFinite(v)&&v>=0;
+const isNum=v=>typeof v==='number'&&isFinite(v)&&v>=0&&v<=Number.MAX_SAFE_INTEGER;
+const isRecord=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
 function validateStore(o){
   if(!o||typeof o!=='object'||Array.isArray(o))throw new Error('format');
   if(o.app!=null&&o.app!=='pentarena')throw new Error('app');
-  const p=o.progress&&typeof o.progress==='object'?o.progress:o;
+  const p=o.progress!==undefined?o.progress:o;
+  if(!isRecord(p))throw new Error('progress');
   if(p.schema!==1)throw new Error('schema');
   const out=freshStore();
   for(const k of ['xp','coins','tours']){if(!isNum(p[k]))throw new Error(k);out[k]=Math.floor(p[k]);}
@@ -125,22 +129,25 @@ function validateStore(o){
   out.skins=strArr(p.skins,'skins',SKINS.map(s=>s.id));if(!out.skins.includes('cyan'))out.skins.unshift('cyan');
   out.trails=strArr(p.trails,'trails',TRAILS.map(s=>s.id));if(!out.trails.includes('none'))out.trails.unshift('none');
   if(!out.skins.includes(p.skin))throw new Error('skin');out.skin=p.skin;if(!out.trails.includes(p.trail))throw new Error('trail');out.trail=p.trail;
-  if(!p.leagues||typeof p.leagues!=='object')throw new Error('leagues');
+  if(!isRecord(p.leagues))throw new Error('leagues');
   for(const L of LEAGUES){const v=p.leagues[L.id];if(!['open','locked','won'].includes(v))throw new Error('leagues');out.leagues[L.id]=v;}
-  if(!p.ex||typeof p.ex!=='object')throw new Error('ex');for(const k of Object.keys(out.ex)){if(p.ex[k]!=null&&!isNum(p.ex[k]))throw new Error('ex');out.ex[k]=Math.floor(p.ex[k]||0);}
-  if(!p.stats||typeof p.stats!=='object')throw new Error('stats');
-  for(const [k,s] of Object.entries(p.stats)){if(!SPORT_KEYS.includes(k)||!s||typeof s!=='object')throw new Error('stats');const c={};for(const f of ['p','w','l','d','f','a','streak','best']){if(!isNum(s[f]??0))throw new Error('stats');c[f]=Math.floor(s[f]||0);}out.stats[k]=c;}
-  if(!p.dailyDone||typeof p.dailyDone!=='object')throw new Error('dailyDone');
+  if(!isRecord(p.ex))throw new Error('ex');for(const k of Object.keys(out.ex)){if(p.ex[k]!==undefined&&!isNum(p.ex[k]))throw new Error('ex');out.ex[k]=Math.floor(p.ex[k]||0);}
+  if(!isRecord(p.stats))throw new Error('stats');
+  for(const [k,s] of Object.entries(p.stats)){if(!SPORT_KEYS.includes(k)||!isRecord(s))throw new Error('stats');const c={};for(const f of ['p','w','l','d','f','a','streak','best']){if(!isNum(s[f]===undefined?0:s[f]))throw new Error('stats');c[f]=Math.floor(s[f]||0);}out.stats[k]=c;}
+  if(!isRecord(p.dailyDone))throw new Error('dailyDone');
   for(const [k,v] of Object.entries(p.dailyDone)){if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||v!==true)throw new Error('dailyDone');const d=new Date(k+'T12:00:00');if(isNaN(d)||todayKey(d)!==k)throw new Error('dailyDone');out.dailyDone[k]=true;}
-  const pr=p.prefs;if(!pr||typeof pr!=='object')throw new Error('prefs');
-  if(!['ro','en'].includes(pr.lang))throw new Error('lang');if(!DIFFS[pr.diff])throw new Error('diff');if(![1,2].includes(pr.players))throw new Error('players');if(![0,1,2].includes(pr.len))throw new Error('len');
+  const pr=p.prefs;if(!isRecord(pr))throw new Error('prefs');
+  if(!['ro','en'].includes(pr.lang))throw new Error('lang');if(!Object.prototype.hasOwnProperty.call(DIFFS,pr.diff))throw new Error('diff');if(![1,2].includes(pr.players))throw new Error('players');if(![0,1,2].includes(pr.len))throw new Error('len');
   for(const k of ['sound','mods','replay','contrast','motion'])if(typeof pr[k]!=='boolean')throw new Error(k);
   if(!isNum(pr.vol)||pr.vol>100)throw new Error('vol');
   out.prefs={lang:pr.lang,diff:pr.diff,players:pr.players,sound:pr.sound,vol:pr.vol,len:pr.len,mods:pr.mods,replay:pr.replay,contrast:pr.contrast,motion:pr.motion};
+  if(pr.theme!==undefined&&!['dark','light','auto'].includes(pr.theme))throw new Error('theme');
+  if(pr.practice!==undefined&&typeof pr.practice!=='boolean')throw new Error('practice');
+  out.prefs.theme=pr.theme||'dark';out.prefs.practice=pr.practice||false;
   return out;}
 function exportStore(){return JSON.stringify({app:'pentarena',version:VERSION,exported:new Date().toISOString(),progress:ST},null,2);}
-function load(){try{const raw=root.localStorage&&root.localStorage.getItem(STORE_KEY);if(raw)ST=validateStore(JSON.parse(raw));}catch(e){ST=freshStore();}
-  if(!(root.localStorage&&root.localStorage.getItem(STORE_KEY))&&HAS_DOM&&root.matchMedia&&root.matchMedia('(prefers-reduced-motion: reduce)').matches)ST.prefs.motion=true;LANG=ST.prefs.lang;}
+function load(){let raw=null;try{raw=root.localStorage&&root.localStorage.getItem(STORE_KEY);if(raw)ST=validateStore(JSON.parse(raw));}catch(e){ST=freshStore();}
+  if(!raw&&HAS_DOM&&root.matchMedia&&root.matchMedia('(prefers-reduced-motion: reduce)').matches)ST.prefs.motion=true;LANG=ST.prefs.lang;}
 function save(){try{root.localStorage&&root.localStorage.setItem(STORE_KEY,JSON.stringify(ST));}catch(e){}}
 
 /* ================= progression ================= */
@@ -156,9 +163,9 @@ const outcome=s=>s.winner!=null?s.winner:Math.sign(s.score[0]-s.score[1]);
 function matchConfig(run,key){const pr=ST.prefs;
   if(run.mode==='career'){const L=LEAGUES.find(l=>l.id===run.league);return{D:L.D,A:L.A,mods:L.mods,len:L.len,two:false,rival:L.rival};}
   if(run.mode==='daily'){const d=DIFFS[run.daily.diff];return{D:d.D,A:d.A,mods:true,len:1,two:false,rival:null};}
-  const d=DIFFS[pr.diff];return{D:d.D,A:d.A,mods:pr.mods,len:pr.len,two:pr.players===2,rival:null};}
+  const d=DIFFS[pr.diff];return{D:d.D,A:d.A,mods:pr.mods,len:pr.len,two:pr.players===2,rival:null,practice:run.mode==='quick'&&pr.practice};}
 /* records one finished match; returns everything the result screen needs */
-function finishMatch(run,s){const o=outcome(s),k=s.key,res={o,xp:0,coins:0,ach:[],level:null,daily:null,runDone:false};const lv0=levelOf(ST.xp);
+function finishMatch(run,s){const o=outcome(s),k=s.key,res={o,xp:0,coins:0,ach:[],level:null,daily:null,runDone:false};const lv0=levelOf(ST.xp);if(M.practice)return res;
   if(M.two){ST.ex.duo++;res.xp=40;res.coins=10;unlock('duo',res.ach);}
   else{const st=ST.stats[k]||(ST.stats[k]={p:0,w:0,l:0,d:0,f:0,a:0,streak:0,best:0});st.p++;st.f+=s.score[0];st.a+=s.score[1];
     if(o>0){st.w++;st.streak++;st.best=Math.max(st.best,st.streak);}else{st.streak=0;if(o<0)st.l++;else st.d++;}
@@ -270,7 +277,7 @@ class Basket{
   newBall(){this.b={x:this.sx,y:430,vx:0,vy:0,r:16,rim:false,made:false,money:this.shot===this.RACK-1,t:0,bounce:0,rot:0};this.state='aim';this.aiT=this.human()?0:1.05;this.sc=8;this.drag=null;this.charging=false;this.kPow=0;}
   turnName(){return M.two?(this.turn?tr('p2Turn'):tr('p1Turn')):(this.turn?tr('aiTurn'):tr('yourTurn'));}
   info(){let t=`${this.extra&&this.round>=this.spots.length-this.extra?tr('overtime')+' · ':''}${tr('spot')} ${this.round+1}/${this.spots.length} · ${tr('ball')} ${this.shot+1}/${this.RACK}`;if(this.b.money)t+=' · '+tr('money');if(this.wind)t+=' · '+tr(this.wind>0?'windR':'windL');if(this.moving)t+=' · '+tr('moving');return t;}
-  clock(){return this.turnName()+(this.state==='aim'&&this.human()?` · ${Math.ceil(this.sc)}s`:'');}
+  clock(){return this.turnName()+(this.state==='aim'&&this.human()&&!M.practice?` · ${Math.ceil(this.sc)}s`:'');}
   launch(vx,vy){this.b.vx=vx;this.b.vy=vy;this.state='fly';this.stats.att[this.turn]++;SFX.swoosh();}
   dragVel(p){const dx=this.drag.x-p.x,dy=this.drag.y-p.y;let vx=dx*3.4,vy=dy*3.4;const l=Math.hypot(vx,vy),m=1250;if(l>m){vx*=m/l;vy*=m/l;}return{x:vx,y:vy};}
   sim(x,y,v,th,t0){let vx=v*Math.cos(th),vy=-v*Math.sin(th),t=0,above=false;const h=1/240;for(let i=0;i<1400;i++){const py=y;vx+=this.wind*h;vy+=BK.g*h;x+=vx*h;y+=vy*h;t+=h;const hy=this.hyAt(t0+t);if(y<hy-20)above=true;if(above&&py<hy&&y>=hy&&vy>0)return x;if(x>BK.bbX)return 1e9;if(y>BK.floor)return above?x:-1e9;}return -1e9;}
@@ -280,7 +287,7 @@ class Basket{
   update(dt){if(this.over)return;const b=this.b;this.clk+=dt;this.hy=this.hyAt(this.clk);if(this.ban>0)this.ban-=dt;this.net=Math.max(0,this.net-dt);
     if(this.state==='aim'){
       if(this.human()){const p=ptr(),c=ctl(0),c2=M.two?ctl(1):null;
-        this.sc-=dt;if(this.sc<=0){floatText(W/2,250,tr('shotClock'),C.coral,48);SFX.foul();this.stats.att[this.turn]++;this.next();return;}
+        if(!M.practice)this.sc-=dt;if(this.sc<=0){floatText(W/2,250,tr('shotClock'),C.coral,48);SFX.foul();this.stats.att[this.turn]++;this.next();return;}
         if(p&&p.justDown)this.drag={x:p.x,y:p.y};
         if(this.drag&&p&&!p.down){const v=this.dragVel(p);this.drag=null;if(Math.hypot(v.x,v.y)>150)this.launch(v.x,v.y);return;}
         if(this.drag&&!p)this.drag=null;
@@ -348,7 +355,7 @@ class Football{
   reset(){const mk=x=>({x,y:300,vx:0,vy:0,r:18,cd:0,st:1,ch:0,chg:false});this.t=[mk(300),mk(660)];this.b={x:480,y:300,vx:0,vy:0,r:10,rot:0};
     this.k=[{x:FB.x0+22,y:300,r:17,vx:0,vy:0},{x:FB.x1-22,y:300,r:17,vx:0,vy:0}];this.pause=1.1;this.err=gauss()*.5;}
   info(){return this.golden?tr('goldenGoal'):`${tr('firstTo')} ${this.target}`;}
-  clock(){return fmtClock(this.time);}
+  clock(){return M.practice?tr('practice'):fmtClock(this.time);}
   snap(){const[p,a]=this.t,b=this.b;return[p.x,p.y,a.x,a.y,b.x,b.y,b.rot,this.k[0].y,this.k[1].y];}
   applySnap(s){const[p,a]=this.t,b=this.b;[p.x,p.y,a.x,a.y,b.x,b.y,b.rot,this.k[0].y,this.k[1].y]=s;}
   trailPt(){return{x:this.b.x,y:this.b.y,r:this.b.r};}
@@ -373,7 +380,7 @@ class Football{
     else if(a.cd<=0&&hyp(b.x-a.x,b.y-a.y)<a.r+b.r+8&&(b.y<f.y0+45||b.y>f.y1-45||b.x<f.x0+45)){this.shoot(a,1,420,300+gauss()*60);a.cd=.4;}}
   update(dt){if(this.over)return;if(this.pause>0){this.pause-=dt;return;}
     this.buf.push(this.snap());if(this.buf.length>150)this.buf.shift();
-    this.time-=dt;if(this.time<=0){if(this.score[0]===this.score[1]&&M.mods&&!this.golden){this.golden=true;this.time=30;floatText(W/2,250,tr('goldenGoal'),C.amber,52);SFX.whistle();announce(tr('goldenGoal'));}else{this.time=0;this.over=true;SFX.whistle();return;}}
+    if(!M.practice)this.time-=dt;if(this.time<=0){if(this.score[0]===this.score[1]&&M.mods&&!this.golden){this.golden=true;this.time=30;floatText(W/2,250,tr('goldenGoal'),C.amber,52);SFX.whistle();announce(tr('goldenGoal'));}else{this.time=0;this.over=true;SFX.whistle();return;}}
     const [p,a]=this.t,b=this.b,f=FB;
     this.human(0,dt);if(M.two)this.human(1,dt);else this.ai(dt);
     for(const o of this.t){o.x=clamp(o.x+o.vx*dt,f.x0+o.r,f.x1-o.r);o.y=clamp(o.y+o.vy*dt,f.y0+o.r,f.y1-o.r);o.cd-=dt;}
@@ -707,24 +714,30 @@ function setTxt(id,v){const el=$(id);v=String(v);if(el&&el.textContent!==v)el.te
 function toast(html){const el=document.createElement('div');el.className='toast';el.innerHTML=html;$('toasts').appendChild(el);setTimeout(()=>el.remove(),3400);}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 
-let touchSeen=false;
+let touchSeen=false,returnFocus=null,guideStep=0,guideWasPaused=false;
 function isTouch(){return touchSeen||root.matchMedia('(pointer: coarse)').matches||((navigator.maxTouchPoints||0)>0&&!root.matchMedia('(pointer: fine)').matches);}
 function startMatch(key){M=matchConfig(run,key);FX.parts=[];FX.texts=[];FX.shake=0;FX.trail=[];
   game={sport:new SPORTS[key](),endT:0,paused:false,shown:false,replay:null};
   if(!HAS_DOM)return game;
+  if(!returnFocus)returnFocus=document.activeElement;document.body.classList.add('playing');
   $('menu').hidden=true;$('game').hidden=false;$('pauseOv').hidden=true;$('resOv').hidden=true;$('skipReplay').hidden=true;
   setTxt('hName',tr(key));setTxt('nmP',sideName(0));setTxt('nmA',sideName(1));
   const g=$('game');g.style.setProperty('--pc',ST.skin==='prism'?C.cyan:skinCol(ST.skin));g.style.setProperty('--oc',colP(1));
   const coarse=isTouch(),acts=M.two?[]:game.sport.acts;
   $('btnAct').hidden=!(coarse&&acts[0]);if(acts[0])$('btnAct').textContent=tr(acts[0]);$('btnSpr').hidden=!(coarse&&acts[1]);if(acts[1])$('btnSpr').textContent=tr(acts[1]);
+  $('guideOv').hidden=true;syncGameTools();cv.setAttribute('aria-describedby','hint');cv.setAttribute('aria-label',tr(key)+' · '+tr('goal_'+key));
   updateHint();fit();SFX.whistle();cv.focus({preventScroll:true});return game;}
 function updateHint(){if(!game)return;const coarse=isTouch(),portrait=innerHeight>innerWidth,k=game.sport.key;
   let h=M.two?(k==='basket'||k==='billiards'?tr('c2turns')+' '+tr('c_'+k):tr('c2')):tr('c_'+k);if(coarse&&portrait&&!ROTATABLE.has(k))h=tr('rotate')+' · '+h;setTxt('hint',h);}
 function fit(){if(!game||!cv)return;const st=$('stage').getBoundingClientRect();ROT=ROTATABLE.has(game.sport.key)&&st.width<st.height*.9;const ar=ROT?H/W:W/H;let w=st.width,h=w/ar;if(h>st.height){h=st.height;w=h*ar;}
   w=Math.max(160,Math.floor(w));h=Math.floor(w/ar);cv.style.width=w+'px';cv.style.height=h+'px';const dpr=Math.min(2,root.devicePixelRatio||1);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);scale=cv.width/(ROT?H:W);cv.dataset.orient=ROT?'portrait':'landscape';}
-function setPause(v){if(!game||game.sport.over||game.shown)return;game.paused=v;$('pauseOv').hidden=!v;if(v){setTxt('pauseHint',tr('pauseKeys'));$('resBtn').focus();}else cv.focus({preventScroll:true});}
-function toMenu(){game=null;run=null;ROT=false;keys.clear();$('game').hidden=true;$('menu').hidden=false;renderMenu();}
+function setPause(v){if(!game||game.sport.over||game.shown)return;game.paused=v;keys.clear();pressed.clear();released.clear();PTRS.clear();BTN.act.h=BTN.spr.h=false;$('pauseOv').hidden=!v;if(v){setTxt('pauseHint',tr('pauseKeys'));$('resBtn').focus();}else cv.focus({preventScroll:true});}
+function toMenu(){if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});document.body.classList.remove('playing');$('guideOv').hidden=true;game=null;run=null;ROT=false;keys.clear();$('game').hidden=true;$('menu').hidden=false;renderMenu();if(returnFocus&&returnFocus.isConnected)returnFocus.focus({preventScroll:true});else $('pickTitle').focus({preventScroll:true});returnFocus=null;}
 
+function syncGameTools(){if(!HAS_DOM)return;setTxt('fullBtn',document.fullscreenElement?tr('leaveFull'):tr('fullscreen'));setTxt('soundGame',tr(ST.prefs.sound?'mute':'unmute'));$('soundGame').setAttribute('aria-pressed',String(!ST.prefs.sound));}
+function showGuide(){if(!game||game.shown)return;guideWasPaused=game.paused;setPause(true);$('pauseOv').hidden=true;guideStep=0;$('guideOv').hidden=false;renderGuide();$('guideNext').focus();}
+function renderGuide(){const k=game.sport.key,keys=['objective','controls','tip'],text=[tr('goal_'+k),M.two?tr('c2')+' · '+tr('c_'+k):tr('c_'+k),tr('tip_'+k)];setTxt('guideTitle',tr(k)+' · '+tr(keys[guideStep]));setTxt('guideCount',tr('stepN',guideStep+1,3));setTxt('guideText',text[guideStep]);setTxt('guideNext',tr(guideStep===2?'ready':'nextTip'));}
+function closeGuide(){if(!game)return;$('guideOv').hidden=true;setPause(guideWasPaused);}
 function step(dt){const s=game.sport;
   if(game.replay){const r=game.replay;r.i+=dt*60*.45;if(r.i>=r.frames.length||r.skip){s.applySnap(r.cur);game.replay=null;if(HAS_DOM)$('skipReplay').hidden=true;}else s.applySnap(r.frames[Math.floor(r.i)]);updFX(dt);return;}
   if(game.paused||game.shown)return;
@@ -734,7 +747,7 @@ function step(dt){const s=game.sport;
   if(s.replayFrames){if(ST.prefs.replay&&!calm()){game.replay={frames:s.replayFrames.slice(-130),i:0,cur:s.snap()};if(HAS_DOM)$('skipReplay').hidden=false;FX.trail=[];}s.replayFrames=null;}
   if(s.over){game.endT+=dt;if(game.endT>1.4&&!game.replay){game.shown=true;if(HAS_DOM)showResult();}}}
 function loop(ts){const dt=Math.min(.033,(ts-last)/1000||0);last=ts;
-  if(game){step(dt);render();const s=game.sport;setTxt('hsP',s.score[0]);setTxt('hsA',s.score[1]);setTxt('hInfo',s.info());setTxt('hClock',s.clock());}
+  if(game){step(dt);render();const s=game.sport;setTxt('hsP',s.score[0]);setTxt('hsA',s.score[1]);setTxt('hInfo',(M.practice?tr('practice')+' · ':'')+s.info());setTxt('hClock',s.clock());}
   endFrameInput();root.requestAnimationFrame(loop);}
 function render(){ctx.setTransform(scale,0,0,scale,0,0);ctx.save();if(ROT){ctx.translate(0,W);ctx.rotate(-Math.PI/2);}if(FX.shake>0)ctx.translate(rand(-FX.shake,FX.shake)*.5,rand(-FX.shake,FX.shake)*.5);game.sport.draw(ctx);if(!game.replay)drawTrail(ctx);drawFX(ctx);
   if(game.replay){ctx.fillStyle='rgba(6,11,20,.25)';ctx.fillRect(0,0,W,H);ctx.strokeStyle=C.amber;ctx.lineWidth=6;ctx.strokeRect(3,3,W-6,H-6);label(ctx,'● '+tr('replay'),24,28,C.coral,16,'left');meter(ctx,24,46,160,game.replay.i/game.replay.frames.length,C.amber);}
@@ -748,7 +761,7 @@ function showResult(){const s=game.sport,r=finishMatch(run,s),o=r.o;
   else btns=`<button class="btn pri" id="rAgain" type="button">${tr('rematch')}</button><button class="btn" id="rMenu" type="button">${tr('menu')}</button>`;
   const pts=multi?runPoints(run):null;
   $('resBox').innerHTML=`<div class="lbl">${tr(s.key)}${multi?` · ${tr('event')} ${run.res.length}/5`:''}${run.mode==='career'?' · '+tr('league_'+run.league):''}</div>
-    <h2 id="resTitle" style="color:${o>0?colP(0):o<0?colP(1):C.ink}">${title}</h2>
+    <h2 id="resTitle" style="color:var(--ink)">${title}</h2>
     <div class="big"><span class="p">${s.score[0]}</span> : <span class="a">${s.score[1]}</span></div>${statRows(s)}
     ${pts?`<div class="lbl">${tr('total')}: ${esc(sideName(0))} ${pts[0]} · ${esc(sideName(1))} ${pts[1]} ${tr('points')}</div>`:''}
     <div class="rewards"><span>${tr('xpGain',r.xp)}</span><span>${tr('coinGain',r.coins)}</span></div>
@@ -776,7 +789,7 @@ function startCareer(id){if(ST.leagues[id]==='locked')return null;run={mode:'car
 function startDaily(){const d=dailyFor(todayKey());run={mode:'daily',daily:d,res:[]};return startMatch(d.sport);}
 
 function dateParts(){const d=new Date();return{day:d.getDate(),mon:d.toLocaleDateString(LANG==='ro'?'ro-RO':'en-GB',{month:'short'})};}
-function renderMenu(){if(!HAS_DOM)return;document.documentElement.lang=LANG;document.body.classList.toggle('contrast',ST.prefs.contrast);document.body.classList.toggle('calm',ST.prefs.motion);
+function renderMenu(){if(!HAS_DOM)return;document.documentElement.lang=LANG;document.body.classList.toggle('contrast',ST.prefs.contrast);document.body.classList.toggle('calm',ST.prefs.motion);document.body.classList.toggle('light',ST.prefs.theme==='light'||(ST.prefs.theme==='auto'&&root.matchMedia('(prefers-color-scheme: light)').matches));
   $('heroTitle').innerHTML=`${tr('heroA')} <em>${tr('heroB')}</em>`;
   document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=tr(el.dataset.i18n);});
   const lb=$('langBtn');lb.textContent=LANG==='ro'?'EN':'RO';lb.lang=LANG==='ro'?'en':'ro';lb.setAttribute('aria-label',LANG==='ro'?'Switch to English':'Schimbă în română');
@@ -801,7 +814,7 @@ function renderMenu(){if(!HAS_DOM)return;document.documentElement.lang=LANG;docu
   $('leagues').querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{SFX.click();startCareer(b.dataset.l);});
   $('achList').innerHTML=ACHS.map(a=>`<span class="chip ${ST.ach.includes(a)?'on':''}"><b>${tr('a_'+a)}</b> · ${tr('ad_'+a)}</span>`).join('');
   syncSettings();}
-function syncSettings(){const p=ST.prefs;const ol=$('optLen');[...ol.options].forEach(o=>o.textContent=tr('len'+o.value));ol.value=String(p.len);$('optMods').checked=p.mods;$('optReplay').checked=p.replay;$('optSound').checked=p.sound;$('optVol').value=p.vol;$('optContrast').checked=p.contrast;$('optMotion').checked=p.motion;}
+function syncSettings(){const p=ST.prefs;const ol=$('optLen');[...ol.options].forEach(o=>o.textContent=tr('len'+o.value));ol.value=String(p.len);$('optMods').checked=p.mods;$('optReplay').checked=p.replay;$('optSound').checked=p.sound;$('optVol').value=p.vol;$('optContrast').checked=p.contrast;$('optMotion').checked=p.motion;$('optPractice').checked=p.practice;$('optTheme').value=p.theme;}
 function renderStats(){const rows=SPORT_KEYS.map(k=>{const s=ST.stats[k]||{p:0,w:0,l:0,d:0,f:0,a:0,best:0};const wr=s.p?Math.round(s.w/s.p*100):0;return{k,s,wr};});
   const any=rows.some(r=>r.s.p);
   $('statsBody').innerHTML=any?`<div class="scroll"><table class="t"><thead><tr><th scope="col"></th><th class="n" scope="col">${tr('played')}</th><th class="n" scope="col">${tr('wS')}</th><th class="n" scope="col">${tr('lS')}</th><th class="n" scope="col">${tr('dS')}</th><th class="n" scope="col">${tr('scored')}</th><th class="n" scope="col">${tr('conceded')}</th><th class="n" scope="col">${tr('bestStreak')}</th></tr></thead><tbody>
@@ -829,13 +842,15 @@ function boot(){load();cv=$('cv');ctx=cv.getContext('2d');cv.tabIndex=0;
   cv.addEventListener('contextmenu',e=>e.preventDefault());
   const hold=(el,o)=>{el.addEventListener('pointerdown',e=>{ac();if(o.p!==undefined)o.p=true;o.h=true;e.preventDefault();});['pointerup','pointercancel','pointerleave'].forEach(t=>el.addEventListener(t,()=>{if(o.h&&o.u!==undefined)o.u=true;o.h=false;}));};
   hold($('btnAct'),BTN.act);hold($('btnSpr'),BTN.spr);
-  addEventListener('keydown',e=>{if(!game||$('game').hidden)return;if(e.target&&e.target.closest&&e.target.closest('.overlay')){if(e.code==='Escape'&&game.paused)setPause(false);return;}
+  addEventListener('keydown',e=>{if(!game||$('game').hidden)return;if(e.target&&e.target.closest&&e.target.closest('.overlay')){if(e.code==='Escape'&&!$('guideOv').hidden)closeGuide();else if(e.code==='Escape'&&game.paused)setPause(false);return;}
+    if(e.target&&e.target.closest&&e.target.closest('button,select,input,dialog'))return;
     if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter'].includes(e.code))e.preventDefault();
     if(e.code==='Escape'||e.code==='KeyP'){if(game.replay)game.replay.skip=true;else setPause(!game.paused);return;}
     if(game.replay&&(e.code==='Space'||e.code==='Enter')){game.replay.skip=true;return;}
     if(!e.repeat)pressed.add(e.code);keys.add(e.code);ac();});
+  document.addEventListener('keydown',e=>{if(e.code!=='Tab'||!game)return;const ov=[$('guideOv'),$('pauseOv'),$('resOv')].find(el=>!el.hidden);if(!ov)return;const list=[...ov.querySelectorAll('button:not([disabled]),[tabindex="0"]')];if(!list.length)return;const first=list[0],last=list[list.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}});
   addEventListener('keyup',e=>{if(keys.has(e.code))released.add(e.code);keys.delete(e.code);});
-  addEventListener('blur',()=>{keys.clear();BTN.act.h=BTN.spr.h=false;});
+  addEventListener('blur',()=>{keys.clear();pressed.clear();released.clear();PTRS.clear();BTN.act.h=BTN.spr.h=false;if(game&&!game.shown)setPause(true);});
   addEventListener('resize',()=>{fit();updateHint();});if(root.ResizeObserver)new ResizeObserver(fit).observe($('stage'));
   $('langBtn').onclick=()=>{LANG=ST.prefs.lang=LANG==='ro'?'en':'ro';save();renderMenu();};
   document.querySelectorAll('#diffSeg button').forEach(b=>b.onclick=()=>{ST.prefs.diff=b.dataset.v;save();SFX.click();renderMenu();});
@@ -843,12 +858,18 @@ function boot(){load();cv=$('cv');ctx=cv.getContext('2d');cv.tabIndex=0;
   $('tourBtn').onclick=()=>{SFX.click();startTour();};$('dailyBtn').onclick=()=>{SFX.click();startDaily();};
   $('pauseBtn').onclick=()=>setPause(!game.paused);$('resBtn').onclick=()=>setPause(false);
   $('rstBtn').onclick=()=>{startMatch(game.sport.key);};$('menuBtn').onclick=toMenu;$('exitBtn').onclick=()=>{if(game&&!game.sport.over&&!game.shown)setPause(true);else toMenu();};
+  $('fullBtn').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else if($('game').requestFullscreen)await $('game').requestFullscreen();else throw new Error('unsupported');}catch(_){announce(tr('fullUnavailable'));}syncGameTools();fit();};
+  document.addEventListener('fullscreenchange',()=>{syncGameTools();fit();});
+  $('gameHelp').onclick=showGuide;$('guideNext').onclick=()=>{if(guideStep<2){guideStep++;renderGuide();}else closeGuide();};$('guideClose').onclick=closeGuide;
+  $('soundGame').onclick=()=>{ST.prefs.sound=!ST.prefs.sound;if(MASTER)MASTER.gain.value=ST.prefs.sound?ST.prefs.vol/100:0;save();syncGameTools();};
+  root.matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{if(ST.prefs.theme==='auto'){document.body.classList.toggle('light',root.matchMedia('(prefers-color-scheme: light)').matches);}});
+  $('resetProgress').onclick=()=>{if(!root.confirm(tr('resetAsk')))return;const prefs={...ST.prefs};ST=freshStore();ST.prefs=prefs;save();renderMenu();announce(tr('resetDone'));};
   $('skipReplay').onclick=()=>{if(game&&game.replay)game.replay.skip=true;};
   const open=(btn,dlg,fn)=>$(btn).onclick=()=>{if(fn)fn();$(dlg).showModal();};
   open('statsBtn','dlgStats',renderStats);open('shopBtn','dlgShop',renderShop);open('helpBtn','dlgHelp',renderHelp);open('setBtn','dlgSet',syncSettings);open('backupBtn','dlgBackup',()=>{setTxt('backupStatus','');$('applyBackup').disabled=true;$('backupFile').value='';});
   document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
   const pref=(id,k,f=v=>v)=>$(id).onchange=e=>{ST.prefs[k]=f(e.target.type==='checkbox'?e.target.checked:e.target.value);save();renderMenu();};
-  pref('optLen','len',v=>+v);pref('optMods','mods');pref('optReplay','replay');pref('optSound','sound');pref('optVol','vol',v=>+v);pref('optContrast','contrast');pref('optMotion','motion');
+  pref('optTheme','theme');pref('optPractice','practice');pref('optLen','len',v=>+v);pref('optMods','mods');pref('optReplay','replay');pref('optSound','sound');pref('optVol','vol',v=>+v);pref('optContrast','contrast');pref('optMotion','motion');
   $('optVol').oninput=e=>{ST.prefs.vol=+e.target.value;if(MASTER)MASTER.gain.value=ST.prefs.vol/100;};
   $('exportBackup').onclick=()=>{const blob=new Blob([exportStore()],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`pentarena-backup-${todayKey()}.json`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);};
   let pending=null;
@@ -867,3 +888,4 @@ root.PentArena={VERSION,SPORTS,SPORT_KEYS,LEAGUES,DIFFS,ACHS,SKINS,TRAILS,
   setLang:l=>{LANG=l;},get rotated(){return ROT;},set rotated(v){ROT=!!v;},ctl,busy:()=>!!(game&&!game.shown&&!game.sport.over)};
 if(HAS_DOM){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();}
 })(typeof window!=='undefined'?window:globalThis);
+

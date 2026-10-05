@@ -5,7 +5,7 @@ const sandbox={console,Math,Date,JSON,Number,Array,Object,Set,Map,Error,isFinite
   localStorage:{getItem:k=>stored[k]??null,setItem:(k,v)=>{stored[k]=String(v);}}};
 sandbox.window=sandbox;sandbox.globalThis=sandbox;vm.createContext(sandbox);
 vm.runInContext(fs.readFileSync(path.join(__dirname,'game.js'),'utf8'),sandbox);
-const PA=sandbox.PentArena;assert(PA&&PA.VERSION==='2.1.0');
+const PA=sandbox.PentArena;assert(PA&&PA.VERSION==='2.2.0');
 const ctx=new Proxy({},{get:(_,k)=>k==='createRadialGradient'||k==='createLinearGradient'?()=>({addColorStop(){}}):k==='measureText'?()=>({width:10}):()=>{},set:()=>true});
 const reset=()=>{PA.store=PA.freshStore();};
 const DT=1/60;
@@ -85,4 +85,20 @@ console.log('PASS: local two-player mode runs every sport');
   for(let i=0;i<20;i++){PA.keys.add('ArrowUp');PA.step(DT);}PA.keys.delete('ArrowUp');assert(s.t[0].x>x0+40,'screen up = toward the opponent goal');
   const y1=s.t[0].y;for(let i=0;i<20;i++){PA.keys.add('ArrowRight');PA.step(DT);}PA.keys.delete('ArrowRight');assert(s.t[0].y>y1+40,'screen right = logical +y');
   const c=PA.ctl(0);assert.equal(c.kx,0);s.draw(ctx);PA.rotated=false;console.log('PASS: portrait rotation keeps keyboard directions screen-relative');}
+// 13. practice removes timing pressure and cannot award competitive progress
+{reset();PA.store.prefs.practice=true;PA.store.prefs.players=1;
+ const g=PA.startQuick('basket'),sc=g.sport.sc;PA.step(1);assert.equal(g.sport.sc,sc);
+ const f=PA.startQuick('football');f.sport.pause=0;const t=f.sport.time;PA.step(1);assert.equal(f.sport.time,t);
+ const before=JSON.stringify(PA.store);f.sport.score=[10,0];f.sport.over=true;
+ const res=PA.finishMatch(PA.run,f.sport);assert.equal(res.xp,0);assert.equal(JSON.stringify(PA.store),before);
+ PA.startTour();assert(!PA.M.practice);PA.startDaily();assert(!PA.M.practice);
+ console.log('PASS: untimed practice, no rewards, competitive modes unaffected');}
+// 14. old backups migrate while malformed nested records/new preferences are rejected
+{reset();const old=JSON.parse(PA.exportStore());delete old.progress.prefs.theme;delete old.progress.prefs.practice;
+ const restored=PA.validateStore(old);assert.equal(restored.prefs.theme,'dark');assert.equal(restored.prefs.practice,false);
+ for(const field of ['stats','ex','leagues','dailyDone','prefs']){const bad=JSON.parse(PA.exportStore());bad.progress[field]=[];assert.throws(()=>PA.validateStore(bad),undefined,field);}
+ for(const [key,val] of [['theme','neon'],['theme',null],['practice','yes'],['practice',null],['diff','__proto__']]){const bad=JSON.parse(PA.exportStore());bad.progress.prefs[key]=val;assert.throws(()=>PA.validateStore(bad),undefined,key);}
+ const bad=JSON.parse(PA.exportStore());bad.progress.stats.basket={p:null};assert.throws(()=>PA.validateStore(bad));
+ console.log('PASS: legacy backup migration and nested-state validation');}
 console.log('ALL PENTARENA CORE CHECKS PASSED');
+

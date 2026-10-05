@@ -1,5 +1,5 @@
 /* PentArena v2 — night-arena scoreboard. Menu: profile + daily ticket, five event cards in tournament order, three career leagues.
-   Play: full-bleed canvas under an LED-style scoreboard. Deliberately single dark look; high-contrast variant via body.contrast. */
+   Play: full-bleed canvas under an LED-style scoreboard. Dark/light interface with high-contrast variant via body.contrast. */
 @font-face{font-family:'Fraunces';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/fraunces-latin-800-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:'Fraunces';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/fraunces-latin-ext-800-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:'Fraunces';font-style:italic;font-weight:800;font-display:swap;src:url(fonts/fraunces-latin-800-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
@@ -181,3 +181,33 @@ select{background:var(--panel2);border:1px solid var(--line);border-radius:10px;
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 body.calm *{animation:none!important;transition:none!important}
+
+
+/* v2.2: maximize the court after choosing an event, including short landscape screens. */
+body.playing{overflow:hidden}
+body.light:not(.contrast){--bg:#f3f6fb;--panel:#fff;--panel2:#e8eef7;--line:#8798b2;--ink:#17263b;--mute:#405575;--cyan:#076478;--amber:#875200;--coral:#a63729;--good:#196535;color-scheme:light}
+body.light .tag,body.light .chip.on{background:var(--panel2)}
+body.light .daily .date{background:var(--panel2)}
+#game{padding-block:env(safe-area-inset-top,0px) env(safe-area-inset-bottom,0px);padding-inline:max(4px,env(safe-area-inset-left,0px)) max(4px,env(safe-area-inset-right,0px));gap:4px;height:100dvh}
+.board{max-width:none;flex:none;min-height:44px}
+.board .nm{font-size:16px}.board .inf{font-size:11px}.board .clk{font-size:12px}
+#cv{border-radius:6px}
+.game-tools{display:flex;justify-content:center;gap:6px;flex:none}
+.game-tools .gbtn{font-size:12px;padding:4px 10px;min-height:44px}
+body.light #game{--pc:#086278;--oc:#995600}
+@media (max-height:500px) and (min-width:600px){
+ #game{display:grid;grid-template-columns:minmax(0,1fr) 136px;grid-template-rows:minmax(0,1fr);column-gap:6px}
+ #stage{grid-column:1;grid-row:1;height:100%;min-width:0}
+ .board{grid-column:2;grid-row:1;display:flex;flex-wrap:wrap;align-content:flex-start;justify-content:center;gap:4px}
+ .board .mid{order:-1;width:100%}.board .sc{padding:4px;gap:4px}.board .sc b{font-size:22px}.board .sc span{max-width:4ch}
+ .game-tools{grid-column:2;grid-row:1;align-self:end;flex-direction:column;gap:4px}
+ .game-tools .gbtn{font-size:11px}
+}
+@media (forced-colors:active){button,a,input,select{forced-color-adjust:auto}#cv{outline:2px solid CanvasText}}
+
+#guideTitle{font-size:clamp(24px,4vw,36px)}
+body.light .sc.p span,body.light .sc.p b{color:#086278}
+body.light .sc.a span,body.light .sc.a b{color:#875200}
+body.light .big .p{color:#086278}body.light .big .a{color:#875200}
+body.light:not(.contrast) .seg button[aria-pressed="true"],body.light:not(.contrast) .cta,body.light:not(.contrast) .btn.pri,body.light:not(.contrast) .play:hover{color:#fff}
+body.light:not(.contrast) .league h3,body.light:not(.contrast) .mono{color:var(--ink)}

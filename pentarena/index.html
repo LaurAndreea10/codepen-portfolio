@@ -14,7 +14,7 @@
 <meta property="og:description" content="Basketball, football, air hockey, volleyball and pool. Career leagues, daily challenge, local two-player, RO/EN, offline.">
 <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/pentarena/icon-512.png">
 <meta name="twitter:card" content="summary">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"PentArena","url":"https://laurandreea10.github.io/codepen-portfolio/pentarena/","inLanguage":["ro","en"],"gamePlatform":"Web browser","applicationCategory":"Game","operatingSystem":"Any with a modern browser","genre":["Sports","Arcade"],"numberOfPlayers":{"@type":"QuantitativeValue","minValue":1,"maxValue":2},"author":{"@type":"Person","name":"Laura Andreea Plugaru"},"version":"2.1.0"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"PentArena","url":"https://laurandreea10.github.io/codepen-portfolio/pentarena/","inLanguage":["ro","en"],"gamePlatform":"Web browser","applicationCategory":"Game","operatingSystem":"Any with a modern browser","genre":["Sports","Arcade"],"numberOfPlayers":{"@type":"QuantitativeValue","minValue":1,"maxValue":2},"author":{"@type":"Person","name":"Laura Andreea Plugaru"},"version":"2.2.0"}</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -25,7 +25,7 @@
 <a class="skip" href="#main" data-i18n="skip">Sari la conținut</a>
 <div id="menu">
   <header class="top">
-    <div class="brand"><h1 class="logo">Pent<i>Arena</i></h1><span class="ver">v2.1.0</span></div>
+    <div class="brand"><h1 class="logo">Pent<i>Arena</i></h1><span class="ver">v2.2.0</span></div>
     <nav class="tools" aria-label="Meniu">
       <button class="ibtn" id="langBtn" type="button" lang="en">EN</button>
       <button class="ibtn" id="statsBtn" type="button" data-i18n="stats">Statistici</button>
@@ -59,7 +59,7 @@
     </section>
 
     <section aria-labelledby="pickTitle">
-      <h2 class="sec" id="pickTitle" data-i18n="pick"></h2>
+      <h2 class="sec" id="pickTitle" tabindex="-1" data-i18n="pick"></h2>
       <p class="secsub" data-i18n="pickSub"></p>
       <div class="grid" id="cards"></div>
     </section>
@@ -91,7 +91,9 @@
     <div class="touch"><button id="btnSpr" type="button" hidden></button><button id="btnAct" type="button" hidden></button></div>
     <button id="skipReplay" type="button" hidden data-i18n="skipReplay"></button>
   </div>
-  <p class="hint" id="hint"></p>
+  <div class="game-tools"><button class="gbtn" id="fullBtn" type="button" data-i18n="fullscreen"></button><button class="gbtn" id="gameHelp" type="button" data-i18n="gameHelp"></button><button class="gbtn" id="soundGame" type="button"></button></div>
+  <p class="sr" id="hint"></p>
+  <div class="overlay" id="guideOv" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="guideTitle" aria-describedby="guideText"><p class="lbl" id="guideCount"></p><h2 id="guideTitle"></h2><p id="guideText"></p><div class="btns"><button class="btn pri" id="guideNext" type="button"></button><button class="btn" id="guideClose" type="button" data-i18n="close"></button></div></div></div>
   <div class="overlay" id="pauseOv" hidden>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
       <h2 id="pauseTitle" data-i18n="paused"></h2>
@@ -106,6 +108,8 @@
 <dialog id="dlgShop" aria-labelledby="shopTitle"><div class="dbody"><div class="dhead"><h2 id="shopTitle" data-i18n="shop"></h2><button class="btn" type="button" data-close data-i18n="close"></button></div><p class="coins" id="shopCoins"></p><h3 class="lbl" data-i18n="skins"></h3><div class="shop" id="shopSkins"></div><h3 class="lbl" data-i18n="trails"></h3><div class="shop" id="shopTrails"></div></div></dialog>
 <dialog id="dlgHelp" aria-labelledby="helpTitle"><div class="dbody"><div class="dhead"><h2 id="helpTitle" data-i18n="help"></h2><button class="btn" type="button" data-close data-i18n="close"></button></div><div class="help" id="helpBody"></div></div></dialog>
 <dialog id="dlgSet" aria-labelledby="setTitle"><div class="dbody"><div class="dhead"><h2 id="setTitle" data-i18n="settings"></h2><button class="btn" type="button" data-close data-i18n="close"></button></div>
+  <label class="field"><span data-i18n="theme"></span><select id="optTheme"><option value="dark" data-i18n="dark"></option><option value="light" data-i18n="light"></option><option value="auto" data-i18n="auto"></option></select></label>
+  <label class="check"><input type="checkbox" id="optPractice"><span data-i18n="practice"></span></label><p class="hint" style="text-align:left" data-i18n="practiceHelp"></p>
   <label class="field"><span data-i18n="length"></span><select id="optLen"><option value="0"></option><option value="1"></option><option value="2"></option></select></label>
   <label class="check"><input type="checkbox" id="optMods"><span data-i18n="mods"></span></label><p class="hint" style="text-align:left" data-i18n="modsHelp"></p>
   <label class="check"><input type="checkbox" id="optReplay"><span data-i18n="replays"></span></label>
@@ -115,7 +119,7 @@
   <label class="check"><input type="checkbox" id="optMotion"><span data-i18n="motion"></span></label>
 </div></dialog>
 <dialog id="dlgBackup" aria-labelledby="bkTitle"><div class="dbody"><div class="dhead"><h2 id="bkTitle" data-i18n="backup"></h2><button class="btn" type="button" data-close data-i18n="close"></button></div>
-  <p data-i18n="backupHelp"></p><div class="btns" style="justify-content:flex-start"><button class="btn pri" id="exportBackup" type="button" data-i18n="exportBackup"></button></div>
+  <p data-i18n="backupHelp"></p><button class="btn" id="resetProgress" type="button" data-i18n="resetProgress"></button><div class="btns" style="justify-content:flex-start"><button class="btn pri" id="exportBackup" type="button" data-i18n="exportBackup"></button></div>
   <label class="field"><span data-i18n="importBackup"></span><input type="file" id="backupFile" accept="application/json,.json"></label>
   <p id="backupStatus" role="status" aria-live="polite"></p><div class="btns" style="justify-content:flex-start"><button class="btn" id="applyBackup" type="button" disabled data-i18n="applyBackup"></button></div>
 </div></dialog>
@@ -125,3 +129,4 @@
 <script src="pwa.js"></script>
 </body>
 </html>
+

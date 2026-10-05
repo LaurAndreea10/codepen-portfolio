@@ -1,8 +1,11 @@
-# PentArena · v2.1.0
+# PentArena · v2.2.0
 
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/pentarena/) · [Changelog](CHANGELOG.md) · [Istoric public / Public history](changelog.html)
 
 ## RO
+
+Teren extins după alegerea probei, scor lateral pe mobil orizontal, fullscreen opțional, ghid în trei pași cu pauză, antrenament fără timer la baschet/fotbal, mute în meci și temă dark/light/automată. Backupuri vechi compatibile; validare nested mai strictă.
+
 
 Cinci sporturi arcade într-un singur canvas: **baschet, fotbal, air hockey, volei și biliard 8-ball**. Joci contra unui AI cu trei niveluri de dificultate sau contra unui prieten pe același dispozitiv.
 
@@ -14,6 +17,9 @@ Cinci sporturi arcade într-un singur canvas: **baschet, fotbal, air hockey, vol
 - **Accesibilitate:** tastatură, mouse și touch la toate probele; anunțuri de scor pentru cititoare de ecran; contrast ridicat; mișcare redusă (fără tremurat, particule și reluări).
 
 ## EN
+
+Expanded court after event selection, side scoreboard on landscape phones, optional fullscreen, paused three-step guide, untimed basketball/football practice, in-match mute and dark/light/system theme. Compatible old backups and stricter nested validation.
+
 
 Five arcade sports on one canvas: **basketball, football, air hockey, volleyball and 8-ball pool**, against a three-level AI or a friend on the same device.
 
@@ -47,3 +53,4 @@ node pentarena/test-browser.mjs
 The checks prove logic, layout at the tested widths, touch emulation and automated accessibility rules. They do not prove feel on physical phones, audible sound quality or real screen-reader use; those remain unverified.
 
 Fonts: Fraunces, Inter and JetBrains Mono under the SIL Open Font License (see `fonts/`).
+

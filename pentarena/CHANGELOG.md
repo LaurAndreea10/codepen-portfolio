@@ -1,5 +1,12 @@
 # PentArena — Changelog
 
+## 2.2.0 — 2026-10-05
+
+**RO.** Teren extins după alegerea probei, scor lateral pe mobil orizontal, fullscreen opțional, ghid în trei pași cu pauză, antrenament fără timer la baschet/fotbal, mute în meci și temă dark/light/automată. Backupuri vechi compatibile; validare nested mai strictă. Antrenamentul nu oferă recompense sau statistici competitive. Revenirea la meniu restaurează focusul; dialogurile de joc rețin focusul. Resetarea progresului cere confirmare. Cache offline 2.2.0-r1.
+
+**EN.** Expanded court after event selection, side scoreboard on landscape phones, optional fullscreen, paused three-step guide, untimed basketball/football practice, in-match mute and dark/light/system theme. Compatible old backups and stricter nested validation. Practice cannot award rewards or competitive stats. Returning to the menu restores focus; game dialogs trap focus. Progress reset requires confirmation. Offline cache 2.2.0-r1.
+
+
 ## 2.1.0 — 2026-10-05
 
 **RO.** Teren pe verticală pentru telefoanele ținute în picioare: fotbalul, air hockey-ul și biliardul se rotesc automat (poarta ta jos, a adversarului sus) și ocupă tot ecranul în loc de o bandă îngustă. Textele, numerele bilelor și bannerele rămân drepte; atingerile, multitouch-ul pentru 2 jucători (J1 jos, J2 sus) și săgețile urmează direcțiile de pe ecran. Baschetul și voleiul rămân pe orizontală, pentru că sunt văzute din lateral, și păstrează sugestia de rotire. Cache-ul offline a fost redenumit ca instalările existente să primească noua versiune.
@@ -37,3 +44,4 @@ Verificare / Verification: `test-core.cjs` (headless simulation of all sports, A
 ## 1.0.0 — 2026-10-05
 
 - Prima versiune, ca artefact de sine stătător: cinci sporturi contra AI, turneu Pentatlon, trei dificultăți, 8 realizări, RO/EN. / First version as a standalone artifact: five sports against the AI, Pentathlon tournament, three difficulties, 8 achievements, RO/EN.
+
