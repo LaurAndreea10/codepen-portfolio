@@ -198,3 +198,8 @@ Serpent Prism v1.9.0 — 2026-10-03: compact mobile arena and controls, handcraf
 ## 2026-10-05 — Tic Tac Toe Ultimate 3.1
 
 Catalogue entry 4 updated to the GitHub Pages game; project page, RO completed/history and EN recent releases aligned. Generated puzzles, championship and backup documented. Mobile/screen-reader/offline manual verification remains pending.
+
+
+
+## 2026-10-05 — Tic Tac Toe Ultimate 3.2
+Added to Completed recently, October history and EN recent releases: puzzle calendar, custom championship, ranking, visual hint paths and result dialog keyboard navigation. Validation limits documented.
