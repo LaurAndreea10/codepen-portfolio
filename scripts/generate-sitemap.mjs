@@ -2,6 +2,8 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
+  ["booscary/case-study.html", "monthly", "0.6", "2026-10-06"],
+  ["booscary/demo.html", "monthly", "0.6", "2026-10-06"],
   ["booscary/", "monthly", "0.7", "2026-10-06"],
   ["pentarena/", "monthly", "0.7", "2026-10-05"],
   ["pentarena/changelog.html", "monthly", "0.6", "2026-10-05"],
@@ -129,5 +131,6 @@ const entries = pages
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries}\n</urlset>\n`;
 writeFileSync("sitemap.xml", xml);
 console.log(`Generated sitemap.xml with ${pages.length} canonical URLs.`);
+
 
 
