@@ -2,7 +2,7 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
-  ["booscary/", "monthly", "0.7", "2026-10-05"],
+  ["booscary/", "monthly", "0.7", "2026-10-06"],
   ["pentarena/", "monthly", "0.7", "2026-10-05"],
   ["pentarena/changelog.html", "monthly", "0.6", "2026-10-05"],
   ["serpent-prism/", "monthly", "0.7", "2026-10-03"],
@@ -11,8 +11,8 @@ const pages = [
   ["slidestorm-arena/case-study.html", "monthly", "0.7", "2026-10-02"],
   ["odyssey-quest/", "monthly", "0.7", "2026-10-02"],
   ["odyssey-quest/case-study.html", "monthly", "0.7", "2026-10-01"],
-  ["portfolio.html", "weekly", "1.0", "2026-10-05"],
-  ["en/", "weekly", "0.9", "2026-10-05"],
+  ["portfolio.html", "weekly", "1.0", "2026-10-06"],
+  ["en/", "weekly", "0.9", "2026-10-06"],
   ["alpis-fusion-crm.html", "monthly", "0.9", "2026-08-30"],
   ["projects/clientflow.html", "monthly", "0.9", "2026-08-30"],
   ["projects/alpis-impactpath.html", "monthly", "0.9", "2026-04-20"],

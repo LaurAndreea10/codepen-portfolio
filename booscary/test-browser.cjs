@@ -2,7 +2,7 @@ const {chromium}=require('playwright');
 const assert=require('node:assert/strict');
 const path=require('node:path');
 (async()=>{
-const browser=await chromium.launch({headless:true,...(process.env.BOOSCARY_BROWSER?{executablePath:process.env.BOOSCARY_BROWSER}:{})});
+const browser=await chromium.launch({headless:true,...(process.env.BOOSCARY_BROWSER?{executablePath:process.env.BOOSCARY_BROWSER}:{}),...(process.env.BOOSCARY_ARGS?{args:JSON.parse(process.env.BOOSCARY_ARGS)}:{})});
 const page=await browser.newPage({viewport:{width:360,height:800},hasTouch:true});const errors=[];page.on('pageerror',e=>errors.push(e.message));
 await page.goto('file://'+path.resolve(__dirname,'index.html'));
 await page.locator('[data-tool="paint"]').click();await page.locator('#pumpkin-stage svg').tap({position:{x:145,y:135}});assert.equal(await page.evaluate(()=>pumpkin.paint.length),1);await page.click('#reset-pumpkin');await page.locator('[data-tool="carve"]').click();

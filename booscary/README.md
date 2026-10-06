@@ -1,5 +1,17 @@
 # Halloween BooScary
 
+## v3.1.0 — 2026-10-06
+
+- Sticky mobile pumpkin and compact brush/contour/eraser/undo/redo/zoom bar. Activity header height is measured to prevent overlap.
+- Quadratic smoothing, dashed open-contour preview until release, zoom maintained across edits, and redo with branch reset after a new action.
+- Records and completed levels per game, persisted separately, plus a next-mission summary. Classic and festival rounds, all mini-games and model completion are recorded.
+- Adjustable persisted volume, distinct carving/painting/lighting effects and a victory chord; no automatic audio playback.
+- Full JSON backups now include per-game records. Missing records in v3.0 backups migrate to an empty record collection; malformed records are rejected before writes. Earlier progress and gallery keys remain intact.
+
+Validation: 314 logic checks; test-browser.cjs, test-v3.cjs and test-v31.cjs passed in Chromium. Automated axe checks detected no WCAG A/AA violations on home, workshop, face-match and maze screens at 390px. Browser tests cover 360/390/1280px, undo/redo branching, smooth contour preview, zoom persistence, audio/volume, records persistence, backup validation, keyboard and touch emulation. Real-phone, audible quality and real screen-reader checks remain pending.
+
+Dependencies for development tests only: Playwright and @axe-core/playwright. Run `node booscary/test-accessibility.cjs` for the automated accessibility audit. BOOSCARY_URL can target the deployed app in test-v31.cjs/test-accessibility.cjs; BOOSCARY_BROWSER and BOOSCARY_ARGS optionally select a local executable and JSON argument list. The app remains one HTML file without runtime dependencies.
+
 ## v3.0.0 — 2026-10-05
 
 - Activity launcher with focused mobile view, return navigation and accessible optional sound control.
