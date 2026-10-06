@@ -1,5 +1,5 @@
 'use strict';
-const CACHE='booscary-v4-20261006';
+const CACHE='booscary-v41-20261006';
 const ROOT=new URL('./',self.location.href).href;
 const ASSETS=['./','index.html','index.pen.html','manifest.webmanifest','icon.svg'].map(p=>new URL(p,ROOT).href);
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));

@@ -45,7 +45,7 @@ main{width:min(980px,100% - 28px);margin:30px auto}header,.toolbar,.answers{disp
 <body>
 <a href="#game" class="skip" data-i="skip">Sari la joc</a>
 <main>
-<header><span class="badge">🎃 Halloween · v4.0.0</span><nav class="toolbar" aria-label="Preferințe / Preferences"><button id="lang" type="button">English</button><button id="theme" type="button" aria-pressed="false" data-i="theme">Temă luminoasă</button><button id="contrast" type="button" aria-pressed="false" data-i="contrast">Contrast ridicat</button></nav></header>
+<header><span class="badge">🎃 Halloween · v4.1.0</span><nav class="toolbar" aria-label="Preferințe / Preferences"><button id="lang" type="button">English</button><button id="theme" type="button" aria-pressed="false" data-i="theme">Temă luminoasă</button><button id="contrast" type="button" aria-pressed="false" data-i="contrast">Contrast ridicat</button></nav></header>
 <h1>Halloween <s>FizzBuzz</s> BooScary</h1>
 <p class="subtitle" data-i="intro">Numără, găsește multiplii și trezește fantomele. Fără cronometru: joacă în ritmul tău.</p>
 <section aria-labelledby="rules"><h2 id="rules" data-i="rules">Cum joci</h2><ol><li data-i="r1">Numără de la 1.</li><li data-i="r3">Divizibil cu 3? Răspunde Boo.</li><li data-i="r5">Divizibil cu 5? Răspunde Scary.</li><li data-i="r15">Divizibil cu 3 și 5? Răspunde BooScary.</li><li data-i="rn">Altfel, răspunde cu numărul.</li></ol><p data-i="keys">Tastatură: Tab și Enter sau tastele 1–4 în zona de răspunsuri.</p></section>
@@ -371,6 +371,64 @@ const originalTranslateFour=translateFour;translateFour=function(){originalTrans
 translateFour();renderWeek();renderGallery();
 </script>
 
+<style>
+.count-chip{display:inline-flex;align-items:center;gap:6px;min-height:44px;border:2px solid var(--accent);border-radius:999px;padding:4px 14px;background:var(--panel);color:var(--ink);font-weight:700}
+.count-chip b{font-size:1.15em;color:var(--accent)}
+#count-gate{max-width:min(92vw,480px);border:2px solid var(--accent);border-radius:18px;background:var(--panel);color:var(--ink);padding:20px}
+#count-gate::backdrop{background:rgb(10 6 20/.75)}
+#count-gate h2{margin-top:0}
+#gate-number{font-size:clamp(3rem,16vw,5rem);font-weight:800;text-align:center;color:var(--accent);line-height:1.1;margin:8px 0}
+#gate-answers{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+#gate-answers button,#count-gate .gate-foot button{min-height:48px}
+#gate-dots{display:flex;justify-content:center;gap:8px;margin:10px 0;font-size:1.4rem}
+#gate-status{min-height:3em}
+#count-gate .gate-foot{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+</style>
+<dialog id="count-gate" aria-labelledby="gate-title">
+<h2 id="gate-title"></h2>
+<p id="gate-intro"></p>
+<div id="gate-dots" aria-hidden="true"></div>
+<div id="gate-number" aria-live="polite"></div>
+<div id="gate-answers"><button type="button" data-gate="number"></button><button type="button" data-gate="Boo">Boo</button><button type="button" data-gate="Scary">Scary</button><button type="button" data-gate="BooScary">BooScary</button></div>
+<p id="gate-status" role="status"></p>
+<div class="gate-foot"><span id="gate-stats"></span><button type="button" id="gate-close"></button></div>
+</dialog>
+<script>
+/* v4.1 · Numărătoarea centrală: every activity is reached by continuing the shared count from 1. */
+const COUNT_KEY='booscary-count-v41',GATE_STEPS=3;
+let countState={next:1,correct:0,gates:0};
+try{const saved=JSON.parse(localStorage.getItem(COUNT_KEY)||'null');if(saved&&Number.isSafeInteger(saved.next)&&saved.next>=1&&Number.isSafeInteger(saved.correct)&&saved.correct>=0)countState={next:saved.next,correct:saved.correct,gates:Number.isSafeInteger(saved.gates)&&saved.gates>=0?saved.gates:0}}catch{}
+function saveCount(){try{localStorage.setItem(COUNT_KEY,JSON.stringify(countState))}catch{}}
+const countText={ro:{chip:'Numărătoarea',gate:'Poarta BooScary',practice:'Continuă numărătoarea',enter:'Ca să intri în „{a}”, continuă numărătoarea de la 1: răspunde corect la următoarele {k} numere.',free:'Numără mai departe, cât vrei. Fiecare răspuns corect rămâne salvat.',why3:'{n} se împarte la 3 → Boo',why5:'{n} se împarte la 5 → Scary',why15:'{n} se împarte și la 3, și la 5 → BooScary',whyN:'{n} nu se împarte nici la 3, nici la 5 → spui numărul',wrong:'Nu încă. ',right:'Corect!',stats:'{c} răspunsuri corecte · {g} porți',cancel:'Înapoi',done:'Gata'},en:{chip:'The count',gate:'BooScary gate',practice:'Keep counting',enter:'To enter “{a}”, continue the count from 1: answer the next {k} numbers correctly.',free:'Keep counting as long as you like. Every correct answer is saved.',why3:'{n} is divisible by 3 → Boo',why5:'{n} is divisible by 5 → Scary',why15:'{n} is divisible by both 3 and 5 → BooScary',whyN:'{n} is divisible by neither 3 nor 5 → say the number',wrong:'Not yet. ',right:'Correct!',stats:'{c} correct answers · {g} gates',cancel:'Back',done:'Done'}};
+function ct(k,v={}){const t=(countText[language==='en'?'en':'ro'])[k];return t.replace(/\{(\w)\}/g,(_,x)=>v[x]??'')}
+function why(n){return ct(n%15===0?'why15':n%3===0?'why3':n%5===0?'why5':'whyN',{n})}
+const gate={steps:0,action:null,label:''};
+const chip=document.createElement('button');chip.type='button';chip.className='count-chip';chip.id='count-chip';
+$('lang').parentElement.prepend(chip);
+const barChip=chip.cloneNode();barChip.id='count-chip-bar';$('activity-bar').insertBefore(barChip,$('activity-bar').children[1]);
+function renderCount(){const label=`🕯️ ${ct('chip')}: `;for(const c of [chip,barChip]){c.replaceChildren(label,Object.assign(document.createElement('b'),{textContent:countState.next}));c.setAttribute('aria-label',`${ct('practice')} · ${countState.next}`)}
+const g=$('count-gate');$('gate-title').textContent=gate.action?ct('gate'):ct('practice');$('gate-intro').textContent=gate.action?ct('enter',{a:gate.label,k:GATE_STEPS}):ct('free');$('gate-number').textContent=countState.next;g.querySelector('[data-gate="number"]').textContent=countState.next;$('gate-dots').textContent=gate.action?Array.from({length:GATE_STEPS},(_,i)=>i<gate.steps?'🎃':'⚪').join(' '):'';$('gate-stats').textContent=ct('stats',{c:countState.correct,g:countState.gates});$('gate-close').textContent=gate.action?ct('cancel'):ct('done')}
+function openGate(action=null,label=''){gate.steps=0;gate.action=action;gate.label=label;$('gate-status').textContent='';renderCount();const g=$('count-gate');if(!g.open){typeof g.showModal==='function'?g.showModal():g.setAttribute('open','')}g.querySelector('[data-gate="number"]').focus()}
+function closeGate(){const g=$('count-gate');gate.action=null;typeof g.close==='function'?g.close():g.removeAttribute('open')}
+function gateAnswer(kind){const n=countState.next,expected=booScary(n),given=kind==='number'?String(n):kind;if(given!==expected){$('gate-status').textContent=ct('wrong')+why(n);if(typeof tone==='function')try{tone('wrong')}catch{}return}
+countState.next=n>=Number.MAX_SAFE_INTEGER-1?1:n+1;countState.correct++;gate.steps++;if(typeof tone==='function')try{tone('paint')}catch{}
+if(gate.action&&gate.steps>=GATE_STEPS){countState.gates++;saveCount();const run=gate.action;closeGate();renderCount();run();return}
+saveCount();$('gate-status').textContent=`${ct('right')} ${why(n)}`;renderCount();$('count-gate').querySelector('[data-gate="number"]').focus()}
+$('count-gate').querySelectorAll('[data-gate]').forEach(b=>b.onclick=()=>gateAnswer(b.dataset.gate));
+$('count-gate').addEventListener('keydown',e=>{const map={'1':'number','2':'Boo','3':'Scary','4':'BooScary'};if(map[e.key]&&e.target.tagName!=='INPUT'){e.preventDefault();gateAnswer(map[e.key])}});
+$('count-gate').addEventListener('close',()=>{gate.action=null});
+$('gate-close').onclick=closeGate;chip.onclick=()=>openGate();barChip.onclick=()=>openGate();
+/* Activities that already ARE the count, plus navigation screens, open directly. */
+const countingKinds=['festival','customBuzz','wrongBuzz','completeBuzz','world-settings','world-hub'];
+function activityLabel(kind,btn){return btn?.textContent?.trim()||kind}
+let gateBypass=false;
+const openActivityBase41=openActivity;openActivity=function(kind){if(gateBypass||window.__booscaryTestNoGate||countingKinds.includes(kind))return openActivityBase41(kind);const label=document.querySelector(`[data-activity="${kind}"]`)?.textContent?.trim()||kind;openGate(()=>{gateBypass=true;try{openActivityBase41(kind)}finally{gateBypass=false}},label)};
+const openWorldBase41=openWorld;openWorld=function(kind){if(gateBypass||window.__booscaryTestNoGate||countingKinds.includes(kind))return openWorldBase41(kind);let label=kind;try{label=g4(kind)}catch{}openGate(()=>{gateBypass=true;try{openWorldBase41(kind)}finally{gateBypass=false}},label)};
+/* Re-bind hub buttons so they reach the gated function (they captured the old one by closure call, so this is a safety net). */
+document.querySelectorAll('[data-activity]').forEach(b=>b.onclick=()=>openActivity(b.dataset.activity));
+const langBase41=$('lang').onclick;$('lang').onclick=e=>{langBase41?.call($('lang'),e);renderCount()};
+renderCount();
+</script>
 <script>
 const arcadeParent=new URLSearchParams(location.search).get('parentOrigin');
 const winWorldBridge=winWorld;winWorld=function(){const wasDone=worldGame.done;winWorldBridge();if(!wasDone&&worldGame.done&&parent!==window&&arcadeParent==='https://laurandreea10.github.io')parent.postMessage({type:'GAME_SCORE',gameId:'booscary',score:Math.min(100,worldGame.points.reduce((a,b)=>a+b,0)),level:Math.max(1,Math.min(10,worldGame.level))},arcadeParent)};

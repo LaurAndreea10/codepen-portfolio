@@ -1,5 +1,11 @@
 # Halloween BooScary
 
+## v4.1.0 — 2026-10-06 · Numărătoarea centrală
+
+Back to the core rule: count up from 1; multiples of 3 → Boo, of 5 → Scary, of both → BooScary. Every activity (workshop, mini-games, all World challenges, story) now opens through a BooScary gate: continue one shared count by answering the next 3 numbers. Wrong answers explain the rule for that number and never penalise. The count persists in this browser (`booscary-count-v41`) and is always visible in the header and activity bar, where it also opens free practice. Activities that already are the count (Festival FizzBuzz, custom/wrong/complete Buzz) and settings open directly. Keys 1–4 answer number/Boo/Scary/BooScary.
+
+Validation: new test-v41.cjs plus all earlier browser suites (browser, v3, v3.1, v4, story/peer, offline, accessibility) pass in Chromium; axe finds no WCAG A/AA violations in the gate dialog. Earlier suites skip the gate through a test-only flag. The count is not yet part of JSON backups.
+
 ## v4.0.0 — 2026-10-06
 
 Six editions; 22 new turn-based challenges with difficulty 1–10; six story chapters. Expanded pumpkin studio: shapes, gradient/spray, layers/textures, symmetry, traced carving, text, movable decorations, weather, scenes and sequenced lights. Album/favorite gallery; SVG/PNG plus transparent PNG, greeting card, coloring page, poster and collection exports. Four local profiles, unfinished-work recovery, validated complete backups, weekly progression and local tournament history. Optional music, voice guidance, RO/EN instructions, fullscreen, left-hand layout and single-switch scanning. Offline PWA after first online visit. Same-screen party modes and manual WebRTC creation sharing (compatible network required; no TURN relay).
