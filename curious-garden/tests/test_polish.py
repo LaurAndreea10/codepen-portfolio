@@ -72,12 +72,12 @@ with sync_playwright() as p:
     dp.evaluate("document.dispatchEvent(new CustomEvent('garden:win',{detail:{game:'count'}}))")
     dp.click('.garden-nav button[data-go=collection]'); dp.click('#collection .learning-tabs button:has-text("Insigne")'); dp.wait_for_timeout(100)
     href=dp.get_attribute('#collection .badge-card.got .diploma-link','href') or ''
-    check('diploma.html?' in href and 'name=Ana' in href,'earned badges have a Diploma link with the child’s nickname')
+    check('insigna.html?' in href and 'name=Ana' in href,'earned badges have a printable badge link with the child’s nickname')
     dp.goto(URL+href); dp.wait_for_timeout(200)
-    check(dp.inner_text('#name')=='Ana' and dp.inner_text('#badge')=='Prima descoperire' and dp.inner_text('#title')=='Diplomă','diploma shows the nickname and the badge')
-    dp.screenshot(path=SHOTS+'p-diploma.png')
+    check(dp.inner_text('#name')=='Ana' and dp.inner_text('#badge')=='Prima descoperire' and 'Insignă' in dp.title(),'badge page shows the nickname and the badge')
+    dp.screenshot(path=SHOTS+'p-insigna.png')
     dp.goto(URL+'diploma.html?lang=en&name=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E&badge=Explorer'); dp.wait_for_timeout(150)
-    check(dp.inner_text('#title')=='Certificate' and dp.locator('#name img').count()==0,'English certificate; text from the link is never treated as HTML')
+    check(dp.url.split('?')[0].endswith('insigna.html') and 'Badge' in dp.title() and dp.locator('#name img').count()==0,'old diploma links redirect to the English badge; text from the link is never treated as HTML')
     dp.close()
     # Studiul de caz afișează părerile aprobate
     cs=br.new_page(viewport={'width':390,'height':844}); cs.on('pageerror',lambda e:errs.append(str(e)))

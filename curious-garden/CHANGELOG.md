@@ -4,6 +4,9 @@ Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub c
 
 This file summarises the major milestones; each link opens the GitHub commit with the exact code of that version.
 
+## 2026-10-07 · v1.14 · Insigne în loc de diplome / Badges instead of certificates
+- Diploma A4 a fost înlocuită cu o insignă rotundă cu panglică, de tipărit și decupat pe linia punctată (`insigna.html`), în 4 limbi. Linkurile vechi spre `diploma.html` duc automat la insignă. / The A4 certificate is now a round, cut-out ribbon badge; old diploma links redirect to it.
+
 ## 2026-09-30 · v1.13 · Jucării: Puzzle, Lego, Potrivește / Toys: puzzle, bricks, match
 - Ecran nou în meniu, „Jucării” 🧸 (12 ecrane în total). / New Toys screen in the menu.
 - **Puzzle** cu piese tăiate din 6 scene desenate în joc: 2×2 cu imagine ajutătoare pentru cei mici, 3×2 și 3×3, iar de la 9 ani 4×4 fără imagine și cu piese rotite. / Jigsaw puzzles from 6 in-game scenes, with rotated pieces for 9+.

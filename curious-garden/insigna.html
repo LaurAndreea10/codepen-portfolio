@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Insignă · Grădina Curioasă</title>
+<style>
+@page{size:A4 portrait;margin:0}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:system-ui,sans-serif;background:#e9efe6;color:#193147;min-height:100vh;display:grid;place-items:center;padding:16px}
+main{display:grid;justify-items:center;gap:14px}
+.cut{position:relative;width:min(92vw,520px);aspect-ratio:1;border:2px dashed #9fb5b0;border-radius:50%;padding:3%;display:grid;place-items:center}
+.scissors{position:absolute;top:-.75em;left:50%;transform:translateX(-50%);background:#e9efe6;padding:0 .3em;font-size:clamp(16px,3vw,22px)}
+.medal{position:relative;width:100%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;
+  background:repeating-conic-gradient(from 0deg,#ffc978 0 7.5deg,#f2ad3d 7.5deg 15deg);box-shadow:0 14px 40px #0003}
+.face{position:relative;width:84%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fffdf5,#fff3d6 70%);
+  border:clamp(4px,1vw,7px) solid #7b2cbf;box-shadow:inset 0 0 0 clamp(3px,.8vw,6px) #fffdf5,inset 0 0 0 clamp(5px,1.2vw,9px) #ffc978;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:17% 12% 11%}
+.ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.ring text{font:800 15px system-ui,sans-serif;letter-spacing:3px;fill:#9b4f12;text-transform:uppercase}
+.icon{font-size:clamp(56px,16vw,118px);line-height:1;filter:drop-shadow(0 4px 4px #0002)}
+.badge{font-family:Georgia,"DejaVu Serif",serif;font-weight:700;color:#7b2cbf;font-size:clamp(18px,4.6vw,32px);line-height:1.15;margin:.25em 0 .15em}
+.desc{font-size:clamp(11px,2.4vw,15px);color:#405c67;line-height:1.3;max-width:24ch}
+.name{margin-top:.5em;font-family:Georgia,"DejaVu Serif",serif;font-weight:700;font-size:clamp(16px,4vw,26px);border-top:2px solid #ffc978;padding:.2em .6em 0;max-width:100%;overflow-wrap:anywhere}
+.date{font-size:clamp(10px,2vw,13px);color:#405c67;margin-top:.15em}
+.ribbon{position:absolute;bottom:-14%;display:flex;gap:6%;width:38%;justify-content:center;z-index:-1}
+.ribbon i{display:block;width:44%;height:clamp(60px,15vw,110px);background:#7b2cbf;clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%)}
+.ribbon i+i{background:#9d4edd}
+.bia{position:absolute;bottom:9%;right:14%}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:clamp(40px,10vw,70px)}
+.actions button,.actions a{font:inherit;font-weight:800;border:2px solid #193147;background:#ffc978;color:#193147;border-radius:12px;padding:12px 18px;min-height:48px;cursor:pointer;text-decoration:none}
+.actions a{background:#fff}
+button:focus-visible,a:focus-visible{outline:3px solid #7b2cbf;outline-offset:3px}
+.hint{font-size:13px;color:#405c67;text-align:center;margin:0;max-width:44ch}
+@media print{body{background:#fff;padding:0;min-height:0;display:block}main{padding-top:40mm}.cut{width:150mm}.scissors{background:#fff}.medal{box-shadow:none}.actions,.hint{display:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<main>
+<div class="cut" id="sheet">
+  <span class="scissors" aria-hidden="true">✂️</span>
+  <div class="medal">
+    <div class="ribbon" aria-hidden="true"><i></i><i></i></div>
+    <div class="face">
+      <svg class="ring" viewBox="0 0 300 300" aria-hidden="true"><defs><path id="arc" d="M 40 150 A 110 110 0 0 1 260 150"/></defs><text text-anchor="middle"><textPath href="#arc" startOffset="50%" id="brand">Grădina Curioasă</textPath></text></svg>
+      <span class="icon" id="icon">🏅</span>
+      <div class="badge" id="badge">Insignă</div>
+      <div class="desc" id="desc"></div>
+      <div class="name" id="name">Explorator</div>
+      <div class="date" id="date"></div>
+      <span class="bia" id="bia" aria-hidden="true"></span>
+    </div>
+  </div>
+</div>
+<div class="actions"><button type="button" id="print">🖨️ Tipărește insigna</button><a href="./" id="back">← Înapoi la joc</a></div>
+<p class="hint" id="hint">Decupează pe linia punctată. Pentru PDF, alege „Salvează ca PDF” în fereastra de tipărire.</p>
+</main>
+<script src="art.js"></script>
+<script>
+(()=>{
+const T={ro:{title:'Insignă',print:'🖨️ Tipărește insigna',back:'← Înapoi la joc',hint:'Decupează pe linia punctată. Pentru PDF, alege „Salvează ca PDF” în fereastra de tipărire.',anon:'Explorator curios',brand:'Grădina Curioasă'},
+en:{title:'Badge',print:'🖨️ Print the badge',back:'← Back to the game',hint:'Cut along the dotted line. For a PDF, choose “Save as PDF” in the print window.',anon:'Curious explorer',brand:'Curious Garden'},
+hu:{title:'Jelvény',print:'🖨️ Jelvény nyomtatása',back:'← Vissza a játékhoz',hint:'Vágd ki a pontozott vonal mentén. PDF-hez válaszd a „Mentés PDF-ként” lehetőséget a nyomtatási ablakban.',anon:'Kíváncsi felfedező',brand:'Kíváncsi Kert'},
+uk:{title:'Значок',print:'🖨️ Надрукувати значок',back:'← Назад до гри',hint:'Виріж по пунктирній лінії. Щоб отримати PDF, оберіть «Зберегти як PDF» у вікні друку.',anon:'Цікавий дослідник',brand:'Цікавий сад'}};
+const q=new URLSearchParams(location.search),lang=T[q.get('lang')]?q.get('lang'):'ro',t=T[lang],$=id=>document.getElementById(id);
+const clip=(v,n)=>String(v||'').replace(/\s+/g,' ').trim().slice(0,n);
+document.documentElement.lang=lang;
+$('brand').textContent=t.brand;$('print').textContent=t.print;$('back').textContent=t.back;$('hint').textContent=t.hint;
+$('name').textContent=clip(q.get('name'),40)||t.anon;$('badge').textContent=clip(q.get('badge'),60)||t.title;$('desc').textContent=clip(q.get('desc'),120);$('icon').textContent=clip(q.get('icon'),8)||'🏅';
+document.title=`${$('badge').textContent} · ${t.title} · ${t.brand}`;
+$('sheet').setAttribute('role','img');$('sheet').setAttribute('aria-label',`${t.title}: ${$('badge').textContent} — ${$('name').textContent}`);
+const d=q.get('date');const when=/^\d{4}-\d{2}-\d{2}$/.test(d||'')?new Date(d+'T12:00:00'):new Date();$('date').textContent=when.toLocaleDateString({ro:'ro-RO',en:'en-GB',hu:'hu-HU',uk:'uk-UA'}[lang],{day:'numeric',month:'long',year:'numeric'});
+if(window.gardenArt)$('bia').append(gardenArt('ladybug',28));
+$('print').onclick=()=>window.print();
+})();
+</script>
+</body></html>
