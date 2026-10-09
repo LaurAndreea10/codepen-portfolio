@@ -96,8 +96,8 @@
     if(note) note.textContent='O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
     const date=document.getElementById('now-datetime');
     if(date){
-      date.dateTime='2026-10-01';
-      date.textContent='1 Octombrie 2026';
+      date.dateTime='2026-10-09';
+      date.textContent='9 Octombrie 2026';
     }
   }
 
@@ -235,5 +235,6 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
   else init();
 })();
+
 
 

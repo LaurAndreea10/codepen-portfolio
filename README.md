@@ -1,5 +1,10 @@
 # Laura Andreea — CodePen Portfolio
 
+## Finalizat / Completed — 2026-10-09
+
+**LaurAI Growth Quest v2.0.1**: [public app](growth-quest/) · [Luna Bakery case study](growth-quest/demo-case.html) · [guide, inventory and limitations](growth-quest/README.md). Agency game, marketing and CRM Studio; RO/EN, local backups and offline support. Automated logic/import/recovery tests passed; real-device and screen-reader checks remain pending.
+
+
 <div align="center">
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-laurandreea10.github.io-4f8cff?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/)
@@ -323,3 +328,4 @@ Serpent Prism v1.7.0 — 2026-10-03: collection route/rerouting/cancel; Aqua wav
 
 
 Serpent Prism v1.9.0 — 2026-10-03: compact mobile arena and controls, handcrafted formations/finales and three limited-ammo puzzles, validated JSON progress merge, offline PWA shell and explicit update activation. RO/EN and accessibility retained; prior versions preserved.
+

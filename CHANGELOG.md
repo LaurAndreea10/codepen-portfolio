@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-09 — LaurAI Growth Quest v2.0.1
+
+- RO: copie publică, catalog și Finalizat recent RO/EN; istoricul păstrat. Simulator de agenție, Studio marketing/CRM, dosar Luna Bakery, backup și suport offline.
+- EN: public copy, catalogue and RO/EN recently completed entries; earlier history preserved. Agency simulator, marketing/CRM Studio, Luna Bakery dossier, backups and offline support.
+- Tests: logic, import, recovery and offline cache passed. Real-phone, screen-reader and visual browser testing remain unconfirmed.
+- [Demo](growth-quest/) · [Case study](growth-quest/demo-case.html) · [Version history](growth-quest/CHANGELOG.md).
+
 ## 2026-10-05 — PentArena v2.1.0
 
 - RO: teren pe verticală pe telefon pentru fotbal, air hockey și biliard (poarta ta jos), cu text drept, atingeri și multitouch corecte; baschetul și voleiul rămân pe orizontală.
@@ -215,3 +222,4 @@ Catalogue entry 4 updated to the GitHub Pages game; project page, RO completed/h
 
 ## 2026-10-05 — Tic Tac Toe Ultimate 3.2
 Added to Completed recently, October history and EN recent releases: puzzle calendar, custom championship, ranking, visual hint paths and result dialog keyboard navigation. Validation limits documented.
+

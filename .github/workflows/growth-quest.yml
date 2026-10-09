@@ -1,0 +1,33 @@
+name: Growth Quest local regression
+on:
+  push:
+    paths:
+      - 'growth-quest/**'
+      - 'portfolio.html'
+      - 'en/index.html'
+      - 'main.js'
+      - 'projects.json'
+      - '.github/workflows/growth-quest.yml'
+  pull_request:
+    paths:
+      - 'growth-quest/**'
+      - 'portfolio.html'
+      - 'en/index.html'
+      - 'main.js'
+      - 'projects.json'
+      - '.github/workflows/growth-quest.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  local-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node growth-quest/tests/verify-local.cjs
+      - run: node growth-quest/tests/verify-offline.cjs
+      - run: node growth-quest/tests/verify-demo.cjs
+      - run: node growth-quest/tests/verify-portfolio.cjs

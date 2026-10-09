@@ -34,11 +34,11 @@ for (const [file, html, configPath] of [
 }
 
 const freshnessChecks = [
-  ["portfolio-config.js", configSource, /updated:\s*["']2026-10-04["']/],
+  ["portfolio-config.js", configSource, /updated:\s*["']2026-10-09["']/],
   ["portfolio.html", ro, /Serpent Prism v2\.0\.0/],
-  ["portfolio.html", ro, /datetime=["']2026-10-04["']/],
+  ["portfolio.html", ro, /datetime=["']2026-10-09["']/],
   ["en/index.html", en, /Serpent Prism v2\.0\.0/],
-  ["en/index.html", en, /Now · updated 4 October 2026/]
+  ["en/index.html", en, /Now · updated 9 October 2026/]
 ];
 for (const [file, source, pattern] of freshnessChecks) {
   if (!pattern.test(source)) failures.push(`${file}: October version/date drift`);
@@ -91,3 +91,4 @@ if (failures.length) {
 }
 
 console.log(`Portfolio quality audit passed: canonical metric ${canonicalCount}, ${evidence.featured.length} featured + ${evidence.recent.length} recent projects, RO/EN parity, SEO and accessibility hooks.`);
+
