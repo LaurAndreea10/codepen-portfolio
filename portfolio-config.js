@@ -1,7 +1,7 @@
 (() => {
   "use strict";
   const config = Object.freeze({
-    projectCount: 85,
+    projectCount: 87,
     repositoryCount: "20+",
     accessibilityScore: 100,
     updated: "2026-10-09"
@@ -9,7 +9,7 @@
   window.PORTFOLIO_CONFIG = config;
 
   function replaceCount(value) {
-    return value.replace(/\b(?:84|85)\b/g, String(config.projectCount));
+    return value.replace(/\b(?:84|85|86)\b/g, String(config.projectCount));
   }
 
   function syncPublicMetrics() {
@@ -17,14 +17,14 @@
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
     nodes.forEach(node => {
-      if (/\b(?:84|85)\b/.test(node.nodeValue)) {
+      if (/\b(?:84|85|86)\b/.test(node.nodeValue)) {
         node.nodeValue = replaceCount(node.nodeValue);
       }
     });
 
     document.querySelectorAll("[aria-label]").forEach(node => {
       const label = node.getAttribute("aria-label");
-      if (label && /\b(?:84|85)\b/.test(label)) {
+      if (label && /\b(?:84|85|86)\b/.test(label)) {
         node.setAttribute("aria-label", replaceCount(label));
       }
     });
