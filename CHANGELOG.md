@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-10 — LIVADA v1.0.0
+
+- RO: proiect nou — landing page cinematic pentru un brand fictiv de suc presat la rece (cătină, vișine, afine, mere ionatan): intro cu picătură de lumină, titlu care se presează la scroll prin axa `wdth`, secțiune sticky cu patru arome care schimbă culoarea paginii, constructor de amestec cu nume și profil generate, calendarul culesului. RO/EN, tastatură, mișcare redusă. Integrat în catalog, portofoliul RO/EN, Finalizat recent, Istoric, README, sitemap și Lighthouse.
+- EN: new project — cinematic landing page for a fictional cold-pressed juice brand: drop-of-light intro, title pressed on scroll via the `wdth` axis, sticky section where four flavours recolour the page, blend builder with generated name and profile, harvest calendar. RO/EN, keyboard, reduced motion.
+- Checked in headless Chromium at 390, 820 and 1440 px (no JS errors, no horizontal scroll, blend flow clicked through). Real phone, Safari/iOS and screen reader remain unverified.
+- [Deschide / Open](livada/) · [README](livada/README.md).
+
 ## 2026-10-09 — LaurAI Growth Quest v2.0.1
 
 - RO: copie publică, catalog și Finalizat recent RO/EN; istoricul păstrat. Simulator de agenție, Studio marketing/CRM, dosar Luna Bakery, backup și suport offline.

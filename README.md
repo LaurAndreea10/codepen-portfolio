@@ -1,5 +1,9 @@
 # Laura Andreea — CodePen Portfolio
 
+## Nou / New — 2026-10-10
+
+**LIVADA v1.0.0** — [deschide / open](https://laurandreea10.github.io/codepen-portfolio/livada/) · [cum e construit / how it's built](livada/README.md). Landing page cinematic pentru un brand fictiv de suc presat la rece: intro animat, titlu presat la scroll, arome care recolorează pagina, constructor de amestec, calendarul culesului; RO/EN. / Cinematic landing page for a fictional cold-pressed juice brand: animated intro, scroll-pressed title, flavours that recolour the page, blend builder, harvest calendar; RO/EN. Real-phone testing remains unverified.
+
 ## Finalizat / Completed — 2026-10-09
 
 **LaurAI Growth Quest v2.0.1**: [public app](growth-quest/) · [Luna Bakery case study](growth-quest/demo-case.html) · [guide, inventory and limitations](growth-quest/README.md). Agency game, marketing and CRM Studio; RO/EN, local backups and offline support. Automated logic/import/recovery tests passed; real-device and screen-reader checks remain pending.
