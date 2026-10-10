@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-10-10 — LIVADA v1.1.0: Culesul
+
+- RO: joc nou în LIVADA — tăiat fructe cu swipe (sau prin atingere), viespi în loc de bombe, mărul de aur cu puncte ×2 și ploaie de fructe, sticle care se umplu la 15 fructe, combo-uri de 3+. Moduri: Clasic (3 vieți), Contra timp (60 s), Comanda zilei (aceleași rețete pentru toți în aceeași zi), Zen. 12 realizări, recorduri și statistici locale validate, ritm lent, contrast ridicat, mișcare redusă, sunet generat, RO/EN, offline (service worker). Legat din landing page, catalog, portofoliu RO/EN, sitemap și Lighthouse.
+- EN: new game inside LIVADA — swipe (or tap) to slice fruit, wasps instead of bombs, a golden apple with ×2 points and a fruit shower, bottles that fill every 15 fruits, 3+ combos. Modes: Classic, Time attack, Order of the day (same recipes for everyone each day), Zen. 12 achievements, validated local records, slow pace, high contrast, reduced motion, synthesized sound, RO/EN, offline.
+- Automated Chromium checks at 390 and 1280 px: swipe combo, wasp penalty per mode, missed fruit, golden apple, tap mode, pause/quit, game over, saving and achievements. Fixed a stale game-over overlay after quitting during the final life. Real phone, Safari/iOS and screen reader remain unverified.
+- Trecut la Finalizat recent în portofoliul RO/EN; numărul de proiecte live actualizat la 87. / Moved to Recently completed in the RO/EN portfolio; live project count updated to 87.
+- [Joacă / Play](livada/joc/) · [Istoric / History](livada/CHANGELOG.md).
+
+## 2026-10-10 — LIVADA v1.0.0
+
+- RO: proiect nou — landing page cinematic pentru un brand fictiv de suc presat la rece (cătină, vișine, afine, mere ionatan): intro cu picătură de lumină, titlu care se presează la scroll prin axa `wdth`, secțiune sticky cu patru arome care schimbă culoarea paginii, constructor de amestec cu nume și profil generate, calendarul culesului. RO/EN, tastatură, mișcare redusă. Integrat în catalog, portofoliul RO/EN, Finalizat recent, Istoric, README, sitemap și Lighthouse.
+- EN: new project — cinematic landing page for a fictional cold-pressed juice brand: drop-of-light intro, title pressed on scroll via the `wdth` axis, sticky section where four flavours recolour the page, blend builder with generated name and profile, harvest calendar. RO/EN, keyboard, reduced motion.
+- Checked in headless Chromium at 390, 820 and 1440 px (no JS errors, no horizontal scroll, blend flow clicked through). Real phone, Safari/iOS and screen reader remain unverified.
+- [Deschide / Open](livada/) · [README](livada/README.md).
+
 ## 2026-10-09 — LaurAI Growth Quest v2.0.1
 
 - RO: copie publică, catalog și Finalizat recent RO/EN; istoricul păstrat. Simulator de agenție, Studio marketing/CRM, dosar Luna Bakery, backup și suport offline.

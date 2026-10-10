@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LIVADA: Culesul — joc de tăiat fructe | Laura Andreea</title>
+<meta name="description" content="Culesul: joc de tăiat fructe în universul LIVADA. Cătină, vișine, afine și mere, viespi de evitat, mărul de aur și sticle de umplut. Patru moduri, realizări, RO/EN, offline.">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/livada/joc/">
+<link rel="alternate" hreflang="ro" href="https://laurandreea10.github.io/codepen-portfolio/livada/joc/">
+<link rel="alternate" hreflang="en" href="https://laurandreea10.github.io/codepen-portfolio/livada/joc/?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://laurandreea10.github.io/codepen-portfolio/livada/joc/">
+<meta property="og:title" content="LIVADA: Culesul">
+<meta property="og:description" content="Taie fructele, ocolește viespile, umple sticlele. Joc de browser RO/EN.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/livada/joc/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LIVADA: Culesul">
+<meta name="twitter:description" content="Joc de tăiat fructe în universul LIVADA, de Laura Andreea.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"LIVADA: Culesul","description":"Joc de browser de tăiat fructe, cu patru moduri, realizări și suport offline.","author":{"@type":"Person","name":"Laura Andreea","url":"https://laurandreea10.github.io/codepen-portfolio/"},"inLanguage":["ro","en"],"gamePlatform":"Web browser","applicationCategory":"Game","url":"https://laurandreea10.github.io/codepen-portfolio/livada/joc/"}</script>
+<meta name="theme-color" content="#24102a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="../icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="joc.css">
+</head>
+<body>
+<a class="skip" href="#menu" data-i18n="skip">Sari la meniu</a>
+
+<canvas id="stage" aria-hidden="true"></canvas>
+
+<!-- HUD -->
+<div class="hud" id="hud" hidden>
+  <div class="hud-left">
+    <p class="hud-score"><span class="visually-hidden" data-i18n="scoreLabel">Scor</span><span id="hud-score">0</span></p>
+    <p class="hud-mult" id="hud-mult" hidden>×2</p>
+  </div>
+  <div class="hud-mid" id="hud-order" hidden></div>
+  <div class="hud-right">
+    <p class="hud-time" id="hud-time" hidden>60</p>
+    <p class="hud-lives" id="hud-lives" hidden aria-label="Vieți"></p>
+    <div class="hud-bottle" id="hud-bottle" role="img" aria-label="Sticla: 0 din 15">
+      <span class="hud-bottle-fill" id="hud-bottle-fill"></span>
+    </div>
+    <p class="hud-bottles" id="hud-bottles">0</p>
+    <button class="icon-btn" id="btn-pause" type="button" aria-label="Pauză" data-i18n-attr="aria-label:pause">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+    </button>
+  </div>
+</div>
+<p class="visually-hidden" id="announcer" aria-live="polite"></p>
+
+<!-- MENIU -->
+<main class="screen menu" id="menu">
+  <header class="menu-bar">
+    <a class="back" href="../" data-i18n="back">Înapoi la LIVADA</a>
+    <button class="pill" id="lang" type="button">EN</button>
+  </header>
+  <div class="menu-body">
+    <h1 class="title"><span class="title-brand">livada</span><span class="title-game" data-i18n="title">Culesul</span></h1>
+    <p class="lead" data-i18n="lead">Taie fructele cu degetul sau cu mouse-ul, ocolește viespile și umple sticlele cu suc.</p>
+    <div class="modes" role="list">
+      <button class="mode" type="button" data-mode="classic" role="listitem">
+        <span class="mode-name" data-i18n="m_classic">Clasic</span>
+        <span class="mode-rule" data-i18n="m_classic_r">Trei vieți. Pierzi una pentru fiecare fruct scăpat sau viespe tăiată.</span>
+        <span class="mode-best"><span data-i18n="best">Record</span>: <b data-best="classic">0</b></span>
+      </button>
+      <button class="mode" type="button" data-mode="timed" role="listitem">
+        <span class="mode-name" data-i18n="m_timed">Contra timp</span>
+        <span class="mode-rule" data-i18n="m_timed_r">60 de secunde. O viespe tăiată îți ia 5 secunde.</span>
+        <span class="mode-best"><span data-i18n="best">Record</span>: <b data-best="timed">0</b></span>
+      </button>
+      <button class="mode" type="button" data-mode="recipe" role="listitem">
+        <span class="mode-name" data-i18n="m_recipe">Comanda zilei</span>
+        <span class="mode-rule" data-i18n="m_recipe_r">90 de secunde, aceleași comenzi pentru toți azi. Taie doar ce cere rețeta.</span>
+        <span class="mode-best"><span data-i18n="best">Record</span>: <b data-best="recipe">0</b></span>
+      </button>
+      <button class="mode" type="button" data-mode="zen" role="listitem">
+        <span class="mode-name" data-i18n="m_zen">Zen</span>
+        <span class="mode-rule" data-i18n="m_zen_r">90 de secunde, fără viespi și fără penalizări. Doar fructe.</span>
+        <span class="mode-best"><span data-i18n="best">Record</span>: <b data-best="zen">0</b></span>
+      </button>
+    </div>
+    <div class="menu-actions">
+      <button class="pill" type="button" data-open="dlg-how" data-i18n="how">Cum se joacă</button>
+      <button class="pill" type="button" data-open="dlg-ach"><span data-i18n="achievements">Realizări</span> <b id="ach-count">0/12</b></button>
+      <button class="pill" type="button" data-open="dlg-settings" data-i18n="settings">Setări</button>
+    </div>
+    <p class="menu-stats" id="menu-stats"></p>
+  </div>
+</main>
+
+<!-- PAUZĂ -->
+<section class="screen overlay" id="pause" hidden aria-labelledby="pause-title" role="dialog" aria-modal="true">
+  <div class="card">
+    <h2 id="pause-title" data-i18n="paused">Pauză</h2>
+    <div class="card-actions">
+      <button class="btn btn-solid" type="button" id="btn-resume" data-i18n="resume">Continuă</button>
+      <button class="btn btn-line" type="button" id="btn-restart" data-i18n="restart">Ia-o de la capăt</button>
+      <button class="btn btn-line" type="button" id="btn-quit" data-i18n="quit">Ieși în meniu</button>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL DE RUNDĂ -->
+<section class="screen overlay" id="over" hidden aria-labelledby="over-title" role="dialog" aria-modal="true">
+  <div class="card">
+    <p class="over-mode" id="over-mode"></p>
+    <h2 id="over-title" class="over-score">0</h2>
+    <p class="over-best" id="over-best"></p>
+    <dl class="over-stats" id="over-stats"></dl>
+    <ul class="over-ach" id="over-ach"></ul>
+    <div class="card-actions">
+      <button class="btn btn-solid" type="button" id="btn-again" data-i18n="again">Joacă din nou</button>
+      <button class="btn btn-line" type="button" id="btn-menu" data-i18n="menu">Meniu</button>
+    </div>
+  </div>
+</section>
+
+<!-- DIALOGURI -->
+<dialog class="dlg" id="dlg-how" aria-labelledby="how-title">
+  <h2 id="how-title" data-i18n="how">Cum se joacă</h2>
+  <ul class="how" id="how-list"></ul>
+  <form method="dialog"><button class="btn btn-solid" data-i18n="close">Închide</button></form>
+</dialog>
+
+<dialog class="dlg" id="dlg-ach" aria-labelledby="ach-title">
+  <h2 id="ach-title" data-i18n="achievements">Realizări</h2>
+  <ul class="ach-list" id="ach-list"></ul>
+  <form method="dialog"><button class="btn btn-solid" data-i18n="close">Închide</button></form>
+</dialog>
+
+<dialog class="dlg" id="dlg-settings" aria-labelledby="set-title">
+  <h2 id="set-title" data-i18n="settings">Setări</h2>
+  <div class="settings">
+    <label class="toggle"><input type="checkbox" id="set-sound"><span><b data-i18n="s_sound">Sunet</b><small data-i18n="s_sound_d">Efecte generate în browser.</small></span></label>
+    <label class="toggle"><input type="checkbox" id="set-slow"><span><b data-i18n="s_slow">Ritm lent</b><small data-i18n="s_slow_d">Fructele zboară cu 30% mai încet.</small></span></label>
+    <label class="toggle"><input type="checkbox" id="set-tap"><span><b data-i18n="s_tap">Tăiere prin atingere</b><small data-i18n="s_tap_d">O atingere sau un click pe fruct îl taie, fără să tragi.</small></span></label>
+    <label class="toggle"><input type="checkbox" id="set-contrast"><span><b data-i18n="s_contrast">Contrast ridicat</b><small data-i18n="s_contrast_d">Fundal simplu și contur alb pe fructe și viespi.</small></span></label>
+    <label class="toggle"><input type="checkbox" id="set-motion"><span><b data-i18n="s_motion">Mișcare redusă</b><small data-i18n="s_motion_d">Fără tremur de ecran și cu mai puține picături.</small></span></label>
+  </div>
+  <div class="danger">
+    <button class="btn btn-line" type="button" id="btn-reset" data-i18n="reset">Șterge progresul</button>
+  </div>
+  <form method="dialog"><button class="btn btn-solid" data-i18n="close">Închide</button></form>
+</dialog>
+
+<noscript><p class="noscript">Jocul are nevoie de JavaScript. / The game needs JavaScript.</p></noscript>
+<script src="joc.js" defer></script>
+</body>
+</html>
