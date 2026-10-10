@@ -19,6 +19,18 @@
 | Amestec | Până la 4 porții în straturi, apoi „Amestecă”: culoare medie, profil dulce/acru/corp și nume generat | Up to 4 layered portions, then "Mix": blended colour, sweet/tart/body profile and a generated name |
 | Sezon | Calendarul culesului, cu luna curentă marcată | Harvest calendar with the current month marked |
 
+## Jocul: Culesul / The Harvest (v1.1)
+
+[Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/livada/joc/) · [Istoric / History](CHANGELOG.md)
+
+**RO** — Joc de tăiat fructe cu aceleași fructe ca landing page-ul. Viespile țin locul bombelor, mărul de aur dă puncte duble, iar fiecare fruct tăiat umple o sticlă. Patru moduri (Clasic, Contra timp, Comanda zilei, Zen), 12 realizări, recorduri locale, ritm lent, tăiere prin atingere, contrast ridicat, mișcare redusă, RO/EN, offline.
+
+**EN** — Fruit-slicing game using the landing page's fruit. Wasps replace bombs, the golden apple doubles points, and every slice fills a bottle. Four modes, 12 achievements, local records, slow pace, tap to slice, high contrast, reduced motion, RO/EN, offline.
+
+Tehnic: Canvas 2D cu DPR, sprite-uri din SVG-ul paginii (și variantă cu contur pentru contrast ridicat), detecție segment–cerc pe fiecare mișcare a pointerului (cu `getCoalescedEvents`), multitouch, Web Audio sintetizat, seed zilnic `mulberry32` pentru Comanda zilei, salvare validată în `localStorage`, service worker „rețea întâi”.
+
+Limită cunoscută: jocul cere o mișcare de tragere sau atingere; nu are control complet din tastatură.
+
 ## Tehnic / Technical
 
 - HTML + CSS + JavaScript vanilla, fără build și fără dependențe; ilustrațiile sunt SVG desenat în pagină.
@@ -35,4 +47,4 @@
 
 ## Fișiere / Files
 
-`index.html` · `style.css` · `app.js` · `icon.svg`
+`index.html` · `style.css` · `app.js` · `icon.svg` · `CHANGELOG.md` · `joc/` (`index.html`, `joc.css`, `joc.js`, `sw.js`, `manifest.webmanifest`)

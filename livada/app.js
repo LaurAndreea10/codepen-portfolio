@@ -72,7 +72,8 @@
   const I18N = {
     ro: {
       skip: 'Sari la conținut', introSkip: 'Sari peste', navLabel: 'Secțiuni',
-      navFlavors: 'Arome', navMix: 'Amestecă', navSeason: 'Sezon',
+      navFlavors: 'Arome', navMix: 'Amestecă', navSeason: 'Sezon', navGame: 'Joacă',
+      playGame: 'Joacă Culesul', playGameLead: 'Sau taie fructele din zbor, într-un joc cu patru moduri.',
       heroKicker: 'Presat la rece în Iași, din livezi de pe dealurile Moldovei',
       heroLine: 'Un singur fruct pe sticlă. Fără apă, fără zahăr, fără pasteurizare.',
       scrollCue: 'Derulează ca să presezi',
@@ -101,7 +102,8 @@
     },
     en: {
       skip: 'Skip to content', introSkip: 'Skip', navLabel: 'Sections',
-      navFlavors: 'Flavours', navMix: 'Mix', navSeason: 'Season',
+      navFlavors: 'Flavours', navMix: 'Mix', navSeason: 'Season', navGame: 'Play',
+      playGame: 'Play The Harvest', playGameLead: 'Or slice the fruit mid-air, in a game with four modes.',
       heroKicker: 'Cold-pressed in Iași, from orchards on the hills of Moldova',
       heroLine: 'One fruit per bottle. No water, no sugar, no pasteurisation.',
       scrollCue: 'Scroll to press',
@@ -396,6 +398,7 @@
     $('#hb-label').textContent = FLAVORS[0].name[lang].toLowerCase();
     $$('.pick span').forEach((s, i) => { s.textContent = FLAVORS[i].name[lang].split(' ')[0]; });
     $$('.marquee-track span').forEach((s, i) => { s.textContent = FLAVORS[i % 4].name[lang]; });
+    $$('a[href^="joc/"]').forEach(l => { l.href = lang === 'en' ? 'joc/?lang=en' : 'joc/'; });
     splitManifest();
     showFlavor(Math.max(0, current), true);
     renderMix();
