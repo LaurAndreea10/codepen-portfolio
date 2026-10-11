@@ -17,15 +17,15 @@
       themeDark: '🌙 Dark',
       contrastOn: 'Contrast normal',
       contrastOff: 'Contrast ridicat',
-      brand: 'Portofoliu CodePen',
+      brand: 'Laura Andreea',
       heroEyebrow: 'CRM • Marketing • Front-end autodidact',
       heroTitle: 'Construiesc interfețe CRM și dashboard-uri care transformă procese complicate în fluxuri clare',
-      heroText: 'Vin din CRM și marketing, iar în front-end mă concentrez pe produse unde structura, prioritizarea și feedback-ul vizual ajută utilizatorii să înțeleagă mai repede ce au de făcut și să acționeze fără fricțiune.',
+      heroText: 'Vin din CRM și marketing, iar în front-end mă concentrez pe produse unde structura, prioritizarea și feedback-ul vizual ajută utilizatorii să înțeleagă mai repede ce au de făcut și să acționeze fără fricțiune. Construiesc în timpul liber, ca să cresc.',
       previewLabel: 'Preview live',
       previewOpen: 'Deschide proiectul',
       previewCaseStudy: 'Deschide case study',
       previewCode: 'Live →',
-      heroPrimary: 'Cum cresc ca developer ↓',
+      heroPrimary: 'Vezi proiectele-cheie ↓',
       heroSecondary: 'Deschide Alpis Fusion →',
       implementationImplemented: 'Implementat',
       implementationProgress: 'În dezvoltare',
@@ -42,7 +42,7 @@
       themeDark: '🌙 Dark',
       contrastOn: 'Normal contrast',
       contrastOff: 'High contrast',
-      brand: 'CodePen Portfolio',
+      brand: 'Laura Andreea',
       heroEyebrow: 'CRM • Marketing • Self-taught front-end',
       heroTitle: 'I build CRM interfaces and dashboards that turn complex processes into clear flows',
       heroText: 'My background is in CRM and marketing, and in front-end I focus on products where structure, prioritization and visual feedback help users understand faster what to do and act with less friction.',
@@ -50,7 +50,7 @@
       previewOpen: 'Open project',
       previewCaseStudy: 'Open case study',
       previewCode: 'Live →',
-      heroPrimary: 'How I grow as a developer ↓',
+      heroPrimary: 'See key projects ↓',
       heroSecondary: 'Open Alpis Fusion →',
       implementationImplemented: 'Implemented',
       implementationProgress: 'In progress',
@@ -173,10 +173,10 @@
   };
 
   const previewSlides = [
-    { title: 'PulseBoard', label: 'AI dashboard', posterUrl: 'pulseboard-preview.svg', description: { ro: 'Dashboard de venituri & operațiuni cu import CSV/Google Sheet, anomalii și briefing executiv.', en: 'Revenue & ops dashboard with CSV/Google Sheet import, anomalies and executive briefing.' }, meta: 'Dashboard · AI fallback · GitHub Pages', frameUrl: 'https://laurandreea10.github.io/PulseBoard/', primaryUrl: 'projects/pulseboard.html', secondaryUrl: 'https://github.com/LaurAndreea10/PulseBoard', codeUrl: 'https://laurandreea10.github.io/PulseBoard/' },
     { title: 'Alpis Fusion CRM Premium', label: 'CRM premium', posterUrl: 'alpis-fusion-demo-poster.svg', description: { ro: 'Colecție modulară pentru lead pipeline, task management, billing și automatizări.', en: 'Modular collection for lead pipeline, task management, billing and automations.' }, meta: 'Vite + React · build optimizat · Deploy automatizat', frameUrl: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/', primaryUrl: 'alpis-fusion-crm.html', secondaryUrl: 'https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium', codeUrl: 'https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/' },
-    { title: 'ClientFlow SaaS CRM', label: 'SaaS CRM', posterUrl: 'clientflow-preview.svg', description: { ro: 'Sistem CRM orientat pe task-uri, automatizări și acțiuni operaționale zilnice.', en: 'CRM system focused on tasks, automations and daily operational actions.' }, meta: 'Kanban + triage · Shortcuts · Prioritizare vizuală', frameUrl: 'https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/', primaryUrl: 'projects/clientflow.html', secondaryUrl: 'https://github.com/LaurAndreea10/ClientFlow-PRO', codeUrl: 'https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/' },
-    { title: 'Link Video Editor Studio', label: 'Video studio', posterUrl: 'link-video-preview.svg', description: { ro: 'Studio pentru workflow video, navigare rapidă și Automation Pack export.', en: 'Studio for video workflow, quick navigation and Automation Pack export.' }, meta: 'HTML · CSS · JavaScript · Automation Pack', frameUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/', primaryUrl: 'tools/link-video-automation-pack.html', secondaryUrl: 'https://github.com/LaurAndreea10/Link-Video-Editor-Studio', codeUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/' }
+    { title: 'ClientFlow · task manager suite', label: 'SaaS CRM', posterUrl: 'clientflow-preview.svg', description: { ro: 'Sistem CRM orientat pe task-uri, automatizări și acțiuni operaționale zilnice.', en: 'CRM system focused on tasks, automations and daily operational actions.' }, meta: 'Kanban + triage · Shortcuts · Prioritizare vizuală', frameUrl: 'https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/', primaryUrl: 'projects/clientflow.html', secondaryUrl: 'https://github.com/LaurAndreea10/ClientFlow-PRO', codeUrl: 'https://laurandreea10.github.io/ClientFlow-SaaS-CRM-task-manager-automation-suite/' },
+    { title: 'Link Video Editor Studio', label: 'Video studio', posterUrl: 'link-video-preview.svg', description: { ro: 'Studio pentru workflow video, navigare rapidă și Automation Pack export.', en: 'Studio for video workflow, quick navigation and Automation Pack export.' }, meta: 'HTML · CSS · JavaScript · Automation Pack', frameUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/', primaryUrl: 'tools/link-video-automation-pack.html', secondaryUrl: 'https://github.com/LaurAndreea10/Link-Video-Editor-Studio', codeUrl: 'https://laurandreea10.github.io/Link-Video-Editor-Studio/' },
+    { title: 'PulseBoard', label: 'AI dashboard', posterUrl: 'pulseboard-preview.svg', description: { ro: 'Dashboard de venituri & operațiuni cu import CSV/Google Sheet, anomalii și briefing executiv.', en: 'Revenue & ops dashboard with CSV/Google Sheet import, anomalies and executive briefing.' }, meta: 'Dashboard · AI fallback · GitHub Pages', frameUrl: 'https://laurandreea10.github.io/PulseBoard/', primaryUrl: 'projects/pulseboard.html', secondaryUrl: 'https://github.com/LaurAndreea10/PulseBoard', codeUrl: 'https://laurandreea10.github.io/PulseBoard/' },
   ];
 
   const cardStatusContent = { 'PulseBoard': 'progress', 'LearnFlow Accessible': 'implemented', 'Excel-Quest': 'implemented', 'BASKET VS AI': 'implemented', 'Link Video Editor Studio': 'implemented', 'CampaignPilot': 'implemented', 'Campaign ROI Calculator': 'implemented', 'Marketing OS': 'implemented', 'Marketing-Tech Templates': 'implemented', 'Lighthouse CI Audit Guide': 'implemented', 'Lead Magnet Landing': 'roadmap', 'Alpis Fusion CRM Premium': 'implemented', 'Brief Studio': 'implemented', 'ClientOps Suite Premium': 'progress', 'ClientFlow SaaS CRM': 'implemented', 'ClientOps': 'implemented', 'ClientFlow': 'implemented', 'ARCADE WORLD': 'implemented', 'Coaching AI': 'progress', '🌊🏄🌊 SURF RUN': 'implemented', 'SURF RUN': 'implemented' };
@@ -212,7 +212,7 @@
     nowSection: document.getElementById('now')
   };
 
-  let currentLang = new URLSearchParams(window.location.search).get('lang') || localStorage.getItem(STORAGE_KEYS.lang) || 'ro';
+  let currentLang = 'ro'; // English lives at en/; this page stays Romanian
   if (!translations[currentLang]) currentLang = 'ro';
   let previewIndex = 0;
   let autoplayId = null;
@@ -415,7 +415,7 @@
     if (els.brandText) els.brandText.textContent = translations[currentLang].brand;
     if (els.heroEyebrow) els.heroEyebrow.textContent = translations[currentLang].heroEyebrow;
     if (els.heroTitle) els.heroTitle.textContent = translations[currentLang].heroTitle;
-    if (els.heroText) els.heroText.textContent = translations[currentLang].heroText;
+    if (els.heroText && currentLang !== 'ro') els.heroText.textContent = translations[currentLang].heroText;
     if (els.heroPreviewLabel) els.heroPreviewLabel.textContent = translations[currentLang].previewLabel;
     if (els.heroCtaPrimary) els.heroCtaPrimary.textContent = translations[currentLang].heroPrimary;
     if (els.heroCtaSecondary) els.heroCtaSecondary.textContent = translations[currentLang].heroSecondary;
@@ -437,7 +437,7 @@
 
   function updateScanDates() {
     const liveDate = getLiveDate();
-    const yearsActive = (new Date().getFullYear() - 2022) + (currentLang === 'ro' ? '+ ani activi' : '+ active years');
+    const yearsActive = (new Date().getFullYear() - 2022) + (currentLang === 'ro' ? '+ ani de proiecte personale' : '+ years of personal projects');
     document.querySelectorAll('[id="scan-date"]').forEach(el => { el.textContent = liveDate; });
     document.querySelectorAll('[id="scan-years"]').forEach(el => { el.textContent = yearsActive; });
   }

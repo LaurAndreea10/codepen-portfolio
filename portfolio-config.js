@@ -8,8 +8,11 @@
   });
   window.PORTFOLIO_CONFIG = config;
 
+  // Only rewrites stale project counts ("85 proiecte", "86 live projects"), never other numbers.
+  const COUNT_RE = /\b(?:84|85|86)(?=\s+(?:de\s+)?(?:proiecte|projects|live|public))/gi;
+  const HAS_COUNT = /\b(?:84|85|86)(?=\s+(?:de\s+)?(?:proiecte|projects|live|public))/i;
   function replaceCount(value) {
-    return value.replace(/\b(?:84|85|86)\b/g, String(config.projectCount));
+    return value.replace(COUNT_RE, String(config.projectCount));
   }
 
   function syncPublicMetrics() {
@@ -17,14 +20,14 @@
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
     nodes.forEach(node => {
-      if (/\b(?:84|85|86)\b/.test(node.nodeValue)) {
+      if (HAS_COUNT.test(node.nodeValue)) {
         node.nodeValue = replaceCount(node.nodeValue);
       }
     });
 
     document.querySelectorAll("[aria-label]").forEach(node => {
       const label = node.getAttribute("aria-label");
-      if (label && /\b(?:84|85|86)\b/.test(label)) {
+      if (label && HAS_COUNT.test(label)) {
         node.setAttribute("aria-label", replaceCount(label));
       }
     });

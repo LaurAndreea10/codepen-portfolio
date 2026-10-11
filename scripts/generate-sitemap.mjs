@@ -2,6 +2,18 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
+  ["projects/link-video-editor-studio.html", "monthly", "0.8", "2026-10-11"],
+  ["projects/link-video-editor-studio-en.html", "monthly", "0.7", "2026-10-11"],
+  ["gravity-draw.html", "monthly", "0.5", "2026-10-11"],
+  ["particle-memory.html", "monthly", "0.5", "2026-10-11"],
+  ["synth-wave.html", "monthly", "0.5", "2026-10-11"],
+  ["neon-drift.html", "monthly", "0.6", "2026-10-11"],
+  ["mobile-performance-case-study.html", "monthly", "0.7", "2026-10-11"],
+  ["marketing-os-pro.html", "monthly", "0.6", "2026-10-11"],
+  ["projects/clientflow-hero.html", "monthly", "0.7", "2026-10-11"],
+  ["projects/crm-galaxy-3d-ultimate-15.html", "monthly", "0.6", "2026-10-11"],
+  ["curious-garden/feedback.html", "monthly", "0.4", "2026-10-11"],
+  ["frontend_newsroom_feed_enhanced.html", "monthly", "0.5", "2026-10-11"],
   ["livada/", "monthly", "0.7", "2026-10-10"],
   ["livada/joc/", "monthly", "0.7", "2026-10-10"],
   ["growth-quest/", "monthly", "0.8", "2026-10-09"],
@@ -20,8 +32,8 @@ const pages = [
   ["slidestorm-arena/case-study.html", "monthly", "0.7", "2026-10-02"],
   ["odyssey-quest/", "monthly", "0.7", "2026-10-02"],
   ["odyssey-quest/case-study.html", "monthly", "0.7", "2026-10-01"],
-  ["portfolio.html", "weekly", "1.0", "2026-10-09"],
-  ["en/", "weekly", "0.9", "2026-10-09"],
+  ["portfolio.html", "weekly", "1.0", "2026-10-11"],
+  ["en/", "weekly", "0.9", "2026-10-11"],
   ["alpis-fusion-crm.html", "monthly", "0.9", "2026-08-30"],
   ["projects/clientflow.html", "monthly", "0.9", "2026-08-30"],
   ["projects/alpis-impactpath.html", "monthly", "0.9", "2026-04-20"],
@@ -29,7 +41,7 @@ const pages = [
   ["projects/pulseboard.html", "monthly", "0.8", "2026-05-29"],
   ["projects/excel-quest.html", "monthly", "0.8", "2026-05-01"],
   ["process.html", "monthly", "0.8", "2026-05-15"],
-  ["work-with-me.html", "monthly", "0.8", "2026-05-20"],
+  ["work-with-me.html", "monthly", "0.8", "2026-10-11"],
   ["insights.html", "weekly", "0.8", "2026-04-25"],
   ["changelog.html", "weekly", "0.7", "2026-10-09"],
   ["proof-pack.html", "monthly", "0.9", "2026-09-20"],
@@ -154,6 +166,8 @@ const pairs = new Map([
     ["release-timeline.html", "en/release-timeline.html"],
   ],
   ["growth-suite.html", ["growth-suite.html", "en/growth-suite.html"]],
+  ["projects/link-video-editor-studio.html", ["projects/link-video-editor-studio.html", "projects/link-video-editor-studio-en.html"]],
+  ["projects/link-video-editor-studio-en.html", ["projects/link-video-editor-studio.html", "projects/link-video-editor-studio-en.html"]],
   ["en/growth-suite.html", ["growth-suite.html", "en/growth-suite.html"]],
 ]);
 

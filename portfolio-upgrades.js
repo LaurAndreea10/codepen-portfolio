@@ -2,8 +2,8 @@
   'use strict';
   const ro = () => document.documentElement.lang !== 'en';
   const copy = {
-    ro:{search:'Caută proiecte',placeholder:'Nume, tehnologie sau rezultat…',category:'Categorie',status:'Status',all:'Toate',live:'Live',caseStudy:'Case study',soon:'Roadmap',results:n=>n+' proiecte afișate',empty:'Niciun proiect nu corespunde filtrelor.',featured:'Featured Challenges',featuredTitle:'Patru experimente recente, grupate într-o colecție clară',featuredText:'Studii vizuale și interactive separate de produsele CRM și de secțiunea Forks.',open:'Deschide proiectul',a11y:'Scorecard accesibilitate',a11yTitle:'WCAG verificabil pentru proiectele-cheie',a11yText:'Criterii urmărite explicit: tastatură, focus, contrast, reduced motion, semantică și alternative text.',details:'Vezi scorecard-ul complet',change:'Vezi changelog-ul'},
-    en:{search:'Search projects',placeholder:'Name, technology or outcome…',category:'Category',status:'Status',all:'All',live:'Live',caseStudy:'Case study',soon:'Roadmap',results:n=>n+' projects shown',empty:'No projects match these filters.',featured:'Featured Challenges',featuredTitle:'Four recent experiments in one clear collection',featuredText:'Visual and interactive studies kept separate from CRM products and the Forks section.',open:'Open project',a11y:'Accessibility scorecard',a11yTitle:'Verifiable WCAG checks for key projects',a11yText:'Explicit checks: keyboard, focus, contrast, reduced motion, semantics and text alternatives.',details:'Open the full scorecard',change:'Open changelog'}
+    ro:{search:'Caută proiecte',placeholder:'Nume, tehnologie sau rezultat…',category:'Categorie',status:'Status',all:'Toate',live:'Live',caseStudy:'Case study',soon:'Roadmap',results:n=>n+' proiecte afișate',empty:'Niciun proiect nu corespunde filtrelor.',featured:'Featured Challenges',featuredTitle:'Patru experimente recente, grupate într-o colecție clară',featuredText:'Studii vizuale și interactive separate de produsele CRM.',open:'Deschide proiectul',a11y:'Scorecard accesibilitate',a11yTitle:'WCAG verificabil pentru proiectele-cheie',a11yText:'Criterii urmărite explicit: tastatură, focus, contrast, reduced motion, semantică și alternative text.',details:'Vezi scorecard-ul complet',change:'Vezi changelog-ul'},
+    en:{search:'Search projects',placeholder:'Name, technology or outcome…',category:'Category',status:'Status',all:'All',live:'Live',caseStudy:'Case study',soon:'Roadmap',results:n=>n+' projects shown',empty:'No projects match these filters.',featured:'Featured Challenges',featuredTitle:'Four recent experiments in one clear collection',featuredText:'Visual and interactive studies kept separate from the CRM products.',open:'Open project',a11y:'Accessibility scorecard',a11yTitle:'Verifiable WCAG checks for key projects',a11yText:'Explicit checks: keyboard, focus, contrast, reduced motion, semantics and text alternatives.',details:'Open the full scorecard',change:'Open changelog'}
   };
   const t=()=>ro()?copy.ro:copy.en;
   const norm=s=>(s||'').toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
@@ -46,7 +46,12 @@
     ];
     const sec=document.createElement('section');sec.id='featured-challenges';sec.className='featured-challenges';sec.setAttribute('aria-labelledby','featured-title');
     sec.innerHTML=`<div class="container"><span class="eyebrow">${t().featured}</span><h2 id="featured-title">${t().featuredTitle}</h2><p class="section-subtitle">${t().featuredText}</p><div class="challenge-grid">${items.map((x,i)=>`<article class="challenge-card glass"><span class="tag">0${i+1}</span><h3>${x[0]}</h3><p>${x[1]}</p><div class="card-actions"><a class="btn btn-secondary" href="${x[2]}" target="_blank" rel="noopener noreferrer">${t().open} ↗</a></div></article>`).join('')}</div></div>`;
-    now.insertAdjacentElement('afterend',sec);
+    const hubs=document.querySelector('#ecosystem-hubs .container');
+    if(hubs){
+      const det=document.createElement('details');det.id='featured-challenges';det.className='featured-more';
+      det.innerHTML=`<summary>${ro()?'Experimente recente':'Recent experiments'} (${items.length})</summary><p class="section-subtitle">${t().featuredText}</p>`+sec.querySelector('.challenge-grid').outerHTML;
+      hubs.appendChild(det);
+    } else now.insertAdjacentElement('afterend',sec);
   }
   function addScorecard(){
     const proof=document.getElementById('proof-of-work');if(!proof||document.getElementById('accessibility-scorecard'))return;

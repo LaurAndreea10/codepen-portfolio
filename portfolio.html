@@ -38,16 +38,8 @@
   <meta name="twitter:description" content="CRM · Marketing · Front-end autodidact. 87 proiecte live · Vite + React · GitHub Actions · UI/UX cu logică de produs." />
   <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/alpis-fusion-demo-poster.svg" />
 
-  <!-- ====================================================
-       FIX #3: PRELOAD LCP IMAGE — prima prioritate absoluta
-       ==================================================== -->
   <link rel="preload" as="image" href="alpis-fusion-demo-poster.svg" media="(min-width: 900px)" fetchpriority="high" />
 
-  <!-- ====================================================
-       FIX #4: FONTURI NON-BLOCKING
-       Daca style.css importa fonturi cu @import, sterge-le
-       de acolo si pastreaza doar blocul de mai jos in HTML
-       ==================================================== -->
   <!-- The system font stack avoids late web-font swaps and their layout shift. -->
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="portfolio-upgrades.css" />
@@ -117,6 +109,12 @@
   </style>
   <style>
     .growth-suite-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:22px}.growth-suite-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.growth-suite-grid:not(.is-expanded) .growth-suite-card:nth-child(n+4){display:none}.growth-suite-card{position:relative;display:flex;min-height:230px;flex-direction:column;padding:18px;border:1px solid var(--line);border-radius:19px;background:linear-gradient(145deg,rgba(19,39,70,.9),rgba(9,23,46,.94));box-shadow:0 18px 44px rgba(0,0,0,.18);transition:transform .2s ease,border-color .2s ease}.growth-suite-card:hover{transform:translateY(-3px);border-color:rgba(101,226,162,.55)}.growth-suite-number{color:#65e2a2;font-size:.75rem;font-weight:950;letter-spacing:.12em}.growth-suite-card h3{margin:9px 0 7px;font-size:1.04rem}.growth-suite-card p{margin:0 0 16px;color:var(--muted);font-size:.86rem;line-height:1.55}.growth-suite-card a{margin-top:auto;font-weight:850;color:#79aaff}.growth-suite-status{display:inline-flex;align-items:center;gap:6px;margin-top:10px;color:#65e2a2;font-size:.76rem;font-weight:800}.growth-suite-status::before{width:7px;height:7px;border-radius:50%;background:#65e2a2;content:""}.growth-suite-all{white-space:nowrap}.growth-suite-toggle{margin-top:16px}
+    @media(max-width:760px){.topbar{position:static}.nav{padding:10px 12px;gap:10px}.nav-links{gap:6px}.nav-links .pill,.nav-links a.pill,.nav-more summary{padding:7px 11px;font-size:.84rem}}
+    .project-card .implementation-badge{position:static;align-self:flex-start;margin-top:4px;order:99}
+    .games-more summary{cursor:pointer;font-weight:700;color:var(--accent,#76a9ff);margin:.2rem 0 .6rem}.games-more .card-actions{margin-top:.6rem}
+    .paths-more{margin-top:22px}.paths-more>summary{cursor:pointer;font-weight:800;color:var(--accent,#76a9ff);padding:10px 0}.paths-grid .project-card{min-height:0}.paths-grid .card-actions{margin-top:16px}.hero-growth-link{color:var(--accent,#76a9ff);font-weight:700;white-space:nowrap}
+    @media(max-width:760px){#hero-proof .cred-strip{grid-template-columns:1fr 1fr;gap:8px}#hero-proof .cred-item p{font-size:.8rem}#heroPreviewSection{display:none}}
+    #crm-projects .project-card{min-height:0}#crm-projects .card-actions{margin-top:16px}.featured-more{margin-top:18px}.featured-more>summary{cursor:pointer;font-weight:800;color:var(--accent,#76a9ff);padding:10px 0}
     .growth-path-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}#growth-path .project-card{min-height:0}#growth-path .project-card:hover{transform:none}@media(max-width:1120px){.growth-path-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:640px){.growth-path-grid{grid-template-columns:1fr}}
     @media(max-width:1120px){.growth-suite-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:760px){.growth-suite-head{align-items:flex-start;flex-direction:column}.growth-suite-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:480px){.growth-suite-grid{grid-template-columns:1fr}.growth-suite-card{min-height:0}}@media(prefers-reduced-motion:reduce){.growth-suite-card{transition:none}.growth-suite-card:hover{transform:none}}
   </style>
@@ -159,8 +157,8 @@
     <div class="container">
       <nav class="nav glass" aria-label="Navigare principal&#x103;">
         <a class="brand" href="#home" aria-label="Mergi la &icirc;nceputul paginii">
-          <span class="badge" aria-hidden="true">CP</span>
-          <span id="brandText">Portofoliu CodePen</span>
+          <span class="badge" aria-hidden="true">LA</span>
+          <span id="brandText">Laura Andreea</span>
         </a>
         <div class="nav-links" aria-label="Secțiuni principale">
           <a class="pill" href="#key-projects">Proiecte</a>
@@ -184,7 +182,7 @@
             </div>
           </details>
           <button class="pill pill-scan" id="scanToggle" type="button" aria-label="Rezumat portofoliu în 30 de secunde" aria-expanded="false" aria-controls="scan-panel">⚡ 30s</button>
-          <button class="pill" id="langToggle" type="button" aria-label="Schimbă limba între română și engleză">RO | EN</button>
+          <a class="pill" href="en/" hreflang="en" lang="en" aria-label="English version of the portfolio">EN</a>
           <button class="pill" id="themeToggle" type="button" aria-label="Schimbă tema vizuală">☀️ Light</button>
           <button class="pill" id="contrastToggle" type="button" aria-pressed="false" aria-label="Activează contrast ridicat">Contrast ridicat</button>
         </div>
@@ -202,10 +200,10 @@
       <div class="scan-grid">
         <div class="scan-col">
           <h3 class="scan-col-title">&#x1F3AF; Cine sunt</h3>
-          <ul class="scan-list">\n            <li>&#x2705; <strong>Tri-Link Quest</strong> &mdash; joc accesibil 3-în-1 cu puzzle glisant, match-3, connect, 10 niveluri, progres local și PWA offline. <a href="projects/tri-link-quest.html">Case study &rarr;</a> · <a href="https://laurandreea10.github.io/Tri-Link-Quest/" target="_blank" rel="noopener noreferrer">Joacă &rarr;</a></li>
+          <ul class="scan-list">
             <li>Front-end autodidact cu background <strong>CRM &amp; marketing digital</strong></li>
             <li>Construiesc interfe&#x21B;e unde <strong>structura &#x219;i fluxul</strong> conteaz&#x103; mai mult dec&acirc;t estetica</li>
-            <li>Tranzi&#x21B;ie activ&#x103; din 2022 &rarr; focus pe CRM, dashboard-uri, AI-native tools</li>
+            <li>Din 2022 construiesc &icirc;n timpul liber &rarr; focus pe CRM, dashboard-uri, AI-native tools</li>
             <li>Bilingv RO/EN, toate proiectele publice &#x219;i verificabile</li>
           </ul>
         </div>
@@ -228,7 +226,7 @@
             <li><strong id="scan-proj-count">87</strong> proiecte live</li>
             <li><strong id="scan-repo-count">20+</strong> repo-uri publice pe GitHub</li>
             <li><strong>6</strong> module SaaS &icirc;n Alpis Fusion: kanban, flow builder, RBAC, billing, booking, autosave</li>
-            <li><strong>10+</strong> certific&#x103;ri: JS Essential Training &middot; Google Digital Marketing &middot; freeCodeCamp &middot; Claude Code</li>
+            <li><strong>4+</strong> certific&#x103;ri, printre care: JS Essential Training &middot; Google Digital Marketing &middot; freeCodeCamp &middot; Claude Code</li>
           </ul>
         </div>
         <div class="scan-col">
@@ -242,6 +240,7 @@
         <div class="scan-col">
           <h3 class="scan-col-title">&#x2705; Finalizat recent</h3>
           <ul class="scan-list">
+            <li>&#x2705; <strong>Tri-Link Quest</strong> &mdash; joc accesibil 3-în-1 cu puzzle glisant, match-3, connect, 10 niveluri, progres local și PWA offline. <a href="projects/tri-link-quest.html">Case study &rarr;</a> · <a href="https://laurandreea10.github.io/Tri-Link-Quest/" target="_blank" rel="noopener noreferrer">Joacă &rarr;</a></li>
             <li>&#x2705; <strong>LIVADA + jocul Culesul</strong> — landing page cinematic pentru un brand fictiv de suc presat la rece și joc de tăiat fructe: viespi, mărul de aur, 4 moduri, 12 realizări, RO/EN, offline. <a class="now-item-link" href="livada/joc/">Joacă</a> · <a class="now-item-link" href="livada/">Landing page</a> · <a class="now-item-link" href="livada/CHANGELOG.md">Istoric</a></li>
             <li>&#x2705; <strong>Halloween BooScary</strong> — CodePen Challenge: FizzBuzz cu Boo / Scary / BooScary, șase moduri, atelier de dovleci, RO/EN, 314 teste. <a class="now-item-link" href="booscary/">Joacă</a> · <a class="now-item-link" href="booscary/index.pen.html">Cod HTML</a> · <a class="now-item-link" href="booscary/README.md">Istoric 1.0–4.0</a></li>
             <li>✅ <strong>Odyssey Quest — Drumul spre Itaca</strong> — 12 insule, 120 de probe, 11 moduri, RO/EN, accesibil fără reacții rapide, PWA offline și, din 2.1, duel WebRTC între dispozitive. <a href="odyssey-quest/">Joacă</a> · <a href="odyssey-quest/case-study.html">Studiu de caz</a></li>
@@ -263,7 +262,7 @@
       <div class="scan-footer">
         <span id="scan-updated">Actualizat: <strong id="scan-date"></strong></span>
         <span class="scan-footer-sep">&middot;</span>
-        <span id="scan-exp">Experien&#x21B;&#x103; activ&#x103;: <strong id="scan-years"></strong></span>
+        <span id="scan-exp">Proiecte personale: <strong id="scan-years"></strong></span>
         <span class="scan-footer-sep">&middot;</span>
         <a href="portfolio-summary.html" onclick="document.getElementById('scan-panel').hidden=true">Rezumat 60 sec →</a>
         <span class="scan-footer-sep">&middot;</span>
@@ -274,36 +273,14 @@
 
   <header class="hero" id="home" aria-labelledby="hero-title">
     <div class="container">
-      <aside class="snapshot-hero-strip" aria-labelledby="snapshot-strip-title">
-        <div class="snapshot-hero-copy">
-          <span class="snapshot-hero-mark" aria-hidden="true">60″</span>
-          <div>
-            <strong id="snapshot-strip-title">Portfolio Snapshot · Rezumat executiv</strong>
-            <p>Profil, Top 3, competențe și rezultate măsurabile — plus BUGFLOW v10, dovada evoluției de la demo vizual la produs local-first securizat și testat.</p>
-            <div class="snapshot-hero-proof" aria-label="Dovezi rapide">
-              <span class="snapshot-proof-chip">87 proiecte live</span>
-              <span class="snapshot-proof-chip">20+ repo-uri</span>
-              <span class="snapshot-proof-chip">Accessibility 100</span>
-              <span class="snapshot-proof-chip">RO / EN</span>
-              <span class="snapshot-proof-chip">BUGFLOW v10 · security hardening</span>
-            </div>
-          </div>
-        </div>
-        <div class="hero-actions" style="margin:0">
-          <a class="btn btn-primary snapshot-hero-cta" href="portfolio-summary.html" aria-label="Deschide rezumatul executiv al portofoliului">Rezumat 60 sec →</a>
-          <a class="btn btn-secondary snapshot-hero-cta" href="growth-suite.html" aria-label="Deschide suita dovezilor de evoluție">Growth Suite · 10 experiențe →</a>
-          <a class="btn btn-secondary snapshot-hero-cta" href="https://laurandreea10.github.io/-BUGFLOW/" target="_blank" rel="noopener noreferrer" aria-label="Deschide BUGFLOW v10">BUGFLOW v10 live →</a>
-        </div>
-      </aside>
       <article class="hero-card glass">
         <div class="hero-layout">
           <div class="hero-main">
             <span class="eyebrow" id="hero-eyebrow">CRM &bull; Marketing &bull; Front-end autodidact</span>
             <h1 id="hero-title">Construiesc interfe&#x21B;e CRM &#x219;i dashboard-uri care transform&#x103; procese complicate &icirc;n fluxuri clare</h1>
-            <p class="hero-text" id="hero-text">Vin din CRM &#x219;i marketing, iar &icirc;n front-end m&#x103; concentrez pe produse unde structura, prioritizarea &#x219;i feedback-ul vizual ajut&#x103; utilizatorii s&#x103; &icirc;n&#x21B;eleag&#x103; mai repede ce au de f&#x103;cut &#x219;i s&#x103; ac&#x21B;ioneze f&#x103;r&#x103; fric&#x21B;iune.</p>
+            <p class="hero-text" id="hero-text">Vin din CRM &#x219;i marketing, iar &icirc;n front-end m&#x103; concentrez pe produse unde structura, prioritizarea &#x219;i feedback-ul vizual ajut&#x103; utilizatorii s&#x103; &icirc;n&#x21B;eleag&#x103; mai repede ce au de f&#x103;cut &#x219;i s&#x103; ac&#x21B;ioneze f&#x103;r&#x103; fric&#x21B;iune. Construiesc &icirc;n timpul liber, ca s&#x103; cresc &mdash; <a href="#growth-path" class="hero-growth-link">vezi cum cresc ca developer &darr;</a></p>
             <div class="hero-actions">
-              <a class="btn btn-secondary" id="heroCtaSnapshot" href="portfolio-summary.html" aria-label="Deschide Portfolio Snapshot">⚡ Rezumat 60 sec</a>
-              <a class="btn btn-primary" href="#growth-path" id="heroCtaPrimary">Cum cresc ca developer &darr;</a>
+              <a class="btn btn-primary" href="#key-projects" id="heroCtaPrimary">Vezi proiectele-cheie &darr;</a>
               <a class="btn btn-secondary" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer" aria-label="Deschide proiectul Alpis Fusion CRM Premium" id="heroCtaSecondary">Deschide Alpis Fusion &rarr;</a>
             </div>
           </div>
@@ -317,14 +294,6 @@
             </div>
             <div class="hero-preview-links" id="heroPreviewLinks" aria-label="Selecteaz&#x103; preview proiect"></div>
             <div class="hero-preview-wrap">
-              <!--
-                FIX #2 + #3: preview optimizat responsive
-                - preload cu prioritate mare doar pe desktop
-                - loading="lazy" + fetchpriority="low" pe mobil
-                - width + height explicite → zero CLS
-                - NO loading="lazy" pe LCP image
-                - decoding="async" → nu blocheaza main thread
-              -->
               <img
                 class="hero-preview-fallback"
                 id="heroPreviewFallback"
@@ -337,13 +306,6 @@
                 decoding="async"
               />
               <div class="hero-preview-hint" id="heroPreviewHint">Previzualizare static&#x103; &mdash; deschide proiectul pentru demo-ul complet.</div>
-              <!--
-                FIX #2: IFRAME FACADE
-                - Iframe-ul NU mai are src la load — zero request la parse
-                - src-ul este injectat de main.js DOAR la interactiune (hover/click)
-                - Pana la interactiune, utilizatorul vede imaginea SVG (LCP = perfect)
-                - style="display:none" — ascuns pana cand main.js il activeaza
-              -->
               <iframe
                 class="hero-preview-frame"
                 id="heroPreviewFrame"
@@ -358,8 +320,8 @@
                 <p class="meta-line" id="heroPreviewMeta">Vite + React &middot; build optimizat &middot; Deploy automatizat</p>
                 <p id="heroPreviewDescription">Colec&#x21B;ie de module CRM premium pentru lead pipeline, task management &#x219;i automatiz&#x103;ri.</p>
                 <div class="hero-preview-actions">
-                  <a class="btn btn-primary" id="heroPreviewOpen" href="projects/alpis-fusion-crm.html">Deschide case study</a>
-                  <a class="btn btn-codepen" id="heroPreviewCode" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">CodePen &rarr;</a>
+                  <a class="btn btn-primary" id="heroPreviewOpen" href="alpis-fusion-crm.html">Deschide case study</a>
+                  <a class="btn btn-codepen" id="heroPreviewCode" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Live &rarr;</a>
                 </div>
                 <a id="heroPreviewUrl" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">github.com/LaurAndreea10/Alpis-Fusion-CRM-premium</a>
               </div>
@@ -367,6 +329,27 @@
           </aside>
         </div>
       </article>
+      <aside class="snapshot-hero-strip" aria-labelledby="snapshot-strip-title">
+        <div class="snapshot-hero-copy">
+          <span class="snapshot-hero-mark" aria-hidden="true">60″</span>
+          <div>
+            <strong id="snapshot-strip-title">Portfolio Snapshot · Rezumat executiv</strong>
+            <p>Profil, Top 3, competențe și rezultate măsurabile — plus BUGFLOW v10, dovada evoluției de la demo vizual la produs local-first securizat și testat.</p>
+            <div class="snapshot-hero-proof" aria-label="Dovezi rapide">
+              <span class="snapshot-proof-chip">87 proiecte live</span>
+              <span class="snapshot-proof-chip">20+ repo-uri</span>
+              <span class="snapshot-proof-chip">Lighthouse A11y 100 · portofoliu</span>
+              <span class="snapshot-proof-chip">RO / EN</span>
+              <span class="snapshot-proof-chip">BUGFLOW v10 · security hardening</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-actions" style="margin:0">
+          <a class="btn btn-primary snapshot-hero-cta" href="portfolio-summary.html" aria-label="Deschide rezumatul executiv al portofoliului">Rezumat 60 sec →</a>
+          <a class="btn btn-secondary snapshot-hero-cta" href="growth-suite.html" aria-label="Deschide suita dovezilor de evoluție">Growth Suite · 10 experiențe →</a>
+          <a class="btn btn-secondary snapshot-hero-cta" href="https://laurandreea10.github.io/-BUGFLOW/" target="_blank" rel="noopener noreferrer" aria-label="Deschide BUGFLOW v10">BUGFLOW v10 live →</a>
+        </div>
+      </aside>
     </div>
   </header>
 
@@ -379,15 +362,15 @@
             <strong>87</strong>
             <p>proiecte live<br><span class="subtle-inline">profil public verificabil &rarr;</span></p>
           </a>
-          <div class="cred-item"><strong>10+</strong><p>certific&#x103;ri: JavaScript Essential Training &middot; Google Digital Marketing &middot; freeCodeCamp Data Analysis &middot; Claude Code in Action</p></div>
+          <div class="cred-item"><strong>4+</strong><p>certific&#x103;ri, printre care: JavaScript Essential Training &middot; Google Digital Marketing &middot; freeCodeCamp Data Analysis &middot; Claude Code in Action</p></div>
           <div class="cred-item"><strong>6</strong><p>module SaaS &icirc;n Alpis Fusion CRM Premium: kanban, flow builder, RBAC, billing, booking, autosave</p></div>
-          <div class="cred-item"><strong>2022 &rarr;</strong><p>tranzi&#x21B;ie activ&#x103; din CRM &amp; Marketing &icirc;n front-end development</p></div>
+          <div class="cred-item"><strong>2022 &rarr;</strong><p>construiesc &icirc;n front-end &icirc;n timpul liber, pornind din CRM &amp; Marketing</p></div>
         </div>
         <nav class="top3-quick glass" aria-label="Selecția Top 3 proiecte">
           <strong>TOP 3 · traseu recomandat</strong>
           <a href="alpis-fusion-crm.html">01 Alpis Fusion</a>
           <a href="projects/clientflow.html">02 ClientFlow PRO</a>
-          <a href="link-video-automation-pack.html">03 Link Video Editor</a>
+          <a href="projects/link-video-editor-studio.html">03 Link Video Editor</a>
           <a class="top3-all" href="#key-projects">Vezi dovezile comparative ↓</a>
         </nav>
       </div>
@@ -402,7 +385,7 @@
             <h2 id="key-projects-title">3 proiecte care arat&#x103; cel mai clar cum g&acirc;ndesc produsul &#x219;i interfa&#x21B;a</h2>
             <p class="section-subtitle">Am ales 3 proiecte care m&#x103; reprezint&#x103; cel mai bine: structur&#x103; clar&#x103;, logic&#x103; de produs &#x219;i interfe&#x21B;e construite pentru ac&#x21B;iune.</p>
           </div>
-          <a class="btn btn-primary" href="https://github.com/LaurAndreea10/ClientFlow-PRO" target="_blank" rel="noopener noreferrer">Vezi ClientFlow PRO pe GitHub &rarr;</a>
+          <a class="btn btn-primary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">Tot codul pe GitHub &rarr;</a>
         </div>
         <div class="projects-grid">
           <article class="project-card glass" aria-labelledby="key-alpis-title">
@@ -414,13 +397,13 @@
               <ul><li><b>Stack:</b> React 18, Vite, JavaScript, CSS, GitHub Actions.</li><li><b>Arhitectur&#x103;:</b> CRM modular, stare partajat&#x103; &#x219;i persisten&#x21B;&#x103; local-first.</li><li><b>Ownership:</b> concept, UX, implementare &#x219;i documenta&#x21B;ie &mdash; Laura Andreea.</li><li><b>Setup:</b> npm install &rarr; npm run dev; verificare cu npm run build.</li><li><a href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">Cod surs&#x103; verificabil &rarr;</a></li></ul>
             </div>
             <div class="card-actions">
-              <a class="btn btn-primary" href="projects/alpis-fusion-crm.html" aria-label="Deschide case study Alpis Fusion CRM Premium">Deschide case study</a>
+              <a class="btn btn-primary" href="alpis-fusion-crm.html" aria-label="Deschide case study Alpis Fusion CRM Premium">Deschide case study</a>
               <a class="btn btn-codepen" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">Demo live</a>
             </div>
           </article>
           <article class="project-card glass" aria-labelledby="key-clientflow-title">
-            <span class="top-rank">TOP 02</span><span class="tag">utility</span>
-            <h3 id="key-clientflow-title">ClientFlow</h3>
+            <span class="top-rank">TOP 02</span><span class="tag">crm</span>
+            <h3 id="key-clientflow-title">ClientFlow PRO</h3>
             <p class="project-desc">Am redus trierea zilnic&#x103; la un ecran unic, cu semnale vizuale &#x219;i shortcut-uri pentru decizii rapide.</p>
             <div class="project-proof">
               <strong>Dovezi observabile</strong>
@@ -440,16 +423,24 @@
               <ul><li><b>Stack:</b> HTML semantic, CSS, JavaScript, GitHub Pages.</li><li><b>Arhitectur&#x103;:</b> preseturi, generator de workflow, export JSON/HTML &#x219;i Automation Pack.</li><li><b>Ownership:</b> concept, UX, implementare &#x219;i documenta&#x21B;ie &mdash; Laura Andreea.</li><li><b>Setup:</b> f&#x103;r&#x103; build; index.html sau server static local.</li><li><a href="https://github.com/LaurAndreea10/Link-Video-Editor-Studio" target="_blank" rel="noopener noreferrer">Cod surs&#x103; verificabil &rarr;</a></li></ul>
             </div>
             <div class="card-actions">
-              <a class="btn btn-primary" href="link-video-automation-pack.html" aria-label="Deschide dovezile Link Video Editor Studio">Deschide dovezile</a>
+              <a class="btn btn-primary" href="projects/link-video-editor-studio.html" aria-label="Deschide case study Link Video Editor Studio">Deschide case study</a>
               <a class="btn btn-codepen" href="https://laurandreea10.github.io/Link-Video-Editor-Studio/" target="_blank" rel="noopener noreferrer">Demo live</a>
             </div>
           </article>
         </div>
+
+        <details class="paths-more" id="project-paths"><summary>Alte trasee: CRM · Accesibilitate · Jocuri</summary>
+        <div class="projects-grid paths-grid">
+          <article class="project-card glass"><span class="tag">CRM &amp; dashboards</span><h3>Produse operaționale</h3><p class="project-desc">Alpis Fusion CRM, ClientFlow PRO și Accessible CRM Client Card — fluxuri, prioritizare și decizii într-o singură suprafață.</p><div class="card-actions"><a class="btn btn-primary" href="#crm-projects">Vezi CRM</a><a class="btn btn-secondary" href="crm-client-card.html">Exercițiu accesibil</a></div></article>
+          <article class="project-card glass"><span class="tag">Accessibility</span><h3>Experimente incluzive</h3><p class="project-desc">LOOP Cosmic Relay, Signal Garden și Accessibility Lab — tastatură, contrast, reduced motion și interacțiune single-switch.</p><div class="card-actions"><a class="btn btn-primary" href="projects/loop-cosmic-relay.html">Vezi LOOP</a><a class="btn btn-secondary" href="accessibility-lab.html">Accessibility Lab</a></div></article>
+          <article class="project-card glass"><span class="tag">Games</span><h3>Jocuri și progresie</h3><p class="project-desc">SkyDreams, Kygo World, Odyssey Quest și Grădina Curioasă — progresie, RO/EN, accesibilitate și joc offline.</p><details class="games-more"><summary>Detalii și toate jocurile</summary><p class="project-desc">SkyDreams Portal oferă 11 moduri și labirint zilnic. Kygo World continuă cu poveste pe iarbă cu alergare automată, cursă, campionat, labirint, comoară, grădină și Duo, cu ediții Halloween, Paște și Crăciun, progres local separat, RO/EN și comenzi tactile. Odyssey Quest adaugă 120 de probe literare și 11 moduri accesibile. Grădina Curioasă adaugă 12 lumi educative pentru 3–12 ani, labirinturi generate, litere, ceas, bani, puzzle pe siluetă, povești cu mai multe finaluri, raport pentru părinți, mod offline și 4 limbi (RO/EN/HU/UK).</p><div class="card-actions"><a class="btn btn-secondary" href="odyssey-quest/case-study.html">Studiu de caz Odyssey Quest</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/curious-garden/" target="_blank" rel="noopener noreferrer">Cod sursă</a><a class="btn btn-secondary" href="curious-garden/case-study.html">Studiu de caz Grădina Curioasă</a><a class="btn btn-secondary" href="skydreams-portal/">Joacă SkyDreams</a><a class="btn btn-secondary" href="kygo-world/?v=20260927-bones">Joacă Kygo World</a><a class="btn btn-secondary" href="https://laurandreea10.github.io/ARCADE-WORLD/" target="_blank" rel="noopener noreferrer">ARCADE WORLD</a></div></details><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/codepen-portfolio/curious-garden/" target="_blank" rel="noopener noreferrer">Joacă Grădina Curioasă</a><a class="btn btn-secondary" href="odyssey-quest/">Joacă Odyssey Quest</a></div></article>
+        </div>
+        </details>
       </div>
     </section>
 
     <div class="section-divider"></div>
-    <section id="crm-projects" class="curated-secondary" class="gh-section" aria-labelledby="crm-projects-title">
+    <section id="crm-projects" class="gh-section" aria-labelledby="crm-projects-title">
       <div class="container">
         <div class="section-head">
           <div>
@@ -537,7 +528,7 @@
           <article class="project-card glass">
             <span class="tag">03 &middot; Calitate</span>
             <h3>Accesibilitate &#x219;i teste</h3>
-            <p class="project-desc">Lighthouse Accessibility 100, tastatur&#x103;, contrast ridicat &#x219;i mi&#x219;care redus&#x103;, teste automate de logic&#x103; &#x219;i browser. Ce n-am verificat &icirc;nc&#x103; notez explicit.</p>
+            <p class="project-desc">Lighthouse Accessibility 100 pe portofoliu; tastatur&#x103;, contrast ridicat &#x219;i mi&#x219;care redus&#x103;, teste automate de logic&#x103; &#x219;i browser. Ce n-am verificat &icirc;nc&#x103; notez explicit.</p>
             <div class="card-actions"><a class="btn btn-secondary" href="accessibility-lab.html">Accessibility Lab</a></div>
           </article>
           <article class="project-card glass">
@@ -546,18 +537,6 @@
             <p class="project-desc">Jocurile Canvas, aplica&#x21B;iile PWA offline &#x219;i interfe&#x21B;ele bilingve RO/EN sunt terenul meu de exersat logic&#x103;, performan&#x21B;&#x103; &#x219;i UX &mdash; cu istoric public pentru fiecare versiune.</p>
             <div class="card-actions"><a class="btn btn-secondary" href="build-in-public.html">Jurnal Build in Public</a><a class="btn btn-secondary" href="#now">Ce fac acum</a></div>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-    <section id="project-paths" aria-labelledby="project-paths-title">
-      <div class="container">
-        <div class="section-head"><div><span class="eyebrow">Alege un traseu</span><h2 id="project-paths-title">Trei direcții, maximum trei proiecte reprezentative</h2><p class="section-subtitle">Top 3 rămâne selecția principală. Traseele de mai jos oferă context fără să încarce primul ecran.</p></div></div>
-        <div class="projects-grid">
-          <article class="project-card glass"><span class="tag">CRM &amp; dashboards</span><h3>Produse operaționale</h3><p class="project-desc">Alpis Fusion CRM, ClientFlow PRO și Accessible CRM Client Card — fluxuri, prioritizare și decizii într-o singură suprafață.</p><div class="card-actions"><a class="btn btn-primary" href="#crm-projects">Vezi CRM</a><a class="btn btn-secondary" href="crm-client-card.html">Exercițiu accesibil</a></div></article>
-          <article class="project-card glass"><span class="tag">Accessibility</span><h3>Experimente incluzive</h3><p class="project-desc">LOOP Cosmic Relay, Signal Garden și Accessibility Lab — tastatură, contrast, reduced motion și interacțiune single-switch.</p><div class="card-actions"><a class="btn btn-primary" href="projects/loop-cosmic-relay.html">Vezi LOOP</a><a class="btn btn-secondary" href="accessibility-lab.html">Accessibility Lab</a></div></article>
-          <article class="project-card glass"><span class="tag">Games</span><h3>Jocuri și progresie</h3><p class="project-desc">SkyDreams Portal oferă 11 moduri și labirint zilnic. Kygo World continuă cu poveste pe iarbă cu alergare automată, cursă, campionat, labirint, comoară, grădină și Duo, cu ediții Halloween, Paște și Crăciun, progres local separat, RO/EN și comenzi tactile. Odyssey Quest adaugă 120 de probe literare și 11 moduri accesibile. Grădina Curioasă adaugă 12 lumi educative pentru 3–12 ani, labirinturi generate, litere, ceas, bani, puzzle pe siluetă, povești cu mai multe finaluri, raport pentru părinți, mod offline și 4 limbi (RO/EN/HU/UK).</p><div class="card-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/codepen-portfolio/curious-garden/" target="_blank" rel="noopener noreferrer">Joacă Grădina Curioasă</a><a class="btn btn-secondary" href="odyssey-quest/">Joacă Odyssey Quest</a><a class="btn btn-secondary" href="odyssey-quest/case-study.html">Studiu de caz Odyssey Quest</a><a class="btn btn-secondary" href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/curious-garden/" target="_blank" rel="noopener noreferrer">Cod sursă</a><a class="btn btn-secondary" href="curious-garden/case-study.html">Studiu de caz Grădina Curioasă</a><a class="btn btn-secondary" href="skydreams-portal/">Joacă SkyDreams</a><a class="btn btn-secondary" href="kygo-world/?v=20260927-bones">Joacă Kygo World</a><a class="btn btn-secondary" href="https://laurandreea10.github.io/ARCADE-WORLD/" target="_blank" rel="noopener noreferrer">ARCADE WORLD</a></div></article>
         </div>
       </div>
     </section>
@@ -600,6 +579,206 @@
           </div>
         </div>
         <div class="pow-note"><strong>De ce Proof of Work?</strong> Lucrez pe proiecte personale. Dovada mea este codul public, deploy-ul real &#x219;i istoricul vizibil de versiuni.</div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+    <section id="latest-github" class="curated-secondary gh-section" aria-labelledby="latest-github-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">&#x1F3AE; Timp liber &middot; Latest on GitHub</span>
+            <h2 id="latest-github-title">Cele mai noi proiecte construite &icirc;n timpul liber</h2>
+            <div class="gh-meta"><span>Cod public &bull; Deploy automat &bull; Open source</span></div>
+          </div>
+          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Vezi toate repo-urile GitHub ale Laurei Andreea">Toate repo-urile &rarr;</a>
+        </div>
+        <div class="projects-grid project-collection" id="latest-project-list" aria-label="Proiecte GitHub recente">
+<article class="project-card glass" aria-labelledby="livada-title"><div class="project-meta"><span class="project-type">UI · Landing page · Scroll</span><span class="project-status">v1.1.0</span></div><h3 id="livada-title">LIVADA — landing page cinematic</h3><p>Brand fictiv de suc presat la rece din livezile Moldovei: intro cu o picătură de lumină, titlu care se presează la scroll, patru arome care schimbă culoarea paginii, constructor de amestec și calendarul culesului. Din 1.1, și jocul Culesul: tăiat fructe, viespi, mărul de aur, patru moduri și 12 realizări. RO/EN, tastatură și mișcare redusă.</p><div class="project-links"><a href="livada/" class="btn btn-primary">Deschide</a><a href="livada/joc/" class="btn btn-secondary">Joacă Culesul</a><a href="livada/README.md" class="btn btn-secondary">Cum e construit</a></div></article>
+<article class="project-card glass" aria-labelledby="pentarena-title"><div class="project-meta"><span class="project-type">Game · Canvas · 2 jucători</span><span class="project-status">v2.3.0</span></div><h3 id="pentarena-title">PentArena</h3><p>Baschet, fotbal, air hockey, volei și biliard contra AI sau în doi pe același ecran: carieră în trei ligi, provocare zilnică, reluări, bonusuri, vestiar și 16 realizări. Teren extins, fullscreen, reluarea partidei, antrenament ghidat, provocări săptămânale, stiluri AI și temă dark/light. PWA offline, RO/EN, contrast ridicat și mișcare redusă.</p><div class="project-links"><a href="pentarena/" class="btn btn-primary">Joacă</a><a href="pentarena/changelog.html" class="btn btn-secondary">Istoric</a><a href="pentarena/README.md" class="btn btn-secondary">README</a></div></article><article class="project-card glass" aria-labelledby="serpent-title"><div class="project-meta"><span class="project-type">Game · Canvas</span><span class="project-status">v2.0.0</span></div><h3 id="serpent-title">Serpent Prism</h3><p>Zuma × Snake într-o arenă Prism Glass: trei lumi, niveluri ghidate, șase moduri, puzzle-uri, sunet, PWA offline, progres local, RO/EN, contrast ridicat și mișcare redusă.</p><div class="project-links"><a href="serpent-prism/" class="btn btn-primary">Joacă</a><a href="serpent-prism/changelog.html" class="btn btn-secondary">Istoric</a><a href="serpent-prism/README.md" class="btn btn-secondary">README</a></div></article>
+<article class="project-card glass" aria-labelledby="slidestorm-title"><div class="project-meta"><span class="project-type">Game · Canvas</span><span class="project-status">v2.4.0</span></div><h3 id="slidestorm-title">SlideStorm Arena</h3><p>100 de niveluri, 8 sporturi și 11 moduri într-un parc cu apă, nisip și furtuni. Constructor, progres local validat și opțiuni de accesibilitate.</p><div class="project-links"><a href="slidestorm-arena/" class="btn btn-primary">Joacă</a><a href="slidestorm-arena/case-study.html" class="btn btn-secondary">Studiu de caz</a><a href="slidestorm-arena/README.md" class="btn btn-secondary">README</a></div></article>
+          <article class="project-card glass" aria-labelledby="loop-cosmic-relay-title">
+            <span class="badge-new">NEW</span>
+            <div class="project-top"><div><h3 id="loop-cosmic-relay-title">LOOP — Cosmic Relay</h3><span class="badge-github">Game · Accessibility · PWA</span></div><span class="tag github">game</span></div>
+            <p class="project-desc">Joc cosmic accesibil cu 9 moduri, progres persistent, power-up-uri, șapte trasee și control printr-o singură acțiune.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="projects/loop-cosmic-relay.html">Case study RO/EN</a>
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/LOOP-Cosmic-Relay/" target="_blank" rel="noopener noreferrer">Deschide jocul →</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/LOOP-Cosmic-Relay" target="_blank" rel="noopener noreferrer">GitHub →</a>
+            </div>
+          </article>
+          <article class="project-card glass" aria-labelledby="pulseboard-title">
+            <span class="badge-new">NEW</span>
+            <div class="project-top"><div><h3 id="pulseboard-title">PulseBoard</h3><span class="badge-github">GitHub</span></div><span class="tag github">github</span></div>
+            <p class="project-desc">Dashboard de venituri &amp; opera&#x21B;iuni care import&#x103; date reale (CSV/Google Sheet), detecteaz&#x103; anomalii &#x219;i genereaz&#x103; un briefing executiv cu ac&#x21B;iuni, scris de AI.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="projects/pulseboard.html">Case study</a>
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/PulseBoard/" aria-label="Deschide demo-ul live PulseBoard" target="_blank" rel="noopener noreferrer">Live Demo</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/PulseBoard" aria-label="Deschide repository-ul GitHub PulseBoard" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
+            </div>
+          </article>
+          <article class="project-card glass" aria-labelledby="excel-quest-title">
+            <span class="badge-new">NEW</span>
+            <div class="project-top"><div><h3 id="excel-quest-title">Excel-Quest</h3><span class="badge-github">GitHub</span></div><span class="tag github">github</span></div>
+            <p class="project-desc">Aplica&#x21B;ie educa&#x21B;ional&#x103; gamificat&#x103; pentru &icirc;nv&#x103;&#x21B;area Excel. Structur&#x103; de quest, progres vizibil &#x219;i deploy GitHub Pages.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="projects/excel-quest.html">Case study</a>
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/Excel-Quest/" aria-label="Deschide demo-ul live Excel-Quest" target="_blank" rel="noopener noreferrer">Live Demo</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Excel-Quest" aria-label="Deschide repository-ul GitHub Excel-Quest" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
+            </div>
+          </article>
+          <article class="project-card glass" aria-labelledby="cv-scout-title">
+            <span class="badge-new">NEW</span>
+            <div class="project-top"><div><h3 id="cv-scout-title">CV Scout</h3><span class="badge-github">GitHub</span></div><span class="tag github">github</span></div>
+            <p class="project-desc">Aplica&#x21B;ie de analiz&#x103; CV cu scoring automat, feedback structurat &#x219;i recomand&#x103;ri de &icirc;mbun&#x103;t&#x103;&#x21B;ire. AI-native, deploy GitHub Pages.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/CV-SCOUT/" aria-label="Deschide demo-ul live CV Scout" target="_blank" rel="noopener noreferrer">Live Demo</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/CV-SCOUT" aria-label="Deschide repository-ul GitHub CV Scout" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
+            </div>
+          </article>
+          <article class="project-card glass" aria-labelledby="link-video-title">
+            <span class="badge-new">NEW</span>
+            <div class="project-top"><div><h3 id="link-video-title">Link Video Editor Studio</h3><span class="badge-github">GitHub</span></div><span class="tag github">github</span></div>
+            <p class="project-desc">Studio front-end pentru planuri de produc&#x21B;ie video. Structur&#x103; de produs cu zone func&#x21B;ionale clare.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="tools/link-video-automation-pack.html">Case study</a>
+              <a class="btn btn-primary" href="https://laurandreea10.github.io/Link-Video-Editor-Studio/" aria-label="Deschide demo-ul live Link Video Editor Studio" target="_blank" rel="noopener noreferrer">Live Demo</a>
+              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Link-Video-Editor-Studio" aria-label="Deschide repository-ul GitHub Link Video Editor Studio" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
+            </div>
+          </article>
+        </div>
+        <button class="btn btn-secondary collection-toggle" type="button" aria-expanded="false" aria-controls="latest-project-list" data-show-label="Vezi toate proiectele recente" data-hide-label="Restrânge proiectele">Vezi toate proiectele recente</button>
+        <p class="side-note-explore">&#x1F3AE; <strong>Side project:</strong> <a href="https://laurandreea10.github.io/BASKET-VS-AI/" target="_blank" rel="noopener noreferrer">BASKET VS AI</a> &mdash; joc arcade cu Web Audio procedural &#x219;i Enhanced Pro variant, explorat separat de stack-ul CRM. <a href="https://github.com/LaurAndreea10/BASKET-VS-AI" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a></p>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+    <section id="marketing-tech" class="curated-secondary gh-section" aria-labelledby="marketing-tech-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">&#x1F4CA; Marketing-Tech</span>
+            <h2 id="marketing-tech-title">Templates pentru marketing manager &#x219;i echipe growth</h2>
+            <p class="section-subtitle">Combin background-ul meu CRM &amp; marketing cu logica de produs front-end. Workspace-uri unificate pentru planificare campanii, KPI tracking &#x219;i conversion UI.</p>
+          </div>
+          <div class="card-actions no-auto-margin">
+            <a class="btn btn-secondary" href="./campaignpilot.html">CampaignPilot</a>
+            <a class="btn btn-secondary" href="./Campaign%20ROI%20Calculator.html">ROI Calculator</a>
+          </div>
+        </div>
+        <div class="projects-grid project-collection" id="marketing-project-list">
+          <article class="project-card glass">
+            <span class="badge-new">NEW</span>
+            <div class="project-top"><div><h3>CampaignPilot</h3><span class="badge-github">Marketing planner &middot; KPI hub</span></div><span class="tag github">marketing-tech</span></div>
+            <p class="project-desc">Workspace unificat pentru planificarea unei campanii de la idee la rezultate: KPI overview, funnel, budget allocation, content calendar &#x219;i brief generator.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="./campaignpilot.html">Deschide Live</a>
+              <a class="btn btn-secondary" href="./campaignpilot.html#brief">Vezi Brief Generator</a>
+            </div>
+          </article>
+          <article class="project-card glass">
+            <span class="badge-new">NEW</span>
+            <div class="project-top"><div><h3>Campaign ROI Calculator</h3><span class="badge-github">Marketing analytics &middot; ROI tool</span></div><span class="tag github">marketing-tech</span></div>
+            <p class="project-desc">Calculator interactiv pentru evaluarea performan&#x21B;ei campaniilor: ROI, ROAS, CAC, cost per lead, revenue estimat &#x219;i profitabilitate.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="./Campaign%20ROI%20Calculator.html">Deschide Live</a></div>
+          </article>
+          <article class="project-card glass">
+            <div class="project-top"><div><h3>Lead Magnet Landing</h3></div><span class="tag github">live</span></div>
+            <p class="project-desc">Landing page modular pentru ebooks, white papers &#x219;i resource downloads. Hero hook + social proof + email gate + thank-you flow.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="lead-magnet-landing.html">Deschide Live</a></div>
+          </article>
+        </div>
+        <button class="btn btn-secondary collection-toggle" type="button" aria-expanded="false" aria-controls="marketing-project-list" data-show-label="Vezi toate proiectele Marketing-Tech" data-hide-label="Restrânge proiectele">Vezi toate proiectele Marketing-Tech</button>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+    <section id="growth-suite" class="curated-secondary" aria-labelledby="growth-suite-title">
+      <div class="container">
+        <div class="growth-suite-head">
+          <div>
+            <span class="eyebrow">10 experiențe implementate</span>
+            <h2 id="growth-suite-title">LaurAi Growth Suite</h2>
+            <p class="section-subtitle">Zece experiențe conectate care demonstrează procesul, progresul, accesibilitatea și maturizarea produselor.</p>
+          </div>
+          <a class="btn btn-primary growth-suite-all" href="growth-suite.html">Deschide hub-ul complet →</a>
+        </div>
+        <div class="growth-suite-grid" id="growth-suite-modules">
+          <article class="growth-suite-card"><span class="growth-suite-number">01 · TOP 3</span><h3>Case Study Story Mode</h3><p>Problemă, decizie, implementare, dovadă și lecție pentru proiectele principale.</p><a href="case-study-story.html">Deschide Story Mode →</a><span class="growth-suite-status">Implementat</span></article>
+          <article class="growth-suite-card"><span class="growth-suite-number">02 · 90 SEC</span><h3>Tur ghidat</h3><p>Traseu accesibil cu progres, navigare Previous/Next, Skip și taste săgeată.</p><a href="guided-tour.html">Pornește turul →</a><span class="growth-suite-status">Implementat</span></article>
+          <article class="growth-suite-card"><span class="growth-suite-number">03 · READY</span><h3>Experience Kit</h3><p>Bio, poziționare, competențe, Top 3, copiere și versiune PDF.</p><a href="recruiter-kit.html">Deschide kitul →</a><span class="growth-suite-status">Implementat</span></article>
+          <article class="growth-suite-card"><span class="growth-suite-number">04 · MAP</span><h3>Ecosistem LaurAi</h3><p>CRM, Marketing-Tech, Accessibility, Automation, Games și Experiments.</p><a href="ecosystem-map.html">Explorează harta →</a><span class="growth-suite-status">Implementat</span></article>
+          <article class="growth-suite-card"><span class="growth-suite-number">05 · QUALITY</span><h3>Proof Dashboard</h3><p>Status central pentru demo, documentație, accesibilitate, audit și CI/CD.</p><a href="proof-dashboard.html">Vezi dashboard-ul →</a><span class="growth-suite-status">Implementat</span></article>
+          <article class="growth-suite-card"><span class="growth-suite-number">06 · LESSONS</span><h3>What I Learned</h3><p>Lecțiile fiecărei etape, conectate cu proiecte și rezultate publice.</p><a href="what-i-learned.html">Vezi lecțiile →</a><span class="growth-suite-status">Implementat</span></article>
+          <article class="growth-suite-card"><span class="growth-suite-number">07 · PROGRESS</span><h3>Before / After</h3><p>Comparații între versiunile inițiale și produsele actuale.</p><a href="before-after.html">Compară versiunile →</a><span class="growth-suite-status">Implementat</span></article>
+          <article class="growth-suite-card"><span class="growth-suite-number">08 · ROLES</span><h3>Demo Scenarios</h3><p>Trasee dedicate pentru manager, agent, client și demo rapid.</p><a href="demo-scenarios.html">Alege scenariul →</a><span class="growth-suite-status">Implementat</span></article>
+          <article class="growth-suite-card"><span class="growth-suite-number">09 · INCLUSIVE</span><h3>Accessibility Lab</h3><p>Contrast, text mare, mod simplificat, tastatură și feedback multimodal.</p><a href="accessibility-lab.html">Testează laboratorul →</a><span class="growth-suite-status">Implementat</span></article>
+          <article class="growth-suite-card"><span class="growth-suite-number">10 · HISTORY</span><h3>Build in Public</h3><p>Jurnal public care conectează problemele, remedierile, dovezile și lecțiile.</p><a href="build-in-public.html">Deschide jurnalul →</a><span class="growth-suite-status">Implementat</span></article>
+        </div>
+        <button class="btn btn-secondary growth-suite-toggle" type="button" aria-controls="growth-suite-modules" aria-expanded="false" data-show-label="Arată toate cele 10 experiențe" data-hide-label="Arată doar primele 3">Arată toate cele 10 experiențe</button>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+    <section id="insights" class="curated-secondary" aria-labelledby="insights-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Insights</span>
+            <h2 id="insights-title">Decizii &#x219;i lec&#x21B;ii din construirea unui CRM SaaS</h2>
+            <p class="section-subtitle">C&acirc;teva insight-uri despre produs, arhitectur&#x103; &#x219;i UX.</p>
+          </div>
+        </div>
+        <div class="insights-grid">
+          <article class="project-card glass" aria-labelledby="insight-1-title">
+            <span class="tag">Lessons</span>
+            <h3 id="insight-1-title">3 lec&#x21B;ii din construirea unui SaaS CRM de la zero</h3>
+            <p class="project-desc">Un CRM este un sistem de decizii, nu doar o interfa&#x21B;&#x103; cu lead-uri &#x219;i task-uri.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="insights/saas-crm-lectii.html">Cite&#x219;te insight-ul</a></div>
+          </article>
+          <article class="project-card glass" aria-labelledby="insight-2-title">
+            <span class="tag">Architecture</span>
+            <h3 id="insight-2-title">De ce am trecut de la single-file HTML la Vite + React</h3>
+            <p class="project-desc">Vite + React mi-au permis s&#x103; separ layout-ul, cardurile &#x219;i fluxurile &icirc;n componente reutilizabile.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="insights/single-file-la-vite-react.html">Cite&#x219;te insight-ul</a></div>
+          </article>
+          <article class="project-card glass" aria-labelledby="insight-3-title">
+            <span class="tag">UX decisions</span>
+            <h3 id="insight-3-title">Flow builder vs Kanban</h3>
+            <p class="project-desc">Kanban-ul organizeaz&#x103; munca, iar Flow builder-ul organizeaz&#x103; deciziile.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="insights/flow-builder-vs-kanban.html">Cite&#x219;te insight-ul</a></div>
+          </article>
+          <article class="project-card glass" aria-labelledby="insight-4-title">
+            <span class="tag">Subiecte viitoare</span>
+            <h3 id="insight-4-title">Ce a&#x219; documenta mai departe</h3>
+            <p class="project-desc">Deciziile din spatele automatiz&#x103;rilor &#x219;i claritatea pe m&#x103;sur&#x103; ce cresc datele &#x219;i regulile.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="insights/ce-as-documenta.html">Cite&#x219;te insight-ul</a></div>
+          </article>
+          <article class="project-card glass">
+            <span class="tag">Case study</span>
+            <h3>Excel-Quest &mdash; de la landing static la produs cu progres salvat</h3>
+            <p class="project-desc">Am transformat Excel-Quest dintr-un landing simplu &icirc;ntr-un produs orientat pe reluare.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="projects/excel-quest.html" aria-label="Deschide case study Excel-Quest">Deschide case study</a>
+              <a class="btn btn-secondary" href="https://laurandreea10.github.io/Excel-Quest/excel-quest-hub.html" target="_blank" rel="noopener noreferrer">Vezi hub-ul</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+    <section id="ecosystem-hubs" aria-labelledby="ecosystem-hubs-title">
+      <div class="container">
+        <div class="section-head"><div><span class="eyebrow">Mai mult</span><h2 id="ecosystem-hubs-title">Hub-uri dedicate și experimente</h2><p class="section-subtitle">Pagina principală prezintă selecția esențială; documentația, istoricul și colecțiile complete rămân disponibile separat.</p></div></div>
+        <div class="ecosystem-hub-grid">
+          <article class="ecosystem-hub-card"><span class="tag">Evolution</span><h3>Evoluție & Practice Lab</h3><p>Versiuni, exerciții progresive, decizii și dovezi tehnice.</p><a href="evolution-lab.html">Deschide Evoluția →</a></article>
+          <article class="ecosystem-hub-card"><span class="tag">Proof</span><h3>Proof Registry</h3><p>Implementări verificabile, audituri și rezultate publice.</p><a href="proof-registry.html">Vezi dovezile →</a></article>
+          <article class="ecosystem-hub-card"><span class="tag">Growth</span><h3>Growth Suite</h3><p>Cele zece experiențe conectate, fără a încărca pagina principală.</p><a href="growth-suite.html">Explorează suita →</a></article>
+          <article class="ecosystem-hub-card"><span class="tag">History</span><h3>Releases & Project Health</h3><p>Istoric de livrare, stare tehnică și verificări recurente.</p><a href="release-timeline.html">Vezi istoricul →</a></article>
+          <article class="ecosystem-hub-card"><span class="tag">Canva · Visual Design</span><h3>Colecție Canva — Excel Quest &amp; CRM</h3><p>14 materiale de design pentru educație, CRM și marketing, inclusiv șase drafturi asistate de AI. Colecție disponibilă separat în română și engleză; contribuțiile manuale personale rămân de documentat.</p><a href="canva-collection.html">Explorează colecția Canva →</a></article>
+          <article class="ecosystem-hub-card"><span class="tag">Data Visualization</span><h3>Revenue Landscape</h3><p>Peisaj izometric 3D al veniturilor, desenat în Canvas 2D fără dependențe.</p><a href="https://laurandreea10.github.io/Revenue-Landscape/" target="_blank" rel="noopener noreferrer">Explorează proiectul →</a></article>
+        </div>
       </div>
     </section>
 
@@ -758,206 +937,6 @@
     </section>
 
     <div class="section-divider"></div>
-    <section id="latest-github" class="curated-secondary" class="gh-section" aria-labelledby="latest-github-title">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">&#x1F3AE; Timp liber &middot; Latest on GitHub</span>
-            <h2 id="latest-github-title">Cele mai noi proiecte construite &icirc;n timpul liber</h2>
-            <div class="gh-meta"><span>Cod public &bull; Deploy automat &bull; Open source</span></div>
-          </div>
-          <a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer" aria-label="Vezi toate repo-urile GitHub ale Laurei Andreea">Toate repo-urile &rarr;</a>
-        </div>
-        <div class="projects-grid project-collection" id="latest-project-list" aria-label="Proiecte GitHub recente">
-<article class="project-card glass" aria-labelledby="livada-title"><div class="project-meta"><span class="project-type">UI · Landing page · Scroll</span><span class="project-status">v1.1.0</span></div><h3 id="livada-title">LIVADA — landing page cinematic</h3><p>Brand fictiv de suc presat la rece din livezile Moldovei: intro cu o picătură de lumină, titlu care se presează la scroll, patru arome care schimbă culoarea paginii, constructor de amestec și calendarul culesului. Din 1.1, și jocul Culesul: tăiat fructe, viespi, mărul de aur, patru moduri și 12 realizări. RO/EN, tastatură și mișcare redusă.</p><div class="project-links"><a href="livada/" class="btn btn-primary">Deschide</a><a href="livada/joc/" class="btn btn-secondary">Joacă Culesul</a><a href="livada/README.md" class="btn btn-secondary">Cum e construit</a></div></article>
-<article class="project-card glass" aria-labelledby="pentarena-title"><div class="project-meta"><span class="project-type">Game · Canvas · 2 jucători</span><span class="project-status">v2.3.0</span></div><h3 id="pentarena-title">PentArena</h3><p>Baschet, fotbal, air hockey, volei și biliard contra AI sau în doi pe același ecran: carieră în trei ligi, provocare zilnică, reluări, bonusuri, vestiar și 16 realizări. Teren extins, fullscreen, reluarea partidei, antrenament ghidat, provocări săptămânale, stiluri AI și temă dark/light. PWA offline, RO/EN, contrast ridicat și mișcare redusă.</p><div class="project-links"><a href="pentarena/" class="btn btn-primary">Joacă</a><a href="pentarena/changelog.html" class="btn btn-secondary">Istoric</a><a href="pentarena/README.md" class="btn btn-secondary">README</a></div></article><article class="project-card glass" aria-labelledby="serpent-title"><div class="project-meta"><span class="project-type">Game · Canvas</span><span class="project-status">v2.0.0</span></div><h3 id="serpent-title">Serpent Prism</h3><p>Zuma × Snake într-o arenă Prism Glass: trei lumi, niveluri ghidate, șase moduri, puzzle-uri, sunet, PWA offline, progres local, RO/EN, contrast ridicat și mișcare redusă.</p><div class="project-links"><a href="serpent-prism/" class="btn btn-primary">Joacă</a><a href="serpent-prism/changelog.html" class="btn btn-secondary">Istoric</a><a href="serpent-prism/README.md" class="btn btn-secondary">README</a></div></article>
-<article class="project-card glass" aria-labelledby="slidestorm-title"><div class="project-meta"><span class="project-type">Game · Canvas</span><span class="project-status">v2.4.0</span></div><h3 id="slidestorm-title">SlideStorm Arena</h3><p>100 de niveluri, 8 sporturi și 11 moduri într-un parc cu apă, nisip și furtuni. Constructor, progres local validat și opțiuni de accesibilitate.</p><div class="project-links"><a href="slidestorm-arena/" class="btn btn-primary">Joacă</a><a href="slidestorm-arena/case-study.html" class="btn btn-secondary">Studiu de caz</a><a href="slidestorm-arena/README.md" class="btn btn-secondary">README</a></div></article>
-          <article class="project-card glass" aria-labelledby="loop-cosmic-relay-title">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3 id="loop-cosmic-relay-title">LOOP — Cosmic Relay</h3><span class="badge-github">Game · Accessibility · PWA</span></div><span class="tag github">game</span></div>
-            <p class="project-desc">Joc cosmic accesibil cu 9 moduri, progres persistent, power-up-uri, șapte trasee și control printr-o singură acțiune.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="projects/loop-cosmic-relay.html">Case study RO/EN</a>
-              <a class="btn btn-primary" href="https://laurandreea10.github.io/LOOP-Cosmic-Relay/" target="_blank" rel="noopener noreferrer">Deschide jocul →</a>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/LOOP-Cosmic-Relay" target="_blank" rel="noopener noreferrer">GitHub →</a>
-            </div>
-          </article>
-          <article class="project-card glass" aria-labelledby="pulseboard-title">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3 id="pulseboard-title">PulseBoard</h3><span class="badge-github">GitHub</span></div><span class="tag github">github</span></div>
-            <p class="project-desc">Dashboard de venituri &amp; opera&#x21B;iuni care import&#x103; date reale (CSV/Google Sheet), detecteaz&#x103; anomalii &#x219;i genereaz&#x103; un briefing executiv cu ac&#x21B;iuni, scris de AI.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="projects/pulseboard.html">Case study</a>
-              <a class="btn btn-primary" href="https://laurandreea10.github.io/PulseBoard/" aria-label="Deschide demo-ul live PulseBoard" target="_blank" rel="noopener noreferrer">Live Demo</a>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/PulseBoard" aria-label="Deschide repository-ul GitHub PulseBoard" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
-            </div>
-          </article>
-          <article class="project-card glass" aria-labelledby="excel-quest-title">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3 id="excel-quest-title">Excel-Quest</h3><span class="badge-github">GitHub</span></div><span class="tag github">github</span></div>
-            <p class="project-desc">Aplica&#x21B;ie educa&#x21B;ional&#x103; gamificat&#x103; pentru &icirc;nv&#x103;&#x21B;area Excel. Structur&#x103; de quest, progres vizibil &#x219;i deploy GitHub Pages.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="projects/excel-quest.html">Case study</a>
-              <a class="btn btn-primary" href="https://laurandreea10.github.io/Excel-Quest/" aria-label="Deschide demo-ul live Excel-Quest" target="_blank" rel="noopener noreferrer">Live Demo</a>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Excel-Quest" aria-label="Deschide repository-ul GitHub Excel-Quest" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
-            </div>
-          </article>
-          <article class="project-card glass" aria-labelledby="cv-scout-title">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3 id="cv-scout-title">CV Scout</h3><span class="badge-github">GitHub</span></div><span class="tag github">github</span></div>
-            <p class="project-desc">Aplica&#x21B;ie de analiz&#x103; CV cu scoring automat, feedback structurat &#x219;i recomand&#x103;ri de &icirc;mbun&#x103;t&#x103;&#x21B;ire. AI-native, deploy GitHub Pages.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="https://laurandreea10.github.io/CV-SCOUT/" aria-label="Deschide demo-ul live CV Scout" target="_blank" rel="noopener noreferrer">Live Demo</a>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/CV-SCOUT" aria-label="Deschide repository-ul GitHub CV Scout" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
-            </div>
-          </article>
-          <article class="project-card glass" aria-labelledby="link-video-title">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3 id="link-video-title">Link Video Editor Studio</h3><span class="badge-github">GitHub</span></div><span class="tag github">github</span></div>
-            <p class="project-desc">Studio front-end pentru planuri de produc&#x21B;ie video. Structur&#x103; de produs cu zone func&#x21B;ionale clare.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="tools/link-video-automation-pack.html">Case study</a>
-              <a class="btn btn-primary" href="https://laurandreea10.github.io/Link-Video-Editor-Studio/" aria-label="Deschide demo-ul live Link Video Editor Studio" target="_blank" rel="noopener noreferrer">Live Demo</a>
-              <a class="btn btn-secondary" href="https://github.com/LaurAndreea10/Link-Video-Editor-Studio" aria-label="Deschide repository-ul GitHub Link Video Editor Studio" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
-            </div>
-          </article>
-        </div>
-        <button class="btn btn-secondary collection-toggle" type="button" aria-expanded="false" aria-controls="latest-project-list" data-show-label="Vezi toate proiectele recente" data-hide-label="Restrânge proiectele">Vezi toate proiectele recente</button>
-        <p class="side-note-explore">&#x1F3AE; <strong>Side project:</strong> <a href="https://laurandreea10.github.io/BASKET-VS-AI/" target="_blank" rel="noopener noreferrer">BASKET VS AI</a> &mdash; joc arcade cu Web Audio procedural &#x219;i Enhanced Pro variant, explorat separat de stack-ul CRM. <a href="https://github.com/LaurAndreea10/BASKET-VS-AI" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a></p>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-    <section id="marketing-tech" class="curated-secondary" class="gh-section" aria-labelledby="marketing-tech-title">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">&#x1F4CA; Marketing-Tech</span>
-            <h2 id="marketing-tech-title">Templates pentru marketing manager &#x219;i echipe growth</h2>
-            <p class="section-subtitle">Combin background-ul meu CRM &amp; marketing cu logica de produs front-end. Workspace-uri unificate pentru planificare campanii, KPI tracking &#x219;i conversion UI.</p>
-          </div>
-          <div class="card-actions no-auto-margin">
-            <a class="btn btn-secondary" href="./campaignpilot.html">CampaignPilot</a>
-            <a class="btn btn-secondary" href="./Campaign%20ROI%20Calculator.html">ROI Calculator</a>
-          </div>
-        </div>
-        <div class="projects-grid project-collection" id="marketing-project-list">
-          <article class="project-card glass">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3>CampaignPilot</h3><span class="badge-github">Marketing planner &middot; KPI hub</span></div><span class="tag github">marketing-tech</span></div>
-            <p class="project-desc">Workspace unificat pentru planificarea unei campanii de la idee la rezultate: KPI overview, funnel, budget allocation, content calendar &#x219;i brief generator.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="./campaignpilot.html">Deschide Live</a>
-              <a class="btn btn-secondary" href="./campaignpilot.html#brief">Vezi Brief Generator</a>
-            </div>
-          </article>
-          <article class="project-card glass">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3>Campaign ROI Calculator</h3><span class="badge-github">Marketing analytics &middot; ROI tool</span></div><span class="tag github">marketing-tech</span></div>
-            <p class="project-desc">Calculator interactiv pentru evaluarea performan&#x21B;ei campaniilor: ROI, ROAS, CAC, cost per lead, revenue estimat &#x219;i profitabilitate.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="./Campaign%20ROI%20Calculator.html">Deschide Live</a></div>
-          </article>
-          <article class="project-card glass">
-            <div class="project-top"><div><h3>Lead Magnet Landing</h3></div><span class="tag github">live</span></div>
-            <p class="project-desc">Landing page modular pentru ebooks, white papers &#x219;i resource downloads. Hero hook + social proof + email gate + thank-you flow.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="lead-magnet-landing.html">Deschide Live</a></div>
-          </article>
-        </div>
-        <button class="btn btn-secondary collection-toggle" type="button" aria-expanded="false" aria-controls="marketing-project-list" data-show-label="Vezi toate proiectele Marketing-Tech" data-hide-label="Restrânge proiectele">Vezi toate proiectele Marketing-Tech</button>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-    <section id="growth-suite" class="curated-secondary" aria-labelledby="growth-suite-title">
-      <div class="container">
-        <div class="growth-suite-head">
-          <div>
-            <span class="eyebrow">10 experiențe implementate</span>
-            <h2 id="growth-suite-title">LaurAi Growth Suite</h2>
-            <p class="section-subtitle">Zece experiențe conectate care demonstrează procesul, progresul, accesibilitatea și maturizarea produselor.</p>
-          </div>
-          <a class="btn btn-primary growth-suite-all" href="growth-suite.html">Deschide hub-ul complet →</a>
-        </div>
-        <div class="growth-suite-grid" id="growth-suite-modules">
-          <article class="growth-suite-card"><span class="growth-suite-number">01 · TOP 3</span><h3>Case Study Story Mode</h3><p>Problemă, decizie, implementare, dovadă și lecție pentru proiectele principale.</p><a href="case-study-story.html">Deschide Story Mode →</a><span class="growth-suite-status">Implementat</span></article>
-          <article class="growth-suite-card"><span class="growth-suite-number">02 · 90 SEC</span><h3>Tur ghidat</h3><p>Traseu accesibil cu progres, navigare Previous/Next, Skip și taste săgeată.</p><a href="guided-tour.html">Pornește turul →</a><span class="growth-suite-status">Implementat</span></article>
-          <article class="growth-suite-card"><span class="growth-suite-number">03 · READY</span><h3>Experience Kit</h3><p>Bio, poziționare, competențe, Top 3, copiere și versiune PDF.</p><a href="recruiter-kit.html">Deschide kitul →</a><span class="growth-suite-status">Implementat</span></article>
-          <article class="growth-suite-card"><span class="growth-suite-number">04 · MAP</span><h3>Ecosistem LaurAi</h3><p>CRM, Marketing-Tech, Accessibility, Automation, Games și Experiments.</p><a href="ecosystem-map.html">Explorează harta →</a><span class="growth-suite-status">Implementat</span></article>
-          <article class="growth-suite-card"><span class="growth-suite-number">05 · QUALITY</span><h3>Proof Dashboard</h3><p>Status central pentru demo, documentație, accesibilitate, audit și CI/CD.</p><a href="proof-dashboard.html">Vezi dashboard-ul →</a><span class="growth-suite-status">Implementat</span></article>
-          <article class="growth-suite-card"><span class="growth-suite-number">06 · LESSONS</span><h3>What I Learned</h3><p>Lecțiile fiecărei etape, conectate cu proiecte și rezultate publice.</p><a href="what-i-learned.html">Vezi lecțiile →</a><span class="growth-suite-status">Implementat</span></article>
-          <article class="growth-suite-card"><span class="growth-suite-number">07 · PROGRESS</span><h3>Before / After</h3><p>Comparații între versiunile inițiale și produsele actuale.</p><a href="before-after.html">Compară versiunile →</a><span class="growth-suite-status">Implementat</span></article>
-          <article class="growth-suite-card"><span class="growth-suite-number">08 · ROLES</span><h3>Demo Scenarios</h3><p>Trasee dedicate pentru manager, agent, client și demo rapid.</p><a href="demo-scenarios.html">Alege scenariul →</a><span class="growth-suite-status">Implementat</span></article>
-          <article class="growth-suite-card"><span class="growth-suite-number">09 · INCLUSIVE</span><h3>Accessibility Lab</h3><p>Contrast, text mare, mod simplificat, tastatură și feedback multimodal.</p><a href="accessibility-lab.html">Testează laboratorul →</a><span class="growth-suite-status">Implementat</span></article>
-          <article class="growth-suite-card"><span class="growth-suite-number">10 · HISTORY</span><h3>Build in Public</h3><p>Jurnal public care conectează problemele, remedierile, dovezile și lecțiile.</p><a href="build-in-public.html">Deschide jurnalul →</a><span class="growth-suite-status">Implementat</span></article>
-        </div>
-        <button class="btn btn-secondary growth-suite-toggle" type="button" aria-controls="growth-suite-modules" aria-expanded="false" data-show-label="Arată toate cele 10 experiențe" data-hide-label="Arată doar primele 3">Arată toate cele 10 experiențe</button>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-    <section id="insights" class="curated-secondary" aria-labelledby="insights-title">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Insights</span>
-            <h2 id="insights-title">Decizii &#x219;i lec&#x21B;ii din construirea unui CRM SaaS</h2>
-            <p class="section-subtitle">C&acirc;teva insight-uri despre produs, arhitectur&#x103; &#x219;i UX.</p>
-          </div>
-        </div>
-        <div class="insights-grid">
-          <article class="project-card glass" aria-labelledby="insight-1-title">
-            <span class="tag">Lessons</span>
-            <h3 id="insight-1-title">3 lec&#x21B;ii din construirea unui SaaS CRM de la zero</h3>
-            <p class="project-desc">Un CRM este un sistem de decizii, nu doar o interfa&#x21B;&#x103; cu lead-uri &#x219;i task-uri.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="insights/saas-crm-lectii.html">Cite&#x219;te insight-ul</a></div>
-          </article>
-          <article class="project-card glass" aria-labelledby="insight-2-title">
-            <span class="tag">Architecture</span>
-            <h3 id="insight-2-title">De ce am trecut de la single-file HTML la Vite + React</h3>
-            <p class="project-desc">Vite + React mi-au permis s&#x103; separ layout-ul, cardurile &#x219;i fluxurile &icirc;n componente reutilizabile.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="insights/single-file-la-vite-react.html">Cite&#x219;te insight-ul</a></div>
-          </article>
-          <article class="project-card glass" aria-labelledby="insight-3-title">
-            <span class="tag">UX decisions</span>
-            <h3 id="insight-3-title">Flow builder vs Kanban</h3>
-            <p class="project-desc">Kanban-ul organizeaz&#x103; munca, iar Flow builder-ul organizeaz&#x103; deciziile.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="insights/flow-builder-vs-kanban.html">Cite&#x219;te insight-ul</a></div>
-          </article>
-          <article class="project-card glass" aria-labelledby="insight-4-title">
-            <span class="tag">Subiecte viitoare</span>
-            <h3 id="insight-4-title">Ce a&#x219; documenta mai departe</h3>
-            <p class="project-desc">Deciziile din spatele automatiz&#x103;rilor &#x219;i claritatea pe m&#x103;sur&#x103; ce cresc datele &#x219;i regulile.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="insights/ce-as-documenta.html">Cite&#x219;te insight-ul</a></div>
-          </article>
-          <article class="project-card glass">
-            <span class="tag">Case study</span>
-            <h3>Excel-Quest &mdash; de la landing static la produs cu progres salvat</h3>
-            <p class="project-desc">Am transformat Excel-Quest dintr-un landing simplu &icirc;ntr-un produs orientat pe reluare.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="projects/excel-quest.html" aria-label="Deschide case study Excel-Quest">Deschide case study</a>
-              <a class="btn btn-secondary" href="https://laurandreea10.github.io/Excel-Quest/excel-quest-hub.html" target="_blank" rel="noopener noreferrer">Vezi hub-ul</a>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-    <section id="ecosystem-hubs" aria-labelledby="ecosystem-hubs-title">
-      <div class="container">
-        <div class="section-head"><div><span class="eyebrow">Ecosistem complet</span><h2 id="ecosystem-hubs-title">Mai puțin pe prima pagină. Mai mult în hub-urile dedicate.</h2><p class="section-subtitle">Pagina principală prezintă selecția esențială; documentația, istoricul și colecțiile complete rămân disponibile separat.</p></div></div>
-        <div class="ecosystem-hub-grid">
-          <article class="ecosystem-hub-card"><span class="tag">Evolution</span><h3>Evoluție & Practice Lab</h3><p>Versiuni, exerciții progresive, decizii și dovezi tehnice.</p><a href="evolution-lab.html">Deschide Evoluția →</a></article>
-          <article class="ecosystem-hub-card"><span class="tag">Proof</span><h3>Proof Registry</h3><p>Implementări verificabile, audituri și rezultate publice.</p><a href="proof-registry.html">Vezi dovezile →</a></article>
-          <article class="ecosystem-hub-card"><span class="tag">Growth</span><h3>Growth Suite</h3><p>Cele zece experiențe conectate, fără a încărca pagina principală.</p><a href="growth-suite.html">Explorează suita →</a></article>
-          <article class="ecosystem-hub-card"><span class="tag">History</span><h3>Releases & Project Health</h3><p>Istoric de livrare, stare tehnică și verificări recurente.</p><a href="release-timeline.html">Vezi istoricul →</a></article>
-          <article class="ecosystem-hub-card"><span class="tag">Canva · Visual Design</span><h3>Colecție Canva — Excel Quest &amp; CRM</h3><p>14 materiale de design pentru educație, CRM și marketing, inclusiv șase drafturi asistate de AI. Colecție disponibilă separat în română și engleză; contribuțiile manuale personale rămân de documentat.</p><a href="canva-collection.html">Explorează colecția Canva →</a></article>
-          <article class="ecosystem-hub-card"><span class="tag">Data Visualization</span><h3>Revenue Landscape</h3><p>Peisaj izometric 3D al veniturilor, desenat în Canvas 2D fără dependențe.</p><a href="https://laurandreea10.github.io/Revenue-Landscape/" target="_blank" rel="noopener noreferrer">Explorează proiectul →</a></article>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
     <section id="about" aria-labelledby="about-title">
       <div class="container about-contact">
         <article class="about-card glass">
@@ -999,7 +978,7 @@
     </section>
 
     <div class="section-divider"></div>
-    <section class="container" id="curious-garden-opinions" aria-labelledby="garden-opinions-title" data-approved-feedback="curious-garden/approved-feedback.json" style="padding:3rem 0">
+    <section class="container" id="curious-garden-opinions" hidden data-hide-when-empty aria-labelledby="garden-opinions-title" data-approved-feedback="curious-garden/approved-feedback.json" style="padding:3rem 0">
       <div class="glass" style="border-radius:24px;padding:clamp(1rem,3vw,2rem)">
         <span class="eyebrow">Grădina Curioasă · Feedback</span>
         <h2 id="garden-opinions-title" style="margin:.4rem 0 1rem">Păreri despre joc</h2>
@@ -1024,29 +1003,9 @@
   </footer>
 
   <script src="curious-garden/feedback-display.js" defer></script>
-  <!-- FIX #6: main.js defer (era deja corect) -->
   <script src="portfolio-config.js?v=20261009-growth-quest" defer></script>
-  <script src="main.js?v=20261011-growth" defer></script>
-  <script src="portfolio-upgrades.js?v=20260906" defer></script>
-
-  <!--
-    NOTE PENTRU main.js:
-    Daca ai scroll listeners, asigura-te ca au { passive: true }:
-      window.addEventListener('scroll', handler, { passive: true });
-    Daca heroPreviewFrame primea src la load, trebuie schimbat sa-l primeasca
-    doar la interactiune. Exemplu minimal:
-      var frame = document.getElementById('heroPreviewFrame');
-      var facade = document.getElementById('heroPreviewSection');
-      function activateIframe(src) {
-        if (!frame.src) {
-          frame.src = src;
-          frame.style.display = '';
-        }
-      }
-      facade.addEventListener('click', function() {
-        activateIframe('https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/');
-      }, { once: true });
-  -->
+  <script src="main.js?v=20261011-review" defer></script>
+  <script src="portfolio-upgrades.js?v=20261011b" defer></script>
 
 </body>
 </html>
