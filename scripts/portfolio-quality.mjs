@@ -34,11 +34,11 @@ for (const [file, html, configPath] of [
 }
 
 const freshnessChecks = [
-  ["portfolio-config.js", configSource, /updated:\s*["']2026-10-09["']/],
+  ["portfolio-config.js", configSource, /updated:\s*["']2026-10-11["']/],
   ["portfolio.html", ro, /Serpent Prism v2\.0\.0/],
-  ["portfolio.html", ro, /datetime=["']2026-10-09["']/],
+  ["portfolio.html", ro, /datetime=["']2026-10-11["']/],
   ["en/index.html", en, /Serpent Prism v2\.0\.0/],
-  ["en/index.html", en, /Now · updated 9 October 2026/]
+  ["en/index.html", en, /Now · updated 11 October 2026/]
 ];
 for (const [file, source, pattern] of freshnessChecks) {
   if (!pattern.test(source)) failures.push(`${file}: October version/date drift`);
