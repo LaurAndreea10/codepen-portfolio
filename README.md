@@ -1,5 +1,9 @@
 # Laura Andreea — CodePen Portfolio
 
+## Finalizat / Completed — 2026-10-12
+
+**Ghost Talk v3.0.0** — [joacă / play](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/) · [cod HTML / HTML source](ghost-talk/index.pen.html) · [ghid / guide](ghost-talk/README.md). Laborator bilingv de limbaj fantomatic cu 14 dialecte, 12 jocuri fără cronometru, poveste cu 5 finaluri și companion personalizabil; RO/EN și PWA offline. / Bilingual ghost-language lab with 14 dialects, 12 untimed games, a story with 5 endings and a customizable companion; RO/EN and offline PWA. Testarea pe telefon real și cu cititor de ecran rămâne de confirmat. / Real-phone and screen-reader testing remains unconfirmed.
+
 ## Finalizat / Completed — 2026-10-10
 
 **LIVADA v1.1.0** — [deschide / open](https://laurandreea10.github.io/codepen-portfolio/livada/) · [joacă Culesul / play The Harvest](https://laurandreea10.github.io/codepen-portfolio/livada/joc/) · [cum e construit / how it's built](livada/README.md). Din 1.1: joc de tăiat fructe cu viespi, mărul de aur, 4 moduri și 12 realizări. / Since 1.1: a fruit-slicing game with wasps, a golden apple, 4 modes and 12 achievements. Landing page cinematic pentru un brand fictiv de suc presat la rece: intro animat, titlu presat la scroll, arome care recolorează pagina, constructor de amestec, calendarul culesului; RO/EN. / Cinematic landing page for a fictional cold-pressed juice brand: animated intro, scroll-pressed title, flavours that recolour the page, blend builder, harvest calendar; RO/EN. Real-phone testing remains unverified.
