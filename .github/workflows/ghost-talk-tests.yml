@@ -1,0 +1,65 @@
+name: Ghost Talk tests
+
+# Jest (with coverage), single-file freshness check and Chromium browser checks for Ghost Talk.
+on:
+  push:
+    paths:
+      - 'ghost-talk/**'
+      - '.github/workflows/ghost-talk-tests.yml'
+  pull_request:
+    paths:
+      - 'ghost-talk/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  jest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ghost-talk
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Jest
+        run: npm install --no-audit --no-fund
+      - name: Jest with coverage
+        run: npm run test:coverage
+      - name: index.pen.html is up to date
+        run: |
+          node build-standalone.cjs
+          git diff --exit-code index.pen.html || (echo "Run: node ghost-talk/build-standalone.cjs" && exit 1)
+
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright and Chromium
+        run: |
+          pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Serve the repository
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /dev/null 2>&1 &
+          sleep 2
+      - name: Browser checks (390 and 1280 px, offline)
+        env:
+          GHOST_URL: http://localhost:8000/ghost-talk/
+          GHOST_SHOTS: ${{ runner.temp }}/ghost-shots
+        run: python ghost-talk/tests/test_browser.py
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghost-talk-screenshots
+          path: ${{ runner.temp }}/ghost-shots
+          if-no-files-found: ignore

@@ -1,0 +1,1342 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for engine.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="prettify.css" />
+    <link rel="stylesheet" href="base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="index.html">All files</a> engine.js</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">94.55% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>417/441</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">81.36% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>323/397</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">96.57% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>169/175</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">96.29% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>234/243</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line high'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a>
+<a name='L178'></a><a href='#L178'>178</a>
+<a name='L179'></a><a href='#L179'>179</a>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a>
+<a name='L187'></a><a href='#L187'>187</a>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a>
+<a name='L206'></a><a href='#L206'>206</a>
+<a name='L207'></a><a href='#L207'>207</a>
+<a name='L208'></a><a href='#L208'>208</a>
+<a name='L209'></a><a href='#L209'>209</a>
+<a name='L210'></a><a href='#L210'>210</a>
+<a name='L211'></a><a href='#L211'>211</a>
+<a name='L212'></a><a href='#L212'>212</a>
+<a name='L213'></a><a href='#L213'>213</a>
+<a name='L214'></a><a href='#L214'>214</a>
+<a name='L215'></a><a href='#L215'>215</a>
+<a name='L216'></a><a href='#L216'>216</a>
+<a name='L217'></a><a href='#L217'>217</a>
+<a name='L218'></a><a href='#L218'>218</a>
+<a name='L219'></a><a href='#L219'>219</a>
+<a name='L220'></a><a href='#L220'>220</a>
+<a name='L221'></a><a href='#L221'>221</a>
+<a name='L222'></a><a href='#L222'>222</a>
+<a name='L223'></a><a href='#L223'>223</a>
+<a name='L224'></a><a href='#L224'>224</a>
+<a name='L225'></a><a href='#L225'>225</a>
+<a name='L226'></a><a href='#L226'>226</a>
+<a name='L227'></a><a href='#L227'>227</a>
+<a name='L228'></a><a href='#L228'>228</a>
+<a name='L229'></a><a href='#L229'>229</a>
+<a name='L230'></a><a href='#L230'>230</a>
+<a name='L231'></a><a href='#L231'>231</a>
+<a name='L232'></a><a href='#L232'>232</a>
+<a name='L233'></a><a href='#L233'>233</a>
+<a name='L234'></a><a href='#L234'>234</a>
+<a name='L235'></a><a href='#L235'>235</a>
+<a name='L236'></a><a href='#L236'>236</a>
+<a name='L237'></a><a href='#L237'>237</a>
+<a name='L238'></a><a href='#L238'>238</a>
+<a name='L239'></a><a href='#L239'>239</a>
+<a name='L240'></a><a href='#L240'>240</a>
+<a name='L241'></a><a href='#L241'>241</a>
+<a name='L242'></a><a href='#L242'>242</a>
+<a name='L243'></a><a href='#L243'>243</a>
+<a name='L244'></a><a href='#L244'>244</a>
+<a name='L245'></a><a href='#L245'>245</a>
+<a name='L246'></a><a href='#L246'>246</a>
+<a name='L247'></a><a href='#L247'>247</a>
+<a name='L248'></a><a href='#L248'>248</a>
+<a name='L249'></a><a href='#L249'>249</a>
+<a name='L250'></a><a href='#L250'>250</a>
+<a name='L251'></a><a href='#L251'>251</a>
+<a name='L252'></a><a href='#L252'>252</a>
+<a name='L253'></a><a href='#L253'>253</a>
+<a name='L254'></a><a href='#L254'>254</a>
+<a name='L255'></a><a href='#L255'>255</a>
+<a name='L256'></a><a href='#L256'>256</a>
+<a name='L257'></a><a href='#L257'>257</a>
+<a name='L258'></a><a href='#L258'>258</a>
+<a name='L259'></a><a href='#L259'>259</a>
+<a name='L260'></a><a href='#L260'>260</a>
+<a name='L261'></a><a href='#L261'>261</a>
+<a name='L262'></a><a href='#L262'>262</a>
+<a name='L263'></a><a href='#L263'>263</a>
+<a name='L264'></a><a href='#L264'>264</a>
+<a name='L265'></a><a href='#L265'>265</a>
+<a name='L266'></a><a href='#L266'>266</a>
+<a name='L267'></a><a href='#L267'>267</a>
+<a name='L268'></a><a href='#L268'>268</a>
+<a name='L269'></a><a href='#L269'>269</a>
+<a name='L270'></a><a href='#L270'>270</a>
+<a name='L271'></a><a href='#L271'>271</a>
+<a name='L272'></a><a href='#L272'>272</a>
+<a name='L273'></a><a href='#L273'>273</a>
+<a name='L274'></a><a href='#L274'>274</a>
+<a name='L275'></a><a href='#L275'>275</a>
+<a name='L276'></a><a href='#L276'>276</a>
+<a name='L277'></a><a href='#L277'>277</a>
+<a name='L278'></a><a href='#L278'>278</a>
+<a name='L279'></a><a href='#L279'>279</a>
+<a name='L280'></a><a href='#L280'>280</a>
+<a name='L281'></a><a href='#L281'>281</a>
+<a name='L282'></a><a href='#L282'>282</a>
+<a name='L283'></a><a href='#L283'>283</a>
+<a name='L284'></a><a href='#L284'>284</a>
+<a name='L285'></a><a href='#L285'>285</a>
+<a name='L286'></a><a href='#L286'>286</a>
+<a name='L287'></a><a href='#L287'>287</a>
+<a name='L288'></a><a href='#L288'>288</a>
+<a name='L289'></a><a href='#L289'>289</a>
+<a name='L290'></a><a href='#L290'>290</a>
+<a name='L291'></a><a href='#L291'>291</a>
+<a name='L292'></a><a href='#L292'>292</a>
+<a name='L293'></a><a href='#L293'>293</a>
+<a name='L294'></a><a href='#L294'>294</a>
+<a name='L295'></a><a href='#L295'>295</a>
+<a name='L296'></a><a href='#L296'>296</a>
+<a name='L297'></a><a href='#L297'>297</a>
+<a name='L298'></a><a href='#L298'>298</a>
+<a name='L299'></a><a href='#L299'>299</a>
+<a name='L300'></a><a href='#L300'>300</a>
+<a name='L301'></a><a href='#L301'>301</a>
+<a name='L302'></a><a href='#L302'>302</a>
+<a name='L303'></a><a href='#L303'>303</a>
+<a name='L304'></a><a href='#L304'>304</a>
+<a name='L305'></a><a href='#L305'>305</a>
+<a name='L306'></a><a href='#L306'>306</a>
+<a name='L307'></a><a href='#L307'>307</a>
+<a name='L308'></a><a href='#L308'>308</a>
+<a name='L309'></a><a href='#L309'>309</a>
+<a name='L310'></a><a href='#L310'>310</a>
+<a name='L311'></a><a href='#L311'>311</a>
+<a name='L312'></a><a href='#L312'>312</a>
+<a name='L313'></a><a href='#L313'>313</a>
+<a name='L314'></a><a href='#L314'>314</a>
+<a name='L315'></a><a href='#L315'>315</a>
+<a name='L316'></a><a href='#L316'>316</a>
+<a name='L317'></a><a href='#L317'>317</a>
+<a name='L318'></a><a href='#L318'>318</a>
+<a name='L319'></a><a href='#L319'>319</a>
+<a name='L320'></a><a href='#L320'>320</a>
+<a name='L321'></a><a href='#L321'>321</a>
+<a name='L322'></a><a href='#L322'>322</a>
+<a name='L323'></a><a href='#L323'>323</a>
+<a name='L324'></a><a href='#L324'>324</a>
+<a name='L325'></a><a href='#L325'>325</a>
+<a name='L326'></a><a href='#L326'>326</a>
+<a name='L327'></a><a href='#L327'>327</a>
+<a name='L328'></a><a href='#L328'>328</a>
+<a name='L329'></a><a href='#L329'>329</a>
+<a name='L330'></a><a href='#L330'>330</a>
+<a name='L331'></a><a href='#L331'>331</a>
+<a name='L332'></a><a href='#L332'>332</a>
+<a name='L333'></a><a href='#L333'>333</a>
+<a name='L334'></a><a href='#L334'>334</a>
+<a name='L335'></a><a href='#L335'>335</a>
+<a name='L336'></a><a href='#L336'>336</a>
+<a name='L337'></a><a href='#L337'>337</a>
+<a name='L338'></a><a href='#L338'>338</a>
+<a name='L339'></a><a href='#L339'>339</a>
+<a name='L340'></a><a href='#L340'>340</a>
+<a name='L341'></a><a href='#L341'>341</a>
+<a name='L342'></a><a href='#L342'>342</a>
+<a name='L343'></a><a href='#L343'>343</a>
+<a name='L344'></a><a href='#L344'>344</a>
+<a name='L345'></a><a href='#L345'>345</a>
+<a name='L346'></a><a href='#L346'>346</a>
+<a name='L347'></a><a href='#L347'>347</a>
+<a name='L348'></a><a href='#L348'>348</a>
+<a name='L349'></a><a href='#L349'>349</a>
+<a name='L350'></a><a href='#L350'>350</a>
+<a name='L351'></a><a href='#L351'>351</a>
+<a name='L352'></a><a href='#L352'>352</a>
+<a name='L353'></a><a href='#L353'>353</a>
+<a name='L354'></a><a href='#L354'>354</a>
+<a name='L355'></a><a href='#L355'>355</a>
+<a name='L356'></a><a href='#L356'>356</a>
+<a name='L357'></a><a href='#L357'>357</a>
+<a name='L358'></a><a href='#L358'>358</a>
+<a name='L359'></a><a href='#L359'>359</a>
+<a name='L360'></a><a href='#L360'>360</a>
+<a name='L361'></a><a href='#L361'>361</a>
+<a name='L362'></a><a href='#L362'>362</a>
+<a name='L363'></a><a href='#L363'>363</a>
+<a name='L364'></a><a href='#L364'>364</a>
+<a name='L365'></a><a href='#L365'>365</a>
+<a name='L366'></a><a href='#L366'>366</a>
+<a name='L367'></a><a href='#L367'>367</a>
+<a name='L368'></a><a href='#L368'>368</a>
+<a name='L369'></a><a href='#L369'>369</a>
+<a name='L370'></a><a href='#L370'>370</a>
+<a name='L371'></a><a href='#L371'>371</a>
+<a name='L372'></a><a href='#L372'>372</a>
+<a name='L373'></a><a href='#L373'>373</a>
+<a name='L374'></a><a href='#L374'>374</a>
+<a name='L375'></a><a href='#L375'>375</a>
+<a name='L376'></a><a href='#L376'>376</a>
+<a name='L377'></a><a href='#L377'>377</a>
+<a name='L378'></a><a href='#L378'>378</a>
+<a name='L379'></a><a href='#L379'>379</a>
+<a name='L380'></a><a href='#L380'>380</a>
+<a name='L381'></a><a href='#L381'>381</a>
+<a name='L382'></a><a href='#L382'>382</a>
+<a name='L383'></a><a href='#L383'>383</a>
+<a name='L384'></a><a href='#L384'>384</a>
+<a name='L385'></a><a href='#L385'>385</a>
+<a name='L386'></a><a href='#L386'>386</a>
+<a name='L387'></a><a href='#L387'>387</a>
+<a name='L388'></a><a href='#L388'>388</a>
+<a name='L389'></a><a href='#L389'>389</a>
+<a name='L390'></a><a href='#L390'>390</a>
+<a name='L391'></a><a href='#L391'>391</a>
+<a name='L392'></a><a href='#L392'>392</a>
+<a name='L393'></a><a href='#L393'>393</a>
+<a name='L394'></a><a href='#L394'>394</a>
+<a name='L395'></a><a href='#L395'>395</a>
+<a name='L396'></a><a href='#L396'>396</a>
+<a name='L397'></a><a href='#L397'>397</a>
+<a name='L398'></a><a href='#L398'>398</a>
+<a name='L399'></a><a href='#L399'>399</a>
+<a name='L400'></a><a href='#L400'>400</a>
+<a name='L401'></a><a href='#L401'>401</a>
+<a name='L402'></a><a href='#L402'>402</a>
+<a name='L403'></a><a href='#L403'>403</a>
+<a name='L404'></a><a href='#L404'>404</a>
+<a name='L405'></a><a href='#L405'>405</a>
+<a name='L406'></a><a href='#L406'>406</a>
+<a name='L407'></a><a href='#L407'>407</a>
+<a name='L408'></a><a href='#L408'>408</a>
+<a name='L409'></a><a href='#L409'>409</a>
+<a name='L410'></a><a href='#L410'>410</a>
+<a name='L411'></a><a href='#L411'>411</a>
+<a name='L412'></a><a href='#L412'>412</a>
+<a name='L413'></a><a href='#L413'>413</a>
+<a name='L414'></a><a href='#L414'>414</a>
+<a name='L415'></a><a href='#L415'>415</a>
+<a name='L416'></a><a href='#L416'>416</a>
+<a name='L417'></a><a href='#L417'>417</a>
+<a name='L418'></a><a href='#L418'>418</a>
+<a name='L419'></a><a href='#L419'>419</a>
+<a name='L420'></a><a href='#L420'>420</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">28508x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">8658x</span>
+<span class="cline-any cline-yes">4506x</span>
+<span class="cline-any cline-yes">2354x</span>
+<span class="cline-any cline-yes">4085x</span>
+<span class="cline-any cline-yes">3986x</span>
+<span class="cline-any cline-yes">25905x</span>
+<span class="cline-any cline-yes">17231x</span>
+<span class="cline-any cline-yes">16930x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">143x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4497x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">302x</span>
+<span class="cline-any cline-yes">302x</span>
+<span class="cline-any cline-yes">302x</span>
+<span class="cline-any cline-yes">302x</span>
+<span class="cline-any cline-yes">302x</span>
+<span class="cline-any cline-yes">3790x</span>
+<span class="cline-any cline-yes">5821x</span>
+<span class="cline-any cline-yes">1414x</span>
+<span class="cline-any cline-yes">1413x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">301x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1734x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">312x</span>
+<span class="cline-any cline-yes">302x</span>
+<span class="cline-any cline-yes">1431x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4453x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">304x</span>
+<span class="cline-any cline-yes">304x</span>
+<span class="cline-any cline-yes">3839x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1128x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">210x</span>
+<span class="cline-any cline-yes">210x</span>
+<span class="cline-any cline-yes">1478x</span>
+<span class="cline-any cline-yes">5418x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">201x</span>
+<span class="cline-any cline-yes">201x</span>
+<span class="cline-any cline-yes">401x</span>
+<span class="cline-any cline-yes">1387x</span>
+<span class="cline-any cline-yes">5174x</span>
+<span class="cline-any cline-yes">1333x</span>
+<span class="cline-any cline-yes">1332x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">823x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3687x</span>
+<span class="cline-any cline-yes">3686x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3578x</span>
+<span class="cline-any cline-yes">621x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3685x</span>
+<span class="cline-any cline-yes">3684x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3578x</span>
+<span class="cline-any cline-yes">319x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">313x</span>
+<span class="cline-any cline-yes">11559x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">300x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">128x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">129x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">111x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">122x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">48x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2351x</span>
+<span class="cline-any cline-yes">2349x</span>
+<span class="cline-any cline-yes">2347x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1734x</span>
+<span class="cline-any cline-yes">6143x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1711x</span>
+<span class="cline-any cline-yes">1711x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1709x</span>
+<span class="cline-any cline-yes">1708x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6840x</span>
+<span class="cline-any cline-yes">6870x</span>
+<span class="cline-any cline-yes">6870x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">93x</span>
+<span class="cline-any cline-yes">1053x</span>
+<span class="cline-any cline-yes">903x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">680x</span>
+<span class="cline-any cline-yes">680x</span>
+<span class="cline-any cline-yes">680x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">679x</span>
+<span class="cline-any cline-yes">679x</span>
+<span class="cline-any cline-yes">679x</span>
+<span class="cline-any cline-yes">679x</span>
+<span class="cline-any cline-yes">679x</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-yes">94x</span>
+<span class="cline-any cline-yes">76x</span>
+<span class="cline-any cline-yes">92x</span>
+<span class="cline-any cline-yes">88x</span>
+<span class="cline-any cline-yes">75x</span>
+<span class="cline-any cline-yes">84x</span>
+<span class="cline-any cline-yes">80x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1351x</span>
+<span class="cline-any cline-yes">1351x</span>
+<span class="cline-any cline-yes">1050x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">25x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">77x</span>
+<span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">51x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">63x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">678x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*!
+ * Ghost Talk engine v3.0.0 — pure, DOM-free, works in the browser (window.Ghost) and in Node (module.exports).
+ * Dialects, decoder, game rules, story graph, profile state. No dependencies.
+ */
+(function (root, factory) {
+  const G = factory();
+  if (typeof module === 'object' &amp;&amp; module.exports) module.exports = G;
+  else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>root.Ghost = G;</span>
+})(typeof self !== 'undefined' ? <span class="branch-0 cbranch-no" title="branch not covered" >self </span>: this, function () {
+  'use strict';
+&nbsp;
+  class GhostError extends Error { constructor(code) { super(code); this.code = code; this.name = 'GhostError'; } }
+  const own = (o, k) =&gt; typeof k === 'string' &amp;&amp; Object.prototype.hasOwnProperty.call(o, k);
+  const VOWELS = new Set(Array.from('aeiouăâîAEIOUĂÂÎ'));
+  const SIGIL = '〰';            // 〰 classic signature, one per EMF level
+  const MIRROR = '⟲ ';          // ⟲ mirror
+  const LOCK = '\u{1F510} ';         // 🔐 secret code
+  const RADIO = '\u{1F4FB} ';        // 📻 spirit-box morse
+  const RUNE = '᛭ ';            // ᛭ runic
+  const MASK = '\u{1F3AD} ';         // 🎭 emoji
+  const BAT = '\u{1F987} ';          // 🦇 vampire
+  const SCROLL = '\u{1F4DC} ';       // 📜 victorian
+  const isV = c =&gt; VOWELS.has(c);
+  const chars = s =&gt; Array.from(s);
+  const clamp = l =&gt; Math.min(5, Math.max(1, Math.round(Number(l)) || 1));
+  const isSpace = c =&gt; /\s/.test(c);
+  function hash(s) { let h = 2166136261; for (const c of s) { h ^= c.codePointAt(0); h = Math.imul(h, 16777619); } return h &gt;&gt;&gt; 0; }
+  function rng(seed) { return () =&gt; { seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed &gt;&gt;&gt; 15), 1 | seed); t = (t + Math.imul(t ^ (t &gt;&gt;&gt; 7), 61 | t)) ^ t; return ((t ^ (t &gt;&gt;&gt; 14)) &gt;&gt;&gt; 0) / 4294967296; }; }
+  const stripMarks = s =&gt; s.replace(/[̀-ͯ]/g, '');
+  const fold = s =&gt; stripMarks(String(s ?? <span class="branch-1 cbranch-no" title="branch not covered" >'')</span>.normalize('NFD')).toLowerCase().replace(/\s+/g, ' ').trim();
+  const HEX = /^[0-9a-f]+(?:-[0-9a-f]+)*$/i;
+  const invert = o =&gt; Object.fromEntries(Object.entries(o).map(([k, v]) =&gt; [v, k]));
+  const capLike = (src, word) =&gt; src === src.toUpperCase() &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >src.length &gt; 1 </span>? <span class="branch-0 cbranch-no" title="branch not covered" >word.toUpperCase() </span>: src[0] === src[0].toUpperCase() &amp;&amp; src[0] !== src[0].toLowerCase() ? word[0].toUpperCase() + word.slice(1) : word;
+&nbsp;
+  /* ---------- Tables ---------- */
+  const MORSE = { a: '.-', b: '-...', c: '-.-.', d: '-..', e: '.', f: '..-.', g: '--.', h: '....', i: '..', j: '.---', k: '-.-', l: '.-..', m: '--', n: '-.', o: '---', p: '.--.', q: '--.-', r: '.-.', s: '...', t: '-', u: '..-', v: '...-', w: '.--', x: '-..-', y: '-.--', z: '--..',
+    0: '-----', 1: '.----', 2: '..---', 3: '...--', 4: '....-', 5: '.....', 6: '-....', 7: '--...', 8: '---..', 9: '----.', '.': '.-.-.-', ',': '--..--', '?': '..--..', '!': '-.-.--', '-': '-....-', '/': '-..-.', '@': '.--.-.', "'": '.----.' };
+  const MORSE_R = invert(MORSE);
+  const RUNES = { a: 'ᚨ', b: 'ᛒ', c: 'ᚳ', d: 'ᛞ', e: 'ᛖ', f: 'ᚠ', g: 'ᚷ', h: 'ᚺ', i: 'ᛁ', j: 'ᛃ', k: 'ᚲ', l: 'ᛚ', m: 'ᛗ', n: 'ᚾ', o: 'ᛟ', p: 'ᛈ', q: 'ᛩ', r: 'ᚱ', s: 'ᛋ', t: 'ᛏ', u: 'ᚢ', v: 'ᚡ', w: 'ᚹ', x: 'ᛪ', y: 'ᚤ', z: 'ᛉ', 'ă': 'ᚫ', 'â': 'ᚪ', 'î': 'ᛇ', 'ș': 'ᛌ', 'ț': 'ᛐ', ' ': '᛫' };
+  const RUNES_R = invert(RUNES);
+  const EMOJI = { a: '🦇', b: '🦴', c: '🍬', d: '🐉', e: '👀', f: '🔥', g: '👻', h: '🎩', i: '🧪', j: '🃏', k: '🔑', l: '🌕', m: '🍄', n: '🌑', o: '🎃', p: '🧙', q: '👑', r: '🐀', s: '💀', t: '🪦', u: '🦉', v: '🧛', w: '🐺', x: '❌', y: '🧶', z: '💤', 'ă': '🍎', 'â': '🌰', 'î': '🦔', 'ș': '🐍', 'ț': '🪲' };
+  const EMOJI_R = invert(EMOJI);
+  const VICTORIAN = {
+    you: 'thee', your: 'thy', yours: 'thine', are: 'art', hello: 'hark', hi: 'hail', yes: 'aye', no: 'nay', do: 'dost', does: 'doth', have: 'hast',
+    friend: 'companion', ghost: 'spectre', scary: 'dreadful', candy: 'confection', house: 'manor', mom: 'mother', dad: 'father', cool: 'splendid', ok: 'verily', boo: 'prithee',
+    tu: 'dumneata', salut: 'închinăciune', da: 'întocmai', nu: 'nicidecum', prieten: 'amic', prietene: 'amice', 'mamă': 'maică', 'tată': 'taică',
+    'fantomă': 'stafie', fantoma: 'stafia', 'casă': 'conac', 'bomboană': 'zaharicală', foarte: 'nespus de', frumos: 'chipeș', bu: 'ascultați'
+  };
+  const VICTORIAN_R = invert(VICTORIAN);
+&nbsp;
+  const words = s =&gt; s.split(/(\p{L}+)/u);   // odd indices are words
+&nbsp;
+  /* ---------- Dialects ---------- */
+  const dialects = {
+    classic: { reversible: true, voice: { pitch: .55, rate: .72 }, tint: '#bff4ff',
+      encode(t, l) { if (t.includes(SIGIL)) throw new GhostError('SIGIL'); return chars(t).map(c =&gt; isV(c) ? c.repeat(l + 1) : c).join('') + SIGIL.repeat(l); },
+      decode(g) {
+        g = g.trimEnd();
+        const m = g.match(/〰+$/); <span class="missing-if-branch" title="if path not taken" >I</span>if (!m) <span class="cstat-no" title="statement not covered" >throw new GhostError('NOSIG');</span>
+        const l = m[0].length; <span class="missing-if-branch" title="if path not taken" >I</span>if (l &gt; 5) <span class="cstat-no" title="statement not covered" >throw new GhostError('BROKEN');</span>
+        const k = l + 1, cs = chars(g.slice(0, g.length - l)); let out = '';
+        for (let i = 0; i &lt; cs.length;) {
+          const c = cs[i]; if (!isV(c)) { out += c; i++; continue; }
+          let j = i; while (j &lt; cs.length &amp;&amp; cs[j] === c) j++;
+          if ((j - i) % k) throw new GhostError('BROKEN');
+          out += c.repeat((j - i) / k); i = j;
+        }
+        return out;
+      },
+      is: g =&gt; /〰+$/.test(g.trim()) },
+    mirror: { reversible: true, voice: { pitch: 1.1, rate: .8 }, tint: '#a9c8ff',
+      encode(t) { return MIRROR + chars(t).reverse().join(''); },
+      decode(g) { <span class="missing-if-branch" title="if path not taken" >I</span>if (!g.startsWith(MIRROR)) <span class="cstat-no" title="statement not covered" >throw new GhostError('NOSIG'); </span>return chars(g.slice(MIRROR.length)).reverse().join(''); },
+      is: g =&gt; g.startsWith(MIRROR) },
+    secret: { reversible: true, speaksHuman: true, voice: { pitch: .8, rate: .9 }, tint: '#ffe39a',
+      encode(t) { return LOCK + chars(t).map(c =&gt; c.codePointAt(0).toString(16)).join('-'); },
+      decode(g) {
+        const s = (g.startsWith(LOCK) ? g.slice(LOCK.length) : g).trim();
+        if (!HEX.test(s)) throw new GhostError('BROKEN');
+        try { return s.split('-').map(h =&gt; String.fromCodePoint(parseInt(h, 16))).join(''); } catch { throw new GhostError('BROKEN'); }
+      },
+      is: g =&gt; g.trim().startsWith(LOCK.trim()) || /^[0-9a-f]+(?:-[0-9a-f]+)+$/i.test(g.trim()) },
+    morse: { reversible: true, lowercase: true, speaksHuman: false, voice: { pitch: .9, rate: 1.1 }, tint: '#ffd0a0',
+      encode(t, l) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (/[⟨⟩]/.test(t)) <span class="cstat-no" title="statement not covered" >throw new GhostError('SIGIL');</span>
+        const dash = 'b' + 'u'.repeat(l + 2);
+        return RADIO + t.toLowerCase().trim().split(/\s+/).map(w =&gt; chars(w).map(c =&gt; own(MORSE, c)
+          ? MORSE[c].split('').map(s =&gt; s === '.' ? 'bu' : dash).join('-') : '⟨' + c + '⟩').join(' ')).join(' / ');
+      },
+      decode(g) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!g.startsWith(RADIO)) <span class="cstat-no" title="statement not covered" >throw new GhostError('NOSIG');</span>
+        const body = g.slice(RADIO.length).trim(); <span class="missing-if-branch" title="if path not taken" >I</span>if (!body) <span class="cstat-no" title="statement not covered" >return '';</span>
+        return body.split(' / ').map(w =&gt; w.split(' ').map(tok =&gt; {
+          const m = tok.match(/^⟨(.+)⟩$/u); if (m) return m[1];
+          const code = tok.split('-').map(p =&gt; p === 'bu' ? '.' : /^buu+$/.test(p) ? '-' : <span class="branch-1 cbranch-no" title="branch not covered" >null)</span>;
+          if (code.includes(null) || !own(MORSE_R, code.join(''))) throw new GhostError('BROKEN');
+          return MORSE_R[code.join('')];
+        }).join('')).join(' ');
+      },
+      is: g =&gt; g.startsWith(RADIO) },
+    runic: { reversible: true, lowercase: true, speaksHuman: true, voice: { pitch: .4, rate: .7 }, tint: '#d9c7a0',
+      encode(t) {
+        if (chars(t).some(c =&gt; own(RUNES_R, c))) throw new GhostError('SIGIL');
+        return RUNE + chars(t.toLowerCase()).map(c =&gt; own(RUNES, c) ? RUNES[c] : c).join('');
+      },
+      decode(g) { <span class="missing-if-branch" title="if path not taken" >I</span>if (!g.startsWith(RUNE)) <span class="cstat-no" title="statement not covered" >throw new GhostError('NOSIG'); </span>return chars(g.slice(RUNE.length)).map(c =&gt; own(RUNES_R, c) ? RUNES_R[c] : c).join(''); },
+      is: g =&gt; g.startsWith(RUNE) },
+    emoji: { reversible: true, lowercase: true, speaksHuman: true, voice: { pitch: 1.3, rate: .95 }, tint: '#ffc2e0',
+      encode(t) {
+        if (chars(t).some(c =&gt; own(EMOJI_R, c))) throw new GhostError('SIGIL');
+        return MASK + chars(t.toLowerCase()).map(c =&gt; own(EMOJI, c) ? EMOJI[c] : c).join('');
+      },
+      decode(g) { <span class="missing-if-branch" title="if path not taken" >I</span>if (!g.startsWith(MASK)) <span class="cstat-no" title="statement not covered" >throw new GhostError('NOSIG'); </span>return chars(g.slice(MASK.length)).map(c =&gt; own(EMOJI_R, c) ? EMOJI_R[c] : c).join(''); },
+      is: g =&gt; g.startsWith(MASK) },
+    poltergeist: { reversible: true, voice: { pitch: .2, rate: 1.15 }, tint: '#c7ff9e',
+      encode(t, l) {
+        const R = rng(hash(t) + l);
+        return chars(t).map(c =&gt; { if (isSpace(c)) return c; let s = c; const n = Math.floor(R() * (l * 2 + 1)); for (let i = 0; i &lt; n; i++) s += String.fromCharCode(0x300 + Math.floor(R() * 0x70)); return s; }).join('');
+      },
+      decode: g =&gt; stripMarks(g),
+      is: g =&gt; /[̀-ͯ]/.test(g) },
+&nbsp;
+    whisper: { voice: { pitch: .9, rate: .62, volume: .45 }, tint: '#c9d3ea',
+      encode(t, l) { return 'p' + 's'.repeat(l) + 't… ' + chars(t.toLowerCase()).map(c =&gt; c === 's' ? 'sh' : isV(c) ? c + c : c).join('') + '…'; },
+      approx: g =&gt; g.replace(/^ps+t… /, '').replace(/…$/, '').replace(/sh/g, 's').replace(/([aeiouăâî])\1/g, '$1'),
+      is: g =&gt; /^ps+t… /.test(g) },
+    banshee: { voice: { pitch: 2, rate: .85 }, tint: '#f6c6ff',
+      encode(t, l) { return chars(t).map(c =&gt; isV(c) ? c.toUpperCase().repeat(l + 2) + c.toLowerCase().repeat(l) : c.toUpperCase()).join('') + '!'.repeat(l); },
+      approx: g =&gt; g.replace(/!+$/, '').toLowerCase().replace(/([aeiouăâî])\1+/g, '$1'),
+      is: g =&gt; /!+$/.test(g) &amp;&amp; /([AEIOUĂÂÎ])\1{2,}/.test(g) },
+    strigoi: { voice: { pitch: .15, rate: .58 }, tint: '#ffb3a1',
+      encode(t, l) { let i = 0; return chars(t).map(c =&gt; { if (isSpace(c)) return c; const r = /[rR]/.test(c) ? c.repeat(l + 1) : c; return (i++ % 2) ? r.toUpperCase() : r.toLowerCase(); }).join('') + ' …b' + 'r'.repeat(l + 1); },
+      approx: g =&gt; g.replace(/ …br+$/, '').toLowerCase().replace(/r{2,}/g, 'r'),
+      is: g =&gt; / …br{2,}$/.test(g) },
+    sleepy: { voice: { pitch: .7, rate: .5 }, tint: '#d7c8ff',
+      encode(t, l) { return chars(t.toLowerCase()).map(c =&gt; isV(c) ? c.repeat(l + 1) : c).join('') + '… ' + 'z'.repeat(l + 2); },
+      approx: g =&gt; g.replace(/… z+$/, '').replace(/([aeiouăâî])\1+/g, '$1'),
+      is: g =&gt; /… z{3,}$/.test(g) },
+    vampire: { voice: { pitch: .45, rate: .7 }, tint: '#ff8fa3',
+      encode(t, l) {
+        const s = t.replace(/th/g, 'z').replace(/Th/g, 'Z').replace(/TH/g, 'Z').replace(/w/g, 'v').replace(/W/g, 'V');
+        return BAT + s + ' …mwa' + 'ha'.repeat(l + 1) + '!';
+      },
+      approx: g =&gt; g.slice(BAT.length).replace(/ …mwa(?:ha)+!$/, ''),
+      is: g =&gt; g.startsWith(BAT) },
+    victorian: { voice: { pitch: .95, rate: .78 }, tint: '#e8d9b0',
+      encode(t, l) {
+        const body = words(t).map((w, i) =&gt; { if (i % 2 === 0) return w; const k = w.toLowerCase(); return own(VICTORIAN, k) ? capLike(w, VICTORIAN[k]) : w; }).join('');
+        const tail = ['', '', ', prithee', ', prithee, most honoured', ', prithee, most honoured soul', ', prithee, most honoured and esteemed soul'][l];
+        return SCROLL + body + tail;
+      },
+      approx: g =&gt; words(g.slice(SCROLL.length).replace(/, prithee.*$/, '')).map((w, i) =&gt; { if (i % 2 === 0) return w; const k = w.toLowerCase(); return own(VICTORIAN_R, k) ? capLike(w, VICTORIAN_R[k]) : w; }).join(''),
+      is: g =&gt; g.startsWith(SCROLL) },
+    echo: { voice: { pitch: .8, rate: .8 }, tint: '#9ef0d0',
+      encode(t, l) { return words(t).map((w, i) =&gt; { if (i % 2 === 0 || chars(w).length &lt; 3) return w; const tail = chars(w).slice(-2).join('').toLowerCase(); return w + ('-' + tail).repeat(l); }).join(''); },
+      approx: g =&gt; g.replace(/(\p{L}*?(\p{L}{2}))((?:-\2)+)(?!\p{L})/giu, '$1'),
+      is: g =&gt; /(\p{L}{2})(?:-\1)+(?!\p{L})/iu.test(g) }
+  };
+  const IDENTIFY_ORDER = ['classic', 'mirror', 'secret', 'morse', 'runic', 'emoji', 'vampire', 'victorian', 'whisper', 'sleepy', 'strigoi', 'banshee', 'poltergeist', 'echo'];
+  const REVERSIBLE = Object.keys(dialects).filter(k =&gt; dialects[k].reversible);
+  const ONE_WAY = Object.keys(dialects).filter(k =&gt; !dialects[k].reversible);
+&nbsp;
+  function translate(text, dialect = 'classic', level = 3) {
+    if (!own(dialects, dialect)) throw new GhostError('DIALECT');
+    if (typeof text !== 'string' || !text.trim()) return '';
+    return dialects[dialect].encode(text, clamp(level));
+  }
+  function chain(text, list, level = 3) {
+    if (!Array.isArray(list) || !list.length) return typeof text === 'string' ? text : <span class="branch-1 cbranch-no" title="branch not covered" >'';</span>
+    return list.reduce((acc, d) =&gt; translate(acc, d, level), text);
+  }
+  function identify(g) {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof g !== 'string' || !g.trim()) <span class="cstat-no" title="statement not covered" >return null;</span>
+    return IDENTIFY_ORDER.find(k =&gt; dialects[k].is(g)) || null;
+  }
+  function detect(g) {               // reversible dialects only
+    const d = identify(g);
+    return d &amp;&amp; dialects[d].reversible ? d : null;
+  }
+  function decode(g) {
+    const d = detect(g); if (!d) throw new GhostError('NOSIG');
+    return dialects[d].decode(g);
+  }
+  function decodeAny(g) {
+    const d = identify(g); <span class="missing-if-branch" title="if path not taken" >I</span>if (!d) <span class="cstat-no" title="statement not covered" >throw new GhostError('NOSIG');</span>
+    const D = dialects[d];
+    return D.reversible ? { text: D.decode(g), dialect: d, exact: true } : { text: D.approx(g), dialect: d, exact: false };
+  }
+&nbsp;
+  /* ---------- Words, games ---------- */
+  const WORDS = {
+    ro: ['lună', 'castel', 'fantomă', 'dovleac', 'magie', 'secret', 'bufniță', 'umbră', 'lumânare', 'vrăjitoare', 'liliac', 'mister', 'păianjen', 'mătură', 'poțiune',
+      'craniu', 'cimitir', 'noapte', 'coș', 'felinar', 'bomboană', 'pălărie', 'schelet', 'vampir', 'lup', 'mumie', 'ceață', 'cheie', 'cufăr', 'oglindă'],
+    en: ['moon', 'castle', 'ghost', 'pumpkin', 'magic', 'secret', 'owl', 'shadow', 'candle', 'witch', 'bat', 'mystery', 'spider', 'broom', 'potion',
+      'skull', 'graveyard', 'night', 'basket', 'lantern', 'candy', 'hat', 'skeleton', 'vampire', 'wolf', 'mummy', 'fog', 'key', 'chest', 'mirror']
+  };
+  const DIFFICULTY = {
+    easy: { fits: w =&gt; fold(w).length &lt;= 5, emf: 1, memory: 3, choir: 2, boo: 30, lives: 8, typing: 1 },
+    medium: { fits: () =&gt; true, emf: 3, memory: 4, choir: 3, boo: 60, lives: 6, typing: 1 },
+    nightmare: { fits: w =&gt; fold(w).length &gt;= 7, emf: 5, memory: 6, choir: 5, boo: 200, lives: 4, typing: 2 }
+  };
+  const GAMES = ['guess', 'typing', 'memory', 'letters', 'secret', 'choir', 'boo', 'hangman', 'daily', 'vocab', 'arcade', 'duo'];
+  const ARCADE_POOL = ['guess', 'typing', 'letters', 'secret', 'boo', 'vocab'];
+  const booscary = n =&gt; n % 15 === 0 ? 'BooScary' : n % 3 === 0 ? 'Boo' : n % 5 === 0 ? 'Scary' : String(n);
+  const sameAnswer = (a, b) =&gt; fold(a) !== '' &amp;&amp; fold(a) === fold(b);
+  const digits = s =&gt; String(s ?? <span class="branch-1 cbranch-no" title="branch not covered" >'')</span>.replace(/[^1-9]/g, '');
+  const dailyIndex = (ms, n) =&gt; Math.floor(ms / 86400000) % n;
+  const pickWord = (lang, difficulty, rand) =&gt; {
+    const list = WORDS[lang === 'en' ? 'en' : 'ro'], d = DIFFICULTY[difficulty] || <span class="branch-1 cbranch-no" title="branch not covered" >DIFFICULTY.medium;</span>
+    const pool = list.filter(d.fits);
+    return pool[Math.floor(rand() * pool.length)];
+  };
+  function makeRound(game, opts = {}) {
+    const lang = opts.lang === 'en' ? 'en' : 'ro', diff = own(DIFFICULTY, opts.difficulty) ? opts.difficulty : 'medium', D = DIFFICULTY[diff];
+    const rand = opts.rand || Math.random, dialect = own(dialects, opts.dialect) ? opts.dialect : 'classic';
+    if (game === 'arcade') game = ARCADE_POOL[Math.floor(rand() * ARCADE_POOL.length)];
+    const w = pickWord(lang, diff, rand), seq = n =&gt; Array.from({ length: n }, () =&gt; 1 + Math.floor(rand() * 4)).join(' ');
+    switch (game) {
+      case 'guess': return { game, prompt: translate(w, dialect, D.emf), expected: w, dialect };
+      case 'typing': return { game, prompt: w, expected: translate(w, 'classic', D.typing).slice(0, -D.typing) };
+      case 'memory': { const s = seq(D.memory); return { game, prompt: s, expected: s, seq: s, digits: true, hideAfter: 3000 }; }
+      case 'letters': return { game, prompt: chars(w).reverse().join(' · '), expected: w };
+      case 'secret': return { game, prompt: translate(w, 'secret'), expected: w };
+      case 'choir': { const s = seq(D.choir); return { game, prompt: '♪ ♫ ♪ ?', expected: s, seq: s, digits: true, audio: true }; }
+      case 'boo': { const n = 1 + Math.floor(rand() * D.boo); return { game, prompt: `${n} → ?`, expected: booscary(n), n }; }
+      case 'vocab': { const i = WORDS[lang].indexOf(w), other = lang === 'ro' ? 'en' : 'ro'; return { game, prompt: WORDS[other][i], expected: w }; }
+<span class="branch-8 cbranch-no" title="branch not covered" >      case 'hangman': <span class="cstat-no" title="statement not covered" >return { game, ...hangmanNew(w, D.lives) };</span></span>
+<span class="branch-9 cbranch-no" title="branch not covered" >      case 'daily': <span class="cstat-no" title="statement not covered" >return { game, ...dailyNew(lang, opts.now ?? Date.now()) };</span></span>
+<span class="branch-10 cbranch-no" title="branch not covered" >      case 'duo': <span class="cstat-no" title="statement not covered" >return { game, stage: 'p1', prompt: '', expected: '' };</span></span>
+      default: throw new GhostError('GAME');
+    }
+  }
+  function checkAnswer(round, answer) {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!round) <span class="cstat-no" title="statement not covered" >return false;</span>
+    if (round.digits) return digits(answer) !== '' &amp;&amp; digits(answer) === digits(round.expected);
+    return sameAnswer(answer, round.expected);
+  }
+&nbsp;
+  /* Hangman — the ghost fades with every wrong letter */
+  const isLetter = c =&gt; /\p{L}/u.test(c);
+  function hangmanNew(word, lives = <span class="branch-0 cbranch-no" title="branch not covered" >6)</span> { return { word, guessed: [], wrong: 0, lives }; }
+  function hangmanGuess(h, letter) {
+    const l = fold(letter).slice(0, 1);
+    if (!l || !isLetter(l) || h.guessed.includes(l) || hangmanStatus(h) !== 'playing') return h;
+    const hit = chars(h.word).some(c =&gt; fold(c) === l);
+    return { ...h, guessed: [...h.guessed, l], wrong: h.wrong + (hit ? 0 : 1) };
+  }
+  const hangmanView = h =&gt; chars(h.word).map(c =&gt; !isLetter(c) || h.guessed.includes(fold(c)) ? c : '_').join(' ');
+  const hangmanStatus = h =&gt; h.wrong &gt;= h.lives ? 'lost' : chars(h.word).every(c =&gt; !isLetter(c) || h.guessed.includes(fold(c))) ? 'won' : 'playing';
+&nbsp;
+  /* Daily puzzle — Wordle-style feedback, shareable squares */
+  const dayKey = ms =&gt; new Date(ms).toISOString().slice(0, 10);
+  function dailyWord(lang, ms) { const list = WORDS[lang === 'en' ? 'en' : 'ro']; return list[dailyIndex(ms, list.length)]; }
+  function dailyNew(lang, ms) { const w = dailyWord(lang, ms); return { expected: w, date: dayKey(ms), rows: [], max: 6, prompt: chars(w).map((c, i) =&gt; i === 0 ? c : '_').join(' ') }; }
+  function wordleScore(guess, answer) {
+    const g = chars(fold(guess)), a = chars(fold(answer));
+    if (g.length !== a.length) throw new GhostError('LENGTH');
+    const res = g.map(() =&gt; 'miss'), left = {};
+    a.forEach((c, i) =&gt; { if (g[i] === c) res[i] = 'hit'; else left[c] = (left[c] || 0) + 1; });
+    g.forEach((c, i) =&gt; { if (res[i] !== 'hit' &amp;&amp; left[c]) { res[i] = 'near'; left[c]--; } });
+    return res;
+  }
+  const SQUARE = { hit: '🟩', near: '🟨', miss: '⬛' };
+  function shareText(date, rows, solved, max = 6) {
+    return `Ghost Talk ${date} · ${solved ? rows.length : <span class="branch-1 cbranch-no" title="branch not covered" >'X'}</span>/${max} 👻\n` + rows.map(r =&gt; r.map(x =&gt; SQUARE[x]).join('')).join('\n');
+  }
+&nbsp;
+  /* ---------- Story ---------- */
+  const RIVAL = 'Zăbrel';
+  const STORY = [
+    { ro: 'Într-un castel vechi găsești o scrisoare sigilată cu ceară verde. Pe plic scrie doar: „Pentru {name}”. Unde cauți cheia sigiliului?', en: 'In an old castle you find a letter sealed with green wax. The envelope only says: “For {name}”. Where do you look for the seal’s key?',
+      next: [[1, 'Biblioteca', 'The library'], [2, 'Grădina', 'The garden']] },
+    { ro: 'În bibliotecă, lumina lunii cade pe o hartă: o săgeată arată spre turn, alta spre criptă.', en: 'In the library, moonlight falls on a map: one arrow points to the tower, another to the crypt.',
+      next: [[3, 'Urcă în turn', 'Climb the tower'], [4, 'Coboară în criptă', 'Go down to the crypt']] },
+    { ro: 'La poarta grădinii, o fantomă îți cere parola PRIETEN. Dar numai pe limba fantomelor: dialectul Clasic, EMF 1, fără 〰.', en: 'At the garden gate, a ghost asks for the password FRIEND. But only in ghost: Classic dialect, EMF 1, no 〰.',
+      puzzle: { kind: 'classic1', word: { ro: 'prieten', en: 'friend' }, success: 5, hint: ['Dublează fiecare vocală. Exemplu: bu → buu.', 'Double every vowel. Example: boo → boooo.'] },
+      next: [[1, 'Înapoi la bibliotecă', 'Back to the library']] },
+    { ro: 'Din umbra turnului apare {rival}, un strigoi cu pelerina roasă de molii: „Scrisoarea e a mea! Hai la un duel de ghicitori.”', en: 'From the tower’s shadow steps {rival}, a strigoi in a moth-eaten cape: “That letter is mine! Let’s duel with riddles.”',
+      speaker: 'rival', next: [[6, 'Acceptă duelul', 'Accept the duel'], [4, 'Fugi în criptă', 'Flee to the crypt']] },
+    { ro: 'Cripta răspunde cu ecou la fiecare pas. Pe un mormânt e o inscripție, iar pe perete o scară urcă spre grădină.', en: 'The crypt echoes every step. There’s an inscription on a tomb, and a ladder on the wall climbs to the garden.',
+      next: [[7, 'Citește inscripția', 'Read the inscription'], [2, 'Urcă în grădină', 'Climb to the garden']] },
+    { ro: 'Poarta se deschide. O bufniță îți lasă în palmă cheia sigiliului. Ce faci cu scrisoarea?', en: 'The gate opens. An owl drops the seal’s key into your hand. What do you do with the letter?',
+      next: [[8, 'Du-i-o lui {name}', 'Bring it to {name}'], [9, 'Păstreaz-o în arhivă', 'Keep it in the archive']] },
+    { ro: '{rival} rânjește: „Ce strigă fantoma când numără până la 15?”', en: '{rival} grins: “What does the ghost shout when it counts to 15?”',
+      speaker: 'rival', puzzle: { kind: 'booscary', n: 15, success: 10, hint: ['Multiplu de 3 → Boo, de 5 → Scary, de ambele → …', 'Multiple of 3 → Boo, of 5 → Scary, of both → …'] },
+      next: [[12, 'Renunță la duel', 'Give up the duel']] },
+    { ro: 'Inscripția e un cod secret: {code}. Descifrează-l ca să afli unde trebuie să ajungă scrisoarea.', en: 'The inscription is a secret code: {code}. Crack it to learn where the letter must go.',
+      puzzle: { kind: 'secret', word: { ro: 'acasă', en: 'home' }, success: 11, hint: ['Fiecare grup hex e o literă: 61 = a, 63 = c.', 'Each hex group is one letter: 68 = h, 6f = o.'] },
+      next: [[4, 'Înapoi în criptă', 'Back into the crypt']] },
+    { ro: 'Scrisoarea ajunge la {name}. Castelul răsună de râsete!', en: 'The letter reaches {name}. The castle fills with laughter!', end: true },
+    { ro: 'Ai ales să păstrezi scrisoarea în arhivă. Misterul așteaptă o altă aventură.', en: 'You kept the letter in the archive. The mystery awaits another adventure.', end: true },
+    { ro: '{rival} pufnește, apoi râde: „BooScary! Ai câștigat.” De azi sunteți prieteni și bântuiți castelul împreună.', en: '{rival} huffs, then laughs: “BooScary! You win.” From today you’re friends and haunt the castle together.', speaker: 'rival', end: true },
+    { ro: 'Codul spunea „acasă”. Duci scrisoarea în căsuța lui {name}, unde o lumânare ardea de un secol. Era de la Bunica Fantomă.', en: 'The code said “home”. You bring the letter to {name}’s little house, where a candle had burned for a century. It was from Grandma Ghost.', end: true },
+    { ro: '{rival} fuge cu scrisoarea în ceață. Poate îl prinzi la Halloweenul următor.', en: '{rival} runs off into the fog with the letter. Maybe you’ll catch him next Halloween.', speaker: 'rival', end: true }
+  ];
+  const ENDINGS = STORY.map((n, i) =&gt; n.end ? i : -1).filter(i =&gt; i &gt;= 0);
+  function storyText(i, lang, name) {
+    const n = STORY[i], L = lang === 'en' ? 'en' : 'ro';
+    let t = n[L].replaceAll('{name}', name || <span class="branch-1 cbranch-no" title="branch not covered" >'Boo')</span>.replaceAll('{rival}', RIVAL);
+    if (n.puzzle &amp;&amp; n.puzzle.kind === 'secret') t = t.replace('{code}', translate(n.puzzle.word[L], 'secret').replace(LOCK, ''));
+    return t;
+  }
+  function storyAnswer(i, lang) {
+    const p = STORY[i] &amp;&amp; STORY[i].puzzle, L = lang === 'en' ? 'en' : 'ro';
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!p) <span class="cstat-no" title="statement not covered" >return null;</span>
+    if (p.kind === 'classic1') return translate(p.word[L], 'classic', 1).slice(0, -1);
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (p.kind === 'booscary') return booscary(p.n);
+<span class="cstat-no" title="statement not covered" >    return p.word[L];</span>
+  }
+&nbsp;
+  /* ---------- Profile ---------- */
+  const HATS = { none: 0, top: 0, crown: 40, wizard: 80 };
+  const EXTRAS = { none: 0, scarf: 20, glasses: 60, lantern: 150 };
+  const COLORS = { auto: [0, ''], lavender: [60, '#d9c8ff'], mint: [120, '#b8f5d6'], candy: [180, '#ffc6dd'], ember: [250, '#ffc59a'], gold: [400, '#ffe08a'] };
+  const DECORS = ['night', 'castle', 'forest', 'pumpkins'];
+  const BADGES = [{ id: 'new', xp: 0 }, { id: 'echo', xp: 40 }, { id: 'master', xp: 80 }, { id: 'banshee', xp: 200 }, { id: 'legend', xp: 500 }];
+  const levelOf = xp =&gt; ({ level: 1 + Math.floor(xp / 100), into: xp % 100 });
+  const badgeOf = xp =&gt; BADGES.filter(b =&gt; xp &gt;= b.xp).pop().id;
+  const ACHIEVEMENTS = [
+    ['first-words', s =&gt; s.stats.translations &gt;= 1], ['chatterbox', s =&gt; s.stats.translations &gt;= 100],
+    ['polyglot', s =&gt; Object.keys(dialects).every(d =&gt; s.stats.dialects.includes(d))], ['streak-10', s =&gt; s.best &gt;= 10],
+    ['storyteller', s =&gt; ENDINGS.every(e =&gt; s.endings.includes(e))], ['first-ending', s =&gt; s.endings.length &gt;= 1],
+    ['hangman', s =&gt; s.stats.hangmanWins &gt;= 1], ['arcade-10', s =&gt; s.arcadeBest &gt;= 10], ['daily', s =&gt; s.stats.dailyWins &gt;= 1],
+    ['collector', s =&gt; s.favorites.length &gt;= 5], ['artist', s =&gt; s.stats.cards &gt;= 1], ['thereminist', s =&gt; s.stats.theremin &gt;= 1],
+    ['alchemist', s =&gt; s.stats.chain &gt;= 1], ['critic', s =&gt; s.stats.compare &gt;= 1]
+  ].map(([id, test]) =&gt; ({ id, test }));
+  const newAchievements = s =&gt; ACHIEVEMENTS.filter(a =&gt; !s.achievements.includes(a.id) &amp;&amp; a.test(s)).map(a =&gt; a.id);
+  function moodOf({ hour = 12, idleMs = 0, streak = 0 } = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> {
+    if (streak &gt;= 3) return 'excited';
+    if (hour &lt; 6 || hour &gt;= 23 || idleMs &gt; 300000) return 'sleepy';
+    if (idleMs &gt; 60000) return 'bored';
+    return 'happy';
+  }
+&nbsp;
+  /* Share links: #msg-&lt;base64url(JSON)&gt; — only URL-safe characters */
+  function toB64url(str) { const b = new TextEncoder().encode(str); let s = ''; b.forEach(x =&gt; { s += String.fromCharCode(x); }); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+  function fromB64url(tok) { const s = atob(tok.replace(/-/g, '+').replace(/_/g, '/')); return new TextDecoder().decode(Uint8Array.from(s, c =&gt; c.charCodeAt(0))); }
+  function encodeShare(msg) { return toB64url(JSON.stringify({ t: String(msg.t || <span class="branch-1 cbranch-no" title="branch not covered" >'')</span>.slice(0, 500), d: own(dialects, msg.d) ? msg.d : <span class="branch-1 cbranch-no" title="branch not covered" >'classic',</span> l: clamp(msg.l) })); }
+  function decodeShare(tok) {
+    try {
+      if (typeof tok !== 'string' || !/^[A-Za-z0-9_-]{2,2000}$/.test(tok)) return null;
+      const o = JSON.parse(fromB64url(tok));
+      if (!o || typeof o.t !== 'string' || !o.t.trim() || !own(dialects, o.d)) return null;
+      return { t: o.t.slice(0, 500), d: o.d, l: clamp(o.l) };
+    } catch { <span class="cstat-no" title="statement not covered" >return null; </span>}
+  }
+&nbsp;
+  const TABS = ['talk', 'play', 'story', 'collection', 'tests', 'settings'];
+  const LEGACY_HAT = { '': 'none', '\u{1F3A9}': 'top', '\u{1F451}': 'crown', '\u{1F9D9}': 'wizard' };
+  const LEGACY_DECOR = { '\u{1F30C}': 'night', '\u{1F3F0}': 'castle', '\u{1F332}': 'forest', '\u{1F383}': 'pumpkins' };
+  const STAT_KEYS = ['translations', 'hangmanWins', 'dailyWins', 'cards', 'theremin', 'chain', 'compare'];
+  const num = (v, min, max, d) =&gt; Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : d;
+  function defaults() {
+    return { v: 3, lang: 'ro', tab: 'talk', xp: 0, favorites: [], log: [], name: 'Boo', hat: 'none', extra: 'none', color: 'auto', decor: 'night', theme: 'night',
+      motion: false, contrast: false, sfx: true, echo: false, ambient: false, font: 'default', scale: 1, rate: 1, volume: .7,
+      story: 0, endings: [], visited: [0], solved: [], dialect: 'classic', level: 3, chain: [], game: 'guess', difficulty: 'medium', best: 0, arcadeBest: 0,
+      daily: { date: '', lang: 'ro', rows: [], guesses: [], done: false, won: false }, achievements: [],
+      stats: { translations: 0, dialects: [], hangmanWins: 0, dailyWins: 0, cards: 0, theremin: 0, chain: 0, compare: 0 } };
+  }
+  function normalizeState(s) {
+    const d = defaults();
+    if (!s || typeof s !== 'object' || Array.isArray(s)) return d;
+    const entry = e =&gt; typeof e === 'string' ? (e ? { g: e.slice(0, 2000), src: '', d: '' } : <span class="branch-1 cbranch-no" title="branch not covered" >null)</span>
+      : <span class="branch-1 cbranch-no" title="branch not covered" >(e &amp;&amp; typeof e === 'object' &amp;&amp; typeof e.g === 'string' &amp;&amp; e.g) ? { g: e.g.slice(0, 2000), src: typeof e.src === 'string' ? e.src.slice(0, 1500) : '', d: own(dialects, e.d) ? e.d : '' } : null;</span>
+    const logEntry = <span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >e &amp;&amp; typeof e === 'object' &amp;&amp; typeof e.g === 'string' &amp;&amp; typeof e.src === 'string' &amp;&amp; own(dialects, e.d)</span>
+      ? { src: e.src.slice(0, 1500), g: e.g.slice(0, 2000), d: e.d, l: clamp(e.l) } : null;
+    const legacy = s.v !== 3;                         // v1/v2 story: 3 = laughter ending, 4 = archive ending
+    const mapNode = n =&gt; legacy ? ({ 3: 8, 4: 9 })[n] ?? n : n;
+    const nodeOk = n =&gt; Number.isInteger(n) &amp;&amp; n &gt;= 0 &amp;&amp; n &lt; STORY.length;
+    const st = s.stats &amp;&amp; typeof s.stats === 'object' &amp;&amp; !Array.isArray(s.stats) ? s.stats : {};
+    const stats = { dialects: Array.isArray(st.dialects) ? <span class="branch-0 cbranch-no" title="branch not covered" >[...new Set(st.dialects.filter(<span class="fstat-no" title="function not covered" >x </span>=&gt; <span class="cstat-no" title="statement not covered" >own(dialects, x))</span>)] </span>: [] };
+    STAT_KEYS.forEach(k =&gt; { stats[k] = Number.isFinite(st[k]) ? Math.max(0, Math.min(1e7, Math.floor(st[k]))) : 0; });
+    const dl = s.daily &amp;&amp; typeof s.daily === 'object' ? s.daily : {};
+    const validRow = r =&gt; Array.isArray(r) &amp;&amp; r.length &lt;= 20 &amp;&amp; r.every(x =&gt; x === 'hit' || x === 'near' || x === 'miss');
+    const daily = typeof dl.date === 'string' &amp;&amp; /^\d{4}-\d{2}-\d{2}$/.test(dl.date) &amp;&amp; Array.isArray(dl.rows) &amp;&amp; dl.rows.length &lt;= 6 &amp;&amp; dl.rows.every(validRow)
+      &amp;&amp; Array.isArray(dl.guesses) &amp;&amp; dl.guesses.length === dl.rows.length &amp;&amp; dl.guesses.every(g =&gt; typeof g === 'string' &amp;&amp; g.length &lt;= 30)
+      ? { date: dl.date, lang: dl.lang === 'en' ? 'en' : <span class="branch-1 cbranch-no" title="branch not covered" >'ro',</span> rows: dl.rows, guesses: dl.guesses, done: dl.done === true, won: dl.won === true } : d.daily;
+    return {
+      v: 3,
+      lang: s.lang === 'en' ? <span class="branch-0 cbranch-no" title="branch not covered" >'en' </span>: 'ro',
+      tab: TABS.includes(s.tab) ? <span class="branch-0 cbranch-no" title="branch not covered" >s.tab </span>: 'talk',
+      xp: Number.isFinite(s.xp) ? Math.max(0, Math.min(100000, Math.floor(s.xp))) : 0,
+      favorites: Array.isArray(s.favorites) ? s.favorites.map(entry).filter(Boolean).slice(0, 30) : [],
+      log: Array.isArray(s.log) ? <span class="branch-0 cbranch-no" title="branch not covered" >s.log.map(logEntry).filter(Boolean).slice(0, 8) </span>: [],
+      name: typeof s.name === 'string' &amp;&amp; s.name.trim() ? s.name.trim().slice(0, 30) : 'Boo',
+      hat: own(HATS, s.hat) ? <span class="branch-0 cbranch-no" title="branch not covered" >s.hat </span>: own(LEGACY_HAT, s.hat) ? LEGACY_HAT[s.hat] : d.hat,
+      extra: own(EXTRAS, s.extra) ? <span class="branch-0 cbranch-no" title="branch not covered" >s.extra </span>: 'none',
+      color: own(COLORS, s.color) ? <span class="branch-0 cbranch-no" title="branch not covered" >s.color </span>: 'auto',
+      decor: DECORS.includes(s.decor) ? <span class="branch-0 cbranch-no" title="branch not covered" >s.decor </span>: own(LEGACY_DECOR, s.decor) ? LEGACY_DECOR[s.decor] : d.decor,
+      theme: s.theme === 'dawn' || s.light === true ? 'dawn' : 'night',
+      motion: s.motion === true, contrast: s.contrast === true, sfx: s.sfx !== false, echo: s.echo === true, ambient: s.ambient === true,
+      font: s.font === 'lexend' ? <span class="branch-0 cbranch-no" title="branch not covered" >'lexend' </span>: 'default', scale: num(s.scale, 1, 1.5, 1),
+      rate: num(s.rate, .5, 1.5, 1), volume: num(s.volume, 0, 1, .7),
+      story: nodeOk(mapNode(s.story)) ? mapNode(s.story) : 0,
+      endings: Array.isArray(s.endings) ? [...new Set(s.endings.map(mapNode).filter(n =&gt; ENDINGS.includes(n)))] : [],
+      visited: Array.isArray(s.visited) ? <span class="branch-0 cbranch-no" title="branch not covered" >[...new Set([0, ...s.visited.filter(nodeOk)])] </span>: [0],
+      solved: Array.isArray(s.solved) ? <span class="branch-0 cbranch-no" title="branch not covered" >[...new Set(s.solved.filter(<span class="fstat-no" title="function not covered" >n </span>=&gt; <span class="cstat-no" title="statement not covered" >nodeOk(n) &amp;&amp; STORY[n].puzzle)</span>)] </span>: [],
+      dialect: own(dialects, s.dialect) ? <span class="branch-0 cbranch-no" title="branch not covered" >s.dialect </span>: 'classic',
+      level: s.level == null ? 3 : <span class="branch-1 cbranch-no" title="branch not covered" >clamp(s.level),</span>
+      chain: Array.isArray(s.chain) ? <span class="branch-0 cbranch-no" title="branch not covered" >s.chain.filter(<span class="fstat-no" title="function not covered" >x </span>=&gt; <span class="cstat-no" title="statement not covered" >own(dialects, x))</span>.slice(0, 2) </span>: [],
+      game: GAMES.includes(s.game) ? <span class="branch-0 cbranch-no" title="branch not covered" >s.game </span>: 'guess',
+      difficulty: own(DIFFICULTY, s.difficulty) ? <span class="branch-0 cbranch-no" title="branch not covered" >s.difficulty </span>: 'medium',
+      best: Number.isFinite(s.best) ? <span class="branch-0 cbranch-no" title="branch not covered" >Math.max(0, Math.floor(s.best)) </span>: 0,
+      arcadeBest: Number.isFinite(s.arcadeBest) ? <span class="branch-0 cbranch-no" title="branch not covered" >Math.max(0, Math.floor(s.arcadeBest)) </span>: 0,
+      daily, achievements: Array.isArray(s.achievements) ? <span class="branch-0 cbranch-no" title="branch not covered" >[...new Set(s.achievements.filter(<span class="fstat-no" title="function not covered" >a </span>=&gt; <span class="cstat-no" title="statement not covered" >ACHIEVEMENTS.some(<span class="fstat-no" title="function not covered" >x </span>=&gt; <span class="cstat-no" title="statement not covered" >x.id === a)</span>)</span>)] </span>: [],
+      stats
+    };
+  }
+&nbsp;
+  return {
+    VERSION: '3.0.0', translate, chain, identify, detect, decode, decodeAny, stripMarks, fold, list: () =&gt; Object.keys(dialects), dialects, REVERSIBLE, ONE_WAY,
+    GhostError, SIGIL, MIRROR, LOCK, RADIO, RUNE, MASK, BAT, SCROLL, MORSE, RUNES, EMOJI, VICTORIAN, hash, rng, clamp, chars,
+    WORDS, DIFFICULTY, GAMES, ARCADE_POOL, booscary, sameAnswer, dailyIndex, pickWord, makeRound, checkAnswer,
+    hangmanNew, hangmanGuess, hangmanView, hangmanStatus, dayKey, dailyWord, dailyNew, wordleScore, shareText,
+    RIVAL, STORY, ENDINGS, storyText, storyAnswer,
+    HATS, EXTRAS, COLORS, DECORS, BADGES, ACHIEVEMENTS, levelOf, badgeOf, newAchievements, moodOf, encodeShare, decodeShare,
+    TABS, defaults, normalizeState
+  };
+});
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2026-10-12T18:42:38.896Z
+            </div>
+        <script src="prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="sorter.js"></script>
+        <script src="block-navigation.js"></script>
+    </body>
+</html>
+    
