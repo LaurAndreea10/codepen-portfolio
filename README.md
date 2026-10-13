@@ -2,7 +2,7 @@
 
 ## Finalizat / Completed — 2026-10-12
 
-**Ghost Talk v3.0.0** — [joacă / play](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/) · [cod HTML / HTML source](ghost-talk/index.pen.html) · [ghid / guide](ghost-talk/README.md). Laborator bilingv de limbaj fantomatic cu 14 dialecte, 12 jocuri fără cronometru, poveste cu 5 finaluri și companion personalizabil; RO/EN și PWA offline. / Bilingual ghost-language lab with 14 dialects, 12 untimed games, a story with 5 endings and a customizable companion; RO/EN and offline PWA. Testarea pe telefon real și cu cititor de ecran rămâne de confirmat. / Real-phone and screen-reader testing remains unconfirmed.
+**Ghost Talk v4.0.0** — [joacă / play](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/) · [regula / rule](ghost-talk/ghosttalk.js) · [teste / tests](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/test-results.html) · [Ghost Lab](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/lab/) · [ghid / guide](ghost-talk/README.md). Intrare CodePen Challenge centrată pe regula oficială (owl → owl-boo, candy → andy-coo), cu explicație pas cu pas și teste pentru exemplele oficiale și cazurile-limită; dialectele, jocurile și efectele sunt opționale în Ghost Lab. / CodePen Challenge entry centered on the official rule, explained step by step, with tests for the official examples and edge cases; extra dialects, games and effects are optional in the Ghost Lab. Testarea pe telefon real și cu cititor de ecran rămâne de confirmat. / Real-phone and screen-reader testing remains unconfirmed.
 
 ## Finalizat / Completed — 2026-10-10
 

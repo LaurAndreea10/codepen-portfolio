@@ -1,92 +1,60 @@
-# Ghost Talk — Haunted Language Lab
+# Ghost Talk
 
-**v3.1.0 · 2026-10-13** · [Play](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/) · [Single-file version](index.pen.html) · [Changelog](CHANGELOG.md)
+**v4.0.0 · 2026-10-13** · [Play](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/) · [Test results](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/test-results.html) · [Ghost Lab (optional extras)](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/lab/) · [Changelog](CHANGELOG.md)
 
-Entry for the [CodePen Challenge, October 2026: Ghost Talk](https://codepen.io/challenges/2026/october).
+Entry for the [CodePen Challenge, October 2026: Ghost Talk](https://codepen.io/challenges/2026/october): type a word and see how a ghost would say it.
 
-## The challenge rule
+## The rule
 
-`ghosttalk.js` exports `ghostTalk(word)`, exactly as the starter asks, and the starter’s Jest tests pass unchanged (`ghosttalk.test.js`):
+| The word starts with | What happens | Example |
+| --- | --- | --- |
+| a vowel (a, e, i, o, u) | add `-boo` | `owl` → `owl-boo` |
+| a consonant | move that letter to the end, add `oo` | `candy` → `andy-coo` |
 
-| Rule | Example |
-| --- | --- |
-| A word that starts with a vowel gets `-boo` | `owl` → `owl-boo` |
-| A word that starts with a consonant moves that letter to the end and adds `oo` | `candy` → `andy-coo` |
+From the challenge’s list of ideas, capital letters and punctuation are kept: `Happy Halloween, candy!` → `Appy-hoo Alloween-hoo, andy-coo!`
 
-From the challenge’s list of optional ideas, it also keeps capitals and punctuation, and `ghostTalkText()` translates whole sentences: `Happy Halloween, candy!` → `Appy-hoo Alloween-hoo, andy-coo!`. Ă, â, î and accented vowels count as vowels.
+## How `ghostTalk(word)` works, step by step
 
-This rule is the app’s default dialect. Everything below is built on top of it.
+All of it is in [`ghosttalk.js`](ghosttalk.js).
 
-## On top of the rule
+1. **Split off the punctuation.** `splitWord("Candy!")` returns `{ before: "", letters: "Candy", after: "!" }`. The rule only touches `letters`.
+2. **Skip what isn’t a word.** If `letters` doesn’t start with a letter (`""`, `"42"`, `"👻"`), the word comes back unchanged.
+3. **Pick the rule.** `startsWithVowel(letters)` compares the first letter, without its accent, to `a e i o u`. So `ă`, `î` and `é` count as vowels, and `y` is a consonant.
+4. **Vowel:** return `letters + "-boo"`.
+5. **Consonant:** take the first letter off, put it at the end and add `"oo"`. If the word was capitalized (`Candy`), the capital moves to the new first letter (`Andy-coo`). A shouted word stays shouted (`BOO` → `OO-BOO`). A lone consonant just becomes `"boo"`.
+6. **Put the punctuation back:** `before + result + after`.
 
-The page grew into a bilingual (RO/EN) ghost-language lab: 14 more dialects, 12 games, a branching story, a ghost companion and a Jest suite that also runs inside the page.
-
-## What’s inside
-
-**Translator**
-- 15 dialects: the official rule plus 14 more. Seven translate back exactly: Classic (`〰` per EMF level), Mirror, Secret code (hex), Spirit Box (morse), Runic (futhark), Emoji, Poltergeist. Eight are one-way and decode approximately: the official rule, Whisper, Banshee, Strigoi, Sleepy, Vampire, Victorian, Echo.
-- Ghost → Human mode recognises the dialect on its own and says whether the result is exact or approximate. Chains are peeled one layer at a time.
-- Dialect chain (up to three in a row) and a side-by-side comparison of all 14.
-- EMF level 1–5 (a K-II meter) controls how haunted the output gets.
-
-**Voice and sound** (Web Audio + Speech Synthesis, everything generated in the browser)
-- A theremin swoop plus a speech voice tuned per dialect; optional crypt echo.
-- Playable theremin: touch the scene, left–right is pitch, up–down is volume.
-- Optional ambience: wind, an owl and a creaking door.
-
-**Games** — untimed, three difficulty levels (Easy / Medium / Nightmare)
-Guess the word, Ghost typing, Echo memory, Haunted letters, Secret séance, Ghost choir, BooScary, Ghostly hangman (the ghost fades with each miss), Daily puzzle (Wordle-style, shareable squares), RO/EN vocabulary, Arcade (mixed rounds, 3 lives) and Two players.
-
-**Story** — “The lost letter”: 13 scenes, 5 endings, three riddles that need the translator, and a rival, the strigoi Zăbrel, who speaks in his own dialect.
-
-**Companion** — name, level and XP, five badges, 14 achievements, moods (happy, bored, sleepy, excited), hats, accessories, body colours and scenes unlocked with XP, ectoplasm confetti on level-ups.
-
-**Sharing** — favorites, séance log, links that open a message (`#msg-…`), PNG cards (square, 9:16 story, 3:1 banner), presentation mode, TXT and JSON backup with validation.
-
-**Accessibility and platform** — keyboard shortcuts (`?` lists them), reduced motion, high contrast, light “Dawn” theme, Lexend reading font, text size up to 150%, RO/EN, offline PWA after the first visit.
+`ghostTalkText(text)` splits a sentence on spaces, runs `ghostTalk` on every word and keeps the spaces as they were.
 
 ## Files
 
 | File | Role |
 | --- | --- |
-| `ghosttalk.js` | **The challenge rule**: `ghostTalk(word)` and `ghostTalkText(text)`, an ES module |
-| `ghosttalk.test.js` | The challenge’s starter tests, unchanged |
-| `index.html`, `styles.css`, `app.js` | Interface |
-| `engine.js` | Pure logic: the other dialects, decoder, game rules, story, saved-data validation. Receives the official rule from `ghosttalk.js` through `useRule()`. |
-| `ghost.spec.js` | Test definitions shared by both runners, plus the in-page runner with API coverage |
-| `tests/ghost.test.js` | Real Jest entry point |
-| `tests/test_browser.py` | Playwright checks in Chromium (390 and 1280 px, offline) |
-| `build-standalone.cjs` | Builds `index.pen.html`, the one-file version for CodePen |
-| `sw.js`, `manifest.webmanifest`, `icon.svg` | Offline install |
+| `ghosttalk.js` | The rule: `ghostTalk`, `ghostTalkText` and the two helpers above |
+| `ghosttalk.test.js` | The starter tests, unchanged, plus the edge cases: capitals, punctuation, shouting, sentences, `y`, one-letter words, no letters |
+| `index.html`, `style.css`, `main.js` | The page: the translation updates as you type, and every word gets a one-line explanation |
+| `test-results.html` | Runs `ghosttalk.test.js` in the browser |
+| `lab/` | **Ghost Lab**, optional: 14 more dialects, games, a story and effects. It imports the same `ghosttalk.js`. |
+
+The page has no canvas, no background animation and no sound. The only motion is the 👻 in the title, and it stops when the device asks for reduced motion.
 
 ## Run the tests
 
 ```bash
 cd ghost-talk
 npm install
-npm test                 # 109 specs with real Jest, including the starter tests
-npm run test:coverage    # line coverage for engine.js and ghosttalk.js (threshold 90%)
-npm run build:standalone # refresh index.pen.html after editing
+npx jest ghosttalk.test.js   # the challenge rule: 9 tests
+npm test                     # everything, Ghost Lab included: 116 tests
 ```
 
-Browser checks, from the repository root:
-
-```bash
-python -m http.server 8000 --bind 127.0.0.1 &
-GHOST_URL=http://localhost:8000/ghost-talk/ python ghost-talk/tests/test_browser.py
-```
-
-GitHub Actions runs all three on every change to `ghost-talk/` ([workflow](../.github/workflows/ghost-talk-tests.yml)).
-
-## Validation and limits
-
-- 109 Jest specs pass, including the two starter tests, with about 96% line coverage of `engine.js` and 100% of `ghosttalk.js`. The same specs, starter tests included, pass in the page and call all 39 public engine functions.
-- Playwright in Chromium passes at 390 px (touch emulated) and 1280 px: the official rule as default, no horizontal scroll, translation and decoding, a BooScary round, keyboard hangman, the story riddle, in-page tests and an offline reload.
-- Not yet checked on a real phone, with a real screen reader, or for audible sound quality. Dictation needs a browser with speech recognition (Chrome, Edge). Speech voices depend on the device.
-- Saves from v1 (“Haunted Language Lab”, key `ghostTalk`) and v2 (`ghosttalk:v2`) are migrated automatically. Progress stays in this browser only.
-
-No runtime dependencies, no server, no account. Jest, Babel (so Jest can run the starter’s `import` test) and Playwright are used only for development.
+Babel is only there so Jest can run the starter’s `import` syntax. Browser checks run in GitHub Actions ([workflow](../.github/workflows/ghost-talk-tests.yml)): `tests/test_page.py` for this page at 360 and 1280 px, and `lab/tests/test_browser.py` for the lab.
 
 ## On CodePen
 
-The challenge pen uses the starter’s file layout: paste `ghosttalk.js` into the pen’s `ghosttalk.js` and keep the starter test file as it is. The tests turn green on CodePen the same way they do here. `index.pen.html` is the whole app in one file, with the rule inlined.
+Use the starter’s files: paste `ghosttalk.js` into `ghosttalk.js`, the tests into the test file, and `index.html`, `style.css` and `main.js` into the matching files. The tests turn green on CodePen the same way.
+
+## Validation and limits
+
+- Jest: the 2 starter tests and 7 edge-case tests pass, with 100% of `ghosttalk.js`’s functions and lines covered.
+- Chromium at 360 px (touch emulated) and 1280 px: the conversion shows on load and updates as you type, examples work, there is no horizontal scroll and no page errors, and `test-results.html` passes.
+- Not yet checked on a real phone or with a real screen reader.

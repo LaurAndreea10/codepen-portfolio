@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ghost Talk</title>
+<title>Ghost Lab</title>
 <meta name="description" content="Ghost Talk — laborator bilingv RO/EN: traducător pe limba fantomelor cu 14 dialecte, 12 jocuri, poveste cu 5 finaluri, fantomă-companion și teste Jest rulate în pagină.">
 <meta name="theme-color" content="#0a0f1f">
 <meta property="og:title" content="Ghost Talk">
@@ -639,7 +639,7 @@ footer a { color: var(--ecto-dim); }
   </main>
 
   <footer>
-    <p>Ghost Talk · v<span id="version">3.1.0</span> · <a href="#tests" id="foot-tests" data-ro="Vezi rezultatele testelor Jest" data-en="View Jest test results">Vezi rezultatele testelor Jest</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/ghost-talk" target="_blank" rel="noopener noreferrer" data-ro="Cod sursă" data-en="Source code">Cod sursă</a></p>
+    <p><a href="../">← Ghost Talk, the challenge entry</a> · Ghost Lab · v<span id="version">3.1.0</span> · <a href="#tests" id="foot-tests" data-ro="Vezi rezultatele testelor Jest" data-en="View Jest test results">Vezi rezultatele testelor Jest</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/ghost-talk" target="_blank" rel="noopener noreferrer" data-ro="Cod sursă" data-en="Source code">Cod sursă</a></p>
     <p data-ro="Joc fără cronometru. Controale prin tastatură și touch. Fără cont, fără server, fără dependențe la rulare." data-en="Untimed play. Keyboard and touch controls. No account, no server, no runtime dependencies.">Joc fără cronometru.</p>
   </footer>
 </div>
@@ -1458,59 +1458,73 @@ footer a { color: var(--ecto-dim); }
 </script>
 <script>
 (function () {
-// ghosttalk.js — the CodePen Challenge rule (October 2026, “Ghost Talk”).
-//   • a word that starts with a vowel gets "-boo" at the end:            owl   → owl-boo
-//   • a word that starts with a consonant moves that letter to the end
-//     and adds "oo":                                                     candy → andy-coo
-// Extras from the challenge’s ideas list: capital letters and punctuation are kept,
-// and ghostTalkText() translates whole sentences word by word.
+// ghosttalk.js — CodePen Challenge, October 2026: Ghost Talk
+//
+// The rule
+//   1. A word that starts with a vowel gets "-boo" at the end.        owl   → owl-boo
+//   2. A word that starts with a consonant moves its first letter
+//      to the end and adds "oo".                                      candy → andy-coo
+//
+// Extras from the challenge's list of ideas: capital letters and punctuation are kept
+// ("Candy!" → "Andy-coo!"), and ghostTalkText() translates a whole sentence.
 
-const VOWELS = 'aeiou';
+const VOWELS = "aeiou";
 
-// "ă", "â", "î", "é"… count as vowels too: compare the base letter without its accent.
-function startsWithVowel(word) {
-  const base = word.normalize('NFD')[0].toLowerCase();
-  return VOWELS.includes(base);
+// Step 1: separate the word from the punctuation around it.
+//   "Candy!" → { before: "", letters: "Candy", after: "!" }
+function splitWord(word) {
+  const [, before, letters, after] = word.match(/^([^\p{L}\p{N}]*)(.*?)([^\p{L}\p{N}]*)$/su);
+  return { before, letters, after };
 }
 
-function isShouted(word) {
-  return word.length > 1 && word === word.toUpperCase() && word !== word.toLowerCase();
+// Step 2: decide which rule applies. "y" is a consonant, as in the challenge.
+//   Accented vowels count too: "ă", "î", "é" are compared without their accent.
+function startsWithVowel(letters) {
+  const first = letters.normalize("NFD")[0].toLowerCase();
+  return VOWELS.includes(first);
 }
 
-function isCapitalised(letter) {
-  return letter !== letter.toLowerCase();
-}
-
-// Translates the letters of one word (no spaces, no surrounding punctuation).
-function translateCore(word) {
-  const letters = Array.from(word);
-  const first = letters[0];
-  if (!/\p{L}/u.test(first)) return word;            // "42" stays "42"
-
-  const shout = isShouted(word);
-  if (startsWithVowel(word)) return word + (shout ? '-BOO' : '-boo');
-
-  const rest = letters.slice(1).join('');
-  if (!rest) return word + (shout ? 'OO' : 'oo');   // "b" → "boo"
-
-  if (!shout && isCapitalised(first)) {             // "Candy" → "Andy-coo"
-    return rest[0].toUpperCase() + rest.slice(1) + '-' + first.toLowerCase() + 'oo';
-  }
-  return rest + '-' + first + (shout ? 'OO' : 'oo'); // "candy" → "andy-coo", "BOO" → "OO-BOO"
-}
-
+// Step 3: apply the rule to one word.
 function ghostTalk(word) {
-  if (typeof word !== 'string') return '';
-  // before = leading punctuation, core = the word, after = trailing punctuation
-  const parts = word.match(/^([^\p{L}\p{N}]*)([\p{L}\p{N}](?:[\p{L}\p{N}'’-]*[\p{L}\p{N}])?)([^\p{L}\p{N}]*)$/u);
-  if (!parts) return word;                           // empty, only symbols, or several words
-  const [, before, core, after] = parts;
-  return before + translateCore(core) + after;
+  if (typeof word !== "string") return "";
+  const { before, letters, after } = splitWord(word);
+
+  // Nothing to translate: "", "42", "👻"
+  if (!/^\p{L}/u.test(letters)) return word;
+
+  // A shouted word stays shouted: "BOO" → "OO-BOO"
+  const shout = letters.length > 1 && letters === letters.toUpperCase() && letters !== letters.toLowerCase();
+  const boo = shout ? "BOO" : "boo";
+  const oo = shout ? "OO" : "oo";
+
+  // Rule 1 — vowel first: add "-boo"
+  if (startsWithVowel(letters)) {
+    return before + letters + "-" + boo + after;
+  }
+
+  // Rule 2 — consonant first: move that letter to the end and add "oo"
+  const [first, ...others] = letters;
+  let rest = others.join("");
+  let moved = first;
+
+  if (rest === "") return before + first + oo + after;     // a lone consonant: "b" → "boo"
+
+  // "Candy" → "Andy-coo": the capital stays at the front of the new word
+  if (!shout && first !== first.toLowerCase()) {
+    rest = rest[0].toUpperCase() + rest.slice(1);
+    moved = first.toLowerCase();
+  }
+
+  return before + rest + "-" + moved + oo + after;
 }
 
+// Translates a sentence word by word and keeps the spaces as they were.
 function ghostTalkText(text) {
-  if (typeof text !== 'string') return '';
-  return text.split(/(\s+)/).map((piece, i) => (i % 2 ? piece : ghostTalk(piece))).join('');
+  if (typeof text !== "string") return "";
+  return text
+    .split(/(\s+)/)
+    .map((piece, i) => (i % 2 === 0 ? ghostTalk(piece) : piece))
+    .join("");
 }
 
 Ghost.useRule(ghostTalkText);

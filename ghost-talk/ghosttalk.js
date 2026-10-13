@@ -1,54 +1,68 @@
-// ghosttalk.js — the CodePen Challenge rule (October 2026, “Ghost Talk”).
-//   • a word that starts with a vowel gets "-boo" at the end:            owl   → owl-boo
-//   • a word that starts with a consonant moves that letter to the end
-//     and adds "oo":                                                     candy → andy-coo
-// Extras from the challenge’s ideas list: capital letters and punctuation are kept,
-// and ghostTalkText() translates whole sentences word by word.
+// ghosttalk.js — CodePen Challenge, October 2026: Ghost Talk
+//
+// The rule
+//   1. A word that starts with a vowel gets "-boo" at the end.        owl   → owl-boo
+//   2. A word that starts with a consonant moves its first letter
+//      to the end and adds "oo".                                      candy → andy-coo
+//
+// Extras from the challenge's list of ideas: capital letters and punctuation are kept
+// ("Candy!" → "Andy-coo!"), and ghostTalkText() translates a whole sentence.
 
-const VOWELS = 'aeiou';
+const VOWELS = "aeiou";
 
-// "ă", "â", "î", "é"… count as vowels too: compare the base letter without its accent.
-function startsWithVowel(word) {
-  const base = word.normalize('NFD')[0].toLowerCase();
-  return VOWELS.includes(base);
+// Step 1: separate the word from the punctuation around it.
+//   "Candy!" → { before: "", letters: "Candy", after: "!" }
+export function splitWord(word) {
+  const [, before, letters, after] = word.match(/^([^\p{L}\p{N}]*)(.*?)([^\p{L}\p{N}]*)$/su);
+  return { before, letters, after };
 }
 
-function isShouted(word) {
-  return word.length > 1 && word === word.toUpperCase() && word !== word.toLowerCase();
+// Step 2: decide which rule applies. "y" is a consonant, as in the challenge.
+//   Accented vowels count too: "ă", "î", "é" are compared without their accent.
+export function startsWithVowel(letters) {
+  const first = letters.normalize("NFD")[0].toLowerCase();
+  return VOWELS.includes(first);
 }
 
-function isCapitalised(letter) {
-  return letter !== letter.toLowerCase();
-}
-
-// Translates the letters of one word (no spaces, no surrounding punctuation).
-function translateCore(word) {
-  const letters = Array.from(word);
-  const first = letters[0];
-  if (!/\p{L}/u.test(first)) return word;            // "42" stays "42"
-
-  const shout = isShouted(word);
-  if (startsWithVowel(word)) return word + (shout ? '-BOO' : '-boo');
-
-  const rest = letters.slice(1).join('');
-  if (!rest) return word + (shout ? 'OO' : 'oo');   // "b" → "boo"
-
-  if (!shout && isCapitalised(first)) {             // "Candy" → "Andy-coo"
-    return rest[0].toUpperCase() + rest.slice(1) + '-' + first.toLowerCase() + 'oo';
-  }
-  return rest + '-' + first + (shout ? 'OO' : 'oo'); // "candy" → "andy-coo", "BOO" → "OO-BOO"
-}
-
+// Step 3: apply the rule to one word.
 export function ghostTalk(word) {
-  if (typeof word !== 'string') return '';
-  // before = leading punctuation, core = the word, after = trailing punctuation
-  const parts = word.match(/^([^\p{L}\p{N}]*)([\p{L}\p{N}](?:[\p{L}\p{N}'’-]*[\p{L}\p{N}])?)([^\p{L}\p{N}]*)$/u);
-  if (!parts) return word;                           // empty, only symbols, or several words
-  const [, before, core, after] = parts;
-  return before + translateCore(core) + after;
+  if (typeof word !== "string") return "";
+  const { before, letters, after } = splitWord(word);
+
+  // Nothing to translate: "", "42", "👻"
+  if (!/^\p{L}/u.test(letters)) return word;
+
+  // A shouted word stays shouted: "BOO" → "OO-BOO"
+  const shout = letters.length > 1 && letters === letters.toUpperCase() && letters !== letters.toLowerCase();
+  const boo = shout ? "BOO" : "boo";
+  const oo = shout ? "OO" : "oo";
+
+  // Rule 1 — vowel first: add "-boo"
+  if (startsWithVowel(letters)) {
+    return before + letters + "-" + boo + after;
+  }
+
+  // Rule 2 — consonant first: move that letter to the end and add "oo"
+  const [first, ...others] = letters;
+  let rest = others.join("");
+  let moved = first;
+
+  if (rest === "") return before + first + oo + after;     // a lone consonant: "b" → "boo"
+
+  // "Candy" → "Andy-coo": the capital stays at the front of the new word
+  if (!shout && first !== first.toLowerCase()) {
+    rest = rest[0].toUpperCase() + rest.slice(1);
+    moved = first.toLowerCase();
+  }
+
+  return before + rest + "-" + moved + oo + after;
 }
 
+// Translates a sentence word by word and keeps the spaces as they were.
 export function ghostTalkText(text) {
-  if (typeof text !== 'string') return '';
-  return text.split(/(\s+)/).map((piece, i) => (i % 2 ? piece : ghostTalk(piece))).join('');
+  if (typeof text !== "string") return "";
+  return text
+    .split(/(\s+)/)
+    .map((piece, i) => (i % 2 === 0 ? ghostTalk(piece) : piece))
+    .join("");
 }

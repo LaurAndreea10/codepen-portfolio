@@ -1,6 +1,6 @@
 name: Ghost Talk tests
 
-# Jest (with coverage), single-file freshness check and Chromium browser checks for Ghost Talk.
+# Jest (challenge rule + Ghost Lab, with coverage), single-file freshness check and Chromium browser checks.
 on:
   push:
     paths:
@@ -30,10 +30,10 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Jest with coverage
         run: npm run test:coverage
-      - name: index.pen.html is up to date
+      - name: lab/index.pen.html is up to date
         run: |
-          node build-standalone.cjs
-          git diff --exit-code index.pen.html || (echo "Run: node ghost-talk/build-standalone.cjs" && exit 1)
+          node lab/build-standalone.cjs
+          git diff --exit-code lab/index.pen.html || (echo "Run: node ghost-talk/lab/build-standalone.cjs" && exit 1)
 
   browser:
     runs-on: ubuntu-latest
@@ -51,11 +51,16 @@ jobs:
         run: |
           python -m http.server 8000 --bind 127.0.0.1 > /dev/null 2>&1 &
           sleep 2
-      - name: Browser checks (390 and 1280 px, offline)
+      - name: Challenge page (360 and 1280 px, in-browser test results)
         env:
           GHOST_URL: http://localhost:8000/ghost-talk/
           GHOST_SHOTS: ${{ runner.temp }}/ghost-shots
-        run: python ghost-talk/tests/test_browser.py
+        run: python ghost-talk/tests/test_page.py
+      - name: Ghost Lab (390 and 1280 px, offline)
+        env:
+          GHOST_LAB_URL: http://localhost:8000/ghost-talk/lab/
+          GHOST_SHOTS: ${{ runner.temp }}/ghost-shots
+        run: python ghost-talk/lab/tests/test_browser.py
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4

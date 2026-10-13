@@ -1,17 +1,18 @@
 'use strict';
 // Ghost Talk service worker: network-first for pages, stale-while-revalidate for files, so updates arrive without a version bump.
-const CACHE = 'ghost-talk-v310';
+const CACHE = 'ghost-lab-v311';
 const ROOT = new URL('./', self.location.href).href;
-const ASSETS = ['./', 'index.html', 'styles.css', 'engine.js', 'ghosttalk.js', 'ghost.spec.js', 'app.js', 'manifest.webmanifest', 'icon.svg'].map(p => new URL(p, ROOT).href);
+const RULE = new URL('../ghosttalk.js', ROOT).href;   // the challenge rule lives one folder up
+const ASSETS = [RULE, ...['./', 'index.html', 'styles.css', 'engine.js', 'ghost.spec.js', 'app.js', 'manifest.webmanifest', 'icon.svg'].map(p => new URL(p, ROOT).href)];
 
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())));
 self.addEventListener('activate', event => event.waitUntil(
-  caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith('ghost-talk-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())
+  caches.keys().then(keys => Promise.all(keys.filter(k => (k.startsWith('ghost-talk-') || k.startsWith('ghost-lab-')) && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())
 ));
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
-  if (url.origin !== self.location.origin || !url.href.startsWith(ROOT)) return;
+  if (url.origin !== self.location.origin || !(url.href.startsWith(ROOT) || url.href === RULE)) return;
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
     if (event.request.mode === 'navigate') {

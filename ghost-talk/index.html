@@ -1,358 +1,52 @@
 <!doctype html>
-<html lang="ro">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ghost Talk</title>
-<meta name="description" content="Ghost Talk — laborator bilingv RO/EN: traducător pe limba fantomelor cu 14 dialecte, 12 jocuri, poveste cu 5 finaluri, fantomă-companion și teste Jest rulate în pagină.">
-<meta name="theme-color" content="#0a0f1f">
-<meta property="og:title" content="Ghost Talk">
-<meta property="og:description" content="Type a word and hear how a ghost would say it. 14 dialects, 12 games, a branching story and live Jest tests.">
-<meta property="og:type" content="website">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="manifest" href="manifest.webmanifest">
+<meta name="description" content="CodePen Challenge, October 2026: type a word and see how a ghost would say it. owl → owl-boo, candy → andy-coo.">
+<meta name="theme-color" content="#0b1020">
+<link rel="icon" href="lab/icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=JetBrains+Mono:wght@400;600&family=Lexend:wght@400;700&display=swap">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600;1,9..144,800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<canvas id="fog" aria-hidden="true"></canvas>
-<canvas id="fx" aria-hidden="true"></canvas>
-<div class="wrap">
-  <header>
-    <div>
-      <p class="eyebrow" data-ro="Provocare CodePen · Haunted Language Lab · v3" data-en="CodePen Challenge · Haunted Language Lab · v3">Provocare CodePen · Haunted Language Lab · v3</p>
-      <h1>Ghost Talk</h1>
-      <p class="lede" data-ro="Regula provocării: vocală la început → „-boo” (owl → owl-boo), consoană → prima literă trece la final + „oo” (candy → andy-coo). Pe deasupra: 14 dialecte în plus, jocuri, o poveste și testele Jest rulate în pagină." data-en="The challenge rule: a vowel first → “-boo” (owl → owl-boo), a consonant first → that letter moves to the end + “oo” (candy → andy-coo). On top: 14 more dialects, games, a story and the Jest tests running in the page.">Regula provocării: owl → owl-boo, candy → andy-coo.</p>
-    </div>
-    <div class="tools">
-      <div class="pill" role="group" aria-label="Limba / Language">
-        <button type="button" data-lang="ro" aria-pressed="true">RO</button>
-        <button type="button" data-lang="en" aria-pressed="false">EN</button>
-      </div>
-      <button type="button" class="tbtn" id="h-sound" aria-pressed="true" data-ro="♫ Sunet" data-en="♫ Sound">♫ Sunet</button>
-      <button type="button" class="tbtn" id="h-theme" aria-pressed="false" data-ro="◐ Zori" data-en="◐ Dawn">◐ Zori</button>
-      <button type="button" class="tbtn" id="h-keys" aria-haspopup="dialog" data-ro="⌨ Scurtături" data-en="⌨ Shortcuts">⌨ Scurtături</button>
-    </div>
-  </header>
+<main>
+  <h1><span class="boo" aria-hidden="true">👻</span> Ghost Talk</h1>
+  <p>Type a word and see how a ghost would say it.</p>
 
-  <main class="table">
-    <section class="seance" id="seance" data-d="classic" data-decor="night" data-hat="none" data-extra="none" data-mood="happy" aria-label="Scena">
-      <div class="scene" id="scene">
-        <svg class="backdrop" viewBox="0 0 400 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-          <g id="stars"></g>
-          <circle class="moon" cx="345" cy="52" r="22"/>
-          <g data-scene="night"><path class="sil" d="M0 300V250Q60 222 120 244T240 236T400 240V300Z"/></g>
-          <g data-scene="castle"><path class="sil" d="M0 300V262H40V236H52V262H96V200H90V188H98V196H106V188H114V196H122V188H130V200H124V262H170V150L186 124L202 150V262H246V214H240V202H248V210H256V202H264V214H258V262H300V230H312V262H400V300Z"/></g>
-          <g data-scene="forest"><path class="sil" d="M0 300V270L20 210L40 270L52 240L74 172L96 240L108 270L130 196L152 270H180L200 220L220 270H244L270 182L296 270L312 238L334 190L356 238L370 270L388 228L400 260V300Z"/></g>
-          <g data-scene="pumpkins">
-            <path class="sil" d="M0 300V262Q100 246 200 258T400 254V300Z"/>
-            <ellipse class="pump" cx="70" cy="262" rx="24" ry="17"/><rect class="stem" x="67" y="240" width="6" height="9" rx="2"/>
-            <ellipse class="pump" cx="318" cy="258" rx="30" ry="21"/><rect class="stem" x="315" y="232" width="7" height="10" rx="2"/>
-            <ellipse class="pump" cx="362" cy="270" rx="16" ry="11"/><rect class="stem" x="360" y="255" width="5" height="7" rx="2"/>
-          </g>
-        </svg>
-        <div class="stage">
-          <div class="ghost-wrap" id="ghost-wrap">
-            <svg class="ghost" viewBox="0 -48 220 268" role="img" aria-label="Boo">
-              <path class="body" d="M100 14C52 14 28 52 28 100V196Q40 182 52 196Q64 210 76 196Q88 182 100 196Q112 210 124 196Q136 182 148 196Q160 210 172 196V100C172 52 148 14 100 14Z"/>
-              <ellipse class="cheek" cx="64" cy="118" rx="10" ry="6"/><ellipse class="cheek" cx="136" cy="118" rx="10" ry="6"/>
-              <g id="eyes">
-                <ellipse class="eye" cx="78" cy="92" rx="11" ry="15"/><ellipse class="eye" cx="122" cy="92" rx="11" ry="15"/>
-                <circle class="glint" cx="82" cy="86" r="3.5"/><circle class="glint" cx="126" cy="86" r="3.5"/>
-              </g>
-              <ellipse class="mouth" id="mouth" cx="100" cy="142" rx="10" ry="8"/>
-              <text class="zzz" x="150" y="40">z z z</text>
-              <g data-extra="glasses"><circle class="lens" cx="78" cy="92" r="19"/><circle class="lens" cx="122" cy="92" r="19"/><path class="frame" d="M97 90Q100 86 103 90M59 88L46 82M141 88L154 82"/></g>
-              <g data-extra="scarf"><path class="scarf" d="M40 160Q100 182 160 160L162 176Q100 198 38 176Z"/><path class="scarf" d="M128 172L150 214L132 218L118 178Z"/><path class="scarf-stripe" d="M44 168Q100 188 156 168"/></g>
-              <g data-extra="lantern"><path class="handle" d="M178 128Q188 112 198 128"/><rect class="lantern" x="176" y="128" width="24" height="34" rx="5"/><ellipse class="flame" cx="188" cy="146" rx="5" ry="8"/></g>
-              <g data-hat="top"><rect class="hat-dark" x="78" y="-28" width="44" height="48" rx="4"/><rect class="hat-band" x="78" y="8" width="44" height="7"/><rect class="hat-dark" x="58" y="18" width="84" height="9" rx="4.5"/></g>
-              <g data-hat="crown"><path class="hat-gold" d="M66 24V-6L83 10L100-14L117 10L134-6V24Z"/><circle class="gem" cx="100" cy="12" r="4.5"/><circle class="gem" cx="78" cy="16" r="3"/><circle class="gem" cx="122" cy="16" r="3"/></g>
-              <g data-hat="wizard"><path class="hat-violet" d="M70 22L108-44L128 22Z"/><ellipse class="hat-violet" cx="100" cy="22" rx="48" ry="8"/><path class="hat-band" d="M104-6l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6-4.5-4 6-1z"/></g>
-            </svg>
-          </div>
-          <div class="bubble">
-            <p class="label" id="ghost-label">Fantoma spune</p>
-            <p id="ghost" aria-live="polite"></p>
-            <p class="bubble-note" id="bubble-note"></p>
-          </div>
-        </div>
-        <p class="theremin-hint" id="theremin-hint" hidden data-ro="Teremin pornit: atinge scena și mișcă degetul. Stânga–dreapta schimbă nota, sus–jos volumul." data-en="Theremin on: touch the scene and move. Left–right changes the note, up–down the volume.">Teremin pornit.</p>
-        <button type="button" class="btn small present-exit" id="present-exit" hidden data-ro="Ieși din prezentare" data-en="Exit presentation">Ieși din prezentare</button>
-      </div>
+  <ul class="rules" aria-label="The rule">
+    <li><b>Starts with a vowel</b> → add <code>-boo</code>: <code>owl</code> → <code>owl-boo</code></li>
+    <li><b>Starts with a consonant</b> → move that letter to the end and add <code>oo</code>: <code>candy</code> → <code>andy-coo</code></li>
+  </ul>
 
-      <div class="pet">
-        <span class="pet-name" id="pet-name">Boo</span>
-        <span class="pet-lvl" id="pet-lvl"></span>
-        <div class="xpbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="xpbar"><span></span></div>
-        <span class="badge-chip" id="pet-badge"></span>
-        <span class="mood-chip" id="pet-mood"></span>
-      </div>
+  <label for="human">You say</label>
+  <textarea id="human" rows="3" spellcheck="false" autocomplete="off">candy</textarea>
+  <div class="examples" aria-label="Examples">
+    <button type="button">owl</button>
+    <button type="button">candy</button>
+    <button type="button">witch</button>
+    <button type="button">pumpkin</button>
+    <button type="button">Happy Halloween, candy!</button>
+  </div>
 
-      <div class="actions">
-        <button type="button" class="btn primary" id="speak"><span aria-hidden="true">◐</span> <span data-ro="Ascultă" data-en="Listen">Ascultă</span></button>
-        <button type="button" class="btn" id="copy" data-ro="Copiază" data-en="Copy">Copiază</button>
-        <button type="button" class="btn" id="fav" data-ro="☆ Salvează" data-en="☆ Save">☆ Salvează</button>
-        <button type="button" class="btn" id="share" data-ro="🔗 Link" data-en="🔗 Link">🔗 Link</button>
-        <button type="button" class="btn" id="txt">TXT</button>
-      </div>
-      <div class="actions">
-        <label class="sr-only" for="card-style" data-ro="Format card" data-en="Card format">Format card</label>
-        <select id="card-style" class="mini-select">
-          <option value="square" data-ro="Card pătrat" data-en="Square card">Card pătrat</option>
-          <option value="story" data-ro="Card story 9:16" data-en="Story card 9:16">Card story 9:16</option>
-          <option value="banner" data-ro="Banner 3:1" data-en="Banner 3:1">Banner 3:1</option>
-        </select>
-        <button type="button" class="btn" id="png" data-ro="Creează PNG" data-en="Make PNG">Creează PNG</button>
-        <button type="button" class="btn" id="theremin" aria-pressed="false" data-ro="🎻 Teremin" data-en="🎻 Theremin">🎻 Teremin</button>
-        <button type="button" class="btn" id="present" data-ro="⛶ Prezentare" data-en="⛶ Present">⛶ Prezentare</button>
-      </div>
-      <p class="stats" id="stats"></p>
-      <p class="toast" id="toast" role="status"></p>
-      <div class="card-preview" id="card-preview" hidden>
-        <img id="card-img" alt="">
-        <p data-ro="Dacă descărcarea nu pornește, apasă lung sau click dreapta pe imagine și salveaz-o." data-en="If the download doesn’t start, long-press or right-click the image to save it.">Dacă descărcarea nu pornește, apasă lung pe imagine.</p>
-        <div class="row"><button type="button" class="btn small" id="card-close" data-ro="Închide" data-en="Close">Închide</button></div>
-      </div>
-    </section>
+  <p class="label">The ghost says</p>
+  <p id="ghost" aria-live="polite"></p>
+  <button type="button" id="copy" class="copy">Copy</button>
 
-    <section class="panel" aria-label="Laborator">
-      <div class="tabs" role="tablist" aria-label="Moduri">
-        <button role="tab" id="t-talk" data-tab="talk" aria-controls="p-talk" data-ro="Traducător" data-en="Translator">Traducător</button>
-        <button role="tab" id="t-play" data-tab="play" aria-controls="p-play" data-ro="Joacă" data-en="Play">Joacă</button>
-        <button role="tab" id="t-story" data-tab="story" aria-controls="p-story" data-ro="Poveste" data-en="Story">Poveste</button>
-        <button role="tab" id="t-collection" data-tab="collection" aria-controls="p-collection" data-ro="Colecție" data-en="Collection">Colecție</button>
-        <button role="tab" id="t-tests" data-tab="tests" aria-controls="p-tests" data-ro="Teste" data-en="Tests">Teste</button>
-        <button role="tab" id="t-settings" data-tab="settings" aria-controls="p-settings" data-ro="Setări" data-en="Settings">Setări</button>
-      </div>
+  <section aria-labelledby="how">
+    <h2 id="how">How each word was translated</h2>
+    <ol id="steps"></ol>
+  </section>
 
-      <!-- Translator -->
-      <div role="tabpanel" id="p-talk" aria-labelledby="t-talk">
-        <div class="mode" role="group" aria-label="Direcție">
-          <button type="button" id="m-enc" aria-pressed="true" data-ro="Om → Fantomă" data-en="Human → Ghost">Om → Fantomă</button>
-          <button type="button" id="m-dec" aria-pressed="false" data-ro="Fantomă → Om" data-en="Ghost → Human">Fantomă → Om</button>
-        </div>
-        <div class="block">
-          <label class="label" for="human" id="human-label">Tu spui</label>
-          <textarea id="human" maxlength="1500" spellcheck="false" autocomplete="off"></textarea>
-          <div class="row">
-            <button type="button" class="btn small" id="dictate" data-ro="🎙 Dictează" data-en="🎙 Dictate">🎙 Dictează</button>
-            <button type="button" class="btn small" id="clear" data-ro="Șterge" data-en="Clear">Șterge</button>
-          </div>
-          <div class="chips" id="chips"></div>
-        </div>
-        <div id="dialect-box" class="block">
-          <fieldset class="dgroup" id="dg-rule"><legend class="label" data-ro="Regula provocării CodePen" data-en="The CodePen challenge rule">Regula provocării CodePen</legend><div class="dchips"></div></fieldset>
-          <fieldset class="dgroup" id="dg-rev"><legend class="label" data-ro="Se traduc înapoi exact" data-en="Translate back exactly">Se traduc înapoi exact</legend><div class="dchips"></div></fieldset>
-          <fieldset class="dgroup" id="dg-one"><legend class="label" data-ro="Doar dus (înapoi aproximativ)" data-en="One way (approximate back)">Doar dus</legend><div class="dchips"></div></fieldset>
-          <p class="desc" id="dialect-desc"></p>
-        </div>
-        <div class="emf">
-          <div class="emf-top">
-            <label class="label" for="level" data-ro="Nivel EMF (contor K-II)" data-en="EMF level (K-II meter)">Nivel EMF</label>
-            <span class="emf-read" id="emf-read">3 / 5</span>
-          </div>
-          <div class="leds" aria-hidden="true"><span class="led"></span><span class="led"></span><span class="led"></span><span class="led"></span><span class="led"></span></div>
-          <input type="range" id="level" min="1" max="5" step="1" value="3">
-          <div class="scale"><span data-ro="adiere rece" data-en="cold draft">adiere rece</span><span data-ro="bântuire totală" data-en="full haunting">bântuire totală</span></div>
-        </div>
-        <details class="more" id="chain-box">
-          <summary data-ro="Lanț de dialecte" data-en="Dialect chain">Lanț de dialecte</summary>
-          <div class="block">
-            <p class="desc" data-ro="Trece traducerea prin încă unul sau două dialecte, în ordine. Lanțurile din dialecte reversibile se pot desface pas cu pas în modul Fantomă → Om." data-en="Pass the translation through one or two more dialects, in order. Chains of reversible dialects can be undone step by step in Ghost → Human mode.">Trece traducerea prin încă unul sau două dialecte.</p>
-            <div class="row">
-              <label class="sr-only" for="chain-1" data-ro="Al doilea dialect" data-en="Second dialect">Al doilea dialect</label><select id="chain-1"></select>
-              <label class="sr-only" for="chain-2" data-ro="Al treilea dialect" data-en="Third dialect">Al treilea dialect</label><select id="chain-2"></select>
-            </div>
-          </div>
-        </details>
-        <details class="more" id="compare-box">
-          <summary data-ro="Compară toate dialectele" data-en="Compare all dialects">Compară toate dialectele</summary>
-          <ul class="compare" id="compare"></ul>
-        </details>
-      </div>
-
-      <!-- Play -->
-      <div role="tabpanel" id="p-play" aria-labelledby="t-play" hidden>
-        <div class="block">
-          <h2 data-ro="Arcade bântuit" data-en="Haunted arcade">Arcade bântuit</h2>
-          <p class="sub" data-ro="Douăsprezece jocuri fără cronometru. Fantoma îți spune provocarea în bula ei." data-en="Twelve untimed games. The ghost gives you each challenge in its speech bubble.">Douăsprezece jocuri fără cronometru.</p>
-        </div>
-        <div class="row">
-          <label class="label full" for="game" data-ro="Joc" data-en="Game">Joc</label>
-          <select id="game" class="grow"></select>
-          <button type="button" class="btn" id="new-round" data-ro="Rundă nouă" data-en="New round">Rundă nouă</button>
-        </div>
-        <div class="seg" role="group" aria-label="Dificultate" id="difficulty">
-          <button type="button" data-diff="easy" data-ro="Ușor" data-en="Easy">Ușor</button>
-          <button type="button" data-diff="medium" data-ro="Mediu" data-en="Medium">Mediu</button>
-          <button type="button" data-diff="nightmare" data-ro="Coșmar" data-en="Nightmare">Coșmar</button>
-        </div>
-        <p class="desc" id="game-hint"></p>
-        <div class="arcade-bar" id="arcade-bar" hidden><span id="arcade-lives"></span><span><span data-ro="Scor" data-en="Score">Scor</span>: <b id="arcade-score">0</b></span><span><span data-ro="Record arcade" data-en="Arcade best">Record arcade</span>: <b id="arcade-best">0</b></span></div>
-        <div class="block" id="answer-area">
-          <label class="label" for="answer" id="answer-label" data-ro="Răspunsul tău" data-en="Your answer">Răspunsul tău</label>
-          <input id="answer" autocomplete="off" spellcheck="false">
-          <div class="pads" id="pads" hidden>
-            <button type="button" class="pad" data-n="1">1</button><button type="button" class="pad" data-n="2">2</button>
-            <button type="button" class="pad" data-n="3">3</button><button type="button" class="pad" data-n="4">4</button>
-            <button type="button" class="pad" data-n="back">⌫</button>
-          </div>
-          <div class="row">
-            <button type="button" class="btn primary" id="check" data-ro="Verifică" data-en="Check">Verifică</button>
-            <button type="button" class="btn" id="replay" data-ro="Repetă" data-en="Replay">Repetă</button>
-            <button type="button" class="btn" id="reveal" data-ro="Arată răspunsul" data-en="Show answer">Arată răspunsul</button>
-          </div>
-        </div>
-        <div class="block" id="hangman-area" hidden>
-          <p class="lives" id="hangman-lives"></p>
-          <div class="keys" id="keys"></div>
-        </div>
-        <div class="block" id="daily-area" hidden>
-          <div class="grid-rows" id="daily-rows"></div>
-          <div class="row"><button type="button" class="btn small" id="daily-hint" data-ro="Indiciu: cuvântul în cealaltă limbă" data-en="Hint: the word in the other language">Indiciu</button><button type="button" class="btn small" id="daily-share" hidden data-ro="Copiază rezultatul" data-en="Copy result">Copiază rezultatul</button></div>
-          <pre class="share-box" id="daily-share-text" hidden></pre>
-        </div>
-        <p class="result" id="result" aria-live="polite"></p>
-        <div class="scoreline"><span><span data-ro="Serie" data-en="Streak">Serie</span>: <b id="streak">0</b></span><span><span data-ro="Record" data-en="Best">Record</span>: <b id="best">0</b></span><span id="daily-note"></span></div>
-      </div>
-
-      <!-- Story -->
-      <div role="tabpanel" id="p-story" aria-labelledby="t-story" hidden>
-        <div class="block">
-          <h2 data-ro="Scrisoarea pierdută" data-en="The lost letter">Scrisoarea pierdută</h2>
-          <p class="sub" data-ro="Aici citești povestea pe limba oamenilor. În bulă, fantoma o spune în dialectul ales, iar strigoiul Zăbrel vorbește în dialectul lui." data-en="Read the story here in human words. In the bubble, the ghost tells it in the chosen dialect, and the strigoi Zăbrel speaks his own.">Aici citești povestea pe limba oamenilor.</p>
-        </div>
-        <p class="speaker" id="speaker"></p>
-        <p class="story-text" id="story-text"></p>
-        <div class="block" id="puzzle" hidden>
-          <label class="label" for="puzzle-input" data-ro="Răspunsul tău" data-en="Your answer">Răspunsul tău</label>
-          <div class="row"><input id="puzzle-input" class="grow" autocomplete="off" spellcheck="false"><button type="button" class="btn primary" id="puzzle-go" data-ro="Răspunde" data-en="Answer">Răspunde</button></div>
-          <p class="desc" id="puzzle-msg" aria-live="polite"></p>
-        </div>
-        <div class="row" id="choices"></div>
-        <div class="row"><button type="button" class="btn small" id="story-reset" data-ro="Reîncepe povestea" data-en="Restart story">Reîncepe povestea</button><span class="stats" id="endings"></span></div>
-      </div>
-
-      <!-- Collection -->
-      <div role="tabpanel" id="p-collection" aria-labelledby="t-collection" hidden>
-        <div class="block">
-          <label class="label" for="pet-input" data-ro="Numele fantomei" data-en="Ghost name">Numele fantomei</label>
-          <input id="pet-input" maxlength="30" autocomplete="off">
-        </div>
-        <div class="block"><h3 data-ro="Pălării" data-en="Hats">Pălării</h3><div class="opts" id="hats"></div></div>
-        <div class="block"><h3 data-ro="Accesorii" data-en="Accessories">Accesorii</h3><div class="opts" id="extras"></div></div>
-        <div class="block"><h3 data-ro="Culoare" data-en="Colour">Culoare</h3><div class="opts six" id="colors"></div></div>
-        <div class="block"><h3 data-ro="Decor" data-en="Scene">Decor</h3><div class="opts" id="decors"></div></div>
-        <div class="block"><h3 data-ro="Insigne" data-en="Badges">Insigne</h3><ul class="badges" id="badges"></ul></div>
-        <div class="block"><h3><span data-ro="Realizări" data-en="Achievements">Realizări</span> <span id="ach-count"></span></h3><ul class="achievements" id="achievements"></ul></div>
-        <div class="block"><h3 data-ro="Mesaje favorite" data-en="Favorite messages">Mesaje favorite</h3><ul class="list" id="favs"></ul></div>
-        <div class="block"><h3 data-ro="Jurnal de ședință" data-en="Séance log">Jurnal de ședință</h3><ul class="list" id="log"></ul></div>
-      </div>
-
-      <!-- Tests -->
-      <div role="tabpanel" id="p-tests" aria-labelledby="t-tests" hidden>
-        <div class="block">
-          <h2 data-ro="Rezultatele testelor" data-en="Test results">Rezultatele testelor</h2>
-          <p class="sub" data-ro="Aceleași specificații rulează aici, în browser, și cu Jest real în GitHub Actions la fiecare push." data-en="The same specs run here in the browser and with real Jest in GitHub Actions on every push.">Aceleași specificații rulează aici și cu Jest real.</p>
-        </div>
-        <div class="term">
-          <div class="term-bar"><span class="tbadge" id="tbadge">RUNS</span><span class="file">ghost.spec.js</span><button type="button" class="btn" id="rerun" data-ro="Rulează din nou" data-en="Run again">Rulează din nou</button></div>
-          <div class="term-body" id="term" aria-live="polite"></div>
-          <div class="summary" id="summary"></div>
-        </div>
-        <div class="block">
-          <h3 data-ro="Acoperirea API-ului" data-en="API coverage">Acoperirea API-ului</h3>
-          <p class="desc" data-ro="Câte apeluri a primit fiecare funcție publică a motorului în timpul testelor. Raportul complet pe linii vine din jest --coverage în CI." data-en="How many calls each public engine function received during the tests. The full line report comes from jest --coverage in CI.">Câte apeluri a primit fiecare funcție publică.</p>
-          <div class="cov-head"><div class="covbar"><span id="cov-fill"></span></div><b id="cov-pct"></b></div>
-          <ul class="cov" id="cov"></ul>
-        </div>
-      </div>
-
-      <!-- Settings -->
-      <div role="tabpanel" id="p-settings" aria-labelledby="t-settings" hidden>
-        <div class="block">
-          <h2 data-ro="În ritmul tău" data-en="At your pace">În ritmul tău</h2>
-          <p class="sub" data-ro="Progresul, favoritele și setările rămân doar în acest browser." data-en="Progress, favorites and settings stay in this browser only.">Progresul rămâne doar în acest browser.</p>
-        </div>
-        <div class="checks">
-          <label class="check"><input type="checkbox" id="s-motion"> <span data-ro="Mișcare redusă" data-en="Reduced motion">Mișcare redusă</span></label>
-          <label class="check"><input type="checkbox" id="s-contrast"> <span data-ro="Contrast ridicat" data-en="High contrast">Contrast ridicat</span></label>
-          <label class="check"><input type="checkbox" id="s-dawn"> <span data-ro="Tema „Zori” (luminoasă)" data-en="“Dawn” theme (light)">Tema „Zori”</span></label>
-          <label class="check"><input type="checkbox" id="s-lexend"> <span data-ro="Font pentru citire ușoară (Lexend)" data-en="Easy-reading font (Lexend)">Font pentru citire ușoară</span></label>
-          <label class="check"><input type="checkbox" id="s-sfx"> <span data-ro="Efecte sonore (teremin și tonuri de joc)" data-en="Sound effects (theremin and game tones)">Efecte sonore</span></label>
-          <label class="check"><input type="checkbox" id="s-echo"> <span data-ro="Ecou pe vocea fantomei" data-en="Echo on the ghost’s voice">Ecou pe vocea fantomei</span></label>
-          <label class="check"><input type="checkbox" id="s-ambient"> <span data-ro="Ambianță: vânt, bufniță, ușă care scârțâie" data-en="Ambience: wind, owl, creaking door">Ambianță</span></label>
-        </div>
-        <div class="sliders">
-          <div class="slider"><label for="s-scale"><span data-ro="Mărimea textului" data-en="Text size">Mărimea textului</span><output id="o-scale">100%</output></label><input type="range" id="s-scale" min="1" max="1.5" step="0.1"></div>
-          <div class="slider"><label for="s-rate"><span data-ro="Viteza vocii" data-en="Voice speed">Viteza vocii</span><output id="o-rate">×1.0</output></label><input type="range" id="s-rate" min="0.5" max="1.5" step="0.1"></div>
-          <div class="slider"><label for="s-volume"><span data-ro="Volum" data-en="Volume">Volum</span><output id="o-volume">70%</output></label><input type="range" id="s-volume" min="0" max="1" step="0.1"></div>
-        </div>
-        <div class="block">
-          <h3 data-ro="Backup" data-en="Backup">Backup</h3>
-          <div class="row">
-            <button type="button" class="btn small" id="export" data-ro="Exportă" data-en="Export">Exportă</button>
-            <button type="button" class="btn small" id="export-dl" data-ro="Descarcă .json" data-en="Download .json">Descarcă .json</button>
-            <label class="file"><span data-ro="Importă fișier:" data-en="Import file:">Importă fișier:</span> <input type="file" id="import" accept="application/json,.json"></label>
-          </div>
-          <label class="label" for="backupText" data-ro="Backup ca text (copiază-l sau lipește unul și importă)" data-en="Backup as text (copy it, or paste one and import)">Backup ca text</label>
-          <textarea id="backupText" spellcheck="false"></textarea>
-          <div class="row">
-            <button type="button" class="btn small" id="backup-copy" data-ro="Copiază textul" data-en="Copy text">Copiază textul</button>
-            <button type="button" class="btn small" id="import-text" data-ro="Importă textul" data-en="Import text">Importă textul</button>
-          </div>
-        </div>
-        <div class="block" id="install-box">
-          <h3 data-ro="Instalează" data-en="Install">Instalează</h3>
-          <p class="desc" id="install-note"></p>
-          <div class="row"><button type="button" class="btn small" id="install" hidden data-ro="Instalează aplicația" data-en="Install the app">Instalează aplicația</button></div>
-        </div>
-        <div class="block">
-          <h3 data-ro="Zona periculoasă" data-en="Danger zone">Zona periculoasă</h3>
-          <div class="row"><button type="button" class="btn small danger" id="reset" data-ro="Șterge toate datele" data-en="Delete all data">Șterge toate datele</button></div>
-          <div class="confirm" id="confirm" hidden>
-            <p data-ro="Ștergi XP-ul, favoritele, jurnalul, realizările și setările? Nu se poate anula." data-en="Delete XP, favorites, the log, achievements and settings? This can’t be undone.">Ștergi tot?</p>
-            <button type="button" class="btn small danger" id="reset-yes" data-ro="Da, șterge" data-en="Yes, delete">Da, șterge</button>
-            <button type="button" class="btn small" id="reset-no" data-ro="Anulează" data-en="Cancel">Anulează</button>
-          </div>
-        </div>
-        <p class="sub" data-ro="Dictarea depinde de browser și poate folosi serviciul lui vocal. Pe GitHub Pages funcționează în Chrome și Edge." data-en="Dictation depends on your browser and may use its speech service. On GitHub Pages it works in Chrome and Edge.">Dictarea depinde de browser.</p>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>Ghost Talk · v<span id="version">3.1.0</span> · <a href="#tests" id="foot-tests" data-ro="Vezi rezultatele testelor Jest" data-en="View Jest test results">Vezi rezultatele testelor Jest</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/ghost-talk" target="_blank" rel="noopener noreferrer" data-ro="Cod sursă" data-en="Source code">Cod sursă</a></p>
-    <p data-ro="Joc fără cronometru. Controale prin tastatură și touch. Fără cont, fără server, fără dependențe la rulare." data-en="Untimed play. Keyboard and touch controls. No account, no server, no runtime dependencies.">Joc fără cronometru.</p>
-  </footer>
-</div>
-
-<dialog id="keys-dialog" aria-labelledby="keys-title">
-  <h2 id="keys-title" data-ro="Scurtături de tastatură" data-en="Keyboard shortcuts">Scurtături de tastatură</h2>
-  <dl class="keylist">
-    <dt><kbd>Ctrl</kbd> + <kbd>Enter</kbd></dt><dd data-ro="Ascultă fantoma" data-en="Hear the ghost">Ascultă fantoma</dd>
-    <dt><kbd>Alt</kbd> + <kbd>1</kbd>…<kbd>6</kbd></dt><dd data-ro="Schimbă tab-ul" data-en="Switch tab">Schimbă tab-ul</dd>
-    <dt><kbd>Alt</kbd> + <kbd>S</kbd></dt><dd data-ro="Salvează în favorite" data-en="Save to favorites">Salvează în favorite</dd>
-    <dt><kbd>Alt</kbd> + <kbd>C</kbd></dt><dd data-ro="Copiază mesajul" data-en="Copy the message">Copiază mesajul</dd>
-    <dt><kbd>Alt</kbd> + <kbd>L</kbd></dt><dd data-ro="Schimbă limba" data-en="Switch language">Schimbă limba</dd>
-    <dt><kbd>Alt</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd></dt><dd data-ro="Nivel EMF mai mare / mai mic" data-en="Raise / lower the EMF level">Nivel EMF</dd>
-    <dt><kbd>Alt</kbd> + <kbd>P</kbd></dt><dd data-ro="Mod prezentare" data-en="Presentation mode">Mod prezentare</dd>
-    <dt><kbd>Esc</kbd></dt><dd data-ro="Închide prezentarea sau acest panou" data-en="Close presentation or this panel">Închide</dd>
-    <dt><kbd>?</kbd></dt><dd data-ro="Arată aceste scurtături" data-en="Show these shortcuts">Arată aceste scurtături</dd>
-  </dl>
-  <form method="dialog"><button class="btn" data-ro="Închide" data-en="Close">Închide</button></form>
-</dialog>
-
-<script src="engine.js" defer></script>
-<script src="ghost.spec.js" defer></script>
-<script type="module">
-  // The challenge rule from ghosttalk.js, handed to the rest of the app before app.js runs.
-  import { ghostTalk, ghostTalkText } from './ghosttalk.js';
-  Ghost.useRule(ghostTalkText);
-  window.ghostTalk = ghostTalk;
-</script>
-<script src="app.js" defer></script>
+  <nav class="links">
+    <a href="test-results.html">View Jest test results</a>
+    <a href="lab/">Ghost Lab: extra dialects, games and effects (optional)</a>
+    <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/ghost-talk">Source code</a>
+  </nav>
+</main>
+<script type="module" src="main.js"></script>
 </body>
 </html>

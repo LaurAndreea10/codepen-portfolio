@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Builds index.pen.html: one self-contained file (CSS + JS inlined) for CodePen or offline sharing.
-// Usage: node ghost-talk/build-standalone.cjs   (or npm run build:standalone inside ghost-talk/)
+// Usage: node ghost-talk/lab/build-standalone.cjs   (or npm run build:lab inside ghost-talk/)
 const fs = require('fs');
 const path = require('path');
 
@@ -17,7 +17,7 @@ html = html
   .replace('<script src="ghost.spec.js" defer></script>', () => `<script>\n${safe(read('ghost.spec.js'))}\n</script>`)
   .replace(/<script type="module">[\s\S]*?<\/script>/, () => {
     // One file has no ./ghosttalk.js to import, so the rule is inlined as a plain script (export keywords dropped).
-    const rule = read('ghosttalk.js').replace(/^export /gm, '');
+    const rule = read('../ghosttalk.js').replace(/^export /gm, '');
     return `<script>\n(function () {\n${safe(rule)}\nGhost.useRule(ghostTalkText);\nwindow.ghostTalk = ghostTalk;\n})();\n</script>`;
   })
   .replace('<script src="app.js" defer></script>', () => `<script>\n${safe(read('app.js'))}\n</script>`);

@@ -1,0 +1,45 @@
+/* Ghost Talk — one column, readable on a phone, no canvas or background animation. */
+:root {
+  --night: #0b1020;
+  --panel: #141b33;
+  --line: #2a3560;
+  --ecto: #bff4ff;
+  --candle: #f4b740;
+  --bone: #e8ecf6;
+  --mist: #98a3c0;
+  --display: "Fraunces", Georgia, serif;
+  --body: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--night); color: var(--bone); font: 17px/1.55 var(--body); }
+main { max-width: 680px; margin: 0 auto; padding: 32px 16px 48px; display: grid; gap: 14px; }
+
+h1 { margin: 0; font: italic 800 clamp(44px, 11vw, 72px)/1 var(--display); color: var(--ecto); text-shadow: 0 0 24px rgba(191, 244, 255, .3); }
+.boo { display: inline-block; animation: float 4s ease-in-out infinite; }
+@keyframes float { 50% { transform: translateY(-6px); } }
+h1 + p { margin: 0; color: var(--mist); }
+h2 { margin: 8px 0 4px; font-size: 17px; }
+
+.rules { margin: 4px 0; padding: 14px 16px 14px 34px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; display: grid; gap: 6px; }
+code { font: 15px var(--mono); color: var(--ecto); overflow-wrap: anywhere; }
+
+label, .label { margin: 8px 0 0; font: 600 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--mist); }
+textarea { width: 100%; font: 20px/1.4 var(--body); color: var(--bone); background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; resize: vertical; }
+
+.examples { display: flex; flex-wrap: wrap; gap: 8px; }
+button { font: 15px var(--body); color: var(--bone); background: none; border: 1px dashed var(--line); border-radius: 999px; padding: 8px 14px; cursor: pointer; }
+button:hover { border-color: var(--ecto); color: var(--ecto); }
+:focus-visible { outline: 2px solid var(--candle); outline-offset: 2px; }
+
+#ghost { margin: 0; min-height: 1.3em; font: italic 600 clamp(26px, 6vw, 38px)/1.25 var(--display); color: var(--ecto); overflow-wrap: anywhere; }
+.copy { justify-self: start; border-style: solid; }
+
+#steps { margin: 0; padding-left: 22px; display: grid; gap: 6px; color: var(--mist); }
+#steps code { color: var(--bone); }
+
+.links { display: grid; gap: 6px; margin-top: 12px; padding-top: 14px; border-top: 1px solid var(--line); }
+.links a { color: var(--candle); }
+
+@media (prefers-reduced-motion: reduce) { .boo { animation: none; } }

@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.0.0 — 2026-10-13
+
+The challenge entry is now small and centered on the rule; everything else moved to an optional Ghost Lab.
+
+- **The page** (`index.html`, `style.css`, `main.js`) keeps the starter’s structure. The translation shows on load and updates as you type, and each word gets a one-line explanation of the rule that was applied. Five examples, one Copy button.
+- **`ghosttalk.js`** is rewritten in numbered steps you can follow: `splitWord`, `startsWithVowel`, `ghostTalk`, `ghostTalkText`.
+- **`ghosttalk.test.js`** holds the starter tests unchanged, plus 7 edge cases: capitals, punctuation, shouted words, sentences, `y` as a consonant, one-letter words, input without letters. `test-results.html` runs it in the browser.
+- **Removed from the challenge page:** the dialects beyond the rule, games, story, companion, sound, fog and particle canvases, presentation mode and settings. They live on in `lab/` (Ghost Lab 3.1), which imports the same `ghosttalk.js`.
+
 ## 3.1.0 — 2026-10-13
 
 - The challenge rule is now the heart of the app: `ghosttalk.js` exports `ghostTalk(word)` as the starter requires (owl → owl-boo, candy → andy-coo). The starter’s Jest tests pass unchanged, both in Jest and in the page’s Tests tab.

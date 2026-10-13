@@ -1,13 +1,13 @@
 {
   "name": "ghost-talk",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "private": true,
-  "description": "Ghost Talk — bilingual ghost-language lab. Tests only; the app itself has no runtime dependencies.",
+  "description": "Ghost Talk — CodePen Challenge entry (ghosttalk.js) plus the optional Ghost Lab. Tests only; no runtime dependencies.",
   "license": "MIT",
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "build:standalone": "node build-standalone.cjs"
+    "build:lab": "node lab/build-standalone.cjs"
   },
   "devDependencies": {
     "@babel/core": "7.25.2",
@@ -18,12 +18,12 @@
   "jest": {
     "testEnvironment": "node",
     "testMatch": [
-      "<rootDir>/tests/**/*.test.js",
-      "<rootDir>/ghosttalk.test.js"
+      "<rootDir>/ghosttalk.test.js",
+      "<rootDir>/lab/tests/**/*.test.js"
     ],
     "collectCoverageFrom": [
-      "engine.js",
-      "ghosttalk.js"
+      "ghosttalk.js",
+      "lab/engine.js"
     ],
     "coverageThreshold": {
       "global": {

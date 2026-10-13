@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ghost Talk — Jest test results</title>
+<link rel="icon" href="lab/icon.svg" type="image/svg+xml">
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #070b16; color: #e8ecf6; font: 15px/1.6 ui-monospace, "JetBrains Mono", Menlo, monospace; }
+  main { max-width: 760px; margin: 0 auto; padding: 28px 16px 40px; }
+  h1 { font-size: 18px; margin: 0 0 6px; }
+  p { color: #98a3c0; margin: 0 0 18px; }
+  .suite { margin-top: 14px; }
+  .t { padding-left: 2ch; color: #98a3c0; }
+  .ok { color: #5fe0a0; } .no { color: #ff6b7d; }
+  pre { margin: 2px 0 6px 4ch; color: #ff6b7d; white-space: pre-wrap; font: inherit; }
+  #summary { margin-top: 18px; padding-top: 12px; border-top: 1px solid #2a3560; }
+  a { color: #f4b740; }
+</style>
+</head>
+<body>
+<main>
+  <h1>ghosttalk.test.js</h1>
+  <p>The same test file Jest runs, executed here in your browser with a small Jest-compatible runner. <a href="./">Back to Ghost Talk</a></p>
+  <div id="report" aria-live="polite">Running…</div>
+  <div id="summary"></div>
+</main>
+<script type="module">
+  // Minimal describe / test / expect, enough for ghosttalk.test.js (it only uses toBe).
+  const suites = [];
+  let current = null;
+  window.describe = (name, fn) => { current = { name, tests: [] }; suites.push(current); fn(); current = null; };
+  window.test = window.it = (name, fn) => current.tests.push({ name, fn });
+  window.expect = (received) => ({
+    toBe(expected) {
+      if (!Object.is(received, expected)) {
+        throw new Error(`Expected: ${JSON.stringify(expected)}\nReceived: ${JSON.stringify(received)}`);
+      }
+    },
+  });
+
+  await import("./ghosttalk.test.js");
+
+  const report = document.getElementById("report");
+  report.textContent = "";
+  let passed = 0, failed = 0;
+  for (const suite of suites) {
+    const heading = document.createElement("div");
+    heading.className = "suite";
+    heading.textContent = suite.name;
+    report.append(heading);
+    for (const t of suite.tests) {
+      const row = document.createElement("div");
+      row.className = "t";
+      let error = null;
+      try { t.fn(); passed++; } catch (e) { error = e; failed++; }
+      row.innerHTML = error ? '<span class="no">✕</span> ' : '<span class="ok">✓</span> ';
+      row.append(t.name);
+      report.append(row);
+      if (error) {
+        const pre = document.createElement("pre");
+        pre.textContent = error.message;
+        report.append(pre);
+      }
+    }
+  }
+  document.getElementById("summary").innerHTML =
+    `Tests: ${failed ? `<span class="no">${failed} failed</span>, ` : ""}<span class="ok">${passed} passed</span>, ${passed + failed} total`;
+  document.title = (failed ? "✕ " : "✓ ") + document.title;
+</script>
+</body>
+</html>

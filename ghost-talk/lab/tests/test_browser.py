@@ -1,15 +1,15 @@
-"""Browser checks for Ghost Talk (Playwright + Chromium).
+"""Browser checks for the Ghost Lab (Playwright + Chromium).
 
 Run from the repository root with a static server:
     python -m http.server 8000 --bind 127.0.0.1 &
-    GHOST_URL=http://localhost:8000/ghost-talk/ python ghost-talk/tests/test_browser.py
+    GHOST_LAB_URL=http://localhost:8000/ghost-talk/lab/ python ghost-talk/lab/tests/test_browser.py
 """
 import os
 import sys
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-URL = os.environ.get("GHOST_URL", "http://localhost:8000/ghost-talk/")
+URL = os.environ.get("GHOST_LAB_URL", "http://localhost:8000/ghost-talk/lab/")
 SHOTS = Path(os.environ.get("GHOST_SHOTS", "ghost-shots"))
 SHOTS.mkdir(parents=True, exist_ok=True)
 failures = []
