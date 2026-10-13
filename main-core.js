@@ -280,7 +280,8 @@
     if (els.heroPreviewOpen) { els.heroPreviewOpen.href = slide.primaryUrl; els.heroPreviewOpen.textContent = translations[currentLang].previewCaseStudy; els.heroPreviewOpen.setAttribute('aria-label', `${translations[currentLang].previewCaseStudy}: ${slide.title}`); }
     if (els.heroPreviewOpenSecondary) { els.heroPreviewOpenSecondary.href = slide.secondaryUrl; els.heroPreviewOpenSecondary.textContent = translations[currentLang].previewOpen; }
     if (els.heroPreviewCode) { els.heroPreviewCode.href = slide.codeUrl; els.heroPreviewCode.textContent = translations[currentLang].previewCode; }
-    if (els.heroPreviewFrame) { showPreviewFallback(true); els.heroPreviewFrame.src = slide.frameUrl; }
+    // The frame stays hidden (display:none), so loading a full app into it every 5 s only costs performance.
+    if (els.heroPreviewFrame) { showPreviewFallback(true); if (els.heroPreviewFrame.style.display !== 'none') els.heroPreviewFrame.src = slide.frameUrl; }
     renderPreviewChips();
   }
 
