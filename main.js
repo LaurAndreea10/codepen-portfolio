@@ -229,7 +229,8 @@
     document.head.appendChild(script);
 
     window.addEventListener('load',()=>{ restoreNow(); fixProjectCounts(); },{once:true});
-    [100,400,1200,3000].forEach(ms=>setTimeout(fixProjectCounts,ms));
+    // One late pass after main-core.js's own count updates (0/300/1200 ms), run when the browser is idle.
+    setTimeout(()=>('requestIdleCallback' in window ? requestIdleCallback(fixProjectCounts,{timeout:2000}) : fixProjectCounts()),1500);
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
