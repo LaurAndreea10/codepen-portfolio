@@ -24,6 +24,7 @@
 
   /* ======================= Copy ======================= */
   const META = {
+    codepen: { n: ['Regula oficială', 'Official rule'], d: ['Regula provocării, din ghosttalk.js: vocală la început → „-boo” (owl → owl-boo); consoană → prima literă trece la final + „oo” (candy → andy-coo). Păstrează majusculele și punctuația. Nivelul EMF nu o schimbă.', 'The challenge rule, from ghosttalk.js: a vowel first → “-boo” (owl → owl-boo); a consonant first → that letter moves to the end + “oo” (candy → andy-coo). Capitals and punctuation are kept. The EMF level doesn’t change it.'], s: 'andy-coo' },
     classic: { n: ['Clasic', 'Classic'], d: ['Vocale prelungite și câte un 〰 pe fiecare nivel EMF.', 'Stretched vowels and one 〰 per EMF level.'], s: 'Booo〰' },
     mirror: { n: ['Oglindă', 'Mirror'], d: ['Vorbește de dincolo de oglindă, de la coadă la cap.', 'Speaks from behind the glass, back to front.'], s: '⟲ oob' },
     secret: { n: ['Cod secret', 'Secret code'], d: ['Fiecare literă devine un cod hexazecimal. Fantoma citește cu voce tare mesajul original.', 'Every letter becomes a hex code. The ghost reads the original message aloud.'], s: '🔐 62-6f-6f' },
@@ -41,8 +42,8 @@
   };
   const dn = d => T(META[d].n);
   const CHIPS = {
-    ro: ['Bună seara, muritorule', 'Bu!', 'Unde e bomboana mea?', 'Nu mă vezi, dar sunt aici', 'Salut prietene, tu ești?'],
-    en: ['Happy Halloween', 'Boo!', 'Trick or treat', 'Who goes there?', 'Hello friend, are you there?']
+    ro: ['owl candy witch pumpkin', 'Bună seara, muritorule', 'Bu!', 'Unde e bomboana mea?', 'Nu mă vezi, dar sunt aici', 'Salut prietene, tu ești?'],
+    en: ['owl candy witch pumpkin', 'Happy Halloween', 'Boo!', 'Trick or treat', 'Who goes there?', 'Hello friend, are you there?']
   };
   const ERR = {
     SIGIL: ['Textul conține deja simboluri ale acestui dialect. Șterge-le sau alege alt dialect.', 'Your text already contains this dialect’s symbols. Remove them or pick another dialect.'],
@@ -73,7 +74,7 @@
   const ACH = {
     'first-words': [['Primele cuvinte', 'First words'], ['prima traducere', 'your first translation']],
     chatterbox: [['Gură-spartă', 'Chatterbox'], ['100 de traduceri', '100 translations']],
-    polyglot: [['Poliglot', 'Polyglot'], ['toate cele 14 dialecte', 'all 14 dialects']],
+    polyglot: [['Poliglot', 'Polyglot'], ['toate cele 15 dialecte', 'all 15 dialects']],
     'streak-10': [['Serie de 10', 'Streak of 10'], ['10 răspunsuri corecte la rând', '10 correct answers in a row']],
     storyteller: [['Povestitor', 'Storyteller'], ['toate cele 5 finaluri', 'all 5 endings']],
     'first-ending': [['Primul final', 'First ending'], ['ai terminat povestea o dată', 'you finished the story once']],
@@ -137,7 +138,7 @@
   let mode = 'encode';
   const cur = { src: '', out: '', err: '', d: 'classic', note: '' };
   function buildDialects() {
-    [['#dg-rev', G.REVERSIBLE], ['#dg-one', G.ONE_WAY]].forEach(([sel, keys]) => {
+    [['#dg-rule', ['codepen']], ['#dg-rev', G.REVERSIBLE], ['#dg-one', G.ONE_WAY.filter(d => d !== 'codepen')]].forEach(([sel, keys]) => {
       const box = $(sel + ' .dchips'); box.innerHTML = '';
       keys.forEach(key => {
         const lab = document.createElement('label');
@@ -218,7 +219,7 @@
     if (more) peel.textContent = L(`Desface încă un strat (${dn(more)})`, `Peel another layer (${dn(more)})`);
     $$('.led').forEach((l, i) => l.classList.toggle('on', i < n));
     $('#emf-read').textContent = `${n} / 5`;
-    $('#level').disabled = mode === 'decode';
+    $('#level').disabled = mode === 'decode' || (S.dialect === 'codepen' && !S.chain.length);
     if ($('#compare-box').open) renderCompare();
     renderBubble();
   }
@@ -502,7 +503,7 @@
       o.connect(g); g.connect(outNode(a)); o.start(t); o.stop(t + dur + .05);
     } catch {}
   }
-  const BASE = { classic: 330, whisper: 520, banshee: 760, poltergeist: 180, strigoi: 140, mirror: 420, sleepy: 220, secret: 600, morse: 700, runic: 160, emoji: 560, vampire: 200, victorian: 380, echo: 300 };
+  const BASE = { codepen: 360, classic: 330, whisper: 520, banshee: 760, poltergeist: 180, strigoi: 140, mirror: 420, sleepy: 220, secret: 600, morse: 700, runic: 160, emoji: 560, vampire: 200, victorian: 380, echo: 300 };
   function theremin(dur, d) {
     if (!S.sfx || !S.volume) return;
     try {
@@ -992,7 +993,7 @@
     const ul = $('#cov'); ul.innerHTML = '';
     c.functions.forEach(f => { const li = document.createElement('li'); li.className = f.calls ? '' : 'zero'; li.innerHTML = '<span></span><b></b>'; li.firstChild.textContent = f.name + '()'; li.lastChild.textContent = f.calls; ul.append(li); });
   }
-  function runTests() { lastRun = window.GhostSuite(G); renderTests(lastRun); }
+  function runTests() { lastRun = window.GhostSuite(G, { ghostTalk: window.ghostTalk }); renderTests(lastRun); }
   $('#rerun').onclick = runTests;
 
   /* ======================= Shortcuts ======================= */

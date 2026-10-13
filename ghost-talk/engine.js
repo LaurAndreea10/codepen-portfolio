@@ -50,8 +50,27 @@
 
   const words = s => s.split(/(\p{L}+)/u);   // odd indices are words
 
+  /* The official CodePen rule lives in ghosttalk.js (an ES module, the file the challenge tests import).
+     The page and the tests hand it to the engine with useRule(), so there is one source for the rule. */
+  let ghostRule = null;
+  function useRule(fn) { if (typeof fn !== 'function') throw new GhostError('RULE'); ghostRule = fn; }
+  const startsWithVowel = w => 'aeiou'.includes((w.normalize('NFD')[0] || '').toLowerCase());
+  function unGhostWord(tok) {                           // andy-coo → candy; owl-boo → owl (approximate)
+    const m = tok.match(/^([^\p{L}\p{N}]*)(.+?)-(\p{L})(oo)([^\p{L}\p{N}]*)$/iu);
+    if (!m) return tok;
+    const [, before, rest, x, oo, after] = m;
+    if (x.toLowerCase() === 'b' && startsWithVowel(rest)) return before + rest + after;   // vowel rule (or a word starting with b: ambiguous)
+    const shout = oo === 'OO';
+    const word = !shout && rest[0] !== rest[0].toLowerCase() ? x.toUpperCase() + rest[0].toLowerCase() + rest.slice(1) : x + rest;
+    return before + word + after;
+  }
+
   /* ---------- Dialects ---------- */
   const dialects = {
+    codepen: { official: true, voice: { pitch: .6, rate: .8 }, tint: '#bff4ff',
+      encode(t) { if (!ghostRule) throw new GhostError('RULE'); return ghostRule(t); },
+      approx: g => g.split(/(\s+)/).map((t, i) => (i % 2 ? t : unGhostWord(t))).join(''),
+      is: g => { const toks = g.trim().split(/\s+/).filter(t => /\p{L}/u.test(t)); return toks.length > 0 && toks.every(t => /-\p{L}oo[^\p{L}\p{N}]*$/iu.test(t)); } },
     classic: { reversible: true, voice: { pitch: .55, rate: .72 }, tint: '#bff4ff',
       encode(t, l) { if (t.includes(SIGIL)) throw new GhostError('SIGIL'); return chars(t).map(c => isV(c) ? c.repeat(l + 1) : c).join('') + SIGIL.repeat(l); },
       decode(g) {
@@ -156,11 +175,11 @@
       approx: g => g.replace(/(\p{L}*?(\p{L}{2}))((?:-\2)+)(?!\p{L})/giu, '$1'),
       is: g => /(\p{L}{2})(?:-\1)+(?!\p{L})/iu.test(g) }
   };
-  const IDENTIFY_ORDER = ['classic', 'mirror', 'secret', 'morse', 'runic', 'emoji', 'vampire', 'victorian', 'whisper', 'sleepy', 'strigoi', 'banshee', 'poltergeist', 'echo'];
+  const IDENTIFY_ORDER = ['classic', 'mirror', 'secret', 'morse', 'runic', 'emoji', 'vampire', 'victorian', 'codepen', 'whisper', 'sleepy', 'strigoi', 'banshee', 'poltergeist', 'echo'];
   const REVERSIBLE = Object.keys(dialects).filter(k => dialects[k].reversible);
   const ONE_WAY = Object.keys(dialects).filter(k => !dialects[k].reversible);
 
-  function translate(text, dialect = 'classic', level = 3) {
+  function translate(text, dialect = 'codepen', level = 3) {
     if (!own(dialects, dialect)) throw new GhostError('DIALECT');
     if (typeof text !== 'string' || !text.trim()) return '';
     return dialects[dialect].encode(text, clamp(level));
@@ -353,7 +372,7 @@
   function defaults() {
     return { v: 3, lang: 'ro', tab: 'talk', xp: 0, favorites: [], log: [], name: 'Boo', hat: 'none', extra: 'none', color: 'auto', decor: 'night', theme: 'night',
       motion: false, contrast: false, sfx: true, echo: false, ambient: false, font: 'default', scale: 1, rate: 1, volume: .7,
-      story: 0, endings: [], visited: [0], solved: [], dialect: 'classic', level: 3, chain: [], game: 'guess', difficulty: 'medium', best: 0, arcadeBest: 0,
+      story: 0, endings: [], visited: [0], solved: [], dialect: 'codepen', level: 3, chain: [], game: 'guess', difficulty: 'medium', best: 0, arcadeBest: 0,
       daily: { date: '', lang: 'ro', rows: [], guesses: [], done: false, won: false }, achievements: [],
       stats: { translations: 0, dialects: [], hangmanWins: 0, dailyWins: 0, cards: 0, theremin: 0, chain: 0, compare: 0 } };
   }
@@ -395,7 +414,7 @@
       endings: Array.isArray(s.endings) ? [...new Set(s.endings.map(mapNode).filter(n => ENDINGS.includes(n)))] : [],
       visited: Array.isArray(s.visited) ? [...new Set([0, ...s.visited.filter(nodeOk)])] : [0],
       solved: Array.isArray(s.solved) ? [...new Set(s.solved.filter(n => nodeOk(n) && STORY[n].puzzle))] : [],
-      dialect: own(dialects, s.dialect) ? s.dialect : 'classic',
+      dialect: own(dialects, s.dialect) ? s.dialect : 'codepen',
       level: s.level == null ? 3 : clamp(s.level),
       chain: Array.isArray(s.chain) ? s.chain.filter(x => own(dialects, x)).slice(0, 2) : [],
       game: GAMES.includes(s.game) ? s.game : 'guess',
@@ -408,7 +427,7 @@
   }
 
   return {
-    VERSION: '3.0.0', translate, chain, identify, detect, decode, decodeAny, stripMarks, fold, list: () => Object.keys(dialects), dialects, REVERSIBLE, ONE_WAY,
+    VERSION: '3.1.0', useRule, translate, chain, identify, detect, decode, decodeAny, stripMarks, fold, list: () => Object.keys(dialects), dialects, REVERSIBLE, ONE_WAY,
     GhostError, SIGIL, MIRROR, LOCK, RADIO, RUNE, MASK, BAT, SCROLL, MORSE, RUNES, EMOJI, VICTORIAN, hash, rng, clamp, chars,
     WORDS, DIFFICULTY, GAMES, ARCADE_POOL, booscary, sameAnswer, dailyIndex, pickWord, makeRound, checkAnswer,
     hangmanNew, hangmanGuess, hangmanView, hangmanStatus, dayKey, dailyWord, dailyNew, wordleScore, shareText,

@@ -339,7 +339,7 @@ footer a { color: var(--ecto-dim); }
     <div>
       <p class="eyebrow" data-ro="Provocare CodePen · Haunted Language Lab · v3" data-en="CodePen Challenge · Haunted Language Lab · v3">Provocare CodePen · Haunted Language Lab · v3</p>
       <h1>Ghost Talk</h1>
-      <p class="lede" data-ro="Cuvintele tale, traduse pe limba fantomelor. Joacă-te cu Boo, înfruntă-l pe strigoiul Zăbrel, adună XP și verifică totul cu testele din pagină." data-en="Your words, translated into ghost. Play with Boo, face the strigoi Zăbrel, earn XP and check everything with the in-page tests.">Cuvintele tale, traduse pe limba fantomelor.</p>
+      <p class="lede" data-ro="Regula provocării: vocală la început → „-boo” (owl → owl-boo), consoană → prima literă trece la final + „oo” (candy → andy-coo). Pe deasupra: 14 dialecte în plus, jocuri, o poveste și testele Jest rulate în pagină." data-en="The challenge rule: a vowel first → “-boo” (owl → owl-boo), a consonant first → that letter moves to the end + “oo” (candy → andy-coo). On top: 14 more dialects, games, a story and the Jest tests running in the page.">Regula provocării: owl → owl-boo, candy → andy-coo.</p>
     </div>
     <div class="tools">
       <div class="pill" role="group" aria-label="Limba / Language">
@@ -458,6 +458,7 @@ footer a { color: var(--ecto-dim); }
           <div class="chips" id="chips"></div>
         </div>
         <div id="dialect-box" class="block">
+          <fieldset class="dgroup" id="dg-rule"><legend class="label" data-ro="Regula provocării CodePen" data-en="The CodePen challenge rule">Regula provocării CodePen</legend><div class="dchips"></div></fieldset>
           <fieldset class="dgroup" id="dg-rev"><legend class="label" data-ro="Se traduc înapoi exact" data-en="Translate back exactly">Se traduc înapoi exact</legend><div class="dchips"></div></fieldset>
           <fieldset class="dgroup" id="dg-one"><legend class="label" data-ro="Doar dus (înapoi aproximativ)" data-en="One way (approximate back)">Doar dus</legend><div class="dchips"></div></fieldset>
           <p class="desc" id="dialect-desc"></p>
@@ -638,7 +639,7 @@ footer a { color: var(--ecto-dim); }
   </main>
 
   <footer>
-    <p>Ghost Talk · v<span id="version">3.0.0</span> · <a href="#tests" id="foot-tests" data-ro="Vezi rezultatele testelor Jest" data-en="View Jest test results">Vezi rezultatele testelor Jest</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/ghost-talk" target="_blank" rel="noopener noreferrer" data-ro="Cod sursă" data-en="Source code">Cod sursă</a></p>
+    <p>Ghost Talk · v<span id="version">3.1.0</span> · <a href="#tests" id="foot-tests" data-ro="Vezi rezultatele testelor Jest" data-en="View Jest test results">Vezi rezultatele testelor Jest</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/ghost-talk" target="_blank" rel="noopener noreferrer" data-ro="Cod sursă" data-en="Source code">Cod sursă</a></p>
     <p data-ro="Joc fără cronometru. Controale prin tastatură și touch. Fără cont, fără server, fără dependențe la rulare." data-en="Untimed play. Keyboard and touch controls. No account, no server, no runtime dependencies.">Joc fără cronometru.</p>
   </footer>
 </div>
@@ -712,8 +713,27 @@ footer a { color: var(--ecto-dim); }
 
   const words = s => s.split(/(\p{L}+)/u);   // odd indices are words
 
+  /* The official CodePen rule lives in ghosttalk.js (an ES module, the file the challenge tests import).
+     The page and the tests hand it to the engine with useRule(), so there is one source for the rule. */
+  let ghostRule = null;
+  function useRule(fn) { if (typeof fn !== 'function') throw new GhostError('RULE'); ghostRule = fn; }
+  const startsWithVowel = w => 'aeiou'.includes((w.normalize('NFD')[0] || '').toLowerCase());
+  function unGhostWord(tok) {                           // andy-coo → candy; owl-boo → owl (approximate)
+    const m = tok.match(/^([^\p{L}\p{N}]*)(.+?)-(\p{L})(oo)([^\p{L}\p{N}]*)$/iu);
+    if (!m) return tok;
+    const [, before, rest, x, oo, after] = m;
+    if (x.toLowerCase() === 'b' && startsWithVowel(rest)) return before + rest + after;   // vowel rule (or a word starting with b: ambiguous)
+    const shout = oo === 'OO';
+    const word = !shout && rest[0] !== rest[0].toLowerCase() ? x.toUpperCase() + rest[0].toLowerCase() + rest.slice(1) : x + rest;
+    return before + word + after;
+  }
+
   /* ---------- Dialects ---------- */
   const dialects = {
+    codepen: { official: true, voice: { pitch: .6, rate: .8 }, tint: '#bff4ff',
+      encode(t) { if (!ghostRule) throw new GhostError('RULE'); return ghostRule(t); },
+      approx: g => g.split(/(\s+)/).map((t, i) => (i % 2 ? t : unGhostWord(t))).join(''),
+      is: g => { const toks = g.trim().split(/\s+/).filter(t => /\p{L}/u.test(t)); return toks.length > 0 && toks.every(t => /-\p{L}oo[^\p{L}\p{N}]*$/iu.test(t)); } },
     classic: { reversible: true, voice: { pitch: .55, rate: .72 }, tint: '#bff4ff',
       encode(t, l) { if (t.includes(SIGIL)) throw new GhostError('SIGIL'); return chars(t).map(c => isV(c) ? c.repeat(l + 1) : c).join('') + SIGIL.repeat(l); },
       decode(g) {
@@ -818,11 +838,11 @@ footer a { color: var(--ecto-dim); }
       approx: g => g.replace(/(\p{L}*?(\p{L}{2}))((?:-\2)+)(?!\p{L})/giu, '$1'),
       is: g => /(\p{L}{2})(?:-\1)+(?!\p{L})/iu.test(g) }
   };
-  const IDENTIFY_ORDER = ['classic', 'mirror', 'secret', 'morse', 'runic', 'emoji', 'vampire', 'victorian', 'whisper', 'sleepy', 'strigoi', 'banshee', 'poltergeist', 'echo'];
+  const IDENTIFY_ORDER = ['classic', 'mirror', 'secret', 'morse', 'runic', 'emoji', 'vampire', 'victorian', 'codepen', 'whisper', 'sleepy', 'strigoi', 'banshee', 'poltergeist', 'echo'];
   const REVERSIBLE = Object.keys(dialects).filter(k => dialects[k].reversible);
   const ONE_WAY = Object.keys(dialects).filter(k => !dialects[k].reversible);
 
-  function translate(text, dialect = 'classic', level = 3) {
+  function translate(text, dialect = 'codepen', level = 3) {
     if (!own(dialects, dialect)) throw new GhostError('DIALECT');
     if (typeof text !== 'string' || !text.trim()) return '';
     return dialects[dialect].encode(text, clamp(level));
@@ -1015,7 +1035,7 @@ footer a { color: var(--ecto-dim); }
   function defaults() {
     return { v: 3, lang: 'ro', tab: 'talk', xp: 0, favorites: [], log: [], name: 'Boo', hat: 'none', extra: 'none', color: 'auto', decor: 'night', theme: 'night',
       motion: false, contrast: false, sfx: true, echo: false, ambient: false, font: 'default', scale: 1, rate: 1, volume: .7,
-      story: 0, endings: [], visited: [0], solved: [], dialect: 'classic', level: 3, chain: [], game: 'guess', difficulty: 'medium', best: 0, arcadeBest: 0,
+      story: 0, endings: [], visited: [0], solved: [], dialect: 'codepen', level: 3, chain: [], game: 'guess', difficulty: 'medium', best: 0, arcadeBest: 0,
       daily: { date: '', lang: 'ro', rows: [], guesses: [], done: false, won: false }, achievements: [],
       stats: { translations: 0, dialects: [], hangmanWins: 0, dailyWins: 0, cards: 0, theremin: 0, chain: 0, compare: 0 } };
   }
@@ -1057,7 +1077,7 @@ footer a { color: var(--ecto-dim); }
       endings: Array.isArray(s.endings) ? [...new Set(s.endings.map(mapNode).filter(n => ENDINGS.includes(n)))] : [],
       visited: Array.isArray(s.visited) ? [...new Set([0, ...s.visited.filter(nodeOk)])] : [0],
       solved: Array.isArray(s.solved) ? [...new Set(s.solved.filter(n => nodeOk(n) && STORY[n].puzzle))] : [],
-      dialect: own(dialects, s.dialect) ? s.dialect : 'classic',
+      dialect: own(dialects, s.dialect) ? s.dialect : 'codepen',
       level: s.level == null ? 3 : clamp(s.level),
       chain: Array.isArray(s.chain) ? s.chain.filter(x => own(dialects, x)).slice(0, 2) : [],
       game: GAMES.includes(s.game) ? s.game : 'guess',
@@ -1070,7 +1090,7 @@ footer a { color: var(--ecto-dim); }
   }
 
   return {
-    VERSION: '3.0.0', translate, chain, identify, detect, decode, decodeAny, stripMarks, fold, list: () => Object.keys(dialects), dialects, REVERSIBLE, ONE_WAY,
+    VERSION: '3.1.0', useRule, translate, chain, identify, detect, decode, decodeAny, stripMarks, fold, list: () => Object.keys(dialects), dialects, REVERSIBLE, ONE_WAY,
     GhostError, SIGIL, MIRROR, LOCK, RADIO, RUNE, MASK, BAT, SCROLL, MORSE, RUNES, EMOJI, VICTORIAN, hash, rng, clamp, chars,
     WORDS, DIFFICULTY, GAMES, ARCADE_POOL, booscary, sameAnswer, dailyIndex, pickWord, makeRound, checkAnswer,
     hangmanNew, hangmanGuess, hangmanView, hangmanStatus, dayKey, dailyWord, dailyNew, wordleScore, shareText,
@@ -1094,8 +1114,46 @@ footer a { color: var(--ecto-dim); }
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  function GhostSpecs({ describe, it, expect }, G) {
+  function GhostSpecs({ describe, it, expect, test }, G, extras = {}) {
     const S = G.SIGIL;
+
+    // The challenge’s own starter tests, word for word. Jest runs them from ghosttalk.test.js;
+    // the page runs them here against the same ghostTalk() from ghosttalk.js.
+    if (typeof extras.ghostTalk === 'function') {
+      const ghostTalk = extras.ghostTalk, t = test || it;
+      describe('👻 Ghost Talk (official starter tests)', () => {
+        t('words that start with a vowel get -boo added to the end', () => {
+          expect(ghostTalk('owl')).toBe('owl-boo');
+          expect(ghostTalk('apple')).toBe('apple-boo');
+          expect(ghostTalk('ice')).toBe('ice-boo');
+        });
+        t('words that start with a consonant move the first letter to the end and add -oo', () => {
+          expect(ghostTalk('candy')).toBe('andy-coo');
+          expect(ghostTalk('witch')).toBe('itch-woo');
+          expect(ghostTalk('pumpkin')).toBe('umpkin-poo');
+        });
+      });
+    }
+
+    describe('official rule — sentences, capitals, punctuation', () => {
+      it('is the default dialect and matches the starter examples', () => {
+        expect(['owl', 'apple', 'ice', 'candy', 'witch', 'pumpkin'].map(w => G.translate(w)))
+          .toEqual(['owl-boo', 'apple-boo', 'ice-boo', 'andy-coo', 'itch-woo', 'umpkin-poo']);
+      });
+      it('translates sentences word by word and keeps punctuation', () => expect(G.translate('Happy Halloween, candy!', 'codepen')).toBe('Appy-hoo Alloween-hoo, andy-coo!'));
+      it('keeps capitals where they belong', () => expect(G.translate('Owl Witch', 'codepen')).toBe('Owl-boo Itch-woo'));
+      it('keeps shouted words shouted', () => expect(G.translate('BOO OWL', 'codepen')).toBe('OO-BOO OWL-BOO'));
+      it('a one-letter consonant just says oo', () => expect(G.translate('b', 'codepen')).toBe('boo'));
+      it('treats Romanian and accented vowels as vowels', () => expect(G.translate('ăla Înger école', 'codepen')).toBe('ăla-boo Înger-boo école-boo'));
+      it('leaves numbers and symbols alone', () => expect(G.translate('room 13 👻', 'codepen')).toBe('oom-roo 13 👻'));
+      it('keeps inner apostrophes and hyphens inside one word', () => expect(G.translate("don't", 'codepen')).toBe("on't-doo"));
+      it('is recognised and translated back approximately', () => {
+        const r = G.decodeAny(G.translate('Candy, witch and pumpkin!', 'codepen'));
+        expect([r.dialect, r.exact, r.text]).toEqual(['codepen', false, 'Candy, witch and pumpkin!']);
+      });
+      it('reads -boo after a vowel as the vowel rule', () => expect(G.decodeAny('owl-boo').text).toBe('owl'));
+      it('useRule() refuses anything that is not a function', () => expect(() => G.useRule('rule')).toThrow('RULE'));
+    });
     const seeded = seed => G.rng(seed);
     const randomPhrases = (seed, alphabet, n, maxLen = 24) => {
       const R = seeded(seed), abc = G.chars(alphabet), out = [];
@@ -1112,10 +1170,10 @@ footer a { color: var(--ecto-dim); }
       it('returns an empty string for whitespace-only input', () => expect(G.translate('   \n ', 'banshee', 4)).toBe(''));
       it('throws DIALECT for an unknown dialect', () => expect(() => G.translate('boo', 'vampyre')).toThrow('DIALECT'));
       it('throws DIALECT for inherited keys like "toString"', () => expect(() => G.translate('boo', 'toString')).toThrow('DIALECT'));
-      it('has 14 dialects: 7 reversible and 7 one-way', () => {
-        expect(G.list().length).toBe(14);
+      it('has 15 dialects: the official rule, 7 reversible and 7 more one-way', () => {
+        expect(G.list().length).toBe(15);
         expect(G.REVERSIBLE).toEqual(['classic', 'mirror', 'secret', 'morse', 'runic', 'emoji', 'poltergeist']);
-        expect(G.ONE_WAY).toEqual(['whisper', 'banshee', 'strigoi', 'sleepy', 'vampire', 'victorian', 'echo']);
+        expect(G.ONE_WAY).toEqual(['codepen', 'whisper', 'banshee', 'strigoi', 'sleepy', 'vampire', 'victorian', 'echo']);
       });
       it('clamps the EMF level into 1–5', () => {
         expect(G.translate('o', 'classic', 99)).toBe(G.translate('o', 'classic', 5));
@@ -1225,7 +1283,7 @@ footer a { color: var(--ecto-dim); }
         const R = seeded(2026);
         ['guess', 'typing', 'memory', 'letters', 'secret', 'choir', 'boo', 'vocab', 'arcade'].forEach(game => ['easy', 'medium', 'nightmare'].forEach(difficulty => {
           for (let i = 0; i < 25; i++) {
-            const r = G.makeRound(game, { lang: i % 2 ? 'en' : 'ro', difficulty, dialect: G.list()[i % 14], rand: R });
+            const r = G.makeRound(game, { lang: i % 2 ? 'en' : 'ro', difficulty, dialect: G.list()[i % G.list().length], rand: R });
             expect(G.checkAnswer(r, r.expected)).toBe(true);
             expect(G.checkAnswer(r, r.digits ? r.expected + ' 1' : r.expected + 'x')).toBe(false);
           }
@@ -1336,7 +1394,7 @@ footer a { color: var(--ecto-dim); }
         expect([s.hat, s.decor, s.theme, s.favorites[0].g, s.xp]).toEqual(['crown', 'pumpkins', 'dawn', 'Boo~ aaa', 50]);
       });
       it('migrates v2 story endings to the new story map', () => expect(G.normalizeState({ endings: [3, 4], story: 3 }).endings).toEqual([8, 9]));
-      it('ignores prototype keys such as hat: "toString"', () => expect([G.normalizeState({ hat: 'toString' }).hat, G.normalizeState({ dialect: '__proto__' }).dialect]).toEqual(['none', 'classic']));
+      it('ignores prototype keys such as hat: "toString"', () => expect([G.normalizeState({ hat: 'toString' }).hat, G.normalizeState({ dialect: '__proto__' }).dialect]).toEqual(['none', 'codepen']));
       it('caps favorites at 30, names at 30 chars, XP at 100000, text size at 150%', () => {
         const s = G.normalizeState({ favorites: Array(50).fill('x'), name: 'B'.repeat(80), xp: 1e9, scale: 9 });
         expect([s.favorites.length, s.name.length, s.xp, s.scale]).toEqual([30, 30, 100000, 1.5]);
@@ -1350,7 +1408,7 @@ footer a { color: var(--ecto-dim); }
   }
 
   /* ---------- Browser runner: tiny Jest-compatible API + API coverage ---------- */
-  function GhostSuite(G) {
+  function GhostSuite(G, extras = {}) {
     const suites = []; let cur = null;
     const fmt = v => JSON.stringify(v);
     const describe = (name, fn) => { cur = { name, tests: [] }; suites.push(cur); fn(); cur = null; };
@@ -1377,7 +1435,7 @@ footer a { color: var(--ecto-dim); }
       wrapped[k] = fn;
       G[k] = function () { calls[k]++; return fn.apply(this, arguments); };
     });
-    GhostSpecs({ describe, it, expect }, G);
+    GhostSpecs({ describe, it, expect, test: it }, G, extras);
     const now = () => (typeof performance !== 'undefined' ? performance.now() : Date.now());
     const t0 = now();
     let out;
@@ -1397,6 +1455,67 @@ footer a { color: var(--ecto-dim); }
   return { GhostSpecs, GhostSuite };
 });
 
+</script>
+<script>
+(function () {
+// ghosttalk.js — the CodePen Challenge rule (October 2026, “Ghost Talk”).
+//   • a word that starts with a vowel gets "-boo" at the end:            owl   → owl-boo
+//   • a word that starts with a consonant moves that letter to the end
+//     and adds "oo":                                                     candy → andy-coo
+// Extras from the challenge’s ideas list: capital letters and punctuation are kept,
+// and ghostTalkText() translates whole sentences word by word.
+
+const VOWELS = 'aeiou';
+
+// "ă", "â", "î", "é"… count as vowels too: compare the base letter without its accent.
+function startsWithVowel(word) {
+  const base = word.normalize('NFD')[0].toLowerCase();
+  return VOWELS.includes(base);
+}
+
+function isShouted(word) {
+  return word.length > 1 && word === word.toUpperCase() && word !== word.toLowerCase();
+}
+
+function isCapitalised(letter) {
+  return letter !== letter.toLowerCase();
+}
+
+// Translates the letters of one word (no spaces, no surrounding punctuation).
+function translateCore(word) {
+  const letters = Array.from(word);
+  const first = letters[0];
+  if (!/\p{L}/u.test(first)) return word;            // "42" stays "42"
+
+  const shout = isShouted(word);
+  if (startsWithVowel(word)) return word + (shout ? '-BOO' : '-boo');
+
+  const rest = letters.slice(1).join('');
+  if (!rest) return word + (shout ? 'OO' : 'oo');   // "b" → "boo"
+
+  if (!shout && isCapitalised(first)) {             // "Candy" → "Andy-coo"
+    return rest[0].toUpperCase() + rest.slice(1) + '-' + first.toLowerCase() + 'oo';
+  }
+  return rest + '-' + first + (shout ? 'OO' : 'oo'); // "candy" → "andy-coo", "BOO" → "OO-BOO"
+}
+
+function ghostTalk(word) {
+  if (typeof word !== 'string') return '';
+  // before = leading punctuation, core = the word, after = trailing punctuation
+  const parts = word.match(/^([^\p{L}\p{N}]*)([\p{L}\p{N}](?:[\p{L}\p{N}'’-]*[\p{L}\p{N}])?)([^\p{L}\p{N}]*)$/u);
+  if (!parts) return word;                           // empty, only symbols, or several words
+  const [, before, core, after] = parts;
+  return before + translateCore(core) + after;
+}
+
+function ghostTalkText(text) {
+  if (typeof text !== 'string') return '';
+  return text.split(/(\s+)/).map((piece, i) => (i % 2 ? piece : ghostTalk(piece))).join('');
+}
+
+Ghost.useRule(ghostTalkText);
+window.ghostTalk = ghostTalk;
+})();
 </script>
 <script>
 /* Ghost Talk v3 — interface. Depends on engine.js (window.Ghost) and ghost.spec.js (window.GhostSuite). */
@@ -1425,6 +1544,7 @@ footer a { color: var(--ecto-dim); }
 
   /* ======================= Copy ======================= */
   const META = {
+    codepen: { n: ['Regula oficială', 'Official rule'], d: ['Regula provocării, din ghosttalk.js: vocală la început → „-boo” (owl → owl-boo); consoană → prima literă trece la final + „oo” (candy → andy-coo). Păstrează majusculele și punctuația. Nivelul EMF nu o schimbă.', 'The challenge rule, from ghosttalk.js: a vowel first → “-boo” (owl → owl-boo); a consonant first → that letter moves to the end + “oo” (candy → andy-coo). Capitals and punctuation are kept. The EMF level doesn’t change it.'], s: 'andy-coo' },
     classic: { n: ['Clasic', 'Classic'], d: ['Vocale prelungite și câte un 〰 pe fiecare nivel EMF.', 'Stretched vowels and one 〰 per EMF level.'], s: 'Booo〰' },
     mirror: { n: ['Oglindă', 'Mirror'], d: ['Vorbește de dincolo de oglindă, de la coadă la cap.', 'Speaks from behind the glass, back to front.'], s: '⟲ oob' },
     secret: { n: ['Cod secret', 'Secret code'], d: ['Fiecare literă devine un cod hexazecimal. Fantoma citește cu voce tare mesajul original.', 'Every letter becomes a hex code. The ghost reads the original message aloud.'], s: '🔐 62-6f-6f' },
@@ -1442,8 +1562,8 @@ footer a { color: var(--ecto-dim); }
   };
   const dn = d => T(META[d].n);
   const CHIPS = {
-    ro: ['Bună seara, muritorule', 'Bu!', 'Unde e bomboana mea?', 'Nu mă vezi, dar sunt aici', 'Salut prietene, tu ești?'],
-    en: ['Happy Halloween', 'Boo!', 'Trick or treat', 'Who goes there?', 'Hello friend, are you there?']
+    ro: ['owl candy witch pumpkin', 'Bună seara, muritorule', 'Bu!', 'Unde e bomboana mea?', 'Nu mă vezi, dar sunt aici', 'Salut prietene, tu ești?'],
+    en: ['owl candy witch pumpkin', 'Happy Halloween', 'Boo!', 'Trick or treat', 'Who goes there?', 'Hello friend, are you there?']
   };
   const ERR = {
     SIGIL: ['Textul conține deja simboluri ale acestui dialect. Șterge-le sau alege alt dialect.', 'Your text already contains this dialect’s symbols. Remove them or pick another dialect.'],
@@ -1474,7 +1594,7 @@ footer a { color: var(--ecto-dim); }
   const ACH = {
     'first-words': [['Primele cuvinte', 'First words'], ['prima traducere', 'your first translation']],
     chatterbox: [['Gură-spartă', 'Chatterbox'], ['100 de traduceri', '100 translations']],
-    polyglot: [['Poliglot', 'Polyglot'], ['toate cele 14 dialecte', 'all 14 dialects']],
+    polyglot: [['Poliglot', 'Polyglot'], ['toate cele 15 dialecte', 'all 15 dialects']],
     'streak-10': [['Serie de 10', 'Streak of 10'], ['10 răspunsuri corecte la rând', '10 correct answers in a row']],
     storyteller: [['Povestitor', 'Storyteller'], ['toate cele 5 finaluri', 'all 5 endings']],
     'first-ending': [['Primul final', 'First ending'], ['ai terminat povestea o dată', 'you finished the story once']],
@@ -1538,7 +1658,7 @@ footer a { color: var(--ecto-dim); }
   let mode = 'encode';
   const cur = { src: '', out: '', err: '', d: 'classic', note: '' };
   function buildDialects() {
-    [['#dg-rev', G.REVERSIBLE], ['#dg-one', G.ONE_WAY]].forEach(([sel, keys]) => {
+    [['#dg-rule', ['codepen']], ['#dg-rev', G.REVERSIBLE], ['#dg-one', G.ONE_WAY.filter(d => d !== 'codepen')]].forEach(([sel, keys]) => {
       const box = $(sel + ' .dchips'); box.innerHTML = '';
       keys.forEach(key => {
         const lab = document.createElement('label');
@@ -1619,7 +1739,7 @@ footer a { color: var(--ecto-dim); }
     if (more) peel.textContent = L(`Desface încă un strat (${dn(more)})`, `Peel another layer (${dn(more)})`);
     $$('.led').forEach((l, i) => l.classList.toggle('on', i < n));
     $('#emf-read').textContent = `${n} / 5`;
-    $('#level').disabled = mode === 'decode';
+    $('#level').disabled = mode === 'decode' || (S.dialect === 'codepen' && !S.chain.length);
     if ($('#compare-box').open) renderCompare();
     renderBubble();
   }
@@ -1903,7 +2023,7 @@ footer a { color: var(--ecto-dim); }
       o.connect(g); g.connect(outNode(a)); o.start(t); o.stop(t + dur + .05);
     } catch {}
   }
-  const BASE = { classic: 330, whisper: 520, banshee: 760, poltergeist: 180, strigoi: 140, mirror: 420, sleepy: 220, secret: 600, morse: 700, runic: 160, emoji: 560, vampire: 200, victorian: 380, echo: 300 };
+  const BASE = { codepen: 360, classic: 330, whisper: 520, banshee: 760, poltergeist: 180, strigoi: 140, mirror: 420, sleepy: 220, secret: 600, morse: 700, runic: 160, emoji: 560, vampire: 200, victorian: 380, echo: 300 };
   function theremin(dur, d) {
     if (!S.sfx || !S.volume) return;
     try {
@@ -2393,7 +2513,7 @@ footer a { color: var(--ecto-dim); }
     const ul = $('#cov'); ul.innerHTML = '';
     c.functions.forEach(f => { const li = document.createElement('li'); li.className = f.calls ? '' : 'zero'; li.innerHTML = '<span></span><b></b>'; li.firstChild.textContent = f.name + '()'; li.lastChild.textContent = f.calls; ul.append(li); });
   }
-  function runTests() { lastRun = window.GhostSuite(G); renderTests(lastRun); }
+  function runTests() { lastRun = window.GhostSuite(G, { ghostTalk: window.ghostTalk }); renderTests(lastRun); }
   $('#rerun').onclick = runTests;
 
   /* ======================= Shortcuts ======================= */

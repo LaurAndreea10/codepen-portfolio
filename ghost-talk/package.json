@@ -1,6 +1,6 @@
 {
   "name": "ghost-talk",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "private": true,
   "description": "Ghost Talk — bilingual ghost-language lab. Tests only; the app itself has no runtime dependencies.",
   "license": "MIT",
@@ -10,12 +10,26 @@
     "build:standalone": "node build-standalone.cjs"
   },
   "devDependencies": {
+    "@babel/core": "7.25.2",
+    "@babel/preset-env": "7.25.4",
+    "babel-jest": "29.7.0",
     "jest": "29.7.0"
   },
   "jest": {
     "testEnvironment": "node",
-    "testMatch": ["<rootDir>/tests/**/*.test.js"],
-    "collectCoverageFrom": ["engine.js"],
-    "coverageThreshold": { "global": { "lines": 90, "functions": 90 } }
+    "testMatch": [
+      "<rootDir>/tests/**/*.test.js",
+      "<rootDir>/ghosttalk.test.js"
+    ],
+    "collectCoverageFrom": [
+      "engine.js",
+      "ghosttalk.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 90,
+        "functions": 90
+      }
+    }
   }
 }

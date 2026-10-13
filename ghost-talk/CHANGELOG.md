@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.1.0 — 2026-10-13
+
+- The challenge rule is now the heart of the app: `ghosttalk.js` exports `ghostTalk(word)` as the starter requires (owl → owl-boo, candy → andy-coo). The starter’s Jest tests pass unchanged, both in Jest and in the page’s Tests tab.
+- It is the default dialect, shown first in its own group. It keeps capitals and punctuation, translates sentences and is recognised and translated back approximately.
+- The page loads the rule as an ES module and hands it to the engine with `useRule()`, so the rule has one source. The single-file build inlines it.
+- Jest runs the starter’s `import` syntax through Babel. 109 specs; Playwright checks the official rule at 390 and 1280 px.
+
 ## 3.0.0 — 2026-10-12
 
 **Translator**

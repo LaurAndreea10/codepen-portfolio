@@ -1,8 +1,8 @@
 'use strict';
 // Ghost Talk service worker: network-first for pages, stale-while-revalidate for files, so updates arrive without a version bump.
-const CACHE = 'ghost-talk-v300';
+const CACHE = 'ghost-talk-v310';
 const ROOT = new URL('./', self.location.href).href;
-const ASSETS = ['./', 'index.html', 'styles.css', 'engine.js', 'ghost.spec.js', 'app.js', 'manifest.webmanifest', 'icon.svg'].map(p => new URL(p, ROOT).href);
+const ASSETS = ['./', 'index.html', 'styles.css', 'engine.js', 'ghosttalk.js', 'ghost.spec.js', 'app.js', 'manifest.webmanifest', 'icon.svg'].map(p => new URL(p, ROOT).href);
 
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())));
 self.addEventListener('activate', event => event.waitUntil(

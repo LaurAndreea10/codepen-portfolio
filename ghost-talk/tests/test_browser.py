@@ -32,7 +32,11 @@ def run(p, width, height, mobile):
     tag = f"{width}px"
 
     check(f"[{tag}] no horizontal scroll", page.evaluate("document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1"))
+    page.fill("#human", "owl candy witch pumpkin")
+    page.wait_for_timeout(200)
+    check(f"[{tag}] official rule is the default", page.inner_text("#ghost").strip() == "owl-boo andy-coo itch-woo umpkin-poo", page.inner_text("#ghost"))
     page.fill("#human", "Bună seara")
+    page.click("label:has(#d-classic)")
     page.wait_for_timeout(200)
     check(f"[{tag}] classic translation", page.inner_text("#ghost").strip().endswith("〰〰〰"), page.inner_text("#ghost"))
 
@@ -65,6 +69,7 @@ def run(p, width, height, mobile):
     page.click("#t-tests")
     page.wait_for_selector("#tbadge.pass, #tbadge.fail")
     check(f"[{tag}] in-page Jest suite passes", page.inner_text("#tbadge") == "PASS", page.inner_text("#summary"))
+    check(f"[{tag}] official starter tests run in the page", "official starter tests" in page.inner_text("#term"))
     check(f"[{tag}] API coverage is complete", "100%" in page.inner_text("#cov-pct"), page.inner_text("#cov-pct"))
     page.screenshot(path=str(SHOTS / f"tests-{tag}.png"), full_page=False)
 

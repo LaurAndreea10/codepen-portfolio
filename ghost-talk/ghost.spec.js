@@ -10,8 +10,46 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  function GhostSpecs({ describe, it, expect }, G) {
+  function GhostSpecs({ describe, it, expect, test }, G, extras = {}) {
     const S = G.SIGIL;
+
+    // The challenge’s own starter tests, word for word. Jest runs them from ghosttalk.test.js;
+    // the page runs them here against the same ghostTalk() from ghosttalk.js.
+    if (typeof extras.ghostTalk === 'function') {
+      const ghostTalk = extras.ghostTalk, t = test || it;
+      describe('👻 Ghost Talk (official starter tests)', () => {
+        t('words that start with a vowel get -boo added to the end', () => {
+          expect(ghostTalk('owl')).toBe('owl-boo');
+          expect(ghostTalk('apple')).toBe('apple-boo');
+          expect(ghostTalk('ice')).toBe('ice-boo');
+        });
+        t('words that start with a consonant move the first letter to the end and add -oo', () => {
+          expect(ghostTalk('candy')).toBe('andy-coo');
+          expect(ghostTalk('witch')).toBe('itch-woo');
+          expect(ghostTalk('pumpkin')).toBe('umpkin-poo');
+        });
+      });
+    }
+
+    describe('official rule — sentences, capitals, punctuation', () => {
+      it('is the default dialect and matches the starter examples', () => {
+        expect(['owl', 'apple', 'ice', 'candy', 'witch', 'pumpkin'].map(w => G.translate(w)))
+          .toEqual(['owl-boo', 'apple-boo', 'ice-boo', 'andy-coo', 'itch-woo', 'umpkin-poo']);
+      });
+      it('translates sentences word by word and keeps punctuation', () => expect(G.translate('Happy Halloween, candy!', 'codepen')).toBe('Appy-hoo Alloween-hoo, andy-coo!'));
+      it('keeps capitals where they belong', () => expect(G.translate('Owl Witch', 'codepen')).toBe('Owl-boo Itch-woo'));
+      it('keeps shouted words shouted', () => expect(G.translate('BOO OWL', 'codepen')).toBe('OO-BOO OWL-BOO'));
+      it('a one-letter consonant just says oo', () => expect(G.translate('b', 'codepen')).toBe('boo'));
+      it('treats Romanian and accented vowels as vowels', () => expect(G.translate('ăla Înger école', 'codepen')).toBe('ăla-boo Înger-boo école-boo'));
+      it('leaves numbers and symbols alone', () => expect(G.translate('room 13 👻', 'codepen')).toBe('oom-roo 13 👻'));
+      it('keeps inner apostrophes and hyphens inside one word', () => expect(G.translate("don't", 'codepen')).toBe("on't-doo"));
+      it('is recognised and translated back approximately', () => {
+        const r = G.decodeAny(G.translate('Candy, witch and pumpkin!', 'codepen'));
+        expect([r.dialect, r.exact, r.text]).toEqual(['codepen', false, 'Candy, witch and pumpkin!']);
+      });
+      it('reads -boo after a vowel as the vowel rule', () => expect(G.decodeAny('owl-boo').text).toBe('owl'));
+      it('useRule() refuses anything that is not a function', () => expect(() => G.useRule('rule')).toThrow('RULE'));
+    });
     const seeded = seed => G.rng(seed);
     const randomPhrases = (seed, alphabet, n, maxLen = 24) => {
       const R = seeded(seed), abc = G.chars(alphabet), out = [];
@@ -28,10 +66,10 @@
       it('returns an empty string for whitespace-only input', () => expect(G.translate('   \n ', 'banshee', 4)).toBe(''));
       it('throws DIALECT for an unknown dialect', () => expect(() => G.translate('boo', 'vampyre')).toThrow('DIALECT'));
       it('throws DIALECT for inherited keys like "toString"', () => expect(() => G.translate('boo', 'toString')).toThrow('DIALECT'));
-      it('has 14 dialects: 7 reversible and 7 one-way', () => {
-        expect(G.list().length).toBe(14);
+      it('has 15 dialects: the official rule, 7 reversible and 7 more one-way', () => {
+        expect(G.list().length).toBe(15);
         expect(G.REVERSIBLE).toEqual(['classic', 'mirror', 'secret', 'morse', 'runic', 'emoji', 'poltergeist']);
-        expect(G.ONE_WAY).toEqual(['whisper', 'banshee', 'strigoi', 'sleepy', 'vampire', 'victorian', 'echo']);
+        expect(G.ONE_WAY).toEqual(['codepen', 'whisper', 'banshee', 'strigoi', 'sleepy', 'vampire', 'victorian', 'echo']);
       });
       it('clamps the EMF level into 1–5', () => {
         expect(G.translate('o', 'classic', 99)).toBe(G.translate('o', 'classic', 5));
@@ -141,7 +179,7 @@
         const R = seeded(2026);
         ['guess', 'typing', 'memory', 'letters', 'secret', 'choir', 'boo', 'vocab', 'arcade'].forEach(game => ['easy', 'medium', 'nightmare'].forEach(difficulty => {
           for (let i = 0; i < 25; i++) {
-            const r = G.makeRound(game, { lang: i % 2 ? 'en' : 'ro', difficulty, dialect: G.list()[i % 14], rand: R });
+            const r = G.makeRound(game, { lang: i % 2 ? 'en' : 'ro', difficulty, dialect: G.list()[i % G.list().length], rand: R });
             expect(G.checkAnswer(r, r.expected)).toBe(true);
             expect(G.checkAnswer(r, r.digits ? r.expected + ' 1' : r.expected + 'x')).toBe(false);
           }
@@ -252,7 +290,7 @@
         expect([s.hat, s.decor, s.theme, s.favorites[0].g, s.xp]).toEqual(['crown', 'pumpkins', 'dawn', 'Boo~ aaa', 50]);
       });
       it('migrates v2 story endings to the new story map', () => expect(G.normalizeState({ endings: [3, 4], story: 3 }).endings).toEqual([8, 9]));
-      it('ignores prototype keys such as hat: "toString"', () => expect([G.normalizeState({ hat: 'toString' }).hat, G.normalizeState({ dialect: '__proto__' }).dialect]).toEqual(['none', 'classic']));
+      it('ignores prototype keys such as hat: "toString"', () => expect([G.normalizeState({ hat: 'toString' }).hat, G.normalizeState({ dialect: '__proto__' }).dialect]).toEqual(['none', 'codepen']));
       it('caps favorites at 30, names at 30 chars, XP at 100000, text size at 150%', () => {
         const s = G.normalizeState({ favorites: Array(50).fill('x'), name: 'B'.repeat(80), xp: 1e9, scale: 9 });
         expect([s.favorites.length, s.name.length, s.xp, s.scale]).toEqual([30, 30, 100000, 1.5]);
@@ -266,7 +304,7 @@
   }
 
   /* ---------- Browser runner: tiny Jest-compatible API + API coverage ---------- */
-  function GhostSuite(G) {
+  function GhostSuite(G, extras = {}) {
     const suites = []; let cur = null;
     const fmt = v => JSON.stringify(v);
     const describe = (name, fn) => { cur = { name, tests: [] }; suites.push(cur); fn(); cur = null; };
@@ -293,7 +331,7 @@
       wrapped[k] = fn;
       G[k] = function () { calls[k]++; return fn.apply(this, arguments); };
     });
-    GhostSpecs({ describe, it, expect }, G);
+    GhostSpecs({ describe, it, expect, test: it }, G, extras);
     const now = () => (typeof performance !== 'undefined' ? performance.now() : Date.now());
     const t0 = now();
     let out;

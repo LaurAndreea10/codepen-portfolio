@@ -24,7 +24,7 @@
     <div>
       <p class="eyebrow" data-ro="Provocare CodePen · Haunted Language Lab · v3" data-en="CodePen Challenge · Haunted Language Lab · v3">Provocare CodePen · Haunted Language Lab · v3</p>
       <h1>Ghost Talk</h1>
-      <p class="lede" data-ro="Cuvintele tale, traduse pe limba fantomelor. Joacă-te cu Boo, înfruntă-l pe strigoiul Zăbrel, adună XP și verifică totul cu testele din pagină." data-en="Your words, translated into ghost. Play with Boo, face the strigoi Zăbrel, earn XP and check everything with the in-page tests.">Cuvintele tale, traduse pe limba fantomelor.</p>
+      <p class="lede" data-ro="Regula provocării: vocală la început → „-boo” (owl → owl-boo), consoană → prima literă trece la final + „oo” (candy → andy-coo). Pe deasupra: 14 dialecte în plus, jocuri, o poveste și testele Jest rulate în pagină." data-en="The challenge rule: a vowel first → “-boo” (owl → owl-boo), a consonant first → that letter moves to the end + “oo” (candy → andy-coo). On top: 14 more dialects, games, a story and the Jest tests running in the page.">Regula provocării: owl → owl-boo, candy → andy-coo.</p>
     </div>
     <div class="tools">
       <div class="pill" role="group" aria-label="Limba / Language">
@@ -143,6 +143,7 @@
           <div class="chips" id="chips"></div>
         </div>
         <div id="dialect-box" class="block">
+          <fieldset class="dgroup" id="dg-rule"><legend class="label" data-ro="Regula provocării CodePen" data-en="The CodePen challenge rule">Regula provocării CodePen</legend><div class="dchips"></div></fieldset>
           <fieldset class="dgroup" id="dg-rev"><legend class="label" data-ro="Se traduc înapoi exact" data-en="Translate back exactly">Se traduc înapoi exact</legend><div class="dchips"></div></fieldset>
           <fieldset class="dgroup" id="dg-one"><legend class="label" data-ro="Doar dus (înapoi aproximativ)" data-en="One way (approximate back)">Doar dus</legend><div class="dchips"></div></fieldset>
           <p class="desc" id="dialect-desc"></p>
@@ -323,7 +324,7 @@
   </main>
 
   <footer>
-    <p>Ghost Talk · v<span id="version">3.0.0</span> · <a href="#tests" id="foot-tests" data-ro="Vezi rezultatele testelor Jest" data-en="View Jest test results">Vezi rezultatele testelor Jest</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/ghost-talk" target="_blank" rel="noopener noreferrer" data-ro="Cod sursă" data-en="Source code">Cod sursă</a></p>
+    <p>Ghost Talk · v<span id="version">3.1.0</span> · <a href="#tests" id="foot-tests" data-ro="Vezi rezultatele testelor Jest" data-en="View Jest test results">Vezi rezultatele testelor Jest</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/ghost-talk" target="_blank" rel="noopener noreferrer" data-ro="Cod sursă" data-en="Source code">Cod sursă</a></p>
     <p data-ro="Joc fără cronometru. Controale prin tastatură și touch. Fără cont, fără server, fără dependențe la rulare." data-en="Untimed play. Keyboard and touch controls. No account, no server, no runtime dependencies.">Joc fără cronometru.</p>
   </footer>
 </div>
@@ -344,8 +345,14 @@
   <form method="dialog"><button class="btn" data-ro="Închide" data-en="Close">Închide</button></form>
 </dialog>
 
-<script src="engine.js"></script>
-<script src="ghost.spec.js"></script>
-<script src="app.js"></script>
+<script src="engine.js" defer></script>
+<script src="ghost.spec.js" defer></script>
+<script type="module">
+  // The challenge rule from ghosttalk.js, handed to the rest of the app before app.js runs.
+  import { ghostTalk, ghostTalkText } from './ghosttalk.js';
+  Ghost.useRule(ghostTalkText);
+  window.ghostTalk = ghostTalk;
+</script>
+<script src="app.js" defer></script>
 </body>
 </html>
