@@ -1,15 +1,15 @@
-"""Browser checks for the Ghost Talk challenge page (Playwright + Chromium).
+"""Browser checks for the simple Ghost Talk page (Playwright + Chromium).
 
 From the repository root:
     python -m http.server 8000 --bind 127.0.0.1 &
-    GHOST_URL=http://localhost:8000/ghost-talk/ python ghost-talk/tests/test_page.py
+    GHOST_SIMPLE_URL=http://localhost:8000/ghost-talk/simple/ python ghost-talk/tests/test_page.py
 """
 import os
 import sys
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-URL = os.environ.get("GHOST_URL", "http://localhost:8000/ghost-talk/")
+URL = os.environ.get("GHOST_SIMPLE_URL", "http://localhost:8000/ghost-talk/simple/")
 SHOTS = Path(os.environ.get("GHOST_SHOTS", "ghost-shots"))
 SHOTS.mkdir(parents=True, exist_ok=True)
 failures = []
@@ -45,10 +45,10 @@ with sync_playwright() as p:
         check(f"[{tag}] no page errors", not errors, "; ".join(errors))
 
     page = browser.new_page()
-    page.goto(URL + "test-results.html")
+    page.goto(URL + "../test-results.html")
     page.wait_for_selector("#summary:not(:empty)")
     summary = page.inner_text("#summary")
-    check("test-results.html runs ghosttalk.test.js and all pass", "failed" not in summary and "9 passed" in summary, summary)
+    check("test-results.html runs ghosttalk.test.js and all pass", "failed" not in summary and "10 passed" in summary, summary)
     browser.close()
 
 print(f"\n{len(failures)} failure(s)")

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ghost Talk — simple</title>
+<meta name="description" content="CodePen Challenge, October 2026: type a word and see how a ghost would say it. owl → owl-boo, candy → andy-coo.">
+<meta name="theme-color" content="#0b1020">
+<link rel="icon" href="../icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600;1,9..144,800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1><span class="boo" aria-hidden="true">👻</span> Ghost Talk</h1>
+  <p>Type a word and see how a ghost would say it.</p>
+
+  <ul class="rules" aria-label="The rule">
+    <li><b>Starts with a vowel</b> → add <code>-boo</code>: <code>owl</code> → <code>owl-boo</code></li>
+    <li><b>Starts with a consonant</b> → move that letter to the end and add <code>oo</code>: <code>candy</code> → <code>andy-coo</code></li>
+  </ul>
+
+  <label for="human">You say</label>
+  <textarea id="human" rows="3" spellcheck="false" autocomplete="off">candy</textarea>
+  <div class="examples" aria-label="Examples">
+    <button type="button">owl</button>
+    <button type="button">candy</button>
+    <button type="button">witch</button>
+    <button type="button">pumpkin</button>
+    <button type="button">Happy Halloween, candy!</button>
+  </div>
+
+  <p class="label">The ghost says</p>
+  <p id="ghost" aria-live="polite"></p>
+  <button type="button" id="copy" class="copy">Copy</button>
+
+  <section aria-labelledby="how">
+    <h2 id="how">How each word was translated</h2>
+    <ol id="steps"></ol>
+  </section>
+
+  <nav class="links">
+    <a href="../test-results.html">View Jest test results</a>
+    <a href="../">The full Ghost Talk: more dialects, games, a story and effects</a>
+    <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/ghost-talk">Source code</a>
+  </nav>
+</main>
+<script type="module" src="main.js"></script>
+</body>
+</html>

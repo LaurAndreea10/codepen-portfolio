@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ghost Lab</title>
+<title>Ghost Talk</title>
 <meta name="description" content="Ghost Talk — laborator bilingv RO/EN: traducător pe limba fantomelor cu 14 dialecte, 12 jocuri, poveste cu 5 finaluri, fantomă-companion și teste Jest rulate în pagină.">
 <meta name="theme-color" content="#0a0f1f">
 <meta property="og:title" content="Ghost Talk">
@@ -206,6 +206,9 @@ textarea { min-height: 104px; resize: vertical; font-size: 19px; line-height: 1.
 input:checked + .dchip { border-color: var(--candle); background: var(--night-3); color: var(--candle); }
 input:focus-visible + .dchip { outline: 2px solid var(--candle); outline-offset: 2px; }
 .desc { margin: 0; color: var(--mist); font-size: 14px; }
+.steps { margin: 0; padding-left: 22px; display: grid; gap: 6px; color: var(--mist); font-size: 14.5px; }
+.steps code { font: 14px var(--f-mono); color: var(--bone); overflow-wrap: anywhere; }
+.no-fx #fog, .no-fx #fx { display: none; }
 .desc code { font-family: var(--f-mono); color: var(--ecto-dim); }
 
 .emf { display: grid; gap: 10px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--night-2); }
@@ -337,7 +340,7 @@ footer a { color: var(--ecto-dim); }
 <div class="wrap">
   <header>
     <div>
-      <p class="eyebrow" data-ro="Provocare CodePen · Haunted Language Lab · v3" data-en="CodePen Challenge · Haunted Language Lab · v3">Provocare CodePen · Haunted Language Lab · v3</p>
+      <p class="eyebrow" data-ro="Provocare CodePen · Haunted Language Lab · v4" data-en="CodePen Challenge · Haunted Language Lab · v4">Provocare CodePen · Haunted Language Lab · v4</p>
       <h1>Ghost Talk</h1>
       <p class="lede" data-ro="Regula provocării: vocală la început → „-boo” (owl → owl-boo), consoană → prima literă trece la final + „oo” (candy → andy-coo). Pe deasupra: 14 dialecte în plus, jocuri, o poveste și testele Jest rulate în pagină." data-en="The challenge rule: a vowel first → “-boo” (owl → owl-boo), a consonant first → that letter moves to the end + “oo” (candy → andy-coo). On top: 14 more dialects, games, a story and the Jest tests running in the page.">Regula provocării: owl → owl-boo, candy → andy-coo.</p>
     </div>
@@ -456,6 +459,10 @@ footer a { color: var(--ecto-dim); }
             <button type="button" class="btn small" id="clear" data-ro="Șterge" data-en="Clear">Șterge</button>
           </div>
           <div class="chips" id="chips"></div>
+        </div>
+        <div class="block" id="steps-box">
+          <h3 data-ro="Cum a fost tradus fiecare cuvânt" data-en="How each word was translated">Cum a fost tradus fiecare cuvânt</h3>
+          <ol class="steps" id="steps"></ol>
         </div>
         <div id="dialect-box" class="block">
           <fieldset class="dgroup" id="dg-rule"><legend class="label" data-ro="Regula provocării CodePen" data-en="The CodePen challenge rule">Regula provocării CodePen</legend><div class="dchips"></div></fieldset>
@@ -592,6 +599,7 @@ footer a { color: var(--ecto-dim); }
           <p class="sub" data-ro="Progresul, favoritele și setările rămân doar în acest browser." data-en="Progress, favorites and settings stay in this browser only.">Progresul rămâne doar în acest browser.</p>
         </div>
         <div class="checks">
+          <label class="check"><input type="checkbox" id="s-effects"> <span data-ro="Efecte vizuale: ceață, particule și litere care apar treptat (oprite implicit pe telefon)" data-en="Visual effects: fog, particles and letters fading in (off by default on phones)">Efecte vizuale</span></label>
           <label class="check"><input type="checkbox" id="s-motion"> <span data-ro="Mișcare redusă" data-en="Reduced motion">Mișcare redusă</span></label>
           <label class="check"><input type="checkbox" id="s-contrast"> <span data-ro="Contrast ridicat" data-en="High contrast">Contrast ridicat</span></label>
           <label class="check"><input type="checkbox" id="s-dawn"> <span data-ro="Tema „Zori” (luminoasă)" data-en="“Dawn” theme (light)">Tema „Zori”</span></label>
@@ -639,7 +647,7 @@ footer a { color: var(--ecto-dim); }
   </main>
 
   <footer>
-    <p><a href="../">← Ghost Talk, the challenge entry</a> · Ghost Lab · v<span id="version">3.1.0</span> · <a href="#tests" id="foot-tests" data-ro="Vezi rezultatele testelor Jest" data-en="View Jest test results">Vezi rezultatele testelor Jest</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/ghost-talk" target="_blank" rel="noopener noreferrer" data-ro="Cod sursă" data-en="Source code">Cod sursă</a></p>
+    <p>Ghost Talk · v<span id="version">4.1.0</span> · <a href="simple/" data-ro="Versiunea simplă" data-en="Simple version">Versiunea simplă</a> · <a href="#tests" id="foot-tests" data-ro="Vezi rezultatele testelor Jest" data-en="View Jest test results">Vezi rezultatele testelor Jest</a> · <a href="test-results.html">ghosttalk.test.js</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/ghost-talk" target="_blank" rel="noopener noreferrer" data-ro="Cod sursă" data-en="Source code">Cod sursă</a></p>
     <p data-ro="Joc fără cronometru. Controale prin tastatură și touch. Fără cont, fără server, fără dependențe la rulare." data-en="Untimed play. Keyboard and touch controls. No account, no server, no runtime dependencies.">Joc fără cronometru.</p>
   </footer>
 </div>
@@ -1034,7 +1042,7 @@ footer a { color: var(--ecto-dim); }
   const num = (v, min, max, d) => Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : d;
   function defaults() {
     return { v: 3, lang: 'ro', tab: 'talk', xp: 0, favorites: [], log: [], name: 'Boo', hat: 'none', extra: 'none', color: 'auto', decor: 'night', theme: 'night',
-      motion: false, contrast: false, sfx: true, echo: false, ambient: false, font: 'default', scale: 1, rate: 1, volume: .7,
+      motion: false, effects: true, contrast: false, sfx: true, echo: false, ambient: false, font: 'default', scale: 1, rate: 1, volume: .7,
       story: 0, endings: [], visited: [0], solved: [], dialect: 'codepen', level: 3, chain: [], game: 'guess', difficulty: 'medium', best: 0, arcadeBest: 0,
       daily: { date: '', lang: 'ro', rows: [], guesses: [], done: false, won: false }, achievements: [],
       stats: { translations: 0, dialects: [], hangmanWins: 0, dailyWins: 0, cards: 0, theremin: 0, chain: 0, compare: 0 } };
@@ -1070,7 +1078,7 @@ footer a { color: var(--ecto-dim); }
       color: own(COLORS, s.color) ? s.color : 'auto',
       decor: DECORS.includes(s.decor) ? s.decor : own(LEGACY_DECOR, s.decor) ? LEGACY_DECOR[s.decor] : d.decor,
       theme: s.theme === 'dawn' || s.light === true ? 'dawn' : 'night',
-      motion: s.motion === true, contrast: s.contrast === true, sfx: s.sfx !== false, echo: s.echo === true, ambient: s.ambient === true,
+      motion: s.motion === true, effects: s.effects !== false, contrast: s.contrast === true, sfx: s.sfx !== false, echo: s.echo === true, ambient: s.ambient === true,
       font: s.font === 'lexend' ? 'lexend' : 'default', scale: num(s.scale, 1, 1.5, 1),
       rate: num(s.rate, .5, 1.5, 1), volume: num(s.volume, 0, 1, .7),
       story: nodeOk(mapNode(s.story)) ? mapNode(s.story) : 0,
@@ -1090,7 +1098,7 @@ footer a { color: var(--ecto-dim); }
   }
 
   return {
-    VERSION: '3.1.0', useRule, translate, chain, identify, detect, decode, decodeAny, stripMarks, fold, list: () => Object.keys(dialects), dialects, REVERSIBLE, ONE_WAY,
+    VERSION: '4.1.0', useRule, translate, chain, identify, detect, decode, decodeAny, stripMarks, fold, list: () => Object.keys(dialects), dialects, REVERSIBLE, ONE_WAY,
     GhostError, SIGIL, MIRROR, LOCK, RADIO, RUNE, MASK, BAT, SCROLL, MORSE, RUNES, EMOJI, VICTORIAN, hash, rng, clamp, chars,
     WORDS, DIFFICULTY, GAMES, ARCADE_POOL, booscary, sameAnswer, dailyIndex, pickWord, makeRound, checkAnswer,
     hangmanNew, hangmanGuess, hangmanView, hangmanStatus, dayKey, dailyWord, dailyNew, wordleScore, shareText,
@@ -1399,6 +1407,7 @@ footer a { color: var(--ecto-dim); }
         const s = G.normalizeState({ favorites: Array(50).fill('x'), name: 'B'.repeat(80), xp: 1e9, scale: 9 });
         expect([s.favorites.length, s.name.length, s.xp, s.scale]).toEqual([30, 30, 100000, 1.5]);
       });
+      it('keeps visual effects on unless they were turned off', () => expect([G.normalizeState({}).effects, G.normalizeState({ effects: false }).effects]).toEqual([true, false]));
       it('keeps a valid daily puzzle and drops a tampered one', () => {
         const ok = { date: '2026-10-12', lang: 'en', rows: [['hit']], guesses: ['a'], done: true, won: true };
         expect(G.normalizeState({ v: 3, daily: ok }).daily).toEqual(ok);
@@ -1518,6 +1527,19 @@ function ghostTalk(word) {
   return before + rest + "-" + moved + oo + after;
 }
 
+// What happened to one word, for explaining it on screen (the pages turn this into sentences).
+//   describeWord("Candy!") → { rule: "consonant", first: "C", moved: "c", capital: true,
+//                              before: "", after: "!", result: "Andy-coo!" }
+function describeWord(word) {
+  const { before, letters, after } = splitWord(word);
+  const result = ghostTalk(word);
+  if (!/^\p{L}/u.test(letters)) return { rule: "none", before, after, result };
+  const [first] = letters;
+  const vowel = startsWithVowel(letters);
+  const capital = !vowel && first !== first.toLowerCase() && letters !== letters.toUpperCase();
+  return { rule: vowel ? "vowel" : "consonant", first, moved: capital ? first.toLowerCase() : first, capital, before, after, result };
+}
+
 // Translates a sentence word by word and keeps the spaces as they were.
 function ghostTalkText(text) {
   if (typeof text !== "string") return "";
@@ -1529,6 +1551,7 @@ function ghostTalkText(text) {
 
 Ghost.useRule(ghostTalkText);
 window.ghostTalk = ghostTalk;
+window.describeWord = describeWord;
 })();
 </script>
 <script>
@@ -1548,12 +1571,16 @@ window.ghostTalk = ghostTalk;
     ['lang', 'dialect', 'level', 'log'].forEach(k => { try { const v = localStorage.getItem('ghosttalk:' + k); if (v != null) legacy[k] = JSON.parse(v); } catch {} });
     return G.normalizeState(legacy);
   }
+  let fresh = true;
+  try { fresh = !localStorage.getItem(KEY) && !localStorage.getItem('ghosttalk:v2') && !localStorage.getItem('ghostTalk'); } catch {}
   let S = load();
+  if (fresh && matchMedia('(max-width: 640px)').matches) S.effects = false;   // lighter first visit on phones
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
   const L = (ro, en) => S.lang === 'ro' ? ro : en;
   const T = pair => pair[S.lang === 'ro' ? 0 : 1];
   const reduceOS = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const still = () => S.motion || reduceOS;
+  const fxOff = () => still() || !S.effects;
   const today = () => G.dayKey(Date.now());
 
   /* ======================= Copy ======================= */
@@ -1630,12 +1657,14 @@ window.ghostTalk = ghostTalk;
     r.classList.toggle('dawn', S.theme === 'dawn' && !S.contrast);
     r.classList.toggle('contrast', S.contrast);
     r.classList.toggle('still', still());
+    r.classList.toggle('no-fx', !S.effects);
     r.classList.toggle('lexend', S.font === 'lexend');
     r.style.setProperty('--scale', String(S.scale));
     $('#h-theme').setAttribute('aria-pressed', String(S.theme === 'dawn'));
     $('#h-sound').setAttribute('aria-pressed', String(S.sfx));
     fogColor = getComputedStyle(r).getPropertyValue('--fog').trim() || '191,244,255';
-    if (still()) drawFog();
+    if (!S.effects) return;
+    if (still()) drawFog(); else fogLoop();
   }
   function i18n() {
     $$('[data-ro]').forEach(el => { el.textContent = el.dataset[S.lang]; });
@@ -1726,7 +1755,7 @@ window.ghostTalk = ghostTalk;
   $('#m-enc').onclick = () => mode !== 'encode' && setMode('encode');
   $('#m-dec').onclick = () => mode !== 'decode' && setMode('decode');
   $('#level').addEventListener('input', e => { S.level = +e.target.value; save(); compute(); });
-  let deb; $('#human').addEventListener('input', () => { clearTimeout(deb); deb = setTimeout(compute, 90); queueLog(); });
+  $('#human').addEventListener('input', () => { compute(); queueLog(); });
   $('#clear').onclick = () => { $('#human').value = ''; compute(); $('#human').focus(); };
   const peel = Object.assign(document.createElement('button'), { type: 'button', className: 'btn small', id: 'peel', hidden: true });
   $('#clear').after(peel);
@@ -1755,7 +1784,32 @@ window.ghostTalk = ghostTalk;
     $('#emf-read').textContent = `${n} / 5`;
     $('#level').disabled = mode === 'decode' || (S.dialect === 'codepen' && !S.chain.length);
     if ($('#compare-box').open) renderCompare();
+    renderSteps();
     renderBubble();
+  }
+
+  /* Step-by-step explanation for the challenge rule, from describeWord() in ghosttalk.js */
+  function explainWord(d) {
+    if (d.rule === 'none') return L('nu are litere, rămâne la fel', 'no letters to translate, so it stays the same');
+    let why = d.rule === 'vowel'
+      ? L(`începe cu vocala „${d.first}”, deci primește „-boo”`, `starts with the vowel “${d.first}”, so it gets “-boo”`)
+      : L(`începe cu consoana „${d.first}”, deci „${d.moved}” trece la final și primește „oo”`, `starts with the consonant “${d.first}”, so “${d.moved}” moves to the end and gets “oo”`);
+    if (d.capital) why += L('; majuscula rămâne în față', '; the capital stays at the front');
+    if (d.before || d.after) why += L(`; „${d.before}${d.after}” rămâne pe loc`, `; “${d.before}${d.after}” stays in place`);
+    return why;
+  }
+  function renderSteps() {
+    const show = mode === 'encode' && S.dialect === 'codepen' && !S.chain.length && typeof window.describeWord === 'function';
+    $('#steps-box').hidden = !show;
+    if (!show) return;
+    const words = cur.src.split(/\s+/).filter(Boolean).slice(0, 12);
+    $('#steps').replaceChildren(...words.map(word => {
+      const d = window.describeWord(word), li = document.createElement('li');
+      const from = document.createElement('code'), to = document.createElement('code');
+      from.textContent = word; to.textContent = d.result;
+      li.append(from, ` ${explainWord(d)} → `, to);
+      return li;
+    }));
   }
 
   /* Compare every dialect */
@@ -1845,7 +1899,7 @@ window.ghostTalk = ghostTalk;
     if (!text) { out.className = 'empty'; out.textContent = L('…tăcere de mormânt. Scrie ceva.', '…dead silence. Type something.'); lastPainted = null; return; }
     out.className = '';
     if (text === lastPainted) return;
-    if (still()) { out.textContent = text; lastPainted = text; return; }
+    if (fxOff()) { out.textContent = text; lastPainted = text; return; }
     const a = graphemes(lastPainted || ''), b = graphemes(text);
     let same = 0; while (same < a.length && same < b.length && a[same] === b[same]) same++;
     out.textContent = '';
@@ -1903,7 +1957,7 @@ window.ghostTalk = ghostTalk;
   const fx = $('#fx'), fxc = fx.getContext('2d');
   let parts = [], fxOn = false;
   function confetti() {
-    if (still()) return;
+    if (fxOff()) return;
     const dpr = Math.min(2, devicePixelRatio || 1);
     fx.width = innerWidth * dpr; fx.height = innerHeight * dpr;
     const r = $('.ghost').getBoundingClientRect(), x0 = (r.left + r.width / 2) * dpr, y0 = (r.top + r.height / 3) * dpr;
@@ -2449,7 +2503,7 @@ window.ghostTalk = ghostTalk;
 
   /* ======================= Settings ======================= */
   function renderSettings() {
-    $('#s-motion').checked = S.motion; $('#s-contrast').checked = S.contrast; $('#s-dawn').checked = S.theme === 'dawn'; $('#s-sfx').checked = S.sfx;
+    $('#s-effects').checked = S.effects; $('#s-motion').checked = S.motion; $('#s-contrast').checked = S.contrast; $('#s-dawn').checked = S.theme === 'dawn'; $('#s-sfx').checked = S.sfx;
     $('#s-echo').checked = S.echo; $('#s-ambient').checked = S.ambient; $('#s-lexend').checked = S.font === 'lexend';
     $('#s-scale').value = S.scale; $('#o-scale').textContent = Math.round(S.scale * 100) + '%';
     $('#s-rate').value = S.rate; $('#o-rate').textContent = '×' + S.rate.toFixed(1);
@@ -2458,6 +2512,7 @@ window.ghostTalk = ghostTalk;
     $('#install-note').textContent = standalone ? L('Rulezi aplicația instalată. Merge și offline.', 'You’re running the installed app. It works offline too.')
       : L('Pe GitHub Pages, Ghost Talk se poate instala și merge offline după prima vizită. În Safari: Partajează → Adaugă pe ecranul principal.', 'On GitHub Pages, Ghost Talk can be installed and works offline after the first visit. In Safari: Share → Add to Home Screen.');
   }
+  $('#s-effects').onchange = e => { S.effects = e.target.checked; save(); applyLook(); if (!S.effects) cx.clearRect(0, 0, W, H); };
   $('#s-motion').onchange = e => { S.motion = e.target.checked; save(); applyLook(); if (!still()) fogLoop(); };
   $('#s-contrast').onchange = e => { S.contrast = e.target.checked; save(); applyLook(); };
   $('#s-dawn').onchange = e => { S.theme = e.target.checked ? 'dawn' : 'night'; save(); applyLook(); };
@@ -2579,8 +2634,8 @@ window.ghostTalk = ghostTalk;
       cx.fillStyle = g; cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, Math.PI * 2); cx.fill();
     });
   }
-  function fogLoop() { if (running) return; running = true; (function f() { drawFog(); if (still()) { running = false; return; } requestAnimationFrame(f); })(); }
-  addEventListener('resize', () => { sizeFog(); drawFog(); });
+  function fogLoop() { if (running || !S.effects) return; running = true; (function f() { drawFog(); if (still() || !S.effects) { running = false; return; } requestAnimationFrame(f); })(); }
+  addEventListener('resize', () => { sizeFog(); if (S.effects) drawFog(); });
 
   /* ======================= Boot ======================= */
   $$('[data-lang]').forEach(b => b.onclick = () => { S.lang = b.dataset.lang; save(); renderAll(); if (S.tab === 'play') newRound(); });
@@ -2592,7 +2647,7 @@ window.ghostTalk = ghostTalk;
 
   sizeFog();
   try { const q = new URLSearchParams(location.search).get('lang'); if (q === 'en' || q === 'ro') S.lang = q; } catch {}
-  $('#human').value = S.lang === 'ro' ? 'Bună seara, muritorule' : 'Happy Halloween';
+  $('#human').value = 'owl candy witch pumpkin';
   const hash = location.hash.slice(1);
   let received = null;
   if (hash.startsWith('msg-')) {

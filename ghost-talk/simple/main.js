@@ -1,22 +1,19 @@
 // main.js — connects the page to ghosttalk.js. The rule itself lives only in ghosttalk.js.
-import { ghostTalk, ghostTalkText, splitWord, startsWithVowel } from "./ghosttalk.js";
+import { ghostTalkText, describeWord } from "../ghosttalk.js";
 
 const human = document.getElementById("human");
 const ghost = document.getElementById("ghost");
 const steps = document.getElementById("steps");
 
-// One line per word: what the rule saw and what it did.
+// One line per word, built from describeWord() in ghosttalk.js.
 function explain(word) {
-  const { before, letters, after } = splitWord(word);
-  if (!/^\p{L}/u.test(letters)) return "no letters to translate, so it stays the same";
-
-  const first = [...letters][0];
-  const lower = first.toLowerCase();
-  let why = startsWithVowel(letters)
-    ? `starts with the vowel “${first}”, so it gets “-boo”`
-    : `starts with the consonant “${first}”, so “${lower}” moves to the end and gets “oo”`;
-  if (!startsWithVowel(letters) && first !== lower && letters !== letters.toUpperCase()) why += "; the capital stays at the front";
-  if (before || after) why += `; “${before}${after}” stays in place`;
+  const d = describeWord(word);
+  if (d.rule === "none") return "no letters to translate, so it stays the same";
+  let why = d.rule === "vowel"
+    ? `starts with the vowel “${d.first}”, so it gets “-boo”`
+    : `starts with the consonant “${d.first}”, so “${d.moved}” moves to the end and gets “oo”`;
+  if (d.capital) why += "; the capital stays at the front";
+  if (d.before || d.after) why += `; “${d.before}${d.after}” stays in place`;
   return why;
 }
 
@@ -30,7 +27,7 @@ function render() {
     const from = document.createElement("code");
     const to = document.createElement("code");
     from.textContent = word;
-    to.textContent = ghostTalk(word);
+    to.textContent = describeWord(word).result;
     li.append(from, ` ${explain(word)} → `, to);
     return li;
   }));

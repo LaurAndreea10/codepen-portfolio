@@ -1,6 +1,6 @@
 # Ghost Talk
 
-**v4.0.0 · 2026-10-13** · [Play](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/) · [Test results](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/test-results.html) · [Ghost Lab (optional extras)](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/lab/) · [Changelog](CHANGELOG.md)
+**v4.1.0 · 2026-10-13** · [Play](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/) · [Simple version](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/simple/) · [Test results](https://laurandreea10.github.io/codepen-portfolio/ghost-talk/test-results.html) · [Changelog](CHANGELOG.md)
 
 Entry for the [CodePen Challenge, October 2026: Ghost Talk](https://codepen.io/challenges/2026/october): type a word and see how a ghost would say it.
 
@@ -26,35 +26,40 @@ All of it is in [`ghosttalk.js`](ghosttalk.js).
 
 `ghostTalkText(text)` splits a sentence on spaces, runs `ghostTalk` on every word and keeps the spaces as they were.
 
+`describeWord(word)` reports which rule was applied (`vowel`, `consonant` or `none`), which letter moved and the result. Both pages build their on-screen explanation from it.
+
 ## Files
 
 | File | Role |
 | --- | --- |
-| `ghosttalk.js` | The rule: `ghostTalk`, `ghostTalkText` and the two helpers above |
-| `ghosttalk.test.js` | The starter tests, unchanged, plus the edge cases: capitals, punctuation, shouting, sentences, `y`, one-letter words, no letters |
-| `index.html`, `style.css`, `main.js` | The page: the translation updates as you type, and every word gets a one-line explanation |
+| `ghosttalk.js` | The rule: `ghostTalk`, `ghostTalkText`, `describeWord` and the two helpers above |
+| `ghosttalk.test.js` | The starter tests, unchanged, plus edge cases: capitals, punctuation, shouting, sentences, `y`, one-letter words, no letters, `describeWord` |
+| `index.html`, `styles.css`, `app.js` | **The full app.** The rule is the default dialect: the translation shows on load, updates on every keystroke and is explained word by word. On top: 14 more dialects, 12 games, a story, a ghost companion, sound, sharing and settings. |
+| `engine.js`, `ghost.spec.js` | The full app’s logic and its specs, run by Jest and in the page’s Tests tab. The engine receives the rule from `ghosttalk.js` through `useRule()`, so the rule exists once. |
+| `simple/` | **The simple version**: only the rule, the per-word explanation, examples and Copy. |
 | `test-results.html` | Runs `ghosttalk.test.js` in the browser |
-| `lab/` | **Ghost Lab**, optional: 14 more dialects, games, a story and effects. It imports the same `ghosttalk.js`. |
+| `index.pen.html` | The full app in one file, for CodePen or sharing |
+| `sw.js`, `manifest.webmanifest`, `icon.svg` | Offline install |
 
-The page has no canvas, no background animation and no sound. The only motion is the 👻 in the title, and it stops when the device asks for reduced motion.
+**Effects on phones:** fog, particles and letters fading in are a setting. On a first visit from a phone they start off; everything else works the same. Reduced-motion devices never get them.
 
 ## Run the tests
 
 ```bash
 cd ghost-talk
 npm install
-npx jest ghosttalk.test.js   # the challenge rule: 9 tests
-npm test                     # everything, Ghost Lab included: 116 tests
+npx jest ghosttalk.test.js   # the challenge rule: 10 tests
+npm test                     # everything: 118 tests
 ```
 
-Babel is only there so Jest can run the starter’s `import` syntax. Browser checks run in GitHub Actions ([workflow](../.github/workflows/ghost-talk-tests.yml)): `tests/test_page.py` for this page at 360 and 1280 px, and `lab/tests/test_browser.py` for the lab.
+Babel is only there so Jest can run the starter’s `import` syntax. Browser checks run in GitHub Actions ([workflow](../.github/workflows/ghost-talk-tests.yml)): `tests/test_browser.py` for the full app at 390 and 1280 px (offline included), and `tests/test_page.py` for the simple page at 360 and 1280 px.
 
 ## On CodePen
 
-Use the starter’s files: paste `ghosttalk.js` into `ghosttalk.js`, the tests into the test file, and `index.html`, `style.css` and `main.js` into the matching files. The tests turn green on CodePen the same way.
+Use the starter’s files: paste `ghosttalk.js` into `ghosttalk.js` and the tests into the test file. For the page, either the simple version (`simple/index.html`, `style.css`, `main.js`, with the import path changed to `./ghosttalk.js`) or the full app (`index.html`, `styles.css`, `engine.js`, `ghost.spec.js`, `app.js`). The tests turn green on CodePen the same way.
 
 ## Validation and limits
 
-- Jest: the 2 starter tests and 7 edge-case tests pass, with 100% of `ghosttalk.js`’s functions and lines covered.
-- Chromium at 360 px (touch emulated) and 1280 px: the conversion shows on load and updates as you type, examples work, there is no horizontal scroll and no page errors, and `test-results.html` passes.
+- Jest: all 118 tests pass, including the 2 starter tests and 8 edge-case tests, with 100% of `ghosttalk.js`’s functions and lines covered.
+- Chromium, full app at 390 px (touch emulated) and 1280 px: the rule shows on load and updates instantly, the step explanation appears, effects are off on the phone by default, games, story, in-page tests and offline reload work. Simple page at 360 and 1280 px, and `test-results.html`, pass.
 - Not yet checked on a real phone or with a real screen reader.

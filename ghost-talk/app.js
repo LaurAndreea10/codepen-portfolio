@@ -14,12 +14,16 @@
     ['lang', 'dialect', 'level', 'log'].forEach(k => { try { const v = localStorage.getItem('ghosttalk:' + k); if (v != null) legacy[k] = JSON.parse(v); } catch {} });
     return G.normalizeState(legacy);
   }
+  let fresh = true;
+  try { fresh = !localStorage.getItem(KEY) && !localStorage.getItem('ghosttalk:v2') && !localStorage.getItem('ghostTalk'); } catch {}
   let S = load();
+  if (fresh && matchMedia('(max-width: 640px)').matches) S.effects = false;   // lighter first visit on phones
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
   const L = (ro, en) => S.lang === 'ro' ? ro : en;
   const T = pair => pair[S.lang === 'ro' ? 0 : 1];
   const reduceOS = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const still = () => S.motion || reduceOS;
+  const fxOff = () => still() || !S.effects;
   const today = () => G.dayKey(Date.now());
 
   /* ======================= Copy ======================= */
@@ -96,12 +100,14 @@
     r.classList.toggle('dawn', S.theme === 'dawn' && !S.contrast);
     r.classList.toggle('contrast', S.contrast);
     r.classList.toggle('still', still());
+    r.classList.toggle('no-fx', !S.effects);
     r.classList.toggle('lexend', S.font === 'lexend');
     r.style.setProperty('--scale', String(S.scale));
     $('#h-theme').setAttribute('aria-pressed', String(S.theme === 'dawn'));
     $('#h-sound').setAttribute('aria-pressed', String(S.sfx));
     fogColor = getComputedStyle(r).getPropertyValue('--fog').trim() || '191,244,255';
-    if (still()) drawFog();
+    if (!S.effects) return;
+    if (still()) drawFog(); else fogLoop();
   }
   function i18n() {
     $$('[data-ro]').forEach(el => { el.textContent = el.dataset[S.lang]; });
@@ -192,7 +198,7 @@
   $('#m-enc').onclick = () => mode !== 'encode' && setMode('encode');
   $('#m-dec').onclick = () => mode !== 'decode' && setMode('decode');
   $('#level').addEventListener('input', e => { S.level = +e.target.value; save(); compute(); });
-  let deb; $('#human').addEventListener('input', () => { clearTimeout(deb); deb = setTimeout(compute, 90); queueLog(); });
+  $('#human').addEventListener('input', () => { compute(); queueLog(); });
   $('#clear').onclick = () => { $('#human').value = ''; compute(); $('#human').focus(); };
   const peel = Object.assign(document.createElement('button'), { type: 'button', className: 'btn small', id: 'peel', hidden: true });
   $('#clear').after(peel);
@@ -221,7 +227,32 @@
     $('#emf-read').textContent = `${n} / 5`;
     $('#level').disabled = mode === 'decode' || (S.dialect === 'codepen' && !S.chain.length);
     if ($('#compare-box').open) renderCompare();
+    renderSteps();
     renderBubble();
+  }
+
+  /* Step-by-step explanation for the challenge rule, from describeWord() in ghosttalk.js */
+  function explainWord(d) {
+    if (d.rule === 'none') return L('nu are litere, rămâne la fel', 'no letters to translate, so it stays the same');
+    let why = d.rule === 'vowel'
+      ? L(`începe cu vocala „${d.first}”, deci primește „-boo”`, `starts with the vowel “${d.first}”, so it gets “-boo”`)
+      : L(`începe cu consoana „${d.first}”, deci „${d.moved}” trece la final și primește „oo”`, `starts with the consonant “${d.first}”, so “${d.moved}” moves to the end and gets “oo”`);
+    if (d.capital) why += L('; majuscula rămâne în față', '; the capital stays at the front');
+    if (d.before || d.after) why += L(`; „${d.before}${d.after}” rămâne pe loc`, `; “${d.before}${d.after}” stays in place`);
+    return why;
+  }
+  function renderSteps() {
+    const show = mode === 'encode' && S.dialect === 'codepen' && !S.chain.length && typeof window.describeWord === 'function';
+    $('#steps-box').hidden = !show;
+    if (!show) return;
+    const words = cur.src.split(/\s+/).filter(Boolean).slice(0, 12);
+    $('#steps').replaceChildren(...words.map(word => {
+      const d = window.describeWord(word), li = document.createElement('li');
+      const from = document.createElement('code'), to = document.createElement('code');
+      from.textContent = word; to.textContent = d.result;
+      li.append(from, ` ${explainWord(d)} → `, to);
+      return li;
+    }));
   }
 
   /* Compare every dialect */
@@ -311,7 +342,7 @@
     if (!text) { out.className = 'empty'; out.textContent = L('…tăcere de mormânt. Scrie ceva.', '…dead silence. Type something.'); lastPainted = null; return; }
     out.className = '';
     if (text === lastPainted) return;
-    if (still()) { out.textContent = text; lastPainted = text; return; }
+    if (fxOff()) { out.textContent = text; lastPainted = text; return; }
     const a = graphemes(lastPainted || ''), b = graphemes(text);
     let same = 0; while (same < a.length && same < b.length && a[same] === b[same]) same++;
     out.textContent = '';
@@ -369,7 +400,7 @@
   const fx = $('#fx'), fxc = fx.getContext('2d');
   let parts = [], fxOn = false;
   function confetti() {
-    if (still()) return;
+    if (fxOff()) return;
     const dpr = Math.min(2, devicePixelRatio || 1);
     fx.width = innerWidth * dpr; fx.height = innerHeight * dpr;
     const r = $('.ghost').getBoundingClientRect(), x0 = (r.left + r.width / 2) * dpr, y0 = (r.top + r.height / 3) * dpr;
@@ -915,7 +946,7 @@
 
   /* ======================= Settings ======================= */
   function renderSettings() {
-    $('#s-motion').checked = S.motion; $('#s-contrast').checked = S.contrast; $('#s-dawn').checked = S.theme === 'dawn'; $('#s-sfx').checked = S.sfx;
+    $('#s-effects').checked = S.effects; $('#s-motion').checked = S.motion; $('#s-contrast').checked = S.contrast; $('#s-dawn').checked = S.theme === 'dawn'; $('#s-sfx').checked = S.sfx;
     $('#s-echo').checked = S.echo; $('#s-ambient').checked = S.ambient; $('#s-lexend').checked = S.font === 'lexend';
     $('#s-scale').value = S.scale; $('#o-scale').textContent = Math.round(S.scale * 100) + '%';
     $('#s-rate').value = S.rate; $('#o-rate').textContent = '×' + S.rate.toFixed(1);
@@ -924,6 +955,7 @@
     $('#install-note').textContent = standalone ? L('Rulezi aplicația instalată. Merge și offline.', 'You’re running the installed app. It works offline too.')
       : L('Pe GitHub Pages, Ghost Talk se poate instala și merge offline după prima vizită. În Safari: Partajează → Adaugă pe ecranul principal.', 'On GitHub Pages, Ghost Talk can be installed and works offline after the first visit. In Safari: Share → Add to Home Screen.');
   }
+  $('#s-effects').onchange = e => { S.effects = e.target.checked; save(); applyLook(); if (!S.effects) cx.clearRect(0, 0, W, H); };
   $('#s-motion').onchange = e => { S.motion = e.target.checked; save(); applyLook(); if (!still()) fogLoop(); };
   $('#s-contrast').onchange = e => { S.contrast = e.target.checked; save(); applyLook(); };
   $('#s-dawn').onchange = e => { S.theme = e.target.checked ? 'dawn' : 'night'; save(); applyLook(); };
@@ -1045,8 +1077,8 @@
       cx.fillStyle = g; cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, Math.PI * 2); cx.fill();
     });
   }
-  function fogLoop() { if (running) return; running = true; (function f() { drawFog(); if (still()) { running = false; return; } requestAnimationFrame(f); })(); }
-  addEventListener('resize', () => { sizeFog(); drawFog(); });
+  function fogLoop() { if (running || !S.effects) return; running = true; (function f() { drawFog(); if (still() || !S.effects) { running = false; return; } requestAnimationFrame(f); })(); }
+  addEventListener('resize', () => { sizeFog(); if (S.effects) drawFog(); });
 
   /* ======================= Boot ======================= */
   $$('[data-lang]').forEach(b => b.onclick = () => { S.lang = b.dataset.lang; save(); renderAll(); if (S.tab === 'play') newRound(); });
@@ -1058,7 +1090,7 @@
 
   sizeFog();
   try { const q = new URLSearchParams(location.search).get('lang'); if (q === 'en' || q === 'ro') S.lang = q; } catch {}
-  $('#human').value = S.lang === 'ro' ? 'Bună seara, muritorule' : 'Happy Halloween';
+  $('#human').value = 'owl candy witch pumpkin';
   const hash = location.hash.slice(1);
   let received = null;
   if (hash.startsWith('msg-')) {

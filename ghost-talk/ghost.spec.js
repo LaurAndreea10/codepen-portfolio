@@ -295,6 +295,7 @@
         const s = G.normalizeState({ favorites: Array(50).fill('x'), name: 'B'.repeat(80), xp: 1e9, scale: 9 });
         expect([s.favorites.length, s.name.length, s.xp, s.scale]).toEqual([30, 30, 100000, 1.5]);
       });
+      it('keeps visual effects on unless they were turned off', () => expect([G.normalizeState({}).effects, G.normalizeState({ effects: false }).effects]).toEqual([true, false]));
       it('keeps a valid daily puzzle and drops a tampered one', () => {
         const ok = { date: '2026-10-12', lang: 'en', rows: [['hit']], guesses: ['a'], done: true, won: true };
         expect(G.normalizeState({ v: 3, daily: ok }).daily).toEqual(ok);

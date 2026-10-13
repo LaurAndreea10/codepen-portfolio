@@ -371,7 +371,7 @@
   const num = (v, min, max, d) => Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : d;
   function defaults() {
     return { v: 3, lang: 'ro', tab: 'talk', xp: 0, favorites: [], log: [], name: 'Boo', hat: 'none', extra: 'none', color: 'auto', decor: 'night', theme: 'night',
-      motion: false, contrast: false, sfx: true, echo: false, ambient: false, font: 'default', scale: 1, rate: 1, volume: .7,
+      motion: false, effects: true, contrast: false, sfx: true, echo: false, ambient: false, font: 'default', scale: 1, rate: 1, volume: .7,
       story: 0, endings: [], visited: [0], solved: [], dialect: 'codepen', level: 3, chain: [], game: 'guess', difficulty: 'medium', best: 0, arcadeBest: 0,
       daily: { date: '', lang: 'ro', rows: [], guesses: [], done: false, won: false }, achievements: [],
       stats: { translations: 0, dialects: [], hangmanWins: 0, dailyWins: 0, cards: 0, theremin: 0, chain: 0, compare: 0 } };
@@ -407,7 +407,7 @@
       color: own(COLORS, s.color) ? s.color : 'auto',
       decor: DECORS.includes(s.decor) ? s.decor : own(LEGACY_DECOR, s.decor) ? LEGACY_DECOR[s.decor] : d.decor,
       theme: s.theme === 'dawn' || s.light === true ? 'dawn' : 'night',
-      motion: s.motion === true, contrast: s.contrast === true, sfx: s.sfx !== false, echo: s.echo === true, ambient: s.ambient === true,
+      motion: s.motion === true, effects: s.effects !== false, contrast: s.contrast === true, sfx: s.sfx !== false, echo: s.echo === true, ambient: s.ambient === true,
       font: s.font === 'lexend' ? 'lexend' : 'default', scale: num(s.scale, 1, 1.5, 1),
       rate: num(s.rate, .5, 1.5, 1), volume: num(s.volume, 0, 1, .7),
       story: nodeOk(mapNode(s.story)) ? mapNode(s.story) : 0,
@@ -427,7 +427,7 @@
   }
 
   return {
-    VERSION: '3.1.0', useRule, translate, chain, identify, detect, decode, decodeAny, stripMarks, fold, list: () => Object.keys(dialects), dialects, REVERSIBLE, ONE_WAY,
+    VERSION: '4.1.0', useRule, translate, chain, identify, detect, decode, decodeAny, stripMarks, fold, list: () => Object.keys(dialects), dialects, REVERSIBLE, ONE_WAY,
     GhostError, SIGIL, MIRROR, LOCK, RADIO, RUNE, MASK, BAT, SCROLL, MORSE, RUNES, EMOJI, VICTORIAN, hash, rng, clamp, chars,
     WORDS, DIFFICULTY, GAMES, ARCADE_POOL, booscary, sameAnswer, dailyIndex, pickWord, makeRound, checkAnswer,
     hangmanNew, hangmanGuess, hangmanView, hangmanStatus, dayKey, dailyWord, dailyNew, wordleScore, shareText,

@@ -58,6 +58,19 @@ export function ghostTalk(word) {
   return before + rest + "-" + moved + oo + after;
 }
 
+// What happened to one word, for explaining it on screen (the pages turn this into sentences).
+//   describeWord("Candy!") → { rule: "consonant", first: "C", moved: "c", capital: true,
+//                              before: "", after: "!", result: "Andy-coo!" }
+export function describeWord(word) {
+  const { before, letters, after } = splitWord(word);
+  const result = ghostTalk(word);
+  if (!/^\p{L}/u.test(letters)) return { rule: "none", before, after, result };
+  const [first] = letters;
+  const vowel = startsWithVowel(letters);
+  const capital = !vowel && first !== first.toLowerCase() && letters !== letters.toUpperCase();
+  return { rule: vowel ? "vowel" : "consonant", first, moved: capital ? first.toLowerCase() : first, capital, before, after, result };
+}
+
 // Translates a sentence word by word and keeps the spaces as they were.
 export function ghostTalkText(text) {
   if (typeof text !== "string") return "";

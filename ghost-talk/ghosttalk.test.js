@@ -1,4 +1,4 @@
-import { ghostTalk, ghostTalkText } from "./ghosttalk.js";
+import { ghostTalk, ghostTalkText, describeWord } from "./ghosttalk.js";
 
 // The challenge's starter tests, unchanged.
 describe("👻 Ghost Talk", () => {
@@ -44,6 +44,13 @@ describe("👻 Ghost Talk — edge cases", () => {
   test("one-letter words", () => {
     expect(ghostTalk("a")).toBe("a-boo");
     expect(ghostTalk("b")).toBe("boo");
+  });
+
+  test("describeWord explains which rule was applied", () => {
+    expect(describeWord("owl").rule).toBe("vowel");
+    expect(describeWord("Candy!").moved).toBe("c");
+    expect(describeWord("Candy!").result).toBe("Andy-coo!");
+    expect(describeWord("42").rule).toBe("none");
   });
 
   test("leaves anything without letters unchanged", () => {

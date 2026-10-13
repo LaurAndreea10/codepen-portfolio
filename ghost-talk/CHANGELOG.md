@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.1.0 — 2026-10-13
+
+Nothing removed: the full app is back on the main page, with the challenge rule at its center.
+
+- The page opens with `owl candy witch pumpkin` already translated, and the translation updates on every keystroke (no delay).
+- With the official rule selected, every word gets a one-line, step-by-step explanation in RO/EN, built from the new `describeWord()` in `ghosttalk.js`. The explanation logic exists once and is shared with the simple page.
+- New setting: visual effects (fog, particles, letters fading in). It is off by default on phones on the first visit, and can be turned on in Settings. Everything else works the same with it off.
+- The simple page from 4.0.0 stays, at `simple/`. `ghosttalk.test.js` gains a test for `describeWord`: 10 tests, 118 across the project.
+
 ## 4.0.0 — 2026-10-13
 
 The challenge entry is now small and centered on the rule; everything else moved to an optional Ghost Lab.
@@ -7,7 +16,7 @@ The challenge entry is now small and centered on the rule; everything else moved
 - **The page** (`index.html`, `style.css`, `main.js`) keeps the starter’s structure. The translation shows on load and updates as you type, and each word gets a one-line explanation of the rule that was applied. Five examples, one Copy button.
 - **`ghosttalk.js`** is rewritten in numbered steps you can follow: `splitWord`, `startsWithVowel`, `ghostTalk`, `ghostTalkText`.
 - **`ghosttalk.test.js`** holds the starter tests unchanged, plus 7 edge cases: capitals, punctuation, shouted words, sentences, `y` as a consonant, one-letter words, input without letters. `test-results.html` runs it in the browser.
-- **Removed from the challenge page:** the dialects beyond the rule, games, story, companion, sound, fog and particle canvases, presentation mode and settings. They live on in `lab/` (Ghost Lab 3.1), which imports the same `ghosttalk.js`.
+- **Removed from the challenge page:** the dialects beyond the rule, games, story, companion, sound, fog and particle canvases, presentation mode and settings. They lived on in `lab/` until 4.1.0, which brought them back to the main page.
 
 ## 3.1.0 — 2026-10-13
 

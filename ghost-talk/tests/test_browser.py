@@ -1,15 +1,15 @@
-"""Browser checks for the Ghost Lab (Playwright + Chromium).
+"""Browser checks for the full Ghost Talk app (Playwright + Chromium).
 
 Run from the repository root with a static server:
     python -m http.server 8000 --bind 127.0.0.1 &
-    GHOST_LAB_URL=http://localhost:8000/ghost-talk/lab/ python ghost-talk/lab/tests/test_browser.py
+    GHOST_URL=http://localhost:8000/ghost-talk/ python ghost-talk/tests/test_browser.py
 """
 import os
 import sys
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-URL = os.environ.get("GHOST_LAB_URL", "http://localhost:8000/ghost-talk/lab/")
+URL = os.environ.get("GHOST_URL", "http://localhost:8000/ghost-talk/")
 SHOTS = Path(os.environ.get("GHOST_SHOTS", "ghost-shots"))
 SHOTS.mkdir(parents=True, exist_ok=True)
 failures = []
@@ -32,9 +32,11 @@ def run(p, width, height, mobile):
     tag = f"{width}px"
 
     check(f"[{tag}] no horizontal scroll", page.evaluate("document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1"))
-    page.fill("#human", "owl candy witch pumpkin")
-    page.wait_for_timeout(200)
-    check(f"[{tag}] official rule is the default", page.inner_text("#ghost").strip() == "owl-boo andy-coo itch-woo umpkin-poo", page.inner_text("#ghost"))
+    check(f"[{tag}] the rule shows on load", page.inner_text("#ghost").strip() == "owl-boo andy-coo itch-woo umpkin-poo", page.inner_text("#ghost"))
+    page.fill("#human", "Candy!")
+    check(f"[{tag}] converts instantly while typing", page.inner_text("#ghost").strip() == "Andy-coo!", page.inner_text("#ghost"))
+    check(f"[{tag}] explains the step", "capital" in page.inner_text("#steps") or "majuscula" in page.inner_text("#steps"), page.inner_text("#steps"))
+    check(f"[{tag}] heavy effects off on phones by default", page.evaluate("document.documentElement.classList.contains('no-fx')") == (width < 640))
     page.fill("#human", "Bună seara")
     page.click("label:has(#d-classic)")
     page.wait_for_timeout(200)
