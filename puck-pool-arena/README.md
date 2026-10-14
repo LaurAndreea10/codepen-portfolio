@@ -88,3 +88,10 @@ Version 1.1 adds a turn-based local AI in championship mode and 2.5D canvas pers
 - Optional aim assist now gently corrects shots toward the nearest ball only when already aimed within roughly 14°.
 - Pocket artwork scales with the chosen collision radius; legacy Pro mode retains original capture radius.
 - Manual real-device gameplay and assistive technology QA still pending.
+
+## 2026-10-14 · v3.0.2 — round completion fix
+- Empty table immediately ends the round and displays an accessible, focusable result panel with score, shots, Continue and Retry controls.
+- Classic and Zen now allow immediate replay instead of leaving an empty table.
+- Campaign modes unlock and advance after clearing the table even if the earlier point target wasn't reached.
+- Shot-limit failure shows Retry; championship advancement requires a positive player score lead.
+- Original saves and version history remain intact. JavaScript syntax was checked; device/browser gameplay QA remains to be run.
