@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-14 — Puck & Pool Arena v1.1.0
+
+- RO: proiect nou, separat de PentArena — air hockey × biliard ca joc de țintire: un puc lovește patru bile spre șase buzunare (+100) și poarta din dreapta (+50). 12 niveluri cu țintă și limită de lovituri, campionat pe ture contra AI în 3 ligi, trei arene 2.5D, slider de unghi și forță, tastatură și touch. RO/EN, dark/light, contrast ridicat și mișcare redusă.
+- EN: new standalone project, separate from PentArena — air hockey × pool as an aiming game: a puck strikes four balls towards six pockets (+100) and the right-hand goal (+50). 12 levels with target scores and shot limits, a turn-based championship against the AI across 3 leagues, three 2.5D arenas, angle and power sliders, keyboard and touch. RO/EN, dark/light, high contrast and reduced motion.
+- Verificat automat în Chromium la 1280 și 390 px (fără erori JS, fără scroll orizontal). Telefonul fizic și cititorul de ecran rămân neconfirmate. / Automated Chromium check at 1280 and 390 px; real phone and screen reader remain unverified.
+- Adăugat în catalog, portofoliul RO/EN și Finalizat recent; numărul de proiecte live actualizat la 88. / Added to the catalogue, RO/EN portfolio and Recently completed; live project count updated to 88.
+- [Joacă / Play](puck-pool-arena/) · [Istoric / History](puck-pool-arena/README.md).
+
 ## 2026-10-13 — PentArena v2.4.0: Carambol
 
 - RO: probă bonus nouă, **Carambol** — fuziune air hockey × biliard: crose pe jumătăți, masă cu șase buzunare, trei bile ale fiecăruia și un puc ×3. Bila ta în colțul adversarului 2, a lui 1; carambolajul (bilă băgată de altă bilă) +1; buzunarele din mijloc primesc doar carambolaje. Bilă de aur ×2, AI care păzește colțurile, antrenament ghidat, realizarea „Carambolist”. Pentatlonul rămâne cu cinci probe.
