@@ -140,24 +140,22 @@
 
   <style>
     .nav-more{position:relative}.nav-more>summary{list-style:none;cursor:pointer}.nav-more>summary::-webkit-details-marker{display:none}.nav-more>summary::after{margin-left:.4rem;content:"▾";font-size:.72em}.nav-more[open]>summary::after{content:"▴"}.nav-more-menu{position:absolute;z-index:80;top:calc(100% + 10px);right:0;display:grid;min-width:210px;padding:8px;border:1px solid var(--line);border-radius:16px;background:#0b1730;box-shadow:var(--shadow)}.nav-more-menu a{padding:10px 12px;border-radius:10px;color:var(--text)}.nav-more-menu a:hover,.nav-more-menu a:focus-visible{background:rgba(255,255,255,.08)}
-    .curated-secondary{display:none!important}
     .ecosystem-hub-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.ecosystem-hub-card{display:flex;min-height:170px;flex-direction:column;padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--panel)}.ecosystem-hub-card h3{margin:8px 0}.ecosystem-hub-card p{margin:0 0 15px;color:var(--muted);font-size:.86rem;line-height:1.55}.ecosystem-hub-card a{margin-top:auto;color:var(--accent);font-weight:850}
     @media(max-width:900px){.ecosystem-hub-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nav-more-menu{position:fixed;top:88px;right:12px;left:12px}}
     @media(max-width:480px){.ecosystem-hub-grid{grid-template-columns:1fr}}
   </style>
+  <link rel="stylesheet" href="portfolio-chapters.css?v=20261014" />
 </head>
 <body>
 
   <div class="skip-links" aria-label="Linkuri rapide">
-    <a class="skip-link" href="#home">Sari la &icirc;nceput</a>
-    <a class="skip-link" href="#key-projects">Sari la proiectele recomandate</a>
-    <a class="skip-link" href="#growth-path">Sari la Cum cresc</a>
-    <a class="skip-link" href="#ecosystem-hubs">Sari la hub-urile ecosistemului</a>
-    <a class="skip-link" href="#accessibility-scorecard">Sari la scorecard accesibilitate</a>
-    <a class="skip-link" href="portfolio-summary.html">Sari la rezumatul de 60 de secunde</a>
+    <a class="skip-link" href="#main-content">Sari la conținut</a>
+    <a class="skip-link" href="#ch-lucrari">Sari la lucrările selectate</a>
+    <a class="skip-link" href="#ch-colectii">Sari la colecții</a>
+    <a class="skip-link" href="#ch-proces">Sari la proces și dovezi</a>
+    <a class="skip-link" href="#ch-jurnal">Sari la jurnal</a>
     <a class="skip-link" href="#contact">Sari la contact</a>
-    <a class="skip-link" href="evolution-lab.html">Deschide Evolution Lab</a>
-    <a class="skip-link" href="portfolio-summary.html">Deschide rezumatul portofoliului</a>
+    <a class="skip-link" href="portfolio-summary.html">Deschide rezumatul de 60 de secunde</a>
   </div>
 
   <noscript>
@@ -180,32 +178,39 @@
           <span id="brandText">Laura Andreea</span>
         </a>
         <div class="nav-links" aria-label="Secțiuni principale">
-          <a class="pill" href="#key-projects">Proiecte</a>
-          <a class="pill" href="#growth-path">Cum cresc</a>
-          <a class="pill" href="#proof-of-work">Dovezi</a>
-          <a class="pill" href="evolution-lab.html">Evoluție</a>
-          <a class="pill" href="#about">Despre</a>
-          <a class="pill" href="#contact">Contact</a>
+          <a class="pill" href="#ch-lucrari">Lucrări</a>
+          <a class="pill" href="#ch-colectii">Colecții</a>
+          <a class="pill" href="#ch-proces">Proces</a>
+          <a class="pill" href="#ch-jurnal">Jurnal</a>
+          <a class="pill" href="#ch-despre">Despre</a>
+          <a class="pill" href="canva-collection.html">Canva</a>
           <a class="pill" href="portfolio-summary.html" aria-label="Deschide rezumatul portofoliului în 60 de secunde">60″</a>
-          <details class="nav-more">
-            <summary class="pill">Mai multe</summary>
-            <div class="nav-more-menu">
-              <a href="canva-collection.html">Canva · RO/EN</a>
-              <a href="#now">Activitate recentă</a>
-              <a href="project-health.html">Project Health</a>
-              <a href="release-timeline.html">Releases</a>
-              <a href="process.html">Process</a>
-              <a href="uses.html">Uses</a>
-              <a href="growth-suite.html">Growth Suite</a>
-              <a href="proof-registry.html">Proof Registry</a>
-            </div>
-          </details>
           <button class="pill pill-scan" id="scanToggle" type="button" aria-label="Rezumat portofoliu în 30 de secunde" aria-expanded="false" aria-controls="scan-panel">⚡ 30s</button>
           <a class="pill" href="en/" hreflang="en" lang="en" aria-label="English version of the portfolio">EN</a>
           <button class="pill" id="themeToggle" type="button" aria-label="Schimbă tema vizuală">☀️ Light</button>
           <button class="pill" id="contrastToggle" type="button" aria-pressed="false" aria-label="Activează contrast ridicat">Contrast ridicat</button>
         </div>
       </nav>
+    </div>
+  </div>
+
+  <div class="nowbar" id="nowbar" data-nowbar>
+    <div class="container nowbar-inner">
+      <button class="nowbar-trigger" id="nowbarTrigger" type="button" aria-expanded="false" aria-controls="nowbarPanel">
+        <span class="nowbar-dot" aria-hidden="true"></span>
+        <span class="nowbar-label">Acum</span>
+        <span class="nowbar-item" id="nowbarItem">La ce lucrez acum</span>
+        <span class="nowbar-count" id="nowbarCount" aria-hidden="true"></span>
+        <span class="nowbar-chev" aria-hidden="true">›</span>
+      </button>
+      <div class="nowbar-panel" id="nowbarPanel" role="region" aria-label="La ce lucrez acum" hidden>
+        <div class="nowbar-panel-head">
+          <strong>La ce lucrez acum</strong>
+          <span class="nowbar-updated" id="nowbarUpdated"></span>
+        </div>
+        <ul class="nowbar-list" id="nowbarList"></ul>
+        <a class="nowbar-all" href="#now">Vezi tot jurnalul →</a>
+      </div>
     </div>
   </div>
 
@@ -242,7 +247,7 @@
         <div class="scan-col">
           <h3 class="scan-col-title">&#x1F4CA; Dovezi observabile</h3>
           <ul class="scan-list">
-            <li><strong id="scan-proj-count">87</strong> proiecte live</li>
+            <li><strong id="scan-proj-count">88</strong> proiecte live</li>
             <li><strong id="scan-repo-count">20+</strong> repo-uri publice pe GitHub</li>
             <li><strong>6</strong> module SaaS &icirc;n Alpis Fusion: kanban, flow builder, RBAC, billing, booking, autosave</li>
             <li><strong>4+</strong> certific&#x103;ri, printre care: JS Essential Training &middot; Google Digital Marketing &middot; freeCodeCamp &middot; Claude Code</li>
@@ -373,6 +378,17 @@
   </header>
 
   <main id="main-content">
+
+    <section class="chapter" id="ch-intro" aria-labelledby="ch-intro-title">
+      <div class="container chapter-head chapter-head--quiet">
+        <span class="chapter-num" aria-hidden="true">01</span>
+        <div>
+          <p class="chapter-kicker">Capitolul 01</p>
+          <h2 class="chapter-title" id="ch-intro-title">Intro</h2>
+          <p class="chapter-lede">Cine sunt, pe scurt, și unde să începi.</p>
+        </div>
+      </div>
+
     <section id="hero-proof" aria-labelledby="hero-proof-title">
       <div class="container">
         <h2 id="hero-proof-title" class="sr-only">Credibilitate</h2>
@@ -395,7 +411,19 @@
       </div>
     </section>
 
-    <div class="section-divider"></div>
+    
+    </section>
+
+    <section class="chapter" id="ch-lucrari" aria-labelledby="ch-lucrari-title">
+      <div class="container chapter-head">
+        <span class="chapter-num" aria-hidden="true">02</span>
+        <div>
+          <p class="chapter-kicker">Capitolul 02</p>
+          <h2 class="chapter-title" id="ch-lucrari-title">Lucrări selectate</h2>
+          <p class="chapter-lede">Trei proiecte care arată cel mai clar cum gândesc produsul și interfața.</p>
+        </div>
+      </div>
+
     <section id="key-projects" aria-labelledby="key-projects-title">
       <div class="container">
         <div class="section-head">
@@ -458,12 +486,32 @@
       </div>
     </section>
 
-    <div class="section-divider"></div>
+    
+    </section>
+
+    <section class="chapter" id="ch-colectii" aria-labelledby="ch-colectii-title">
+      <div class="container chapter-head">
+        <span class="chapter-num" aria-hidden="true">03</span>
+        <div>
+          <p class="chapter-kicker">Capitolul 03</p>
+          <h2 class="chapter-title" id="ch-colectii-title">Colecții</h2>
+          <p class="chapter-lede">Tot catalogul, grupat pe direcții: CRM, Marketing-Tech, proiecte recente și jocuri.</p>
+        </div>
+      </div>
+      <div class="container">
+        <div class="collection-tabs" role="tablist" aria-label="Filtrează colecțiile">
+          <button class="collection-tab is-active" type="button" role="tab" aria-selected="true" data-collection="all">Toate</button>
+          <button class="collection-tab" type="button" role="tab" aria-selected="false" data-collection="crm-projects">CRM</button>
+          <button class="collection-tab" type="button" role="tab" aria-selected="false" data-collection="marketing-tech">Marketing-Tech</button>
+          <button class="collection-tab" type="button" role="tab" aria-selected="false" data-collection="latest-github">Recente &amp; jocuri</button>
+        </div>
+      </div>
+
     <section id="crm-projects" class="gh-section" aria-labelledby="crm-projects-title">
       <div class="container">
         <div class="section-head">
           <div>
-            <span class="eyebrow eyebrow-green">&#x1F5C2; CRM Ecosystem</span>
+            <span class="eyebrow eyebrow-green">CRM Ecosystem</span>
             <h2 id="crm-projects-title">5 produse CRM cu repo public</h2>
             <div class="gh-meta gh-meta-green"><span>Cod public &middot; Deploy automat &middot; Open source</span></div>
           </div>
@@ -520,93 +568,54 @@
       </div>
     </section>
 
-    <div class="section-divider"></div>
-    <section id="growth-path" aria-labelledby="growth-path-title">
+    
+
+    <section id="marketing-tech" class="gh-section" aria-labelledby="marketing-tech-title">
       <div class="container">
         <div class="section-head">
           <div>
-            <span class="eyebrow eyebrow-green">&#x1F331; Cum cresc</span>
-            <h2 id="growth-path-title">&Icirc;nv&#x103;&#x21B; &icirc;n timpul liber, construind proiecte reale</h2>
-            <p class="section-subtitle">Front-end-ul e drumul pe care &icirc;l construiesc &icirc;n timpul liber. Din 2022 &icirc;nv&#x103;&#x21B; construind, testând &#x219;i documentând public &mdash; fiecare proiect m&#x103; duce un pas mai departe.</p>
+            <span class="eyebrow">Marketing-Tech</span>
+            <h2 id="marketing-tech-title">Templates pentru marketing manager &#x219;i echipe growth</h2>
+            <p class="section-subtitle">Combin background-ul meu CRM &amp; marketing cu logica de produs front-end. Workspace-uri unificate pentru planificare campanii, KPI tracking &#x219;i conversion UI.</p>
           </div>
-          <a class="btn btn-secondary" href="what-i-learned.html">Ce am &icirc;nv&#x103;&#x21B;at &rarr;</a>
+          <div class="card-actions no-auto-margin">
+            <a class="btn btn-secondary" href="./campaignpilot.html">CampaignPilot</a>
+            <a class="btn btn-secondary" href="./Campaign%20ROI%20Calculator.html">ROI Calculator</a>
+          </div>
         </div>
-        <div class="growth-path-grid">
+        <div class="projects-grid project-collection" id="marketing-project-list">
           <article class="project-card glass">
-            <span class="tag">01 &middot; Punct de plecare</span>
-            <h3>Din CRM &#x219;i marketing spre cod</h3>
-            <p class="project-desc">Am pornit de la experien&#x21B;a &icirc;n CRM, baze de date &#x219;i campanii digitale. Primele proiecte au fost pagini single-file &icirc;n HTML, CSS &#x219;i JavaScript.</p>
-            <div class="card-actions"><a class="btn btn-secondary" href="insights/single-file-la-vite-react.html">De la single-file la Vite + React</a></div>
+            <span class="badge-new">NEW</span>
+            <div class="project-top"><div><h3>CampaignPilot</h3><span class="badge-github">Marketing planner &middot; KPI hub</span></div><span class="tag github">marketing-tech</span></div>
+            <p class="project-desc">Workspace unificat pentru planificarea unei campanii de la idee la rezultate: KPI overview, funnel, budget allocation, content calendar &#x219;i brief generator.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="./campaignpilot.html">Deschide Live</a>
+              <a class="btn btn-secondary" href="./campaignpilot.html#brief">Vezi Brief Generator</a>
+            </div>
           </article>
           <article class="project-card glass">
-            <span class="tag">02 &middot; Produse</span>
-            <h3>De la demo la produs</h3>
-            <p class="project-desc">Am trecut la React, Vite &#x219;i TypeScript: arhitectur&#x103; modular&#x103;, date local-first &#x219;i deploy automat cu GitHub Actions, aplicate &icirc;n proiectele CRM.</p>
-            <div class="card-actions"><a class="btn btn-secondary" href="evolution-lab.html">Evolution Lab</a><a class="btn btn-secondary" href="before-after.html">&Icirc;nainte / dup&#x103;</a></div>
+            <span class="badge-new">NEW</span>
+            <div class="project-top"><div><h3>Campaign ROI Calculator</h3><span class="badge-github">Marketing analytics &middot; ROI tool</span></div><span class="tag github">marketing-tech</span></div>
+            <p class="project-desc">Calculator interactiv pentru evaluarea performan&#x21B;ei campaniilor: ROI, ROAS, CAC, cost per lead, revenue estimat &#x219;i profitabilitate.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="./Campaign%20ROI%20Calculator.html">Deschide Live</a></div>
           </article>
           <article class="project-card glass">
-            <span class="tag">03 &middot; Calitate</span>
-            <h3>Accesibilitate &#x219;i teste</h3>
-            <p class="project-desc">Lighthouse Accessibility 100 pe portofoliu; tastatur&#x103;, contrast ridicat &#x219;i mi&#x219;care redus&#x103;, teste automate de logic&#x103; &#x219;i browser. Ce n-am verificat &icirc;nc&#x103; notez explicit.</p>
-            <div class="card-actions"><a class="btn btn-secondary" href="accessibility-lab.html">Accessibility Lab</a></div>
-          </article>
-          <article class="project-card glass">
-            <span class="tag">04 &middot; Acum</span>
-            <h3>Exersez prin experimente</h3>
-            <p class="project-desc">Jocurile Canvas, aplica&#x21B;iile PWA offline &#x219;i interfe&#x21B;ele bilingve RO/EN sunt terenul meu de exersat logic&#x103;, performan&#x21B;&#x103; &#x219;i UX &mdash; cu istoric public pentru fiecare versiune.</p>
-            <div class="card-actions"><a class="btn btn-secondary" href="build-in-public.html">Jurnal Build in Public</a><a class="btn btn-secondary" href="#now">Ce fac acum</a></div>
+            <div class="project-top"><div><h3>Lead Magnet Landing</h3></div><span class="tag github">live</span></div>
+            <p class="project-desc">Landing page modular pentru ebooks, white papers &#x219;i resource downloads. Hero hook + social proof + email gate + thank-you flow.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="lead-magnet-landing.html">Deschide Live</a></div>
           </article>
         </div>
+        <button class="btn btn-secondary collection-toggle" type="button" aria-expanded="false" aria-controls="marketing-project-list" data-show-label="Vezi toate proiectele Marketing-Tech" data-hide-label="Restrânge proiectele">Vezi toate proiectele Marketing-Tech</button>
       </div>
     </section>
 
-    <div class="section-divider"></div>
-    <section id="proof-of-work" class="pow-section" aria-labelledby="proof-title">
-      <!-- Evolution Lab connects before/after evidence, decisions, audits and lessons. -->
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">&#x2705; Proof of Work</span>
-            <h2 id="proof-title">Dovezi tehnice obiective &icirc;n loc de testimoniale</h2>
-            <p class="section-subtitle">Tot ce construiesc este public, verificabil &#x219;i are istoric de versiuni.</p>
-          </div>
-        </div>
-        <p style="margin:0 0 22px"><a class="btn btn-primary" href="evolution-lab.html">Explorează Evolution Lab — înainte, acum, dovadă →</a></p>
-        <div class="pow-grid">
-          <div class="pow-card">
-            <div class="pow-card-header"><div class="pow-icon green">&#x1F4C2;</div><h3>Cod public, verificabil oric&acirc;nd</h3></div>
-            <p>Toate proiectele majore au repo public pe GitHub.</p>
-            <span class="pow-metric green">20+ repo-uri publice</span>
-            <div class="pow-links"><a class="pow-link" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">github.com/LaurAndreea10</a></div>
-          </div>
-          <div class="pow-card">
-            <div class="pow-card-header"><div class="pow-icon blue">&#x1F680;</div><h3>Deploy automat pe GitHub Actions</h3></div>
-            <p>Proiectele majore au CI/CD configurat pentru build &#x219;i deploy automat.</p>
-            <span class="pow-metric">CI/CD configurat</span>
-            <div class="pow-links">
-              <a class="pow-link" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">&rarr; Alpis Fusion live</a>
-              <a class="pow-link" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">&rarr; Repo + Actions</a>
-            </div>
-          </div>
-          <div class="pow-card">
-            <div class="pow-card-header"><div class="pow-icon green">&#x1F310;</div><h3>88 proiecte live</h3></div>
-            <p>Nu sunt mockup-uri. Sunt proiecte func&#x21B;ionale, deployate pe CodePen &#x219;i GitHub Pages.</p>
-            <span class="pow-metric green">88 proiecte live</span>
-            <div class="pow-links">
-              <a class="pow-link" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">&rarr; Profil CodePen</a>
-            </div>
-          </div>
-        </div>
-        <div class="pow-note"><strong>De ce Proof of Work?</strong> Lucrez pe proiecte personale. Dovada mea este codul public, deploy-ul real &#x219;i istoricul vizibil de versiuni.</div>
-      </div>
-    </section>
+    
 
-    <div class="section-divider"></div>
-    <section id="latest-github" class="curated-secondary gh-section" aria-labelledby="latest-github-title">
+    <section id="latest-github" class="gh-section" aria-labelledby="latest-github-title">
       <div class="container">
         <div class="section-head">
           <div>
-            <span class="eyebrow">&#x1F3AE; Timp liber &middot; Latest on GitHub</span>
+            <span class="eyebrow">Timp liber &middot; Latest on GitHub</span>
             <h2 id="latest-github-title">Cele mai noi proiecte construite &icirc;n timpul liber</h2>
             <div class="gh-meta"><span>Cod public &bull; Deploy automat &bull; Open source</span></div>
           </div>
@@ -667,52 +676,107 @@
           </article>
         </div>
         <button class="btn btn-secondary collection-toggle" type="button" aria-expanded="false" aria-controls="latest-project-list" data-show-label="Vezi toate proiectele recente" data-hide-label="Restrânge proiectele">Vezi toate proiectele recente</button>
-        <p class="side-note-explore">&#x1F3AE; <strong>Side project:</strong> <a href="https://laurandreea10.github.io/BASKET-VS-AI/" target="_blank" rel="noopener noreferrer">BASKET VS AI</a> &mdash; joc arcade cu Web Audio procedural &#x219;i Enhanced Pro variant, explorat separat de stack-ul CRM. <a href="https://github.com/LaurAndreea10/BASKET-VS-AI" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a></p>
+        <p class="side-note-explore"><strong>Side project:</strong> <a href="https://laurandreea10.github.io/BASKET-VS-AI/" target="_blank" rel="noopener noreferrer">BASKET VS AI</a> &mdash; joc arcade cu Web Audio procedural &#x219;i Enhanced Pro variant, explorat separat de stack-ul CRM. <a href="https://github.com/LaurAndreea10/BASKET-VS-AI" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a></p>
       </div>
     </section>
 
-    <div class="section-divider"></div>
-    <section id="marketing-tech" class="curated-secondary gh-section" aria-labelledby="marketing-tech-title">
+    
+    </section>
+
+    <section class="chapter" id="ch-proces" aria-labelledby="ch-proces-title">
+      <div class="container chapter-head">
+        <span class="chapter-num" aria-hidden="true">04</span>
+        <div>
+          <p class="chapter-kicker">Capitolul 04</p>
+          <h2 class="chapter-title" id="ch-proces-title">Proces &amp; dovezi</h2>
+          <p class="chapter-lede">Cum cresc, ce pot verifica alții și hub-urile dedicate.</p>
+        </div>
+      </div>
+
+    <section id="growth-path" aria-labelledby="growth-path-title">
       <div class="container">
         <div class="section-head">
           <div>
-            <span class="eyebrow">&#x1F4CA; Marketing-Tech</span>
-            <h2 id="marketing-tech-title">Templates pentru marketing manager &#x219;i echipe growth</h2>
-            <p class="section-subtitle">Combin background-ul meu CRM &amp; marketing cu logica de produs front-end. Workspace-uri unificate pentru planificare campanii, KPI tracking &#x219;i conversion UI.</p>
+            <span class="eyebrow eyebrow-green">Cum cresc</span>
+            <h2 id="growth-path-title">&Icirc;nv&#x103;&#x21B; &icirc;n timpul liber, construind proiecte reale</h2>
+            <p class="section-subtitle">Front-end-ul e drumul pe care &icirc;l construiesc &icirc;n timpul liber. Din 2022 &icirc;nv&#x103;&#x21B; construind, testând &#x219;i documentând public &mdash; fiecare proiect m&#x103; duce un pas mai departe.</p>
           </div>
-          <div class="card-actions no-auto-margin">
-            <a class="btn btn-secondary" href="./campaignpilot.html">CampaignPilot</a>
-            <a class="btn btn-secondary" href="./Campaign%20ROI%20Calculator.html">ROI Calculator</a>
-          </div>
+          <a class="btn btn-secondary" href="what-i-learned.html">Ce am &icirc;nv&#x103;&#x21B;at &rarr;</a>
         </div>
-        <div class="projects-grid project-collection" id="marketing-project-list">
+        <div class="growth-path-grid">
           <article class="project-card glass">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3>CampaignPilot</h3><span class="badge-github">Marketing planner &middot; KPI hub</span></div><span class="tag github">marketing-tech</span></div>
-            <p class="project-desc">Workspace unificat pentru planificarea unei campanii de la idee la rezultate: KPI overview, funnel, budget allocation, content calendar &#x219;i brief generator.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="./campaignpilot.html">Deschide Live</a>
-              <a class="btn btn-secondary" href="./campaignpilot.html#brief">Vezi Brief Generator</a>
-            </div>
+            <span class="tag">01 &middot; Punct de plecare</span>
+            <h3>Din CRM &#x219;i marketing spre cod</h3>
+            <p class="project-desc">Am pornit de la experien&#x21B;a &icirc;n CRM, baze de date &#x219;i campanii digitale. Primele proiecte au fost pagini single-file &icirc;n HTML, CSS &#x219;i JavaScript.</p>
+            <div class="card-actions"><a class="btn btn-secondary" href="insights/single-file-la-vite-react.html">De la single-file la Vite + React</a></div>
           </article>
           <article class="project-card glass">
-            <span class="badge-new">NEW</span>
-            <div class="project-top"><div><h3>Campaign ROI Calculator</h3><span class="badge-github">Marketing analytics &middot; ROI tool</span></div><span class="tag github">marketing-tech</span></div>
-            <p class="project-desc">Calculator interactiv pentru evaluarea performan&#x21B;ei campaniilor: ROI, ROAS, CAC, cost per lead, revenue estimat &#x219;i profitabilitate.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="./Campaign%20ROI%20Calculator.html">Deschide Live</a></div>
+            <span class="tag">02 &middot; Produse</span>
+            <h3>De la demo la produs</h3>
+            <p class="project-desc">Am trecut la React, Vite &#x219;i TypeScript: arhitectur&#x103; modular&#x103;, date local-first &#x219;i deploy automat cu GitHub Actions, aplicate &icirc;n proiectele CRM.</p>
+            <div class="card-actions"><a class="btn btn-secondary" href="evolution-lab.html">Evolution Lab</a><a class="btn btn-secondary" href="before-after.html">&Icirc;nainte / dup&#x103;</a></div>
           </article>
           <article class="project-card glass">
-            <div class="project-top"><div><h3>Lead Magnet Landing</h3></div><span class="tag github">live</span></div>
-            <p class="project-desc">Landing page modular pentru ebooks, white papers &#x219;i resource downloads. Hero hook + social proof + email gate + thank-you flow.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="lead-magnet-landing.html">Deschide Live</a></div>
+            <span class="tag">03 &middot; Calitate</span>
+            <h3>Accesibilitate &#x219;i teste</h3>
+            <p class="project-desc">Lighthouse Accessibility 100 pe portofoliu; tastatur&#x103;, contrast ridicat &#x219;i mi&#x219;care redus&#x103;, teste automate de logic&#x103; &#x219;i browser. Ce n-am verificat &icirc;nc&#x103; notez explicit.</p>
+            <div class="card-actions"><a class="btn btn-secondary" href="accessibility-lab.html">Accessibility Lab</a></div>
+          </article>
+          <article class="project-card glass">
+            <span class="tag">04 &middot; Acum</span>
+            <h3>Exersez prin experimente</h3>
+            <p class="project-desc">Jocurile Canvas, aplica&#x21B;iile PWA offline &#x219;i interfe&#x21B;ele bilingve RO/EN sunt terenul meu de exersat logic&#x103;, performan&#x21B;&#x103; &#x219;i UX &mdash; cu istoric public pentru fiecare versiune.</p>
+            <div class="card-actions"><a class="btn btn-secondary" href="build-in-public.html">Jurnal Build in Public</a><a class="btn btn-secondary" href="#now">Ce fac acum</a></div>
           </article>
         </div>
-        <button class="btn btn-secondary collection-toggle" type="button" aria-expanded="false" aria-controls="marketing-project-list" data-show-label="Vezi toate proiectele Marketing-Tech" data-hide-label="Restrânge proiectele">Vezi toate proiectele Marketing-Tech</button>
       </div>
     </section>
 
-    <div class="section-divider"></div>
-    <section id="growth-suite" class="curated-secondary" aria-labelledby="growth-suite-title">
+    
+
+    <section id="proof-of-work" class="pow-section" aria-labelledby="proof-title">
+      <!-- Evolution Lab connects before/after evidence, decisions, audits and lessons. -->
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Proof of Work</span>
+            <h2 id="proof-title">Dovezi tehnice obiective &icirc;n loc de testimoniale</h2>
+            <p class="section-subtitle">Tot ce construiesc este public, verificabil &#x219;i are istoric de versiuni.</p>
+          </div>
+        </div>
+        <p style="margin:0 0 22px"><a class="btn btn-primary" href="evolution-lab.html">Explorează Evolution Lab — înainte, acum, dovadă →</a></p>
+        <div class="pow-grid">
+          <div class="pow-card">
+            <div class="pow-card-header"><div class="pow-icon green">&#x1F4C2;</div><h3>Cod public, verificabil oric&acirc;nd</h3></div>
+            <p>Toate proiectele majore au repo public pe GitHub.</p>
+            <span class="pow-metric green">20+ repo-uri publice</span>
+            <div class="pow-links"><a class="pow-link" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">github.com/LaurAndreea10</a></div>
+          </div>
+          <div class="pow-card">
+            <div class="pow-card-header"><div class="pow-icon blue">&#x1F680;</div><h3>Deploy automat pe GitHub Actions</h3></div>
+            <p>Proiectele majore au CI/CD configurat pentru build &#x219;i deploy automat.</p>
+            <span class="pow-metric">CI/CD configurat</span>
+            <div class="pow-links">
+              <a class="pow-link" href="https://laurandreea10.github.io/Alpis-Fusion-CRM-premium/" target="_blank" rel="noopener noreferrer">&rarr; Alpis Fusion live</a>
+              <a class="pow-link" href="https://github.com/LaurAndreea10/Alpis-Fusion-CRM-premium" target="_blank" rel="noopener noreferrer">&rarr; Repo + Actions</a>
+            </div>
+          </div>
+          <div class="pow-card">
+            <div class="pow-card-header"><div class="pow-icon green">&#x1F310;</div><h3>88 proiecte live</h3></div>
+            <p>Nu sunt mockup-uri. Sunt proiecte func&#x21B;ionale, deployate pe CodePen &#x219;i GitHub Pages.</p>
+            <span class="pow-metric green">88 proiecte live</span>
+            <div class="pow-links">
+              <a class="pow-link" href="https://codepen.io/Laura-Andreea-the-typescripter" target="_blank" rel="noopener noreferrer">&rarr; Profil CodePen</a>
+            </div>
+          </div>
+        </div>
+        <div class="pow-note"><strong>De ce Proof of Work?</strong> Lucrez pe proiecte personale. Dovada mea este codul public, deploy-ul real &#x219;i istoricul vizibil de versiuni.</div>
+      </div>
+    </section>
+
+    
+
+    <section id="growth-suite" aria-labelledby="growth-suite-title">
       <div class="container">
         <div class="growth-suite-head">
           <div>
@@ -738,55 +802,8 @@
       </div>
     </section>
 
-    <div class="section-divider"></div>
-    <section id="insights" class="curated-secondary" aria-labelledby="insights-title">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Insights</span>
-            <h2 id="insights-title">Decizii &#x219;i lec&#x21B;ii din construirea unui CRM SaaS</h2>
-            <p class="section-subtitle">C&acirc;teva insight-uri despre produs, arhitectur&#x103; &#x219;i UX.</p>
-          </div>
-        </div>
-        <div class="insights-grid">
-          <article class="project-card glass" aria-labelledby="insight-1-title">
-            <span class="tag">Lessons</span>
-            <h3 id="insight-1-title">3 lec&#x21B;ii din construirea unui SaaS CRM de la zero</h3>
-            <p class="project-desc">Un CRM este un sistem de decizii, nu doar o interfa&#x21B;&#x103; cu lead-uri &#x219;i task-uri.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="insights/saas-crm-lectii.html">Cite&#x219;te insight-ul</a></div>
-          </article>
-          <article class="project-card glass" aria-labelledby="insight-2-title">
-            <span class="tag">Architecture</span>
-            <h3 id="insight-2-title">De ce am trecut de la single-file HTML la Vite + React</h3>
-            <p class="project-desc">Vite + React mi-au permis s&#x103; separ layout-ul, cardurile &#x219;i fluxurile &icirc;n componente reutilizabile.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="insights/single-file-la-vite-react.html">Cite&#x219;te insight-ul</a></div>
-          </article>
-          <article class="project-card glass" aria-labelledby="insight-3-title">
-            <span class="tag">UX decisions</span>
-            <h3 id="insight-3-title">Flow builder vs Kanban</h3>
-            <p class="project-desc">Kanban-ul organizeaz&#x103; munca, iar Flow builder-ul organizeaz&#x103; deciziile.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="insights/flow-builder-vs-kanban.html">Cite&#x219;te insight-ul</a></div>
-          </article>
-          <article class="project-card glass" aria-labelledby="insight-4-title">
-            <span class="tag">Subiecte viitoare</span>
-            <h3 id="insight-4-title">Ce a&#x219; documenta mai departe</h3>
-            <p class="project-desc">Deciziile din spatele automatiz&#x103;rilor &#x219;i claritatea pe m&#x103;sur&#x103; ce cresc datele &#x219;i regulile.</p>
-            <div class="card-actions"><a class="btn btn-primary" href="insights/ce-as-documenta.html">Cite&#x219;te insight-ul</a></div>
-          </article>
-          <article class="project-card glass">
-            <span class="tag">Case study</span>
-            <h3>Excel-Quest &mdash; de la landing static la produs cu progres salvat</h3>
-            <p class="project-desc">Am transformat Excel-Quest dintr-un landing simplu &icirc;ntr-un produs orientat pe reluare.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="projects/excel-quest.html" aria-label="Deschide case study Excel-Quest">Deschide case study</a>
-              <a class="btn btn-secondary" href="https://laurandreea10.github.io/Excel-Quest/excel-quest-hub.html" target="_blank" rel="noopener noreferrer">Vezi hub-ul</a>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
+    
 
-    <div class="section-divider"></div>
     <section id="ecosystem-hubs" aria-labelledby="ecosystem-hubs-title">
       <div class="container">
         <div class="section-head"><div><span class="eyebrow">Mai mult</span><h2 id="ecosystem-hubs-title">Hub-uri dedicate și experimente</h2><p class="section-subtitle">Pagina principală prezintă selecția esențială; documentația, istoricul și colecțiile complete rămân disponibile separat.</p></div></div>
@@ -797,17 +814,32 @@
           <article class="ecosystem-hub-card"><span class="tag">History</span><h3>Releases & Project Health</h3><p>Istoric de livrare, stare tehnică și verificări recurente.</p><a href="release-timeline.html">Vezi istoricul →</a></article>
           <article class="ecosystem-hub-card"><span class="tag">Canva · Visual Design</span><h3>Colecție Canva — Excel Quest &amp; CRM</h3><p>14 materiale de design pentru educație, CRM și marketing, inclusiv șase drafturi asistate de AI. Colecție disponibilă separat în română și engleză; contribuțiile manuale personale rămân de documentat.</p><a href="canva-collection.html">Explorează colecția Canva →</a></article>
           <article class="ecosystem-hub-card"><span class="tag">Data Visualization</span><h3>Revenue Landscape</h3><p>Peisaj izometric 3D al veniturilor, desenat în Canvas 2D fără dependențe.</p><a href="https://laurandreea10.github.io/Revenue-Landscape/" target="_blank" rel="noopener noreferrer">Explorează proiectul →</a></article>
+          <article class="ecosystem-hub-card"><span class="tag">Health</span><h3>Project Health</h3><p>Starea tehnică a proiectelor principale: demo, documentație, accesibilitate și verificări.</p><a href="project-health.html">Vezi starea proiectelor →</a></article>
+          <article class="ecosystem-hub-card"><span class="tag">Process</span><h3>Process</h3><p>Cum lucrez de la idee la versiune publicată: pași, verificări și decizii.</p><a href="process.html">Vezi procesul →</a></article>
+          <article class="ecosystem-hub-card"><span class="tag">Uses</span><h3>Uses</h3><p>Uneltele, stack-ul și setup-ul cu care construiesc proiectele.</p><a href="uses.html">Vezi uneltele →</a></article>
         </div>
       </div>
     </section>
 
-    <div class="section-divider"></div>
+    
+    </section>
+
+    <section class="chapter" id="ch-jurnal" aria-labelledby="ch-jurnal-title">
+      <div class="container chapter-head">
+        <span class="chapter-num" aria-hidden="true">05</span>
+        <div>
+          <p class="chapter-kicker">Capitolul 05</p>
+          <h2 class="chapter-title" id="ch-jurnal-title">Jurnal</h2>
+          <p class="chapter-lede">Ce construiesc acum, ce am terminat și lecțiile notate pe drum.</p>
+        </div>
+      </div>
+
     <section id="now" aria-labelledby="now-title">
       <div class="container">
         <article class="about-card glass">
           <div class="now-head">
             <div>
-              <span class="eyebrow eyebrow-green">&#x26A1; Now</span>
+              <span class="eyebrow eyebrow-green">Now</span>
               <h2 id="now-title" class="now-title">La ce lucrez acum</h2>
             </div>
             <p class="now-badge">Actualizat: <time id="now-datetime" datetime="2026-10-11">11 Octombrie 2026</time></p>
@@ -957,7 +989,68 @@
       </div>
     </section>
 
-    <div class="section-divider"></div>
+    
+
+    <section id="insights" aria-labelledby="insights-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Insights</span>
+            <h2 id="insights-title">Decizii &#x219;i lec&#x21B;ii din construirea unui CRM SaaS</h2>
+            <p class="section-subtitle">C&acirc;teva insight-uri despre produs, arhitectur&#x103; &#x219;i UX.</p>
+          </div>
+        </div>
+        <div class="insights-grid">
+          <article class="project-card glass" aria-labelledby="insight-1-title">
+            <span class="tag">Lessons</span>
+            <h3 id="insight-1-title">3 lec&#x21B;ii din construirea unui SaaS CRM de la zero</h3>
+            <p class="project-desc">Un CRM este un sistem de decizii, nu doar o interfa&#x21B;&#x103; cu lead-uri &#x219;i task-uri.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="insights/saas-crm-lectii.html">Cite&#x219;te insight-ul</a></div>
+          </article>
+          <article class="project-card glass" aria-labelledby="insight-2-title">
+            <span class="tag">Architecture</span>
+            <h3 id="insight-2-title">De ce am trecut de la single-file HTML la Vite + React</h3>
+            <p class="project-desc">Vite + React mi-au permis s&#x103; separ layout-ul, cardurile &#x219;i fluxurile &icirc;n componente reutilizabile.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="insights/single-file-la-vite-react.html">Cite&#x219;te insight-ul</a></div>
+          </article>
+          <article class="project-card glass" aria-labelledby="insight-3-title">
+            <span class="tag">UX decisions</span>
+            <h3 id="insight-3-title">Flow builder vs Kanban</h3>
+            <p class="project-desc">Kanban-ul organizeaz&#x103; munca, iar Flow builder-ul organizeaz&#x103; deciziile.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="insights/flow-builder-vs-kanban.html">Cite&#x219;te insight-ul</a></div>
+          </article>
+          <article class="project-card glass" aria-labelledby="insight-4-title">
+            <span class="tag">Subiecte viitoare</span>
+            <h3 id="insight-4-title">Ce a&#x219; documenta mai departe</h3>
+            <p class="project-desc">Deciziile din spatele automatiz&#x103;rilor &#x219;i claritatea pe m&#x103;sur&#x103; ce cresc datele &#x219;i regulile.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="insights/ce-as-documenta.html">Cite&#x219;te insight-ul</a></div>
+          </article>
+          <article class="project-card glass">
+            <span class="tag">Case study</span>
+            <h3>Excel-Quest &mdash; de la landing static la produs cu progres salvat</h3>
+            <p class="project-desc">Am transformat Excel-Quest dintr-un landing simplu &icirc;ntr-un produs orientat pe reluare.</p>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="projects/excel-quest.html" aria-label="Deschide case study Excel-Quest">Deschide case study</a>
+              <a class="btn btn-secondary" href="https://laurandreea10.github.io/Excel-Quest/excel-quest-hub.html" target="_blank" rel="noopener noreferrer">Vezi hub-ul</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    
+    </section>
+
+    <section class="chapter" id="ch-despre" aria-labelledby="ch-despre-title">
+      <div class="container chapter-head">
+        <span class="chapter-num" aria-hidden="true">06</span>
+        <div>
+          <p class="chapter-kicker">Capitolul 06</p>
+          <h2 class="chapter-title" id="ch-despre-title">Despre &amp; contact</h2>
+          <p class="chapter-lede">Povestea din spatele proiectelor și cum mă găsești.</p>
+        </div>
+      </div>
+
     <section id="about" aria-labelledby="about-title">
       <div class="container about-contact">
         <article class="about-card glass">
@@ -982,7 +1075,8 @@
       </div>
     </section>
 
-    <div class="section-divider"></div>
+    
+
     <section class="final-cta-section" aria-labelledby="final-cta-title">
       <div class="container">
         <div class="final-cta-card glass">
@@ -998,7 +1092,8 @@
       </div>
     </section>
 
-    <div class="section-divider"></div>
+    
+
     <section class="container" id="curious-garden-opinions" hidden data-hide-when-empty aria-labelledby="garden-opinions-title" data-approved-feedback="curious-garden/approved-feedback.json" style="padding:3rem 0">
       <div class="glass" style="border-radius:24px;padding:clamp(1rem,3vw,2rem)">
         <span class="eyebrow">Grădina Curioasă · Feedback</span>
@@ -1007,6 +1102,8 @@
         <div data-feedback-list class="garden-feedback-list" aria-live="polite"></div>
         <a class="btn btn-secondary" href="curious-garden/feedback.html" style="margin-top:1rem">Scrie-ți părerea</a>
       </div>
+    </section>
+  
     </section>
   </main>
 
@@ -1027,6 +1124,7 @@
   <script src="portfolio-config.js?v=20261009-growth-quest" defer></script>
   <script src="main.js?v=20261013-perf" defer></script>
   <script src="portfolio-upgrades.js?v=20261011b" defer></script>
+  <script src="portfolio-chapters.js?v=20261014" defer></script>
 
 </body>
 </html>

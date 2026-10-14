@@ -24,7 +24,7 @@ for (const [file, html, configPath] of [
   ["portfolio.html", ro, "portfolio-config.js"],
   ["en/index.html", en, "../portfolio-config.js"]
 ]) {
-  if (!html.includes(`src="${configPath}"`) && !html.includes(`src='${configPath}'`)) {
+  if (!html.includes(`src="${configPath}"`) && !html.includes(`src='${configPath}'`) && !html.includes(`src="${configPath}?`)) {
     failures.push(`${file}: shared portfolio config is not loaded`);
   }
   const canonicalMetric = new RegExp(`\\b${canonicalCount}\\b`);
