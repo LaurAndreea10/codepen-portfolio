@@ -169,6 +169,15 @@
     if (!tabs.length) return;
     const ids = tabs.map(t => t.dataset.collection).filter(id => id !== 'all');
 
+    // Counts on the tabs follow the real cards, so they never go stale.
+    const countIn = id => document.querySelectorAll(`#${id} .project-collection .project-card`).length;
+    tabs.forEach(t => {
+      const n = t.querySelector('.collection-tab-n');
+      if (!n) return;
+      const total = t.dataset.collection === 'all' ? ids.reduce((s, id) => s + countIn(id), 0) : countIn(t.dataset.collection);
+      if (total) n.textContent = `· ${total}`;
+    });
+
     function select(tab, focus) {
       const target = tab.dataset.collection;
       tabs.forEach(t => {
@@ -211,8 +220,16 @@
      Colecții chapter: place it right under the tabs. */
   function placeDiscoveryTool() {
     const tool = document.getElementById('portfolio-tools');
-    const tabs = document.querySelector('#ch-colectii .collection-tabs');
-    if (tool && tabs && tool.previousElementSibling !== tabs) tabs.insertAdjacentElement('afterend', tool);
+    const head = document.querySelector('#ch-colectii .bento-chapter-head') || document.querySelector('#ch-colectii .collection-tabs');
+    if (!tool || !head) return;
+    let slot = document.getElementById('collections-tools-slot');
+    if (!slot) {
+      slot = document.createElement('div');
+      slot.id = 'collections-tools-slot';
+      slot.className = 'container';
+      head.insertAdjacentElement('afterend', slot);
+    }
+    if (tool.parentElement !== slot) slot.appendChild(tool);
   }
 
   function init() {
