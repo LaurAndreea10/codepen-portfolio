@@ -1,4 +1,4 @@
-# Puck & Pool Arena — v1.0.0
+# Puck & Pool Arena — v1.1.0
 
 Air Hockey × Billiards. Browser-only arcade game, built as a standalone HTML/CSS/JavaScript experience.
 
@@ -17,12 +17,21 @@ Air Hockey × Billiards. Browser-only arcade game, built as a standalone HTML/CS
 - Responsive canvas and pointer controls for mobile.
 
 ## Technical notes
-This is a local single-player v1, not yet a full AI opponent, multi-player experience or 3D game. Future iterations can add new arenas, progressive levels, optional sounds, AI, tutorials and tests.
+Version 1.1 adds a turn-based local AI in championship mode and 2.5D canvas perspective (not real WebGL 3D). No network multiplayer. The AI chooses a ball target and applies difficulty-based aiming error. Browser-only, zero dependencies.
+
+## Campaign / Campanie
+- 12 progressive levels with target scores and shot limits. Unlocks and medals stored locally.
+- 3 championship leagues with alternating player and AI shots over up to 3 rounds. Rookie, Challenger and Champion difficulty.
+- Neon City, Ocean Depths and Cosmic Orbit arena palettes with optional 2.5D table edge, drop shadows and depth effects. High contrast remains flat for readability.
+- LocalStorage campaign key `puckPoolCampaignV1` is separate from the original `puckPoolBest` and `puckPoolPrefs` keys.
 
 ## History
+- **2026-10-14 · 1.1.0:** Progressive levels, AI challenger, three championship leagues, three 2.5D arena styles, local campaign persistence; original v1.0.0 retained.
 - **2026-10-13 · 1.0.0:** First playable fusion engine, bilingual UI and accessibility options.
 
 ## Manual QA
+- [ ] Smoke-test levels 1–12, target/shot limits, next-level button and refresh persistence.
+- [ ] Smoke-test three AI difficulties, championship round transitions, league unlocks and arena changes.
 - [ ] Test on Android touchscreen (aim, shoot, orientation changes).
 - [ ] Test with keyboard only and a screen reader.
 - [ ] Verify RO/EN, theme and contrast persistence.
