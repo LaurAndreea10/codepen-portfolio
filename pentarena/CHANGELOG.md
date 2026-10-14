@@ -1,5 +1,21 @@
 # PentArena — Changelog
 
+## 2.4.0 — 2026-10-13
+
+**RO.** Probă bonus nouă, **Carambol**: fuziune între air hockey și biliard. Crose pe jumătăți ca la hochei, o masă cu șase buzunare, șase bile colorate (trei ale tale, trei ale adversarului) și un puc care valorează triplu.
+
+- Punctezi trimițând bile în colțurile adversarului: bila ta 2, a lui 1, pucul 3. Punctul e al celui care a trimis bila (ultima atingere de crosă, transmisă prin ricoșeuri între bile).
+- Carambolaj: o bilă care intră lovită de altă bilă primește +1. Buzunarele din mijloc primesc doar carambolaje; orice altă bilă căzută acolo sau în propriul colț revine pe centru, fără punct.
+- Modificator: bilă de aur ×2. Masă nouă când se golește sau după 22 s fără buzunar. Reluare pentru puc și carambolaje.
+- AI: prezice ricoșeurile din mantinelă, se așază între bilă și colțul amenințat, degajează bilele lipite de mantinela din spate și se retrage încet ca să nu-și dea autogoluri.
+- Integrare: card lat în meniu, antrenament ghidat (fă un carambolaj), statistici, ajutor, salvare/reluare partidă, backup, realizarea „Carambolist” (3 carambolaje într-un meci). Pe telefon vertical masa se rotește.
+- Pentatlonul rămâne cu cinci probe: turneul, cariera, provocarea zilnică, cea săptămânală și realizarea „Pentatlonist” nu includ Carambolul. Cache offline 2.4.0-r1.
+
+**EN.** New bonus event, **Carom Hockey**: a fusion of air hockey and pool. Mallets on halves like hockey, a six-pocket table, six coloured balls (three yours, three your rival’s) and a puck worth triple. You score by sending balls into the opponent’s corners: your colour 2, theirs 1, the puck 3, and a point belongs to whoever sent the ball. A ball sunk by another ball is a carom (+1); middle pockets accept caroms only and anything else dropped there or into your own corner is respotted. Golden-ball modifier ×2, fresh rack when the table empties or after 22 s without a pocket, replays for pucks and caroms. The AI predicts rail bounces, guards the threatened corner, digs balls off its back rail and retreats slowly to avoid own goals. Wide menu card, guided training, stats, help, checkpoints, backup and a new “Carom artist” achievement; portrait phones rotate the table. The pentathlon stays five events: tournament, career, daily and weekly challenges and Pentathlete exclude the bonus event. Offline cache 2.4.0-r1.
+
+Verificare / Verification: new core checks for finishing on every difficulty, AI beating an idle player, every scoring rule, respots, carom ownership, gold, training, checkpoint validation, achievement and the five-event pentathlon; browser regression now covers six cards and runs and restores Carom at 360, 390, 844 and 1440 px with axe. Feel on real phones still unverified.
+
+
 ## 2.3.0 — 2026-10-05
 
 **RO.** Continuarea partidei cu scor și pozițiile mingilor restaurate pe pauză; antrenament ghidat cu obiective detectate din joc; provocare săptămânală cu recompensă unică; AI echilibrat, defensiv și ofensiv; indicii de putere, posesie și timing; butoane tactile ajustabile, efecte vizuale și volum al efectelor configurabile.

@@ -1,8 +1,8 @@
 'use strict';
-/* PentArena v2.3.0 — five arcade sports on one canvas. No libraries.
-   Sections: core · i18n · audio · fx · input · sports (basket, football, hockey, volley, pool) · progression · UI. */
+/* PentArena v2.4.0 — five arcade sports plus a bonus fusion event on one canvas. No libraries.
+   Sections: core · i18n · audio · fx · input · sports (basket, football, hockey, volley, pool, carom) · progression · UI. */
 (function(root){
-const VERSION='2.3.0';
+const VERSION='2.4.0';
 const W=960,H=600,TAU=Math.PI*2;
 const clamp=(v,a,b)=>v<a?a:v>b?b:v,rand=(a,b)=>a+Math.random()*(b-a),hyp=Math.hypot;
 function gauss(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(TAU*v);}
@@ -10,6 +10,8 @@ const HAS_DOM=typeof document!=='undefined'&&typeof document.getElementById==='f
 const now=()=>(typeof performance!=='undefined'?performance.now():Date.now());
 const C={cyan:'#3fd0e0',amber:'#f5b041',coral:'#ff7a6b',ink:'#e7eef7',navy:'#0a1322',good:'#5fe08a',mute:'#9db0c8',lime:'#a3e635',violet:'#a78bfa',ice:'#e0f2fe'};
 const SPORT_KEYS=['basket','football','hockey','volley','billiards'];
+/* the pentathlon stays five events; Carom is a bonus event (quick play, training, stats) */
+const BONUS_KEYS=['carom'],ALL_KEYS=[...SPORT_KEYS,...BONUS_KEYS];
 const DIFFS={easy:{D:.75,A:.6},normal:{D:1,A:1},hard:{D:1.3,A:1.45}};
 const LEAGUES=[
   {id:'bronze',D:.8,A:.65,len:0,mods:false,reward:250,xp:300,col:'#d9935a',rival:'Radu'},
@@ -17,17 +19,17 @@ const LEAGUES=[
   {id:'gold',D:1.3,A:1.5,len:1,mods:true,reward:700,xp:800,col:'#f5c542',rival:'Kairos'}];
 const SKINS=[{id:'cyan',col:'#3fd0e0',price:0},{id:'coral',col:'#ff7a6b',price:150},{id:'lime',col:'#a3e635',price:220},{id:'violet',col:'#a78bfa',price:300},{id:'ice',col:'#e0f2fe',price:400},{id:'prism',col:null,price:700}];
 const TRAILS=[{id:'none',price:0},{id:'comet',price:200},{id:'spark',price:350}];
-const ACHS=['first','swish','shut','hard','penta','champ','clean','mara','spike','power','golden','duo','run','daily3','league','legend'];
+const ACHS=['first','swish','shut','hard','penta','champ','clean','mara','spike','power','golden','duo','run','daily3','league','legend','carom'];
 /* match config: D = AI speed, A = AI accuracy, mods = modifiers, len 0..2, two = local 2-player */
 let M={D:1,A:1,mods:true,len:1,two:false,rival:null};
 /* portrait phones: top-down sports are drawn rotated 90° (your goal at the bottom); text stays upright */
-const ROTATABLE=new Set(['football','hockey','billiards']);let ROT=false;
+const ROTATABLE=new Set(['football','hockey','billiards','carom']);let ROT=false;
 function upText(c,x,y,fn){if(!ROT){fn(x,y);return;}c.save();c.translate(x,y);c.rotate(Math.PI/2);fn(0,0);c.restore();}
 
 /* ================= i18n ================= */
 const I18N={
 ro:{skip:'Sari la conținut',heroA:'Cinci probe.',heroB:'Un singur campion.',heroSub:'Baschet, fotbal, air hockey, volei și biliard împotriva unui AI sau a unui prieten pe același dispozitiv. Urcă prin trei ligi, deblochează echipament și întoarce-te zilnic pentru o provocare nouă.',
-tag1:'5 sporturi',tag2:'Carieră în 3 ligi',tag3:'1–2 jucători',tag4:'Offline · RO/EN',
+tag1:'5 sporturi + bonus',tag2:'Carieră în 3 ligi',tag3:'1–2 jucători',tag4:'Offline · RO/EN',
 level:'Nivel',xpOf:(a,b)=>`${a} / ${b} XP`,coinsN:n=>`${n} monede`,diff:'Dificultate',easy:'Ușor',normal:'Normal',hard:'Greu',players:'Jucători',pl1:'1 jucător',pl2:'2 jucători',
 startTour:'Start turneu Pentatlon',tourLen:'5 probe',wins:'Victorii',tours:'Turnee',achs:'Realizări',
 daily:'Provocarea zilei',dailyAccept:'Acceptă',dailyDone:'Completată azi. Revino mâine pentru una nouă.',dailyReward:'Recompensă: 120 monede și 150 XP',
@@ -66,7 +68,7 @@ a_penta:'Pentatlonist',ad_penta:'Câștigă măcar o dată la fiecare sport',a_c
 a_spike:'Ciocanul',ad_spike:'Fă 4 spike-uri într-un meci de volei',a_power:'Colecționar',ad_power:'Ia 3 bonusuri într-un meci de air hockey',a_golden:'Aur curat',ad_golden:'Câștigă cu gol de aur',a_duo:'În doi',ad_duo:'Joacă un meci în modul 2 jucători',
 a_run:'Serie',ad_run:'Bagă 4 bile într-o singură tură',a_daily3:'Fidel',ad_daily3:'Completează 3 provocări zilnice',a_league:'Promovat',ad_league:'Câștigă o ligă',a_legend:'Legendă',ad_legend:'Câștigă Liga de Aur'},
 en:{skip:'Skip to content',heroA:'Five events.',heroB:'One champion.',heroSub:'Basketball, football, air hockey, volleyball and pool against an AI or a friend on the same device. Climb three leagues, unlock gear and come back daily for a new challenge.',
-tag1:'5 sports',tag2:'3-league career',tag3:'1–2 players',tag4:'Offline · RO/EN',
+tag1:'5 sports + bonus',tag2:'3-league career',tag3:'1–2 players',tag4:'Offline · RO/EN',
 level:'Level',xpOf:(a,b)=>`${a} / ${b} XP`,coinsN:n=>`${n} coins`,diff:'Difficulty',easy:'Easy',normal:'Normal',hard:'Hard',players:'Players',pl1:'1 player',pl2:'2 players',
 startTour:'Start Pentathlon tournament',tourLen:'5 events',wins:'Wins',tours:'Tournaments',achs:'Achievements',
 daily:'Daily challenge',dailyAccept:'Accept',dailyDone:'Completed today. Come back tomorrow for a new one.',dailyReward:'Reward: 120 coins and 150 XP',
@@ -109,6 +111,14 @@ Object.assign(I18N.en,{fullscreen:'Fullscreen',leaveFull:'Exit fullscreen',fullU
 
 Object.assign(I18N.ro,{resumeMatch:'Continuă partida salvată',discardMatch:'Șterge partida salvată',discardAsk:'Ștergi partida salvată? Progresul și recompensele rămân.',savedMatch:'Partida este salvată automat. Reluarea pornește pe pauză.',guided:'Antrenament ghidat',trainingDone:'Exercițiu reușit!',train_basket:'Înscrie primul coș. Ajustează unghiul, apoi ține Space sau trage înapoi și eliberează.',train_football:'Execută un șut încărcat. Apropie-te de minge și ține butonul de șut până la cel puțin 70%.',train_hockey:'Lovește pucul astfel încât să ricoșeze din marginea de sus sau de jos.',train_volley:'Execută un spike: sari și lovește mingea în aer aproape de fileu.',train_billiards:'Introdu o bilă din grupa ta. Țintește pe linia de ghidare și reglează puterea.',weekly:'Provocarea săptămânii',weeklyHelp:'Câștigă un meci contra AI la fiecare sport. Antrenamentul și jocul în doi nu se contorizează.',claimWeekly:'Ridică recompensa',weeklyReward:'200 XP + 200 monede + urma Scântei. O singură recompensă pe săptămână.',weeklyClaimed:'Recompensă ridicată pentru această săptămână.',aiStyle:'Stil AI · meci rapid și turneu',balanced:'Echilibrat',defensive:'Defensiv',offensive:'Ofensiv',style_balanced:'Echilibrat: alternează atacul și apărarea.',style_defensive:'Defensiv: stă mai aproape de poartă, preferă precizia și loviturile controlate.',style_offensive:'Ofensiv: urmărește mingea mai devreme și caută lovituri mai puternice.',difficultyHelp:'Ușor: viteză și precizie reduse. Normal: echilibrat. Greu: reacții rapide și țintire precisă.',touchSize:'Mărimea butoanelor tactile',touchSide:'Poziția butoanelor tactile',right:'Dreapta',left:'Stânga',effects:'Efecte vizuale (particule, tremurat, urme)',fxVolume:'Volumul efectelor sonore',feedback:'Indicii vizuale în joc',powerLabel:'Putere',possession:'Posesie',readyAction:'Poți acționa',waitAction:'Așteaptă momentul potrivit',ballMoving:'Mingea se mișcă',aimNow:'Țintește și reglează puterea',jumpNow:'Moment bun pentru săritură',closeBall:'Apropie-te de minge'});
 Object.assign(I18N.en,{resumeMatch:'Resume saved match',discardMatch:'Discard saved match',discardAsk:'Discard the saved match? Progress and rewards stay.',savedMatch:'The match is saved automatically. Resume starts paused.',guided:'Guided practice',trainingDone:'Exercise completed!',train_basket:'Make your first basket. Adjust the angle, then hold Space or pull back and release.',train_football:'Make a charged shot. Approach the ball and hold shoot until at least 70%.',train_hockey:'Hit the puck so it rebounds off the top or bottom rail.',train_volley:'Make a spike: jump and hit the ball in the air close to the net.',train_billiards:'Pot one of your own balls. Follow the aiming guide and adjust power.',weekly:'Weekly challenge',weeklyHelp:'Win one match against the AI in every sport. Practice and two-player games do not count.',claimWeekly:'Claim reward',weeklyReward:'200 XP + 200 coins + Spark trail. Once per week.',weeklyClaimed:'Reward already claimed this week.',aiStyle:'AI style · quick match and tournament',balanced:'Balanced',defensive:'Defensive',offensive:'Offensive',style_balanced:'Balanced: switches between attack and defence.',style_defensive:'Defensive: stays closer to goal and favours precision and controlled shots.',style_offensive:'Offensive: pursues the ball sooner and favours stronger shots.',difficultyHelp:'Easy: lower speed and accuracy. Normal: balanced. Hard: fast reactions and precise aim.',touchSize:'Touch button size',touchSide:'Touch button position',right:'Right',left:'Left',effects:'Visual effects (particles, shake, trails)',fxVolume:'Sound effects volume',feedback:'Visual gameplay hints',powerLabel:'Power',possession:'Possession',readyAction:'Ready for action',waitAction:'Wait for the right moment',ballMoving:'Ball is moving',aimNow:'Aim and adjust power',jumpNow:'Good time to jump',closeBall:'Get closer to the ball'});
+Object.assign(I18N.ro,{carom:'Carambol',bonusEvent:'Probă bonus · fuziune',d_carom:'Air hockey pe masă de biliard: crose, șase bile colorate și un puc care valorează triplu.',n_carom:'Carambolaj +1, puc ×3, bilă de aur ×2',
+c_carom:'Mouse sau deget mută crosa · tastatură: WASD/săgeți',goal_carom:'Trimite bilele în buzunarele din colțurile adversarului: bila ta valorează 2, a lui 1, pucul 3. Punctul e al celui care a trimis bila; în buzunarele din mijloc intră doar carambolaje, iar orice altceva revine pe centru. Primul la scorul țintă câștigă.',
+tip_carom:'Lovește o bilă în alta: dacă intră din ricoșeu e carambolaj (+1). O atingere de crosă face bila a ta, așa că apără-ți colțurile atingând bilele care vin spre ele.',train_carom:'Fă un carambolaj: lovește o bilă în cealaltă ca să intre în buzunar.',
+caromHit:'CARAMBOL!',caromOnly:'Doar carambol',noScore:'Fără punct',rerack:'Masă nouă',goldBall:'Bilă de aur ×2',ballsLeft:'Bile',st_pocketed:'Bile băgate',st_caroms:'Carambolaje',st_puck:'Pucuri ×3',a_carom:'Carambolist',ad_carom:'Fă 3 carambolaje într-un meci de Carambol'});
+Object.assign(I18N.en,{carom:'Carom Hockey',bonusEvent:'Bonus event · fusion',d_carom:'Air hockey on a pool table: mallets, six coloured balls and a puck worth triple.',n_carom:'Carom +1, puck ×3, golden ball ×2',
+c_carom:'Mouse or finger moves the mallet · keyboard: WASD/arrows',goal_carom:'Send balls into the opponent’s corner pockets: your colour is worth 2, theirs 1, the puck 3. A point belongs to whoever sent the ball; middle pockets only take caroms and anything else returns to the centre. First to the target score wins.',
+tip_carom:'Knock one ball into another: if it drops off the rebound it is a carom (+1). One mallet touch makes a ball yours, so guard your corners by touching the balls heading for them.',train_carom:'Make a carom: hit one ball into the other so it drops into a pocket.',
+caromHit:'CAROM!',caromOnly:'Caroms only',noScore:'No score',rerack:'Fresh rack',goldBall:'Golden ball ×2',ballsLeft:'Balls',st_pocketed:'Balls sunk',st_caroms:'Caroms',st_puck:'Pucks ×3',a_carom:'Carom artist',ad_carom:'Make 3 caroms in one Carom Hockey match'});
 
 let LANG='ro';
 function tr(k,...a){const d=I18N[LANG];let v=d&&d[k]!=null?d[k]:(I18N.en[k]!=null?I18N.en[k]:k);return typeof v==='function'?v(...a):v;}
@@ -129,7 +139,7 @@ function validateStore(o){
   const out=freshStore();
   for(const k of ['xp','coins','tours']){if(!isNum(p[k]))throw new Error(k);out[k]=Math.floor(p[k]);}
   const strArr=(v,k,allowed)=>{if(!Array.isArray(v)||v.some(x=>typeof x!=='string'||(allowed&&!allowed.includes(x))))throw new Error(k);return [...new Set(v)];};
-  out.ach=strArr(p.ach,'ach',ACHS);out.won=strArr(p.won,'won',SPORT_KEYS);
+  out.ach=strArr(p.ach,'ach',ACHS);out.won=strArr(p.won,'won',ALL_KEYS);
   out.skins=strArr(p.skins,'skins',SKINS.map(s=>s.id));if(!out.skins.includes('cyan'))out.skins.unshift('cyan');
   out.trails=strArr(p.trails,'trails',TRAILS.map(s=>s.id));if(!out.trails.includes('none'))out.trails.unshift('none');
   if(!out.skins.includes(p.skin))throw new Error('skin');out.skin=p.skin;if(!out.trails.includes(p.trail))throw new Error('trail');out.trail=p.trail;
@@ -137,7 +147,7 @@ function validateStore(o){
   for(const L of LEAGUES){const v=p.leagues[L.id];if(!['open','locked','won'].includes(v))throw new Error('leagues');out.leagues[L.id]=v;}
   if(!isRecord(p.ex))throw new Error('ex');for(const k of Object.keys(out.ex)){if(p.ex[k]!==undefined&&!isNum(p.ex[k]))throw new Error('ex');out.ex[k]=Math.floor(p.ex[k]||0);}
   if(!isRecord(p.stats))throw new Error('stats');
-  for(const [k,s] of Object.entries(p.stats)){if(!SPORT_KEYS.includes(k)||!isRecord(s))throw new Error('stats');const c={};for(const f of ['p','w','l','d','f','a','streak','best']){if(!isNum(s[f]===undefined?0:s[f]))throw new Error('stats');c[f]=Math.floor(s[f]||0);}out.stats[k]=c;}
+  for(const [k,s] of Object.entries(p.stats)){if(!ALL_KEYS.includes(k)||!isRecord(s))throw new Error('stats');const c={};for(const f of ['p','w','l','d','f','a','streak','best']){if(!isNum(s[f]===undefined?0:s[f]))throw new Error('stats');c[f]=Math.floor(s[f]||0);}out.stats[k]=c;}
   if(!isRecord(p.dailyDone))throw new Error('dailyDone');
   for(const [k,v] of Object.entries(p.dailyDone)){if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||v!==true)throw new Error('dailyDone');const d=new Date(k+'T12:00:00');if(isNaN(d)||todayKey(d)!==k)throw new Error('dailyDone');out.dailyDone[k]=true;}
   const pr=p.prefs;if(!isRecord(pr))throw new Error('prefs');
@@ -151,7 +161,7 @@ function validateStore(o){
   for(const [k,allowed] of [['aiStyle',['balanced','defensive','offensive']],['touchSide',['left','right']]]){if(pr[k]!==undefined&&!allowed.includes(pr[k]))throw new Error(k);out.prefs[k]=pr[k]===undefined?out.prefs[k]:pr[k];}
   for(const [k,min,max] of [['touchSize',80,140],['fxVol',0,100]]){if(pr[k]!==undefined&&(!isNum(pr[k])||pr[k]<min||pr[k]>max))throw new Error(k);out.prefs[k]=pr[k]===undefined?out.prefs[k]:pr[k];}
   for(const k of ['effects','feedback']){if(pr[k]!==undefined&&typeof pr[k]!=='boolean')throw new Error(k);out.prefs[k]=pr[k]===undefined?out.prefs[k]:pr[k];}
-  if(p.trainingDone!==undefined)out.trainingDone=strArr(p.trainingDone,'trainingDone',SPORT_KEYS);
+  if(p.trainingDone!==undefined)out.trainingDone=strArr(p.trainingDone,'trainingDone',ALL_KEYS);
   if(p.weekly!==undefined){const w=p.weekly;if(!isRecord(w)||typeof w.key!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(w.key)||weekKey(new Date(w.key+'T12:00:00'))!==w.key||typeof w.claimed!=='boolean')throw new Error('weekly');const wins=strArr(w.wins,'weekly.wins',SPORT_KEYS);if(w.claimed&&wins.length!==5)throw new Error('weekly.claimed');out.weekly={key:w.key,wins,claimed:w.claimed};}
   return out;}
 function exportStore(){return JSON.stringify({app:'pentarena',version:VERSION,exported:new Date().toISOString(),progress:ST},null,2);}
@@ -184,13 +194,13 @@ function finishMatch(run,s){const o=outcome(s),k=s.key,res={o,xp:0,coins:0,ach:[
     if(o>0){st.w++;st.streak++;st.best=Math.max(st.best,st.streak);}else{st.streak=0;if(o<0)st.l++;else st.d++;}
     const mult=(M.D>=1.29?1.5:1)*(run.mode==='career'?1.2:1);res.xp=Math.round((o>0?120:o<0?35:60)*mult+s.score[0]*4);res.coins=Math.round((o>0?40:o<0?8:15)*mult);
     if(o>0){unlock('first',res.ach);if(!ST.won.includes(k))ST.won.push(k);if(M.D>=1.29)unlock('hard',res.ach);if((k==='football'||k==='hockey')&&s.score[1]===0)unlock('shut',res.ach);
-      if(k==='billiards'&&s.score[1]===0)unlock('clean',res.ach);if(ST.won.length>=5)unlock('penta',res.ach);if(k==='football'&&s.goldenWin){ST.ex.golden++;unlock('golden',res.ach);}}
+      if(k==='billiards'&&s.score[1]===0)unlock('clean',res.ach);if(SPORT_KEYS.every(x=>ST.won.includes(x)))unlock('penta',res.ach);if(k==='football'&&s.goldenWin){ST.ex.golden++;unlock('golden',res.ach);}}
     if(run.mode==='daily'){const ok=dailyMet(run.daily,s,o);res.daily=ok;if(ok&&!ST.dailyDone[run.daily.key]){ST.dailyDone[run.daily.key]=true;ST.ex.daily++;res.xp+=150;res.coins+=120;if(ST.ex.daily>=3)unlock('daily3',res.ach);}}}
   const ex=s.stats||{};if(ex.sw)ST.ex.swish+=ex.sw[0];if(ex.spikes)ST.ex.spike+=ex.spikes[0];if(ex.power)ST.ex.power+=ex.power[0];if(ex.potted)ST.ex.potted+=ex.potted[0];
-  if(ex.spikes&&ex.spikes[0]>=4)unlock('spike',res.ach);if(ex.power&&ex.power[0]>=3)unlock('power',res.ach);if(ex.run&&ex.run[0]>=4)unlock('run',res.ach);if(ex.sw&&ex.sw[0]>0)unlock('swish',res.ach);
+  if(ex.spikes&&ex.spikes[0]>=4)unlock('spike',res.ach);if(ex.power&&ex.power[0]>=3)unlock('power',res.ach);if(ex.run&&ex.run[0]>=4)unlock('run',res.ach);if(ex.sw&&ex.sw[0]>0)unlock('swish',res.ach);if(ex.caroms&&ex.caroms[0]>=3)unlock('carom',res.ach);
   const played=Object.values(ST.stats).reduce((a,b)=>a+b.p,0)+ST.ex.duo;if(played>=25)unlock('mara',res.ach);
   if(run.mode==='tour'||run.mode==='career'){run.res.push({key:k,o,score:s.score.slice()});res.runDone=run.res.length>=SPORT_KEYS.length;}
-  if(!M.two&&o>0){const w=weeklyState();if(!w.wins.includes(k))w.wins.push(k);}
+  if(!M.two&&o>0&&SPORT_KEYS.includes(k)){const w=weeklyState();if(!w.wins.includes(k))w.wins.push(k);}
   ST.xp+=res.xp;ST.coins+=res.coins;const lv1=levelOf(ST.xp);if(lv1>lv0)res.level=lv1;save();return res;}
 function runPoints(run){let p=0,a=0;for(const r of run.res){if(r.o>0)p+=3;else if(r.o<0)a+=3;else{p++;a++;}}return[p,a];}
 function finishRun(run){const [p,a]=runPoints(run),out={p,a,champ:p>a,ach:[],xp:0,coins:0,unlocked:null};
@@ -722,16 +732,133 @@ class Pool{
   matchStats(){return[[tr('st_potted'),this.stats.potted[0],this.stats.potted[1]],[tr('st_run'),this.stats.run[0],this.stats.run[1]],[tr('st_fouls'),this.stats.fouls[0],this.stats.fouls[1]]];}
 }
 
-const SPORTS={basket:Basket,football:Football,hockey:AirHockey,volley:Volley,billiards:Pool};
+/* ================= 6. CAROM HOCKEY (bonus fusion: air hockey × pool) =================
+   Mallets on halves like air hockey, a table with six pockets like pool.
+   A ball only scores for whoever sent it (last mallet touch, passed on through caroms): in the rival's corner pockets,
+   or in a middle pocket via a carom. Any other drop (own corner, straight into the middle) is respotted on the centre.
+   Value: the scorer's own colour 2, the rival colour 1, the puck 3; a carom by the scorer (ball sunk by another ball) +1;
+   a golden ball (modifier) doubles it. */
+const CH={x0:60,x1:900,y0:60,y1:540,mid:480,cy:300};
+const CPK=[[CH.x0,CH.y0,1],[CH.x1,CH.y0,1],[CH.x0,CH.y1,1],[CH.x1,CH.y1,1],[CH.mid,CH.y0-6,0],[CH.mid,CH.y1+6,0]].map(([x,y,c])=>({x,y,corner:!!c,cr:c?27:25}));
+class Carom{
+  constructor(){this.key='carom';this.score=[0,0];this.target=[6,9,12][M.len];this.over=false;this.acts=[];this.winner=null;
+    const mk=x=>({x,y:CH.cy,vx:0,vy:0,r:30,hc:0});this.m=[mk(150),mk(810)];this.aiT=0;this.aiTarget={x:810,y:CH.cy};
+    this.balls=[];for(let i=0;i<7;i++)this.balls.push({id:i,o:i<3?0:i<6?1:-1,puck:i===6,x:0,y:0,vx:0,vy:0,r:i===6?15:14,in:false,by:-1,car:false});
+    this.gold=-1;this.goldT=6;this.idle=0;this.msg='';this.msgT=0;this.rounds=0;
+    this.stats={pocketed:[0,0],caroms:[0,0],top:0,puck:[0,0]};this.buf=[];this.replayFrames=null;this.rack();}
+  rack(){const R=48,ang=[180,130,230,0,50,310];this.balls.forEach((b,i)=>{b.in=false;b.vx=b.vy=0;b.by=-1;b.car=false;
+      if(b.puck){b.x=CH.mid;b.y=CH.cy;}else{const a=ang[i]*Math.PI/180;b.x=CH.mid+Math.cos(a)*R*(i%3?1:1.9);b.y=CH.cy+Math.sin(a)*R*(i%3?1.25:1);}});
+    this.gold=-1;this.goldT=rand(5,8);this.idle=0;this.pause=.8;this.rounds++;}
+  info(){const g=this.gold>=0?' · '+tr('goldBall'):'';return `${tr('firstTo')} ${this.target}${g}`;}
+  clock(){const left=this.balls.filter(b=>!b.in).length;return `${tr('ballsLeft')} ${left}/7`;}
+  snap(){const o=[this.m[0].x,this.m[0].y,this.m[1].x,this.m[1].y];for(const b of this.balls)o.push(b.x,b.y,b.in?1:0);return o;}
+  applySnap(s){[this.m[0].x,this.m[0].y,this.m[1].x,this.m[1].y]=s;this.balls.forEach((b,i)=>{b.x=s[4+i*3];b.y=s[5+i*3];b.in=!!s[6+i*3];});}
+  trailPt(){let best=null,bs=-1;for(const b of this.balls){if(b.in)continue;const sp=Math.hypot(b.vx,b.vy);if(sp>bs){bs=sp;best=b;}}return best?{x:best.x,y:best.y,r:best.r}:{x:CH.mid,y:CH.cy,r:0};}
+  move(m,tx,ty,max,dt){const dx=tx-m.x,dy=ty-m.y,d=Math.hypot(dx,dy),st=Math.min(d,max*dt),nx=d?m.x+dx/d*st:m.x,ny=d?m.y+dy/d*st:m.y;m.vx=(nx-m.x)/dt;m.vy=(ny-m.y)/dt;m.x=nx;m.y=ny;}
+  bounds(i){const r=this.m[i].r,g=this.pause>0&&this.rounds>0?110:0;/* mallets wait outside the rack until the round starts */return i===0?[CH.x0+r,CH.mid-r-g]:[CH.mid+r+g,CH.x1-r];}
+  humanMove(i,dt){const m=this.m[i],pp=ptr(i),c=ctl(i);let tx=m.x,ty=m.y;
+    if(pp&&(pp.down||(pp.type==='mouse'&&(i===0||!M.two)))){tx=pp.x;ty=pp.y;}
+    if(c.x||c.y){tx=m.x+c.x*30;ty=m.y+c.y*30;}
+    const[lo,hi]=this.bounds(i);this.move(m,clamp(tx,lo,hi),clamp(ty,CH.y0+m.r,CH.y1-m.r),1700,dt);}
+  /* value of a ball if it drops into pocket pk: [side that scores, points] */
+  worth(b,pk){if(!pk.corner&&!b.car)return[-1,0];const side=pk.corner?(pk.x<CH.mid?1:0):b.by;if(side<0||b.by!==side)return[-1,0];let v=b.puck?3:b.o===side?2:1;
+    if(b.car)v++;if(b.id===this.gold)v*=2;return[side,v];}
+  plan(){const a=this.m[1],live=this.balls.filter(b=>!b.in),off=M.style==='offensive'?60:M.style==='defensive'?-110:0;
+    /* defend: predict where each incoming ball meets the AI's back line (with rail bounces) */
+    const lo=CH.y0+14,hi=CH.y1-14,refl=y=>{const L=hi-lo;let q=((y-lo)%(2*L)+2*L)%(2*L);return lo+(q>L?2*L-q:q);};
+    let threat=null,tt=1e9;for(const b of live){if(b.vx<=110)continue;const ti=(CH.x1-60-b.x)/b.vx;if(ti<0||ti>1.8)continue;const py=refl(b.y+b.vy*ti);
+      if((py<CH.y0+175||py>CH.y1-175)&&ti<tt){tt=ti;const cy=py<CH.cy?CH.y0:CH.y1,dx=b.x-CH.x1,dy=b.y-cy,dl=Math.hypot(dx,dy)||1;
+        threat={x:clamp(CH.x1+dx/dl*62,CH.mid+a.r,CH.x1-a.r),y:clamp(cy+dy/dl*62,CH.y0+a.r,CH.y1-a.r)};}}
+    if(threat&&tt<(M.style==='defensive'?1.8:M.style==='offensive'?.9:1.25)*Math.min(1.2,M.A+.2)){this.aiTarget=threat;return;}
+    /* attack: best ball on the AI half towards the best pocket */
+    let best=null;for(const b of live){if(b.x<CH.mid-off+10)continue;
+      for(const pk of CPK){if(!pk.corner||pk.x>CH.mid)continue;const[side,v]=this.worth({...b,car:false,by:1},pk);if(side!==1)continue;
+        const gx=pk.x,gy=pk.y+gauss()*28/M.A,ux0=b.x-gx,uy0=b.y-gy,ul=Math.hypot(ux0,uy0)||1,ux=ux0/ul,uy=uy0/ul;if(ux<.15)continue;
+        const sx=b.x+ux*(a.r+b.r+4),sy=b.y+uy*(a.r+b.r+4);if(sx>CH.x1-a.r||sy<CH.y0+a.r||sy>CH.y1-a.r)continue;
+        const danger=Math.hypot(b.x-CH.x1,b.y-CH.y0)<170||Math.hypot(b.x-CH.x1,b.y-CH.y1)<170?90:0,sc=v*120+danger-Math.hypot(a.x-sx,a.y-sy)*.35-ul*.08-(pk.corner?0:40);if(!best||sc>best.sc)best={sc,b,ux,uy,sx,sy};}
+      /* dig out a ball stuck against the AI's back rail: push it along the rail, away from the nearest corner */
+      if(b.x>CH.x1-a.r-b.r-30&&Math.abs(b.y-CH.cy)<CH.cy-CH.y0-60){const dir=b.y<CH.cy?-1:1,sy=b.y+dir*(a.r+b.r+2),sx=Math.min(b.x+8,CH.x1-a.r);if(sy>CH.y0+a.r&&sy<CH.y1-a.r){const sc=200-Math.hypot(a.x-sx,a.y-sy)*.3;if(!best||sc>best.sc)best={sc,b,ux:(sx-b.x)/(a.r+b.r),uy:dir,sx,sy};}}}
+    if(best){const{b,ux,uy,sx,sy}=best,behind=(a.x-b.x)*ux+(a.y-b.y)*uy;
+      if(behind<0)this.aiTarget={x:b.x+ux*60,y:b.y+(a.y<b.y?-70:70)};
+      else if(Math.hypot(a.x-sx,a.y-sy)<40)this.aiTarget={x:b.x-ux*60,y:b.y-uy*60};
+      else this.aiTarget={x:sx,y:sy};return;}
+    /* home: between the two corners, shading towards the busiest ball */
+    const near=live.filter(b=>b.x>CH.mid-140);const ay=near.length?near.reduce((s,b)=>s+b.y,0)/near.length:CH.cy;
+    this.aiTarget={x:CH.x1-100,y:CH.cy+(ay-CH.cy)*.6};}
+  update(dt){if(this.over)return;const[p,a]=this.m;if(this.msgT>0)this.msgT-=dt;
+    for(const m of this.m)m.hc-=dt;
+    this.humanMove(0,dt);
+    if(M.two)this.humanMove(1,dt);else{this.aiT-=dt;if(this.aiT<=0){this.aiT=.09/M.D;this.plan();}const at=this.aiTarget,[lo,hi]=this.bounds(1),sp=560+380*M.D,back=at.x>a.x+4||a.x>CH.x1-130;this.move(a,clamp(at.x,lo,hi),clamp(at.y,CH.y0+a.r,CH.y1-a.r),back?sp*.5:sp,dt);}
+    if(this.pause>0){this.pause-=dt;return;}
+    this.buf.push(this.snap());if(this.buf.length>150)this.buf.shift();
+    if(M.mods){if(this.gold<0){this.goldT-=dt;if(this.goldT<=0){const c=this.balls.filter(b=>!b.in&&!b.puck);if(c.length){this.gold=c[Math.floor(Math.random()*c.length)].id;this.goldT=8;announce(tr('goldBall'));}else this.goldT=3;}}
+      else{this.goldT-=dt;if(this.goldT<=0||this.balls[this.gold].in){this.gold=-1;this.goldT=rand(7,11);}}}
+    const n=6,h=dt/n,live=this.balls.filter(b=>!b.in);
+    for(let s=0;s<n;s++){
+      for(const b of live){if(b.in)continue;b.x+=b.vx*h;b.y+=b.vy*h;
+        for(let i=0;i<2;i++){const m=this.m[i],imp=collide(b,m,.92,m);if(imp>1){b.by=i;b.car=false;SFX.hit(Math.min(1,imp/1000));if(imp>650){burst(b.x,b.y,colP(i),6,180);shake(2);}}}
+        for(const pk of CPK)if(Math.hypot(b.x-pk.x,b.y-pk.y)<pk.cr){this.sink(b,pk);break;}
+        if(b.in)continue;
+        if(b.x<CH.x0+b.r){b.x=CH.x0+b.r;b.vx=Math.abs(b.vx)*.85;SFX.wall();}if(b.x>CH.x1-b.r){b.x=CH.x1-b.r;b.vx=-Math.abs(b.vx)*.85;SFX.wall();}
+        if(b.y<CH.y0+b.r){b.y=CH.y0+b.r;b.vy=Math.abs(b.vy)*.85;SFX.wall();}if(b.y>CH.y1-b.r){b.y=CH.y1-b.r;b.vy=-Math.abs(b.vy)*.85;SFX.wall();}}
+      for(let i=0;i<live.length;i++){const A=live[i];if(A.in)continue;for(let j=i+1;j<live.length;j++){const B=live[j];if(B.in)continue;
+        const dx=B.x-A.x,dy=B.y-A.y,rr=A.r+B.r,d2=dx*dx+dy*dy;if(d2>=rr*rr||d2===0)continue;const d=Math.sqrt(d2),nx=dx/d,ny=dy/d,ov=(rr-d)/2;A.x-=nx*ov;A.y-=ny*ov;B.x+=nx*ov;B.y+=ny*ov;
+        const rel=(A.vx-B.vx)*nx+(A.vy-B.vy)*ny;if(rel<=0)continue;const j2=rel*.96;A.vx-=j2*nx;A.vy-=j2*ny;B.vx+=j2*nx;B.vy+=j2*ny;
+        const sa=Math.hypot(A.vx+j2*nx,A.vy+j2*ny),sb=Math.hypot(B.vx-j2*nx,B.vy-j2*ny),src=sa>=sb?A:B,dst=src===A?B:A;
+        if(src.by>=0&&rel>40){dst.by=src.by;dst.car=true;}if(rel>30)SFX.clack(Math.min(1,rel/900));}}}
+    for(const b of live){if(b.in)continue;capSpeed(b,1500);const sp=Math.hypot(b.vx,b.vy);this.stats.top=Math.max(this.stats.top,sp);
+      if(sp>0){const ns=sp*Math.exp(-.45*dt)-22*dt;if(ns<4){b.vx=b.vy=0;}else{b.vx*=ns/sp;b.vy*=ns/sp;}}
+      if(Math.abs(b.x-CH.mid)<16&&sp<60)b.vx+=Math.sign(b.x-CH.mid||(Math.random()<.5?-1:1))*90*dt;}
+    if(this.over)return;
+    const left=this.balls.filter(b=>!b.in);this.idle+=dt;
+    if(!left.length||this.idle>22){if(left.length){this.msg=tr('rerack');this.msgT=1.4;}this.rack();}}
+  sink(b,pk){b.in=true;b.vx=b.vy=0;this.idle=0;const[side,v]=this.worth(b,pk),col=b.puck?C.cyan:colP(b.o);SFX.pot();burst(pk.x,pk.y,col,14,170);
+    if(side<0){this.respot(b);floatText(clamp(pk.x,110,850),clamp(pk.y,100,500),pk.corner?tr('noScore'):tr('caromOnly'),C.mute,26);return;}
+    this.score[side]+=v;this.stats.pocketed[side]++;if(b.puck)this.stats.puck[side]++;const fx=clamp(pk.x,110,850),fy=clamp(pk.y,100,500);
+    floatText(fx,fy,'+'+v,colP(side),b.puck||v>2?52:40);
+    if(b.car&&b.by===side){this.stats.caroms[side]++;this.msg=tr('caromHit');this.msgT=1.3;shake(6);}
+    (side===0||M.two)?SFX.goal():SFX.concede();announce(`+${v} ${sideName(side)} · ${sideName(0)} ${this.score[0]} – ${sideName(1)} ${this.score[1]}`);
+    if((b.puck||b.car)&&this.buf.length>30)this.replayFrames=this.buf.slice();if(b.puck||b.car)this.buf=[];
+    if(this.score[side]>=this.target){this.over=true;this.msg=M.two?(side?tr('p2win'):tr('p1win')):(side===0?tr('win'):tr('loss'));this.msgT=3;SFX.whistle();}}
+  respot(b){b.in=false;b.vx=b.vy=0;b.by=-1;b.car=false;b.x=CH.mid;b.y=CH.cy;let k=0;while(this.balls.some(o=>o!==b&&!o.in&&Math.hypot(o.x-b.x,o.y-b.y)<o.r+b.r+2)&&k<20){k++;b.y=CH.cy+(k%2?1:-1)*Math.ceil(k/2)*(2*b.r+4);}}
+  drawBall(c,b){const x=b.x,y=b.y,r=b.r;shadow(c,x+3,y+5,r,r*.8,.4);
+    if(b.puck){c.fillStyle='#0b0f17';c.beginPath();c.arc(x,y,r,0,TAU);c.fill();c.strokeStyle=C.cyan;c.lineWidth=3;c.shadowColor=C.cyan;c.shadowBlur=calm()?0:12;c.beginPath();c.arc(x,y,r-2,0,TAU);c.stroke();c.shadowBlur=0;
+      c.fillStyle=C.cyan;c.font='700 11px "JetBrains Mono", monospace';c.textAlign='center';c.textBaseline='middle';upText(c,x,y+.5,(a,q)=>c.fillText('×3',a,q));return;}
+    const col=colP(b.o);c.fillStyle=col;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();c.fillStyle='#f4f1e8';c.beginPath();c.arc(x,y,r*.52,0,TAU);c.fill();
+    c.fillStyle='#111';c.font=`700 ${Math.round(r*.72)}px "JetBrains Mono", monospace`;c.textAlign='center';c.textBaseline='middle';upText(c,x,y+.5,(a,q)=>c.fillText(b.id%3+1,a,q));shade(c,x,y,r);
+    if(b.id===this.gold){c.strokeStyle=C.amber;c.lineWidth=3;c.globalAlpha=.6+.4*Math.sin(now()/120);c.shadowColor=C.amber;c.shadowBlur=calm()?0:16;c.beginPath();c.arc(x,y,r+4,0,TAU);c.stroke();c.shadowBlur=0;c.globalAlpha=1;}
+    if(b.car&&Math.hypot(b.vx,b.vy)>80){c.strokeStyle='rgba(231,238,247,.5)';c.lineWidth=1.5;c.setLineDash([3,4]);c.beginPath();c.arc(x,y,r+7,0,TAU);c.stroke();c.setLineDash([]);}}
+  draw(c){const T=CH;c.fillStyle='#060c17';c.fillRect(0,0,W,H);
+    /* wooden pool rail around an air-hockey surface */
+    c.fillStyle='#2b1d16';c.beginPath();c.roundRect(T.x0-30,T.y0-30,T.x1-T.x0+60,T.y1-T.y0+60,26);c.fill();
+    c.strokeStyle='rgba(245,176,65,.25)';c.lineWidth=2;c.beginPath();c.roundRect(T.x0-24,T.y0-24,T.x1-T.x0+48,T.y1-T.y0+48,22);c.stroke();
+    const g=c.createRadialGradient(W/2,H/2,40,W/2,H/2,520);g.addColorStop(0,'#145a63');g.addColorStop(1,'#0c2a40');c.fillStyle=g;c.fillRect(T.x0,T.y0,T.x1-T.x0,T.y1-T.y0);
+    c.fillStyle='rgba(231,238,247,.05)';for(let x=T.x0+20;x<T.x1;x+=30)for(let y=T.y0+20;y<T.y1;y+=30)c.fillRect(x,y,2,2);
+    c.strokeStyle='rgba(63,208,224,.55)';c.lineWidth=3;c.beginPath();c.moveTo(T.mid,T.y0);c.lineTo(T.mid,T.y1);c.stroke();c.beginPath();c.arc(T.mid,T.cy,70,0,TAU);c.stroke();
+    c.fillStyle=C.amber;for(let i=1;i<8;i++){if(i===4)continue;const x=T.x0+(T.x1-T.x0)*i/8;c.beginPath();c.arc(x,T.y0-15,2.5,0,TAU);c.arc(x,T.y1+15,2.5,0,TAU);c.fill();}
+    for(const pk of CPK){const own=pk.corner?(pk.x<T.mid?0:1):-1;c.fillStyle='#030508';c.beginPath();c.arc(pk.x,pk.y,pk.cr,0,TAU);c.fill();
+      c.strokeStyle=own<0?'rgba(245,176,65,.55)':hexA(colP(own),.75);c.lineWidth=3;c.stroke();}
+    for(const b of this.balls)if(!b.in)this.drawBall(c,b);
+    this.m.forEach((m,i)=>{const col=colP(i);shadow(c,m.x+4,m.y+7,m.r,m.r*.8,.45);orb(c,m.x,m.y,m.r,col);c.fillStyle='rgba(6,11,20,.35)';c.beginPath();c.arc(m.x,m.y,m.r*.62,0,TAU);c.fill();orb(c,m.x,m.y,m.r*.42,col);});
+    /* pocketed trays */
+    const tray=(o,x0,dir)=>{this.balls.filter(b=>b.o===o).forEach((b,i)=>{c.globalAlpha=b.in?1:.22;c.fillStyle=colP(o);c.beginPath();c.arc(x0+dir*i*20,18,7,0,TAU);c.fill();c.globalAlpha=1;});};
+    tray(0,T.x0+10,1);tray(1,T.x1-10,-1);
+    if(this.pause>0&&this.rounds>1)label(c,tr('rerack'),T.mid,T.cy-90,C.ink,14);
+    if(this.msgT>0)banner(c,this.msg,this.over?colP(this.score[0]>=this.score[1]?0:1):C.amber,this.msgT);}
+  matchStats(){return[[tr('st_pocketed'),this.stats.pocketed[0],this.stats.pocketed[1]],[tr('st_caroms'),this.stats.caroms[0],this.stats.caroms[1]],[tr('st_puck'),this.stats.puck[0],this.stats.puck[1]],[tr('st_top'),Math.round(this.stats.top/10)+' km/h','']];}
+}
+
+const SPORTS={basket:Basket,football:Football,hockey:AirHockey,volley:Volley,billiards:Pool,carom:Carom};
 
 /* Practical training, visual cues and weekly UI. */
 function prepareTraining(s){
   if(s.key==='football'){s.pause=0;s.t[0].x=620;s.b.x=650;s.t[1].x=880;s.t[1].y=480;}
   if(s.key==='hockey'){s.pause=0;s.k.x=260;s.k.y=160;s.m[0].x=180;s.m[0].y=200;}
   if(s.key==='volley'){s.pause=0;s.s[0].x=390;s.b.x=400;s.b.y=VB.G-260;s.b.vy=90;s.server=0;}
+  if(s.key==='carom'){s.pause=0;s.balls.forEach(b=>{b.in=b.id!==0&&b.id!==1;});const[a,b]=s.balls;a.x=330;a.y=250;b.x=430;b.y=210;s.m[0].x=200;s.m[0].y=300;}
   if(s.key==='billiards'){s.isBreak=false;s.groups=['solid','stripe'];for(const b of s.balls)b.in=b.n!==0&&b.n!==1&&b.n!==8;s.cue.x=380;s.cue.y=320;const one=s.balls.find(b=>b.n===1),pk=POCKETS[0];one.x=280;one.y=220;s.aim=Math.atan2(one.y-s.cue.y,one.x-s.cue.x);s.balls.find(b=>b.n===8).x=750;s.balls.find(b=>b.n===8).y=400;}
 }
-function trainingMet(s){if(s.key==='basket')return s.stats.made[0]>0;if(s.key==='football')return s.stats.charged[0]>0;if(s.key==='hockey')return s.stats.banks[0]>0;if(s.key==='volley')return s.stats.spikes[0]>0;return s.stats.potted[0]>0;}
+function trainingMet(s){if(s.key==='basket')return s.stats.made[0]>0;if(s.key==='football')return s.stats.charged[0]>0;if(s.key==='hockey')return s.stats.banks[0]>0;if(s.key==='volley')return s.stats.spikes[0]>0;if(s.key==='carom')return s.stats.caroms[0]>0;return s.stats.potted[0]>0;}
 function checkTraining(){if(!game||run.mode!=='training'||game.trainingComplete||!trainingMet(game.sport))return;game.trainingComplete=true;if(!ST.trainingDone.includes(game.sport.key)){ST.trainingDone.push(game.sport.key);save();}announce(tr('trainingDone'));if(HAS_DOM)toast(esc(tr('trainingDone')));}
 function syncTouch(){if(!HAS_DOM)return;document.body.style.setProperty('--touch-scale',ST.prefs.touchSize/100);document.querySelector('.touch').classList.toggle('left',ST.prefs.touchSide==='left');}
 function updateFeedback(){if(!HAS_DOM||!game)return;const el=$('playFeedback'),s=game.sport;el.hidden=!ST.prefs.feedback;if(el.hidden)return;let text='',power=null;
@@ -740,6 +867,7 @@ function updateFeedback(){if(!HAS_DOM||!game)return;const el=$('playFeedback'),s
   else if(s.key==='basket'){text=tr(s.state==='aim'?'aimNow':'ballMoving');power=s.kPow;}
   else if(s.key==='billiards'){text=tr(s.state==='aim'?'aimNow':'ballMoving');power=s.power;}
   else if(s.key==='volley'){const near=!s.s[0].onG&&Math.abs(s.s[0].x-VB.net)<170;text=tr(near?'readyAction':s.b.x<VB.net&&s.b.y<VB.G-100?'jumpNow':'waitAction');}
+  else if(s.key==='carom')text=tr(s.balls.some(b=>!b.in&&b.x<CH.mid)?'readyAction':'waitAction')+' · '+tr('ballsLeft')+' '+s.balls.filter(b=>!b.in).length;
   else text=tr(s.k.x<W/2?'readyAction':'waitAction');
   if(power!==null)text+=' · '+tr('powerLabel')+': '+Math.round(power*100)+'%';setTxt('playFeedback',text);
 }
@@ -758,7 +886,7 @@ function writeCheckpoint(){const c=checkpointData();if(!c)return false;try{root.
 function validateCheckpoint(c){
   if(!isRecord(c)||c.format!==1||c.version!==VERSION||!Number.isFinite(c.savedAt)||c.savedAt>Date.now()+60000||Date.now()-c.savedAt>7*86400000||typeof c.trainingComplete!=='boolean')throw new Error('checkpoint');
   const progress=validateStore(c.progress);if(progressMark(progress)!==progressMark(ST))throw new Error('progress changed');
-  const r=c.run,d=c.sport;if(!isRecord(r)||!['quick','training','daily','tour','career'].includes(r.mode)||!Array.isArray(r.res)||r.res.length>4||!isRecord(d)||!SPORT_KEYS.includes(d.key)||d.over!==false)throw new Error('match');
+  const r=c.run,d=c.sport;if(!isRecord(r)||!['quick','training','daily','tour','career'].includes(r.mode)||!Array.isArray(r.res)||r.res.length>4||!isRecord(d)||!ALL_KEYS.includes(d.key)||d.over!==false)throw new Error('match');
   if(r.mode==='career'&&!LEAGUES.some(l=>l.id===r.league))throw new Error('league');
   if(r.mode==='daily'&&JSON.stringify(r.daily)!==JSON.stringify(dailyFor(todayKey())))throw new Error('daily expired');
   if(r.mode!=='tour'&&r.mode!=='career'&&r.res.length)throw new Error('results');
@@ -800,6 +928,7 @@ function validateCheckpoint(c){
   shape(d,JSON.parse(JSON.stringify(base)),'sport');
   if(d.key!==base.key||JSON.stringify(d.acts)!==JSON.stringify(base.acts)||d.score.some(n=>!Number.isSafeInteger(n)||n<0||n>10000)||!['aim','flight','roll','fly'].includes(d.state||'aim'))throw new Error('sport state');
   if(d.key==='basket'&&(!Number.isInteger(d.round)||d.round<0||d.round>=d.spots.length||![0,1].includes(d.turn)||d.shot<0||d.shot>=d.RACK))throw new Error('basket state');
+  if(d.key==='carom'&&(d.balls.length!==7||d.balls.some((b,i)=>b.id!==i||b.o!==(i<3?0:i<6?1:-1)||b.puck!==(i===6)||![-1,0,1].includes(b.by))||!Number.isInteger(d.gold)||d.gold<-1||d.gold>5))throw new Error('carom state');
   if(d.key==='billiards'){
     if(![0,1].includes(d.shooter)||new Set(d.balls.map(b=>b.n)).size!==16||d.balls.some(b=>!Number.isInteger(b.n)||b.n<0||b.n>15)||JSON.stringify(d.cue)!==JSON.stringify(d.balls.find(b=>b.n===0)))throw new Error('pool state');
     if(d.groups.some(g=>g!==null&&!['solid','stripe'].includes(g)))throw new Error('pool groups');
@@ -913,8 +1042,8 @@ function renderMenu(){if(!HAS_DOM)return;document.documentElement.lang=LANG;docu
   const ds=$('dailyStatus');ds.textContent=done?tr('dailyDone'):tr('dailyReward');ds.className=done?'done':'';$('dailyBtn').textContent=done?tr('play'):tr('dailyAccept');
   renderWeekly();renderResume();setTxt('styleHint',tr('style_'+ST.prefs.aiStyle));
   const cards=$('cards');cards.innerHTML='';
-  SPORT_KEYS.forEach((k,i)=>{const s=ST.stats[k]||{w:0,l:0,d:0},el=document.createElement('article');el.className='card';
-    el.innerHTML=`<canvas width="480" height="300" aria-hidden="true"></canvas><div class="body"><span class="eyebrow">${tr('event')} ${i+1}</span><h3>${tr(k)}</h3><p>${tr('d_'+k)}</p><div class="new"><span class="sr">${tr('newIn')}: </span>${tr('n_'+k)}</div>
+  ALL_KEYS.forEach((k,i)=>{const s=ST.stats[k]||{w:0,l:0,d:0},el=document.createElement('article'),bonus=BONUS_KEYS.includes(k);el.className='card'+(bonus?' bonus':'');
+    el.innerHTML=`<canvas width="480" height="300" aria-hidden="true"></canvas><div class="body"><span class="eyebrow">${bonus?tr('bonusEvent'):tr('event')+' '+(i+1)}</span><h3>${tr(k)}</h3><p>${tr('d_'+k)}</p><div class="new"><span class="sr">${tr('newIn')}: </span>${tr('n_'+k)}</div>
       <div class="foot"><span class="rec" aria-label="${s.w} ${tr('wins')}">${s.w}${tr('wS')} · ${s.l}${tr('lS')} · ${s.d}${tr('dS')}</span><button class="btn train" type="button" data-training="${k}">${tr('guided')}<span class="sr"> ${tr(k)}</span>${ST.trainingDone.includes(k)?' ✓':''}</button><button class="play" type="button" data-k="${k}">${tr('play')}<span class="sr"> ${tr(k)}</span></button></div></div>`;
     cards.appendChild(el);const tc=el.querySelector('canvas').getContext('2d');tc.setTransform(.5,0,0,.5,0,0);const keep=M,kr=ROT;ROT=false;M={D:1,A:1,mods:false,len:1,two:false,rival:null};try{new SPORTS[k]().draw(tc);}catch(e){}M=keep;ROT=kr;});
   cards.querySelectorAll('[data-training]').forEach(b=>b.onclick=()=>{SFX.click();startTraining(b.dataset.training);});
@@ -925,7 +1054,7 @@ function renderMenu(){if(!HAS_DOM)return;document.documentElement.lang=LANG;docu
   $('achList').innerHTML=ACHS.map(a=>`<span class="chip ${ST.ach.includes(a)?'on':''}"><b>${tr('a_'+a)}</b> · ${tr('ad_'+a)}</span>`).join('');
   syncSettings();}
 function syncSettings(){const p=ST.prefs;const ol=$('optLen');[...ol.options].forEach(o=>o.textContent=tr('len'+o.value));ol.value=String(p.len);$('optMods').checked=p.mods;$('optReplay').checked=p.replay;$('optSound').checked=p.sound;$('optVol').value=p.vol;$('optContrast').checked=p.contrast;$('optMotion').checked=p.motion;$('optPractice').checked=p.practice;$('optTheme').value=p.theme;$('optStyle').value=p.aiStyle;$('optTouchSize').value=p.touchSize;$('optTouchSide').value=p.touchSide;$('optEffects').checked=p.effects;$('optFxVol').value=p.fxVol;$('optFeedback').checked=p.feedback;}
-function renderStats(){const rows=SPORT_KEYS.map(k=>{const s=ST.stats[k]||{p:0,w:0,l:0,d:0,f:0,a:0,best:0};const wr=s.p?Math.round(s.w/s.p*100):0;return{k,s,wr};});
+function renderStats(){const rows=ALL_KEYS.map(k=>{const s=ST.stats[k]||{p:0,w:0,l:0,d:0,f:0,a:0,best:0};const wr=s.p?Math.round(s.w/s.p*100):0;return{k,s,wr};});
   const any=rows.some(r=>r.s.p);
   $('statsBody').innerHTML=any?`<div class="scroll"><table class="t"><thead><tr><th scope="col"></th><th class="n" scope="col">${tr('played')}</th><th class="n" scope="col">${tr('wS')}</th><th class="n" scope="col">${tr('lS')}</th><th class="n" scope="col">${tr('dS')}</th><th class="n" scope="col">${tr('scored')}</th><th class="n" scope="col">${tr('conceded')}</th><th class="n" scope="col">${tr('bestStreak')}</th></tr></thead><tbody>
     ${rows.map(r=>`<tr><th scope="row">${tr(r.k)}</th><td class="n">${r.s.p}</td><td class="n">${r.s.w}</td><td class="n">${r.s.l}</td><td class="n">${r.s.d}</td><td class="n">${r.s.f}</td><td class="n">${r.s.a}</td><td class="n">${r.s.best}</td></tr>`).join('')}</tbody></table></div>
@@ -937,7 +1066,7 @@ function renderShop(){setTxt('shopCoins',tr('coinsN',ST.coins));
     return `<div class="item ${eq?'eq':''}"><span class="sw" style="background:${sw}" aria-hidden="true"></span><b>${tr(kind+'_'+it.id)}</b><button class="btn ${eq?'':'pri'}" type="button" data-kind="${kind}" data-id="${it.id}" ${eq?'disabled':''}>${eq?tr('equipped'):own?tr('equip'):tr('buy',it.price)}</button></div>`;};
   $('shopSkins').innerHTML=SKINS.map(s=>item('skin',s)).join('');$('shopTrails').innerHTML=TRAILS.map(s=>item('trail',s)).join('');
   $('dlgShop').querySelectorAll('[data-kind]').forEach(b=>b.onclick=()=>{const r=buy(b.dataset.kind,b.dataset.id);if(r==='poor')toast(tr('notEnough'));else{SFX.power();if(r==='ok'&&b.textContent.includes('·'))toast(tr('bought'));}renderShop();renderMenu();});}
-function renderHelp(){$('helpBody').innerHTML=`<p>${tr('helpIntro')}</p>`+SPORT_KEYS.map(k=>`<h3>${tr(k)}</h3><p>${tr('c_'+k)}</p>`).join('')+`<h3>${tr('pl2')}</h3><p>${tr('c2')}</p><p>${tr('c2turns')}</p>`;}
+function renderHelp(){$('helpBody').innerHTML=`<p>${tr('helpIntro')}</p>`+ALL_KEYS.map(k=>`<h3>${tr(k)}</h3><p>${tr('c_'+k)}</p>`).join('')+`<h3>${tr('pl2')}</h3><p>${tr('c2')}</p><p>${tr('c2turns')}</p>`;}
 
 function boot(){load();cv=$('cv');ctx=cv.getContext('2d');cv.tabIndex=0;
   document.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'&&!touchSeen){touchSeen=true;if(game&&!M.two){const a=game.sport.acts;$('btnAct').hidden=!a[0];$('btnSpr').hidden=!a[1];}}},true);
@@ -993,7 +1122,7 @@ function boot(){load();cv=$('cv');ctx=cv.getContext('2d');cv.tabIndex=0;
   root.requestAnimationFrame(loop);}
 
 /* ================= public API (tests, PWA) ================= */
-root.PentArena={VERSION,SPORTS,SPORT_KEYS,LEAGUES,DIFFS,ACHS,SKINS,TRAILS,
+root.PentArena={VERSION,SPORTS,SPORT_KEYS,BONUS_KEYS,ALL_KEYS,LEAGUES,DIFFS,ACHS,SKINS,TRAILS,
   get store(){return ST;},set store(v){ST=v;},get M(){return M;},set M(v){M=v;},get game(){return game;},get run(){return run;},
   keys,pressed,released,PTRS,BTN,endFrameInput,step:dt=>{if(game){step(dt);endFrameInput();}},
   startTraining,startQuick,startTour,startCareer,startDaily,weekKey,weeklyState,claimWeekly,trainingMet,writeCheckpoint,validateCheckpoint,resumeCheckpoint,clearCheckpoint,finishMatch,finishRun,runPoints,matchConfig,outcome,dailyFor,dailyMet,todayKey,levelOf,xpFor,buy,validateStore,exportStore,freshStore,

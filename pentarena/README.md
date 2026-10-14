@@ -1,8 +1,10 @@
-# PentArena · v2.3.0
+# PentArena · v2.4.0
 
 [Joacă / Play](https://laurandreea10.github.io/codepen-portfolio/pentarena/) · [Changelog](CHANGELOG.md) · [Istoric public / Public history](changelog.html)
 
 ## RO
+
+**Nou în 2.4.0:** proba bonus **Carambol**, fuziune air hockey × biliard: crose pe jumătăți, masă cu șase buzunare, trei bile ale tale, trei ale adversarului și un puc ×3. Bila ta în colțul adversarului valorează 2, a lui 1; carambolajul (bilă băgată de altă bilă) +1; buzunarele din mijloc primesc doar carambolaje. Pentatlonul rămâne cu cinci probe.
 
 Continuarea partidei cu scor și pozițiile mingilor restaurate pe pauză; antrenament ghidat cu obiective detectate din joc; provocare săptămânală cu recompensă unică; AI echilibrat, defensiv și ofensiv; indicii de putere, posesie și timing; butoane tactile ajustabile, efecte vizuale și volum al efectelor configurabile.
 
@@ -20,6 +22,8 @@ Cinci sporturi arcade într-un singur canvas: **baschet, fotbal, air hockey, vol
 - **Accesibilitate:** tastatură, mouse și touch la toate probele; anunțuri de scor pentru cititoare de ecran; contrast ridicat; mișcare redusă (fără tremurat, particule și reluări).
 
 ## EN
+
+**New in 2.4.0:** the bonus event **Carom Hockey**, an air hockey × pool fusion: mallets on halves, a six-pocket table, three balls each and a ×3 puck. Your colour in the rival’s corner is worth 2, theirs 1; a carom (ball sunk by another ball) +1; middle pockets take caroms only. The pentathlon stays five events.
 
 Resume matches with scores and ball positions restored on pause; practical training with objectives detected from gameplay; a weekly challenge with a one-time reward; balanced, defensive and offensive AI; power, possession and timing cues; adjustable touch buttons, visual effects and sound-effects volume.
 
@@ -40,7 +44,7 @@ Five arcade sports on one canvas: **basketball, football, air hockey, volleyball
 
 | File | Role |
 | --- | --- |
-| `game.js` | Engine, five sports, AI, progression, UI (no dependencies) |
+| `game.js` | Engine, five sports + Carom bonus event, AI, progression, UI (no dependencies) |
 | `style.css` | Layout and self-hosted fonts |
 | `pwa.js`, `sw.js`, `manifest.webmanifest` | Install, offline cache, safe updates (no reload mid-match) |
 | `test-core.cjs` | Headless simulation: every sport finishes vs AI on all difficulties, 2P, golden goal, replays, power-ups, spike, basketball AI under wind/moving hoop, pool spin and ball in hand, tournament/career unlocks, daily seed, locker, backup validation |

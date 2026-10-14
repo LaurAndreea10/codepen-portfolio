@@ -7,7 +7,7 @@ const sandbox={console,Math:seededMath,Date,JSON,Number,Array,Object,Set,Map,Err
   localStorage:{getItem:k=>stored[k]??null,setItem:(k,v)=>{stored[k]=String(v);},removeItem:k=>{delete stored[k];}}};
 sandbox.window=sandbox;sandbox.globalThis=sandbox;vm.createContext(sandbox);
 vm.runInContext(fs.readFileSync(path.join(__dirname,'game.js'),'utf8'),sandbox);
-const PA=sandbox.PentArena;assert(PA&&PA.VERSION==='2.3.0');
+const PA=sandbox.PentArena;assert(PA&&PA.VERSION==='2.4.0');
 const ctx=new Proxy({},{get:(_,k)=>k==='createRadialGradient'||k==='createLinearGradient'?()=>({addColorStop(){}}):k==='measureText'?()=>({width:10}):()=>{},set:()=>true});
 const reset=()=>{PA.store=PA.freshStore();};
 const DT=1/60;
@@ -19,6 +19,7 @@ function play(key,{diff='normal',players=1,cap=420,bot=true}={}){
       if(key==='basket'&&s.state==='aim'&&s.human())s.launch(480+testRandom()*320,-680-testRandom()*240);
       if(key==='billiards'&&s.state==='aim'&&s.human()){if(s.bih)s.placeAt(300,310);s.spin=[-1,0,1][Math.floor(testRandom()*3)];s.shoot(testRandom()*6.283,300+testRandom()*1000);}
       if(key==='volley'&&testRandom()<.02)PA.pressed.add('Space');
+      if(key==='carom'){const live=s.balls.filter(b=>!b.in&&b.x<480);let tg=live[0];for(const b of live)if(b.x<tg.x)tg=b;PA.PTRS.set('mouse',{id:'mouse',type:'mouse',inside:true,down:false,sx:100,x:tg?tg.x-30:200,y:tg?tg.y+(testRandom()-.5)*20:300,justDown:false,justUp:false});}
       if(key==='hockey'){PA.PTRS.set('mouse',{id:'mouse',type:'mouse',inside:true,down:false,sx:100,x:s.k.x-28,y:s.k.y,justDown:false,justUp:false});}
     }
     PA.step(DT);s.draw(ctx);s.info();s.clock();if(s.matchStats)s.matchStats();t+=DT;
@@ -37,7 +38,7 @@ for(const key of ['hockey','volley']){const {s}=play(key,{diff:'normal',bot:fals
 {let goals=0;for(let i=0;i<3;i++)goals+=play('football',{diff:'hard',bot:false}).s.score[1];assert(goals>=3,'football AI should score vs idle player');}
 console.log('PASS: AI beats an idle player in hockey/volley and scores in football');
 // 3. two-player mode runs every sport with both sides human
-for(const key of PA.SPORT_KEYS){const {s}=play(key,{players:2,cap:25});assert.equal(PA.M.two,true);assert(!s.over||key==='basket'||key==='billiards'||true);}
+for(const key of PA.ALL_KEYS){const {s}=play(key,{players:2,cap:25});assert.equal(PA.M.two,true);assert(!s.over||key==='basket'||key==='billiards'||true);}
 console.log('PASS: local two-player mode runs every sport');
 // 4. football: golden goal, replay frames, charged shot
 {PA.store.prefs.mods=true;PA.store.prefs.players=1;const g=PA.startQuick('football'),s=g.sport;s.pause=0;for(let i=0;i<60;i++)PA.step(DT);
@@ -103,7 +104,7 @@ console.log('PASS: local two-player mode runs every sport');
  const bad=JSON.parse(PA.exportStore());bad.progress.stats.basket={p:null};assert.throws(()=>PA.validateStore(bad));
  console.log('PASS: legacy backup migration and nested-state validation');}
 // 15. complete match checkpoints round-trip all engines, reject nested corruption and retain pool aliasing
-for(const key of PA.SPORT_KEYS){reset();const g=PA.startQuick(key);for(let i=0;i<120;i++)PA.step(DT);
+for(const key of PA.ALL_KEYS){reset();const g=PA.startQuick(key);for(let i=0;i<120;i++)PA.step(DT);
  if(key==='billiards')g.sport.shoot(.4,650);
  assert(PA.writeCheckpoint());const snap=JSON.parse(stored['pentarena-match-v1']);const restored=PA.validateCheckpoint(snap);
  assert.equal(restored.sport.key,key);assert.deepEqual(Array.from(restored.sport.score),Array.from(g.sport.score));
@@ -128,16 +129,41 @@ console.log('PASS: weekly eligibility, Monday boundary, one-time cosmetic reward
  g=PA.startTraining('basket');g.sport.b.x=821;g.sport.b.y=g.sport.hyAt(0)-1;g.sport.b.vy=180;g.sport.state='flight';PA.step(DT);assert(g.trainingComplete);
  g=PA.startTraining('billiards');g.sport.pot(g.sport.balls.find(b=>b.n===1),{x:90,y:90});g.sport.firstHit=1;g.sport.isBreak=false;g.sport.resolve();PA.step(DT);assert(g.trainingComplete);
  g=PA.startTraining('volley');const p=g.sport.s[0];p.x=400;p.y=450;p.onG=false;p.vy=-100;p.cd=0;g.sport.b.x=405;g.sport.b.y=p.y-p.r-14;g.sport.b.vy=60;for(let i=0;i<3;i++)PA.step(DT);assert(g.trainingComplete);
- for(const key of PA.SPORT_KEYS){PA.startTraining(key);assert(PA.writeCheckpoint());PA.validateCheckpoint(JSON.parse(stored['pentarena-match-v1']));}
+ for(const key of PA.ALL_KEYS){PA.startTraining(key);assert(PA.writeCheckpoint());PA.validateCheckpoint(JSON.parse(stored['pentarena-match-v1']));}
  assert.equal(PA.store.xp,0);assert.equal(PA.store.coins,0);}
 console.log('PASS: guided training detects charged shot, rail rebound, basket and pot without competitive rewards');
 // 18. styles are distinct tactics; all sports run under both new styles
-for(const style of ['defensive','offensive'])for(const key of PA.SPORT_KEYS){reset();PA.store.prefs.aiStyle=style;const {s}=play(key,{cap:420});assert(s.over,style+' '+key+' finishes');assert.equal(PA.M.style,style);}
+for(const style of ['defensive','offensive'])for(const key of PA.ALL_KEYS){reset();PA.store.prefs.aiStyle=style;const {s}=play(key,{cap:420});assert(s.over,style+' '+key+' finishes');assert.equal(PA.M.style,style);}
 console.log('PASS: defensive and offensive AI finish all five sports');
 // 19. older backup defaults and new preference validation
 {reset();const legacy=JSON.parse(PA.exportStore());delete legacy.progress.weekly;delete legacy.progress.trainingDone;for(const k of ['aiStyle','touchSize','touchSide','effects','fxVol','feedback'])delete legacy.progress.prefs[k];const out=PA.validateStore(legacy);assert.equal(out.prefs.touchSize,100);assert.equal(out.prefs.aiStyle,'balanced');assert.equal(out.prefs.effects,true);
  for(const [k,v] of [['touchSize',200],['touchSide','middle'],['fxVol',-1],['feedback',null],['aiStyle','wild']]){const bad=JSON.parse(PA.exportStore());bad.progress.prefs[k]=v;assert.throws(()=>PA.validateStore(bad));}}
 console.log('PASS: legacy migration and configurable accessibility preferences');
 
+// 20. Carom Hockey (bonus fusion event): finishes on every difficulty, AI beats an idle player, scoring rules, caroms, gold, training, progression
+{const sum=[];for(const diff of ['easy','normal','hard']){reset();const {s,t}=play('carom',{diff});assert(s.over,`${diff} carom did not finish (${s.score})`);sum.push(`${diff} ${s.score.join(':')} ${Math.round(t)}s`);
+  reset();const idle=play('carom',{diff,bot:false}).s;assert(idle.over&&idle.score[1]>idle.score[0],`${diff} carom AI should beat an idle player`);}
+ console.log('PASS: carom finishes vs AI and beats an idle player —',sum.join(' | '));}
+{reset();PA.store.prefs.players=1;PA.store.prefs.mods=false;const g=PA.startQuick('carom'),s=g.sport;s.pause=0;s.target=999;PA.M.two=true;
+ const only=ids=>s.balls.forEach(b=>{b.in=!ids.includes(b.id);b.vx=b.vy=0;b.by=-1;b.car=false;});
+ const drop=(id,x,y,vx,vy,by,car=false)=>{only([id,5]);const k=s.balls[5];k.x=480;k.y=300;const b=s.balls[id];Object.assign(b,{x,y,vx,vy,by,car});s.m[0].x=150;s.m[0].y=300;s.m[1].x=810;s.m[1].y=300;const before=s.score.slice();let respot=false;for(let i=0;i<20&&!b.in&&!respot;i++){s.update(DT);respot=b.by===-1;}return[s.score[0]-before[0],s.score[1]-before[1]];};
+ assert.deepEqual(drop(0,880,80,300,-300,0),[2,0],'own colour in rival corner = 2');
+ assert.deepEqual(drop(3,880,520,300,300,0),[1,0],'rival colour in rival corner = 1');
+ assert.deepEqual(drop(6,880,80,300,-300,0),[3,0],'puck = 3');
+ assert.deepEqual(drop(0,880,80,300,-300,0,true),[3,0],'carom adds 1');
+ assert.deepEqual(drop(0,880,80,300,-300,1),[0,0],'deflection into own corner never scores');assert(!s.balls[0].in,'own-corner drop is respotted');
+ assert.deepEqual(drop(1,480,80,0,-400,0),[0,0],'direct shot into the middle is respotted');assert(!s.balls[1].in);
+ assert.deepEqual(drop(1,480,80,0,-400,0,true),[3,0],'carom into the middle scores for the sender (own colour 2 + carom 1)');
+ s.gold=0;s.goldT=99;assert.deepEqual(drop(0,880,80,300,-300,0),[4,0],'golden ball doubles');s.gold=-1;
+ only([0,1]);const A=s.balls[0],B=s.balls[1];Object.assign(A,{x:300,y:300,vx:700,vy:0,by:0});Object.assign(B,{x:340,y:300,vx:0,vy:0,by:1});s.m[0].x=100;s.m[0].y=100;s.m[1].x=860;s.m[1].y=500;for(let i=0;i<4;i++)s.update(DT);assert(B.car&&B.by===0,'ball-to-ball contact passes ownership as a carom');
+ const t=PA.startTraining('carom').sport;assert.equal(PA.trainingMet(t),false);t.stats.caroms[0]=1;assert.equal(PA.trainingMet(t),true);
+ const snap=JSON.parse(JSON.stringify(PA.game.sport));snap.balls.pop();PA.writeCheckpoint();const cp=JSON.parse(stored['pentarena-match-v1']);cp.sport.balls=snap.balls;assert.throws(()=>PA.validateCheckpoint(cp),undefined,'carom ball set validated');
+ console.log('PASS: carom scoring (2/1/3, +1 carom, gold ×2), respots, ownership chain, training and checkpoint validation');}
+{reset();PA.store.prefs.players=1;PA.store.prefs.diff='normal';const fake=(key,a,b,ex)=>{const s=new PA.SPORTS[key]();s.score=[a,b];s.over=true;if(ex)Object.assign(s.stats,ex);return s;};
+ PA.startQuick('carom');const r=PA.finishMatch(PA.run,fake('carom',9,2,{caroms:[3,0]}));assert(r.ach.includes('carom'),'carom achievement');assert.equal(PA.store.stats.carom.w,1);assert(!PA.weeklyState().wins.includes('carom'),'bonus event stays out of the weekly five');
+ for(const k of ['basket','football','hockey','volley']){PA.startQuick(k);PA.finishMatch(PA.run,fake(k,5,0));}assert(!PA.store.ach.includes('penta'),'carom does not count towards Pentathlete');
+ PA.startQuick('billiards');PA.finishMatch(PA.run,fake('billiards',7,1));assert(PA.store.ach.includes('penta'));
+ const back=PA.validateStore(JSON.parse(PA.exportStore()));assert.equal(back.stats.carom.w,1);assert(back.won.includes('carom'));
+ console.log('PASS: carom stats, achievement and backup; pentathlon, weekly and Pentathlete stay five events');}
 console.log('ALL PENTARENA CORE CHECKS PASSED');
 

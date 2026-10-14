@@ -16,12 +16,12 @@ try{
     const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!/favicon/.test(m.text()))errors.push(m.text());});
     await page.goto(origin+'/pentarena/');await page.waitForFunction(()=>window.PentArena&&navigator.serviceWorker.controller,null,{timeout:15000});
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'no horizontal scroll on menu');
-    assert.equal(await page.locator('#cards .card').count(),5);assert.equal(await page.locator('#leagues .league').count(),3);
+    assert.equal(await page.locator('#cards .card').count(),6);assert.equal(await page.locator('#cards .card.bonus').count(),1,'Carom is the single bonus card');assert.equal(await page.locator('#leagues .league').count(),3);
     assert.equal(await page.locator('[data-l="silver"]').isDisabled(),true,'silver league locked at start');
     const menuAxe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();assert.deepEqual(serious(menuAxe),[],'menu axe');
     await page.screenshot({path:`${out}/${width}x${height}-menu.png`,fullPage:true});
     // every sport starts, runs and pauses
-    for(const key of ['basket','football','hockey','volley','billiards']){
+    for(const key of ['basket','football','hockey','volley','billiards','carom']){
       await page.locator(`.play[data-k="${key}"]`).click();await page.waitForFunction(k=>PentArena.game&&PentArena.game.sport.key===k,key);
       assert.equal(await page.locator('#game').isVisible(),true);await page.waitForTimeout(400);
       if(key==="football"&&height>width){const r2=await page.locator("#cv").boundingBox();assert(r2.height>r2.width,"football field is vertical in portrait");}
@@ -29,19 +29,19 @@ try{
       const box=await page.locator('#cv').boundingBox();assert(box.width>=200);
       if(mobile){await page.touchscreen.tap(box.x+box.width*.3,box.y+box.height*.5);}else{await page.mouse.move(box.x+box.width*.3,box.y+box.height*.5);await page.mouse.click(box.x+box.width*.3,box.y+box.height*.55);}
       await page.waitForTimeout(250);
-      if(key==='football')await page.screenshot({path:`${out}/${width}x${height}-${key}.png`});
+      if(key==='football'||key==='carom')await page.screenshot({path:`${out}/${width}x${height}-${key}.png`});
       await page.locator('#pauseBtn').click();assert.equal(await page.locator('#pauseOv').isVisible(),true);await page.keyboard.press('Escape');assert.equal(await page.locator('#pauseOv').isVisible(),false);
       await page.locator('#exitBtn').click();await page.locator('#menuBtn').click();assert.equal(await page.locator('#menu').isVisible(),true);
     }
     console.log('PASS sports',width);
-    // all five sports survive reload with engine positions and score restored on pause
-    for(const key of ['basket','football','hockey','volley','billiards']){
+    // all six events survive reload with engine positions and score restored on pause
+    for(const key of ['basket','football','hockey','volley','billiards','carom']){
       await page.locator(`.play[data-k="${key}"]`).click();await page.waitForTimeout(200);await page.locator('#pauseBtn').click();
       const checkpoint=await page.evaluate(()=>{PentArena.writeCheckpoint();return JSON.parse(localStorage.getItem('pentarena-match-v1'));});
       await page.reload();await page.waitForFunction(()=>window.PentArena);assert.equal(await page.locator('#resumePanel').isVisible(),true,key+' saved panel');
       await page.locator('#resumeMatch').click();assert.equal(await page.evaluate(()=>PentArena.game.paused),true);assert.equal(await page.evaluate(()=>PentArena.game.sport.key),key);
       assert.deepEqual(await page.evaluate(()=>PentArena.game.sport.score),checkpoint.sport.score);
-      const ball=checkpoint.sport.b||checkpoint.sport.k||checkpoint.sport.cue;assert.deepEqual(await page.evaluate(()=>{const s=PentArena.game.sport,b=s.b||s.k||s.cue;return [b.x,b.y];}),[ball.x,ball.y],'ball position restored');
+      const ball=checkpoint.sport.b||checkpoint.sport.k||checkpoint.sport.cue||checkpoint.sport.balls[6];assert.deepEqual(await page.evaluate(()=>{const s=PentArena.game.sport,b=s.b||s.k||s.cue||s.balls[6];return [b.x,b.y];}),[ball.x,ball.y],'ball position restored');
       if(key==='billiards')assert.equal(await page.evaluate(()=>PentArena.game.sport.cue===PentArena.game.sport.balls.find(b=>b.n===0)),true);
       await page.locator('#resBtn').click();await page.waitForTimeout(200);await page.locator('#exitBtn').click();await page.locator('#menuBtn').click();
     }
