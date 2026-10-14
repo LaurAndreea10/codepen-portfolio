@@ -1,4 +1,4 @@
-# Puck & Pool Arena — v2.0.0
+# Puck & Pool Arena — v2.1.0
 
 Air Hockey × Billiards. Browser-only arcade game, built as a standalone HTML/CSS/JavaScript experience.
 
@@ -46,3 +46,24 @@ Version 1.1 adds a turn-based local AI in championship mode and 2.5D canvas pers
 - [ ] Test with keyboard only and a screen reader.
 - [ ] Verify RO/EN, theme and contrast persistence.
 - [ ] Verify reduced motion and scores on mobile.
+
+## 2026-10-14 — v2.1.0 additive integration
+- Added keyboard-operable editor controls with pointer placement, undo and clear; obstacle layouts persist in a separate `puckPoolExtrasV1` key.
+- Bumpers, magnetic nodes and wall posts now render and participate in physics.
+- Added a virtual-coin economy (earn coins from scored points), a two-item cosmetic puck shop and selectable purchased skins.
+- Added local progression statistics, preserving existing v1/v2 keys and historical entries.
+- JavaScript passed syntax compilation; gameplay, screen-reader, touch and deployment regression testing remain unverified.
+
+## Ten-direction tracking
+| Direction | Current scope | Remaining gap |
+|---|---|---|
+| Arenas & 3D | 2.5D canvas palettes | True WebGL 3D |
+| Game modes | Classic, campaign, daily, precision, zen, championship | Distinct rules for every proposed mode |
+| Physics | Ball collisions, friction, wall reflection, interactive obstacles | Spin, detailed weights and advanced effects |
+| AI opponents | Turn-based AI with three difficulties | Advanced personalities and strategic search |
+| Levels & championship | 100-level structure and league framework | Unique level scripting and boss fights |
+| Customization | Puck skins, earned coins and cosmetic shop | Full themed catalog and achievement rewards |
+| Mobile | Touch controls, focus and fullscreen | Real-device test matrix |
+| Accessibility | RO/EN core, themes, keyboard, live updates | Full new-control localization and assistive tech QA |
+| Arena builder | Place, remove, save interactive obstacles | Arena JSON import/export and advanced editing |
+| Product/portfolio | Local stats, backup, versioned README | Catalog, Arcade World and history indexing confirmation |
