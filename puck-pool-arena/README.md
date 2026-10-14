@@ -1,4 +1,4 @@
-# Puck & Pool Arena — v2.1.0
+# Puck & Pool Arena — v3.0.0
 
 Air Hockey × Billiards. Browser-only arcade game, built as a standalone HTML/CSS/JavaScript experience.
 
@@ -67,3 +67,17 @@ Version 1.1 adds a turn-based local AI in championship mode and 2.5D canvas pers
 | Accessibility | RO/EN core, themes, keyboard, live updates | Full new-control localization and assistive tech QA |
 | Arena builder | Place, remove, save interactive obstacles | Arena JSON import/export and advanced editing |
 | Product/portfolio | Local stats, backup, versioned README | Catalog, Arcade World and history indexing confirmation |
+
+## 2026-10-14 · v3.0.0 — expanded feature integration
+- Expanded mode selector with Survival, Boss Battle, Trick Shot and Pinball Pool. **These are variant presets using the common simulation, not bespoke mechanics or boss personalities.**
+- AI Master tier with improved angle noise and speed; still a heuristic aim model.
+- Puck spin modifier, adjustable via accessible range control; optional assisted aim overlay.
+- Arena JSON import/export, file size and strict obstacle shape/range checks, preserving `puckPoolExtrasV1`.
+- Localized new controls for RO/EN. Keyboard, high contrast, reduced motion and existing saves remain supported.
+- No new runtime dependencies.
+
+### Remaining verification and implementation
+- True WebGL 3D engine / actual 3D camera is **not implemented**; the game continues to use canvas 2.5D.
+- Distinct mechanics and scripted boss fights for all advertised modes, advanced tactical AI opponent, larger shop inventory and multiplayer are **not implemented**.
+- Mobile gesture, screen reader, Lighthouse and game-regression test results are **not verified** in a browser.
+- Portfolio hub, Arcade World, Finalizat and Istoric catalog registration requires separate integration checks.
