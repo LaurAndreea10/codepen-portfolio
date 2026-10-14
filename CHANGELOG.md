@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-13 — PentArena v2.4.0: Carambol
+
+- RO: probă bonus nouă, **Carambol** — fuziune air hockey × biliard: crose pe jumătăți, masă cu șase buzunare, trei bile ale fiecăruia și un puc ×3. Bila ta în colțul adversarului 2, a lui 1; carambolajul (bilă băgată de altă bilă) +1; buzunarele din mijloc primesc doar carambolaje. Bilă de aur ×2, AI care păzește colțurile, antrenament ghidat, realizarea „Carambolist”. Pentatlonul rămâne cu cinci probe.
+- EN: new bonus event, **Carom Hockey** — an air hockey × pool fusion: mallets on halves, a six-pocket table, three balls each and a ×3 puck. Your colour in the rival's corner 2, theirs 1; a carom (ball sunk by another ball) +1; middle pockets take caroms only. Golden ball ×2, corner-guarding AI, guided training, “Carom artist” achievement. The pentathlon stays five events.
+- Core and browser checks passed at 360, 390, 844 and 1440 px with axe; feel on real phones remains unverified.
+- Trecut la Finalizat recent în portofoliul RO/EN. / Moved to Recently completed in the RO/EN portfolio.
+- [Joacă / Play](pentarena/) · [Istoric / History](pentarena/CHANGELOG.md).
+
 ## 2026-10-10 — LIVADA v1.1.0: Culesul
 
 - RO: joc nou în LIVADA — tăiat fructe cu swipe (sau prin atingere), viespi în loc de bombe, mărul de aur cu puncte ×2 și ploaie de fructe, sticle care se umplu la 15 fructe, combo-uri de 3+. Moduri: Clasic (3 vieți), Contra timp (60 s), Comanda zilei (aceleași rețete pentru toți în aceeași zi), Zen. 12 realizări, recorduri și statistici locale validate, ritm lent, contrast ridicat, mișcare redusă, sunet generat, RO/EN, offline (service worker). Legat din landing page, catalog, portofoliu RO/EN, sitemap și Lighthouse.
