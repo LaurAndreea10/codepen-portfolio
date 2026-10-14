@@ -5,6 +5,7 @@ const pages = [
   ["puck-pool-arena/", "monthly", "0.7", "2026-10-14"],
   ["ghost-talk/", "monthly", "0.7", "2026-10-13"],
   ["ghost-talk/simple/", "monthly", "0.5", "2026-10-13"],
+  ["ghost-talk/test-results.html", "monthly", "0.4", "2026-10-13"],
   ["projects/link-video-editor-studio.html", "monthly", "0.8", "2026-10-11"],
   ["projects/link-video-editor-studio-en.html", "monthly", "0.7", "2026-10-11"],
   ["gravity-draw.html", "monthly", "0.5", "2026-10-11"],
