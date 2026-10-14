@@ -81,3 +81,10 @@ Version 1.1 adds a turn-based local AI in championship mode and 2.5D canvas pers
 - Distinct mechanics and scripted boss fights for all advertised modes, advanced tactical AI opponent, larger shop inventory and multiplayer are **not implemented**.
 - Mobile gesture, screen reader, Lighthouse and game-regression test results are **not verified** in a browser.
 - Portfolio hub, Arcade World, Finalizat and Istoric catalog registration requires separate integration checks.
+
+## 2026-10-14 · v3.0.1 — easier pocketing
+- Default pocket capture radius widened from 25 to 47 game units.
+- Player can choose Easy (47), Normal (35), or Pro (25) pocket tolerance, persisted locally.
+- Optional aim assist now gently corrects shots toward the nearest ball only when already aimed within roughly 14°.
+- Pocket artwork scales with the chosen collision radius; legacy Pro mode retains original capture radius.
+- Manual real-device gameplay and assistive technology QA still pending.
