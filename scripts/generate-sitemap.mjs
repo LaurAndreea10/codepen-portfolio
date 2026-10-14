@@ -2,6 +2,7 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
+  ["puck-pool-arena/", "monthly", "0.7", "2026-10-14"],
   ["ghost-talk/", "monthly", "0.7", "2026-10-13"],
   ["ghost-talk/simple/", "monthly", "0.5", "2026-10-13"],
   ["projects/link-video-editor-studio.html", "monthly", "0.8", "2026-10-11"],
@@ -26,8 +27,8 @@ const pages = [
   ["booscary/case-study.html", "monthly", "0.6", "2026-10-06"],
   ["booscary/demo.html", "monthly", "0.6", "2026-10-06"],
   ["booscary/", "monthly", "0.7", "2026-10-06"],
-  ["pentarena/", "monthly", "0.7", "2026-10-05"],
-  ["pentarena/changelog.html", "monthly", "0.6", "2026-10-05"],
+  ["pentarena/", "monthly", "0.7", "2026-10-13"],
+  ["pentarena/changelog.html", "monthly", "0.6", "2026-10-13"],
   ["serpent-prism/", "monthly", "0.7", "2026-10-03"],
   ["serpent-prism/changelog.html", "monthly", "0.6", "2026-10-03"],
   ["slidestorm-arena/", "monthly", "0.7", "2026-10-02"],
