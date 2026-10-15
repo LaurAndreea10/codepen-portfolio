@@ -7,7 +7,7 @@ Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub c
 - Crengile joase introduc o eschivă nouă: butonul „Alunecă” pe touch și tasta Shift; în modul fără eșec, Kygo alunecă automat pentru a evita impactul. / Low branches add a slide dodge with a touch button or Shift; safe mode auto-slides to avoid impact.
 - S-au păstrat progresul local existent, structura salvărilor și trecerea manuală prin „Următorul nivel”. / Existing local progress, save shape, and manual Next-level transition are preserved.
 - Verificări locale: sintaxa JavaScript, maparea celor cinci acte, controalele de alunecare și forma salvării. / Local checks cover JavaScript syntax, all five acts, slide controls, and unchanged save shape.
-- Implementarea este propusă pentru revizuire în [PR #98](https://github.com/LaurAndreea10/codepen-portfolio/pull/98); jocul public rămâne neschimbat până la integrare. / Proposed in [PR #98](https://github.com/LaurAndreea10/codepen-portfolio/pull/98); the public game remains unchanged until merge.
+- Integrat în `main` prin [PR #98](https://github.com/LaurAndreea10/codepen-portfolio/pull/98) pe 15 octombrie 2026. / Merged into `main` through [PR #98](https://github.com/LaurAndreea10/codepen-portfolio/pull/98) on 15 October 2026.
 
 ## 2026-09-29 · v1.4.1 · Încărcare mai rapidă / Faster loading
 - Imaginile au dimensiunea folosită efectiv în joc (828 KB → 348 KB la prima încărcare; Lighthouse performanță 79 → 95), cu aceeași scenă desenată. Bifele și glisoarele din Setări au zone de atingere mai mari. / Images resized to what the game draws; larger touch targets in Settings. [Cod / Code](https://github.com/LaurAndreea10/codepen-portfolio/commit/db840adda2cb7dfb440e5a14601fef8d1ce4cc32)
