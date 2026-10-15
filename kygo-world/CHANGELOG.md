@@ -1,5 +1,11 @@
 # Kygo World — istoric al versiunilor / Version history
 
+## 2026-10-15 · Grafică realistă / Realistic graphics
+- Scena Poveste folosește un peisaj panoramic realist; fundalul nu mai este acoperit de un filtru albastru și de un câmp plat. / Story mode now uses a realistic panoramic landscape without the blue tint and flat grass overlay.
+- Traseul, obiectele de colecție, obstacolele, fanioanele și poarta sunt desenate cu texturi, umbre și forme canvas; sprite-ul lui Kygo rămâne neschimbat. / The path, collectibles, obstacles, flags, and gate use canvas shading and textures; Kygo’s sprite stays unchanged.
+- Contrastul ridicat, edițiile sezoniere și modul RO/EN rămân compatibile. / High contrast, seasonal editions, and RO/EN remain supported.
+
+
 Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub cu codul exact al acelei versiuni. Istoricul complet al tuturor modificărilor rămâne în GitHub. Datele sunt în fusul Europe/Bucharest. / This file summarizes major milestones; linked commits preserve the exact code.
 
 ## 2026-10-15 · Poveste și mișcare / Story and movement
