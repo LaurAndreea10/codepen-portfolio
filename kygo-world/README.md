@@ -1,6 +1,6 @@
 # Kygo World · Insulele din Nori
 
-**Build documentat:** `2026.09.29.1` (reperele funcționale sunt grupate în v1.0–v1.4). Numărul identifică starea publică și nu reprezintă un scor de calitate.
+**Versiune de lucru:** `2026.10.15.1` (propunere pentru următoarea actualizare). Istoricul versiunilor păstrează separat etapele publicate.
 
 [Istoricul versiunilor](CHANGELOG.md) include etapele importante și commiturile GitHub cu codul exact; jocul îl afișează și în meniul „Istoricul versiunilor”. Istoricul complet rămâne în commiturile repository-ului.
 
@@ -8,7 +8,7 @@ Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`, fără bu
 
 ## Moduri
 
-- **Poveste:** 100 de niveluri în 25 de capitole, câte patru lumi cu 30 de pași și trei benzi de iarbă. Kygo aleargă automat; schimbi banda, sari peste obstacole, aduni oase și relicve, alegi ramuri și înfrunți câte un șef cu tipar de benzi sigure în fiecare lume. Un obiect ascuns pe lume deblochează un costum la final. Finalizarea acordă până la trei stele. La capătul fiecărui nivel apare un ecran de rezultat; «Următorul nivel» pornește doar la apăsare. La fiecare zece niveluri se acordă un bonus și o insignă.
+- **Poveste:** 100 de niveluri în 25 de capitole și patru lumi, pe trasee de 30 de pași cu trei benzi. Cele cinci acte urmăresc refacerea Hărții Lumilor; dialogul actului apare în panoul de poveste și în ecranul de finalizare. Kygo aleargă automat; schimbi banda, sari peste obstacole, aluneci pe sub crengi joase, aduni oase și relicve, alegi ramuri și înfrunți câte un șef cu tipar de benzi sigure. Un obiect ascuns pe lume deblochează un costum la final. Finalizarea acordă până la trei stele. La capătul fiecărui nivel apare un ecran de rezultat; «Următorul nivel» pornește doar la apăsare. La fiecare zece niveluri se acordă un bonus și o insignă.
 - **Provocarea zilei:** un traseu Poveste stabil pentru ziua curentă. Minimum două relicve acordă un bonus o dată pe zi.
 - **Contra cronometru:** încheie traseul Poveste în 30 de secunde; cel mai bun timp este salvat separat pentru fiecare ediție.
 - **Explorare liberă:** deplasare manuală înainte/înapoi pe iarbă, cu schimbarea benzii și săritură.
@@ -34,7 +34,7 @@ Pe mobil, alegerea modului sau atingerea butonului Start concentrează ecranul p
 | Acțiune | Tastatură | Mobil |
 | --- | --- | --- |
 | Pornește / reia | Enter / Start | Butonul Start pe scenă |
-| Poveste | Deplasare automată | Schimbă banda prin swipe sus/jos; atinge pentru săritură |
+| Poveste | Deplasare automată; Space sare, Shift alunecă | Schimbă banda prin swipe sus/jos; atinge pentru săritură sau folosește Alunecă pe crengi joase |
 | Halloween | E lângă dovleac | Butonul „Sparge!” |
 | Explorare | Săgeți stânga/dreapta | Swipe orizontal sau butoanele Pas − / Pas + |
 | Alte moduri | Săgeți / WASD | Swipe, butoane sau joystick opțional |
