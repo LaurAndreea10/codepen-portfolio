@@ -1,6 +1,6 @@
 # Kygo World · Insulele din Nori
 
-**Versiune de lucru:** `2026.10.15.1` (propunere pentru următoarea actualizare). Istoricul versiunilor păstrează separat etapele publicate.
+**Build documentat:** `2026.10.15.1` (integrat în `main` prin PR #98). Istoricul versiunilor păstrează etapele și commiturile codului.
 
 [Istoricul versiunilor](CHANGELOG.md) include etapele importante și commiturile GitHub cu codul exact; jocul îl afișează și în meniul „Istoricul versiunilor”. Istoricul complet rămâne în commiturile repository-ului.
 
