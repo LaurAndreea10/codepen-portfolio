@@ -1,5 +1,11 @@
 # Kygo World — istoric al versiunilor / Version history
 
+## 2026-10-16 · Obiecte realiste și randare mai rapidă / Realistic objects and faster rendering
+- Obiectele de colecție, obstacolele și poarta folosesc atlasuri foto-realiste cu fundal transparent, în aceeași lumină caldă ca sprite-ul lui Kygo. / Collectibles, hazards, and the finish gate now use photorealistic transparent sprites lit to match Kygo.
+- Sprite-urile și benzile de cursă sunt pregătite o singură dată și refolosite; au fost eliminate umbrele blurate calculate la fiecare cadru. / Sprites and racing lanes are pre-rendered and reused; per-frame blurred shadows were removed.
+- În contrast ridicat rămâne randarea simplă cu contururi clare. / High-contrast mode keeps the simple high-visibility shapes.
+
+
 ## 2026-10-15 · Grafică realistă / Realistic graphics
 - Scena Poveste folosește un peisaj panoramic realist; fundalul nu mai este acoperit de un filtru albastru și de un câmp plat. / Story mode now uses a realistic panoramic landscape without the blue tint and flat grass overlay.
 - Traseul, obiectele de colecție, obstacolele, fanioanele și poarta sunt desenate cu texturi, umbre și forme canvas; sprite-ul lui Kygo rămâne neschimbat. / The path, collectibles, obstacles, flags, and gate use canvas shading and textures; Kygo’s sprite stays unchanged.
