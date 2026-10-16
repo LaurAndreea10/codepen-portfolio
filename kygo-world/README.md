@@ -1,10 +1,10 @@
 # Kygo World · Insulele din Nori
 
-**Build documentat:** `2026.10.15.2` (integrat în `main` prin PR #99) — scenă și obiecte desenate mai realist. Istoricul versiunilor păstrează etapele și commiturile codului.
+**Build documentat:** `2026.10.16.1` — obiecte 3D realiste și randare mai eficientă. Istoricul versiunilor păstrează etapele și commiturile codului.
 
 [Istoricul versiunilor](CHANGELOG.md) include etapele importante și commiturile GitHub cu codul exact; jocul îl afișează și în meniul „Istoricul versiunilor”. Istoricul complet rămâne în commiturile repository-ului.
 
-Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`, fără build sau biblioteci externe. Jocul folosește `sky-islands-realistic.webp` pentru peisaj și `kygo-sprite.webp` pentru Kygo; `sky-islands.jpg` păstrează coperta originală.
+Joc browser RO/EN inspirat de Kygo. Pornește direct din `index.html`, fără build sau biblioteci externe. Jocul folosește `sky-islands-realistic.webp` pentru peisaj, `kygo-sprite.webp` pentru Kygo și atlasurile `kygo-collectibles.webp` / `kygo-hazards.webp` pentru obiecte și obstacole; `sky-islands.jpg` păstrează coperta originală.
 
 ## Moduri
 
