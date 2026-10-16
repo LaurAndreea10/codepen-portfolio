@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Demo CRM browser-only cu o coadă offline persistentă, validare, Retry sigur, stare accesibilă și interfață RO/EN.">
+<meta name="color-scheme" content="dark light">
+<title>Coadă CRM offline — Practice Lab 11</title>
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/crm-offline-queue.html">
+<style>
+:root{color-scheme:dark;--bg:#07111f;--panel:#0d1c31;--panel2:#142842;--text:#f4f7ff;--muted:#b8c8df;--line:#355274;--accent:#82b2ff;--good:#6ee7ad;--warn:#ffd166;--danger:#ff92a0;--shadow:0 22px 64px rgba(0,0,0,.34)}
+[data-theme="light"]{color-scheme:light;--bg:#eef5ff;--panel:#fff;--panel2:#f4f8ff;--text:#132238;--muted:#52647d;--line:#b5c8df;--accent:#245fc5;--good:#08794d;--warn:#765100;--danger:#aa2638;--shadow:0 18px 48px rgba(36,74,125,.15)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 0,color-mix(in srgb,var(--accent) 18%,transparent),transparent 34%),var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input{font:inherit}.shell{width:min(100% - 2rem,980px);margin:auto;padding:1rem 0 3rem}.topbar,.controls,.status-line,.form-actions,.queue-head{display:flex;flex-wrap:wrap;align-items:center;gap:.65rem}.topbar,.queue-head{justify-content:space-between}.topbar{margin-bottom:2rem}.brand{color:var(--text);font-weight:850;text-decoration:none}.button{min-height:44px;border:1px solid var(--line);border-radius:.8rem;background:var(--panel2);color:var(--text);padding:.65rem .9rem;font-weight:800;cursor:pointer}.button.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}.button:disabled{cursor:not-allowed;opacity:.58}.button:hover:not(:disabled){filter:brightness(1.08)}:focus-visible{outline:3px solid var(--warn);outline-offset:3px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-size:.78rem;font-weight:900}h1{max-width:13ch;margin:.35rem 0 1rem;font-size:clamp(2rem,8vw,4.4rem);line-height:1.02}.lede{max-width:70ch;color:var(--muted);font-size:1.07rem}.layout{display:grid;gap:1rem;margin-top:2rem}.card{border:1px solid var(--line);border-radius:1.15rem;background:color-mix(in srgb,var(--panel) 95%,transparent);box-shadow:var(--shadow);padding:clamp(1rem,4vw,1.5rem)}.card h2{margin:.1rem 0 .8rem;font-size:1.22rem}label{display:block;margin:.9rem 0 .4rem;font-weight:800}input[type="text"]{display:block;width:100%;min-height:48px;border:1px solid var(--line);border-radius:.8rem;background:var(--panel2);color:var(--text);padding:.75rem .85rem}input[aria-invalid="true"]{border-color:var(--danger);box-shadow:0 0 0 1px var(--danger)}.field-meta{display:flex;justify-content:space-between;gap:1rem;margin:.4rem 0;color:var(--muted);font-size:.9rem}.error{min-height:1.5em;margin:.35rem 0;color:var(--danger);font-weight:750}.form-actions{margin-top:.7rem}.switches{display:grid;gap:.65rem;margin-top:1rem}.check{display:flex;align-items:flex-start;gap:.65rem;margin:0;padding:.75rem;border:1px solid var(--line);border-radius:.8rem;background:var(--panel2);font-weight:700}.check input{width:1.2rem;height:1.2rem;margin:.15rem 0 0;accent-color:var(--accent)}.status-line{justify-content:space-between;margin-top:1rem;padding:.85rem 1rem;border:1px solid var(--line);border-radius:.9rem;background:var(--panel2)}.connection{display:inline-flex;align-items:center;gap:.5rem;font-weight:850}.connection::before,.queue-state::before{content:"";width:.68rem;height:.68rem;border-radius:50%;background:var(--good)}.connection[data-state="offline"]::before{background:var(--warn)}.connection[data-state="error"]::before{background:var(--danger)}.queue-state{display:flex;align-items:center;gap:.5rem;color:var(--muted)}.queue{display:grid;gap:.7rem;margin:0;padding:0;list-style:none}.queue-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.4rem 1rem;border:1px solid var(--line);border-radius:.85rem;background:var(--panel2);padding:.85rem}.queue-item strong{overflow-wrap:anywhere}.queue-item small{color:var(--muted)}.queue-item .state{grid-row:1/3;grid-column:2;align-self:center;color:var(--warn);font-weight:850}.empty{color:var(--muted);padding:1.1rem 0}.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin:0 0 1rem}.metric{border:1px solid var(--line);border-radius:.85rem;background:var(--panel2);padding:.8rem}.metric strong{display:block;font-size:1.7rem}.metric span{color:var(--muted);font-size:.9rem}.notes{margin:0;padding-left:1.2rem;color:var(--muted)}.notes li+li{margin-top:.5rem}.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(min-width:760px){.shell{padding-top:1.5rem}.layout{grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr)}.side{align-self:start;position:sticky;top:1rem}}
+@media(max-width:380px){.button{width:100%}.controls{width:100%}.controls .button{width:auto;flex:1}.queue-item{grid-template-columns:1fr}.queue-item .state{grid-row:auto;grid-column:auto}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media(forced-colors:active){.card,.button,input,.check,.status-line,.queue-item{border:2px solid CanvasText}.connection::before,.queue-state::before{forced-color-adjust:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="topbar">
+<a class="brand" href="evolution-lab.html">← Evolution Lab</a>
+<div class="controls" aria-label="Preferințe interfață">
+<button class="button" id="languageButton" type="button" aria-label="Switch to English">EN</button>
+<button class="button" id="themeButton" type="button" data-i18n="themeLight">Temă deschisă</button>
+</div>
+</header>
+<main>
+<span class="eyebrow">Practice Lab II · 11 · Offline queue</span>
+<h1 data-i18n="title">Acțiunile CRM nu se pierd offline.</h1>
+<p class="lede" data-i18n="intro">O coadă local-first păstrează modificările până când conexiunea revine. Sincronizarea rulează o singură dată, validează starea restaurată și elimină doar operațiile confirmate.</p>
+
+<div class="layout">
+<div>
+<section class="card" aria-labelledby="formTitle">
+<h2 id="formTitle" data-i18n="formTitle">Adaugă o acțiune CRM</h2>
+<form id="actionForm" novalidate>
+<label for="actionInput" data-i18n="actionLabel">Următorul pas pentru client</label>
+<input id="actionInput" name="action" type="text" maxlength="120" required autocomplete="off" aria-describedby="actionHelp actionError">
+<div class="field-meta"><span id="actionHelp" data-i18n="actionHelp">Maximum 120 de caractere.</span><span id="counter">0 / 120</span></div>
+<p class="error" id="actionError" role="alert"></p>
+<div class="form-actions">
+<button class="button primary" type="submit" data-i18n="add">Adaugă în coadă</button>
+<button class="button" id="retryButton" type="button" data-i18n="retry">Reîncearcă sincronizarea</button>
+</div>
+</form>
+
+<div class="switches" aria-label="Controale de test">
+<label class="check"><input id="offlineDemo" type="checkbox"><span data-i18n="offlineDemo">Simulează modul offline</span></label>
+<label class="check"><input id="failureDemo" type="checkbox"><span data-i18n="failureDemo">Simulează o eroare la sincronizare</span></label>
+</div>
+
+<div class="status-line">
+<span class="connection" id="connectionStatus" data-state="online">Online</span>
+<span class="queue-state"><span id="syncStatus" role="status" aria-live="polite" aria-atomic="true">Pregătit.</span></span>
+</div>
+</section>
+
+<section class="card" aria-labelledby="queueTitle" style="margin-top:1rem">
+<div class="queue-head"><h2 id="queueTitle" data-i18n="queueTitle">Acțiuni în așteptare</h2><strong id="queueCount" aria-live="polite">0</strong></div>
+<p class="empty" id="emptyState" data-i18n="empty">Nu există acțiuni în coadă.</p>
+<ul class="queue" id="queueList" aria-label="Acțiuni în așteptare"></ul>
+</section>
+</div>
+
+<aside class="card side" aria-labelledby="evidenceTitle">
+<h2 id="evidenceTitle" data-i18n="evidenceTitle">Dovezi tehnice</h2>
+<div class="metric-grid">
+<div class="metric"><strong id="pendingMetric">0</strong><span data-i18n="pending">În așteptare</span></div>
+<div class="metric"><strong id="syncedMetric">0</strong><span data-i18n="synced">Sincronizate</span></div>
+</div>
+<ul class="notes">
+<li data-i18n="noteOne">Coada este validată înainte de restaurare.</li>
+<li data-i18n="noteTwo">Blocarea sincronizării există numai în memorie.</li>
+<li data-i18n="noteThree">Fiecare operație este eliminată doar după succes.</li>
+<li data-i18n="noteFour">Evenimentele online și offline actualizează interfața.</li>
+</ul>
+</aside>
+</div>
+</main>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const QUEUE_KEY = "crm-offline-queue-v1";
+  const LANGUAGE_KEY = "portfolio-language";
+  const THEME_KEY = "portfolio-theme";
+  const MAX_QUEUE_LENGTH = 100;
+  const SYNC_DELAY = 500;
+
+  const translations = {
+    ro: {
+      title: "Acțiunile CRM nu se pierd offline.",
+      intro: "O coadă local-first păstrează modificările până când conexiunea revine. Sincronizarea rulează o singură dată, validează starea restaurată și elimină doar operațiile confirmate.",
+      formTitle: "Adaugă o acțiune CRM", actionLabel: "Următorul pas pentru client", actionHelp: "Maximum 120 de caractere.",
+      placeholder: "Ex.: Trimite oferta actualizată", add: "Adaugă în coadă", retry: "Reîncearcă sincronizarea",
+      offlineDemo: "Simulează modul offline", failureDemo: "Simulează o eroare la sincronizare",
+      queueTitle: "Acțiuni în așteptare", empty: "Nu există acțiuni în coadă.", pending: "În așteptare", synced: "Sincronizate",
+      evidenceTitle: "Dovezi tehnice", noteOne: "Coada este validată înainte de restaurare.", noteTwo: "Blocarea sincronizării există numai în memorie.", noteThree: "Fiecare operație este eliminată doar după succes.", noteFour: "Evenimentele online și offline actualizează interfața.",
+      online: "Online", offline: "Offline", ready: "Pregătit.", savedOffline: "Acțiunea a fost păstrată local.", syncing: count => `Se sincronizează ${count} acțiuni…`,
+      syncedAll: "Toate acțiunile au fost sincronizate.", syncOne: "Se sincronizează…", waiting: "În așteptare",
+      syncError: "Sincronizarea a eșuat. Coada a fost păstrată pentru Retry.", nothing: "Nu există acțiuni de sincronizat.",
+      required: "Introdu o acțiune CRM.", tooLong: "Textul depășește 120 de caractere.", full: "Coada locală este plină.",
+      invalidRestore: "Date locale invalide ignorate.", storageError: "Coada nu a putut fi salvată în browser.",
+      themeLight: "Temă deschisă", themeDark: "Temă închisă"
+    },
+    en: {
+      title: "CRM actions are not lost offline.",
+      intro: "A local-first queue keeps changes until the connection returns. Synchronization runs only once, validates restored state and removes only confirmed operations.",
+      formTitle: "Add a CRM action", actionLabel: "Next step for the client", actionHelp: "Maximum 120 characters.",
+      placeholder: "E.g. Send the updated proposal", add: "Add to queue", retry: "Retry synchronization",
+      offlineDemo: "Simulate offline mode", failureDemo: "Simulate a synchronization error",
+      queueTitle: "Pending actions", empty: "There are no queued actions.", pending: "Pending", synced: "Synchronized",
+      evidenceTitle: "Technical evidence", noteOne: "The queue is validated before restoration.", noteTwo: "The synchronization lock exists only in memory.", noteThree: "Each operation is removed only after success.", noteFour: "Online and offline events update the interface.",
+      online: "Online", offline: "Offline", ready: "Ready.", savedOffline: "The action was stored locally.", syncing: count => `Synchronizing ${count} actions…`,
+      syncedAll: "All actions were synchronized.", syncOne: "Synchronizing…", waiting: "Pending",
+      syncError: "Synchronization failed. The queue was kept for Retry.", nothing: "There are no actions to synchronize.",
+      required: "Enter a CRM action.", tooLong: "The text exceeds 120 characters.", full: "The local queue is full.",
+      invalidRestore: "Invalid local data was ignored.", storageError: "The queue could not be saved in this browser.",
+      themeLight: "Light theme", themeDark: "Dark theme"
+    }
+  };
+
+  const elements = {
+    form: document.querySelector("#actionForm"), input: document.querySelector("#actionInput"), error: document.querySelector("#actionError"),
+    counter: document.querySelector("#counter"), retry: document.querySelector("#retryButton"), offline: document.querySelector("#offlineDemo"),
+    failure: document.querySelector("#failureDemo"), connection: document.querySelector("#connectionStatus"), sync: document.querySelector("#syncStatus"),
+    list: document.querySelector("#queueList"), empty: document.querySelector("#emptyState"), count: document.querySelector("#queueCount"),
+    pending: document.querySelector("#pendingMetric"), synced: document.querySelector("#syncedMetric"),
+    language: document.querySelector("#languageButton"), theme: document.querySelector("#themeButton")
+  };
+
+  const safeRead = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch { return fallback; } };
+  const safeWrite = (key, value) => { try { localStorage.setItem(key, value); return true; } catch { return false; } };
+  const createId = () => crypto.randomUUID?.() || `action-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  const delay = milliseconds => new Promise(resolve => window.setTimeout(resolve, milliseconds));
+  const isQueueItem = item => item && typeof item.id === "string" && item.id.length > 0 && typeof item.text === "string" && item.text.trim().length > 0 && item.text.length <= 120 && Number.isFinite(item.createdAt) && item.status === "pending";
+  const isEffectivelyOnline = () => navigator.onLine && !elements.offline.checked;
+
+  let language = safeRead(LANGUAGE_KEY, "ro") === "en" ? "en" : "ro";
+  let theme = safeRead(THEME_KEY, "dark") === "light" ? "light" : "dark";
+  let queue = [];
+  let synchronizedCount = 0;
+  let isSyncing = false;
+
+  const t = key => translations[language][key];
+
+  function restoreQueue() {
+    const raw = safeRead(QUEUE_KEY, "");
+    if (!raw) return;
+    try {
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed) || parsed.length > MAX_QUEUE_LENGTH || !parsed.every(isQueueItem)) throw new Error("invalid");
+      queue = parsed;
+    } catch {
+      queue = [];
+      elements.sync.textContent = t("invalidRestore");
+    }
+  }
+
+  function persistQueue() {
+    const saved = safeWrite(QUEUE_KEY, JSON.stringify(queue));
+    if (!saved) elements.sync.textContent = t("storageError");
+    return saved;
+  }
+
+  function formatTime(timestamp) {
+    return new Intl.DateTimeFormat(language === "ro" ? "ro-RO" : "en-GB", {hour: "2-digit", minute: "2-digit"}).format(new Date(timestamp));
+  }
+
+  function renderQueue() {
+    elements.list.replaceChildren();
+    elements.empty.hidden = queue.length > 0;
+    queue.forEach(item => {
+      const row = document.createElement("li");
+      row.className = "queue-item";
+      const text = document.createElement("strong");
+      text.textContent = item.text;
+      const time = document.createElement("small");
+      time.textContent = formatTime(item.createdAt);
+      const state = document.createElement("span");
+      state.className = "state";
+      state.textContent = t("waiting");
+      row.append(text, time, state);
+      elements.list.append(row);
+    });
+    elements.count.textContent = String(queue.length);
+    elements.pending.textContent = String(queue.length);
+    elements.synced.textContent = String(synchronizedCount);
+    elements.retry.disabled = isSyncing || queue.length === 0 || !isEffectivelyOnline();
+  }
+
+  function updateConnectionStatus() {
+    const online = isEffectivelyOnline();
+    elements.connection.dataset.state = online ? "online" : "offline";
+    elements.connection.textContent = online ? t("online") : t("offline");
+    elements.retry.disabled = isSyncing || queue.length === 0 || !online;
+  }
+
+  function validateInput() {
+    const value = elements.input.value.trim();
+    let message = "";
+    if (!value) message = t("required");
+    else if (value.length > 120) message = t("tooLong");
+    else if (queue.length >= MAX_QUEUE_LENGTH) message = t("full");
+    elements.input.setAttribute("aria-invalid", String(Boolean(message)));
+    elements.error.textContent = message;
+    return message ? null : value;
+  }
+
+  async function fakeSync() {
+    await delay(SYNC_DELAY);
+    if (elements.failure.checked) throw new Error("simulated failure");
+  }
+
+  async function syncQueue() {
+    if (isSyncing) return;
+    if (!isEffectivelyOnline()) {
+      elements.sync.textContent = t("savedOffline");
+      updateConnectionStatus();
+      return;
+    }
+    if (queue.length === 0) {
+      elements.sync.textContent = t("nothing");
+      renderQueue();
+      return;
+    }
+
+    isSyncing = true;
+    elements.sync.textContent = t("syncing")(queue.length);
+    elements.retry.disabled = true;
+    try {
+      while (queue.length > 0 && isEffectivelyOnline()) {
+        const firstState = elements.list.querySelector(".state");
+        if (firstState) firstState.textContent = t("syncOne");
+        await fakeSync(queue[0]);
+        queue.shift();
+        synchronizedCount += 1;
+        persistQueue();
+        renderQueue();
+      }
+      elements.sync.textContent = queue.length === 0 ? t("syncedAll") : t("savedOffline");
+    } catch {
+      elements.sync.textContent = t("syncError");
+    } finally {
+      isSyncing = false;
+      renderQueue();
+      updateConnectionStatus();
+    }
+  }
+
+  function applyLanguage() {
+    document.documentElement.lang = language;
+    document.querySelectorAll("[data-i18n]").forEach(node => {
+      const value = t(node.dataset.i18n);
+      if (typeof value === "string") node.textContent = value;
+    });
+    elements.input.placeholder = t("placeholder");
+    elements.language.textContent = language === "ro" ? "EN" : "RO";
+    elements.language.setAttribute("aria-label", language === "ro" ? "Switch to English" : "Schimbă în română");
+    elements.theme.textContent = theme === "dark" ? t("themeLight") : t("themeDark");
+    updateConnectionStatus();
+    renderQueue();
+  }
+
+  function applyTheme() {
+    document.documentElement.dataset.theme = theme;
+    elements.theme.textContent = theme === "dark" ? t("themeLight") : t("themeDark");
+  }
+
+  elements.form.addEventListener("submit", event => {
+    event.preventDefault();
+    const value = validateInput();
+    if (!value) { elements.input.focus(); return; }
+    queue.push({id: createId(), text: value, createdAt: Date.now(), status: "pending"});
+    persistQueue();
+    elements.form.reset();
+    elements.counter.textContent = "0 / 120";
+    elements.input.setAttribute("aria-invalid", "false");
+    elements.error.textContent = "";
+    elements.sync.textContent = t("savedOffline");
+    renderQueue();
+    if (isEffectivelyOnline()) syncQueue();
+  });
+
+  elements.input.addEventListener("input", () => {
+    elements.counter.textContent = `${elements.input.value.length} / 120`;
+    if (elements.input.getAttribute("aria-invalid") === "true") validateInput();
+  });
+  elements.retry.addEventListener("click", syncQueue);
+  elements.offline.addEventListener("change", () => {
+    updateConnectionStatus();
+    elements.sync.textContent = isEffectivelyOnline() ? t("ready") : t("savedOffline");
+    if (isEffectivelyOnline()) syncQueue();
+  });
+  elements.failure.addEventListener("change", () => { elements.sync.textContent = t("ready"); });
+  elements.language.addEventListener("click", () => {
+    language = language === "ro" ? "en" : "ro";
+    safeWrite(LANGUAGE_KEY, language);
+    applyLanguage();
+  });
+  elements.theme.addEventListener("click", () => {
+    theme = theme === "dark" ? "light" : "dark";
+    safeWrite(THEME_KEY, theme);
+    applyTheme();
+  });
+  window.addEventListener("online", () => { updateConnectionStatus(); syncQueue(); });
+  window.addEventListener("offline", () => { updateConnectionStatus(); elements.sync.textContent = t("savedOffline"); });
+
+  restoreQueue();
+  applyTheme();
+  applyLanguage();
+  elements.sync.textContent = t("ready");
+  if (isEffectivelyOnline() && queue.length > 0) syncQueue();
+})();
+</script>
+</body>
+</html>
