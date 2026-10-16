@@ -1,5 +1,10 @@
 # Kygo World — istoric al versiunilor / Version history
 
+## 2026-10-16 · v2026.10.16.2 · Randare fluidă și atlas reparat / Smoother rendering and repaired atlas
+- Povestea rulează la până la 30 FPS pe mobil (înainte 20) și 60 FPS pe ecrane mari (înainte 30); timpul simulării rămâne independent de ritmul desenării. / Story rendering now targets up to 30 FPS on mobile (was 20) and 60 FPS on larger screens (was 30); simulation timing stays independent of rendering cadence.
+- Atlasul de colecționabile corupt a fost înlocuit cu un WebP transparent valid, optimizat la 768×576; decuparea ține cont separat de lățimea și înălțimea celulelor. / Replaced the corrupt collectible atlas with a valid optimized 1024×768 transparent WebP; sprite cropping now uses each cell's actual width and height.
+- Progresul salvat, modurile RO/EN, contrastul ridicat și mișcarea redusă rămân păstrate. / Saved progress, RO/EN, high contrast, and reduced-motion support are preserved.
+
 ## 2026-10-16 · Obiecte realiste și randare mai rapidă / Realistic objects and faster rendering
 - Obiectele de colecție, obstacolele și poarta folosesc atlasuri foto-realiste cu fundal transparent, în aceeași lumină caldă ca sprite-ul lui Kygo. / Collectibles, hazards, and the finish gate now use photorealistic transparent sprites lit to match Kygo.
 - Sprite-urile și benzile de cursă sunt pregătite o singură dată și refolosite; au fost eliminate umbrele blurate calculate la fiecare cadru. / Sprites and racing lanes are pre-rendered and reused; per-frame blurred shadows were removed.

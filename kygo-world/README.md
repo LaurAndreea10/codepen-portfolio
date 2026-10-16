@@ -1,6 +1,6 @@
 # Kygo World · Insulele din Nori
 
-**Build documentat:** `2026.10.16.1` — obiecte 3D realiste și randare mai eficientă. Istoricul versiunilor păstrează etapele și commiturile codului.
+**Build documentat:** `2026.10.16.2` — randare fluidă pe mobil/desktop și atlas foto-realist de obiecte reparat. Istoricul versiunilor păstrează etapele și commiturile codului.
 
 [Istoricul versiunilor](CHANGELOG.md) include etapele importante și commiturile GitHub cu codul exact; jocul îl afișează și în meniul „Istoricul versiunilor”. Istoricul complet rămâne în commiturile repository-ului.
 
