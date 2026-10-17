@@ -93,7 +93,7 @@ const pages = [
   ["clipboard-crm-summary.html", "monthly", "0.75", "2026-09-21"],
   ["dashboard-activity-filter.html", "monthly", "0.75", "2026-09-23"],
   ["skydreams-portal/", "monthly", "0.8", "2026-09-27"],
-  ["kygo-world/", "monthly", "0.8", "2026-09-27"],
+  ["kygo-world/", "monthly", "0.8", "2026-10-16"],
   ["crm-accessible-form.html", "monthly", "0.75", "2026-09-25"],
   ["crm-json-backup.html", "monthly", "0.75", "2026-09-28"],
   ["crm-optimistic-undo.html", "monthly", "0.75", "2026-09-30"],
