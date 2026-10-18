@@ -23,6 +23,9 @@ Validăm dacă aplicația este ușor de folosit pe telefon, tabletă și desktop
 6. Deschide „Subiecte & bareme” și găsește un an.
 7. Deschide „Testare & feedback” și salvează observația.
 8. Verifică dark mode, română/engleză și mărirea textului.
+9. Deschide „Diagnostic”, alege o clasă și o materie, apoi termină testul.
+10. Verifică harta competențelor, treci la exercițiul adaptiv și printează raportul.
+11. Dintr-un quiz, semnalează o întrebare și verifică enunțul precompletat în formularul local.
 
 ## Criterii de acceptare
 
@@ -30,6 +33,9 @@ Validăm dacă aplicația este ușor de folosit pe telefon, tabletă și desktop
 - Un răspuns greșit este explicat și apare în registrul de greșeli.
 - Nicio funcție critică nu cere cont sau plată.
 - Feedbackul se salvează local și se poate exporta.
+- Harta competențelor se salvează local și se actualizează după un diagnostic nou.
+- Exercițiul adaptiv prioritizează subiectele sub 80%, eșantioanele scurte și răspunsurile greșite recente; fără date anterioare revine la setul mixt.
+- Raportul imprimabil afișează clasa, materia, nivelurile pe competențe și ultima simulare EN salvată.
 - Nu apar erori în consolă în traseul de mai sus.
 
 Nu introduceți nume, emailuri, fotografii sau alte date personale în observații.

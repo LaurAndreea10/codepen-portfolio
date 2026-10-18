@@ -13,8 +13,14 @@
     get(k, fb) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch { return fb; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } }
   };
-  const fresh = () => ({ v: 1, xp: 0, days: {}, quiz: {}, quizzes: 0, perfect: 0, cards: {}, reviews: 0, known: {}, fav: {}, memoRead: {}, pomos: 0, sims: [], plan: {}, badges: {}, mistakes: [], challenge: null, feedback: [] });
-  const validate = (s) => (s && typeof s === 'object' && s.v === 1 && typeof s.xp === 'number') ? Object.assign(fresh(), s) : fresh();
+  const fresh = () => ({ v: 1, xp: 0, days: {}, quiz: {}, quizzes: 0, perfect: 0, cards: {}, reviews: 0, known: {}, fav: {}, memoRead: {}, pomos: 0, sims: [], plan: {}, badges: {}, mistakes: [], challenge: null, feedback: [], diagnostics: [], mastery: {} });
+  const validate = (s) => {
+    if (!s || typeof s !== 'object' || s.v !== 1 || typeof s.xp !== 'number') return fresh();
+    const safe = Object.assign(fresh(), s);
+    safe.diagnostics = Array.isArray(safe.diagnostics) ? safe.diagnostics.filter((x) => x && typeof x === 'object') : [];
+    safe.mastery = safe.mastery && typeof safe.mastery === 'object' && !Array.isArray(safe.mastery) ? safe.mastery : {};
+    return safe;
+  };
   let S = validate(store.get(KEY));
   let SET = Object.assign({ lang: 'ro', theme: 'system', size: '1', font: '', contrast: false, motion: '', spacing: false, sound: true, grade: 0 }, store.get(SKEY, {}));
   const save = () => store.set(KEY, S);
@@ -288,6 +294,35 @@
   const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const inGrade = (g, sel) => !sel || (Array.isArray(g) ? g.includes(sel) : g === sel);
   const norm = (s) => String(s).toLocaleLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const reportQuestionUrl = (q) => { const p = new URLSearchParams({ item: `${q.s}-${q.g}`, subject: q.s, grade: q.g, q: pick(q.q) }); return `#feedback?${p}`; };
+  function competency(q) {
+    if (q.topic && typeof q.topic === 'string') return { id: q.topic, ro: q.topicLabel || q.topic, en: q.topicLabelEn || q.topicLabel || q.topic };
+    const text = norm(`${pick(q.q)} ${pick(q.x)}`);
+    const has = (...terms) => terms.some((w) => text.includes(norm(w)));
+    const topics = {
+      mat: [
+        ['number', 'Numere și operații', 'Numbers and operations', ['restul', 'divide', 'diviz', 'putere', 'exponent', 'multiplu', 'frac', 'procent', 'mean', 'remainder', 'power']],
+        ['algebra', 'Algebră și ecuații', 'Algebra and equations', ['ecuati', 'ecuaț', 'necunosc', 'x este', 'proport', 'raport', 'equation', 'unknown']],
+        ['geometry', 'Geometrie și măsurare', 'Geometry and measurement', ['unghi', 'triunghi', 'dreptunghi', 'arie', 'perimetru', 'cerc', 'cm', 'cm²', 'geometr', 'angle', 'triangle', 'area', 'perimeter']],
+        ['data', 'Date și probabilitate', 'Data and probability', ['probabil', 'media aritmetic', 'grafic', 'diagram', 'average', 'die', 'zar']]
+      ],
+      rom: [
+        ['reading', 'Înțelegerea textului', 'Reading comprehension', ['textul', 'fragment', 'autorul', 'ideea principal', 'personaj', 'citat', 'text', 'character', 'main idea']],
+        ['grammar', 'Gramatică', 'Grammar', ['substantiv', 'verb', 'adjectiv', 'pronume', 'predicat', 'subiectul', 'parte de vorbire', 'gramatic', 'noun', 'verb', 'adjective']],
+        ['writing', 'Comunicare și redactare', 'Writing and communication', ['scrie', 'formuleaz', 'enunț', 'propozi', 'punctua', 'ortograf', 'write', 'sentence']]
+      ],
+      fiz: [['physics', 'Fenomene și mărimi fizice', 'Physical quantities and phenomena', ['vitez', 'distan', 'timp', 'forț', 'energie', 'electric', 'temperatur', 'density', 'speed', 'force']]],
+      chi: [['chemistry', 'Substanțe și reacții', 'Substances and reactions', ['atom', 'molecul', 'element', 'substan', 'reacț', 'solution', 'chemical']]],
+      bio: [['biology', 'Organisme și viață', 'Organisms and life', ['celul', 'plant', 'animal', 'organism', 'sistem', 'ecosistem', 'body', 'photosynthesis']]],
+      ist: [['history', 'Cronologie și evenimente', 'Chronology and events', ['anul', 'secol', 'domn', 'război', 'eveniment', 'cauz', 'consecin', 'century', 'event']]],
+      geo: [['geography', 'Hărți și geografie', 'Maps and geography', ['hart', 'continent', 'clim', 'popula', 'relief', 'râu', 'ocean', 'map', 'country']]],
+      eng: [['english', 'Vocabular și gramatică', 'Vocabulary and grammar', ['choose', 'complete', 'verb', 'tense', 'word', 'sentence', 'vocabular', 'grammar']]]
+    };
+    const options = topics[q.s] || [];
+    const match = options.find(([, , , terms]) => has(...terms));
+    const fallback = { mat: ['math-mixed', 'Calcul și raționament', 'Calculation and reasoning'], rom: ['romanian-mixed', 'Limbă și text', 'Language and text'], fiz: ['physics-mixed', 'Noțiuni de fizică', 'Physics concepts'], chi: ['chemistry-mixed', 'Noțiuni de chimie', 'Chemistry concepts'], bio: ['biology-mixed', 'Noțiuni de biologie', 'Biology concepts'], ist: ['history-mixed', 'Noțiuni de istorie', 'History concepts'], geo: ['geography-mixed', 'Noțiuni de geografie', 'Geography concepts'], eng: ['english-mixed', 'Limba engleză', 'English language'] }[q.s] || ['general', 'Competență generală', 'General skills'];
+    return match ? { id: match[0], ro: match[1], en: match[2] } : { id: fallback[0], ro: fallback[1], en: fallback[2] };
+  }
   const fmtDate = (iso) => new Date(iso).toLocaleDateString(SET.lang === 'en' ? 'en-GB' : 'ro-RO', { day: 'numeric', month: 'short', year: 'numeric' });
   const daysUntil = (iso) => Math.ceil((new Date(iso + 'T09:00:00') - new Date()) / 86400000);
 
@@ -300,7 +335,7 @@
   const level = () => 1 + Math.floor(S.xp / 150);
   const accuracy = (s) => { const q = s ? S.quiz[s] : Object.values(S.quiz).reduce((a, b) => ({ ok: a.ok + b.ok, bad: a.bad + b.bad }), { ok: 0, bad: 0 }); if (!q) return null; const n = q.ok + q.bad; return n ? Math.round(q.ok / n * 100) : null; };
   function recordMistake(q, oi) {
-    const mistake = { id: q.s + '|' + pick(q.q), s: q.s, g: q.g, q: q.q, chosen: q.o[oi], correct: q.o[q.a], x: q.x, when: new Date().toISOString() };
+    const mistake = { id: q.s + '|' + pick(q.q), s: q.s, g: q.g, topic: competency(q).id, q: q.q, chosen: q.o[oi], correct: q.o[q.a], x: q.x, when: new Date().toISOString() };
     S.mistakes = [...(S.mistakes || [])].filter((m) => m && m.id !== mistake.id).concat(mistake).slice(-50);
     save();
   }
@@ -429,7 +464,8 @@
       <section aria-labelledby="quick-h">
         <h2 id="quick-h">${t('quick')}</h2>
         <div class="row">
-          <a class="btn primary" href="#quiz?n=5${g ? `&g=${g}` : ''}&go=1">${t('quickQuiz')}</a>
+          <a class="btn primary" href="#diagnostic?s=mat${g ? `&g=${g}` : ''}">${tx('Diagnostic inițial', 'Start diagnostic')}</a>
+          <a class="btn" href="#quiz?n=5${g ? `&g=${g}` : ''}&go=1">${t('quickQuiz')}</a>
           <a class="btn" href="#cartonase">${t('quickCards')}</a>
           <a class="btn" href="#formule${g ? `?g=${g}` : ''}">${t('quickFormulas')}</a>
           <a class="btn" href="#simulare">${t('quickSim')}</a>
@@ -754,18 +790,112 @@
   };
 
   /* ───────────── Quiz ───────────── */
-  VIEWS.quiz = (el, p) => {
-    const st = { s: p.get('s') || '', g: Number(p.get('g')) || SET.grade || 0, n: Number(p.get('n')) || 10 };
+  function renderMastery(grade, subject) {
+    const prefix = `${grade || 0}|${subject || 'all'}|`;
+    const rows = Object.entries(S.mastery || {}).filter(([key]) => key.startsWith(prefix)).map(([, value]) => value).sort((a, b) => a.pct - b.pct);
+    if (!rows.length) return `<section class="card stack"><h2>${tx('Harta competențelor', 'Skills map')}</h2><p class="muted">${tx('Încă nu ai un diagnostic pentru această selecție. După test, vei vedea aici ce ai stăpânit și ce merită repetat.', 'No diagnostic for this selection yet. After the test, this map will show what you know and what to revisit.')}</p></section>`;
+    return `<section class="card stack"><div class="row"><h2 style="margin:0">${tx('Harta competențelor', 'Skills map')}</h2><span class="chip">${rows.length}</span></div><div class="skill-map">${rows.map((x) => { const level = x.total < 3 ? tx('Eșantion mic', 'Small sample') : x.pct >= 80 ? tx('Stăpânit', 'Mastered') : x.pct >= 55 ? tx('În lucru', 'In progress') : tx('De repetat', 'Revisit'); return `<div class="skill-row"><div class="row"><strong>${esc(SET.lang === 'en' ? x.en : x.ro)}</strong><span class="spacer"></span><span>${x.pct}% · ${level} (${x.ok}/${x.total})</span></div><div class="progress" role="img" aria-label="${esc(SET.lang === 'en' ? x.en : x.ro)}: ${x.pct}%"><i style="width:${x.pct}%"></i></div></div>`; }).join('')}</div><p class="small muted">${tx('Eșantioanele sub 3 întrebări sunt doar indicii, nu concluzii.', 'Samples under 3 questions are clues, not conclusions.')}</p><p class="small muted">${tx('Ultima actualizare', 'Last updated')}: ${fmtDate(rows[0].date)}</p></section>`;
+  }
+  function renderAllMastery() {
+    const entries = Object.entries(S.mastery || {});
+    if (!entries.length) return `<section class="card stack"><h2>${tx('Harta competențelor', 'Skills map')}</h2><p class="muted">${tx('Completează un diagnostic pentru a începe harta competențelor.', 'Complete a diagnostic to start your skills map.')}</p><a class="btn primary" href="#diagnostic">${tx('Începe diagnosticul', 'Start diagnostic')} →</a></section>`;
+    const groups = new Map();
+    entries.forEach(([key, value]) => { const [grade, subject] = key.split('|'); const id = `${grade}|${subject}`; if (!groups.has(id)) groups.set(id, { grade, subject, items: [] }); groups.get(id).items.push(value); });
+    return `<section class="card stack"><h2>${tx('Harta competențelor', 'Skills map')}</h2>${[...groups.values()].map((g) => `<div class="skill-group"><h3>${g.subject === 'all' ? tx('Toate materiile', 'All subjects') : esc(subjName(g.subject))} · ${g.grade === '0' ? 'V–VIII' : `${tx('Clasa', 'Grade')} ${g.grade}`}</h3>${g.items.map((x) => `<div class="skill-row"><div class="row"><strong>${esc(SET.lang === 'en' ? x.en : x.ro)}</strong><span class="spacer"></span><span>${x.pct}% · ${x.total < 3 ? tx('eșantion mic', 'small sample') : ''} (${x.ok}/${x.total})</span></div><div class="progress" role="img" aria-label="${esc(SET.lang === 'en' ? x.en : x.ro)}: ${x.pct}%"><i style="width:${x.pct}%"></i></div></div>`).join('')}</div>`).join('')}<p class="small muted">${tx('Eșantioanele sub 3 întrebări sunt doar indicii, nu concluzii.', 'Samples under 3 questions are clues, not conclusions.')}</p></section>`;
+  }
+
+  VIEWS.diagnostic = (el, p) => {
+    const st = { s: p.get('s') || '', g: Number(p.get('g')) || SET.grade || 0 };
     let run = null;
     const pool = () => D.QUIZ.filter((q) => (!st.s || q.s === st.s) && (!st.g || q.g === st.g));
+    const setup = () => {
+      const all = pool();
+      el.innerHTML = head('◎', tx('Diagnostic și hartă de competențe', 'Diagnostic and skills map'), tx('Un test scurt identifică ce ai stăpânit și ce merită repetat. Rezultatul rămâne doar în acest browser.', 'A short test identifies what you know and what to revisit. Results stay in this browser.')) + `
+        <section class="card stack"><div class="filters">${subjPills(st.s, D.SUBJECTS)}${gradePills(st.g)}</div>
+          <p class="hint">${tx('Alege materia și clasa. Testul folosește întrebările existente și oferă o hartă orientativă, nu o notă școlară.', 'Choose a subject and grade. The test uses existing questions and gives an indicative map, not a school grade.')}</p>
+          <p class="count">${all.length} ${tx('întrebări disponibile', 'questions available')} · ${Math.min(12, all.length)} ${tx('în diagnostic', 'in the diagnostic')}</p>
+          <button class="btn primary" id="d-start" type="button" ${all.length ? '' : 'disabled'}>${tx('Începe diagnosticul', 'Start diagnostic')} →</button>
+        </section>
+        ${renderMastery(st.g, st.s)}
+        ${S.diagnostics.length ? `<p class="small muted">${tx('Ultimul diagnostic', 'Latest diagnostic')}: ${fmtDate(S.diagnostics.at(-1).date)} · ${S.diagnostics.at(-1).correct}/${S.diagnostics.at(-1).total}</p>` : ''}`;
+    };
+    const start = () => {
+      const all = pool();
+      const groups = new Map();
+      all.forEach((q) => { const id = competency(q).id; if (!groups.has(id)) groups.set(id, []); groups.get(id).push(q); });
+      for (const [id, qs] of groups) groups.set(id, shuffle(qs));
+      const questions = [];
+      while (questions.length < Math.min(12, all.length)) {
+        let added = false;
+        for (const qs of groups.values()) if (qs.length && questions.length < Math.min(12, all.length)) { questions.push(qs.pop()); added = true; }
+        if (!added) break;
+      }
+      run = { qs: questions.map((q) => ({ q, order: shuffle(q.o.map((_, i) => i)) })), i: 0, ok: 0, results: {} };
+      ask();
+    };
+    const ask = () => {
+      const { q, order } = run.qs[run.i];
+      const comp = competency(q);
+      el.innerHTML = head('◎', tx('Diagnostic', 'Diagnostic')) + `<div class="card q-card">
+        <div class="row"><span class="small muted">${tx('Întrebarea', 'Question')} ${run.i + 1}/${run.qs.length}</span><span class="spacer"></span>${subjChip(q.s)}<span class="chip">${t('gradeN')(q.g)}</span></div>
+        <p class="small muted">${esc(SET.lang === 'en' ? comp.en : comp.ro)}</p><div class="progress" aria-hidden="true"><i style="width:${run.i / run.qs.length * 100}%"></i></div>
+        <p class="q-text" id="d-q">${esc(pick(q.q))}</p><div class="opts" role="group" aria-labelledby="d-q">${order.map((oi, k) => `<button type="button" class="opt" data-d-answer="${oi}"><span class="key" aria-hidden="true">${'ABCD'[k]}</span><span>${esc(pick(q.o[oi]))}</span></button>`).join('')}</div><div id="d-fb" aria-live="polite"></div></div>`;
+      $('.opt', el)?.focus();
+    };
+    const choose = (oi) => {
+      const { q } = run.qs[run.i]; const ok = oi === q.a; const c = competency(q);
+      run.results[c.id] ||= { id: c.id, ro: c.ro, en: c.en, ok: 0, total: 0 };
+      run.results[c.id].total++; if (ok) { run.ok++; run.results[c.id].ok++; }
+      $$('.opt', el).forEach((b) => { b.disabled = true; const n = Number(b.dataset.dAnswer); if (n === q.a) b.classList.add('correct'); else if (n === oi) b.classList.add('wrong'); });
+      $('#d-fb', el).innerHTML = `<div class="feedback ${ok ? 'ok' : 'bad'}"><strong>${ok ? t('correct') : t('wrong')}</strong> ${ok ? '' : `${t('rightWas')} <strong>${esc(pick(q.o[q.a]))}</strong>. `}${esc(pick(q.x))}</div><div class="row" style="margin-top:1rem"><a class="btn" href="${reportQuestionUrl(q)}">${tx('Semnalează o problemă', 'Report a problem')}</a><button type="button" class="btn primary" id="d-next">${run.i === run.qs.length - 1 ? t('finish') : t('next')} →</button></div>`;
+      $('#d-next', el).focus();
+    };
+    const finish = () => {
+      const date = new Date().toISOString(); const subject = st.s || 'all'; const grade = st.g || SET.grade || 0;
+      const record = { date, subject, grade, total: run.qs.length, correct: run.ok, skills: Object.values(run.results) };
+      S.diagnostics = [...(S.diagnostics || []), record].slice(-30);
+      S.mastery ||= {};
+      record.skills.forEach((skill) => { S.mastery[`${grade}|${subject}|${skill.id}`] = { ...skill, pct: Math.round(skill.ok / skill.total * 100), date }; });
+      save();
+      const pct = Math.round(run.ok / run.qs.length * 100);
+      const rows = record.skills.map((x) => { const score = Math.round(x.ok / x.total * 100); const label = x.total < 3 ? tx('Eșantion mic — repetă', 'Small sample — retry') : score >= 80 ? tx('Stăpânit', 'Mastered') : score >= 55 ? tx('În lucru', 'In progress') : tx('De repetat', 'Revisit'); return `<tr><th scope="row">${esc(SET.lang === 'en' ? x.en : x.ro)}</th><td>${x.ok}/${x.total}</td><td><span class="chip">${score}% · ${label}</span></td></tr>`; }).join('');
+      el.innerHTML = head('◎', tx('Harta ta de recapitulare', 'Your revision map'), tx('Rezultatul este orientativ și bazat doar pe răspunsurile din acest diagnostic.', 'This result is indicative and based only on answers in this diagnostic.')) +
+        `<section class="card stack"><p class="result-big">${run.ok}/${run.qs.length} <span class="muted" style="font-size:1.4rem">· ${pct}%</span></p><p>${tx('Clasa', 'Grade')} ${grade || 'V–VIII'} · ${subject === 'all' ? tx('Toate materiile', 'All subjects') : esc(subjName(subject))}</p>${S.sims.length ? `<p class="hint">${tx('Ultima simulare EN', 'Latest national assessment mock')}: ${S.sims.at(-1).p}/100 · ${fmtDate(S.sims.at(-1).d)} · ${S.sims.at(-1).k === 'mat' ? t('simMat') : t('simRom')}</p>` : ''}<div class="table-wrap"><table><thead><tr><th>${tx('Competență', 'Skill')}</th><th>${tx('Corecte', 'Correct')}</th><th>${tx('Nivel', 'Level')}</th></tr></thead><tbody>${rows}</tbody></table></div><h2>${tx('Ce urmează?', 'What next?')}</h2><p>${tx('Repetă mai întâi competențele marcate „De repetat”, apoi încearcă un quiz adaptiv.', 'Review skills marked “Revisit” first, then try an adaptive quiz.')}</p><div class="row"><a class="btn primary" href="#quiz?mode=adaptive${st.s ? `&s=${st.s}` : ''}${grade ? `&g=${grade}` : ''}&n=10&go=1">${tx('Exersează punctele slabe', 'Practice weak areas')} →</a><button type="button" class="btn" id="d-print">${tx('Printează raportul', 'Print report')}</button><button type="button" class="btn" id="d-again">${tx('Refă diagnosticul', 'Retake diagnostic')}</button><a class="btn" href="#progres">${tx('Vezi progresul', 'View progress')}</a></div><p class="hint">${tx('Sursă: întrebările și explicațiile incluse în Gimnaziu Space. Harta nu reprezintă o evaluare oficială.', 'Source: questions and explanations included in Gimnaziu Space. This map is not an official assessment.')}</p></section>`;
+      $('#d-print', el).onclick = () => window.print(); $('#d-again', el).onclick = setup;
+    };
+    setup();
+    el.addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.s !== undefined) { st.s = b.dataset.s; setup(); }
+      else if (b.dataset.g !== undefined) { st.g = Number(b.dataset.g) || 0; setup(); }
+      else if (b.id === 'd-start') start();
+      else if (b.dataset.dAnswer !== undefined) choose(Number(b.dataset.dAnswer));
+      else if (b.id === 'd-next') { run.i++; run.i < run.qs.length ? ask() : finish(); }
+    });
+  };
+
+  VIEWS.quiz = (el, p) => {
+    const st = { s: p.get('s') || '', g: Number(p.get('g')) || SET.grade || 0, n: Number(p.get('n')) || 10 };
+    let mode = p.get('mode') === 'adaptive' ? 'adaptive' : 'standard';
+    let run = null;
+    const pool = () => {
+      const all = D.QUIZ.filter((q) => (!st.s || q.s === st.s) && (!st.g || q.g === st.g));
+      if (mode !== 'adaptive') return all;
+      const prefix = `${st.g || 0}|${st.s || 'all'}|`;
+      const weak = new Set(Object.entries(S.mastery || {}).filter(([key, v]) => key.startsWith(prefix) && (v.pct < 80 || v.total < 3)).map(([key]) => key.split('|').slice(2).join('|')));
+      (S.mistakes || []).slice(-40).forEach((m) => { if ((!st.s || m.s === st.s) && (!st.g || m.g === st.g)) weak.add(m.topic || competency(m).id); });
+      const targeted = all.filter((q) => weak.has(competency(q).id));
+      return targeted.length ? targeted : all;
+    };
     const setup = () => {
       const n = pool().length;
       el.innerHTML = head('?', t('quizTitle'), t('quizLede')) + `
         <div class="filters">${subjPills(st.s, D.SUBJECTS)}${gradePills(st.g)}
+          <div class="filter-row" role="group" aria-label="${tx('Mod de exercițiu', 'Practice mode')}"><span class="lbl">${tx('Mod', 'Mode')}</span><button type="button" class="pill" data-mode="standard" aria-pressed="${mode === 'standard'}">${tx('Mixt', 'Mixed')}</button><button type="button" class="pill" data-mode="adaptive" aria-pressed="${mode === 'adaptive'}">${tx('Adaptiv', 'Adaptive')}</button></div>
           <div class="filter-row" role="group" aria-label="${t('howMany')}"><span class="lbl" aria-hidden="true">${t('howMany')}</span>
             ${[5, 10, 15].map((x) => `<button type="button" class="pill" data-n="${x}" aria-pressed="${st.n === x}">${x}</button>`).join('')}</div>
         </div>
-        <p class="count">${t('nQuiz')(n)}</p>
+        <p class="count">${t('nQuiz')(n)}${mode === 'adaptive' ? ` · ${tx('selectate după harta ta și greșelile recente', 'selected from your skills map and recent mistakes')}` : ''}</p>
         <button type="button" class="btn primary" id="q-start" ${n ? '' : 'disabled'}>${t('start')}</button>
         ${n ? '' : `<p class="muted" style="margin-top:.75rem">${t('noQuestions')}</p>`}`;
     };
@@ -808,7 +938,7 @@
       });
       const last = run.i === run.qs.length - 1;
       $('#q-fb', el).innerHTML = `<div class="feedback ${ok ? 'ok' : 'bad'}"><strong>${ok ? t('correct') : t('wrong')}</strong> ${ok ? '' : `${t('rightWas')} <strong>${esc(pick(q.o[q.a]))}</strong>. `}${esc(pick(q.x))}</div>
-        <div class="row" style="margin-top:1rem"><button type="button" class="btn primary" id="q-next">${last ? t('finish') : t('next')} →</button></div>`;
+        <div class="row" style="margin-top:1rem"><a class="btn" href="${reportQuestionUrl(q)}">${tx('Semnalează o problemă', 'Report a problem')}</a><button type="button" class="btn primary" id="q-next">${last ? t('finish') : t('next')} →</button></div>`;
       $('#q-next', el).focus();
     };
     const finish = () => {
@@ -832,6 +962,7 @@
       const b = e.target.closest('button'); if (!b) return;
       if (b.hasAttribute('data-s')) { st.s = b.dataset.s; setup(); $(`[data-s="${st.s}"]`, el).focus(); }
       else if (b.hasAttribute('data-g')) { st.g = Number(b.dataset.g) || 0; setup(); $(`[data-g="${b.dataset.g}"]`, el).focus(); }
+      else if (b.dataset.mode) { mode = b.dataset.mode; setup(); $(`[data-mode="${mode}"]`, el).focus(); }
       else if (b.dataset.n) { st.n = Number(b.dataset.n); setup(); $(`[data-n="${st.n}"]`, el).focus(); }
       else if (b.id === 'q-start' || b.id === 'q-again') start();
       else if (b.id === 'q-setup') { run = null; setup(); $('h1', el).focus(); }
@@ -1031,6 +1162,7 @@
           .map(([k, n]) => `<div class="stat"><b>${n}</b><span>${st[k]}</span></div>`).join('')}
       </div>
       <p class="small muted" style="margin-top:.5rem">${t('level')(level())}</p>
+      ${renderAllMastery()}
       <section class="card"><h2>${t('activity')}</h2>
         <div class="heat" role="img" aria-label="${t('activity')}: ${days.filter((x) => x[1]).length}/28">${days.map(([k, v]) => `<i data-l="${lvl(v)}" title="${k}: ${v} XP"></i>`).join('')}</div>
       </section>
@@ -1132,7 +1264,7 @@
       el.innerHTML = head('▣', tx('Subiecte și bareme', 'Past papers and marking schemes'), tx('Lucrează singur, apoi verifică fiecare punct în sursa oficială. Linkurile sunt gratuite și duc către arhiva Ministerului.', 'Work independently, then check each point in the official source. The links are free and open the Ministry archive.')) + `
         <section class="card stack">
           <div class="filters"><label class="sr" for="archive-year">${tx('Alege anul', 'Choose year')}</label><select id="archive-year" class="search"><option value="all">${tx('Toți anii', 'All years')}</option>${years.map((x) => `<option value="${x.year}" ${selected === String(x.year) ? 'selected' : ''}>${x.year}</option>`).join('')}</select><span class="chip">${list.length} ${tx('ani disponibili', 'years available')}</span></div>
-          <div class="grid g2">${list.map((x) => `<article class="card archive-card"><div class="row"><span class="big" aria-hidden="true">📄</span><div><h2 style="margin:0">${x.year}</h2><p class="small muted">${esc(pick(x.t))}</p></div></div><p>${esc(pick(x.d))}</p><a class="btn primary" href="${x.u}" target="_blank" rel="noopener noreferrer">${tx('Deschide arhiva oficială', 'Open official archive')} ↗</a></article>`).join('')}</div>
+          <div class="grid g2">${list.map((x) => `<article class="card archive-card"><div class="row"><span class="big" aria-hidden="true">📄</span><div><h2 style="margin:0">${x.year}</h2><p class="small muted">${esc(pick(x.t))}</p></div></div><p>${esc(pick(x.d))}</p><p class="source-meta"><strong>${tx('Sursă oficială', 'Official source')}:</strong> ${esc(x.source || 'subiecte.edu.ro')} · ${tx('an selectat', 'selected year')}: ${x.year}. ${tx('Pagina oficială permite alegerea probei și a fișierului original.', 'The official archive lets you choose the subject and original file.')}</p><a class="btn primary" href="${x.u}" target="_blank" rel="noopener noreferrer">${tx('Deschide arhiva oficială', 'Open official archive')} ↗</a></article>`).join('')}</div>
           <p class="hint">${tx('Pentru clasele V–VII, aplicația oferă exerciții orientative; arhiva standardizată este relevantă în principal pentru Evaluarea Națională de la clasa a VIII-a.', 'For grades 5–7, the app provides orientation practice; the standardized archive is mainly relevant to the National Assessment in grade 8.')}</p>
         </section>`;
     };
@@ -1170,7 +1302,7 @@
   };
 
 
-  VIEWS.feedback = (el) => {
+  VIEWS.feedback = (el, p) => {
     const records = (S.feedback || []).slice().reverse();
     const option = (value, ro, en, selected) => '<option value="' + value + '"' + (selected ? ' selected' : '') + '>' + tx(ro, en) + '</option>';
     const paint = () => {
@@ -1214,6 +1346,12 @@
       $('#feedback-clear', el)?.addEventListener('click', () => { S.feedback = []; save(); paint(); });
     };
     paint();
+    if (p?.get('item')) {
+      $('#fb-task', el).value = 'quiz';
+      if (p.get('grade')) $('#fb-grade', el).value = p.get('grade');
+      $('#fb-note', el).value = `${tx('Problemă semnalată la întrebarea', 'Issue reported for question')}: “${p.get('q') || p.get('item')}” · ${p.get('subject') || ''} · ${tx('Descrie ce trebuie verificat.', 'Describe what should be checked.')}`;
+      $('#fb-note', el).focus();
+    }
   };
 
   /* ───────────── Despre ───────────── */

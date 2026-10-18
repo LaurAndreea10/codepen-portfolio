@@ -17,9 +17,10 @@ Aplicație de recapitulare pentru clasele V–VIII și Evaluarea Națională, co
 | Glosar | 39 de termeni explicați pe scurt |
 | Cartonașe | Repetare spațiată Leitner în 5 cutii, generată automat din formule, memoratoare, date istorice și glosar |
 | Quiz + AI Coach | 83 de întrebări cu explicații, registru persistent al greșelilor și AI Coach local pentru întrebări și explicații |
+| Diagnostic + quiz adaptiv | Test scurt pe clasă și materie, hartă orientativă de competențe, apoi exerciții prioritizate după rezultate și greșeli recente |
 | Simulare EN | Matematică (12 itemi + 3 probleme cu barem orientativ) și Română (text original, 6 itemi, compunere cu listă de verificare), cu cronometru |
 | Focus & plan | Pomodoro 25/5/15 și plan de 7 zile |
-| Progres | XP, serie de zile, activitate pe 28 de zile, acuratețe pe materii, 12 insigne, istoric simulări, export/import/ștergere |
+| Progres | XP, serie de zile, activitate pe 28 de zile, acuratețe pe materii, hartă de competențe, raport diagnostic imprimabil, 12 insigne, istoric simulări, export/import/ștergere |
 
 ## Unificare cu ExamSpace V–VIII
 
@@ -61,6 +62,9 @@ Realizat de Laura Andreea · proiect din portofoliul CodePen, în dezvoltare.
 - AI Coach local, fără API plătit, cu explicații pentru concepte și răspunsuri greșite.
 - Registru persistent al greșelilor, repetare, explicații și pași de reparare.
 - Arhivă pe ani pentru subiecte și bareme, cu link către sursa oficială.
+- Fiecare fișă din arhivă afișează sursa oficială și anul; pagina deschisă permite alegerea probei și fișierului original.
+- Diagnostic local, hartă orientativă a competențelor, exercițiu adaptiv și raport imprimabil care poate include ultima simulare EN.
+- Semnalarea unei întrebări pornește formularul local de feedback cu materia, clasa și enunțul completate.
 - Provocarea zilei, XP, serii, insigne, progres și certificat local.
 - Partajare prin Web Share/clipboard, printare, backup JSON și export local.
 - PWA/offline, dark/light, contrast ridicat, text mărit, Lexend, reduced motion și tastatură.

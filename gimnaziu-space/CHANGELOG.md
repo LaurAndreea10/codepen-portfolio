@@ -38,3 +38,13 @@ Pachet de validare și lansare fără costuri:
 - texte pregătite pentru Facebook și LinkedIn;
 - ghid pentru capturi reale și trasee live;
 - bundle și service worker actualizate.
+
+
+## 2.3.0 — 2026-10-18
+
+- Diagnostic inițial pe clasă și materie, cu hartă locală a competențelor.
+- Quiz adaptiv care prioritizează competențele sub 80% și greșelile recente.
+- Raport de recapitulare imprimabil, cu rezultate pe competențe și ultima simulare EN.
+- Proveniență vizibilă pentru fiecare an din arhivă: Ministerul Educației și subiecte.edu.ro.
+- Semnalarea unei probleme pornește formularul local cu întrebarea, clasa și materia completate.
+- Backupurile existente primesc câmpurile noi în mod compatibil; datele rămân locale.
