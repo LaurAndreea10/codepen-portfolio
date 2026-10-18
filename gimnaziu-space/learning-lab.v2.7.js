@@ -10,7 +10,7 @@ var pick=function(v){return typeof v==='string'?v:(v&&v[lang()])||(v&&v.ro)||''}
 var state=function(){return window.GS&&window.GS.state?window.GS.state():{}};
 function mission(){
  var s=state(), recent=(s.mistakes||[]).filter(function(m){return m&&m.s&&m.g}).slice(-20).reverse();
- if(recent.length){var m=recent[0],sub=SUBJECTS.find(function(x){return x.id===m.s});return {s:m.s,g:Number(m.g),label:sub?pick(sub):m.s,mode:'errors',detail:tr('Începe cu o greșeală recentă și exersează încă 5 întrebări din materia ei.','Start from a recent mistake, then practise 5 more questions in that subject.')}} 
+ if(recent.length){var m=recent[0],sub=SUBJECTS.find(function(x){return x.id===m.s});return {s:m.s,g:Number(m.g),label:sub?pick(sub):m.s,mode:'adaptive',detail:tr('Începe cu o greșeală recentă și exersează încă 5 întrebări din materia ei.','Start from a recent mistake, then practise 5 more questions in that subject.')}} 
  var weak=Object.entries(s.mastery||{}).filter(function(x){return x[1]&&(Number(x[1].pct)<80||Number(x[1].total)<3)}).sort(function(a,b){return (Number(a[1].pct)||0)-(Number(b[1].pct)||0)});
  if(weak.length){var p=weak[0][0].split('|'),g=Number(p[0])||7,id=p[1]||'mat',sub=SUBJECTS.find(function(x){return x.id===id});return {s:id,g:g,label:sub?pick(sub):id,mode:'adaptive',detail:tr('Am ales o zonă din harta ta de competențe care merită exersată.','I picked an area from your skills map that could use practice.')}} 
  var quiz=s.quiz||{},w=SUBJECTS.map(function(x){return {x:x,v:quiz[x.id]||{ok:0,bad:0}}}).filter(function(y){return y.v.ok+y.v.bad>0}).sort(function(a,b){return a.v.ok/Math.max(1,a.v.ok+a.v.bad)-b.v.ok/Math.max(1,b.v.ok+b.v.bad)})[0],sub=w?w.x:SUBJECTS[0];
