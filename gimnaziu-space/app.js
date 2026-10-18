@@ -1114,7 +1114,7 @@
       $('#coach-ask', el).onclick = () => { answer.hidden = false; answer.innerHTML = coachAnswer(question.value); };
       $('#coach-mistakes', el).onclick = () => { answer.hidden = false; answer.innerHTML = records.length ? explainMistake(records[0]) : coachAnswer('greșeli'); };
       $('[data-mistake]', el).forEach((b) => { b.onclick = () => { answer.hidden = false; answer.innerHTML = explainMistake(records[Number(b.dataset.mistake)]); answer.scrollIntoView({ block: 'nearest' }); }; });
-      $('#coach-clear', el)?.addEventListener('click', () => { S.mistakes = []; save(); render(); });
+      $('#coach-clear', el)?.addEventListener('click', () => { S.mistakes = []; save(); route(); });
     };
     render();
   };
