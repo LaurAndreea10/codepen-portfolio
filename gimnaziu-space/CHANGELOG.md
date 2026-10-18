@@ -78,3 +78,11 @@ Pachet de validare și lansare fără costuri:
 - Rezultatele PISA intră în backupul verificat; datele vechi rămân compatibile.
 - Actualizat cache-ul PWA și descrierile pentru noile module.
 - Pagina precizează că sarcinile sunt orientative, nu itemi, punctaje sau evaluări oficiale OECD/PISA.
+
+## 2.7.0 — 2026-10-18
+
+- Pagina Acasă recomandă o misiune scurtă de 5 întrebări din greșelile recente, harta competențelor sau rezultatele quizurilor; progresul rămâne local.
+- Progres → include o fișă imprimabilă din ultimele 20 de greșeli salvate, cu răspunsul ales, răspunsul corect și explicația existentă.
+- Acasă → „Acoperirea băncii” afișează câte întrebări sunt etichetate pentru fiecare materie și clasă, cu legături către quizurile filtrate.
+- Matricea descrie doar banca actuală de întrebări și precizează că nu certifică acoperirea programei.
+- Extensie bilingvă în fișier separat, fără conturi, servicii externe sau date trimise în afara browserului; cache-ul offline a fost actualizat.
