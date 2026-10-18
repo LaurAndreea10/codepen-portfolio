@@ -8,13 +8,15 @@ ExamSpace V–VIII is a browser-first, bilingual Romanian/English study space fo
 - Subjects and lessons for mathematics, Romanian, science, history, geography and English
 - Formula vault with search and voice readout
 - Active-recall memory cards with spaced-review guidance
-- Quiz mode with explanations and mistake review
+- Quiz mode with explanations, a persistent wrong-answer log and repair steps
+- AI Coach question area with local, transparent guidance for formulas, concepts and recorded mistakes
 - Seven-day study plan and focus timer
 - Timed orientation simulation
 - Official past-paper archive for National Assessment grade 8, with year filters and links to subjects + marking schemes
 - Dark/light theme, high contrast, larger text, reduced motion, keyboard navigation and voice readout
 - Romanian/English interface toggle
-- Local export/import/reset of progress
+- Local export/import/reset of progress, including the mistake log
+- The active streak starts at 0 and grows only after learning progress is recorded
 - Lightweight offline cache and no backend
 
 ## Important note
