@@ -1,8 +1,8 @@
 'use strict';
 // Gimnaziu Space service worker: network-first pentru pagini, stale-while-revalidate pentru fișiere.
-const CACHE = 'gimnaziu-space-v2.7.0';
+const CACHE = 'gimnaziu-space-v2.8.0';
 const ROOT = new URL('./', self.location.href).href;
-const ASSETS = ['./', 'index.html', 'styles.css', 'styles.v2.4.css', 'styles.v2.5.css', 'data.js', 'data.v2.4.js', 'progress.v2.5.js', 'app.js', 'app.v2.1.js', 'app.v2.2.js', 'app.v2.3.js', 'app.v2.4.js', 'app.v2.5.js', 'learning-lab.v2.7.js', 'manifest.webmanifest', 'icon.svg'].map(p => new URL(p, ROOT).href);
+const ASSETS = ['./', 'index.html', 'styles.css', 'styles.v2.4.css', 'styles.v2.5.css', 'data.js', 'data.v2.4.js', 'progress.v2.5.js', 'app.js', 'app.v2.1.js', 'app.v2.2.js', 'app.v2.3.js', 'app.v2.4.js', 'app.v2.5.js', 'learning-lab.v2.7.js', 'comper.v1.js', 'manifest.webmanifest', 'icon.svg'].map(p => new URL(p, ROOT).href);
 
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())));
 self.addEventListener('activate', event => event.waitUntil(
