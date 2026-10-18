@@ -64,7 +64,7 @@ function render(rootEl){
   practice.href='#quiz?s='+sub.value+'&g='+grade.value;
  }
  [edit,sub,stage,grade].forEach(function(select){select.addEventListener('change',update)});
- update();document.querySelectorAll('[data-nav]').forEach(function(a){a.removeAttribute('aria-current')});if(h)h.focus({preventScroll:true})
+ update();document.querySelectorAll('[data-nav]').forEach(function(a){a.removeAttribute('aria-current')});var active=document.querySelector('[data-nav=comper]');if(active)active.setAttribute('aria-current','page');if(h)h.focus({preventScroll:true})
 }
 function card(){
  return '<section class="card stack" data-comper-card><p class="eyebrow">COMPER · 2025–2026</p><h2>'+esc(tr('Subiecte și bareme pentru clasele V–VIII','COMPER papers and marking schemes for grades 5–8'))+'</h2><p class="muted">'+esc(tr('Alege materia, etapa și clasa; deschide documentele publicate de organizator.','Choose subject, stage and grade; open the organizer’s published documents.'))+'</p><div class="row"><a class="btn primary" href="#comper">'+esc(tr('Deschide arhiva COMPER','Open COMPER tests'))+' →</a><a class="btn" href="'+archive+'" target="_blank" rel="noopener">'+esc(tr('Arhiva oficială','Official archive'))+' ↗</a></div></section>'
