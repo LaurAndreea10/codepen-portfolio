@@ -349,6 +349,9 @@ legend { font-weight: 700; margin-bottom: .45rem; padding: 0; }
   .brand-name em { display: none; }
   .topbar { gap: .45rem; padding-left: .6rem; padding-right: .6rem; }
   .top-tools { gap: .35rem; }
+  .network-status { width: 1.35rem; height: 1.35rem; overflow: hidden; padding: 0; font-size: 0; text-align: center; }
+  .network-status::before { content: '●'; display: block; font-size: .72rem; line-height: 1.35rem; }
+  .network-status[data-state="update"]::before { content: '↻'; font-size: .9rem; }
   .top-tools .seg button { padding: 0 .55rem; }
   .memo dl { grid-template-columns: 1fr; }
   .memo dt { border-top: 1px solid var(--line); padding-bottom: 0; }
@@ -395,4 +398,14 @@ button, a { touch-action: manipulation; }
 .table-wrap table { width: 100%; border-collapse: collapse; }
 .table-wrap th, .table-wrap td { text-align: start; padding: .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
 .table-wrap th { font-weight: 700; }
+.network-status { white-space: nowrap; font-size: .76rem; }
+.network-status[data-state="offline"] { background: var(--warn-soft); color: var(--ink); }
+.read-guide { position: fixed; z-index: 99; inset-inline: 0; height: 2.25rem; pointer-events: none; background: rgba(255, 224, 102, .18); border-block: 1px solid rgba(150, 110, 0, .35); top: var(--guide-y, 42vh); }
+.read-guide[hidden] { display: none; }
+.quiz-focus #sidenav, .quiz-focus .topbar, .quiz-focus .tabbar { opacity: .15; transition: opacity .2s; }
+.quiz-focus #sidenav:hover, .quiz-focus .topbar:hover, .quiz-focus .tabbar:hover { opacity: 1; }
+.hint-tier { margin-top: .65rem; padding: .65rem .8rem; border-inline-start: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+.trend-line { display:flex; align-items:end; gap:.35rem; min-height:120px; padding:.75rem; border-bottom:1px solid var(--line); }
+.trend-line i { flex:1; min-width:12px; background:var(--accent); border-radius:6px 6px 0 0; position:relative; }
+.trend-line i span { position:absolute; bottom:calc(100% + .25rem); left:50%; transform:translateX(-50%); font-size:.72rem; white-space:nowrap; color:var(--ink-2); }
 @media print { .topbar, .sidenav, .tabbar, .btn, .filters { display: none !important; } body { background: #fff !important; color: #111 !important; } .card { break-inside: avoid; box-shadow: none !important; } }

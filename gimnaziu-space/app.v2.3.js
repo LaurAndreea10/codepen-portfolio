@@ -13,12 +13,13 @@
     get(k, fb) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch { return fb; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } }
   };
-  const fresh = () => ({ v: 1, xp: 0, days: {}, quiz: {}, quizzes: 0, perfect: 0, cards: {}, reviews: 0, known: {}, fav: {}, memoRead: {}, pomos: 0, sims: [], plan: {}, badges: {}, mistakes: [], challenge: null, feedback: [], diagnostics: [], mastery: {} });
+  const fresh = () => ({ v: 1, xp: 0, days: {}, quiz: {}, quizTime: {}, quizzes: 0, perfect: 0, cards: {}, reviews: 0, known: {}, fav: {}, memoRead: {}, pomos: 0, sims: [], plan: {}, badges: {}, mistakes: [], challenge: null, feedback: [], diagnostics: [], mastery: {} });
   const validate = (s) => {
     if (!s || typeof s !== 'object' || s.v !== 1 || typeof s.xp !== 'number') return fresh();
     const safe = Object.assign(fresh(), s);
     safe.diagnostics = Array.isArray(safe.diagnostics) ? safe.diagnostics.filter((x) => x && typeof x === 'object') : [];
     safe.mastery = safe.mastery && typeof safe.mastery === 'object' && !Array.isArray(safe.mastery) ? safe.mastery : {};
+    safe.quizTime = safe.quizTime && typeof safe.quizTime === 'object' && !Array.isArray(safe.quizTime) ? safe.quizTime : {};
     return safe;
   };
   let S = validate(store.get(KEY));
@@ -334,8 +335,23 @@
   }
   const level = () => 1 + Math.floor(S.xp / 150);
   const accuracy = (s) => { const q = s ? S.quiz[s] : Object.values(S.quiz).reduce((a, b) => ({ ok: a.ok + b.ok, bad: a.bad + b.bad }), { ok: 0, bad: 0 }); if (!q) return null; const n = q.ok + q.bad; return n ? Math.round(q.ok / n * 100) : null; };
+  const difficulty = (q) => {
+    const txt = norm(`${pick(q.q)} ${pick(q.x)}`);
+    if (/ecuat|ecuaț|radical|proport|piramid|neutraliz|echilibrat|argumentativ|scale|scar[aă]/.test(txt)) return 'challenge';
+    if (q.g >= 7 || /procent|fract|triunghi|energia|densitat|fotosintez|predicat|present simple/.test(txt)) return 'medium';
+    return 'easy';
+  };
+  const diffLabel = (key) => ({ easy: tx('Mai accesibil', 'Gentle start'), medium: tx('Nivel mediu', 'Medium'), challenge: tx('Provocare', 'Challenge') }[key]);
+  const say = (text) => { if (!('speechSynthesis' in window)) { toast(tx('Citirea vocală nu este disponibilă în acest browser.', 'Speech is unavailable in this browser.')); return; } speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(String(text)); u.lang = SET.lang === 'en' ? 'en-GB' : 'ro-RO'; speechSynthesis.speak(u); };
+  const guide = { el: null, on: false };
+  function setReadingGuide(on) { guide.on = on; if (on && !guide.el) { guide.el = document.createElement('div'); guide.el.className = 'read-guide'; guide.el.setAttribute('aria-hidden', 'true'); document.body.append(guide.el); } if (guide.el) guide.el.hidden = !on; $('#reading-guide-btn')?.setAttribute('aria-pressed', String(on)); }
+  function printWorksheet(questions) {
+    const w = window.open('', '_blank'); if (!w) { toast(tx('Permite fereastra de printare pentru a crea fișa.', 'Allow the print window to create the worksheet.')); return; }
+    const lang = SET.lang; const title = tx('Fișă de lucru · Gimnaziu Space', 'Practice worksheet · Gimnaziu Space');
+    w.document.write(`<!doctype html><html lang="${lang}"><meta charset="utf-8"><title>${title}</title><style>body{font:16px system-ui;max-width:850px;margin:2rem auto;color:#111}h1{font-size:24px}li{margin:1.2rem 0;break-inside:avoid}.answer{margin:.3rem 0 .3rem 1.2rem}.space{height:2.6rem;border-bottom:1px solid #bbb;margin:.5rem 0}</style><h1>${title}</h1><p>${tx('Nume: ____________________  Data: __________', 'Name: ____________________  Date: __________')}</p><ol>${questions.map(q => `<li><strong>${esc(pick(q.q))}</strong>${q.o.map((o,i)=>`<div class="answer">${'ABCD'[i]}. ${esc(pick(o))}</div>`).join('')}<div class="space"></div></li>`).join('')}</ol><script>window.onload=()=>window.print()<\/script></html>`); w.document.close();
+  }
   function recordMistake(q, oi) {
-    const mistake = { id: q.s + '|' + pick(q.q), s: q.s, g: q.g, topic: competency(q).id, q: q.q, chosen: q.o[oi], correct: q.o[q.a], x: q.x, when: new Date().toISOString() };
+    const mistake = { id: q.s + '|' + pick(q.q), s: q.s, g: q.g, topic: competency(q).id, q: q.q, chosen: q.o[oi], correct: q.o[q.a], x: q.x, stage: 0, nextReview: Date.now() + 86400000, when: new Date().toISOString() };
     S.mistakes = [...(S.mistakes || [])].filter((m) => m && m.id !== mistake.id).concat(mistake).slice(-50);
     save();
   }
@@ -767,8 +783,8 @@
     el.addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return;
       if (b.dataset.type) { st.type = b.dataset.type; setup(); $(`[data-type="${st.type}"]`, el).focus(); }
-      else if (b.hasAttribute('data-s')) { st.s = b.dataset.s; setup(); $(`[data-s="${st.s}"]`, el).focus(); }
-      else if (b.hasAttribute('data-g')) { st.g = Number(b.dataset.g) || 0; setup(); $(`[data-g="${b.dataset.g}"]`, el).focus(); }
+      else if (b.hasAttribute('data-s')) { st.s = b.dataset.s; st.topic=''; setup(); $(`[data-s="${st.s}"]`, el).focus(); }
+      else if (b.hasAttribute('data-g')) { st.g = Number(b.dataset.g) || 0; st.topic=''; setup(); $(`[data-g="${b.dataset.g}"]`, el).focus(); }
       else if (b.id === 'c-start') {
         const deck = buildDeck(st.type, st.s, st.g);
         const due = shuffle(deck.filter((x) => S.cards[x.id] && isDue(x.id)));
@@ -786,7 +802,7 @@
       else if (session.flipped && e.key === '2') answer(true);
     };
     document.addEventListener('keydown', onKey);
-    cleanup = () => document.removeEventListener('keydown', onKey);
+    cleanup = () => { document.removeEventListener('keydown', onKey); document.body.classList.remove('quiz-focus'); };
   };
 
   /* ───────────── Quiz ───────────── */
@@ -812,7 +828,7 @@
       const all = pool();
       el.innerHTML = head('◎', tx('Diagnostic și hartă de competențe', 'Diagnostic and skills map'), tx('Un test scurt identifică ce ai stăpânit și ce merită repetat. Rezultatul rămâne doar în acest browser.', 'A short test identifies what you know and what to revisit. Results stay in this browser.')) + `
         <section class="card stack"><div class="filters">${subjPills(st.s, D.SUBJECTS)}${gradePills(st.g)}</div>
-          <p class="hint">${tx('Alege materia și clasa. Testul folosește întrebările existente și oferă o hartă orientativă, nu o notă școlară.', 'Choose a subject and grade. The test uses existing questions and gives an indicative map, not a school grade.')}</p>
+          <p class="hint">${tx('Competențele sunt grupate orientativ după domeniile din programele școlare pentru gimnaziu; etichetele întrebărilor sunt clasificate automat și trebuie confirmate de profesor. Harta nu este evaluare oficială.', 'Skills are grouped indicatively by domains in the lower-secondary syllabi; question labels are assigned automatically and should be checked by a teacher. This is not an official assessment.')} <a href="https://www.edu.ro/Ordin_ministru_3393_2017" target="_blank" rel="noopener">${tx('Vezi programa Ministerului','See Ministry syllabus')} ↗</a></p>
           <p class="count">${all.length} ${tx('întrebări disponibile', 'questions available')} · ${Math.min(12, all.length)} ${tx('în diagnostic', 'in the diagnostic')}</p>
           <button class="btn primary" id="d-start" type="button" ${all.length ? '' : 'disabled'}>${tx('Începe diagnosticul', 'Start diagnostic')} →</button>
         </section>
@@ -875,11 +891,12 @@
   };
 
   VIEWS.quiz = (el, p) => {
-    const st = { s: p.get('s') || '', g: Number(p.get('g')) || SET.grade || 0, n: Number(p.get('n')) || 10 };
-    let mode = p.get('mode') === 'adaptive' ? 'adaptive' : 'standard';
+    const st = { s: p.get('s') || '', g: Number(p.get('g')) || SET.grade || 0, n: Number(p.get('n')) || 10, topic: p.get('topic') || '', level: p.get('level') || 'all' };
+    let mode = ['adaptive', 'errors'].includes(p.get('mode')) ? p.get('mode') : 'standard';
     let run = null;
     const pool = () => {
-      const all = D.QUIZ.filter((q) => (!st.s || q.s === st.s) && (!st.g || q.g === st.g));
+      let all = D.QUIZ.filter((q) => (!st.s || q.s === st.s) && (!st.g || q.g === st.g) && (!st.topic || competency(q).id === st.topic) && (st.level === 'all' || difficulty(q) === st.level));
+      if (mode === 'errors') { const errors = new Set((S.mistakes || []).filter(m=>!m.nextReview||m.nextReview<=Date.now()).map((m) => m.id)); return all.filter((q) => errors.has(q.s + '|' + pick(q.q))); }
       if (mode !== 'adaptive') return all;
       const prefix = `${st.g || 0}|${st.s || 'all'}|`;
       const weak = new Set(Object.entries(S.mastery || {}).filter(([key, v]) => key.startsWith(prefix) && (v.pct < 80 || v.total < 3)).map(([key]) => key.split('|').slice(2).join('|')));
@@ -889,31 +906,36 @@
     };
     const setup = () => {
       const n = pool().length;
+      const topicIds = [...new Map(D.QUIZ.filter((q) => (!st.s || q.s === st.s) && (!st.g || q.g === st.g)).map((q) => { const c = competency(q); return [c.id, c]; })).values()];
       el.innerHTML = head('?', t('quizTitle'), t('quizLede')) + `
         <div class="filters">${subjPills(st.s, D.SUBJECTS)}${gradePills(st.g)}
-          <div class="filter-row" role="group" aria-label="${tx('Mod de exercițiu', 'Practice mode')}"><span class="lbl">${tx('Mod', 'Mode')}</span><button type="button" class="pill" data-mode="standard" aria-pressed="${mode === 'standard'}">${tx('Mixt', 'Mixed')}</button><button type="button" class="pill" data-mode="adaptive" aria-pressed="${mode === 'adaptive'}">${tx('Adaptiv', 'Adaptive')}</button></div>
+          <label class="filter-row">${tx('Subiect', 'Topic')} <select id="q-topic" class="search"><option value="">${tx('Toate subiectele', 'All topics')}</option>${topicIds.map(c=>`<option value="${c.id}" ${st.topic===c.id?'selected':''}>${esc(SET.lang==='en'?c.en:c.ro)}</option>`).join('')}</select></label>
+          <label class="filter-row">${tx('Dificultate orientativă', 'Indicative difficulty')} <select id="q-level" class="search">${[['all',tx('Toate nivelurile','All levels')],['easy',diffLabel('easy')],['medium',diffLabel('medium')],['challenge',diffLabel('challenge')]].map(([v,l])=>`<option value="${v}" ${st.level===v?'selected':''}>${l}</option>`).join('')}</select></label>
+          <div class="filter-row" role="group" aria-label="${tx('Mod de exercițiu', 'Practice mode')}"><span class="lbl">${tx('Mod', 'Mode')}</span><button type="button" class="pill" data-mode="standard" aria-pressed="${mode === 'standard'}">${tx('Mixt', 'Mixed')}</button><button type="button" class="pill" data-mode="adaptive" aria-pressed="${mode === 'adaptive'}">${tx('Adaptiv', 'Adaptive')}</button><button type="button" class="pill" data-mode="errors" aria-pressed="${mode === 'errors'}">${tx('Greșelile mele', 'My mistakes')}</button></div>
           <div class="filter-row" role="group" aria-label="${t('howMany')}"><span class="lbl" aria-hidden="true">${t('howMany')}</span>
             ${[5, 10, 15].map((x) => `<button type="button" class="pill" data-n="${x}" aria-pressed="${st.n === x}">${x}</button>`).join('')}</div>
         </div>
-        <p class="count">${t('nQuiz')(n)}${mode === 'adaptive' ? ` · ${tx('selectate după harta ta și greșelile recente', 'selected from your skills map and recent mistakes')}` : ''}</p>
-        <button type="button" class="btn primary" id="q-start" ${n ? '' : 'disabled'}>${t('start')}</button>
+        <p class="count">${t('nQuiz')(n)}${mode === 'adaptive' ? ` · ${tx('selectate după harta ta și greșelile recente', 'selected from your skills map and recent mistakes')}` : ''} · ${tx('dificultatea este estimată automat și poate fi ajustată', 'difficulty is estimated automatically and may be approximate')}</p>
+        <div class="row"><button type="button" class="btn primary" id="q-start" ${n ? '' : 'disabled'}>${t('start')}</button><button type="button" class="btn" id="q-worksheet" ${n ? '' : 'disabled'}>${tx('Printează o fișă', 'Print a worksheet')}</button></div>
         ${n ? '' : `<p class="muted" style="margin-top:.75rem">${t('noQuestions')}</p>`}`;
     };
     const start = () => {
       const all = pool();
-      run = { qs: shuffle(all).slice(0, st.n).map((q) => ({ q, order: shuffle(q.o.map((_, i) => i)) })), i: 0, ok: 0, wrong: [], answered: false, short: all.length < st.n };
+      run = { qs: shuffle(all).slice(0, st.n).map((q) => ({ q, order: shuffle(q.o.map((_, i) => i)) })), i: 0, ok: 0, wrong: [], answered: false, short: all.length < st.n, times: [], started: Date.now() };
       ask();
     };
     const ask = () => {
       const { q, order } = run.qs[run.i];
+      run.questionStartedAt = Date.now();
       el.innerHTML = head('?', t('quizTitle')) + `
         <div class="card q-card">
           <div class="row" style="margin-bottom:.6rem"><span class="small muted">${t('question')(run.i + 1, run.qs.length)}</span><span class="spacer"></span>${subjChip(q.s)}<span class="chip">${t('gradeN')(q.g)}</span></div>
           <div class="progress" aria-hidden="true" style="margin-bottom:1rem"><i style="width:${run.i / run.qs.length * 100}%"></i></div>
-          <p class="q-text" id="q-text">${esc(pick(q.q))}</p>
+          <p class="q-text" id="q-text">${esc(pick(q.q))} <button type="button" class="btn sm" id="q-speak" aria-label="${tx('Citește întrebarea cu voce tare','Read question aloud')}">🔊</button></p>
           <div class="opts" role="group" aria-labelledby="q-text">
             ${order.map((oi, k) => `<button type="button" class="opt" data-oi="${oi}"><span class="key" aria-hidden="true">${'ABCD'[k]}</span><span>${esc(pick(q.o[oi]))}</span></button>`).join('')}
           </div>
+          <div class="row"><button type="button" class="btn sm" id="q-hint">${tx('Indiciu 1/3','Hint 1/3')}</button><button type="button" class="btn sm" id="q-focus" aria-pressed="${document.body.classList.contains('quiz-focus')}">${tx('Mod concentrare','Focus mode')}</button></div><div id="q-hints" aria-live="polite"></div>
           <div id="q-fb" aria-live="polite"></div>
         </div>`;
       $('.opt', el).focus();
@@ -922,10 +944,12 @@
       if (run.answered) return;
       run.answered = true;
       const { q } = run.qs[run.i];
+      run.times.push(Math.max(0, Math.round((Date.now() - run.questionStartedAt) / 1000)));
       const ok = oi === q.a;
       S.quiz[q.s] = S.quiz[q.s] || { ok: 0, bad: 0 };
       if (ok) {
         S.quiz[q.s].ok++; run.ok++;
+        const reviewed=(S.mistakes||[]).find(m=>m.id===q.s+'|'+pick(q.q)); if(reviewed){reviewed.stage=Math.min(4,(reviewed.stage||0)+1);reviewed.nextReview=Date.now()+[86400000,3,7,14,30][reviewed.stage]*86400000;if(reviewed.stage>=4)S.mistakes=S.mistakes.filter(m=>m.id!==reviewed.id);}
       } else {
         S.quiz[q.s].bad++; run.wrong.push(q);
         recordMistake(q, oi);
@@ -937,7 +961,9 @@
         else if (v === oi) b.classList.add('wrong');
       });
       const last = run.i === run.qs.length - 1;
-      $('#q-fb', el).innerHTML = `<div class="feedback ${ok ? 'ok' : 'bad'}"><strong>${ok ? t('correct') : t('wrong')}</strong> ${ok ? '' : `${t('rightWas')} <strong>${esc(pick(q.o[q.a]))}</strong>. `}${esc(pick(q.x))}</div>
+      const avgTime = Math.round(run.times.reduce((a,b)=>a+b,0)/run.times.length);
+      S.quizTime ||= {}; const timeRec = S.quizTime[q.s] || { seconds: 0, count: 0 }; timeRec.seconds += run.times.at(-1); timeRec.count++; S.quizTime[q.s] = timeRec; save();
+      $('#q-fb', el).innerHTML = `<div class="feedback ${ok ? 'ok' : 'bad'}"><strong>${ok ? t('correct') : t('wrong')}</strong> ${ok ? '' : `${t('rightWas')} <strong>${esc(pick(q.o[q.a]))}</strong>. `}${esc(pick(q.x))}<p class="small">${tx('Pașii:','Steps:')} 1) ${tx('identifică datele din enunț','identify the given information')} 2) ${tx('alege regula potrivită','choose the relevant rule')} 3) ${tx('calculează și verifică unitatea/răspunsul','calculate and check the unit/answer')} · ${avgTime}${tx(' sec/item',' sec/item')}</p></div>
         <div class="row" style="margin-top:1rem"><a class="btn" href="${reportQuestionUrl(q)}">${tx('Semnalează o problemă', 'Report a problem')}</a><button type="button" class="btn primary" id="q-next">${last ? t('finish') : t('next')} →</button></div>`;
       $('#q-next', el).focus();
     };
@@ -951,7 +977,8 @@
           <p class="result-big">${run.ok}/${n} <span class="muted" style="font-size:1.4rem">· ${pct}%</span></p>
           ${run.short ? `<p class="hint">${t('notEnough')}</p>` : ''}
           ${run.wrong.length ? `<h2>${t('review')}</h2><ul>${run.wrong.map((q) => `<li><strong>${esc(pick(q.q))}</strong><br>${t('rightWas')} ${esc(pick(q.o[q.a]))}. <span class="muted">${esc(pick(q.x))}</span></li>`).join('')}</ul>` : `<p>${t('allRight')}</p>`}
-          <div class="row"><button type="button" class="btn primary" id="q-again">${t('retry')}</button><button type="button" class="btn" id="q-setup">${t('back')}</button></div>
+          <p class="hint">${tx('Timp mediu pe întrebare','Average time per question')}: ${Math.round(run.times.reduce((a,b)=>a+b,0)/Math.max(1,run.times.length))} ${tx('secunde','seconds')} · ${tx('Timp total','Total time')}: ${Math.round((Date.now()-run.started)/60000)} ${tx('min','min')}</p>
+          <div class="row"><button type="button" class="btn primary" id="q-again">${t('retry')}</button><button type="button" class="btn" id="q-errors" ${run.wrong.length?'':'disabled'}>${tx('Repetă greșelile','Retry mistakes')}</button><button type="button" class="btn" id="q-setup">${t('back')}</button></div>
         </div>`;
       $('h1', el).setAttribute('tabindex', '-1'); $('h1', el).focus();
       announce(`${t('score')}: ${run.ok} / ${n}`);
@@ -960,27 +987,33 @@
     if (p.get('go') && pool().length) start();
     el.addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return;
-      if (b.hasAttribute('data-s')) { st.s = b.dataset.s; setup(); $(`[data-s="${st.s}"]`, el).focus(); }
-      else if (b.hasAttribute('data-g')) { st.g = Number(b.dataset.g) || 0; setup(); $(`[data-g="${b.dataset.g}"]`, el).focus(); }
+      if (b.hasAttribute('data-s')) { st.s = b.dataset.s; st.topic=''; setup(); $(`[data-s="${st.s}"]`, el).focus(); }
+      else if (b.hasAttribute('data-g')) { st.g = Number(b.dataset.g) || 0; st.topic=''; setup(); $(`[data-g="${b.dataset.g}"]`, el).focus(); }
       else if (b.dataset.mode) { mode = b.dataset.mode; setup(); $(`[data-mode="${mode}"]`, el).focus(); }
       else if (b.dataset.n) { st.n = Number(b.dataset.n); setup(); $(`[data-n="${st.n}"]`, el).focus(); }
+      else if (b.id === 'q-worksheet') printWorksheet(pool().slice(0, 12));
+      else if (b.id === 'q-errors') { mode='errors'; setup(); }
+      else if (b.id === 'q-speak') say(pick(run.qs[run.i].q.q));
+      else if (b.id === 'q-hint') { const q=run.qs[run.i].q; const box=$('#q-hints',el); const level=(Number(b.dataset.step)||0)+1; b.dataset.step=String(level); b.textContent=level>=3?tx('Explicația este mai jos','Explanation is below'):tx(`Indiciu ${level+1}/3`,`Hint ${level+1}/3`); const hints=[tx('Privește cuvintele-cheie sau mărimile cunoscute din enunț.','Look for key words or known quantities.'),tx('Amintește-ți regula/formula folosită la acest tip de exercițiu.','Recall the rule/formula used for this type of exercise.'),pick(q.x)]; box.innerHTML += `<p class="hint-tier">${esc(hints[level-1])}</p>`; }
+      else if (b.id === 'q-focus') { const on=!document.body.classList.contains('quiz-focus'); document.body.classList.toggle('quiz-focus',on); b.setAttribute('aria-pressed',String(on)); }
       else if (b.id === 'q-start' || b.id === 'q-again') start();
       else if (b.id === 'q-setup') { run = null; setup(); $('h1', el).focus(); }
       else if (b.dataset.oi !== undefined && run) choose(Number(b.dataset.oi));
       else if (b.id === 'q-next') { run.i++; run.answered = false; run.i < run.qs.length ? ask() : finish(); }
     });
+    el.addEventListener('change', (e) => { if (e.target.id === 'q-topic') { st.topic=e.target.value; setup(); $('#q-topic',el).focus(); } else if (e.target.id === 'q-level') { st.level=e.target.value; setup(); $('#q-level',el).focus(); } });
     const onKey = (e) => {
-      if (!run || run.answered || e.target.matches('input, textarea')) return;
+      if (!run || run.answered || e.target.matches('input, textarea, select')) return;
       const k = 'abcd'.indexOf(e.key.toLowerCase());
       if (k >= 0) { const b = $$('.opt', el)[k]; if (b) b.click(); }
     };
     document.addEventListener('keydown', onKey);
-    cleanup = () => document.removeEventListener('keydown', onKey);
+    cleanup = () => { document.removeEventListener('keydown', onKey); document.body.classList.remove('quiz-focus'); };
   };
 
   /* ───────────── Simulare EN ───────────── */
   VIEWS.simulare = (el) => {
-    let kind = 'mat', mins = 120, timer = null, endAt = 0, sim = null;
+    let kind = 'mat', mins = 120, timer = null, endAt = 0, sim = null, profile = 'balanced';
     const setup = () => {
       el.innerHTML = head('✎', t('simTitle'), t('simLede')) + `
         <div class="grid g2">
@@ -989,6 +1022,7 @@
               <span class="h2like">${n}</span><span class="muted" style="display:block;margin-top:.4rem">${d}</span></button>`).join('')}
         </div>
         <div class="filters" style="margin-top:1.25rem">
+          <div class="filter-row" role="group" aria-label="${tx('Variantă de exercițiu','Practice set')}"><span class="lbl">${tx('Variantă','Variant')}</span>${[['balanced',kind==='mat'?tx('Echilibrată','Balanced'):tx('Set A','Set A')],['algebra',kind==='mat'?tx('Algebră','Algebra'):tx('Set B','Set B')],['geometry',kind==='mat'?tx('Geometrie','Geometry'):tx('Set C','Set C')]].map(([id,label])=>`<button type="button" class="pill" data-profile="${id}" aria-pressed="${profile===id}">${label}</button>`).join('')}</div>
           <div class="filter-row" role="group" aria-label="${t('duration')}"><span class="lbl" aria-hidden="true">${t('duration')}</span>
             ${[30, 60, 120].map((m) => `<button type="button" class="pill" data-min="${m}" aria-pressed="${mins === m}">${t('minutes')(m)}</button>`).join('')}
             <button type="button" class="pill" data-min="0" aria-pressed="${mins === 0}">${t('noTimer')}</button></div>
@@ -1007,10 +1041,14 @@
     };
     const begin = () => {
       if (kind === 'mat') {
-        const pool = D.QUIZ.filter((q) => q.s === 'mat' && q.g >= 6);
-        sim = { kind, items: shuffle(pool).slice(0, 12).map((q) => ({ q, order: shuffle([0, 1, 2, 3]) })), probs: D.SIM_MAT_PROBLEMS };
+        let pool = D.QUIZ.filter((q) => q.s === 'mat' && q.g >= 6);
+        if (profile === 'algebra') { const focus=pool.filter(q=>competency(q).id==='algebra'); pool=shuffle(focus.concat(pool.filter(q=>!focus.includes(q)))); }
+        else if (profile === 'geometry') { const focus=pool.filter(q=>competency(q).id==='geometry'); pool=shuffle(focus.concat(pool.filter(q=>!focus.includes(q)))); }
+        else pool=shuffle(pool);
+        sim = { kind, items: pool.slice(0, 12).map((q) => ({ q, order: shuffle([0, 1, 2, 3]) })), probs: D.SIM_MAT_PROBLEMS, startedAt: Date.now(), profile };
       } else {
-        sim = { kind, items: D.SIM_ROM.map((q) => ({ q, order: shuffle([0, 1, 2, 3]) })) };
+        const prompts = profile === 'algebra' ? tx('Scrie un text argumentativ despre rolul exercițiului în învățare, cu două argumente și exemple.','Write an argumentative text about the role of practice in learning, with two arguments and examples.') : profile === 'geometry' ? tx('Descrie o experiență de învățare care ți-a schimbat perspectiva, folosind detalii concrete.','Describe a learning experience that changed your perspective, using specific details.') : pick(D.SIM_ROM_WRITE.task);
+        sim = { kind, items: D.SIM_ROM.map((q) => ({ q, order: shuffle([0, 1, 2, 3]) })), startedAt: Date.now(), profile, writeTask: prompts };
       }
       const radios = (it, i) => `<div class="sim-q"><fieldset><legend>${i + 1}. ${esc(pick(it.q.q))}</legend>${it.order.map((oi, k) => `<label class="radio" data-qi="${i}" data-oi="${oi}"><input type="radio" name="q${i}" value="${oi}"><span><span class="mono">${'abcd'[k]})</span> ${esc(pick(it.q.o[oi]))}</span></label>`).join('')}</fieldset></div>`;
       el.innerHTML = head('✎', kind === 'mat' ? t('simMat') : t('simRom')) + `
@@ -1022,7 +1060,7 @@
               ${sim.probs.map((pr, i) => `<div class="sim-q"><h3>${13 + i}.</h3><p class="problem">${esc(pick(pr.q))}</p></div>`).join('')}</section>` : `
             <section class="card"><h2>${t('readText')}</h2><div class="card sim-text">${esc(pick(D.SIM_ROM_TEXT))}</div></section>
             <section class="card"><h2>${t('partRom1')}</h2>${sim.items.map(radios).join('')}</section>
-            <section class="card"><h2>${t('partRom2')}</h2><p>${esc(pick(D.SIM_ROM_WRITE.task))}</p>
+            <section class="card"><h2>${t('partRom2')}</h2><p>${esc(sim.writeTask)}</p><p class="small muted">${tx('Alege criteriile de autoevaluare după ce ai încheiat.','Use the self-check rubric after finishing.')}</p>
               <label class="sr" for="s-write">${t('writeHere')}</label><textarea id="s-write" class="write" placeholder="${t('writeHere')}…"></textarea>
               <p class="small muted" id="s-wc" aria-live="polite">${t('words')(0)}</p></section>`}
         </form>`;
@@ -1032,6 +1070,7 @@
     const submit = (auto) => {
       if (!sim) return;
       if (!auto && !confirm(t('simConfirm'))) return;
+      sim.submittedAt = Date.now();
       if (timer) { clearInterval(timer); timer = null; }
       const form = $('#s-form', el);
       let mcq = 0;
@@ -1076,11 +1115,12 @@
     el.addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return;
       if (b.dataset.kind) { kind = b.dataset.kind; setup(); $(`[data-kind="${kind}"]`, el).focus(); }
+      else if (b.dataset.profile) { profile=b.dataset.profile; setup(); $(`[data-profile="${profile}"]`,el).focus(); }
       else if (b.dataset.min !== undefined) { mins = Number(b.dataset.min); setup(); $(`[data-min="${mins}"]`, el).focus(); }
       else if (b.id === 's-start') begin();
       else if (b.id === 's-submit') submit(false);
       else if (b.id === 's-save') {
-        S.sims.push({ d: new Date().toISOString(), k: sim.kind, p: sim.total });
+        S.sims.push({ d: new Date().toISOString(), k: sim.kind, p: sim.total, minutes: Math.max(1,Math.round(((sim.submittedAt||Date.now())-sim.startedAt)/60000)), profile: sim.profile });
         S.sims = S.sims.slice(-30); gain(40); toast(t('saved')); b.disabled = true;
       } else if (b.id === 's-back') { sim = null; setup(); $('h1', el).focus(); }
     });
@@ -1120,6 +1160,22 @@
     $$('[data-mode]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === POMO.mode)));
   }
   VIEWS.focus = (el) => {
+    const createAdaptivePlan = () => {
+      const weak = Object.entries(S.mastery || {}).filter(([,v]) => v && v.total).sort((a,b)=>a[1].pct-b[1].pct).slice(0,3);
+      const subjects = [...new Set(weak.map(([key])=>key.split('|')[1]).filter(Boolean))];
+      const focus = subjects[0] || D.SUBJECTS.slice().sort((a,b)=>(accuracy(a.id) ?? 100)-(accuracy(b.id) ?? 100))[0]?.id || 'mat';
+      const title = subjName(focus);
+      S.adaptivePlan = [
+        tx(`Diagnostic scurt la ${title}`,`Short diagnostic in ${title}`),
+        tx(`Recitește o fișă la ${title}`,`Review one study sheet in ${title}`),
+        tx('Repetă 10 cartonașe scadente','Review 10 due flashcards'),
+        tx('Quiz adaptiv: 5 întrebări','Adaptive quiz: 5 questions'),
+        tx('Pomodoro de 25 min la competența cea mai slabă','25-minute focus session on the weakest skill'),
+        tx('Refă întrebările greșite','Retry the questions you missed'),
+        tx('O simulare EN sau o fișă imprimată','A mock exam or a printed worksheet')
+      ]; save();
+    };
+    const planItems = S.adaptivePlan || t('plan');
     el.innerHTML = head('◷', t('focusTitle'), t('focusLede')) + `
       <div class="grid g2">
         <section class="card pomo" id="pomo" aria-label="Pomodoro">
@@ -1131,13 +1187,16 @@
         </section>
         <section class="card">
           <h2>${t('planTitle')}</h2>
-          <ul class="plan">${t('plan').map((x, i) => `<li><label class="check"><input type="checkbox" data-plan="${i}" ${S.plan[i] ? 'checked' : ''}><span><strong>${t('day')(i + 1)}:</strong> ${esc(x)}</span></label></li>`).join('')}</ul>
+          <p class="small muted">${tx('Plan adaptat după diagnostice și greșeli; generarea lui rămâne locală.','Plan adapts to diagnostics and mistakes; it is generated locally.')}</p>
+          <ul class="plan">${planItems.map((x, i) => `<li><label class="check"><input type="checkbox" data-plan="${i}" ${S.plan[i] ? 'checked' : ''}><span><strong>${t('day')(i + 1)}:</strong> ${esc(x)}</span></label></li>`).join('')}</ul>
+          <button type="button" class="btn" id="adaptive-plan">${tx('Regenerează planul adaptiv','Regenerate adaptive plan')}</button>
         </section>
       </div>`;
     paintPomo();
     el.addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return;
       if (b.dataset.mode) { POMO.running = false; clearInterval(POMO.id); POMO.id = null; POMO.mode = b.dataset.mode; POMO.total = POMO.left = MODES[POMO.mode] * 60; paintPomo(); }
+      else if (b.id === 'adaptive-plan') { createAdaptivePlan(); route(false); }
       else if (b.id === 'p-toggle') {
         if (POMO.running) { POMO.running = false; clearInterval(POMO.id); POMO.id = null; }
         else { POMO.running = true; POMO.end = Date.now() + POMO.left * 1000; POMO.id = setInterval(pomoTick, 1000); }
@@ -1163,6 +1222,8 @@
       </div>
       <p class="small muted" style="margin-top:.5rem">${t('level')(level())}</p>
       ${renderAllMastery()}
+      <section class="card stack"><h2>${tx('Evoluția diagnosticelor','Diagnostic trend')}</h2>
+        ${(S.diagnostics || []).length ? `<div class="trend-line" role="img" aria-label="${tx('Evoluția ultimelor diagnostice','Trend of recent diagnostics')}">${S.diagnostics.slice(-8).map(d=>`<i style="height:${Math.max(8,Math.round(d.correct/Math.max(1,d.total)*100))}%;"><span>${Math.round(d.correct/Math.max(1,d.total)*100)}%</span></i>`).join('')}</div><p class="small muted">${S.diagnostics.slice(-8).map(d=>`${fmtDate(d.date)} · ${d.correct}/${d.total}`).join('　')}</p>` : `<p class="muted">${tx('După două diagnostice, vei putea compara rezultatele în timp.','After two diagnostics, you can compare results over time.')}</p>`}</section>
       <section class="card"><h2>${t('activity')}</h2>
         <div class="heat" role="img" aria-label="${t('activity')}: ${days.filter((x) => x[1]).length}/28">${days.map(([k, v]) => `<i data-l="${lvl(v)}" title="${k}: ${v} XP"></i>`).join('')}</div>
       </section>
@@ -1175,12 +1236,18 @@
       <section class="card"><h2>${t('simHistory')}</h2>${S.sims.length ? histTable() : `<p class="muted">${t('noSims')}</p>`}</section>
       <section class="card stack"><h2>${t('data')}</h2><p class="muted">${t('privacy')}</p>
         <div class="row"><button type="button" class="btn" id="p-export">⤓ ${t('exportBtn')}</button>
+          <button type="button" class="btn" id="guardian-report">${tx('Raport pentru familie/profesor','Family/teacher report')}</button>
           <button type="button" class="btn" id="p-import-btn">⤒ ${t('importBtn')}</button><input type="file" id="p-import" accept="application/json,.json" hidden>
           <button type="button" class="btn danger" id="p-reset">${t('resetBtn')}</button></div>
       </section>`;
     el.addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return;
       if (b.id === 'p-import-btn') $('#p-import', el).click();
+      else if (b.id === 'guardian-report') {
+        const subjectRows = D.SUBJECTS.map(s=>`<tr><td>${esc(pick(s))}</td><td>${accuracy(s.id)==null?'—':accuracy(s.id)+'%'}</td><td>${S.quiz[s.id]?.ok||0}/${(S.quiz[s.id]?.ok||0)+(S.quiz[s.id]?.bad||0)}</td><td>${S.quizTime?.[s.id]?.count?Math.round(S.quizTime[s.id].seconds/S.quizTime[s.id].count)+' '+tx('sec','sec'):'—'}</td></tr>`).join('');
+        const html=`<!doctype html><html lang="${SET.lang}"><meta charset="utf-8"><title>${tx('Raport de progres','Progress report')}</title><style>body{font:16px system-ui;max-width:850px;margin:2rem auto;color:#142033}h1{color:#2346c7}table{border-collapse:collapse;width:100%}td,th{padding:.65rem;border-bottom:1px solid #ccd}small{color:#556}</style><h1>Gimnaziu Space · ${tx('Raport local','Local report')}</h1><p>${tx('Generat','Generated')}: ${new Date().toLocaleDateString(SET.lang==='en'?'en-GB':'ro-RO')}</p><p>${S.xp} XP · ${S.quizzes} ${tx('quiz-uri','quizzes')} · ${S.mistakes?.length||0} ${tx('greșeli în registru','logged mistakes')}</p><table><thead><tr><th>${tx('Materie','Subject')}</th><th>${tx('Acuratețe','Accuracy')}</th><th>${tx('Răspunsuri','Answers')}</th><th>${tx('Timp mediu/item','Avg. time/item')}</th></tr></thead><tbody>${subjectRows}</tbody></table><h2>${tx('Simulări recente','Recent mock exams')}</h2><ul>${(S.sims||[]).slice(-5).reverse().map(s=>`<li>${fmtDate(s.d)} · ${s.k==='mat'?t('simMat'):t('simRom')} · ${s.p}/100${s.minutes?` · ${s.minutes} ${tx('min','min')}`:''}</li>`).join('')||'<li>—</li>'}</ul><p><small>${tx('Raport orientativ, calculat local pe baza activității în aplicație. Nu este notă școlară. Exportul nu trimite date automat.','Indicative report, generated locally from app activity. It is not a school grade. Export does not send data automatically.')}</small></p></html>`;
+        const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download=`gimnaziu-space-raport-${today()}.html`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+      }
       else if (b.id === 'p-export') {
         const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
         const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `gimnaziu-space-${today()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
@@ -1309,6 +1376,7 @@
       const device = ['phone', 'tablet', 'desktop'];
       const grade = ['5', '6', '7', '8'];
       const task = [['quiz', 'Quiz', 'Quiz'], ['coach', 'AI Coach', 'AI Coach'], ['formulas', 'Formule', 'Formulas'], ['simulation', 'Simulare', 'Mock exam'], ['archive', 'Subiecte și bareme', 'Papers and schemes'], ['accessibility', 'Accesibilitate', 'Accessibility']];
+      const categories = [['content', 'Conținut / răspuns greșit', 'Content / incorrect answer'], ['usability', 'Navigare sau utilizare', 'Navigation or usability'], ['accessibility', 'Accesibilitate / afișare', 'Accessibility / display'], ['idea', 'Idee de îmbunătățire', 'Improvement idea'], ['other', 'Altceva', 'Other']];
       el.innerHTML = head('✓', tx('Testare & feedback', 'Testing & feedback'), tx('Ajută la îmbunătățirea aplicației fără cont și fără colectare de date personale.', 'Help improve the app without an account and without collecting personal data.')) +
         '<section class="card stack">' +
           '<h2>' + tx('Sesiune scurtă de testare', 'Short testing session') + '</h2>' +
@@ -1318,6 +1386,7 @@
               '<label class="stack"><span>' + tx('Dispozitiv', 'Device') + '</span><select id="fb-device" class="search">' + device.map((v) => option(v, v === 'phone' ? 'Telefon' : v === 'tablet' ? 'Tabletă' : 'Desktop', v[0].toUpperCase() + v.slice(1), false)).join('') + '</select></label>' +
               '<label class="stack"><span>' + tx('Clasa', 'Grade') + '</span><select id="fb-grade" class="search">' + grade.map((v) => option(v, 'Clasa a ' + v + '-a', 'Grade ' + v, false)).join('') + '</select></label>' +
               '<label class="stack"><span>' + tx('Ce ai testat?', 'What did you test?') + '</span><select id="fb-task" class="search">' + task.map((v) => option(v[0], v[1], v[2], false)).join('') + '</select></label>' +
+              '<label class="stack"><span>' + tx('Categorie feedback', 'Feedback category') + '</span><select id="fb-category" class="search">' + categories.map((v) => option(v[0], v[1], v[2], false)).join('') + '</select></label>' +
               '<label class="stack"><span>' + tx('Cât de ușor a fost?', 'How easy was it?') + '</span><select id="fb-rating" class="search">' + [1, 2, 3, 4, 5].map((v) => option(String(v), String(v) + '/5', String(v) + '/5', v === 5)).join('') + '</select></label>' +
             '</div>' +
             '<label class="stack"><span>' + tx('Ce a fost neclar sau dificil?', 'What was unclear or difficult?') + '</span><textarea id="fb-note" class="write" rows="4" placeholder="' + tx('Scrie observația aici…', 'Write your observation here…') + '"></textarea></label>' +
@@ -1328,12 +1397,12 @@
         '</section>' +
         '<section class="card stack">' +
           '<div class="row"><h2 style="margin:0">' + tx('Observații salvate local', 'Locally saved observations') + '</h2><span class="chip">' + records.length + '</span></div>' +
-          (records.length ? '<div class="stack">' + records.map((r) => '<article class="feedback-card"><strong>' + esc(r.task) + ' · ' + esc(r.device) + ' · ' + esc(r.grade) + '</strong><p class="small muted">' + esc(new Date(r.when).toLocaleString(SET.lang === 'en' ? 'en-GB' : 'ro-RO')) + ' · ' + esc(r.rating) + '/5' + (r.accessibility ? ' · ' + tx('accesibilitate', 'accessibility') : '') + '</p><p>' + esc(r.note || tx('Fără observație scrisă.', 'No written observation.')) + '</p></article>').join('') + '</div><button class="btn danger" type="button" id="feedback-clear">' + tx('Șterge observațiile', 'Clear observations') + '</button>' : '<p class="muted">' + tx('Încă nu există observații. Începe cu o sesiune de 5 minute.', 'No observations yet. Start with a 5-minute session.') + '</p>') +
+          (records.length ? '<div class="stack">' + records.map((r) => '<article class="feedback-card"><strong>' + esc(r.task) + ' · ' + esc(r.device) + ' · ' + esc(r.grade) + '</strong><p class="small muted">' + esc(r.category || '') + ' · ' + esc(new Date(r.when).toLocaleString(SET.lang === 'en' ? 'en-GB' : 'ro-RO')) + ' · ' + esc(r.rating) + '/5' + (r.accessibility ? ' · ' + tx('accesibilitate', 'accessibility') : '') + '</p><p>' + esc(r.note || tx('Fără observație scrisă.', 'No written observation.')) + '</p></article>').join('') + '</div><button class="btn danger" type="button" id="feedback-clear">' + tx('Șterge observațiile', 'Clear observations') + '</button>' : '<p class="muted">' + tx('Încă nu există observații. Începe cu o sesiune de 5 minute.', 'No observations yet. Start with a 5-minute session.') + '</p>') +
         '</section>';
       $('#feedback-form', el).addEventListener('submit', (event) => {
         event.preventDefault();
         const taskLabel = $('#fb-task', el).selectedOptions[0]?.textContent || '';
-        const record = { device: $('#fb-device', el).value, grade: $('#fb-grade', el).value, task: taskLabel, rating: $('#fb-rating', el).value, note: $('#fb-note', el).value.trim(), accessibility: $('#fb-access', el).checked, when: new Date().toISOString() };
+        const record = { device: $('#fb-device', el).value, grade: $('#fb-grade', el).value, task: taskLabel, category: $('#fb-category', el).selectedOptions[0]?.textContent || '', rating: $('#fb-rating', el).value, note: $('#fb-note', el).value.trim(), accessibility: $('#fb-access', el).checked, when: new Date().toISOString() };
         S.feedback = [...(S.feedback || []), record].slice(-50);
         save();
         toast(tx('Feedback salvat local.', 'Feedback saved locally.'));
@@ -1378,11 +1447,18 @@
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && $('#sidenav').classList.contains('open')) { closeNav(); $('#menu-btn').focus(); } });
 
   document.addEventListener('click', (e) => {
-    const l = e.target.closest('[data-set-lang]'); if (l) { SET.lang = l.dataset.setLang; saveSet(); mathCache.clear(); applySettings(); route(false); l.focus(); }
+    const l = e.target.closest('[data-set-lang]'); if (l) { SET.lang = l.dataset.setLang; saveSet(); mathCache.clear(); applySettings(); labelGuide(); route(false); l.focus(); }
     const th = e.target.closest('[data-set-theme]'); if (th) { SET.theme = th.dataset.setTheme; saveSet(); applySettings(); }
     const sz = e.target.closest('[data-set-size]'); if (sz) { SET.size = sz.dataset.setSize; saveSet(); applySettings(); }
   });
   $('#theme-btn').addEventListener('click', () => { SET.theme = isDark() ? 'light' : 'dark'; saveSet(); applySettings(); });
+  $('#reading-guide-btn').addEventListener('click', () => setReadingGuide(!guide.on));
+  const networkStatus = $('#network-status');
+  const paintNetwork = (state) => { if (!networkStatus) return; const off=state==='offline'; networkStatus.dataset.state=state; networkStatus.textContent=off?tx('Offline · cache local','Offline · local cache'):tx('Online','Online'); networkStatus.title=off?tx('Aplicația folosește fișierele salvate pe acest dispozitiv.','The app is using files saved on this device.'):tx('Conținutul aplicației este accesibil online.','App content is available online.');networkStatus.setAttribute('aria-label',networkStatus.textContent); };
+  window.addEventListener('online',()=>paintNetwork('online')); window.addEventListener('offline',()=>paintNetwork('offline')); paintNetwork(navigator.onLine?'online':'offline');
+  const labelGuide=()=>{const label=guide.on?tx('Dezactivează ghidul de citire','Turn off reading guide'):tx('Activează ghidul de citire','Turn on reading guide');$('#reading-guide-btn').setAttribute('aria-label',label);$('#reading-guide-btn').title=label;};
+  labelGuide();
+  $('#reading-guide-btn').addEventListener('click',labelGuide);
   $('#settings-btn').addEventListener('click', () => $('#settings').showModal());
   $('#set-font').addEventListener('change', (e) => { SET.font = e.target.checked ? 'lexend' : ''; saveSet(); applySettings(); });
   $('#set-spacing').addEventListener('change', (e) => { SET.spacing = e.target.checked; saveSet(); applySettings(); });
@@ -1396,7 +1472,7 @@
   applySettings();
   route(false);
 
-  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').then(reg=>{ if(reg.waiting){networkStatus.textContent=tx('Actualizare disponibilă','Update ready');networkStatus.dataset.state='update';networkStatus.setAttribute('aria-label',networkStatus.textContent);} reg.addEventListener('updatefound',()=>{const worker=reg.installing;worker?.addEventListener('statechange',()=>{if(worker.state==='installed'&&navigator.serviceWorker.controller){networkStatus.textContent=tx('Actualizare · reîncarcă pagina','Update · reload page');networkStatus.dataset.state='update';networkStatus.setAttribute('aria-label',networkStatus.textContent);networkStatus.title=tx('Versiunea nouă este descărcată. Reîncarcă pagina când ai terminat.','The new version is downloaded. Reload when you are ready.');}});}); }).catch(() => {});
 
   // expus pentru teste
   window.GS = { parseMath, speak, plainMath, buildDeck, state: () => S };

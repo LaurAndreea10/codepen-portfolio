@@ -48,3 +48,14 @@ Pachet de validare și lansare fără costuri:
 - Proveniență vizibilă pentru fiecare an din arhivă: Ministerul Educației și subiecte.edu.ro.
 - Semnalarea unei probleme pornește formularul local cu întrebarea, clasa și materia completate.
 - Backupurile existente primesc câmpurile noi în mod compatibil; datele rămân locale.
+
+
+## 2.4.0 — 2026-10-18
+
+- Extinsă banca de la 83 la 104 de itemi bilingvi în matematică, română, fizică, chimie, biologie, istorie, geografie și engleză.
+- Adăugate filtre pentru subiect și dificultate estimativă, repetare spațiată a greșelilor, indicii în trei trepte și fișe de lucru imprimabile.
+- Adăugate timp mediu/item, cronometrarea simulării, tendința diagnosticelor și raport local exportabil pentru familie/profesor.
+- Adăugat plan adaptiv de recapitulare și variante tematice pentru simulările EN.
+- Adăugate citirea vocală a întrebării, mod concentrare, ghid de citire, indicator online/offline/actualizare.
+- Arhiva deschide acum pagina oficială pentru anul ales; diagnosticul trimite la programele școlare ale Ministerului și descrie explicit limitele etichetării automate.
+- Feedbackul local poate fi clasificat pe categorii; cache-ul PWA a fost actualizat.

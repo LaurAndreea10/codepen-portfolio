@@ -26,6 +26,10 @@ Validăm dacă aplicația este ușor de folosit pe telefon, tabletă și desktop
 9. Deschide „Diagnostic”, alege o clasă și o materie, apoi termină testul.
 10. Verifică harta competențelor, treci la exercițiul adaptiv și printează raportul.
 11. Dintr-un quiz, semnalează o întrebare și verifică enunțul precompletat în formularul local.
+12. Filtrează quizul după subiect/dificultate, cere indicii, activează concentrarea și citirea vocală.
+13. Printează o fișă, verifică planul adaptiv și generează raportul pentru familie/profesor.
+14. Compară două diagnostice și verifică timpii din raportul local.
+15. Închide conexiunea și verifică indicatorul offline; reconectează și verifică actualizarea.
 
 ## Criterii de acceptare
 
@@ -37,5 +41,6 @@ Validăm dacă aplicația este ușor de folosit pe telefon, tabletă și desktop
 - Exercițiul adaptiv prioritizează subiectele sub 80%, eșantioanele scurte și răspunsurile greșite recente; fără date anterioare revine la setul mixt.
 - Raportul imprimabil afișează clasa, materia, nivelurile pe competențe și ultima simulare EN salvată.
 - Nu apar erori în consolă în traseul de mai sus.
+- Toate variantele tematice de simulare păstrează baremul orientativ și cronometrul coerente.
 
 Nu introduceți nume, emailuri, fotografii sau alte date personale în observații.

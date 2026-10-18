@@ -16,11 +16,11 @@ Aplicație de recapitulare pentru clasele V–VIII și Evaluarea Națională, co
 | Memoratoare | 27 de fișe (gramatică, figuri de stil, ortografie, compuneri, divizibilitate, unități, trigonometrie, științe, geografie, engleză) + 29 de repere cronologice; printabile |
 | Glosar | 39 de termeni explicați pe scurt |
 | Cartonașe | Repetare spațiată Leitner în 5 cutii, generată automat din formule, memoratoare, date istorice și glosar |
-| Quiz + AI Coach | 83 de întrebări cu explicații, registru persistent al greșelilor și AI Coach local pentru întrebări și explicații |
-| Diagnostic + quiz adaptiv | Test scurt pe clasă și materie, hartă orientativă de competențe, apoi exerciții prioritizate după rezultate și greșeli recente |
+| Quiz + AI Coach | 104 de întrebări cu explicații, registru persistent al greșelilor cu repetare spațiată și AI Coach local pentru întrebări și explicații |
+| Diagnostic + quiz adaptiv | Test scurt, tendință diagnostic, filtre după subiect și dificultate orientativă, quiz adaptiv și mod de repetare a greșelilor |
 | Simulare EN | Matematică (12 itemi + 3 probleme cu barem orientativ) și Română (text original, 6 itemi, compunere cu listă de verificare), cu cronometru |
-| Focus & plan | Pomodoro 25/5/15 și plan de 7 zile |
-| Progres | XP, serie de zile, activitate pe 28 de zile, acuratețe pe materii, hartă de competențe, raport diagnostic imprimabil, 12 insigne, istoric simulări, export/import/ștergere |
+| Focus & plan | Pomodoro 25/5/15, plan adaptiv de 7 zile și mod de concentrare |
+| Progres | XP, serii, activitate, tendința diagnosticelor, timp mediu per item, raport local pentru familie/profesor, 12 insigne, istoric simulări, export/import/ștergere |
 
 ## Unificare cu ExamSpace V–VIII
 
@@ -36,7 +36,7 @@ Gimnaziu Space este acum aplicația principală și reunește modulele ExamSpace
 
 ## Tehnic
 
-HTML, CSS și JavaScript simplu, fără framework și fără build. Conținutul stă în `data.js` (RO/EN), logica activă în `app.v2.3.js` (sincronizată cu fișierele istorice `app.js`, `app.v2.1.js` și `app.v2.2.js`). Progresul și setările se salvează doar în `localStorage`. Funcționează offline prin service worker.
+HTML, CSS și JavaScript simplu, fără framework și fără build. Conținutul stă în `data.js` (RO/EN), logica activă în `app.v2.4.js` (sincronizată cu fișierele istorice `app.js`, `app.v2.1.js`, `app.v2.2.js` și `app.v2.3.js`). Progresul și setările se salvează doar în `localStorage`. Funcționează offline prin service worker.
 
 ### Mini-sintaxa formulelor
 
@@ -62,10 +62,10 @@ Realizat de Laura Andreea · proiect din portofoliul CodePen, în dezvoltare.
 - AI Coach local, fără API plătit, cu explicații pentru concepte și răspunsuri greșite.
 - Registru persistent al greșelilor, repetare, explicații și pași de reparare.
 - Arhivă pe ani pentru subiecte și bareme, cu link către sursa oficială.
-- Fiecare fișă din arhivă afișează sursa oficială și anul; pagina deschisă permite alegerea probei și fișierului original.
-- Diagnostic local, hartă orientativă a competențelor, exercițiu adaptiv și raport imprimabil care poate include ultima simulare EN.
+- Fiecare fișă din arhivă deschide anul corespunzător pe subiecte.edu.ro; pagina oficială permite alegerea probei și fișierului original.
+- Diagnostic local, hartă orientativă a competențelor raportată la domenii de programă (etichetare automată, de verificat de profesor), tendințe, quiz adaptiv și export de raport local.
 - Semnalarea unei întrebări pornește formularul local de feedback cu materia, clasa și enunțul completate.
-- Provocarea zilei, XP, serii, insigne, progres și certificat local.
+- Provocarea zilei, XP, serii, insigne, progres și certificat local. Fișe imprimabile, indicii în trei trepte, citire vocală a itemilor și ghid de citire.
 - Partajare prin Web Share/clipboard, printare, backup JSON și export local.
 - PWA/offline, dark/light, contrast ridicat, text mărit, Lexend, reduced motion și tastatură.
 - Fără cont, server, reclame, analytics sau servicii AI cu plată.
