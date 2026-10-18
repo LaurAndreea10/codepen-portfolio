@@ -68,10 +68,14 @@ with sync_playwright() as p:
         check(pg.evaluate('window.hacked===undefined') and pg.locator(f'{sel} img, {sel} b').count()==0,f'{page}: opinions are shown as text, never as HTML')
         check(pg.locator(f'{sel} a[href$="feedback.html"]').count()==1,f'{page}: has a “share your feedback” link')
         pg.close()
-    pg=br.new_page(); pg.route(re.compile(r'.*/approved-feedback\.json.*'),lambda r:r.fulfill(status=200,content_type='application/json',body='{"items":[]}'))
-    pg.goto(ROOT+'portfolio.html'); pg.wait_for_timeout(500)
-    check(pg.locator('#curious-garden-opinions [data-feedback-empty]').is_visible() and pg.locator('#curious-garden-opinions figure').count()==0,'with no approved opinions the honest empty message is shown')
-    pg.close()
+    for page,sel in [('portfolio.html','#curious-garden-opinions'),('en/','#garden-feedback')]:
+        pg=br.new_page()
+        pg.route(re.compile(r'.*/approved-feedback\.json.*'),lambda r:r.fulfill(status=200,content_type='application/json',body='{"items":[]}'))
+        pg.goto(ROOT+page); pg.wait_for_timeout(500)
+        root=pg.locator(sel)
+        check(root.get_attribute('data-hide-when-empty') is not None and root.is_hidden() and root.locator('figure').count()==0,f'{page}: section stays hidden without approved opinions')
+        check(root.locator('[data-feedback-empty]').count()==1 and bool(root.locator('[data-feedback-empty]').text_content().strip()),f'{page}: retains an honest empty-state message')
+        pg.close()
     check(not errs,f'no page errors {errs[:3]}')
     br.close()
 print('\nFAILURES:',len(fails)); [print(' -',f) for f in fails]

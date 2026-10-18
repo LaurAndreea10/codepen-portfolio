@@ -333,6 +333,13 @@ footer a { color: var(--ecto-dim); }
 .still .ghost-wrap, .still [data-d] .ghost-wrap, .still .seance[data-mood] .ghost-wrap, .still .speaking .ghost .mouth, .still #ghost .g, .still .flame { animation: none !important; }
 @media (prefers-reduced-motion: reduce) { .ghost-wrap, [data-d] .ghost-wrap, .seance[data-mood] .ghost-wrap, .speaking .ghost .mouth, #ghost .g, .flame { animation: none !important; } }
 
+@media(forced-colors:active){.btn.primary,.btn.primary span{forced-color-adjust:none;background:Highlight!important;color:HighlightText!important;border-color:Highlight!important}}
+
+.translation-heading{font-size:1.17em}
+/* Reduce transitions as well as the named ghost animations. */
+.still *,.still *::before,.still *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
 </style>
 </head>
 <body>
@@ -462,7 +469,7 @@ footer a { color: var(--ecto-dim); }
           <div class="chips" id="chips"></div>
         </div>
         <div class="block" id="steps-box">
-          <h3 data-ro="Cum a fost tradus fiecare cuvânt" data-en="How each word was translated">Cum a fost tradus fiecare cuvânt</h3>
+          <h2 class="translation-heading" data-ro="Cum a fost tradus fiecare cuvânt" data-en="How each word was translated">Cum a fost tradus fiecare cuvânt</h2>
           <ol class="steps" id="steps"></ol>
         </div>
         <div id="dialect-box" class="block">
