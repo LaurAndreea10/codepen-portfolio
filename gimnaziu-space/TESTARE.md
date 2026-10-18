@@ -59,3 +59,11 @@ Nu introduceți nume, emailuri, fotografii sau alte date personale în observaț
 - Acasă → „Acoperirea băncii”: numerele corespund întrebărilor din banca actuală pe clasă și materie; fiecare număr deschide quizul filtrat. Verifică RO/EN și tastatura.
 - Matricea trebuie să precizeze că numărul de itemi nu certifică acoperirea programei. Testează lățimea de 320–520 px și fără scroll orizontal.
 - După instalare/actualizare PWA, verifică încărcarea learning-lab.v2.7.js; apoi repetă traseul în mod offline.
+
+## Verificări COMPER
+
+- Navigare: Acasă → COMPER și linkul COMPER din meniul lateral deschid pagina nouă.
+- Selectează matematică/română, etapele I/II și clasele V–VIII; fiecare combinație din ediția 2025–2026 trebuie să ofere subiectul și baremul potrivite.
+- Testează opțiunea „Alți ani / toate edițiile” și arhiva oficială completă.
+- Verifică RO/EN, tastatura, contrastul și lățimea mobilă. Linkurile externe trebuie să indice documentele publicate prin arhiva organizatorului.
+- Confirmă că pagina precizează că exercițiile proprii Gimnaziu Space nu sunt subiecte oficiale COMPER și că documentele externe nu sunt disponibile offline fără conexiune.
