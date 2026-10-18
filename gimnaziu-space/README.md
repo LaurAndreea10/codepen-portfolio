@@ -36,7 +36,7 @@ Gimnaziu Space este acum aplicația principală și reunește modulele ExamSpace
 
 ## Tehnic
 
-HTML, CSS și JavaScript simplu, fără framework și fără build. Conținutul stă în `data.js` (RO/EN), logica activă în `app.v2.4.js` (sincronizată cu fișierele istorice `app.js`, `app.v2.1.js`, `app.v2.2.js` și `app.v2.3.js`). Progresul și setările se salvează doar în `localStorage`. Funcționează offline prin service worker.
+HTML, CSS și JavaScript simplu, fără framework și fără build. Conținutul bilingv stă în `data.v2.4.js` (cu `data.js` păstrat ca alias compatibil), logica activă în `app.v2.4.js` (sincronizată cu fișierele istorice `app.js`, `app.v2.1.js`, `app.v2.2.js` și `app.v2.3.js`). Progresul și setările se salvează doar în `localStorage`. Funcționează offline prin service worker.
 
 ### Mini-sintaxa formulelor
 

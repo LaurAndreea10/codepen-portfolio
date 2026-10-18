@@ -59,3 +59,7 @@ Pachet de validare și lansare fără costuri:
 - Adăugate citirea vocală a întrebării, mod concentrare, ghid de citire, indicator online/offline/actualizare.
 - Arhiva deschide acum pagina oficială pentru anul ales; diagnosticul trimite la programele școlare ale Ministerului și descrie explicit limitele etichetării automate.
 - Feedbackul local poate fi clasificat pe categorii; cache-ul PWA a fost actualizat.
+
+## 2.4.1 — 2026-10-18
+
+- Versionate separat URL-urile pentru date și stiluri, pentru ca browserele cu cache PWA vechi să preia corect actualizarea 2.4.
