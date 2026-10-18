@@ -1,1479 +1,7 @@
-'use strict';
-/* Gimnaziu Space â€” logica aplicaÈ›iei. Totul ruleazÄƒ local, fÄƒrÄƒ server È™i fÄƒrÄƒ conturi. */
-(() => {
-  const D = window.GS_DATA;
-  const $ = (s, el = document) => el.querySelector(s);
-  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Stocare sigurÄƒ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  const KEY = 'gimnaziu-space:v1';
-  const SKEY = 'gimnaziu-space:settings';
-  const store = {
-    get(k, fb) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch { return fb; } },
-    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } }
-  };
-  const fresh = () => window.GS_PROGRESS.fresh();
-  const validate = (s) => window.GS_PROGRESS.normalize(s) || fresh();
-  let S = validate(store.get(KEY));
-  let SET = Object.assign({ lang: 'ro', theme: 'system', size: '1', font: '', contrast: false, motion: '', spacing: false, sound: true, grade: 0 }, store.get(SKEY, {}));
-  const save = () => store.set(KEY, S);
-  const saveSet = () => store.set(SKEY, SET);
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ i18n â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  const T = {
-    ro: {
-      skip: 'Sari la conÈ›inut', menu: 'Meniu', settings: 'SetÄƒri de accesibilitate', settingsTitle: 'SetÄƒri de accesibilitate', close: 'Ãnchide',
-      navLearn: 'ÃnvaÈ›Äƒ', navPractice: 'ExerseazÄƒ', navYou: 'Tu', navNote: 'Nu este material didactic oficial.',
-      'nav.acasa': 'AcasÄƒ', 'nav.clase': 'Pe clase', 'nav.formule': 'Formule', 'nav.formuleShort': 'Formule', 'nav.memorator': 'Memoratoare', 'nav.memoShort': 'Memo',
-      'nav.glosar': 'Glosar', 'nav.coach': 'AI Coach', 'nav.cartonase': 'CartonaÈ™e', 'nav.quiz': 'Quiz', 'nav.simulare': 'Simulare EN', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progres', 'nav.despre': 'Despre & surse', 'nav.arhiva': 'Subiecte & bareme', 'nav.instrumente': 'Instrumente', 'nav.feedback': 'Testare & feedback',
-      'disc.title': 'Important:', 'disc.body': 'aplicaÈ›ie de recapitulare creatÄƒ independent. Nu este material didactic oficial È™i nu Ã®nlocuieÈ™te manualele, profesorul sau documentele Ministerului EducaÈ›iei.',
-      'set.theme': 'TemÄƒ', 'set.system': 'Ca sistemul', 'set.light': 'LuminoasÄƒ', 'set.dark': 'ÃntunecatÄƒ', 'set.size': 'MÄƒrimea textului',
-      'set.font': 'Font uÈ™or de citit (Lexend)', 'set.spacing': 'SpaÈ›iere mai mare Ã®ntre rÃ¢nduri', 'set.contrast': 'Contrast ridicat', 'set.motion': 'Reduce animaÈ›iile', 'set.sound': 'Sunet la final de Pomodoro',
-      'set.hint': 'SetÄƒrile se salveazÄƒ doar Ã®n acest browser.',
-      themeTo: { light: 'ComutÄƒ pe tema Ã®ntunecatÄƒ', dark: 'ComutÄƒ pe tema luminoasÄƒ' },
-      grade: 'Clasa', grades: 'Clasele', all: 'Toate', subject: 'Materia', search: 'CautÄƒ', results: (n) => n === 1 ? '1 rezultat' : `${n} rezultate`,
-      gradeN: (g) => `clasa a ${['', '', '', '', '', 'V', 'VI', 'VII', 'VIII'][g]}-a`, gradeShort: (g) => ['', '', '', '', '', 'V', 'VI', 'VII', 'VIII'][g],
-      start: 'Ãncepe', next: 'UrmÄƒtoarea', finish: 'TerminÄƒ', back: 'Ãnapoi', retry: 'ÃncÄƒ o datÄƒ', reset: 'ReseteazÄƒ',
-      // AcasÄƒ
-      homeEyebrow: 'Recapitulare Â· clasele Vâ€“VIII Â· Evaluarea NaÈ›ionalÄƒ',
-      homeTitle: 'Tot ce trebuie <em>reamintit</em>, Ã®ntr-un singur caiet.',
-      homeLede: 'Formule, memoratoare, cartonaÈ™e, quiz-uri cu explicaÈ›ii È™i simulÄƒri Ã®n stilul EvaluÄƒrii NaÈ›ionale. Progresul tÄƒu rÄƒmÃ¢ne doar Ã®n browser È™i porneÈ™te de la zero.',
-      pickGrade: 'Ãn ce clasÄƒ eÈ™ti?', pickGradeHint: 'Filtrele pornesc de la clasa aleasÄƒ; o poÈ›i schimba oricÃ¢nd.',
-      countTitle: 'PÃ¢nÄƒ la examen', countDraft: 'Calendar EN VIII 2027 Ã®n proiect (MEC, august 2026) â€” verificÄƒ pe edu.ro.',
-      countSim: 'zile pÃ¢nÄƒ la simulare (16 mar. 2027)', countRom: 'zile pÃ¢nÄƒ la proba de romÃ¢nÄƒ (22 iun. 2027)', countMat: 'zile pÃ¢nÄƒ la proba de matematicÄƒ (24 iun. 2027)', countPast: 'a trecut',
-      tabDemo: 'Demo de prezentare', tabMine: 'ExperienÈ›a mea',
-      demoFlag: 'DATE DE EXEMPLU', demoText: 'Valorile de aici sunt inventate, ca sÄƒ vezi cum aratÄƒ aplicaÈ›ia dupÄƒ cÃ¢teva sÄƒptÄƒmÃ¢ni de folosire.',
-      mineEmpty: 'ÃncÄƒ nu ai progres. Ãncepe cu un quiz scurt sau cÃ¢teva cartonaÈ™e â€” totul se actualizeazÄƒ automat.',
-      st: { xp: 'XP', streak: 'zile la rÃ¢nd', quizzes: 'quiz-uri', acc: 'acurateÈ›e', cards: 'cartonaÈ™e repetate', known: 'formule È™tiute', memos: 'memoratoare citite', pomos: 'sesiuni de focus' },
-      coachTitle: 'Coach local', coachNote: 'Sugestii calculate Ã®n browser, din activitatea ta. Nu trimite date nicÄƒieri. AI Coach oferÄƒ explicaÈ›ii orientative.',
-      quick: 'Pornire rapidÄƒ', quickQuiz: 'Quiz de 5 Ã®ntrebÄƒri', quickCards: 'RepetÄƒ cartonaÈ™e', quickFormulas: 'Formulele clasei mele', quickSim: 'Simulare EN',
-      subjectsTitle: 'Materii',
-      coach: {
-        start: 'Ãncepe cu un quiz de 5 Ã®ntrebÄƒri din clasa ta â€” vei vedea imediat unde stai.',
-        due: (n) => `Ai ${n} cartonaÈ™e de repetat azi. DureazÄƒ cÃ¢teva minute.`,
-        weak: (s, p) => `${s} are acurateÈ›ea cea mai micÄƒ (${p}%). ReciteÈ™te memoratorul, apoi refÄƒ un quiz.`,
-        strong: (s, p) => `La ${s} stai bine (${p}%). Treci la Ã®ntrebÄƒri din clasa urmÄƒtoare.`,
-        sim: (n) => `Mai sunt ${n} zile pÃ¢nÄƒ la simulare. O simulare pe sÄƒptÄƒmÃ¢nÄƒ e un ritm bun.`,
-        streak: 'Ai Ã®nvÄƒÈ›at azi. PÄƒstreazÄƒ seria È™i mÃ¢ine, chiar È™i 10 minute.',
-        nostreak: 'Nu ai Ã®nvÄƒÈ›at Ã®ncÄƒ azi. Un Pomodoro de 25 de minute ajunge ca sÄƒ nu rupi seria.',
-        pomo: 'ÃncearcÄƒ un Pomodoro: 25 de minute de lucru, apoi 5 de pauzÄƒ.'
-      },
-      // Clase
-      claseTitle: 'Pe clase', claseLede: 'Alege clasa È™i vezi ce ai de recapitulat la fiecare materie.',
-      nForm: (n) => n === 1 ? '1 formulÄƒ' : `${n} formule`, nMemo: (n) => n === 1 ? '1 memorator' : `${n} memoratoare`, nQuiz: (n) => n === 1 ? '1 Ã®ntrebare' : `${n} Ã®ntrebÄƒri`, nTime: (n) => n === 1 ? '1 reper' : `${n} repere`,
-      openFormulas: 'Formule', openMemos: 'Memorator', openQuiz: 'Quiz', enBadge: 'ProbÄƒ la EN',
-      // Formule
-      formTitle: 'Formule', formLede: 'Formulele de matematicÄƒ, fizicÄƒ È™i chimie din gimnaziu. MarcheazÄƒ ce È™tii deja È™i adaugÄƒ la favorite ce vrei sÄƒ repeÈ›i.',
-      known: 'È˜tiu', fav: 'Favorit', copy: 'CopiazÄƒ', copied: 'Formula a fost copiatÄƒ', onlyFav: 'Doar favorite', onlyUnknown: 'Doar ce nu È™tiu',
-      noResults: 'Nu am gÄƒsit nimic. SchimbÄƒ filtrele sau cÄƒutarea.',
-      // Memorator
-      memoTitle: 'Memoratoare', memoLede: 'FiÈ™e scurte pentru recapitulare: gramaticÄƒ, figuri de stil, ortografie, reguli de matematicÄƒ, È™tiinÈ›e, istorie, geografie È™i englezÄƒ.',
-      markRead: 'MarcheazÄƒ ca citit', read: 'Citit', print: 'PrinteazÄƒ memoratoarele afiÈ™ate', timelineTitle: 'Repere cronologice',
-      // Glosar
-      glosTitle: 'Glosar', glosLede: 'Termeni de bazÄƒ explicaÈ›i pe scurt.',
-      // CartonaÈ™e
-      cardsTitle: 'CartonaÈ™e', cardsLede: 'Repetare spaÈ›iatÄƒ Ã®n 5 cutii: ce È™tii revine mai rar, ce greÈ™eÈ™ti revine mÃ¢ine.',
-      deck: 'Pachet', deckType: { all: 'Tot', f: 'Formule', m: 'Memorator', t: 'Date istorice', g: 'Glosar' },
-      due: 'de repetat', newC: 'noi', box: (b) => `Cutia ${b}`,
-      startCards: 'Ãncepe sesiunea', front: 'Ãntrebare', backFace: 'RÄƒspuns', flip: 'Ãntoarce (SpaÈ›iu)', iKnow: 'È˜tiu', again: 'Mai repet',
-      cardOf: (i, n) => `CartonaÈ™ul ${i} din ${n}`, sessionDone: 'Sesiune terminatÄƒ', sessionStats: (k, a) => `${k} È™tiute Â· ${a} de repetat`,
-      noCards: 'Nu ai cartonaÈ™e de repetat acum Ã®n acest pachet. Revino mÃ¢ine sau alege alt pachet.',
-      cardsHint: 'ScurtÄƒturi: SpaÈ›iu â€” Ã®ntoarce, 1 â€” mai repet, 2 â€” È™tiu.',
-      // Quiz
-      quizTitle: 'Quiz', quizLede: 'ÃntrebÄƒri cu variante È™i explicaÈ›ii. RÄƒspunsurile se amestecÄƒ de fiecare datÄƒ.',
-      howMany: 'CÃ¢te Ã®ntrebÄƒri', question: (i, n) => `Ãntrebarea ${i} din ${n}`,
-      correct: 'Corect!', wrong: 'GreÈ™it.', rightWas: 'RÄƒspunsul corect:', score: 'Scor', review: 'Ce trebuie reluat',
-      allRight: 'Toate rÄƒspunsurile sunt corecte. Bravo!', notEnough: 'Nu sunt destule Ã®ntrebÄƒri pentru filtrele alese; am folosit toate Ã®ntrebÄƒrile disponibile.',
-      noQuestions: 'Nu existÄƒ Ã®ntrebÄƒri pentru aceastÄƒ combinaÈ›ie.',
-      // Simulare
-      simTitle: 'Simulare Evaluare NaÈ›ionalÄƒ', simLede: 'ExerciÈ›ii Ã®n stilul probelor de la clasa a VIII-a. Scorul este orientativ È™i nu reprezintÄƒ o notÄƒ oficialÄƒ.',
-      simMat: 'MatematicÄƒ', simRom: 'Limba romÃ¢nÄƒ', duration: 'DuratÄƒ', noTimer: 'FÄƒrÄƒ cronometru', minutes: (m) => `${m} min`,
-      simMatDesc: '12 itemi cu variante (Subiectele Iâ€“II) + 3 probleme cu rezolvare completÄƒ (Subiectul III), notate dupÄƒ un barem orientativ.',
-      simRomDesc: 'Un text scris pentru aplicaÈ›ie, 6 itemi de Ã®nÈ›elegere È™i limbÄƒ, plus o compunere argumentativÄƒ evaluatÄƒ cu o listÄƒ de verificare.',
-      simStructure: 'Structura realÄƒ (2 ore, 3 subiecte) se verificÄƒ pe subiecte.edu.ro.',
-      simStart: 'Ãncepe simularea', simSubmit: 'PredÄƒ lucrarea', simConfirm: 'Sigur predai lucrarea? Nu vei mai putea schimba rÄƒspunsurile.',
-      partI: 'Subiectele Iâ€“II Â· itemi cu variante (5 p fiecare)', partIII: 'Subiectul III Â· probleme (10 p fiecare)',
-      solveOnPaper: 'RezolvÄƒ pe hÃ¢rtie, apoi, dupÄƒ predare, comparÄƒ cu paÈ™ii din barem È™i bifeazÄƒ ce ai obÈ›inut.',
-      writeHere: 'Scrie compunerea aici', words: (n) => `${n} cuvinte`, readText: 'CiteÈ™te textul', partRom1: 'Subiectul I Â· Ã®nÈ›elegerea textului (5 p fiecare)', partRom2: 'Subiectul II Â· compunere (60 p)',
-      selfCheck: 'Autoevaluare dupÄƒ barem orientativ', stepPts: (p) => `${p} p`, oficiu: '10 p din oficiu',
-      simResult: 'Rezultat orientativ', estGrade: 'NotÄƒ estimativÄƒ', saveResult: 'SalveazÄƒ rezultatul', saved: 'Rezultat salvat Ã®n progres',
-      timeUp: 'Timpul a expirat. Lucrarea a fost predatÄƒ automat.', timeLeft: 'Timp rÄƒmas',
-      officialLink: 'Subiecte È™i bareme oficiale', simHistory: 'SimulÄƒrile tale',
-      // Focus
-      focusTitle: 'Focus & plan', focusLede: 'Pomodoro pentru sesiuni scurte È™i un plan de 7 zile pe care Ã®l bifezi.',
-      pFocus: 'Focus 25â€²', pShort: 'PauzÄƒ 5â€²', pLong: 'PauzÄƒ 15â€²', pStart: 'PorneÈ™te', pPause: 'PauzÄƒ', pReset: 'ReseteazÄƒ', pDone: 'Sesiune terminatÄƒ! Ia o pauzÄƒ.', pBreakDone: 'Pauza s-a terminat.',
-      sessionsToday: 'Sesiuni de focus Ã®n total', planTitle: 'Plan de 7 zile',
-      plan: ['Alege clasa È™i fÄƒ un quiz de 5 Ã®ntrebÄƒri', 'CiteÈ™te 2 memoratoare la romÃ¢nÄƒ', '20 de cartonaÈ™e cu formule', 'Un Pomodoro la materia cea mai slabÄƒ', 'Quiz de 10 Ã®ntrebÄƒri la matematicÄƒ', 'ReciteÈ™te greÈ™elile È™i glosarul', 'O simulare completÄƒ (romÃ¢nÄƒ sau matematicÄƒ)'],
-      tips: ['Pune telefonul departe È™i opreÈ™te notificÄƒrile.', 'Scrie 1â€“3 obiective Ã®nainte sÄƒ porneÈ™ti cronometrul.', 'RepetÄƒ la 1, 3 È™i 7 zile â€” cartonaÈ™ele fac asta automat.', 'DupÄƒ 4 sesiuni, ia o pauzÄƒ lungÄƒ.'],
-      day: (n) => `Ziua ${n}`,
-      // Progres
-      progTitle: 'Progresul tÄƒu', progLede: 'Statistici calculate local, din activitatea ta Ã®n aceastÄƒ aplicaÈ›ie.',
-      activity: 'Activitate Ã®n ultimele 28 de zile', accBySubj: 'AcurateÈ›e pe materii', badges: 'Insigne', noSims: 'Nu ai Ã®ncÄƒ simulÄƒri salvate.',
-      thDate: 'Data', thType: 'Proba', thScore: 'Punctaj', thGrade: 'NotÄƒ est.',
-      data: 'Datele tale', exportBtn: 'ExportÄƒ (JSON)', importBtn: 'ImportÄƒ', resetBtn: 'È˜terge tot progresul', resetConfirm: 'Sigur È™tergi tot progresul? AcÈ›iunea nu se poate anula.',
-      resetDone: 'Progresul a fost È™ters', importDone: 'Progres importat', importBad: 'FiÈ™ierul nu este un export valid Gimnaziu Space', importStorage: 'Importul nu a putut fi salvat. Progresul curent a rÄƒmas neschimbat.',
-      privacy: 'Nimic nu pleacÄƒ din browserul tÄƒu: nu existÄƒ conturi, server sau analytics.',
-      badgeNew: (b) => `InsignÄƒ nouÄƒ: ${b}`, xpGain: (n) => `+${n} XP`, level: (n) => `Nivelul ${n}`,
-      // Despre
-      aboutTitle: 'Despre & surse', aboutLede: 'Ce este È™i ce nu este Gimnaziu Space.',
-      aboutWhat: 'Ce este', aboutWhatBody: 'Un proiect personal de front-end: o aplicaÈ›ie de recapitulare pentru clasele Vâ€“VIII, construitÄƒ pe acelaÈ™i principiu ca BAC Space â€” conÈ›inut scurt, exerciÈ›iu imediat, progres salvat local, accesibilitate È™i douÄƒ limbi.',
-      aboutNot: 'Ce nu este', aboutNotBody: 'Nu este material didactic, nu este avizat de Ministerul EducaÈ›iei È™i nu Ã®nlocuieÈ™te manualele, programa È™colarÄƒ, profesorul sau subiectele oficiale. Formulele È™i explicaÈ›iile sunt rezumate pentru recapitulare; pot exista simplificÄƒri. DacÄƒ ceva diferÄƒ de ce aÈ›i Ã®nvÄƒÈ›at la clasÄƒ, are prioritate profesorul È™i manualul.',
-      aboutA11y: 'Accesibilitate', aboutA11yBody: 'Navigare completÄƒ din tastaturÄƒ, link de salt la conÈ›inut, temÄƒ luminoasÄƒ/Ã®ntunecatÄƒ, contrast ridicat, mÄƒrirea textului, font Lexend, spaÈ›iere mai mare, reducerea animaÈ›iilor, È›inte de atingere de minimum 44 px, formule citite corect de cititoarele de ecran È™i mod de culori forÈ›ate.',
-      aboutPrivacy: 'ConfidenÈ›ialitate', aboutPrivacyBody: 'Progresul È™i setÄƒrile se salveazÄƒ doar Ã®n localStorage, Ã®n browserul tÄƒu. Le poÈ›i exporta sau È™terge oricÃ¢nd din pagina Progres.',
-      aboutLinks: 'Surse oficiale', aboutCal: 'Datele examenului 2027 provin din calendarul publicat Ã®n proiect de Ministerul EducaÈ›iei (august 2026) È™i pot fi modificate. VerificÄƒ Ã®ntotdeauna edu.ro.',
-      aboutAuthor: 'Realizat de Laura Andreea Â· proiect din portofoliul CodePen, Ã®n dezvoltare.'
-    },
-    en: {
-      skip: 'Skip to content', menu: 'Menu', settings: 'Accessibility settings', settingsTitle: 'Accessibility settings', close: 'Close',
-      navLearn: 'Learn', navPractice: 'Practise', navYou: 'You', navNote: 'Not official teaching material.',
-      'nav.acasa': 'Home', 'nav.clase': 'By grade', 'nav.formule': 'Formulas', 'nav.formuleShort': 'Formulas', 'nav.memorator': 'Study sheets', 'nav.memoShort': 'Sheets',
-      'nav.glosar': 'Glossary', 'nav.coach': 'AI Coach', 'nav.cartonase': 'Flashcards', 'nav.quiz': 'Quiz', 'nav.simulare': 'Mock exam', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progress', 'nav.despre': 'About & sources', 'nav.arhiva': 'Papers & schemes', 'nav.instrumente': 'Toolkit', 'nav.feedback': 'Testing & feedback',
-      'disc.title': 'Important:', 'disc.body': 'an independently made revision app. It is not official teaching material and does not replace textbooks, teachers or Ministry of Education documents.',
-      'set.theme': 'Theme', 'set.system': 'System', 'set.light': 'Light', 'set.dark': 'Dark', 'set.size': 'Text size',
-      'set.font': 'Easy-to-read font (Lexend)', 'set.spacing': 'Wider line spacing', 'set.contrast': 'High contrast', 'set.motion': 'Reduce motion', 'set.sound': 'Sound when a Pomodoro ends',
-      'set.hint': 'Settings are saved in this browser only.',
-      themeTo: { light: 'Switch to dark theme', dark: 'Switch to light theme' },
-      grade: 'Grade', grades: 'Grades', all: 'All', subject: 'Subject', search: 'Search', results: (n) => n === 1 ? '1 result' : `${n} results`,
-      gradeN: (g) => `grade ${g}`, gradeShort: (g) => String(g),
-      start: 'Start', next: 'Next', finish: 'Finish', back: 'Back', retry: 'Again', reset: 'Reset',
-      homeEyebrow: 'Revision Â· grades 5â€“8 Â· National Evaluation',
-      homeTitle: 'Everything you need to <em>remember</em>, in one notebook.',
-      homeLede: 'Formulas, study sheets, flashcards, quizzes with explanations and mock exams in the style of Romaniaâ€™s grade-8 National Evaluation. Your progress stays in your browser and starts from zero.',
-      pickGrade: 'Which grade are you in?', pickGradeHint: 'Filters start from the chosen grade; you can change it anytime.',
-      countTitle: 'Until the exam', countDraft: 'The 2027 grade-8 exam calendar is a draft (Ministry, August 2026) â€” check edu.ro.',
-      countSim: 'days to the mock exam (16 Mar 2027)', countRom: 'days to the Romanian paper (22 Jun 2027)', countMat: 'days to the maths paper (24 Jun 2027)', countPast: 'passed',
-      tabDemo: 'Showcase demo', tabMine: 'My experience',
-      demoFlag: 'SAMPLE DATA', demoText: 'These values are made up, to show what the app looks like after a few weeks of use.',
-      mineEmpty: 'No progress yet. Start with a short quiz or a few flashcards â€” everything updates automatically.',
-      st: { xp: 'XP', streak: 'day streak', quizzes: 'quizzes', acc: 'accuracy', cards: 'cards reviewed', known: 'formulas known', memos: 'sheets read', pomos: 'focus sessions' },
-      coachTitle: 'Local coach', coachNote: 'Suggestions computed in your browser from your activity. No data is sent anywhere and no AI is used.',
-      quick: 'Quick start', quickQuiz: '5-question quiz', quickCards: 'Review flashcards', quickFormulas: 'My gradeâ€™s formulas', quickSim: 'Mock exam',
-      subjectsTitle: 'Subjects',
-      coach: {
-        start: 'Start with a 5-question quiz for your grade â€” youâ€™ll see right away where you stand.',
-        due: (n) => `You have ${n} flashcards due today. It takes a few minutes.`,
-        weak: (s, p) => `${s} has your lowest accuracy (${p}%). Re-read the sheet, then retake a quiz.`,
-        strong: (s, p) => `Youâ€™re doing well in ${s} (${p}%). Try questions from the next grade.`,
-        sim: (n) => `${n} days until the mock exam. One mock a week is a good pace.`,
-        streak: 'You studied today. Keep the streak tomorrow, even for 10 minutes.',
-        nostreak: 'You havenâ€™t studied yet today. One 25-minute Pomodoro keeps the streak alive.',
-        pomo: 'Try a Pomodoro: 25 minutes of work, then a 5-minute break.'
-      },
-      claseTitle: 'By grade', claseLede: 'Pick a grade and see what to revise in each subject.',
-      nForm: (n) => n === 1 ? '1 formula' : `${n} formulas`, nMemo: (n) => n === 1 ? '1 sheet' : `${n} sheets`, nQuiz: (n) => n === 1 ? '1 question' : `${n} questions`, nTime: (n) => n === 1 ? '1 date' : `${n} dates`,
-      openFormulas: 'Formulas', openMemos: 'Sheets', openQuiz: 'Quiz', enBadge: 'Exam subject',
-      formTitle: 'Formulas', formLede: 'Middle-school maths, physics and chemistry formulas. Mark what you already know and star what you want to review.',
-      known: 'I know it', fav: 'Star', copy: 'Copy', copied: 'Formula copied', onlyFav: 'Starred only', onlyUnknown: 'Only what I donâ€™t know',
-      noResults: 'Nothing found. Change the filters or the search.',
-      memoTitle: 'Study sheets', memoLede: 'Short revision sheets: grammar, figures of speech, spelling, maths rules, science, history, geography and English.',
-      markRead: 'Mark as read', read: 'Read', print: 'Print the sheets shown', timelineTitle: 'Key dates',
-      glosTitle: 'Glossary', glosLede: 'Basic terms explained briefly.',
-      cardsTitle: 'Flashcards', cardsLede: 'Spaced repetition in 5 boxes: what you know comes back less often, what you miss comes back tomorrow.',
-      deck: 'Deck', deckType: { all: 'Everything', f: 'Formulas', m: 'Sheets', t: 'History dates', g: 'Glossary' },
-      due: 'due', newC: 'new', box: (b) => `Box ${b}`,
-      startCards: 'Start session', front: 'Question', backFace: 'Answer', flip: 'Flip (Space)', iKnow: 'I know it', again: 'Again',
-      cardOf: (i, n) => `Card ${i} of ${n}`, sessionDone: 'Session complete', sessionStats: (k, a) => `${k} known Â· ${a} to review`,
-      noCards: 'No cards due right now in this deck. Come back tomorrow or pick another deck.',
-      cardsHint: 'Shortcuts: Space â€” flip, 1 â€” again, 2 â€” I know it.',
-      quizTitle: 'Quiz', quizLede: 'Multiple-choice questions with explanations. Options are shuffled every time.',
-      howMany: 'How many questions', question: (i, n) => `Question ${i} of ${n}`,
-      correct: 'Correct!', wrong: 'Not quite.', rightWas: 'Correct answer:', score: 'Score', review: 'What to revisit',
-      allRight: 'Every answer is correct. Well done!', notEnough: 'Not enough questions for these filters; all available questions were used.',
-      noQuestions: 'There are no questions for this combination.',
-      simTitle: 'National Evaluation mock exam', simLede: 'Practice in the style of the grade-8 papers. The score is an estimate, not an official grade.',
-      simMat: 'Mathematics', simRom: 'Romanian', duration: 'Duration', noTimer: 'No timer', minutes: (m) => `${m} min`,
-      simMatDesc: '12 multiple-choice items (Parts Iâ€“II) + 3 full-solution problems (Part III), scored with a guide marking scheme.',
-      simRomDesc: 'A text written for this app, 6 reading and language items, plus an argumentative essay assessed with a checklist.',
-      simStructure: 'Always check the real structure (2 hours, 3 parts) on subiecte.edu.ro.',
-      simStart: 'Start mock exam', simSubmit: 'Hand in', simConfirm: 'Hand in your paper? You wonâ€™t be able to change your answers.',
-      partI: 'Parts Iâ€“II Â· multiple-choice items (5 pts each)', partIII: 'Part III Â· problems (10 pts each)',
-      solveOnPaper: 'Solve on paper; after handing in, compare with the marking steps and tick what you got.',
-      writeHere: 'Write your essay here', words: (n) => `${n} words`, readText: 'Read the text', partRom1: 'Part I Â· reading (5 pts each)', partRom2: 'Part II Â· writing (60 pts)',
-      selfCheck: 'Self-assessment with the guide marking scheme', stepPts: (p) => `${p} pts`, oficiu: '10 pts given by default',
-      simResult: 'Estimated result', estGrade: 'Estimated grade', saveResult: 'Save result', saved: 'Result saved to progress',
-      timeUp: 'Time is up. Your paper was handed in automatically.', timeLeft: 'Time left',
-      officialLink: 'Official papers and marking schemes', simHistory: 'Your mock exams',
-      focusTitle: 'Focus & plan', focusLede: 'A Pomodoro timer for short sessions and a 7-day plan you can tick off.',
-      pFocus: 'Focus 25â€²', pShort: 'Break 5â€²', pLong: 'Break 15â€²', pStart: 'Start', pPause: 'Pause', pReset: 'Reset', pDone: 'Session complete! Take a break.', pBreakDone: 'Break is over.',
-      sessionsToday: 'Focus sessions in total', planTitle: '7-day plan',
-      plan: ['Pick your grade and take a 5-question quiz', 'Read 2 Romanian study sheets', '20 formula flashcards', 'One Pomodoro on your weakest subject', 'A 10-question maths quiz', 'Re-read mistakes and the glossary', 'A full mock exam (Romanian or maths)'],
-      tips: ['Put your phone away and silence notifications.', 'Write 1â€“3 goals before starting the timer.', 'Review after 1, 3 and 7 days â€” flashcards do this for you.', 'After 4 sessions, take a long break.'],
-      day: (n) => `Day ${n}`,
-      progTitle: 'Your progress', progLede: 'Statistics computed locally from your activity in this app.',
-      activity: 'Activity in the last 28 days', accBySubj: 'Accuracy by subject', badges: 'Badges', noSims: 'No saved mock exams yet.',
-      thDate: 'Date', thType: 'Paper', thScore: 'Points', thGrade: 'Est. grade',
-      data: 'Your data', exportBtn: 'Export (JSON)', importBtn: 'Import', resetBtn: 'Delete all progress', resetConfirm: 'Delete all progress? This cannot be undone.',
-      resetDone: 'Progress deleted', importDone: 'Progress imported', importBad: 'This file isnâ€™t a valid Gimnaziu Space export', importStorage: 'The import could not be saved. Your current progress is unchanged.',
-      privacy: 'Nothing leaves your browser: there are no accounts, servers or analytics.',
-      badgeNew: (b) => `New badge: ${b}`, xpGain: (n) => `+${n} XP`, level: (n) => `Level ${n}`,
-      aboutTitle: 'About & sources', aboutLede: 'What Gimnaziu Space is, and what it isnâ€™t.',
-      aboutWhat: 'What it is', aboutWhatBody: 'A personal front-end project: a revision app for grades 5â€“8, built on the same principle as BAC Space â€” short content, immediate practice, progress saved locally, accessibility and two languages.',
-      aboutNot: 'What it isnâ€™t', aboutNotBody: 'It is not teaching material, it is not endorsed by the Ministry of Education and it does not replace textbooks, the curriculum, teachers or official exam papers. Formulas and explanations are summaries for revision and may simplify. If something differs from what you learned in class, your teacher and textbook come first.',
-      aboutA11y: 'Accessibility', aboutA11yBody: 'Full keyboard navigation, skip link, light/dark theme, high contrast, larger text, Lexend font, wider spacing, reduced motion, touch targets of at least 44 px, formulas read correctly by screen readers and forced-colours support.',
-      aboutPrivacy: 'Privacy', aboutPrivacyBody: 'Progress and settings are saved only in localStorage in your browser. You can export or delete them anytime from the Progress page.',
-      aboutLinks: 'Official sources', aboutCal: 'The 2027 exam dates come from the draft calendar published by the Ministry of Education (August 2026) and may change. Always check edu.ro.',
-      aboutAuthor: 'Made by Laura Andreea Â· a CodePen portfolio project, in development.'
-    }
-  };
-  const t = (k) => { const v = T[SET.lang][k]; return v === undefined ? (T.ro[k] ?? k) : v; };
-  const pick = (o) => (o && typeof o === 'object' && 'ro' in o) ? (o[SET.lang] ?? o.ro) : o;
-  const subj = (id) => D.SUBJECTS.find((s) => s.id === id);
-  const subjName = (id) => pick(subj(id));
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Formule: mini-parser â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  function parseMath(src) {
-    let i = 0;
-    function seq(stops) {
-      const out = []; let buf = '';
-      const flush = () => { if (buf) { out.push({ k: 'txt', v: buf }); buf = ''; } };
-      while (i < src.length) {
-        const c = src[i];
-        if (stops.includes(c)) break;
-        if (c === '[' && src.indexOf('|', i) > i) {
-          flush(); i++; const n = seq('|'); i++; const d = seq(']'); i++; out.push({ k: 'fr', n, d });
-        } else if (c === 'âˆš' && src[i + 1] === '{') {
-          flush(); i += 2; const v = seq('}'); i++; out.push({ k: 'sq', v });
-        } else if ((c === '^' || c === '_') && i + 1 < src.length) {
-          flush(); i++;
-          let v;
-          if (src[i] === '{') { i++; v = seq('}'); i++; } else { v = [{ k: 'txt', v: src[i] }]; i++; }
-          out.push({ k: c === '^' ? 'sup' : 'sub', v });
-        } else { buf += c; i++; }
-      }
-      flush(); return out;
-    }
-    return seq('');
-  }
-  const html = (nodes) => nodes.map((n) => {
-    if (n.k === 'txt') return esc(n.v);
-    if (n.k === 'fr') return `<span class="fr"><span class="fr-n">${html(n.n)}</span><span class="fr-d">${html(n.d)}</span></span>`;
-    if (n.k === 'sq') return `<span class="sq">âˆš<span class="sq-in">${html(n.v)}</span></span>`;
-    return `<${n.k}>${html(n.v)}</${n.k}>`;
-  }).join('');
-  const SPEAK = {
-    ro: { 'Â·': ' ori ', 'Ã—': ' ori ', ':': ' Ã®mpÄƒrÈ›it la ', '=': ' egal ', 'âˆ’': ' minus ', '+': ' plus ', 'Â±': ' plus sau minus ', 'Ï€': 'pi', 'Î”': 'delta ', 'â‡”': ' echivalent cu ', 'â‡’': ' rezultÄƒ ', 'â‰ˆ': ' aproximativ ', 'Â°': ' grade', 'â‰¤': ' mai mic sau egal cu ', 'â‰¥': ' mai mare sau egal cu ', '<': ' mai mic decÃ¢t ', '>': ' mai mare decÃ¢t ', 'â‰ ': ' diferit de ', 'Ï': 'ro', 'Î·': 'eta', 'Î»': 'lambda', 'âˆ ': 'unghiul ', '%': ' la sutÄƒ', 'â€¦': ' È™i aÈ™a mai departe ' },
-    en: { 'Â·': ' times ', 'Ã—': ' times ', ':': ' divided by ', '=': ' equals ', 'âˆ’': ' minus ', '+': ' plus ', 'Â±': ' plus or minus ', 'Ï€': 'pi', 'Î”': 'delta ', 'â‡”': ' if and only if ', 'â‡’': ' gives ', 'â‰ˆ': ' approximately ', 'Â°': ' degrees', 'â‰¤': ' at most ', 'â‰¥': ' at least ', '<': ' less than ', '>': ' greater than ', 'â‰ ': ' not equal to ', 'Ï': 'rho', 'Î·': 'eta', 'Î»': 'lambda', 'âˆ ': 'angle ', '%': ' percent', 'â€¦': ' and so on ' }
-  };
-  function speak(nodes, lang) {
-    const m = SPEAK[lang];
-    const w = lang === 'en'
-      ? { over: ' over ', root: 'square root of ', sq: ' squared', cube: ' cubed', pow: ' to the power ', sub: ' sub ', open: ' ( ', close: ' ) ' }
-      : { over: ' supra ', root: 'radical din ', sq: ' la pÄƒtrat', cube: ' la cub', pow: ' la puterea ', sub: ' indice ', open: ' ( ', close: ' ) ' };
-    return nodes.map((n) => {
-      if (n.k === 'txt') {
-        const abs = lang === 'en' ? 'absolute value of ' : 'modulul lui ';
-        const v = n.v.replace(/\|(\w)\|/g, (_, x) => ` ${abs}${x} `)
-          // â€RGâ€, â€Llhâ€, â€abâ€ sunt produse de litere: le citim separat, nu ca pe un cuvÃ¢nt
-          .replace(/[A-Za-zÏ€]+/g, (w) => (w.length <= 5 && w !== 'Pa' && (/[A-ZÏ€][A-Za-zÏ€]|[a-zÏ€][A-ZÏ€]/.test(w) || ['ab', 'ac', 'ax', 'bc', 'lh', 'Ll'].includes(w))) ? w.split('').join(' ') : w);
-        return [...v].map((c) => m[c] ?? c).join('');
-      }
-      if (n.k === 'fr') return w.open + speak(n.n, lang) + w.over + speak(n.d, lang) + w.close;
-      if (n.k === 'sq') return w.root + w.open + speak(n.v, lang) + w.close;
-      if (n.k === 'sup') { const s = speak(n.v, lang).trim(); return (s === '2' ? w.sq : s === '3' ? w.cube : w.pow + s) + ' '; }
-      return w.sub + speak(n.v, lang) + ' ';
-    }).join('').replace(/\s+/g, ' ').trim();
-  }
-  const mathCache = new Map();
-  function renderMath(src, cls = 'f-math') {
-    if (!mathCache.has(src)) mathCache.set(src, parseMath(src));
-    const nodes = mathCache.get(src);
-    return `<span class="${cls}"><span aria-hidden="true">${html(nodes)}</span><span class="sr">${esc(speak(nodes, SET.lang))}</span></span>`;
-  }
-  const plainMath = (src) => src.replace(/\[([^|\]]*)\|([^\]]*)\]/g, '($1)/($2)').replace(/âˆš\{([^}]*)\}/g, 'âˆš($1)').replace(/\^\{([^}]*)\}/g, '^($1)').replace(/_\{([^}]*)\}/g, '_$1');
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Util â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
-  const dayKey = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-  const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-  const inGrade = (g, sel) => !sel || (Array.isArray(g) ? g.includes(sel) : g === sel);
-  const norm = (s) => String(s).toLocaleLowerCase().normalize('NFD').replace(/[Ì€-Í¯]/g, '');
-  const reportQuestionUrl = (q) => { const p = new URLSearchParams({ item: `${q.s}-${q.g}`, subject: q.s, grade: q.g, q: pick(q.q) }); return `#feedback?${p}`; };
-  function competency(q) {
-    if (q.topic && typeof q.topic === 'string') return { id: q.topic, ro: q.topicLabel || q.topic, en: q.topicLabelEn || q.topicLabel || q.topic };
-    const text = norm(`${pick(q.q)} ${pick(q.x)}`);
-    const has = (...terms) => terms.some((w) => text.includes(norm(w)));
-    const topics = {
-      mat: [
-        ['number', 'Numere È™i operaÈ›ii', 'Numbers and operations', ['restul', 'divide', 'diviz', 'putere', 'exponent', 'multiplu', 'frac', 'procent', 'mean', 'remainder', 'power']],
-        ['algebra', 'AlgebrÄƒ È™i ecuaÈ›ii', 'Algebra and equations', ['ecuati', 'ecuaÈ›', 'necunosc', 'x este', 'proport', 'raport', 'equation', 'unknown']],
-        ['geometry', 'Geometrie È™i mÄƒsurare', 'Geometry and measurement', ['unghi', 'triunghi', 'dreptunghi', 'arie', 'perimetru', 'cerc', 'cm', 'cmÂ²', 'geometr', 'angle', 'triangle', 'area', 'perimeter']],
-        ['data', 'Date È™i probabilitate', 'Data and probability', ['probabil', 'media aritmetic', 'grafic', 'diagram', 'average', 'die', 'zar']]
-      ],
-      rom: [
-        ['reading', 'ÃnÈ›elegerea textului', 'Reading comprehension', ['textul', 'fragment', 'autorul', 'ideea principal', 'personaj', 'citat', 'text', 'character', 'main idea']],
-        ['grammar', 'GramaticÄƒ', 'Grammar', ['substantiv', 'verb', 'adjectiv', 'pronume', 'predicat', 'subiectul', 'parte de vorbire', 'gramatic', 'noun', 'verb', 'adjective']],
-        ['writing', 'Comunicare È™i redactare', 'Writing and communication', ['scrie', 'formuleaz', 'enunÈ›', 'propozi', 'punctua', 'ortograf', 'write', 'sentence']]
-      ],
-      fiz: [['physics', 'Fenomene È™i mÄƒrimi fizice', 'Physical quantities and phenomena', ['vitez', 'distan', 'timp', 'forÈ›', 'energie', 'electric', 'temperatur', 'density', 'speed', 'force']]],
-      chi: [['chemistry', 'SubstanÈ›e È™i reacÈ›ii', 'Substances and reactions', ['atom', 'molecul', 'element', 'substan', 'reacÈ›', 'solution', 'chemical']]],
-      bio: [['biology', 'Organisme È™i viaÈ›Äƒ', 'Organisms and life', ['celul', 'plant', 'animal', 'organism', 'sistem', 'ecosistem', 'body', 'photosynthesis']]],
-      ist: [['history', 'Cronologie È™i evenimente', 'Chronology and events', ['anul', 'secol', 'domn', 'rÄƒzboi', 'eveniment', 'cauz', 'consecin', 'century', 'event']]],
-      geo: [['geography', 'HÄƒrÈ›i È™i geografie', 'Maps and geography', ['hart', 'continent', 'clim', 'popula', 'relief', 'rÃ¢u', 'ocean', 'map', 'country']]],
-      eng: [['english', 'Vocabular È™i gramaticÄƒ', 'Vocabulary and grammar', ['choose', 'complete', 'verb', 'tense', 'word', 'sentence', 'vocabular', 'grammar']]]
-    };
-    const options = topics[q.s] || [];
-    const match = options.find(([, , , terms]) => has(...terms));
-    const fallback = { mat: ['math-mixed', 'Calcul È™i raÈ›ionament', 'Calculation and reasoning'], rom: ['romanian-mixed', 'LimbÄƒ È™i text', 'Language and text'], fiz: ['physics-mixed', 'NoÈ›iuni de fizicÄƒ', 'Physics concepts'], chi: ['chemistry-mixed', 'NoÈ›iuni de chimie', 'Chemistry concepts'], bio: ['biology-mixed', 'NoÈ›iuni de biologie', 'Biology concepts'], ist: ['history-mixed', 'NoÈ›iuni de istorie', 'History concepts'], geo: ['geography-mixed', 'NoÈ›iuni de geografie', 'Geography concepts'], eng: ['english-mixed', 'Limba englezÄƒ', 'English language'] }[q.s] || ['general', 'CompetenÈ›Äƒ generalÄƒ', 'General skills'];
-    return match ? { id: match[0], ro: match[1], en: match[2] } : { id: fallback[0], ro: fallback[1], en: fallback[2] };
-  }
-  const fmtDate = (iso) => new Date(iso).toLocaleDateString(SET.lang === 'en' ? 'en-GB' : 'ro-RO', { day: 'numeric', month: 'short', year: 'numeric' });
-  const daysUntil = (iso) => Math.ceil((new Date(iso + 'T09:00:00') - new Date()) / 86400000);
-
-  function streak() {
-    let n = 0; const d = new Date();
-    if (!S.days[dayKey(d)]) d.setDate(d.getDate() - 1);
-    while (S.days[dayKey(d)]) { n++; d.setDate(d.getDate() - 1); }
-    return n;
-  }
-  const level = () => 1 + Math.floor(S.xp / 150);
-  const accuracy = (s) => { const q = s ? S.quiz[s] : Object.values(S.quiz).reduce((a, b) => ({ ok: a.ok + b.ok, bad: a.bad + b.bad }), { ok: 0, bad: 0 }); if (!q) return null; const n = q.ok + q.bad; return n ? Math.round(q.ok / n * 100) : null; };
-  const difficulty = (q) => {
-    const txt = norm(`${pick(q.q)} ${pick(q.x)}`);
-    if (/ecuat|ecuaÈ›|radical|proport|piramid|neutraliz|echilibrat|argumentativ|scale|scar[aÄƒ]/.test(txt)) return 'challenge';
-    if (q.g >= 7 || /procent|fract|triunghi|energia|densitat|fotosintez|predicat|present simple/.test(txt)) return 'medium';
-    return 'easy';
-  };
-  const diffLabel = (key) => ({ easy: tx('Mai accesibil', 'Gentle start'), medium: tx('Nivel mediu', 'Medium'), challenge: tx('Provocare', 'Challenge') }[key]);
-  const say = (text) => { if (!('speechSynthesis' in window)) { toast(tx('Citirea vocalÄƒ nu este disponibilÄƒ Ã®n acest browser.', 'Speech is unavailable in this browser.')); return; } speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(String(text)); u.lang = SET.lang === 'en' ? 'en-GB' : 'ro-RO'; speechSynthesis.speak(u); };
-  const guide = { el: null, on: false };
-  function setReadingGuide(on) { guide.on = on; if (on && !guide.el) { guide.el = document.createElement('div'); guide.el.className = 'read-guide'; guide.el.setAttribute('aria-hidden', 'true'); document.body.append(guide.el); } if (guide.el) guide.el.hidden = !on; $('#reading-guide-btn')?.setAttribute('aria-pressed', String(on)); }
-  function printWorksheet(questions) {
-    const w = window.open('', '_blank'); if (!w) { toast(tx('Permite fereastra de printare pentru a crea fiÈ™a.', 'Allow the print window to create the worksheet.')); return; }
-    const lang = SET.lang; const title = tx('FiÈ™Äƒ de lucru Â· Gimnaziu Space', 'Practice worksheet Â· Gimnaziu Space');
-    w.document.write(`<!doctype html><html lang="${lang}"><meta charset="utf-8"><title>${title}</title><style>body{font:16px system-ui;max-width:850px;margin:2rem auto;color:#111}h1{font-size:24px}li{margin:1.2rem 0;break-inside:avoid}.answer{margin:.3rem 0 .3rem 1.2rem}.space{height:2.6rem;border-bottom:1px solid #bbb;margin:.5rem 0}</style><h1>${title}</h1><p>${tx('Nume: ____________________  Data: __________', 'Name: ____________________  Date: __________')}</p><ol>${questions.map(q => `<li><strong>${esc(pick(q.q))}</strong>${q.o.map((o,i)=>`<div class="answer">${'ABCD'[i]}. ${esc(pick(o))}</div>`).join('')}<div class="space"></div></li>`).join('')}</ol><script>window.onload=()=>window.print()<\/script></html>`); w.document.close();
-  }
-  function recordMistake(q, oi) {
-    const mistake = { id: q.s + '|' + pick(q.q), s: q.s, g: q.g, topic: competency(q).id, q: q.q, chosen: q.o[oi], correct: q.o[q.a], x: q.x, stage: 0, nextReview: Date.now() + 86400000, when: new Date().toISOString() };
-    S.mistakes = [...(S.mistakes || [])].filter((m) => m && m.id !== mistake.id).concat(mistake).slice(-50);
-    save();
-  }
-
-
-  function gain(xp, silent) {
-    S.xp += xp; const k = today(); S.days[k] = (S.days[k] || 0) + xp;
-    checkBadges(); save();
-    if (!silent && xp) toast(t('xpGain')(xp));
-  }
-  function checkBadges() {
-    const subjAnswered = Object.keys(S.quiz).filter((k) => (S.quiz[k].ok + S.quiz[k].bad) > 0).length;
-    const st = streak();
-    const rules = {
-      'first-quiz': S.quizzes >= 1, perfect: S.perfect >= 1, 'cards-20': S.reviews >= 20, 'cards-100': S.reviews >= 100,
-      'formulas-10': Object.keys(S.known).length >= 10, 'memo-5': Object.keys(S.memoRead).length >= 5, 'pomo-1': S.pomos >= 1, 'pomo-10': S.pomos >= 10,
-      'sim-1': S.sims.length >= 1, 'streak-3': st >= 3, 'streak-7': st >= 7, 'all-subj': subjAnswered >= D.SUBJECTS.length
-    };
-    for (const b of D.BADGES) if (rules[b.id] && !S.badges[b.id]) { S.badges[b.id] = today(); setTimeout(() => toast(t('badgeNew')(pick(b.t))), 900); }
-  }
-
-  let toastTimer;
-  function toast(msg) { const el = $('#toast'); el.textContent = msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 2400); }
-  const announce = (msg) => { const a = $('#announcer'); a.textContent = ''; setTimeout(() => { a.textContent = msg; }, 30); };
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ SetÄƒri â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  function applySettings() {
-    const d = document.documentElement;
-    d.lang = SET.lang;
-    if (SET.theme === 'light' || SET.theme === 'dark') d.dataset.theme = SET.theme; else delete d.dataset.theme;
-    SET.contrast ? (d.dataset.contrast = 'high') : delete d.dataset.contrast;
-    SET.font === 'lexend' ? (d.dataset.font = 'lexend') : delete d.dataset.font;
-    SET.motion === 'reduce' ? (d.dataset.motion = 'reduce') : delete d.dataset.motion;
-    SET.spacing ? (d.dataset.spacing = 'wide') : delete d.dataset.spacing;
-    d.style.setProperty('--scale', SET.size || '1');
-    $$('[data-i18n]').forEach((el) => { const v = t(el.dataset.i18n); if (typeof v === 'string') el.textContent = v; });
-    $$('[data-set-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.setLang === SET.lang)));
-    $$('[data-set-theme]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.setTheme === SET.theme)));
-    $$('[data-set-size]').forEach((b) => { b.setAttribute('aria-pressed', String(b.dataset.setSize === String(SET.size || '1'))); b.setAttribute('aria-label', `${t('set.size')} ${Math.round(Number(b.dataset.setSize) * 100)}%`); });
-    $('#set-font').checked = SET.font === 'lexend';
-    $('#set-spacing').checked = !!SET.spacing;
-    $('#set-contrast').checked = !!SET.contrast;
-    $('#set-motion').checked = SET.motion === 'reduce';
-    $('#set-sound').checked = SET.sound !== false;
-    const dark = isDark();
-    $('#theme-label').textContent = t('themeTo')[dark ? 'dark' : 'light'];
-    $('#theme-btn').setAttribute('aria-pressed', String(dark));
-    $('.sidenav').setAttribute('aria-label', SET.lang === 'en' ? 'Sections' : 'SecÈ›iuni');
-    $('.tabbar').setAttribute('aria-label', SET.lang === 'en' ? 'Quick navigation' : 'Navigare rapidÄƒ');
-  }
-  const isDark = () => SET.theme === 'dark' || (SET.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Router â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  const VIEWS = {};
-  let current = '';
-  let cleanup = null;
-  function route(focus = true) {
-    const [name, qs] = (location.hash.slice(1) || 'acasa').split('?');
-    const view = VIEWS[name] ? name : 'acasa';
-    const params = new URLSearchParams(qs || '');
-    if (cleanup) { cleanup(); cleanup = null; }
-    current = view;
-    $$('[data-nav]').forEach((a) => a.dataset.nav === view ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
-    // element nou la fiecare rutÄƒ, ca ascultÄƒtorii vechi sÄƒ disparÄƒ odatÄƒ cu vechea vedere
-    const old = $('#view');
-    const el = document.createElement('div');
-    el.id = 'view';
-    old.replaceWith(el);
-    VIEWS[view](el, params);
-    const h1 = $('h1', el);
-    document.title = `${h1 ? h1.textContent : 'Gimnaziu Space'} Â· Gimnaziu Space`;
-    closeNav();
-    if (focus && h1) { h1.setAttribute('tabindex', '-1'); h1.focus({ preventScroll: true }); window.scrollTo(0, 0); }
-  }
-  const head = (eyebrow, title, lede) => `<header class="view-head">${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ''}<h1>${title}</h1>${lede ? `<p class="lede">${lede}</p>` : ''}</header>`;
-
-  /* Filtre reutilizabile */
-  function subjPills(selected, list, attr = 's') {
-    return `<div class="filter-row" role="group" aria-label="${t('subject')}"><span class="lbl" aria-hidden="true">${t('subject')}</span>
-      <button type="button" class="pill" data-${attr}="" aria-pressed="${!selected}">${t('all')}</button>
-      ${list.map((s) => `<button type="button" class="pill" data-${attr}="${s.id}" aria-pressed="${selected === s.id}"><span class="subj-dot" style="--h:${s.hue}" aria-hidden="true"></span>${esc(pick(s))}</button>`).join('')}</div>`;
-  }
-  function gradePills(selected, grades = [5, 6, 7, 8]) {
-    return `<div class="filter-row" role="group" aria-label="${t('grade')}"><span class="lbl" aria-hidden="true">${t('grade')}</span>
-      <button type="button" class="pill" data-g="" aria-pressed="${!selected}">${t('all')}</button>
-      ${grades.map((g) => `<button type="button" class="pill" data-g="${g}" aria-pressed="${selected === g}" aria-label="${t('gradeN')(g)}">${t('gradeShort')(g)}</button>`).join('')}</div>`;
-  }
-  const gradeChips = (g) => (Array.isArray(g) ? g : [g]).map((x) => `<span class="chip">${t('gradeN')(x)}</span>`).join(' ');
-  const subjChip = (id) => { const s = subj(id); return `<span class="chip subj-chip" style="--h:${s.hue}"><span class="subj-dot" style="--h:${s.hue}" aria-hidden="true"></span>${esc(pick(s))}</span>`; };
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ AcasÄƒ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  const DEMO = { xp: 820, streak: 6, quizzes: 14, acc: 81, cards: 236, known: 31, memos: 9, pomos: 17 };
-  let homeTab = 'mine';
-  VIEWS.acasa = (el) => {
-    const g = SET.grade;
-    const counts = [['sim', 'countSim'], ['rom', 'countRom'], ['mat', 'countMat']].map(([k, label]) => {
-      const n = daysUntil(D.EXAM_DATES[k]);
-      return `<div class="count-item"><b>${n >= 0 ? n : 'â€”'}</b><span>${n >= 0 ? t(label) : t('countPast')}</span></div>`;
-    }).join('');
-    el.innerHTML = `
-      <div class="hero">
-        <div class="card">
-          <p class="eyebrow">${t('homeEyebrow')}</p>
-          <h1>${t('homeTitle')}</h1>
-          <p class="lede">${t('homeLede')}</p>
-          <h2 class="small" style="font-family:var(--font);margin-top:1rem" id="pick-lbl">${t('pickGrade')}</h2>
-          <div class="grade-pick" role="group" aria-labelledby="pick-lbl">
-            ${[5, 6, 7, 8].map((x) => `<button type="button" data-grade="${x}" aria-pressed="${g === x}">${t('gradeShort')(x)}<small>${SET.lang === 'en' ? 'grade' : 'clasa'}</small></button>`).join('')}
-          </div>
-          <p class="hint" style="margin-top:.5rem">${t('pickGradeHint')}</p>
-        </div>
-        <div class="card count-card">
-          <h2>${t('countTitle')}</h2>
-          ${counts}
-          <p class="hint">${t('countDraft')}</p>
-        </div>
-      </div>
-      <section aria-labelledby="exp-h">
-        <h2 id="exp-h" class="sr">${t('tabMine')}</h2>
-        <div class="tabs" role="tablist">
-          <button type="button" role="tab" id="tab-mine" aria-controls="panel-exp" aria-selected="${homeTab === 'mine'}" data-tab="mine">${t('tabMine')}</button>
-          <button type="button" role="tab" id="tab-demo" aria-controls="panel-exp" aria-selected="${homeTab === 'demo'}" data-tab="demo">${t('tabDemo')}</button>
-        </div>
-        <div id="panel-exp" role="tabpanel" aria-labelledby="tab-${homeTab}"></div>
-      </section>
-      <section aria-labelledby="quick-h">
-        <h2 id="quick-h">${t('quick')}</h2>
-        <div class="row">
-          <a class="btn primary" href="#diagnostic?s=mat${g ? `&g=${g}` : ''}">${tx('Diagnostic iniÈ›ial', 'Start diagnostic')}</a>
-          <a class="btn" href="#quiz?n=5${g ? `&g=${g}` : ''}&go=1">${t('quickQuiz')}</a>
-          <a class="btn" href="#cartonase">${t('quickCards')}</a>
-          <a class="btn" href="#formule${g ? `?g=${g}` : ''}">${t('quickFormulas')}</a>
-          <a class="btn" href="#simulare">${t('quickSim')}</a>
-        </div>
-      </section>
-      <section aria-labelledby="subj-h">
-        <h2 id="subj-h">${t('subjectsTitle')}</h2>
-        <div class="grid g4">
-          ${D.SUBJECTS.filter((s) => !g || s.grades.includes(g)).map((s) => `
-            <a class="card subj-tile" style="--h:${s.hue}" href="#clase?s=${s.id}${g ? `&g=${g}` : ''}">
-              <span class="big" aria-hidden="true">${s.icon}</span>
-              <strong>${esc(pick(s))}</strong>
-              <span class="small muted">${s.grades.map((x) => t('gradeShort')(x)).join(' Â· ')}${s.en8 ? ` Â· ${t('enBadge')}` : ''}</span>
-            </a>`).join('')}
-        </div>
-      </section>`;
-    const panel = $('#panel-exp', el);
-    const paint = () => {
-      const isDemo = homeTab === 'demo';
-      const v = isDemo ? DEMO : { xp: S.xp, streak: streak(), quizzes: S.quizzes, acc: accuracy(), cards: S.reviews, known: Object.keys(S.known).length, memos: Object.keys(S.memoRead).length, pomos: S.pomos };
-      const st = t('st');
-      const empty = !isDemo && !S.xp;
-      panel.setAttribute('aria-labelledby', `tab-${homeTab}`);
-      panel.innerHTML = `
-        ${isDemo ? `<span class="demo-flag">${t('demoFlag')}</span><p class="muted">${t('demoText')}</p>` : ''}
-        ${empty ? `<p class="muted">${t('mineEmpty')}</p>` : ''}
-        <div class="grid g4">
-          ${[['xp', v.xp], ['streak', v.streak], ['quizzes', v.quizzes], ['acc', v.acc == null ? 'â€”' : v.acc + '%'], ['cards', v.cards], ['known', v.known], ['memos', v.memos], ['pomos', v.pomos]]
-            .map(([k, n]) => `<div class="stat"><b>${n}</b><span>${st[k]}</span></div>`).join('')}
-        </div>
-        ${isDemo ? '' : `<p class="small muted" style="margin-top:.6rem">${t('level')(level())} Â· ${S.xp} XP</p>`}
-        <div class="card coach" style="margin-top:1rem">
-          <h3>${t('coachTitle')}</h3>
-          <ul>${coachTips(isDemo).map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
-          <p class="hint">${t('coachNote')}</p>
-        </div>`;
-      $$('[data-tab]', el).forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === homeTab)));
-    };
-    paint();
-    el.addEventListener('click', (e) => {
-      const tb = e.target.closest('[data-tab]');
-      if (tb) { homeTab = tb.dataset.tab; paint(); tb.focus(); }
-      const gb = e.target.closest('[data-grade]');
-      if (gb) { const x = Number(gb.dataset.grade); SET.grade = SET.grade === x ? 0 : x; saveSet(); route(false); $(`[data-grade="${x}"]`)?.focus(); }
-    });
-    $('.tabs', el).addEventListener('keydown', (e) => {
-      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-      homeTab = homeTab === 'mine' ? 'demo' : 'mine'; paint(); $(`[data-tab="${homeTab}"]`, el).focus();
-    });
-  };
-  function coachTips(demo) {
-    const c = t('coach');
-    if (demo) return [c.due(12), c.weak(subjName('fiz'), 58), c.sim(Math.max(0, daysUntil(D.EXAM_DATES.sim)))];
-    const tips = [];
-    const due = buildDeck('all', '', 0).filter((x) => isDue(x.id) && S.cards[x.id]).length;
-    if (!S.xp) tips.push(c.start);
-    if (due) tips.push(c.due(due));
-    const accs = Object.keys(S.quiz).filter((k) => S.quiz[k].ok + S.quiz[k].bad >= 3).map((k) => [k, accuracy(k)]).sort((a, b) => a[1] - b[1]);
-    if (accs.length && accs[0][1] < 75) tips.push(c.weak(subjName(accs[0][0]), accs[0][1]));
-    else if (accs.length) tips.push(c.strong(subjName(accs[accs.length - 1][0]), accs[accs.length - 1][1]));
-    if (S.xp) tips.push(S.days[today()] ? c.streak : c.nostreak);
-    const ds = daysUntil(D.EXAM_DATES.sim);
-    if (ds > 0 && tips.length < 4) tips.push(c.sim(ds));
-    if (!S.pomos && tips.length < 4) tips.push(c.pomo);
-    return tips.slice(0, 4);
-  }
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Pe clase â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  VIEWS.clase = (el, p) => {
-    let g = Number(p.get('g')) || SET.grade || 8;
-    const focusS = p.get('s');
-    const paint = () => {
-      const list = D.SUBJECTS.filter((s) => s.grades.includes(g));
-      el.innerHTML = head(t('gradeN')(g), t('claseTitle'), t('claseLede')) + `
-        <div class="grade-pick" role="group" aria-label="${t('grade')}" style="max-width:520px;margin-bottom:1.5rem">
-          ${[5, 6, 7, 8].map((x) => `<button type="button" data-cg="${x}" aria-pressed="${g === x}">${t('gradeShort')(x)}<small>${SET.lang === 'en' ? 'grade' : 'clasa'}</small></button>`).join('')}
-        </div>
-        <div class="grid g2">
-          ${list.map((s) => {
-            const nf = D.FORMULAS.filter((f) => f.s === s.id && inGrade(f.g, g)).length;
-            const nm = D.MEMOS.filter((m) => m.s === s.id && inGrade(m.g, g)).length;
-            const nq = D.QUIZ.filter((q) => q.s === s.id && q.g === g).length;
-            const nt = s.id === 'ist' ? D.TIMELINE.filter((x) => x.g === g).length : 0;
-            return `<article class="card stack" id="c-${s.id}" style="--h:${s.hue}">
-              <div class="row"><span class="subj-tile"><span class="big" aria-hidden="true">${s.icon}</span></span><h2 style="margin:0">${esc(pick(s))}</h2>${s.en8 && g === 8 ? `<span class="chip">${t('enBadge')}</span>` : ''}</div>
-              <p class="small muted">${[nf && t('nForm')(nf), nm && t('nMemo')(nm), nt && t('nTime')(nt), nq && t('nQuiz')(nq)].filter(Boolean).join(' Â· ')}</p>
-              <div class="row">
-                ${nf ? `<a class="btn sm" href="#formule?s=${s.id}&g=${g}">${t('openFormulas')}</a>` : ''}
-                ${nm || nt ? `<a class="btn sm" href="#memorator?s=${s.id}&g=${g}">${t('openMemos')}</a>` : ''}
-                ${nq ? `<a class="btn sm primary" href="#quiz?s=${s.id}&g=${g}&n=${Math.min(10, nq)}&go=1">${t('openQuiz')}</a>` : ''}
-              </div>
-            </article>`;
-          }).join('')}
-        </div>`;
-    };
-    paint();
-    if (focusS) requestAnimationFrame(() => $(`#c-${focusS}`, el)?.scrollIntoView({ block: 'center' }));
-    el.addEventListener('click', (e) => { const b = e.target.closest('[data-cg]'); if (b) { g = Number(b.dataset.cg); paint(); $(`[data-cg="${g}"]`, el).focus(); } });
-  };
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Formule â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  VIEWS.formule = (el, p) => {
-    const st = { s: p.get('s') || '', g: Number(p.get('g')) || 0, q: '', fav: false, unknown: false };
-    const subs = D.SUBJECTS.filter((s) => D.FORMULAS.some((f) => f.s === s.id));
-    el.innerHTML = head('âˆ‘', t('formTitle'), t('formLede')) + `
-      <div class="filters">
-        <label class="sr" for="f-search">${t('search')}</label>
-        <input id="f-search" class="search" type="search" placeholder="${t('search')}â€¦ (Pitagora, densitate, moli)" autocomplete="off">
-        <div id="f-subj"></div><div id="f-grade"></div>
-        <div class="filter-row"><button type="button" class="pill" id="f-fav" aria-pressed="false">â˜… ${t('onlyFav')}</button><button type="button" class="pill" id="f-unk" aria-pressed="false">${t('onlyUnknown')}</button></div>
-      </div>
-      <p class="count" id="f-count" aria-live="polite"></p>
-      <div class="grid g2" id="f-list"></div>`;
-    const list = $('#f-list', el);
-    const paintFilters = () => { $('#f-subj', el).innerHTML = subjPills(st.s, subs); $('#f-grade', el).innerHTML = gradePills(st.g); };
-    const paint = () => {
-      const q = norm(st.q);
-      const items = D.FORMULAS.filter((f) => (!st.s || f.s === st.s) && inGrade(f.g, st.g) && (!st.fav || S.fav[f.id]) && (!st.unknown || !S.known[f.id]) &&
-        (!q || norm(pick(f.t) + ' ' + pick(f.m) + ' ' + (f.n ? pick(f.n) : '')).includes(q)));
-      $('#f-count', el).textContent = t('results')(items.length);
-      list.innerHTML = items.length ? items.map((f) => `
-        <article class="card f-card">
-          <div class="row">${subjChip(f.s)} ${gradeChips(f.g)}</div>
-          <h3>${esc(pick(f.t))}</h3>
-          ${renderMath(pick(f.m))}
-          ${f.n ? `<p class="f-note">${renderMath(pick(f.n), 'f-inline')}</p>` : ''}
-          <div class="f-actions">
-            <button type="button" class="btn sm toggle" data-known="${f.id}" aria-pressed="${!!S.known[f.id]}">âœ“ ${t('known')}</button>
-            <button type="button" class="btn sm toggle star" data-fav="${f.id}" aria-pressed="${!!S.fav[f.id]}" aria-label="${t('fav')}: ${esc(pick(f.t))}">â˜…</button>
-            <button type="button" class="btn sm ghost" data-copy="${f.id}">${t('copy')}</button>
-          </div>
-        </article>`).join('') : `<p class="muted">${t('noResults')}</p>`;
-    };
-    paintFilters(); paint();
-    $('#f-search', el).addEventListener('input', (e) => { st.q = e.target.value; paint(); });
-    el.addEventListener('click', (e) => {
-      const b = e.target.closest('button'); if (!b) return;
-      if (b.hasAttribute('data-s')) { st.s = b.dataset.s; paintFilters(); paint(); $(`[data-s="${st.s}"]`, el).focus(); }
-      else if (b.hasAttribute('data-g')) { st.g = Number(b.dataset.g) || 0; paintFilters(); paint(); $(`[data-g="${b.dataset.g}"]`, el).focus(); }
-      else if (b.id === 'f-fav') { st.fav = !st.fav; b.setAttribute('aria-pressed', String(st.fav)); paint(); }
-      else if (b.id === 'f-unk') { st.unknown = !st.unknown; b.setAttribute('aria-pressed', String(st.unknown)); paint(); }
-      else if (b.dataset.known) {
-        const id = b.dataset.known; const on = !S.known[id];
-        if (on) { S.known[id] = 1; gain(2); } else { delete S.known[id]; save(); }
-        b.setAttribute('aria-pressed', String(on));
-      } else if (b.dataset.fav) {
-        const id = b.dataset.fav; const on = !S.fav[id];
-        on ? (S.fav[id] = 1) : delete S.fav[id]; save(); b.setAttribute('aria-pressed', String(on));
-      } else if (b.dataset.copy) {
-        const f = D.FORMULAS.find((x) => x.id === b.dataset.copy);
-        const text = `${pick(f.t)}: ${plainMath(pick(f.m))}`;
-        (navigator.clipboard?.writeText(text) || Promise.reject()).then(() => toast(t('copied'))).catch(() => toast(text));
-      }
-    });
-  };
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Memoratoare â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  VIEWS.memorator = (el, p) => {
-    const st = { s: p.get('s') || '', g: Number(p.get('g')) || 0, q: '' };
-    el.innerHTML = head('â–¤', t('memoTitle'), t('memoLede')) + `
-      <div class="filters">
-        <label class="sr" for="m-search">${t('search')}</label>
-        <input id="m-search" class="search" type="search" placeholder="${t('search')}â€¦ (metafora, s-a, Burebista)" autocomplete="off">
-        <div id="m-subj"></div><div id="m-grade"></div>
-        <div class="row no-print"><button type="button" class="btn sm" id="m-print">â™ ${t('print')}</button></div>
-      </div>
-      <p class="count" id="m-count" aria-live="polite"></p>
-      <div class="stack" id="m-list"></div>`;
-    const paintFilters = () => { $('#m-subj', el).innerHTML = subjPills(st.s, D.SUBJECTS); $('#m-grade', el).innerHTML = gradePills(st.g); };
-    const paint = () => {
-      const q = norm(st.q);
-      const memos = D.MEMOS.filter((m) => (!st.s || m.s === st.s) && inGrade(m.g, st.g)).map((m) => {
-        if (!q) return [m, m.i];
-        const hit = norm(pick(m.t)).includes(q);
-        const items = m.i.filter(([a, b]) => hit || norm(pick(a) + ' ' + pick(b)).includes(q));
-        return [m, items];
-      }).filter(([, items]) => items.length);
-      const tl = (!st.s || st.s === 'ist') ? D.TIMELINE.filter((x) => (!st.g || x.g === st.g) && (!q || norm(x.y + ' ' + pick(x.e)).includes(q))) : [];
-      $('#m-count', el).textContent = t('results')(memos.length + (tl.length ? 1 : 0));
-      $('#m-list', el).innerHTML = memos.map(([m, items]) => `
-        <details class="card memo" ${q || memos.length <= 2 ? 'open' : ''} data-memo="${m.id}">
-          <summary><span class="subj-dot" style="--h:${subj(m.s).hue}" aria-hidden="true"></span><h3>${esc(pick(m.t))}</h3>${S.memoRead[m.id] ? `<span class="chip">âœ“ ${t('read')}</span>` : ''}</summary>
-          <div class="row" style="padding:0 1.2rem .5rem">${subjChip(m.s)} ${gradeChips(m.g)}</div>
-          <dl>${items.map(([a, b]) => `<dt>${esc(pick(a))}</dt><dd>${esc(pick(b))}</dd>`).join('')}</dl>
-          <div class="memo-foot"><button type="button" class="btn sm toggle" data-read="${m.id}" aria-pressed="${!!S.memoRead[m.id]}">âœ“ ${S.memoRead[m.id] ? t('read') : t('markRead')}</button></div>
-        </details>`).join('') + (tl.length ? `
-        <details class="card memo" open>
-          <summary><span class="subj-dot" style="--h:${subj('ist').hue}" aria-hidden="true"></span><h3>${t('timelineTitle')}</h3></summary>
-          <ol class="timeline">${tl.map((x) => `<li><span class="yr">${esc(x.y)}</span><span>${esc(pick(x.e))} <span class="chip">${t('gradeShort')(x.g)}</span></span></li>`).join('')}</ol>
-        </details>` : '') || `<p class="muted">${t('noResults')}</p>`;
-    };
-    paintFilters(); paint();
-    $('#m-search', el).addEventListener('input', (e) => { st.q = e.target.value; paint(); });
-    el.addEventListener('click', (e) => {
-      const b = e.target.closest('button'); if (!b) return;
-      if (b.hasAttribute('data-s')) { st.s = b.dataset.s; paintFilters(); paint(); $(`[data-s="${st.s}"]`, el).focus(); }
-      else if (b.hasAttribute('data-g')) { st.g = Number(b.dataset.g) || 0; paintFilters(); paint(); $(`[data-g="${b.dataset.g}"]`, el).focus(); }
-      else if (b.id === 'm-print') { $$('details.memo', el).forEach((d) => { d.open = true; }); window.print(); }
-      else if (b.dataset.read) {
-        const id = b.dataset.read; const on = !S.memoRead[id];
-        if (on) { S.memoRead[id] = 1; gain(3); } else { delete S.memoRead[id]; save(); }
-        b.setAttribute('aria-pressed', String(on)); b.textContent = `âœ“ ${on ? t('read') : t('markRead')}`;
-      }
-    });
-  };
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Glosar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  VIEWS.glosar = (el, p) => {
-    const st = { s: p.get('s') || '', q: '' };
-    const subs = D.SUBJECTS.filter((s) => D.GLOSSARY.some((x) => x.s === s.id));
-    el.innerHTML = head('Aa', t('glosTitle'), t('glosLede')) + `
-      <div class="filters"><label class="sr" for="g-search">${t('search')}</label><input id="g-search" class="search" type="search" placeholder="${t('search')}â€¦" autocomplete="off"><div id="g-subj"></div></div>
-      <p class="count" id="g-count" aria-live="polite"></p><dl class="grid g2" id="g-list" style="margin:0"></dl>`;
-    const paint = () => {
-      $('#g-subj', el).innerHTML = subjPills(st.s, subs);
-      const q = norm(st.q);
-      const items = D.GLOSSARY.filter((x) => (!st.s || x.s === st.s) && (!q || norm(pick(x.t) + ' ' + pick(x.d)).includes(q)))
-        .sort((a, b) => pick(a.t).localeCompare(pick(b.t), SET.lang));
-      $('#g-count', el).textContent = t('results')(items.length);
-      $('#g-list', el).innerHTML = items.map((x) => `<div class="card"><dt><strong>${esc(pick(x.t))}</strong> <span class="subj-dot" style="--h:${subj(x.s).hue}" aria-hidden="true"></span><span class="sr">${esc(subjName(x.s))}</span></dt><dd style="margin:.35rem 0 0">${esc(pick(x.d))}</dd></div>`).join('') || `<p class="muted">${t('noResults')}</p>`;
-    };
-    paint();
-    $('#g-search', el).addEventListener('input', (e) => { st.q = e.target.value; paint(); });
-    el.addEventListener('click', (e) => { const b = e.target.closest('[data-s]'); if (b) { st.s = b.dataset.s; paint(); $(`[data-s="${st.s}"]`, el).focus(); } });
-  };
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CartonaÈ™e (Leitner) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  const INTERVAL = [0, 1, 3, 7, 14, 30]; // zile pentru cutiile 1â€“5
-  function buildDeck(type, s, g) {
-    const out = [];
-    if (type === 'all' || type === 'f') D.FORMULAS.forEach((f) => (!s || f.s === s) && inGrade(f.g, g) && out.push({ id: 'f:' + f.id, s: f.s, front: () => esc(pick(f.t)), back: () => renderMath(pick(f.m)) + (f.n ? `<p class="f-note" style="margin-top:.5rem">${renderMath(pick(f.n), 'f-inline')}</p>` : '') }));
-    if (type === 'all' || type === 'm') D.MEMOS.forEach((m) => (!s || m.s === s) && inGrade(m.g, g) && m.i.forEach(([a, b], i) => out.push({ id: `m:${m.id}:${i}`, s: m.s, front: () => `<span class="small muted" style="display:block;font-weight:400">${esc(pick(m.t))}</span>${esc(pick(a))}`, back: () => esc(pick(b)) })));
-    if ((type === 'all' || type === 't') && (!s || s === 'ist')) D.TIMELINE.forEach((x, i) => (!g || x.g === g) && out.push({ id: 't:' + i, s: 'ist', front: () => esc(pick(x.e)), back: () => `<span class="result-big">${esc(x.y)}</span>` }));
-    if (type === 'all' || type === 'g') D.GLOSSARY.forEach((x, i) => (!s || x.s === s) && out.push({ id: 'g:' + i, s: x.s, front: () => esc(pick(x.t)), back: () => esc(pick(x.d)) }));
-    return out;
-  }
-  const isDue = (id) => { const c = S.cards[id]; return !c || c.due <= Date.now(); };
-  VIEWS.cartonase = (el, p) => {
-    const st = { type: p.get('t') || 'all', s: p.get('s') || '', g: Number(p.get('g')) || SET.grade || 0 };
-    let session = null;
-    const setup = () => {
-      const deck = buildDeck(st.type, st.s, st.g);
-      const dueOld = deck.filter((x) => S.cards[x.id] && isDue(x.id)).length;
-      const fresh = deck.filter((x) => !S.cards[x.id]).length;
-      const boxes = [1, 2, 3, 4, 5].map((b) => deck.filter((x) => S.cards[x.id]?.b === b).length);
-      el.innerHTML = head('â–', t('cardsTitle'), t('cardsLede')) + `
-        <div class="filters">
-          <div class="filter-row" role="group" aria-label="${t('deck')}"><span class="lbl" aria-hidden="true">${t('deck')}</span>
-            ${Object.entries(t('deckType')).map(([k, v]) => `<button type="button" class="pill" data-type="${k}" aria-pressed="${st.type === k}">${v}</button>`).join('')}</div>
-          ${subjPills(st.s, D.SUBJECTS)}
-          ${gradePills(st.g)}
-        </div>
-        <div class="card stack" style="max-width:640px">
-          <div class="grid g3">
-            <div class="stat"><b>${dueOld}</b><span>${t('due')}</span></div>
-            <div class="stat"><b>${fresh}</b><span>${t('newC')}</span></div>
-            <div class="stat"><b>${deck.length}</b><span>${t('deck')}</span></div>
-          </div>
-          <div class="boxes" aria-label="Leitner">${boxes.map((n, i) => `<span class="box-pill">${t('box')(i + 1)}: <b>${n}</b></span>`).join('')}</div>
-          <div class="row"><button type="button" class="btn primary" id="c-start" ${dueOld + fresh ? '' : 'disabled'}>${t('startCards')}</button></div>
-          ${dueOld + fresh ? '' : `<p class="muted">${t('noCards')}</p>`}
-          <p class="hint">${t('cardsHint')}</p>
-        </div>`;
-    };
-    const play = () => {
-      const c = session.list[session.i];
-      if (!c) return done();
-      el.innerHTML = head('â–', t('cardsTitle')) + `
-        <div class="flash-wrap stack">
-          <div class="row"><span class="small muted" aria-live="polite">${t('cardOf')(session.i + 1, session.list.length)}</span><span class="spacer"></span>${subjChip(c.s)}</div>
-          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${session.list.length}" aria-valuenow="${session.i}" aria-label="${t('cardOf')(session.i + 1, session.list.length)}"><i style="width:${session.i / session.list.length * 100}%"></i></div>
-          <button type="button" class="flash" id="flash" aria-describedby="flash-hint">
-            <span class="face-label">${session.flipped ? t('backFace') : t('front')}</span>
-            <span class="face ${session.flipped ? 'back' : ''}" aria-live="polite">${session.flipped ? c.back() : c.front()}</span>
-          </button>
-          <p class="hint" id="flash-hint">${t('cardsHint')}</p>
-          <div class="row" style="justify-content:center">
-            ${session.flipped ? `<button type="button" class="btn" data-ans="0">1 Â· ${t('again')}</button><button type="button" class="btn primary" data-ans="1">2 Â· ${t('iKnow')}</button>` : `<button type="button" class="btn primary" id="flip-btn">${t('flip')}</button>`}
-            <button type="button" class="btn ghost" id="c-stop">${t('back')}</button>
-          </div>
-        </div>`;
-    };
-    const answer = (ok) => {
-      const c = session.list[session.i];
-      const cur = S.cards[c.id]?.b || 0;
-      const b = ok ? Math.min(5, Math.max(1, cur) + 1) : 1;
-      S.cards[c.id] = { b, due: Date.now() + (ok ? INTERVAL[b] : 0.5) * 86400000 };
-      S.reviews++; ok ? session.k++ : session.a++;
-      gain(1, true);
-      session.i++; session.flipped = false; play();
-      $('#flash', el)?.focus();
-    };
-    const done = () => {
-      el.innerHTML = head('â–', t('sessionDone')) + `<div class="card stack" style="max-width:520px"><p class="result-big">${session.k}/${session.list.length}</p><p>${t('sessionStats')(session.k, session.a)}</p><div class="row"><button type="button" class="btn primary" id="c-again">${t('retry')}</button></div></div>`;
-      toast(t('xpGain')(session.list.length));
-      session = null; $('h1', el).setAttribute('tabindex', '-1'); $('h1', el).focus();
-    };
-    setup();
-    el.addEventListener('click', (e) => {
-      const b = e.target.closest('button'); if (!b) return;
-      if (b.dataset.type) { st.type = b.dataset.type; setup(); $(`[data-type="${st.type}"]`, el).focus(); }
-      else if (b.hasAttribute('data-s')) { st.s = b.dataset.s; st.topic=''; setup(); $(`[data-s="${st.s}"]`, el).focus(); }
-      else if (b.hasAttribute('data-g')) { st.g = Number(b.dataset.g) || 0; st.topic=''; setup(); $(`[data-g="${b.dataset.g}"]`, el).focus(); }
-      else if (b.id === 'c-start') {
-        const deck = buildDeck(st.type, st.s, st.g);
-        const due = shuffle(deck.filter((x) => S.cards[x.id] && isDue(x.id)));
-        const fresh = shuffle(deck.filter((x) => !S.cards[x.id]));
-        session = { list: [...due, ...fresh].slice(0, 20), i: 0, flipped: false, k: 0, a: 0 };
-        play(); $('#flash', el).focus();
-      } else if (b.id === 'flash' || b.id === 'flip-btn') { session.flipped = !session.flipped; play(); $('#flash', el).focus(); }
-      else if (b.dataset.ans) answer(b.dataset.ans === '1');
-      else if (b.id === 'c-stop' || b.id === 'c-again') { session = null; setup(); $('h1', el).focus(); }
-    });
-    const onKey = (e) => {
-      if (!session || e.target.matches('input, textarea')) return;
-      if (e.key === ' ' && !e.target.closest('button, a, input, textarea, select, label')) { e.preventDefault(); session.flipped = !session.flipped; play(); $('#flash', el).focus(); }
-      else if (session.flipped && e.key === '1') answer(false);
-      else if (session.flipped && e.key === '2') answer(true);
-    };
-    document.addEventListener('keydown', onKey);
-    cleanup = () => { document.removeEventListener('keydown', onKey); document.body.classList.remove('quiz-focus'); };
-  };
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Quiz â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  function renderMastery(grade, subject) {
-    const prefix = `${grade || 0}|${subject || 'all'}|`;
-    const rows = Object.entries(S.mastery || {}).filter(([key]) => key.startsWith(prefix)).map(([, value]) => value).sort((a, b) => a.pct - b.pct);
-    if (!rows.length) return `<section class="card stack"><h2>${tx('Harta competenÈ›elor', 'Skills map')}</h2><p class="muted">${tx('ÃncÄƒ nu ai un diagnostic pentru aceastÄƒ selecÈ›ie. DupÄƒ test, vei vedea aici ce ai stÄƒpÃ¢nit È™i ce meritÄƒ repetat.', 'No diagnostic for this selection yet. After the test, this map will show what you know and what to revisit.')}</p></section>`;
-    return `<section class="card stack"><div class="row"><h2 style="margin:0">${tx('Harta competenÈ›elor', 'Skills map')}</h2><span class="chip">${rows.length}</span></div><div class="skill-map">${rows.map((x) => { const level = x.total < 3 ? tx('EÈ™antion mic', 'Small sample') : x.pct >= 80 ? tx('StÄƒpÃ¢nit', 'Mastered') : x.pct >= 55 ? tx('Ãn lucru', 'In progress') : tx('De repetat', 'Revisit'); return `<div class="skill-row"><div class="row"><strong>${esc(SET.lang === 'en' ? x.en : x.ro)}</strong><span class="spacer"></span><span>${x.pct}% Â· ${level} (${x.ok}/${x.total})</span></div><div class="progress" role="img" aria-label="${esc(SET.lang === 'en' ? x.en : x.ro)}: ${x.pct}%"><i style="width:${x.pct}%"></i></div></div>`; }).join('')}</div><p class="small muted">${tx('EÈ™antioanele sub 3 Ã®ntrebÄƒri sunt doar indicii, nu concluzii.', 'Samples under 3 questions are clues, not conclusions.')}</p><p class="small muted">${tx('Ultima actualizare', 'Last updated')}: ${fmtDate(rows[0].date)}</p></section>`;
-  }
-  function renderAllMastery() {
-    const entries = Object.entries(S.mastery || {});
-    if (!entries.length) return `<section class="card stack"><h2>${tx('Harta competenÈ›elor', 'Skills map')}</h2><p class="muted">${tx('CompleteazÄƒ un diagnostic pentru a Ã®ncepe harta competenÈ›elor.', 'Complete a diagnostic to start your skills map.')}</p><a class="btn primary" href="#diagnostic">${tx('Ãncepe diagnosticul', 'Start diagnostic')} â†’</a></section>`;
-    const groups = new Map();
-    entries.forEach(([key, value]) => { const [grade, subject] = key.split('|'); const id = `${grade}|${subject}`; if (!groups.has(id)) groups.set(id, { grade, subject, items: [] }); groups.get(id).items.push(value); });
-    return `<section class="card stack"><h2>${tx('Harta competenÈ›elor', 'Skills map')}</h2>${[...groups.values()].map((g) => `<div class="skill-group"><h3>${g.subject === 'all' ? tx('Toate materiile', 'All subjects') : esc(subjName(g.subject))} Â· ${g.grade === '0' ? 'Vâ€“VIII' : `${tx('Clasa', 'Grade')} ${g.grade}`}</h3>${g.items.map((x) => `<div class="skill-row"><div class="row"><strong>${esc(SET.lang === 'en' ? x.en : x.ro)}</strong><span class="spacer"></span><span>${x.pct}% Â· ${x.total < 3 ? tx('eÈ™antion mic', 'small sample') : ''} (${x.ok}/${x.total})</span></div><div class="progress" role="img" aria-label="${esc(SET.lang === 'en' ? x.en : x.ro)}: ${x.pct}%"><i style="width:${x.pct}%"></i></div></div>`).join('')}</div>`).join('')}<p class="small muted">${tx('EÈ™antioanele sub 3 Ã®ntrebÄƒri sunt doar indicii, nu concluzii.', 'Samples under 3 questions are clues, not conclusions.')}</p></section>`;
-  }
-
-  VIEWS.diagnostic = (el, p) => {
-    const st = { s: p.get('s') || '', g: Number(p.get('g')) || SET.grade || 0 };
-    let run = null;
-    const pool = () => D.QUIZ.filter((q) => (!st.s || q.s === st.s) && (!st.g || q.g === st.g));
-    const setup = () => {
-      const all = pool();
-      el.innerHTML = head('â—', tx('Diagnostic È™i hartÄƒ de competenÈ›e', 'Diagnostic and skills map'), tx('Un test scurt identificÄƒ ce ai stÄƒpÃ¢nit È™i ce meritÄƒ repetat. Rezultatul rÄƒmÃ¢ne doar Ã®n acest browser.', 'A short test identifies what you know and what to revisit. Results stay in this browser.')) + `
-        <section class="card stack"><div class="filters">${subjPills(st.s, D.SUBJECTS)}${gradePills(st.g)}</div>
-          <p class="hint">${tx('CompetenÈ›ele sunt grupate orientativ dupÄƒ domeniile din programele È™colare pentru gimnaziu; etichetele Ã®ntrebÄƒrilor sunt clasificate automat È™i trebuie confirmate de profesor. Harta nu este evaluare oficialÄƒ.', 'Skills are grouped indicatively by domains in the lower-secondary syllabi; question labels are assigned automatically and should be checked by a teacher. This is not an official assessment.')} <a href="https://www.edu.ro/Ordin_ministru_3393_2017" target="_blank" rel="noopener">${tx('Vezi programa Ministerului','See Ministry syllabus')} â†—</a></p>
-          <p class="count">${all.length} ${tx('Ã®ntrebÄƒri disponibile', 'questions available')} Â· ${Math.min(12, all.length)} ${tx('Ã®n diagnostic', 'in the diagnostic')}</p>
-          <button class="btn primary" id="d-start" type="button" ${all.length ? '' : 'disabled'}>${tx('Ãncepe diagnosticul', 'Start diagnostic')} â†’</button>
-        </section>
-        ${renderMastery(st.g, st.s)}
-        ${S.diagnostics.length ? `<p class="small muted">${tx('Ultimul diagnostic', 'Latest diagnostic')}: ${fmtDate(S.diagnostics.at(-1).date)} Â· ${S.diagnostics.at(-1).correct}/${S.diagnostics.at(-1).total}</p>` : ''}`;
-    };
-    const start = () => {
-      const all = pool();
-      const groups = new Map();
-      all.forEach((q) => { const id = competency(q).id; if (!groups.has(id)) groups.set(id, []); groups.get(id).push(q); });
-      for (const [id, qs] of groups) groups.set(id, shuffle(qs));
-      const questions = [];
-      while (questions.length < Math.min(12, all.length)) {
-        let added = false;
-        for (const qs of groups.values()) if (qs.length && questions.length < Math.min(12, all.length)) { questions.push(qs.pop()); added = true; }
-        if (!added) break;
-      }
-      run = { qs: questions.map((q) => ({ q, order: shuffle(q.o.map((_, i) => i)) })), i: 0, ok: 0, results: {} };
-      ask();
-    };
-    const ask = () => {
-      const { q, order } = run.qs[run.i];
-      const comp = competency(q);
-      el.innerHTML = head('â—', tx('Diagnostic', 'Diagnostic')) + `<div class="card q-card">
-        <div class="row"><span class="small muted">${tx('Ãntrebarea', 'Question')} ${run.i + 1}/${run.qs.length}</span><span class="spacer"></span>${subjChip(q.s)}<span class="chip">${t('gradeN')(q.g)}</span></div>
-        <p class="small muted">${esc(SET.lang === 'en' ? comp.en : comp.ro)}</p><div class="progress" aria-hidden="true"><i style="width:${run.i / run.qs.length * 100}%"></i></div>
-        <p class="q-text" id="d-q">${esc(pick(q.q))}</p><div class="opts" role="group" aria-labelledby="d-q">${order.map((oi, k) => `<button type="button" class="opt" data-d-answer="${oi}"><span class="key" aria-hidden="true">${'ABCD'[k]}</span><span>${esc(pick(q.o[oi]))}</span></button>`).join('')}</div><div id="d-fb" aria-live="polite"></div></div>`;
-      $('.opt', el)?.focus();
-    };
-    const choose = (oi) => {
-      const { q } = run.qs[run.i]; const ok = oi === q.a; const c = competency(q);
-      run.results[c.id] ||= { id: c.id, ro: c.ro, en: c.en, ok: 0, total: 0 };
-      run.results[c.id].total++; if (ok) { run.ok++; run.results[c.id].ok++; }
-      $$('.opt', el).forEach((b) => { b.disabled = true; const n = Number(b.dataset.dAnswer); if (n === q.a) b.classList.add('correct'); else if (n === oi) b.classList.add('wrong'); });
-      $('#d-fb', el).innerHTML = `<div class="feedback ${ok ? 'ok' : 'bad'}"><strong>${ok ? t('correct') : t('wrong')}</strong> ${ok ? '' : `${t('rightWas')} <strong>${esc(pick(q.o[q.a]))}</strong>. `}${esc(pick(q.x))}</div><div class="row" style="margin-top:1rem"><a class="btn" href="${reportQuestionUrl(q)}">${tx('SemnaleazÄƒ o problemÄƒ', 'Report a problem')}</a><button type="button" class="btn primary" id="d-next">${run.i === run.qs.length - 1 ? t('finish') : t('next')} â†’</button></div>`;
-      $('#d-next', el).focus();
-    };
-    const finish = () => {
-      const date = new Date().toISOString(); const subject = st.s || 'all'; const grade = st.g || SET.grade || 0;
-      const record = { date, subject, grade, total: run.qs.length, correct: run.ok, skills: Object.values(run.results) };
-      S.diagnostics = [...(S.diagnostics || []), record].slice(-30);
-      S.mastery ||= {};
-      record.skills.forEach((skill) => { S.mastery[`${grade}|${subject}|${skill.id}`] = { ...skill, pct: Math.round(skill.ok / skill.total * 100), date }; });
-      save();
-      const pct = Math.round(run.ok / run.qs.length * 100);
-      const rows = record.skills.map((x) => { const score = Math.round(x.ok / x.total * 100); const label = x.total < 3 ? tx('EÈ™antion mic â€” repetÄƒ', 'Small sample â€” retry') : score >= 80 ? tx('StÄƒpÃ¢nit', 'Mastered') : score >= 55 ? tx('Ãn lucru', 'In progress') : tx('De repetat', 'Revisit'); return `<tr><th scope="row">${esc(SET.lang === 'en' ? x.en : x.ro)}</th><td>${x.ok}/${x.total}</td><td><span class="chip">${score}% Â· ${label}</span></td></tr>`; }).join('');
-      el.innerHTML = head('â—', tx('Harta ta de recapitulare', 'Your revision map'), tx('Rezultatul este orientativ È™i bazat doar pe rÄƒspunsurile din acest diagnostic.', 'This result is indicative and based only on answers in this diagnostic.')) +
-        `<section class="card stack"><p class="result-big">${run.ok}/${run.qs.length} <span class="muted" style="font-size:1.4rem">Â· ${pct}%</span></p><p>${tx('Clasa', 'Grade')} ${grade || 'Vâ€“VIII'} Â· ${subject === 'all' ? tx('Toate materiile', 'All subjects') : esc(subjName(subject))}</p>${S.sims.length ? `<p class="hint">${tx('Ultima simulare EN', 'Latest national assessment mock')}: ${S.sims.at(-1).p}/100 Â· ${fmtDate(S.sims.at(-1).d)} Â· ${S.sims.at(-1).k === 'mat' ? t('simMat') : t('simRom')}</p>` : ''}<div class="table-wrap"><table><thead><tr><th>${tx('CompetenÈ›Äƒ', 'Skill')}</th><th>${tx('Corecte', 'Correct')}</th><th>${tx('Nivel', 'Level')}</th></tr></thead><tbody>${rows}</tbody></table></div><h2>${tx('Ce urmeazÄƒ?', 'What next?')}</h2><p>${tx('RepetÄƒ mai Ã®ntÃ¢i competenÈ›ele marcate â€De repetatâ€, apoi Ã®ncearcÄƒ un quiz adaptiv.', 'Review skills marked â€œRevisitâ€ first, then try an adaptive quiz.')}</p><div class="row"><a class="btn primary" href="#quiz?mode=adaptive${st.s ? `&s=${st.s}` : ''}${grade ? `&g=${grade}` : ''}&n=10&go=1">${tx('ExerseazÄƒ punctele slabe', 'Practice weak areas')} â†’</a><button type="button" class="btn" id="d-print">${tx('PrinteazÄƒ raportul', 'Print report')}</button><button type="button" class="btn" id="d-again">${tx('RefÄƒ diagnosticul', 'Retake diagnostic')}</button><a class="btn" href="#progres">${tx('Vezi progresul', 'View progress')}</a></div><p class="hint">${tx('SursÄƒ: Ã®ntrebÄƒrile È™i explicaÈ›iile incluse Ã®n Gimnaziu Space. Harta nu reprezintÄƒ o evaluare oficialÄƒ.', 'Source: questions and explanations included in Gimnaziu Space. This map is not an official assessment.')}</p></section>`;
-      $('#d-print', el).onclick = () => window.print(); $('#d-again', el).onclick = setup;
-    };
-    setup();
-    el.addEventListener('click', (e) => {
-      const b = e.target.closest('button'); if (!b) return;
-      if (b.dataset.s !== undefined) { st.s = b.dataset.s; setup(); }
-      else if (b.dataset.g !== undefined) { st.g = Number(b.dataset.g) || 0; setup(); }
-      else if (b.id === 'd-start') start();
-      else if (b.dataset.dAnswer !== undefined) choose(Number(b.dataset.dAnswer));
-      else if (b.id === 'd-next') { run.i++; run.i < run.qs.length ? ask() : finish(); }
-    });
-  };
-
-  VIEWS.quiz = (el, p) => {
-    const st = { s: p.get('s') || '', g: Number(p.get('g')) || SET.grade || 0, n: Number(p.get('n')) || 10, topic: p.get('topic') || '', level: p.get('level') || 'all' };
-    let mode = ['adaptive', 'errors'].includes(p.get('mode')) ? p.get('mode') : 'standard';
-    let run = null;
-    const pool = () => {
-      let all = D.QUIZ.filter((q) => (!st.s || q.s === st.s) && (!st.g || q.g === st.g) && (!st.topic || competency(q).id === st.topic) && (st.level === 'all' || difficulty(q) === st.level));
-      if (mode === 'errors') { const errors = new Set((S.mistakes || []).filter(m=>!m.nextReview||m.nextReview<=Date.now()).map((m) => m.id)); return all.filter((q) => errors.has(q.s + '|' + pick(q.q))); }
-      if (mode !== 'adaptive') return all;
-      const prefix = `${st.g || 0}|${st.s || 'all'}|`;
-      const weak = new Set(Object.entries(S.mastery || {}).filter(([key, v]) => key.startsWith(prefix) && (v.pct < 80 || v.total < 3)).map(([key]) => key.split('|').slice(2).join('|')));
-      (S.mistakes || []).slice(-40).forEach((m) => { if ((!st.s || m.s === st.s) && (!st.g || m.g === st.g)) weak.add(m.topic || competency(m).id); });
-      const targeted = all.filter((q) => weak.has(competency(q).id));
-      return targeted.length ? targeted : all;
-    };
-    const setup = () => {
-      const n = pool().length;
-      const topicIds = [...new Map(D.QUIZ.filter((q) => (!st.s || q.s === st.s) && (!st.g || q.g === st.g)).map((q) => { const c = competency(q); return [c.id, c]; })).values()];
-      el.innerHTML = head('?', t('quizTitle'), t('quizLede')) + `
-        <div class="filters">${subjPills(st.s, D.SUBJECTS)}${gradePills(st.g)}
-          <label class="filter-row">${tx('Subiect', 'Topic')} <select id="q-topic" class="search"><option value="">${tx('Toate subiectele', 'All topics')}</option>${topicIds.map(c=>`<option value="${c.id}" ${st.topic===c.id?'selected':''}>${esc(SET.lang==='en'?c.en:c.ro)}</option>`).join('')}</select></label>
-          <label class="filter-row">${tx('Dificultate orientativÄƒ', 'Indicative difficulty')} <select id="q-level" class="search">${[['all',tx('Toate nivelurile','All levels')],['easy',diffLabel('easy')],['medium',diffLabel('medium')],['challenge',diffLabel('challenge')]].map(([v,l])=>`<option value="${v}" ${st.level===v?'selected':''}>${l}</option>`).join('')}</select></label>
-          <div class="filter-row" role="group" aria-label="${tx('Mod de exerciÈ›iu', 'Practice mode')}"><span class="lbl">${tx('Mod', 'Mode')}</span><button type="button" class="pill" data-mode="standard" aria-pressed="${mode === 'standard'}">${tx('Mixt', 'Mixed')}</button><button type="button" class="pill" data-mode="adaptive" aria-pressed="${mode === 'adaptive'}">${tx('Adaptiv', 'Adaptive')}</button><button type="button" class="pill" data-mode="errors" aria-pressed="${mode === 'errors'}">${tx('GreÈ™elile mele', 'My mistakes')}</button></div>
-          <div class="filter-row" role="group" aria-label="${t('howMany')}"><span class="lbl" aria-hidden="true">${t('howMany')}</span>
-            ${[5, 10, 15].map((x) => `<button type="button" class="pill" data-n="${x}" aria-pressed="${st.n === x}">${x}</button>`).join('')}</div>
-        </div>
-        <p class="count">${t('nQuiz')(n)}${mode === 'adaptive' ? ` Â· ${tx('selectate dupÄƒ harta ta È™i greÈ™elile recente', 'selected from your skills map and recent mistakes')}` : ''} Â· ${tx('dificultatea este estimatÄƒ automat È™i poate fi ajustatÄƒ', 'difficulty is estimated automatically and may be approximate')}</p>
-        <div class="row"><button type="button" class="btn primary" id="q-start" ${n ? '' : 'disabled'}>${t('start')}</button><button type="button" class="btn" id="q-worksheet" ${n ? '' : 'disabled'}>${tx('PrinteazÄƒ o fiÈ™Äƒ', 'Print a worksheet')}</button></div>
-        ${n ? '' : `<p class="muted" style="margin-top:.75rem">${t('noQuestions')}</p>`}`;
-    };
-    const start = () => {
-      const all = pool();
-      run = { qs: shuffle(all).slice(0, st.n).map((q) => ({ q, order: shuffle(q.o.map((_, i) => i)) })), i: 0, ok: 0, wrong: [], answered: false, short: all.length < st.n, times: [], started: Date.now() };
-      ask();
-    };
-    const ask = () => {
-      const { q, order } = run.qs[run.i];
-      run.questionStartedAt = Date.now();
-      el.innerHTML = head('?', t('quizTitle')) + `
-        <div class="card q-card">
-          <div class="row" style="margin-bottom:.6rem"><span class="small muted">${t('question')(run.i + 1, run.qs.length)}</span><span class="spacer"></span>${subjChip(q.s)}<span class="chip">${t('gradeN')(q.g)}</span></div>
-          <div class="progress" aria-hidden="true" style="margin-bottom:1rem"><i style="width:${run.i / run.qs.length * 100}%"></i></div>
-          <p class="q-text" id="q-text">${esc(pick(q.q))} <button type="button" class="btn sm" id="q-speak" aria-label="${tx('CiteÈ™te Ã®ntrebarea cu voce tare','Read question aloud')}">ğŸ”Š</button></p>
-          <div class="opts" role="group" aria-labelledby="q-text">
-            ${order.map((oi, k) => `<button type="button" class="opt" data-oi="${oi}"><span class="key" aria-hidden="true">${'ABCD'[k]}</span><span>${esc(pick(q.o[oi]))}</span></button>`).join('')}
-          </div>
-          <div class="row"><button type="button" class="btn sm" id="q-hint">${tx('Indiciu 1/3','Hint 1/3')}</button><button type="button" class="btn sm" id="q-focus" aria-pressed="${document.body.classList.contains('quiz-focus')}">${tx('Mod concentrare','Focus mode')}</button></div><div id="q-hints" aria-live="polite"></div>
-          <div id="q-fb" aria-live="polite"></div>
-        </div>`;
-      $('.opt', el).focus();
-    };
-    const choose = (oi) => {
-      if (run.answered) return;
-      run.answered = true;
-      const { q } = run.qs[run.i];
-      run.times.push(Math.max(0, Math.round((Date.now() - run.questionStartedAt) / 1000)));
-      const ok = oi === q.a;
-      S.quiz[q.s] = S.quiz[q.s] || { ok: 0, bad: 0 };
-      if (ok) {
-        S.quiz[q.s].ok++; run.ok++;
-        const reviewed=(S.mistakes||[]).find(m=>m.id===q.s+'|'+pick(q.q)); if(reviewed){reviewed.stage=Math.min(4,(reviewed.stage||0)+1);reviewed.nextReview=Date.now()+[86400000,3,7,14,30][reviewed.stage]*86400000;if(reviewed.stage>=4)S.mistakes=S.mistakes.filter(m=>m.id!==reviewed.id);}
-      } else {
-        S.quiz[q.s].bad++; run.wrong.push(q);
-        recordMistake(q, oi);
-      }
-      gain(ok ? 5 : 0, true);
-      $$('.opt', el).forEach((b) => {
-        b.disabled = true; const v = Number(b.dataset.oi);
-        if (v === q.a) { b.classList.add('correct'); b.insertAdjacentHTML('beforeend', `<span class="sr"> â€” ${t('correct')}</span>`); }
-        else if (v === oi) b.classList.add('wrong');
-      });
-      const last = run.i === run.qs.length - 1;
-      const avgTime = Math.round(run.times.reduce((a,b)=>a+b,0)/run.times.length);
-      S.quizTime ||= {}; const timeRec = S.quizTime[q.s] || { seconds: 0, count: 0 }; timeRec.seconds += run.times.at(-1); timeRec.count++; S.quizTime[q.s] = timeRec; save();
-      $('#q-fb', el).innerHTML = `<div class="feedback ${ok ? 'ok' : 'bad'}"><strong>${ok ? t('correct') : t('wrong')}</strong> ${ok ? '' : `${t('rightWas')} <strong>${esc(pick(q.o[q.a]))}</strong>. `}${esc(pick(q.x))}<p class="small">${tx('PaÈ™ii:','Steps:')} 1) ${tx('identificÄƒ datele din enunÈ›','identify the given information')} 2) ${tx('alege regula potrivitÄƒ','choose the relevant rule')} 3) ${tx('calculeazÄƒ È™i verificÄƒ unitatea/rÄƒspunsul','calculate and check the unit/answer')} Â· ${avgTime}${tx(' sec/item',' sec/item')}</p></div>
-        <div class="row" style="margin-top:1rem"><a class="btn" href="${reportQuestionUrl(q)}">${tx('SemnaleazÄƒ o problemÄƒ', 'Report a problem')}</a><button type="button" class="btn primary" id="q-next">${last ? t('finish') : t('next')} â†’</button></div>`;
-      $('#q-next', el).focus();
-    };
-    const finish = () => {
-      const n = run.qs.length;
-      S.quizzes++; if (run.ok === n && n >= 5) S.perfect++;
-      gain(10);
-      const pct = Math.round(run.ok / n * 100);
-      el.innerHTML = head('?', t('score')) + `
-        <div class="card stack" style="max-width:720px">
-          <p class="result-big">${run.ok}/${n} <span class="muted" style="font-size:1.4rem">Â· ${pct}%</span></p>
-          ${run.short ? `<p class="hint">${t('notEnough')}</p>` : ''}
-          ${run.wrong.length ? `<h2>${t('review')}</h2><ul>${run.wrong.map((q) => `<li><strong>${esc(pick(q.q))}</strong><br>${t('rightWas')} ${esc(pick(q.o[q.a]))}. <span class="muted">${esc(pick(q.x))}</span></li>`).join('')}</ul>` : `<p>${t('allRight')}</p>`}
-          <p class="hint">${tx('Timp mediu pe Ã®ntrebare','Average time per question')}: ${Math.round(run.times.reduce((a,b)=>a+b,0)/Math.max(1,run.times.length))} ${tx('secunde','seconds')} Â· ${tx('Timp total','Total time')}: ${Math.round((Date.now()-run.started)/60000)} ${tx('min','min')}</p>
-          <div class="row"><button type="button" class="btn primary" id="q-again">${t('retry')}</button><button type="button" class="btn" id="q-errors" ${run.wrong.length?'':'disabled'}>${tx('RepetÄƒ greÈ™elile','Retry mistakes')}</button><button type="button" class="btn" id="q-setup">${t('back')}</button></div>
-        </div>`;
-      $('h1', el).setAttribute('tabindex', '-1'); $('h1', el).focus();
-      announce(`${t('score')}: ${run.ok} / ${n}`);
-    };
-    setup();
-    if (p.get('go') && pool().length) start();
-    el.addEventListener('click', (e) => {
-      const b = e.target.closest('button'); if (!b) return;
-      if (b.hasAttribute('data-s')) { st.s = b.dataset.s; st.topic=''; setup(); $(`[data-s="${st.s}"]`, el).focus(); }
-      else if (b.hasAttribute('data-g')) { st.g = Number(b.dataset.g) || 0; st.topic=''; setup(); $(`[data-g="${b.dataset.g}"]`, el).focus(); }
-      else if (b.dataset.mode) { mode = b.dataset.mode; setup(); $(`[data-mode="${mode}"]`, el).focus(); }
-      else if (b.dataset.n) { st.n = Number(b.dataset.n); setup(); $(`[data-n="${st.n}"]`, el).focus(); }
-      else if (b.id === 'q-worksheet') printWorksheet(pool().slice(0, 12));
-      else if (b.id === 'q-errors') { mode='errors'; setup(); }
-      else if (b.id === 'q-speak') say(pick(run.qs[run.i].q.q));
-      else if (b.id === 'q-hint') { const q=run.qs[run.i].q; const box=$('#q-hints',el); const level=(Number(b.dataset.step)||0)+1; b.dataset.step=String(level); b.textContent=level>=3?tx('ExplicaÈ›ia este mai jos','Explanation is below'):tx(`Indiciu ${level+1}/3`,`Hint ${level+1}/3`); const hints=[tx('PriveÈ™te cuvintele-cheie sau mÄƒrimile cunoscute din enunÈ›.','Look for key words or known quantities.'),tx('AminteÈ™te-È›i regula/formula folositÄƒ la acest tip de exerciÈ›iu.','Recall the rule/formula used for this type of exercise.'),pick(q.x)]; box.innerHTML += `<p class="hint-tier">${esc(hints[level-1])}</p>`; }
-      else if (b.id === 'q-focus') { const on=!document.body.classList.contains('quiz-focus'); document.body.classList.toggle('quiz-focus',on); b.setAttribute('aria-pressed',String(on)); }
-      else if (b.id === 'q-start' || b.id === 'q-again') start();
-      else if (b.id === 'q-setup') { run = null; setup(); $('h1', el).focus(); }
-      else if (b.dataset.oi !== undefined && run) choose(Number(b.dataset.oi));
-      else if (b.id === 'q-next') { run.i++; run.answered = false; run.i < run.qs.length ? ask() : finish(); }
-    });
-    el.addEventListener('change', (e) => { if (e.target.id === 'q-topic') { st.topic=e.target.value; setup(); $('#q-topic',el).focus(); } else if (e.target.id === 'q-level') { st.level=e.target.value; setup(); $('#q-level',el).focus(); } });
-    const onKey = (e) => {
-      if (!run || run.answered || e.target.matches('input, textarea, select')) return;
-      const k = 'abcd'.indexOf(e.key.toLowerCase());
-      if (k >= 0) { const b = $$('.opt', el)[k]; if (b) b.click(); }
-    };
-    document.addEventListener('keydown', onKey);
-    cleanup = () => { document.removeEventListener('keydown', onKey); document.body.classList.remove('quiz-focus'); };
-  };
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Simulare EN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  VIEWS.simulare = (el) => {
-    let kind = 'mat', mins = 120, timer = null, endAt = 0, sim = null, profile = 'balanced';
-    const setup = () => {
-      el.innerHTML = head('âœ', t('simTitle'), t('simLede')) + `
-        <div class="grid g2">
-          ${[['mat', t('simMat'), t('simMatDesc')], ['rom', t('simRom'), t('simRomDesc')]].map(([k, n, d]) => `
-            <button type="button" class="card" data-kind="${k}" aria-pressed="${kind === k}" style="text-align:left;cursor:pointer;${kind === k ? 'outline:3px solid var(--accent)' : ''}">
-              <span class="h2like">${n}</span><span class="muted" style="display:block;margin-top:.4rem">${d}</span></button>`).join('')}
-        </div>
-        <div class="filters" style="margin-top:1.25rem">
-          <div class="filter-row" role="group" aria-label="${tx('VariantÄƒ de exerciÈ›iu','Practice set')}"><span class="lbl">${tx('VariantÄƒ','Variant')}</span>${[['balanced',kind==='mat'?tx('EchilibratÄƒ','Balanced'):tx('Set A','Set A')],['algebra',kind==='mat'?tx('AlgebrÄƒ','Algebra'):tx('Set B','Set B')],['geometry',kind==='mat'?tx('Geometrie','Geometry'):tx('Set C','Set C')]].map(([id,label])=>`<button type="button" class="pill" data-profile="${id}" aria-pressed="${profile===id}">${label}</button>`).join('')}</div>
-          <div class="filter-row" role="group" aria-label="${t('duration')}"><span class="lbl" aria-hidden="true">${t('duration')}</span>
-            ${[30, 60, 120].map((m) => `<button type="button" class="pill" data-min="${m}" aria-pressed="${mins === m}">${t('minutes')(m)}</button>`).join('')}
-            <button type="button" class="pill" data-min="0" aria-pressed="${mins === 0}">${t('noTimer')}</button></div>
-        </div>
-        <p class="hint">${t('simStructure')} <a href="https://subiecte.edu.ro/" target="_blank" rel="noopener">${t('officialLink')} â†—</a></p>
-        <button type="button" class="btn primary" id="s-start" style="margin-top:.75rem">${t('simStart')}</button>
-        ${S.sims.length ? `<section style="margin-top:2rem"><h2>${t('simHistory')}</h2>${histTable()}</section>` : ''}`;
-    };
-    const tick = () => {
-      const left = Math.max(0, Math.round((endAt - Date.now()) / 1000));
-      const tm = $('#s-timer', el); if (!tm) return;
-      tm.textContent = `${String(Math.floor(left / 3600))}:${String(Math.floor(left % 3600 / 60)).padStart(2, '0')}:${String(left % 60).padStart(2, '0')}`;
-      tm.classList.toggle('low', left < 300);
-      if (left === 300) announce(`${t('timeLeft')}: 5 min`);
-      if (left <= 0) { clearInterval(timer); timer = null; submit(true); }
-    };
-    const begin = () => {
-      if (kind === 'mat') {
-        let pool = D.QUIZ.filter((q) => q.s === 'mat' && q.g >= 6);
-        if (profile === 'algebra') { const focus=pool.filter(q=>competency(q).id==='algebra'); pool=shuffle(focus.concat(pool.filter(q=>!focus.includes(q)))); }
-        else if (profile === 'geometry') { const focus=pool.filter(q=>competency(q).id==='geometry'); pool=shuffle(focus.concat(pool.filter(q=>!focus.includes(q)))); }
-        else pool=shuffle(pool);
-        sim = { kind, items: pool.slice(0, 12).map((q) => ({ q, order: shuffle([0, 1, 2, 3]) })), probs: D.SIM_MAT_PROBLEMS, startedAt: Date.now(), profile };
-      } else {
-        const prompts = profile === 'algebra' ? tx('Scrie un text argumentativ despre rolul exerciÈ›iului Ã®n Ã®nvÄƒÈ›are, cu douÄƒ argumente È™i exemple.','Write an argumentative text about the role of practice in learning, with two arguments and examples.') : profile === 'geometry' ? tx('Descrie o experienÈ›Äƒ de Ã®nvÄƒÈ›are care È›i-a schimbat perspectiva, folosind detalii concrete.','Describe a learning experience that changed your perspective, using specific details.') : pick(D.SIM_ROM_WRITE.task);
-        sim = { kind, items: D.SIM_ROM.map((q) => ({ q, order: shuffle([0, 1, 2, 3]) })), startedAt: Date.now(), profile, writeTask: prompts };
-      }
-      const radios = (it, i) => `<div class="sim-q"><fieldset><legend>${i + 1}. ${esc(pick(it.q.q))}</legend>${it.order.map((oi, k) => `<label class="radio" data-qi="${i}" data-oi="${oi}"><input type="radio" name="q${i}" value="${oi}"><span><span class="mono">${'abcd'[k]})</span> ${esc(pick(it.q.o[oi]))}</span></label>`).join('')}</fieldset></div>`;
-      el.innerHTML = head('âœ', kind === 'mat' ? t('simMat') : t('simRom')) + `
-        <div class="sim-sticky row">${mins ? `<span class="sr">${t('timeLeft')}</span><span class="timer" id="s-timer" role="timer">--:--:--</span>` : ''}<span class="spacer"></span><button type="button" class="btn primary" id="s-submit">${t('simSubmit')}</button></div>
-        <form id="s-form" class="stack" onsubmit="return false">
-          ${kind === 'mat' ? `
-            <section class="card"><h2>${t('partI')}</h2>${sim.items.map(radios).join('')}</section>
-            <section class="card"><h2>${t('partIII')}</h2><p class="hint">${t('solveOnPaper')}</p>
-              ${sim.probs.map((pr, i) => `<div class="sim-q"><h3>${13 + i}.</h3><p class="problem">${esc(pick(pr.q))}</p></div>`).join('')}</section>` : `
-            <section class="card"><h2>${t('readText')}</h2><div class="card sim-text">${esc(pick(D.SIM_ROM_TEXT))}</div></section>
-            <section class="card"><h2>${t('partRom1')}</h2>${sim.items.map(radios).join('')}</section>
-            <section class="card"><h2>${t('partRom2')}</h2><p>${esc(sim.writeTask)}</p><p class="small muted">${tx('Alege criteriile de autoevaluare dupÄƒ ce ai Ã®ncheiat.','Use the self-check rubric after finishing.')}</p>
-              <label class="sr" for="s-write">${t('writeHere')}</label><textarea id="s-write" class="write" placeholder="${t('writeHere')}â€¦"></textarea>
-              <p class="small muted" id="s-wc" aria-live="polite">${t('words')(0)}</p></section>`}
-        </form>`;
-      if (mins) { endAt = Date.now() + mins * 60000; tick(); timer = setInterval(tick, 1000); }
-      $('#s-write', el)?.addEventListener('input', (e) => { const n = (e.target.value.trim().match(/\S+/g) || []).length; $('#s-wc', el).textContent = t('words')(n); });
-    };
-    const submit = (auto) => {
-      if (!sim) return;
-      if (!auto && !confirm(t('simConfirm'))) return;
-      sim.submittedAt = Date.now();
-      if (timer) { clearInterval(timer); timer = null; }
-      const form = $('#s-form', el);
-      let mcq = 0;
-      sim.items.forEach((it, i) => {
-        const v = form.querySelector(`input[name="q${i}"]:checked`);
-        const chosen = v ? Number(v.value) : -1;
-        if (chosen === it.q.a) mcq += 5;
-        S.quiz[it.q.s] = S.quiz[it.q.s] || { ok: 0, bad: 0 };
-        chosen === it.q.a ? S.quiz[it.q.s].ok++ : S.quiz[it.q.s].bad++;
-        $$(`label[data-qi="${i}"]`, el).forEach((l) => { const oi = Number(l.dataset.oi); if (oi === it.q.a) l.classList.add('correct'); else if (oi === chosen) l.classList.add('wrong'); });
-      });
-      $$('input', form).forEach((x) => { x.disabled = true; });
-      $('#s-write', el)?.setAttribute('readonly', '');
-      sim.mcq = mcq;
-      const words = sim.kind === 'rom' ? (($('#s-write', el).value.trim().match(/\S+/g) || []).length) : 0;
-      const romW = [10, 10, 10, 8, 8, 7, 7];
-      const checks = sim.kind === 'mat'
-        ? sim.probs.map((pr, i) => `<div class="card"><h3>${13 + i}.</h3>${pr.steps.map((s, j) => `<label class="check"><input type="checkbox" data-pts="${[3, 3, 4][j]}"><span>${esc(pick(s))} <span class="chip">${t('stepPts')([3, 3, 4][j])}</span></span></label>`).join('')}</div>`).join('')
-        : `<div class="card">${D.SIM_ROM_WRITE.rubric.map((r, j) => `<label class="check"><input type="checkbox" data-pts="${romW[j]}" ${j === 5 && words >= 150 ? 'checked' : ''}><span>${esc(pick(r))} <span class="chip">${t('stepPts')(romW[j])}</span></span></label>`).join('')}<p class="small muted">${t('words')(words)}</p></div>`;
-      $('.sim-sticky', el).remove();
-      form.insertAdjacentHTML('afterend', `
-        <section class="card stack" id="s-result" style="margin-top:1.5rem">
-          ${auto ? `<p class="feedback bad">${t('timeUp')}</p>` : ''}
-          <h2 tabindex="-1" id="s-res-h">${t('simResult')}</h2>
-          <h3>${t('selfCheck')}</h3>
-          <div class="stack">${checks}</div>
-          <p class="hint">+ ${t('oficiu')}</p>
-          <div class="grid g3"><div class="stat"><b id="s-pts">0</b><span>/ 100 p</span></div><div class="stat"><b id="s-grade">0</b><span>${t('estGrade')}</span></div></div>
-          <div class="row"><button type="button" class="btn primary" id="s-save">${t('saveResult')}</button><button type="button" class="btn" id="s-back">${t('back')}</button></div>
-        </section>`);
-      const recalc = () => {
-        const extra = $$('#s-result input[type=checkbox]:checked', el).reduce((a, x) => a + Number(x.dataset.pts), 0);
-        sim.total = Math.min(100, sim.mcq + extra + 10);
-        $('#s-pts', el).textContent = sim.total;
-        $('#s-grade', el).textContent = (sim.total / 10).toFixed(2).replace('.', SET.lang === 'en' ? '.' : ',');
-      };
-      $('#s-result', el).addEventListener('change', recalc); recalc();
-      $('#s-res-h', el).focus();
-      save();
-    };
-    setup();
-    el.addEventListener('click', (e) => {
-      const b = e.target.closest('button'); if (!b) return;
-      if (b.dataset.kind) { kind = b.dataset.kind; setup(); $(`[data-kind="${kind}"]`, el).focus(); }
-      else if (b.dataset.profile) { profile=b.dataset.profile; setup(); $(`[data-profile="${profile}"]`,el).focus(); }
-      else if (b.dataset.min !== undefined) { mins = Number(b.dataset.min); setup(); $(`[data-min="${mins}"]`, el).focus(); }
-      else if (b.id === 's-start') begin();
-      else if (b.id === 's-submit') submit(false);
-      else if (b.id === 's-save') {
-        S.sims.push({ d: new Date().toISOString(), k: sim.kind, p: sim.total, minutes: Math.max(1,Math.round(((sim.submittedAt||Date.now())-sim.startedAt)/60000)), profile: sim.profile });
-        S.sims = S.sims.slice(-30); gain(40); toast(t('saved')); b.disabled = true;
-      } else if (b.id === 's-back') { sim = null; setup(); $('h1', el).focus(); }
-    });
-    cleanup = () => { if (timer) clearInterval(timer); };
-  };
-  function histTable() {
-    return `<table class="hist"><thead><tr><th scope="col">${t('thDate')}</th><th scope="col">${t('thType')}</th><th scope="col">${t('thScore')}</th><th scope="col">${t('thGrade')}</th></tr></thead><tbody>
-      ${S.sims.slice().reverse().map((s) => `<tr><td>${fmtDate(s.d)}</td><td>${s.k === 'mat' ? t('simMat') : t('simRom')}</td><td>${s.p}</td><td>${(s.p / 10).toFixed(2)}</td></tr>`).join('')}</tbody></table>`;
-  }
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Focus & plan (Pomodoro) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  const POMO = { mode: 'focus', left: 25 * 60, total: 25 * 60, running: false, end: 0, id: null };
-  const MODES = { focus: 25, short: 5, long: 15 };
-  function beep() {
-    if (SET.sound === false) return;
-    try { const A = new (window.AudioContext || window.webkitAudioContext)(); [0, .25, .5].forEach((d) => { const o = A.createOscillator(); const g = A.createGain(); o.frequency.value = 660; g.gain.setValueAtTime(.0001, A.currentTime + d); g.gain.exponentialRampToValueAtTime(.2, A.currentTime + d + .02); g.gain.exponentialRampToValueAtTime(.0001, A.currentTime + d + .2); o.connect(g).connect(A.destination); o.start(A.currentTime + d); o.stop(A.currentTime + d + .22); }); } catch { /* fÄƒrÄƒ sunet */ }
-  }
-  function pomoTick() {
-    if (!POMO.running) return;
-    POMO.left = Math.max(0, Math.round((POMO.end - Date.now()) / 1000));
-    if (POMO.left <= 0) {
-      POMO.running = false; clearInterval(POMO.id); POMO.id = null; beep();
-      if (POMO.mode === 'focus') { S.pomos++; gain(15, true); announce(t('pDone')); toast(t('pDone')); }
-      else { announce(t('pBreakDone')); toast(t('pBreakDone')); }
-      POMO.left = POMO.total;
-    }
-    if (current === 'focus') paintPomo();
-  }
-  function paintPomo() {
-    const el = $('#pomo'); if (!el) return;
-    const m = String(Math.floor(POMO.left / 60)).padStart(2, '0'), s = String(POMO.left % 60).padStart(2, '0');
-    $('.time', el).textContent = `${m}:${s}`;
-    const C = 2 * Math.PI * 54;
-    $('.fg', el).style.strokeDasharray = C; $('.fg', el).style.strokeDashoffset = C * (1 - POMO.left / POMO.total);
-    $('#p-toggle').textContent = POMO.running ? t('pPause') : t('pStart');
-    $('#p-count').textContent = S.pomos;
-    $$('[data-mode]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === POMO.mode)));
-  }
-  VIEWS.focus = (el) => {
-    const createAdaptivePlan = () => {
-      const weak = Object.entries(S.mastery || {}).filter(([,v]) => v && v.total).sort((a,b)=>a[1].pct-b[1].pct).slice(0,3);
-      const subjects = [...new Set(weak.map(([key])=>key.split('|')[1]).filter(Boolean))];
-      const focus = subjects[0] || D.SUBJECTS.slice().sort((a,b)=>(accuracy(a.id) ?? 100)-(accuracy(b.id) ?? 100))[0]?.id || 'mat';
-      const title = subjName(focus);
-      S.adaptivePlan = [
-        tx(`Diagnostic scurt la ${title}`,`Short diagnostic in ${title}`),
-        tx(`ReciteÈ™te o fiÈ™Äƒ la ${title}`,`Review one study sheet in ${title}`),
-        tx('RepetÄƒ 10 cartonaÈ™e scadente','Review 10 due flashcards'),
-        tx('Quiz adaptiv: 5 Ã®ntrebÄƒri','Adaptive quiz: 5 questions'),
-        tx('Pomodoro de 25 min la competenÈ›a cea mai slabÄƒ','25-minute focus session on the weakest skill'),
-        tx('RefÄƒ Ã®ntrebÄƒrile greÈ™ite','Retry the questions you missed'),
-        tx('O simulare EN sau o fiÈ™Äƒ imprimatÄƒ','A mock exam or a printed worksheet')
-      ]; save();
-    };
-    const planItems = S.adaptivePlan || t('plan');
-    el.innerHTML = head('â—·', t('focusTitle'), t('focusLede')) + `
-      <div class="grid g2">
-        <section class="card pomo" id="pomo" aria-label="Pomodoro">
-          <div class="seg" role="group" aria-label="Pomodoro">${Object.keys(MODES).map((k) => `<button type="button" data-mode="${k}" aria-pressed="false">${t(k === 'focus' ? 'pFocus' : k === 'short' ? 'pShort' : 'pLong')}</button>`).join('')}</div>
-          <div class="ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bg" cx="60" cy="60" r="54"/><circle class="fg" cx="60" cy="60" r="54"/></svg><span class="time" role="timer" aria-live="off">25:00</span></div>
-          <div class="row" style="justify-content:center"><button type="button" class="btn primary" id="p-toggle">${t('pStart')}</button><button type="button" class="btn" id="p-reset">${t('pReset')}</button></div>
-          <p class="small muted">${t('sessionsToday')}: <b id="p-count">${S.pomos}</b></p>
-          <ul class="small muted" style="text-align:left">${t('tips').map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
-        </section>
-        <section class="card">
-          <h2>${t('planTitle')}</h2>
-          <p class="small muted">${tx('Plan adaptat dupÄƒ diagnostice È™i greÈ™eli; generarea lui rÄƒmÃ¢ne localÄƒ.','Plan adapts to diagnostics and mistakes; it is generated locally.')}</p>
-          <ul class="plan">${planItems.map((x, i) => `<li><label class="check"><input type="checkbox" data-plan="${i}" ${S.plan[i] ? 'checked' : ''}><span><strong>${t('day')(i + 1)}:</strong> ${esc(x)}</span></label></li>`).join('')}</ul>
-          <button type="button" class="btn" id="adaptive-plan">${tx('RegenereazÄƒ planul adaptiv','Regenerate adaptive plan')}</button>
-        </section>
-      </div>`;
-    paintPomo();
-    el.addEventListener('click', (e) => {
-      const b = e.target.closest('button'); if (!b) return;
-      if (b.dataset.mode) { POMO.running = false; clearInterval(POMO.id); POMO.id = null; POMO.mode = b.dataset.mode; POMO.total = POMO.left = MODES[POMO.mode] * 60; paintPomo(); }
-      else if (b.id === 'adaptive-plan') { createAdaptivePlan(); route(false); }
-      else if (b.id === 'p-toggle') {
-        if (POMO.running) { POMO.running = false; clearInterval(POMO.id); POMO.id = null; }
-        else { POMO.running = true; POMO.end = Date.now() + POMO.left * 1000; POMO.id = setInterval(pomoTick, 1000); }
-        paintPomo();
-      } else if (b.id === 'p-reset') { POMO.running = false; clearInterval(POMO.id); POMO.id = null; POMO.left = POMO.total; paintPomo(); }
-    });
-    el.addEventListener('change', (e) => {
-      const c = e.target.closest('[data-plan]'); if (!c) return;
-      const i = c.dataset.plan; if (c.checked) { S.plan[i] = today(); gain(5); } else { delete S.plan[i]; save(); }
-    });
-  };
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Progres â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  VIEWS.progres = (el) => {
-    const days = []; const d = new Date(); d.setDate(d.getDate() - 27);
-    for (let i = 0; i < 28; i++) { const k = dayKey(d); const v = S.days[k] || 0; days.push([k, v]); d.setDate(d.getDate() + 1); }
-    const lvl = (v) => v === 0 ? 0 : v < 20 ? 1 : v < 60 ? 2 : 3;
-    const st = t('st');
-    el.innerHTML = head('â–²', t('progTitle'), t('progLede')) + `
-      <div class="grid g4">
-        ${[['xp', S.xp], ['streak', streak()], ['quizzes', S.quizzes], ['acc', accuracy() == null ? 'â€”' : accuracy() + '%'], ['cards', S.reviews], ['known', Object.keys(S.known).length], ['memos', Object.keys(S.memoRead).length], ['pomos', S.pomos]]
-          .map(([k, n]) => `<div class="stat"><b>${n}</b><span>${st[k]}</span></div>`).join('')}
-      </div>
-      <p class="small muted" style="margin-top:.5rem">${t('level')(level())}</p>
-      ${renderAllMastery()}
-      <section class="card stack"><h2>${tx('EvoluÈ›ia diagnosticelor','Diagnostic trend')}</h2>
-        ${(S.diagnostics || []).length ? `<div class="trend-line" role="img" aria-label="${tx('EvoluÈ›ia ultimelor diagnostice','Trend of recent diagnostics')}">${S.diagnostics.slice(-8).map(d=>`<i style="height:${Math.max(8,Math.round(d.correct/Math.max(1,d.total)*100))}%;"><span>${Math.round(d.correct/Math.max(1,d.total)*100)}%</span></i>`).join('')}</div><p class="small muted">${S.diagnostics.slice(-8).map(d=>`${fmtDate(d.date)} Â· ${d.correct}/${d.total}`).join('ã€€')}</p>` : `<p class="muted">${tx('DupÄƒ douÄƒ diagnostice, vei putea compara rezultatele Ã®n timp.','After two diagnostics, you can compare results over time.')}</p>`}</section>
-      <section class="card"><h2>${t('activity')}</h2>
-        <div class="heat" role="img" aria-label="${t('activity')}: ${days.filter((x) => x[1]).length}/28">${days.map(([k, v]) => `<i data-l="${lvl(v)}" title="${k}: ${v} XP"></i>`).join('')}</div>
-      </section>
-      <section class="card"><h2>${t('accBySubj')}</h2>
-        <div class="bars">${D.SUBJECTS.map((s) => { const a = accuracy(s.id); const q = S.quiz[s.id]; return `<div class="bar-row" style="--h:${s.hue}"><span>${esc(pick(s))}</span><span class="bar" role="img" aria-label="${esc(pick(s))}: ${a == null ? 'â€”' : a + '%'}"><i style="width:${a || 0}%"></i></span><span class="mono">${a == null ? 'â€”' : a + '%'}${q ? ` <span class="sr">(${q.ok}/${q.ok + q.bad})</span>` : ''}</span></div>`; }).join('')}</div>
-      </section>
-      <section><h2>${t('badges')}</h2>
-        <ul class="grid g3" style="list-style:none;padding:0;margin:0">${D.BADGES.map((b) => `<li class="card badge ${S.badges[b.id] ? 'on' : ''}"><span class="ico" aria-hidden="true">${S.badges[b.id] ? b.icon : 'ğŸ”’'}</span><span><strong>${esc(pick(b.t))}</strong><br><span class="small muted">${esc(pick(b.d))}</span>${S.badges[b.id] ? `<span class="sr"> âœ“</span>` : ''}</span></li>`).join('')}</ul>
-      </section>
-      <section class="card"><h2>${t('simHistory')}</h2>${S.sims.length ? histTable() : `<p class="muted">${t('noSims')}</p>`}</section>
-      <section class="card stack"><h2>${t('data')}</h2><p class="muted">${t('privacy')}</p>
-        <div class="row"><button type="button" class="btn" id="p-export">â¤“ ${t('exportBtn')}</button>
-          <button type="button" class="btn" id="guardian-report">${tx('Raport pentru familie/profesor','Family/teacher report')}</button>
-          <button type="button" class="btn" id="p-import-btn">â¤’ ${t('importBtn')}</button><input type="file" id="p-import" accept="application/json,.json" hidden>
-          <button type="button" class="btn danger" id="p-reset">${t('resetBtn')}</button></div>
-      </section>`;
-    el.addEventListener('click', (e) => {
-      const b = e.target.closest('button'); if (!b) return;
-      if (b.id === 'p-import-btn') $('#p-import', el).click();
-      else if (b.id === 'guardian-report') {
-        const subjectRows = D.SUBJECTS.map(s=>`<tr><td>${esc(pick(s))}</td><td>${accuracy(s.id)==null?'â€”':accuracy(s.id)+'%'}</td><td>${S.quiz[s.id]?.ok||0}/${(S.quiz[s.id]?.ok||0)+(S.quiz[s.id]?.bad||0)}</td><td>${S.quizTime?.[s.id]?.count?Math.round(S.quizTime[s.id].seconds/S.quizTime[s.id].count)+' '+tx('sec','sec'):'â€”'}</td></tr>`).join('');
-        const html=`<!doctype html><html lang="${SET.lang}"><meta charset="utf-8"><title>${tx('Raport de progres','Progress report')}</title><style>body{font:16px system-ui;max-width:850px;margin:2rem auto;color:#142033}h1{color:#2346c7}table{border-collapse:collapse;width:100%}td,th{padding:.65rem;border-bottom:1px solid #ccd}small{color:#556}</style><h1>Gimnaziu Space Â· ${tx('Raport local','Local report')}</h1><p>${tx('Generat','Generated')}: ${new Date().toLocaleDateString(SET.lang==='en'?'en-GB':'ro-RO')}</p><p>${S.xp} XP Â· ${S.quizzes} ${tx('quiz-uri','quizzes')} Â· ${S.mistakes?.length||0} ${tx('greÈ™eli Ã®n registru','logged mistakes')}</p><table><thead><tr><th>${tx('Materie','Subject')}</th><th>${tx('AcurateÈ›e','Accuracy')}</th><th>${tx('RÄƒspunsuri','Answers')}</th><th>${tx('Timp mediu/item','Avg. time/item')}</th></tr></thead><tbody>${subjectRows}</tbody></table><h2>${tx('SimulÄƒri recente','Recent mock exams')}</h2><ul>${(S.sims||[]).slice(-5).reverse().map(s=>`<li>${fmtDate(s.d)} Â· ${s.k==='mat'?t('simMat'):t('simRom')} Â· ${s.p}/100${s.minutes?` Â· ${s.minutes} ${tx('min','min')}`:''}</li>`).join('')||'<li>â€”</li>'}</ul><p><small>${tx('Raport orientativ, calculat local pe baza activitÄƒÈ›ii Ã®n aplicaÈ›ie. Nu este notÄƒ È™colarÄƒ. Exportul nu trimite date automat.','Indicative report, generated locally from app activity. It is not a school grade. Export does not send data automatically.')}</small></p></html>`;
-        const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download=`gimnaziu-space-raport-${today()}.html`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-      }
-      else if (b.id === 'p-export') {
-        const backup = { app: 'Gimnaziu Space', format: 'gimnaziu-space-backup', version: 2, exportedAt: new Date().toISOString(), progress: S };
-        const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `gimnaziu-space-${today()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-      } else if (b.id === 'p-reset' && confirm(t('resetConfirm'))) { S = fresh(); save(); toast(t('resetDone')); route(); }
-    });
-    $('#p-import', el).addEventListener('change', async (e) => {
-      const f = e.target.files[0]; if (!f) return;
-      try {
-        if (f.size > 2_000_000) throw new Error('too-large');
-        const raw = JSON.parse(await f.text());
-        const imported = window.GS_PROGRESS.normalize(raw); if (!imported) throw new Error('invalid-backup');
-        if (!store.set(KEY, imported)) { toast(t('importStorage')); return; }
-        S = imported; toast(t('importDone')); route();
-      } catch { toast(t('importBad')); }
-      finally { e.target.value = ''; }
-    });
-  };
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ AI Coach & registrul greÈ™elilor â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  const tx = (ro, en) => SET.lang === 'ro' ? ro : en;
-  function explainMistake(m) {
-    const tips = {
-      mat: tx('Scrie datele, alege formula, Ã®nlocuieÈ™te valorile È™i verificÄƒ unitatea. La ecuaÈ›ii, fÄƒ aceeaÈ™i operaÈ›ie Ã®n ambele pÄƒrÈ›i È™i verificÄƒ rezultatul prin Ã®nlocuire.',
-        'Write the known data, choose the formula, substitute values and check the unit. For equations, do the same operation on both sides and verify by substitution.'),
-      rom: tx('CiteÈ™te cerinÈ›a, cautÄƒ dovada Ã®n text È™i rÄƒspunde Ã®n propoziÈ›ii clare. Pentru gramaticÄƒ, pune Ã®ntrebarea potrivitÄƒ È™i verificÄƒ rolul cuvÃ¢ntului Ã®n enunÈ›.',
-        'Read the task, find evidence in the text and answer in clear sentences. For grammar, ask the right question and check the wordâ€™s role in the sentence.'),
-      fiz: tx('NoteazÄƒ mÄƒrimile È™i unitÄƒÈ›ile, scrie formula, transformÄƒ unitÄƒÈ›ile dacÄƒ este nevoie È™i verificÄƒ dacÄƒ rezultatul are sens fizic.',
-        'Note the quantities and units, write the formula, convert units when needed and check whether the result makes physical sense.'),
-      chim: tx('IdentificÄƒ substanÈ›ele È™i mÄƒrimile cunoscute, scrie relaÈ›ia folositÄƒ È™i verificÄƒ simbolurile È™i unitÄƒÈ›ile Ã®nainte de calcul.',
-        'Identify the substances and known quantities, write the relationship used and check symbols and units before calculating.'),
-      ist: tx('LeagÄƒ evenimentul de cauzÄƒ È™i consecinÈ›Äƒ. ConstruieÈ™te o mini-cronologie È™i cautÄƒ cuvintele care indicÄƒ ordinea Ã®n timp.',
-        'Connect the event to its cause and consequence. Build a mini-timeline and look for words that signal time order.'),
-      geo: tx('PorneÈ™te de la legendÄƒ, orientare È™i scarÄƒ. IdentificÄƒ simbolul È™i relaÈ›ia dintre distanÈ›a de pe hartÄƒ È™i distanÈ›a realÄƒ.',
-        'Start with the legend, orientation and scale. Identify the symbol and the relationship between map distance and real distance.'),
-      eng: tx('IdentificÄƒ subiectul, timpul È™i forma verbului. VerificÄƒ persoana È™i cuvintele-indiciu precum every day, yesterday sau tomorrow.',
-        'Identify the subject, tense and verb form. Check the person and clue words such as every day, yesterday or tomorrow.')
-    };
-    return `<strong>${tx('ExplicaÈ›ie pentru', 'Explanation for')} ${esc(subjName(m.s))}</strong><p>${esc(pick(m.x))}</p><p><strong>${tx('PaÈ™i de reparare', 'Repair steps')}</strong><br>${tips[m.s] || tips.mat}</p><p class="hint">${tx('Ai ales', 'You chose')}: ${esc(pick(m.chosen))} Â· ${tx('Corect', 'Correct')}: ${esc(pick(m.correct))}</p>`;
-  }
-  function coachAnswer(text) {
-    const q = norm(text || '');
-    if (!q.trim()) return tx('Scrie o Ã®ntrebare concretÄƒ, de exemplu: â€Cum calculez aria?â€ sau â€De ce am greÈ™it?â€.', 'Write a concrete question, for example: â€œHow do I calculate area?â€ or â€œWhy was my answer wrong?â€');
-    if (q.includes('frac')) return tx('<strong>FracÈ›ii:</strong> numitorul aratÄƒ Ã®n cÃ¢te pÄƒrÈ›i egale este Ã®mpÄƒrÈ›it Ã®ntregul, iar numÄƒrÄƒtorul cÃ¢te pÄƒrÈ›i luÄƒm. La adunare, cautÄƒ un numitor comun Ã®nainte sÄƒ aduni numÄƒrÄƒtorii.', '<strong>Fractions:</strong> the denominator shows how many equal parts make the whole, while the numerator shows how many parts we take. For addition, find a common denominator before adding numerators.');
-    if (q.includes('procent') || q.includes('percent')) return tx('<strong>Procente:</strong> p% din N = (p Ã— N) / 100. Exemplu: 25% din 80 = 20. VerificÄƒ prin estimare: 25% este un sfert.', '<strong>Percentages:</strong> p% of N = (p Ã— N) / 100. Example: 25% of 80 = 20. Check by estimation: 25% is one quarter.');
-    if (q.includes('arie') || q.includes('area')) return tx('<strong>Aria:</strong> identificÄƒ forma, adu dimensiunile la aceeaÈ™i unitate, scrie formula È™i apoi Ã®nlocuieÈ™te valorile. Dreptunghi: A = L Ã— l. Triunghi: A = (b Ã— h) / 2.', '<strong>Area:</strong> identify the shape, use the same unit for dimensions, write the formula and then substitute values. Rectangle: A = L Ã— l. Triangle: A = (b Ã— h) / 2.');
-    if (q.includes('ecua') || q.includes('equation')) return tx('<strong>EcuaÈ›ii:</strong> izoleazÄƒ necunoscuta fÄƒcÃ¢nd aceeaÈ™i operaÈ›ie Ã®n ambele membre. La final, Ã®nlocuieÈ™te valoarea gÄƒsitÄƒ pentru verificare.', '<strong>Equations:</strong> isolate the unknown by doing the same operation on both sides. Finally, substitute the result to check it.');
-    if (q.includes('idee') || q.includes('subiect') || q.includes('text') || q.includes('main idea')) return tx('<strong>Ideea principalÄƒ:</strong> Ã®ntreabÄƒ ce mesaj rÄƒmÃ¢ne dacÄƒ elimini detaliile. CautÄƒ ideea repetatÄƒ sau susÈ›inutÄƒ de exemple È™i formuleaz-o Ã®n 1â€“2 propoziÈ›ii.', '<strong>Main idea:</strong> ask what message remains if you remove details. Find the repeated idea or the one supported by examples and express it in 1â€“2 sentences.');
-    if (q.includes('greÈ™') || q.includes('gres') || q.includes('mistake') || q.includes('wrong')) {
-      const last = (S.mistakes || []).slice(-1)[0];
-      return last ? explainMistake(last) : tx('Nu existÄƒ Ã®ncÄƒ o greÈ™ealÄƒ Ã®nregistratÄƒ. Ãncepe un quiz, iar explicaÈ›ia va apÄƒrea aici.', 'No mistake has been recorded yet. Start a quiz and the explanation will appear here.');
-    }
-    return tx('<strong>Metoda de Ã®nvÄƒÈ›are:</strong> Ã®mparte Ã®ntrebarea Ã®n trei: ce È™tiu, ce trebuie sÄƒ aflu È™i ce regulÄƒ leagÄƒ cele douÄƒ. ExplicÄƒ rÄƒspunsul cu propriile cuvinte È™i verificÄƒ-l printr-un exemplu simplu.', '<strong>Study method:</strong> split the question into three parts: what I know, what I need to find and what rule connects them. Explain the answer in your own words and check it with a simple example.');
-  }
-  VIEWS.coach = (el) => {
-    const render = () => {
-      const records = (S.mistakes || []).slice().reverse();
-      el.innerHTML = head('âœ¦', tx('AI Coach â€” Ã®ntrebÄƒri È™i greÈ™eli', 'AI Coach â€” questions and mistakes'), tx('ÃntreabÄƒ Ã®n cuvinte simple. PrimeÈ™ti ghidare localÄƒ, orientativÄƒ, construitÄƒ din explicaÈ›iile aplicaÈ›iei.', 'Ask in simple words. You get local, orientation guidance built from the appâ€™s explanations.')) + `
-        <section class="card stack">
-          <h2>${tx('Ce vrei sÄƒ Ã®nÈ›elegi?', 'What do you want to understand?')}</h2>
-          <p class="muted">${tx('Exemple: â€Cum calculez aria?â€, â€ExplicÄƒ-mi procenteleâ€, â€De ce am greÈ™it?â€, â€Ce este ideea principalÄƒ?â€', 'Examples: â€œHow do I calculate area?â€, â€œExplain percentagesâ€, â€œWhy was my answer wrong?â€, â€œWhat is the main idea?â€')}</p>
-          <label class="sr" for="coach-q">${tx('Ãntrebarea ta', 'Your question')}</label>
-          <textarea id="coach-q" class="write" rows="4" placeholder="${tx('Scrie Ã®ntrebarea aiciâ€¦', 'Write your question hereâ€¦')}"></textarea>
-          <div class="row"><button type="button" class="btn primary" id="coach-ask">âœ¦ ${tx('ExplicÄƒ', 'Explain')}</button><button type="button" class="btn" id="coach-mistakes">${tx('AnalizeazÄƒ greÈ™elile mele', 'Analyse my mistakes')}</button></div>
-          <div id="coach-answer" class="feedback" hidden aria-live="polite"></div>
-          <p class="hint">${tx('AI Coach este local È™i orientativ; nu trimite Ã®ntrebÄƒrile la un serviciu extern, nu este profesor È™i nu Ã®nlocuieÈ™te materialul didactic sau baremul oficial.', 'AI Coach is local and for orientation; it does not send questions to an external service, is not a teacher and does not replace teaching material or official marking schemes.')}</p>
-        </section>
-        <section class="card stack">
-          <div class="row"><h2 style="margin:0">${tx('RÄƒspunsuri greÈ™ite salvate', 'Saved wrong answers')}</h2><span class="chip">${records.length}</span></div>
-          ${records.length ? `<div class="stack">${records.map((m, i) => `<article class="mistake-card"><strong>${esc(subjName(m.s))} Â· ${esc(pick(m.q))}</strong><p class="small muted">${tx('Ai ales', 'You chose')}: ${esc(pick(m.chosen))} Â· ${tx('Corect', 'Correct')}: ${esc(pick(m.correct))}</p><div class="feedback">${explainMistake(m)}</div><button type="button" class="btn sm" data-mistake="${i}">${tx('ExplicÄƒ Ã®n AI Coach', 'Explain in AI Coach')} â†’</button></article>`).join('')}</div><button type="button" class="btn danger" id="coach-clear">${tx('È˜terge registrul', 'Clear log')}</button>` : `<p class="muted">${tx('ÃncÄƒ nu ai greÈ™eli salvate. DupÄƒ un quiz, fiecare rÄƒspuns greÈ™it va apÄƒrea aici cu explicaÈ›ii.', 'No mistakes saved yet. After a quiz, every wrong answer will appear here with explanations.')}</p>`}
-        </section>`;
-      const answer = $('#coach-answer', el);
-      const question = $('#coach-q', el);
-      $('#coach-ask', el).onclick = () => { answer.hidden = false; answer.innerHTML = coachAnswer(question.value); };
-      $('#coach-mistakes', el).onclick = () => { answer.hidden = false; answer.innerHTML = records.length ? explainMistake(records[0]) : coachAnswer('greÈ™eli'); };
-      $$('[data-mistake]', el).forEach((b) => { b.onclick = () => { answer.hidden = false; answer.innerHTML = explainMistake(records[Number(b.dataset.mistake)]); answer.scrollIntoView({ block: 'nearest' }); }; });
-      $('#coach-clear', el)?.addEventListener('click', () => { S.mistakes = []; save(); route(); });
-    };
-    render();
-  };
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ArhivÄƒ oficialÄƒ & instrumente gratuite â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  VIEWS.arhiva = (el) => {
-    const years = D.ARCHIVE || [];
-    let selected = 'all';
-    const paint = () => {
-      const list = selected === 'all' ? years : years.filter((x) => String(x.year) === selected);
-      el.innerHTML = head('â–£', tx('Subiecte È™i bareme', 'Past papers and marking schemes'), tx('LucreazÄƒ singur, apoi verificÄƒ fiecare punct Ã®n sursa oficialÄƒ. Linkurile sunt gratuite È™i duc cÄƒtre arhiva Ministerului.', 'Work independently, then check each point in the official source. The links are free and open the Ministry archive.')) + `
-        <section class="card stack">
-          <div class="filters"><label class="sr" for="archive-year">${tx('Alege anul', 'Choose year')}</label><select id="archive-year" class="search"><option value="all">${tx('ToÈ›i anii', 'All years')}</option>${years.map((x) => `<option value="${x.year}" ${selected === String(x.year) ? 'selected' : ''}>${x.year}</option>`).join('')}</select><span class="chip">${list.length} ${tx('ani disponibili', 'years available')}</span></div>
-          <div class="grid g2">${list.map((x) => `<article class="card archive-card"><div class="row"><span class="big" aria-hidden="true">ğŸ“„</span><div><h2 style="margin:0">${x.year}</h2><p class="small muted">${esc(pick(x.t))}</p></div></div><p>${esc(pick(x.d))}</p><p class="source-meta"><strong>${tx('SursÄƒ oficialÄƒ', 'Official source')}:</strong> ${esc(x.source || 'subiecte.edu.ro')} Â· ${tx('an selectat', 'selected year')}: ${x.year}. ${tx('Pagina oficialÄƒ permite alegerea probei È™i a fiÈ™ierului original.', 'The official archive lets you choose the subject and original file.')}</p><a class="btn primary" href="${x.u}" target="_blank" rel="noopener noreferrer">${tx('Deschide arhiva oficialÄƒ', 'Open official archive')} â†—</a></article>`).join('')}</div>
-          <p class="hint">${tx('Pentru clasele Vâ€“VII, aplicaÈ›ia oferÄƒ exerciÈ›ii orientative; arhiva standardizatÄƒ este relevantÄƒ Ã®n principal pentru Evaluarea NaÈ›ionalÄƒ de la clasa a VIII-a.', 'For grades 5â€“7, the app provides orientation practice; the standardized archive is mainly relevant to the National Assessment in grade 8.')}</p>
-        </section>`;
-    };
-    paint();
-    $('#archive-year', el).addEventListener('change', (e) => { selected = e.target.value; paint(); $('#archive-year', el).focus(); });
-  };
-
-  VIEWS.instrumente = (el) => {
-    const todayKey = today();
-    const pool = D.QUIZ.filter((q) => !SET.grade || q.g === SET.grade);
-    const hash = [...todayKey].reduce((n, c) => n + c.charCodeAt(0), 0);
-    const daily = pool[hash % Math.max(1, pool.length)] || D.QUIZ[0];
-    const challengeDone = S.challenge?.date === todayKey;
-    const shareText = () => tx(`Am ${S.xp} XP Ã®n Gimnaziu Space, ${S.quizzes} quiz-uri È™i ${accuracy() ?? 0}% acurateÈ›e.`, `I have ${S.xp} XP in Gimnaziu Space, ${S.quizzes} quizzes and ${accuracy() ?? 0}% accuracy.`);
-    const downloadCertificate = () => {
-      const title = tx('Certificat de progres', 'Progress certificate');
-      const body = `<!doctype html><html lang="${SET.lang}"><meta charset="utf-8"><title>${title}</title><style>body{font-family:system-ui;padding:4rem;text-align:center;background:#0b1220;color:#eff5ff}main{max-width:700px;margin:auto;border:2px solid #69e2c3;border-radius:24px;padding:3rem}h1{color:#69e2c3}b{font-size:2.2rem}</style><main><p>Gimnaziu Space Â· ExamSpace Vâ€“VIII</p><h1>${title}</h1><p>${tx('Acest document reflectÄƒ progresul local din aplicaÈ›ie.', 'This document reflects local progress from the app.')}</p><p><b>${S.xp} XP</b></p><p>${S.quizzes} ${tx('quiz-uri', 'quizzes')} Â· ${S.reviews} ${tx('cartonaÈ™e repetate', 'cards reviewed')} Â· ${S.mistakes?.length || 0} ${tx('greÈ™eli de revÄƒzut', 'mistakes to review')}</p><p>${new Date().toLocaleDateString(SET.lang === 'en' ? 'en-GB' : 'ro-RO')}</p></main></html>`;
-      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], { type: 'text/html' })); a.download = `gimnaziu-space-${todayKey}-progres.html`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-    };
-    const copy = (value, ok) => navigator.clipboard?.writeText(value).then(() => toast(ok), () => toast(tx('Copiarea nu este disponibilÄƒ Ã®n acest browser.', 'Copy is not available in this browser.')));
-    const paint = () => {
-      el.innerHTML = head('âœ¦', tx('Instrumente gratuite', 'Free toolkit'), tx('ProvocÄƒri, partajare, printare, backup È™i certificate locale â€” fÄƒrÄƒ cont È™i fÄƒrÄƒ servicii plÄƒtite.', 'Challenges, sharing, printing, backup and local certificates â€” no account and no paid services.')) + `
-        <div class="grid g2">
-          <section class="card stack"><div class="row"><h2 style="margin:0">${tx('Provocarea zilei', 'Daily challenge')}</h2><span class="chip">${todayKey}</span></div><p class="muted">${tx('O Ã®ntrebare scurtÄƒ aleasÄƒ automat din materia ta.', 'A short question selected automatically from your subject.')}</p><h3>${esc(pick(daily.q))}</h3><div class="stack">${daily.o.map((o, i) => `<button type="button" class="btn challenge-option" data-challenge="${i}" ${challengeDone ? 'disabled' : ''}>${String.fromCharCode(65 + i)} Â· ${esc(pick(o))}</button>`).join('')}</div><div id="challenge-feedback" aria-live="polite">${challengeDone ? `<p class="feedback ok">${tx('Provocarea de azi este finalizatÄƒ.', 'Todayâ€™s challenge is complete.')}</p>` : ''}</div></section>
-          <section class="card stack"><h2>${tx('PartajeazÄƒ È™i pÄƒstreazÄƒ', 'Share and keep')}</h2><p class="muted">${tx('FuncÈ›ii locale, fÄƒrÄƒ cont È™i fÄƒrÄƒ server.', 'Local features, with no account and no server.')}</p><div class="row"><button type="button" class="btn primary" id="share-progress">â†— ${tx('PartajeazÄƒ progresul', 'Share progress')}</button><button type="button" class="btn" id="copy-link">â§‰ ${tx('CopiazÄƒ linkul', 'Copy link')}</button><button type="button" class="btn" id="print-report">â™ ${tx('PrinteazÄƒ', 'Print')}</button></div><div class="row"><button type="button" class="btn" id="download-certificate">âœ¦ ${tx('DescarcÄƒ certificatul', 'Download certificate')}</button><a class="btn" href="#progres">${tx('Vezi progresul', 'View progress')} â†’</a></div></section>
-        </div>
-        <section class="card stack"><h2>${tx('ScurtÄƒturi de Ã®nvÄƒÈ›are', 'Study shortcuts')}</h2><div class="grid g3"><a class="card" href="#coach"><strong>âœ¦ AI Coach</strong><span class="small muted">${tx('ÃntreabÄƒ È™i reparÄƒ greÈ™elile.', 'Ask and repair mistakes.')}</span></a><a class="card" href="#arhiva"><strong>â–£ ${tx('Subiecte È™i bareme', 'Papers and schemes')}</strong><span class="small muted">${tx('Arhiva oficialÄƒ pe ani.', 'Official archive by year.')}</span></a><a class="card" href="#progres"><strong>â–² ${tx('Backup local', 'Local backup')}</strong><span class="small muted">${tx('ExportÄƒ sau importÄƒ progresul.', 'Export or import progress.')}</span></a></div></section>`;
-      $('#share-progress', el).onclick = async () => { const text = shareText(); if (navigator.share) { try { await navigator.share({ title: 'Gimnaziu Space', text, url: location.href }); } catch {} } else copy(`${text}\n${location.href}`, tx('Progresul a fost copiat.', 'Progress copied.')); };
-      $('#copy-link', el).onclick = () => copy(location.href, tx('Linkul a fost copiat.', 'Link copied.'));
-      $('#print-report', el).onclick = () => window.print();
-      $('#download-certificate', el).onclick = downloadCertificate;
-      $$('[data-challenge]', el).forEach((b) => { b.onclick = () => { const chosen = Number(b.dataset.challenge); const ok = chosen === daily.a; S.challenge = { date: todayKey, id: daily.s + '|' + pick(daily.q), chosen, correct: daily.a }; if (!ok) recordMistake(daily, chosen); gain(ok ? 10 : 2); paint(); $('#challenge-feedback', el)?.focus(); }; });
-    };
-    paint();
-  };
-
-
-  VIEWS.feedback = (el, p) => {
-    const records = (S.feedback || []).slice().reverse();
-    const option = (value, ro, en, selected) => '<option value="' + value + '"' + (selected ? ' selected' : '') + '>' + tx(ro, en) + '</option>';
-    const paint = () => {
-      const device = ['phone', 'tablet', 'desktop'];
-      const grade = ['5', '6', '7', '8'];
-      const task = [['quiz', 'Quiz', 'Quiz'], ['coach', 'AI Coach', 'AI Coach'], ['formulas', 'Formule', 'Formulas'], ['simulation', 'Simulare', 'Mock exam'], ['archive', 'Subiecte È™i bareme', 'Papers and schemes'], ['accessibility', 'Accesibilitate', 'Accessibility']];
-      const categories = [['content', 'ConÈ›inut / rÄƒspuns greÈ™it', 'Content / incorrect answer'], ['usability', 'Navigare sau utilizare', 'Navigation or usability'], ['accessibility', 'Accesibilitate / afiÈ™are', 'Accessibility / display'], ['idea', 'Idee de Ã®mbunÄƒtÄƒÈ›ire', 'Improvement idea'], ['other', 'Altceva', 'Other']];
-      el.innerHTML = head('âœ“', tx('Testare & feedback', 'Testing & feedback'), tx('AjutÄƒ la Ã®mbunÄƒtÄƒÈ›irea aplicaÈ›iei fÄƒrÄƒ cont È™i fÄƒrÄƒ colectare de date personale.', 'Help improve the app without an account and without collecting personal data.')) +
-        '<section class="card stack">' +
-          '<h2>' + tx('Sesiune scurtÄƒ de testare', 'Short testing session') + '</h2>' +
-          '<p class="muted">' + tx('Alege o sarcinÄƒ, lucreazÄƒ 5â€“10 minute, apoi salveazÄƒ observaÈ›ia. Datele rÄƒmÃ¢n doar Ã®n acest browser.', 'Choose a task, work for 5â€“10 minutes, then save your observation. Data stays in this browser only.') + '</p>' +
-          '<form id="feedback-form" class="stack">' +
-            '<div class="grid g2">' +
-              '<label class="stack"><span>' + tx('Dispozitiv', 'Device') + '</span><select id="fb-device" class="search">' + device.map((v) => option(v, v === 'phone' ? 'Telefon' : v === 'tablet' ? 'TabletÄƒ' : 'Desktop', v[0].toUpperCase() + v.slice(1), false)).join('') + '</select></label>' +
-              '<label class="stack"><span>' + tx('Clasa', 'Grade') + '</span><select id="fb-grade" class="search">' + grade.map((v) => option(v, 'Clasa a ' + v + '-a', 'Grade ' + v, false)).join('') + '</select></label>' +
-              '<label class="stack"><span>' + tx('Ce ai testat?', 'What did you test?') + '</span><select id="fb-task" class="search">' + task.map((v) => option(v[0], v[1], v[2], false)).join('') + '</select></label>' +
-              '<label class="stack"><span>' + tx('Categorie feedback', 'Feedback category') + '</span><select id="fb-category" class="search">' + categories.map((v) => option(v[0], v[1], v[2], false)).join('') + '</select></label>' +
-              '<label class="stack"><span>' + tx('CÃ¢t de uÈ™or a fost?', 'How easy was it?') + '</span><select id="fb-rating" class="search">' + [1, 2, 3, 4, 5].map((v) => option(String(v), String(v) + '/5', String(v) + '/5', v === 5)).join('') + '</select></label>' +
-            '</div>' +
-            '<label class="stack"><span>' + tx('Ce a fost neclar sau dificil?', 'What was unclear or difficult?') + '</span><textarea id="fb-note" class="write" rows="4" placeholder="' + tx('Scrie observaÈ›ia aiciâ€¦', 'Write your observation hereâ€¦') + '"></textarea></label>' +
-            '<label class="check"><input type="checkbox" id="fb-access"> <span>' + tx('Am Ã®ntÃ¢lnit o problemÄƒ de accesibilitate sau afiÈ™are.', 'I found an accessibility or display issue.') + '</span></label>' +
-            '<div class="row"><button class="btn primary" type="submit">âœ“ ' + tx('SalveazÄƒ feedbackul', 'Save feedback') + '</button><button class="btn" type="button" id="feedback-export">â†“ ' + tx('ExportÄƒ observaÈ›iile', 'Export observations') + '</button></div>' +
-          '</form>' +
-          '<p class="hint">' + tx('Nu cere nume, email, cont sau date despre elev. Pentru feedback extern, exportÄƒ fiÈ™ierul È™i trimite-l manual persoanei care coordoneazÄƒ testarea.', 'No name, email, account or student data is requested. For external feedback, export the file and send it manually to the person coordinating testing.') + '</p>' +
-        '</section>' +
-        '<section class="card stack">' +
-          '<div class="row"><h2 style="margin:0">' + tx('ObservaÈ›ii salvate local', 'Locally saved observations') + '</h2><span class="chip">' + records.length + '</span></div>' +
-          (records.length ? '<div class="stack">' + records.map((r) => '<article class="feedback-card"><strong>' + esc(r.task) + ' Â· ' + esc(r.device) + ' Â· ' + esc(r.grade) + '</strong><p class="small muted">' + esc(r.category || '') + ' Â· ' + esc(new Date(r.when).toLocaleString(SET.lang === 'en' ? 'en-GB' : 'ro-RO')) + ' Â· ' + esc(r.rating) + '/5' + (r.accessibility ? ' Â· ' + tx('accesibilitate', 'accessibility') : '') + '</p><p>' + esc(r.note || tx('FÄƒrÄƒ observaÈ›ie scrisÄƒ.', 'No written observation.')) + '</p></article>').join('') + '</div><button class="btn danger" type="button" id="feedback-clear">' + tx('È˜terge observaÈ›iile', 'Clear observations') + '</button>' : '<p class="muted">' + tx('ÃncÄƒ nu existÄƒ observaÈ›ii. Ãncepe cu o sesiune de 5 minute.', 'No observations yet. Start with a 5-minute session.') + '</p>') +
-        '</section>';
-      $('#feedback-form', el).addEventListener('submit', (event) => {
-        event.preventDefault();
-        const taskLabel = $('#fb-task', el).selectedOptions[0]?.textContent || '';
-        const record = { device: $('#fb-device', el).value, grade: $('#fb-grade', el).value, task: taskLabel, category: $('#fb-category', el).selectedOptions[0]?.textContent || '', rating: $('#fb-rating', el).value, note: $('#fb-note', el).value.trim(), accessibility: $('#fb-access', el).checked, when: new Date().toISOString() };
-        S.feedback = [...(S.feedback || []), record].slice(-50);
-        save();
-        toast(tx('Feedback salvat local.', 'Feedback saved locally.'));
-        paint();
-      });
-      $('#feedback-export', el).onclick = () => {
-        const blob = new Blob([JSON.stringify({ app: 'Gimnaziu Space', exportedAt: new Date().toISOString(), feedback: S.feedback || [] }, null, 2)], { type: 'application/json' });
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'gimnaziu-space-feedback.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-      };
-      $('#feedback-clear', el)?.addEventListener('click', () => { S.feedback = []; save(); paint(); });
-    };
-    paint();
-    if (p?.get('item')) {
-      $('#fb-task', el).value = 'quiz';
-      if (p.get('grade')) $('#fb-grade', el).value = p.get('grade');
-      $('#fb-note', el).value = `${tx('ProblemÄƒ semnalatÄƒ la Ã®ntrebarea', 'Issue reported for question')}: â€œ${p.get('q') || p.get('item')}â€ Â· ${p.get('subject') || ''} Â· ${tx('Descrie ce trebuie verificat.', 'Describe what should be checked.')}`;
-      $('#fb-note', el).focus();
-    }
-  };
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Despre â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  VIEWS.despre = (el) => {
-    el.innerHTML = head('i', t('aboutTitle'), t('aboutLede')) + `
-      <div class="grid g2">
-        <section class="card"><h2>${t('aboutWhat')}</h2><p>${t('aboutWhatBody')}</p></section>
-        <section class="card" style="border:2px solid var(--bad)"><h2>${t('aboutNot')}</h2><p>${t('aboutNotBody')}</p></section>
-        <section class="card"><h2>${t('aboutA11y')}</h2><p>${t('aboutA11yBody')}</p></section>
-        <section class="card"><h2>${t('aboutPrivacy')}</h2><p>${t('aboutPrivacyBody')}</p></section>
-      </div>
-      <section class="card stack"><h2>${t('aboutLinks')}</h2>
-        <ul>${D.OFFICIAL.map((o) => `<li><a href="${o.u}" target="_blank" rel="noopener">${esc(pick(o.t))} â†—</a></li>`).join('')}</ul>
-        <p class="hint">${t('aboutCal')}</p>
-      </section>
-      <p class="small muted">${t('aboutAuthor')} Â· <a href="../portfolio.html">Portfolio</a> Â· <a href="https://laurandreea10.github.io/BACapp/" target="_blank" rel="noopener">BAC Space â†—</a></p>`;
-  };
-
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ NavigaÈ›ie & evenimente globale â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  function openNav() { $('#sidenav').classList.add('open'); $('#scrim').hidden = false; $('#menu-btn').setAttribute('aria-expanded', 'true'); $('#sidenav a').focus(); }
-  function closeNav() { if (!$('#sidenav').classList.contains('open')) return; $('#sidenav').classList.remove('open'); $('#scrim').hidden = true; $('#menu-btn').setAttribute('aria-expanded', 'false'); }
-  $('#menu-btn').addEventListener('click', () => $('#sidenav').classList.contains('open') ? closeNav() : openNav());
-  $('#scrim').addEventListener('click', () => { closeNav(); $('#menu-btn').focus(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && $('#sidenav').classList.contains('open')) { closeNav(); $('#menu-btn').focus(); } });
-
-  document.addEventListener('click', (e) => {
-    const l = e.target.closest('[data-set-lang]'); if (l) { SET.lang = l.dataset.setLang; saveSet(); mathCache.clear(); applySettings(); labelGuide(); route(false); l.focus(); }
-    const th = e.target.closest('[data-set-theme]'); if (th) { SET.theme = th.dataset.setTheme; saveSet(); applySettings(); }
-    const sz = e.target.closest('[data-set-size]'); if (sz) { SET.size = sz.dataset.setSize; saveSet(); applySettings(); }
-  });
-  $('#theme-btn').addEventListener('click', () => { SET.theme = isDark() ? 'light' : 'dark'; saveSet(); applySettings(); });
-  $('#reading-guide-btn').addEventListener('click', () => setReadingGuide(!guide.on));
-  const networkStatus = $('#network-status');
-  const paintNetwork = (state) => { if (!networkStatus) return; const off=state==='offline'; networkStatus.dataset.state=state; networkStatus.textContent=off?tx('Offline Â· cache local','Offline Â· local cache'):tx('Online','Online'); networkStatus.title=off?tx('AplicaÈ›ia foloseÈ™te fiÈ™ierele salvate pe acest dispozitiv.','The app is using files saved on this device.'):tx('ConÈ›inutul aplicaÈ›iei este accesibil online.','App content is available online.');networkStatus.setAttribute('aria-label',networkStatus.textContent); };
-  window.addEventListener('online',()=>paintNetwork('online')); window.addEventListener('offline',()=>paintNetwork('offline')); paintNetwork(navigator.onLine?'online':'offline');
-  const labelGuide=()=>{const label=guide.on?tx('DezactiveazÄƒ ghidul de citire','Turn off reading guide'):tx('ActiveazÄƒ ghidul de citire','Turn on reading guide');$('#reading-guide-btn').setAttribute('aria-label',label);$('#reading-guide-btn').title=label;};
-  labelGuide();
-  $('#reading-guide-btn').addEventListener('click',labelGuide);
-  $('#settings-btn').addEventListener('click', () => $('#settings').showModal());
-  $('#set-font').addEventListener('change', (e) => { SET.font = e.target.checked ? 'lexend' : ''; saveSet(); applySettings(); });
-  $('#set-spacing').addEventListener('change', (e) => { SET.spacing = e.target.checked; saveSet(); applySettings(); });
-  $('#set-contrast').addEventListener('change', (e) => { SET.contrast = e.target.checked; saveSet(); applySettings(); });
-  $('#set-motion').addEventListener('change', (e) => { SET.motion = e.target.checked ? 'reduce' : ''; saveSet(); applySettings(); });
-  $('#set-sound').addEventListener('change', (e) => { SET.sound = e.target.checked; saveSet(); });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', applySettings);
-  window.addEventListener('hashchange', () => route());
-  window.addEventListener('beforeprint', () => $$('details').forEach((d) => { d.open = true; }));
-
-  applySettings();
-  route(false);
-
-  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').then(reg=>{ if(reg.waiting){networkStatus.textContent=tx('Actualizare disponibilÄƒ','Update ready');networkStatus.dataset.state='update';networkStatus.setAttribute('aria-label',networkStatus.textContent);} reg.addEventListener('updatefound',()=>{const worker=reg.installing;worker?.addEventListener('statechange',()=>{if(worker.state==='installed'&&navigator.serviceWorker.controller){networkStatus.textContent=tx('Actualizare Â· reÃ®ncarcÄƒ pagina','Update Â· reload page');networkStatus.dataset.state='update';networkStatus.setAttribute('aria-label',networkStatus.textContent);networkStatus.title=tx('Versiunea nouÄƒ este descÄƒrcatÄƒ. ReÃ®ncarcÄƒ pagina cÃ¢nd ai terminat.','The new version is downloaded. Reload when you are ready.');}});}); }).catch(() => {});
-
-  // expus pentru teste
-  window.GS = { parseMath, speak, plainMath, buildDeck, state: () => S };
-})();
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíç7í:-jZ.¶›­–)Ş³RwW6R7G&–7Bs°¢ò¢v–Öæ¦—R76R(	BÆöv–6Æ–6‰¶–V’âF÷GVÂ'VÆV¬H2Æö6ÂÂlH7,H26W'fW"‰–’lH7,H26öçGW&’â¢ğ¢‚‚’Óâ°¢6öç7BBÒv–æF÷räu5ôDD°¢6öç7BBÒ‡2ÂVÂÒFö7VÖVçB’ÓâVÂçVW'•6VÆV7F÷"‡2“°¢6öç7BBBÒ‡2ÂVÂÒFö7VÖVçB’Óâ²ââæVÂçVW'•6VÆV7F÷$ÆÂ‡2•Ó°¢6öç7BW62Ò‡2’Óâ7G&–ær‡2’ç&WÆ6R‚õ²cÃâ"uÒörÂ†2’Óâ‡²rbs¢rf×²rÂsÂs¢rfÇC²rÂsâs¢rfwC²rÂr"s¢rgV÷C²rÂ"r#¢rb33“²rÕ¶5Ò’“° ¢ò¢)H)H)H)H)H)H)H)H)H)H)H)H)H7Fö6&R6–wW,H2)H)H)H)H)H)H)H)H)H)H)H)H)H¢ğ¢6öç7B´U’Òvv–Öæ¦—R×76S§cs°¢6öç7B4´U’Òvv–Öæ¦—R×76S§6WGF–æw2s°¢6öç7B7F÷&RÒ°¢vWB†²Âf"’²G'’²6öç7BbÒÆö6Å7F÷&vRævWD—FVÒ†²“²&WGW&âbò¥4ôâç'6R‡b’¢f#²Ò6F6‚²&WGW&âf#²ÒÒÀ¢6WB†²Âb’²G'’²Æö6Å7F÷&vRç6WD—FVÒ†²Â¥4ôâç7G&–æv–g’‡b’“²&WGW&âG'VS²Ò6F6‚²&WGW&âfÇ6S²ÒĞ¢Ó°¢6öç7Bg&W6‚Ò‚’Óâv–æF÷räu5õ$ôu$U52æg&W6‚‚“°¢6öç7BfÆ–FFRÒ‡2’Óâv–æF÷räu5õ$ôu$U52ææ÷&ÖÆ—¦R‡2’ÇÂg&W6‚‚“°¢ÆWB2ÒfÆ–FFR‡7F÷&RævWB„´U’’“°¢ÆWB4UBÒö&¦V7Bæ76–vâ‡²Ææs¢w&òrÂF†VÖS¢w7—7FVÒrÂ6—¦S¢srÂföçC¢rrÂ6öçG&7C¢fÇ6RÂÖ÷F–öã¢rrÂ76–æs¢fÇ6RÂ6÷VæC¢G'VRÂw&FS¢ÒÂ7F÷&RævWB…4´U’Â·Ò’“°¢6öç7B6fRÒ‚’Óâ7F÷&Rç6WB„´U’Â2“°¢6öç7B6fU6WBÒ‚’Óâ7F÷&Rç6WB…4´U’Â4UB“° ¢ò¢)H)H)H)H)H)H)H)H)H)H)H)H)H“†â)H)H)H)H)H)H)H)H)H)H)H)H)H¢ğ¢6öç7BBÒ°¢&ó¢°¢6¶—¢u6&’Æ6öì‰¶–çWBrÂÖVçS¢tÖVæ—RrÂ6WGF–æw3¢u6WLH7&’FR66W6–&–Æ—FFRrÂ6WGF–æw5F—FÆS¢u6WLH7&’FR66W6–&–Æ—FFRrÂ6Æ÷6S¢|8ææ6†–FRrÀ¢ædÆV&ã¢|8æçf‰¼H2rÂæe&7F–6S¢tW†W'6V¬H2rÂæe–÷S¢uGRrÂædæ÷FS¢tçRW7FRÖFW&–ÂF–F7F–2öf–6–ÂârÀ¢væbæ66s¢t6<H2rÂvæbæ6Æ6Rs¢uR6Æ6RrÂvæbæf÷&×VÆRs¢tf÷&×VÆRrÂvæbæf÷&×VÆU6†÷'Bs¢tf÷&×VÆRrÂvæbæÖVÖ÷&F÷"s¢tÖVÖ÷&Fö&RrÂvæbæÖVÖõ6†÷'Bs¢tÖVÖòrÀ¢væbævÆ÷6"s¢tvÆ÷6"rÂvæbæ6ö6‚s¢t’6ö6‚rÂvæbæ6'Föæ6Rs¢t6'Föæ‰–RrÂvæbçV—¢s¢uV—¢rÂvæbç6–×VÆ&Rs¢u6–×VÆ&RTârÂvæbæfö7W2s¢tfö7W2bÆârÂvæbç&öw&W2s¢u&öw&W2rÂvæbæFW7&Rs¢tFW7&Rb7W'6RrÂvæbæ&†—fs¢u7V&–V7FRb&&VÖRrÂvæbæ–ç7G'VÖVçFRs¢t–ç7G'VÖVçFRrÂvæbæfVVF&6²s¢uFW7F&RbfVVF&6²rÂvæbæ6ö×&Rs¢t6ö×,H2rÂvæbç—6s¢u•4+rÆ–<H2rÀ¢vF—62çF—FÆRs¢t–×÷'FçC¢rÂvF—62æ&öG’s¢vÆ–6‰¶–RFR&V6—GVÆ&R7&VLH2–æFWVæFVçBâçRW7FRÖFW&–ÂF–F7F–2öf–6–Â‰–’çR:ææÆö7V–\‰—FRÖçVÆVÆRÂ&öfW6÷'VÂ6RFö7VÖVçFVÆRÖ–æ—7FW'VÇV’VGV6‰¶–V’ârÀ¢w6WBçF†VÖRs¢uFVÜH2rÂw6WBç7—7FVÒs¢t66—7FV×VÂrÂw6WBæÆ–v‡Bs¢tÇVÖ–æö<H2rÂw6WBæF&²s¢|8æçGVæV6LH2rÂw6WBç6—¦Rs¢tÜH7&–ÖVFW‡GVÇV’rÀ¢w6WBæföçBs¢tföçB\‰–÷"FR6—F—B„ÆW†VæB’rÂw6WBç76–ærs¢u7‰¶–W&RÖ’Ö&R:æçG&R,:&æGW&’rÂw6WBæ6öçG&7Bs¢t6öçG&7B&–F–6BrÂw6WBæÖ÷F–öâs¢u&VGV6Ræ–Ö‰¶––ÆRrÂw6WBç6÷VæBs¢u7VæWBÆf–æÂFRöÖöF÷&òrÀ¢w6WBæ†–çBs¢u6WLH7&–ÆR6R6ÇfV¬H2Fö":æâ6W7B'&÷w6W"ârÀ¢F†VÖUFó¢²Æ–v‡C¢t6ö×WLH2RFVÖ:æçGVæV6LH2rÂF&³¢t6ö×WLH2RFVÖÇVÖ–æö<H2rÒÀ¢w&FS¢t6Æ6rÂw&FW3¢t6Æ6VÆRrÂÆÃ¢uFöFRrÂ7V&¦V7C¢tÖFW&–rÂ6V&6ƒ¢t6WLH2rÂ&W7VÇG3¢†â’ÓââÓÓÒòs&W§VÇFBr¢G¶çÒ&W§VÇFFVÀ¢w&FTã¢†r’Óâ6Æ6Gµ²rrÂrrÂrrÂrrÂrrÂubrÂud’rÂud”’rÂud””’uÕ¶u×ÒÖÂw&FU6†÷'C¢†r’Óâ²rrÂrrÂrrÂrrÂrrÂubrÂud’rÂud”’rÂud””’uÕ¶uÒÀ¢7F'C¢|8ææ6WRrÂæW‡C¢uW&ÜH7Fö&VrÂf–æ—6ƒ¢uFW&Ö–ìH2rÂ&6³¢|8ææö’rÂ&WG'“¢|8ææ<H2òFLH2rÂ&W6WC¢u&W6WFV¬H2rÀ¢òò6<H0¢†öÖTW–V'&÷s¢u&V6—GVÆ&R+r6Æ6VÆRn(	5d””’+rWfÇV&Væ‰¶–öæÌH2rÀ¢†öÖUF—FÆS¢uF÷B6RG&V'V–RÆVÓç&VÖ–çF—CÂöVÓâÂ:æçG"×Vâ6–æwW"6–WBârÀ¢†öÖTÆVFS¢tf÷&×VÆRÂÖVÖ÷&Fö&RÂ6'Föæ‰–RÂV—¢×W&’7RW‡Æ–6‰¶–’‰–’6–×VÌH7&’:æâ7F–ÇVÂWfÇ\H7&–’æ‰¶–öæÆRâ&öw&W7VÂLH7R,H6Ü:&æRFö":æâ'&÷w6W"‰–’÷&æ\‰—FRFRÆ¦W&òârÀ¢–6´w&FS¢|8æâ6R6Æ<H2\‰—F“òrÂ–6´w&FT†–çC¢tf–ÇG&VÆR÷&æW62FRÆ6Æ6ÆV<H3²òü‰¶’66†–Ö&÷&–<:&æBârÀ¢6÷VçEF—FÆS¢u:&ìH2ÆW†ÖVârÂ6÷VçDG&gC¢t6ÆVæF"Tâd””’##r:æâ&ö–V7B„ÔT2ÂVwW7B##b’(	BfW&–f–<H2RVGRç&òârÀ¢6÷VçE6–Ó¢w¦–ÆR:&ìH2Æ6–×VÆ&RƒbÖ"â##r’rÂ6÷VçE&öÓ¢w¦–ÆR:&ìH2Æ&ö&FR&öÜ:&ìH2ƒ#"—Vââ##r’rÂ6÷VçDÖC¢w¦–ÆR:&ìH2Æ&ö&FRÖFVÖF–<H2ƒ#B—Vââ##r’rÂ6÷VçE7C¢vG&V7WBrÀ¢F$FVÖó¢tFVÖòFR&W¦VçF&RrÂF$Ö–æS¢tW‡W&–Vì‰¶ÖVrÀ¢FVÖôfÆs¢tDDRDRU„TÕÅRrÂFVÖõFW‡C¢ufÆ÷&–ÆRFR–6’7VçB–çfVçFFRÂ6<H2fW¦’7VÒ&LH2Æ–6‰¶–GWH2<:'FWf<H7LH6Ü:&æ’FRföÆ÷6—&RârÀ¢Ö–æTV×G“¢|8ææ<H2çR’&öw&W2â8ææ6WR7RVâV—¢67W'B6R<:'FWf6'Föæ‰–R(	BF÷GVÂ6R7GVÆ—¦V¬H2WFöÖBârÀ¢7C¢²‡¢u…rÂ7G&V³¢w¦–ÆRÆ,:&æBrÂV—§¦W3¢wV—¢×W&’rÂ63¢v7W&F\‰¶RrÂ6&G3¢v6'Föæ‰–R&WWFFRrÂ¶æ÷vã¢vf÷&×VÆR‰—F—WFRrÂÖVÖ÷3¢vÖVÖ÷&Fö&R6—F—FRrÂöÖ÷3¢w6W6—Væ’FRfö7W2rÒÀ¢6ö6…F—FÆS¢t6ö6‚Æö6ÂrÂ6ö6„æ÷FS¢u7VvW7F–’6Æ7VÆFR:æâ'&÷w6W"ÂF–â7F—f—FFVFâçRG&–Ö—FRFFRæ–<H6–W&’â’6ö6‚öfW,H2W‡Æ–6‰¶–’÷&–VçFF—fRârÀ¢V–6³¢u÷&æ—&R&–LH2rÂV–6µV—£¢uV—¢FRR:æçG&V,H7&’rÂV–6´6&G3¢u&WWLH26'Föæ‰–RrÂV–6´f÷&×VÆ3¢tf÷&×VÆVÆR6Æ6V’ÖVÆRrÂV–6µ6–Ó¢u6–×VÆ&RTârÀ¢7V&¦V7G5F—FÆS¢tÖFW&–’rÀ¢6ö6ƒ¢°¢7F'C¢|8ææ6WR7RVâV—¢FRR:æçG&V,H7&’F–â6Æ6F(	BfV’fVFV–ÖVF–BVæFR7F’ârÀ¢GVS¢†â’Óâ’G¶çÒ6'Föæ‰–RFR&WWFB¦’âGW&V¬H2<:'FWfÖ–çWFRæÀ¢vV³¢‡2Â’ÓâG·7Ò&R7W&F\‰¶V6VÖ’Ö–<H2‚G·ÒR’â&V6—F\‰—FRÖVÖ÷&F÷'VÂÂö’&VlH2VâV—¢æÀ¢7G&öæs¢‡2Â’ÓâÆG·7Ò7F’&–æR‚G·ÒR’âG&V6’Æ:æçG&V,H7&’F–â6Æ6W&ÜH7Fö&RæÀ¢6–Ó¢†â’ÓâÖ’7VçBG¶çÒ¦–ÆR:&ìH2Æ6–×VÆ&Râò6–×VÆ&RR<H7LH6Ü:&ìH2RVâ&—FÒ'VâæÀ¢7G&V³¢t’:æçlH<‰¶B¦’âH77G&V¬H26W&–‰–’Ü:&–æRÂ6†–"‰–’Ö–çWFRârÀ¢æ÷7G&V³¢tçR’:æçlH<‰¶B:ææ<H2¦’âVâöÖöF÷&òFR#RFRÖ–çWFR§VævR6<H2çR'W’6W&–ârÀ¢öÖó¢|8ææ6V&<H2VâöÖöF÷&ó¢#RFRÖ–çWFRFRÇV7'RÂö’RFRW¬H2âp¢ÒÀ¢òò6Æ6P¢6Æ6UF—FÆS¢uR6Æ6RrÂ6Æ6TÆVFS¢tÆVvR6Æ6‰–’fW¦’6R’FR&V6—GVÆBÆf–V6&RÖFW&–RârÀ¢äf÷&Ó¢†â’ÓââÓÓÒòsf÷&×VÌH2r¢G¶çÒf÷&×VÆVÂäÖVÖó¢†â’ÓââÓÓÒòsÖVÖ÷&F÷"r¢G¶çÒÖVÖ÷&Fö&VÂåV—£¢†â’ÓââÓÓÒòs:æçG&V&&Rr¢G¶çÒ:æçG&V,H7&–ÂåF–ÖS¢†â’ÓââÓÓÒòs&WW"r¢G¶çÒ&WW&VÀ¢÷Väf÷&×VÆ3¢tf÷&×VÆRrÂ÷VäÖVÖ÷3¢tÖVÖ÷&F÷"rÂ÷VåV—£¢uV—¢rÂVä&FvS¢u&ö,H2ÆTârÀ¢òòf÷&×VÆP¢f÷&ÕF—FÆS¢tf÷&×VÆRrÂf÷&ÔÆVFS¢tf÷&×VÆVÆRFRÖFVÖF–<H2Âf—¦–<H2‰–’6†–Ö–RF–âv–Öæ¦—RâÖ&6†V¬H26R‰—F–’FV¦‰–’FV|H2Æff÷&—FR6Rg&V’<H2&W\‰¶’ârÀ¢¶æ÷vã¢|‰‡F—RrÂfc¢tff÷&—BrÂ6÷“¢t6÷–¬H2rÂ6÷–VC¢tf÷&×VÆf÷7B6÷–LH2rÂöæÇ”fc¢tFö"ff÷&—FRrÂöæÇ•Væ¶æ÷vã¢tFö"6RçR‰—F—RrÀ¢æõ&W7VÇG3¢tçRÒ|H76—Bæ–Ö–2â66†–Ö,H2f–ÇG&VÆR6R<H7WF&VârÀ¢òòÖVÖ÷&F÷ ¢ÖVÖõF—FÆS¢tÖVÖ÷&Fö&RrÂÖVÖôÆVFS¢tfœ‰–R67W'FRVçG'R&V6—GVÆ&S¢w&ÖF–<H2Âf–wW&’FR7F–ÂÂ÷'Föw&f–RÂ&VwVÆ’FRÖFVÖF–<H2Â‰—F––ì‰¶RÂ—7F÷&–RÂvVöw&f–R‰–’VævÆW¬H2ârÀ¢Ö&µ&VC¢tÖ&6†V¬H266—F—BrÂ&VC¢t6—F—BrÂ&–çC¢u&–çFV¬H2ÖVÖ÷&Fö&VÆRfœ‰–FRrÂF–ÖVÆ–æUF—FÆS¢u&WW&R7&öæöÆöv–6RrÀ¢òòvÆ÷6 ¢vÆ÷5F—FÆS¢tvÆ÷6"rÂvÆ÷4ÆVFS¢uFW&ÖVæ’FR&¬H2W‡Æ–6‰¶’R67W'BârÀ¢òò6'Föæ‰–P¢6&G5F—FÆS¢t6'Föæ‰–RrÂ6&G4ÆVFS¢u&WWF&R7‰¶–LH2:æâR7WF–“¢6R‰—F–’&Wf–æRÖ’&"Â6Rw&\‰–\‰—F’&Wf–æRÜ:&–æRârÀ¢FV6³¢u6†WBrÂFV6µG—S¢²ÆÃ¢uF÷BrÂc¢tf÷&×VÆRrÂÓ¢tÖVÖ÷&F÷"rÂC¢tFFR—7F÷&–6RrÂs¢tvÆ÷6"rÒÀ¢GVS¢vFR&WWFBrÂæWt3¢væö’rÂ&÷ƒ¢†"’Óâ7WF–G¶'ÖÀ¢7F'D6&G3¢|8ææ6WR6W6—VæVrÂg&öçC¢|8æçG&V&&RrÂ&6´f6S¢u,H77Vç2rÂfÆ—¢|8æçFö&6R…7‰¶—R’rÂ”¶æ÷s¢|‰‡F—RrÂv–ã¢tÖ’&WWBrÀ¢6&Döc¢†’Ââ’Óâ6'Föæ‰—VÂG¶—ÒF–âG¶çÖÂ6W76–öäFöæS¢u6W6—VæRFW&Ö–æLH2rÂ6W76–öå7FG3¢†²Â’ÓâG¶·Ò‰—F—WFR+rG¶ÒFR&WWFFÀ¢æô6&G3¢tçR’6'Föæ‰–RFR&WWFB7VÒ:æâ6W7B6†WBâ&Wf–æòÜ:&–æR6RÆVvRÇB6†WBârÀ¢6&G4†–çC¢u67W'LH7GW&“¢7‰¶—R(	B:æçFö&6RÂ(	BÖ’&WWBÂ"(	B‰—F—RârÀ¢òòV— ¢V—¥F—FÆS¢uV—¢rÂV—¤ÆVFS¢|8æçG&V,H7&’7Rf&–çFR‰–’W‡Æ–6‰¶–’â,H77Vç7W&–ÆR6RÖW7FV<H2FRf–V6&RFLH2ârÀ¢†÷tÖç“¢t<:'FR:æçG&V,H7&’rÂVW7F–öã¢†’Ââ’Óâ8æçG&V&&VG¶—ÒF–âG¶çÖÀ¢6÷'&V7C¢t6÷&V7BrÂw&öæs¢tw&\‰–—BârÂ&–v‡Ev3¢u,H77Vç7VÂ6÷&V7C¢rÂ66÷&S¢u66÷"rÂ&Wf–Ws¢t6RG&V'V–R&VÇVBrÀ¢ÆÅ&–v‡C¢uFöFR,H77Vç7W&–ÆR7VçB6÷&V7FRâ'&fòrÂæ÷DVæ÷Vvƒ¢tçR7VçBFW7GVÆR:æçG&V,H7&’VçG'Rf–ÇG&VÆRÆW6S²ÒföÆ÷6—BFöFR:æçG&V,H7&–ÆRF—7öæ–&–ÆRârÀ¢æõVW7F–öç3¢tçRW†—7LH2:æçG&V,H7&’VçG'R6V7LH26öÖ&–æ‰¶–RârÀ¢òò6–×VÆ&P¢6–ÕF—FÆS¢u6–×VÆ&RWfÇV&Ræ‰¶–öæÌH2rÂ6–ÔÆVFS¢tW†W&6œ‰¶–’:æâ7F–ÇVÂ&ö&VÆ÷"FRÆ6Æ6d””’Öâ66÷'VÂW7FR÷&–VçFF—b‰–’çR&W&W¦–çLH2òæ÷LH2öf–6–ÌH2ârÀ¢6–ÔÖC¢tÖFVÖF–<H2rÂ6–Õ&öÓ¢tÆ–Ö&&öÜ:&ìH2rÂGW&F–öã¢tGW&LH2rÂæõF–ÖW#¢tlH7,H27&öæöÖWG'RrÂÖ–çWFW3¢†Ò’ÓâG¶×ÒÖ–æÀ¢6–ÔÖDFW63¢s"—FVÖ’7Rf&–çFR…7V&–V7FVÆR(	4”’’²2&ö&ÆVÖR7R&W¦öÇf&R6ö×ÆWLH2…7V&–V7GVÂ””’’Âæ÷FFRGWH2Vâ&&VÒ÷&–VçFF—bârÀ¢6–Õ&öÔFW63¢uVâFW‡B67&—2VçG'RÆ–6‰¶–RÂb—FVÖ’FR:æì‰¶VÆVvW&R‰–’Æ–Ö,H2ÂÇW2ò6ö×VæW&R&wVÖVçFF—lH2WfÇVLH27RòÆ—7LH2FRfW&–f–6&RârÀ¢6–Õ7G'V7GW&S¢u7G'V7GW&&VÌH2ƒ"÷&RÂ27V&–V7FR’6RfW&–f–<H2R7V&–V7FRæVGRç&òârÀ¢6–Õ7F'C¢|8ææ6WR6–×VÆ&VrÂ6–Õ7V&Ö—C¢u&VLH2ÇV7&&VrÂ6–Ô6öæf—&Ó¢u6–wW"&VF’ÇV7&&VòçRfV’Ö’WFV66†–Ö&,H77Vç7W&–ÆRârÀ¢'D“¢u7V&–V7FVÆR(	4”’+r—FVÖ’7Rf&–çFRƒRf–V6&R’rÂ'D””“¢u7V&–V7GVÂ””’+r&ö&ÆVÖRƒf–V6&R’rÀ¢6öÇfTöåW#¢u&W¦öÇlH2RŒ:''F–RÂö’ÂGWH2&VF&RÂ6ö×,H27R‰––’F–â&&VÒ‰–’&–fV¬H26R’ö,‰¶–çWBârÀ¢w&—FT†W&S¢u67&–R6ö×VæW&V–6’rÂv÷&G3¢†â’ÓâG¶çÒ7Wf–çFVÂ&VEFW‡C¢t6—F\‰—FRFW‡GVÂrÂ'E&öÓ¢u7V&–V7GVÂ’+r:æì‰¶VÆVvW&VFW‡GVÇV’ƒRf–V6&R’rÂ'E&öÓ#¢u7V&–V7GVÂ”’+r6ö×VæW&Rƒc’rÀ¢6VÆd6†V6³¢tWFöWfÇV&RGWH2&&VÒ÷&–VçFF—brÂ7FWG3¢‡’ÓâG·ÒÂöf–6—S¢sF–âöf–6—RrÀ¢6–Õ&W7VÇC¢u&W§VÇFB÷&–VçFF—brÂW7Dw&FS¢tæ÷LH2W7F–ÖF—lH2rÂ6fU&W7VÇC¢u6ÇfV¬H2&W§VÇFGVÂrÂ6fVC¢u&W§VÇFB6ÇfB:æâ&öw&W2rÀ¢F–ÖUW¢uF–×VÂW‡—&BâÇV7&&Vf÷7B&VFLH2WFöÖBârÂF–ÖTÆVgC¢uF–×,H6Ö2rÀ¢öff–6–ÄÆ–æ³¢u7V&–V7FR‰–’&&VÖRöf–6–ÆRrÂ6–Ô†—7F÷'“¢u6–×VÌH7&–ÆRFÆRrÀ¢òòfö7W0¢fö7W5F—FÆS¢tfö7W2bÆârÂfö7W4ÆVFS¢uöÖöF÷&òVçG'R6W6—Væ’67W'FR‰–’VâÆâFRr¦–ÆRR6&R:æÂ&–fW¦’ârÀ¢fö7W3¢tfö7W2#^("rÂ6†÷'C¢uW¬H2^("rÂÆöæs¢uW¬H2^("rÂ7F'C¢u÷&æ\‰—FRrÂW6S¢uW¬H2rÂ&W6WC¢u&W6WFV¬H2rÂFöæS¢u6W6—VæRFW&Ö–æLH2–òW¬H2ârÂ'&V´FöæS¢uW¦2ÖFW&Ö–æBârÀ¢6W76–öç5FöF“¢u6W6—Væ’FRfö7W2:æâF÷FÂrÂÆåF—FÆS¢uÆâFRr¦–ÆRrÀ¢Æã¢²tÆVvR6Æ6‰–’lH2VâV—¢FRR:æçG&V,H7&’rÂt6—F\‰—FR"ÖVÖ÷&Fö&RÆ&öÜ:&ìH2rÂs#FR6'Föæ‰–R7Rf÷&×VÆRrÂuVâöÖöF÷&òÆÖFW&–6VÖ’6Æ,H2rÂuV—¢FR:æçG&V,H7&’ÆÖFVÖF–<H2rÂu&V6—F\‰—FRw&\‰–VÆ–ÆR‰–’vÆ÷6'VÂrÂtò6–×VÆ&R6ö×ÆWLH2‡&öÜ:&ìH26RÖFVÖF–<H2’uÒÀ¢F—3¢²uVæRFVÆVföçVÂFW'FR‰–’÷&\‰—FRæ÷F–f–<H7&–ÆRârÂu67&–R(	32ö&–V7F—fR:ææ–çFR<H2÷&æ\‰—F’7&öæöÖWG'VÂârÂu&WWLH2ÆÂ2‰–’r¦–ÆR(	B6'Föæ‰–VÆRf27FWFöÖBârÂtGWH2B6W6—Væ’Â–òW¬H2ÇVæ|H2âuÒÀ¢F“¢†â’Óâ¦—VG¶çÖÀ¢òò&öw&W0¢&öuF—FÆS¢u&öw&W7VÂLH7RrÂ&ötÆVFS¢u7FF—7F–6’6Æ7VÆFRÆö6ÂÂF–â7F—f—FFVF:æâ6V7LH2Æ–6‰¶–RârÀ¢7F—f—G“¢t7F—f—FFR:æâVÇF–ÖVÆR#‚FR¦–ÆRrÂ64'•7V&£¢t7W&F\‰¶RRÖFW&–’rÂ&FvW3¢t–ç6–væRrÂæõ6–×3¢tçR’:ææ<H26–×VÌH7&’6ÇfFRârÀ¢F„FFS¢tFFrÂF…G—S¢u&ö&rÂF…66÷&S¢uVæ7F¢rÂF„w&FS¢tæ÷LH2W7BârÀ¢FF¢tFFVÆRFÆRrÂW‡÷'D'Fã¢tW‡÷'LH2„¥4ôâ’rÂ–×÷'D'Fã¢t–×÷'LH2rÂ&W6WD'Fã¢|‰‡FW&vRF÷B&öw&W7VÂrÂ&W6WD6öæf—&Ó¢u6–wW"‰—FW&v’F÷B&öw&W7VÃò<‰¶—VæVçR6RöFRçVÆârÀ¢&W6WDFöæS¢u&öw&W7VÂf÷7B‰—FW'2rÂ–×÷'DFöæS¢u&öw&W2–×÷'FBrÂ–×÷'D&C¢tfœ‰––W'VÂçRW7FRVâW‡÷'BfÆ–Bv–Öæ¦—R76RrÂ–×÷'E7F÷&vS¢t–×÷'GVÂçRWGWBf’6ÇfBâ&öw&W7VÂ7W&VçB,H6Ö2æW66†–Ö&BârÀ¢&—f7“¢tæ–Ö–2çRÆV<H2F–â'&÷w6W'VÂLH7S¢çRW†—7LH26öçGW&’Â6W'fW"6RæÇ—F–72ârÀ¢&FvTæWs¢†"’Óâ–ç6–vìH2æ÷\H3¢G¶'ÖÂ‡v–ã¢†â’Óâ²G¶çÒ…ÂÆWfVÃ¢†â’Óâæ—fVÇVÂG¶çÖÀ¢òòFW7&P¢&÷WEF—FÆS¢tFW7&Rb7W'6RrÂ&÷WDÆVFS¢t6RW7FR‰–’6RçRW7FRv–Öæ¦—R76RârÀ¢&÷WEv†C¢t6RW7FRrÂ&÷WEv†D&öG“¢uVâ&ö–V7BW'6öæÂFRg&öçBÖVæC¢òÆ–6‰¶–RFR&V6—GVÆ&RVçG'R6Æ6VÆRn(	5d””’Â6öç7G'V—LH2R6VÆ‰–’&–æ6——R6$276R(	B6öì‰¶–çWB67W'BÂW†W&6œ‰¶—R–ÖVF–BÂ&öw&W26ÇfBÆö6ÂÂ66W6–&–Æ—FFR‰–’F÷\H2Æ–Ö&’ârÀ¢&÷WDæ÷C¢t6RçRW7FRrÂ&÷WDæ÷D&öG“¢tçRW7FRÖFW&–ÂF–F7F–2ÂçRW7FRf—¦BFRÖ–æ—7FW'VÂVGV6‰¶–V’‰–’çR:ææÆö7V–\‰—FRÖçVÆVÆRÂ&öw&Ö‰–6öÆ,H2Â&öfW6÷'VÂ6R7V&–V7FVÆRöf–6–ÆRâf÷&×VÆVÆR‰–’W‡Æ–6‰¶––ÆR7VçB&W§VÖFRVçG'R&V6—GVÆ&S²÷BW†—7F6–×Æ–f–<H7&’âF<H26WfF–fW,H2FR6R‰¶’:æçlH<‰¶BÆ6Æ<H2Â&R&–÷&—FFR&öfW6÷'VÂ‰–’ÖçVÇVÂârÀ¢&÷WD“¢t66W6–&–Æ—FFRrÂ&÷WD”&öG“¢tæf–v&R6ö×ÆWLH2F–âF7FGW,H2ÂÆ–æ²FR6ÇBÆ6öì‰¶–çWBÂFVÜH2ÇVÖ–æö<H2ü:æçGVæV6LH2Â6öçG&7B&–F–6BÂÜH7&—&VFW‡GVÇV’ÂföçBÆW†VæBÂ7‰¶–W&RÖ’Ö&RÂ&VGV6W&Væ–Ö‰¶––Æ÷"Â‰¶–çFRFRF–ævW&RFRÖ–æ–×VÒCB‚Âf÷&×VÆR6—F—FR6÷&V7BFR6—F—Fö&VÆRFRV7&â‰–’ÖöBFR7VÆ÷&’f÷,‰¶FRârÀ¢&÷WE&—f7“¢t6öæf–FVì‰¶–Æ—FFRrÂ&÷WE&—f7”&öG“¢u&öw&W7VÂ‰–’6WLH7&–ÆR6R6ÇfV¬H2Fö":æâÆö6Å7F÷&vRÂ:æâ'&÷w6W'VÂLH7RâÆRü‰¶’W‡÷'F6R‰—FW&vR÷&–<:&æBF–âv–æ&öw&W2ârÀ¢&÷WDÆ–æ·3¢u7W'6Röf–6–ÆRrÂ&÷WD6Ã¢tFFVÆRW†ÖVçVÇV’##r&÷f–âF–â6ÆVæF'VÂV&Æ–6B:æâ&ö–V7BFRÖ–æ—7FW'VÂVGV6‰¶–V’†VwW7B##b’‰–’÷Bf’ÖöF–f–6FRâfW&–f–<H2:æçF÷FFVVæVGRç&òârÀ¢&÷WDWF†÷#¢u&VÆ—¦BFRÆW&æG&VV+r&ö–V7BF–â÷'FöföÆ—VÂ6öFUVâÂ:æâFW§föÇF&Râp¢ÒÀ¢Vã¢°¢6¶—¢u6¶—Fò6öçFVçBrÂÖVçS¢tÖVçRrÂ6WGF–æw3¢t66W76–&–Æ—G’6WGF–æw2rÂ6WGF–æw5F—FÆS¢t66W76–&–Æ—G’6WGF–æw2rÂ6Æ÷6S¢t6Æ÷6RrÀ¢ædÆV&ã¢tÆV&ârÂæe&7F–6S¢u&7F—6RrÂæe–÷S¢u–÷RrÂædæ÷FS¢tæ÷Böff–6–ÂFV6†–ærÖFW&–ÂârÀ¢væbæ66s¢t†öÖRrÂvæbæ6Æ6Rs¢t'’w&FRrÂvæbæf÷&×VÆRs¢tf÷&×VÆ2rÂvæbæf÷&×VÆU6†÷'Bs¢tf÷&×VÆ2rÂvæbæÖVÖ÷&F÷"s¢u7GVG’6†VWG2rÂvæbæÖVÖõ6†÷'Bs¢u6†VWG2rÀ¢væbævÆ÷6"s¢tvÆ÷76'’rÂvæbæ6ö6‚s¢t’6ö6‚rÂvæbæ6'Föæ6Rs¢tfÆ6†6&G2rÂvæbçV—¢s¢uV—¢rÂvæbç6–×VÆ&Rs¢tÖö6²W†ÒrÂvæbæfö7W2s¢tfö7W2bÆârÂvæbç&öw&W2s¢u&öw&W72rÂvæbæFW7&Rs¢t&÷WBb6÷W&6W2rÂvæbæ&†—fs¢uW'2b66†VÖW2rÂvæbæ–ç7G'VÖVçFRs¢uFööÆ¶—BrÂvæbæfVVF&6²s¢uFW7F–ærbfVVF&6²rÂvæbæ6ö×&Rs¢t6ö×&RrÂvæbç—6s¢u•4+r&7F–6RrÀ¢vF—62çF—FÆRs¢t–×÷'FçC¢rÂvF—62æ&öG’s¢vâ–æFWVæFVçFÇ’ÖFR&Wf—6–öââ—B—2æ÷Böff–6–ÂFV6†–ærÖFW&–ÂæBFöW2æ÷B&WÆ6RFW‡F&öö·2ÂFV6†W'2÷"Ö–æ—7G'’öbVGV6F–öâFö7VÖVçG2ârÀ¢w6WBçF†VÖRs¢uF†VÖRrÂw6WBç7—7FVÒs¢u7—7FVÒrÂw6WBæÆ–v‡Bs¢tÆ–v‡BrÂw6WBæF&²s¢tF&²rÂw6WBç6—¦Rs¢uFW‡B6—¦RrÀ¢w6WBæföçBs¢tV7’×Fò×&VBföçB„ÆW†VæB’rÂw6WBç76–ærs¢uv–FW"Æ–æR76–ærrÂw6WBæ6öçG&7Bs¢t†–v‚6öçG&7BrÂw6WBæÖ÷F–öâs¢u&VGV6RÖ÷F–öârÂw6WBç6÷VæBs¢u6÷VæBv†VâöÖöF÷&òVæG2rÀ¢w6WBæ†–çBs¢u6WGF–æw2&R6fVB–âF†—2'&÷w6W"öæÇ’ârÀ¢F†VÖUFó¢²Æ–v‡C¢u7v—F6‚FòF&²F†VÖRrÂF&³¢u7v—F6‚FòÆ–v‡BF†VÖRrÒÀ¢w&FS¢tw&FRrÂw&FW3¢tw&FW2rÂÆÃ¢tÆÂrÂ7V&¦V7C¢u7V&¦V7BrÂ6V&6ƒ¢u6V&6‚rÂ&W7VÇG3¢†â’ÓââÓÓÒòs&W7VÇBr¢G¶çÒ&W7VÇG6À¢w&FTã¢†r’Óâw&FRG¶wÖÂw&FU6†÷'C¢†r’Óâ7G&–ær†r’À¢7F'C¢u7F'BrÂæW‡C¢tæW‡BrÂf–æ—6ƒ¢tf–æ—6‚rÂ&6³¢t&6²rÂ&WG'“¢tv–ârÂ&W6WC¢u&W6WBrÀ¢†öÖTW–V'&÷s¢u&Wf—6–öâ+rw&FW2^(	3‚+ræF–öæÂWfÇVF–öârÀ¢†öÖUF—FÆS¢tWfW'—F†–ær–÷RæVVBFòÆVÓç&VÖVÖ&W#ÂöVÓâÂ–âöæRæ÷FV&öö²ârÀ¢†öÖTÆVFS¢tf÷&×VÆ2Â7GVG’6†VWG2ÂfÆ6†6&G2ÂV—§¦W2v—F‚W‡ÆæF–öç2æBÖö6²W†×2–âF†R7G–ÆRöb&öÖæ–(	—2w&FRÓ‚æF–öæÂWfÇVF–öââ–÷W"&öw&W727F—2–â–÷W"'&÷w6W"æB7F'G2g&öÒ¦W&òârÀ¢–6´w&FS¢uv†–6‚w&FR&R–÷R–ãòrÂ–6´w&FT†–çC¢tf–ÇFW'27F'Bg&öÒF†R6†÷6Vâw&FS²–÷R6â6†ævR—Bç—F–ÖRârÀ¢6÷VçEF—FÆS¢uVçF–ÂF†RW†ÒrÂ6÷VçDG&gC¢uF†R##rw&FRÓ‚W†Ò6ÆVæF"—2G&gB„Ö–æ—7G'’ÂVwW7B##b’(	B6†V6²VGRç&òârÀ¢6÷VçE6–Ó¢vF—2FòF†RÖö6²W†ÒƒbÖ"##r’rÂ6÷VçE&öÓ¢vF—2FòF†R&öÖæ–âW"ƒ#"§Vâ##r’rÂ6÷VçDÖC¢vF—2FòF†RÖF‡2W"ƒ#B§Vâ##r’rÂ6÷VçE7C¢w76VBrÀ¢F$FVÖó¢u6†÷v66RFVÖòrÂF$Ö–æS¢t×’W‡W&–Væ6RrÀ¢FVÖôfÆs¢u4ÕÄRDDrÂFVÖõFW‡C¢uF†W6RfÇVW2&RÖFRWÂFò6†÷rv†BF†RÆöö·2Æ–¶RgFW"fWrvVV·2öbW6RârÀ¢Ö–æTV×G“¢tæò&öw&W72–WBâ7F'Bv—F‚6†÷'BV—¢÷"fWrfÆ6†6&G2(	BWfW'—F†–ærWFFW2WFöÖF–6ÆÇ’ârÀ¢7C¢²‡¢u…rÂ7G&V³¢vF’7G&V²rÂV—§¦W3¢wV—§¦W2rÂ63¢v67W&7’rÂ6&G3¢v6&G2&Wf–WvVBrÂ¶æ÷vã¢vf÷&×VÆ2¶æ÷vârÂÖVÖ÷3¢w6†VWG2&VBrÂöÖ÷3¢vfö7W26W76–öç2rÒÀ¢6ö6…F—FÆS¢tÆö6Â6ö6‚rÂ6ö6„æ÷FS¢u7VvvW7F–öç26ö×WFVB–â–÷W"'&÷w6W"g&öÒ–÷W"7F—f—G’âæòFF—26VçBç—v†W&RæBæò’—2W6VBârÀ¢V–6³¢uV–6²7F'BrÂV–6µV—£¢sR×VW7F–öâV—¢rÂV–6´6&G3¢u&Wf–WrfÆ6†6&G2rÂV–6´f÷&×VÆ3¢t×’w&F^(	—2f÷&×VÆ2rÂV–6µ6–Ó¢tÖö6²W†ÒrÀ¢7V&¦V7G5F—FÆS¢u7V&¦V7G2rÀ¢6ö6ƒ¢°¢7F'C¢u7F'Bv—F‚R×VW7F–öâV—¢f÷"–÷W"w&FR(	B–÷^(	–ÆÂ6VR&–v‡Bv’v†W&R–÷R7FæBârÀ¢GVS¢†â’Óâ–÷R†fRG¶çÒfÆ6†6&G2GVRFöF’â—BF¶W2fWrÖ–çWFW2æÀ¢vV³¢‡2Â’ÓâG·7Ò†2–÷W"Æ÷vW7B67W&7’‚G·ÒR’â&R×&VBF†R6†VWBÂF†Vâ&WF¶RV—¢æÀ¢7G&öæs¢‡2Â’Óâ–÷^(	—&RFö–ærvVÆÂ–âG·7Ò‚G·ÒR’âG'’VW7F–öç2g&öÒF†RæW‡Bw&FRæÀ¢6–Ó¢†â’ÓâG¶çÒF—2VçF–ÂF†RÖö6²W†ÒâöæRÖö6²vVV²—2vööB6RæÀ¢7G&V³¢u–÷R7GVF–VBFöF’â¶VWF†R7G&V²FöÖ÷'&÷rÂWfVâf÷"Ö–çWFW2ârÀ¢æ÷7G&V³¢u–÷R†fVî(	—B7GVF–VB–WBFöF’âöæR#RÖÖ–çWFRöÖöF÷&ò¶VW2F†R7G&V²Æ—fRârÀ¢öÖó¢uG'’öÖöF÷&ó¢#RÖ–çWFW2öbv÷&²ÂF†VâRÖÖ–çWFR'&V²âp¢ÒÀ¢6Æ6UF—FÆS¢t'’w&FRrÂ6Æ6TÆVFS¢u–6²w&FRæB6VRv†BFò&Wf—6R–âV6‚7V&¦V7BârÀ¢äf÷&Ó¢†â’ÓââÓÓÒòsf÷&×VÆr¢G¶çÒf÷&×VÆ6ÂäÖVÖó¢†â’ÓââÓÓÒòs6†VWBr¢G¶çÒ6†VWG6ÂåV—£¢†â’ÓââÓÓÒòsVW7F–öâr¢G¶çÒVW7F–öç6ÂåF–ÖS¢†â’ÓââÓÓÒòsFFRr¢G¶çÒFFW6À¢÷Väf÷&×VÆ3¢tf÷&×VÆ2rÂ÷VäÖVÖ÷3¢u6†VWG2rÂ÷VåV—£¢uV—¢rÂVä&FvS¢tW†Ò7V&¦V7BrÀ¢f÷&ÕF—FÆS¢tf÷&×VÆ2rÂf÷&ÔÆVFS¢tÖ–FFÆR×66†ööÂÖF‡2Â‡—6–72æB6†VÖ—7G'’f÷&×VÆ2âÖ&²v†B–÷RÇ&VG’¶æ÷ræB7F"v†B–÷RvçBFò&Wf–WrârÀ¢¶æ÷vã¢t’¶æ÷r—BrÂfc¢u7F"rÂ6÷“¢t6÷’rÂ6÷–VC¢tf÷&×VÆ6÷–VBrÂöæÇ”fc¢u7F'&VBöæÇ’rÂöæÇ•Væ¶æ÷vã¢töæÇ’v†B’Föî(	—B¶æ÷rrÀ¢æõ&W7VÇG3¢tæ÷F†–ærf÷VæBâ6†ævRF†Rf–ÇFW'2÷"F†R6V&6‚ârÀ¢ÖVÖõF—FÆS¢u7GVG’6†VWG2rÂÖVÖôÆVFS¢u6†÷'B&Wf—6–öâ6†VWG3¢w&ÖÖ"Âf–wW&W2öb7VV6‚Â7VÆÆ–ærÂÖF‡2'VÆW2Â66–Væ6RÂ†—7F÷'’ÂvVöw&‡’æBVævÆ—6‚ârÀ¢Ö&µ&VC¢tÖ&²2&VBrÂ&VC¢u&VBrÂ&–çC¢u&–çBF†R6†VWG26†÷vârÂF–ÖVÆ–æUF—FÆS¢t¶W’FFW2rÀ¢vÆ÷5F—FÆS¢tvÆ÷76'’rÂvÆ÷4ÆVFS¢t&6–2FW&×2W‡Æ–æVB'&–VfÇ’ârÀ¢6&G5F—FÆS¢tfÆ6†6&G2rÂ6&G4ÆVFS¢u76VB&WWF—F–öâ–âR&÷†W3¢v†B–÷R¶æ÷r6öÖW2&6²ÆW72ögFVâÂv†B–÷RÖ—726öÖW2&6²FöÖ÷'&÷rârÀ¢FV6³¢tFV6²rÂFV6µG—S¢²ÆÃ¢tWfW'—F†–ærrÂc¢tf÷&×VÆ2rÂÓ¢u6†VWG2rÂC¢t†—7F÷'’FFW2rÂs¢tvÆ÷76'’rÒÀ¢GVS¢vGVRrÂæWt3¢væWrrÂ&÷ƒ¢†"’Óâ&÷‚G¶'ÖÀ¢7F'D6&G3¢u7F'B6W76–öârÂg&öçC¢uVW7F–öârÂ&6´f6S¢tç7vW"rÂfÆ—¢tfÆ—…76R’rÂ”¶æ÷s¢t’¶æ÷r—BrÂv–ã¢tv–ârÀ¢6&Döc¢†’Ââ’Óâ6&BG¶—ÒöbG¶çÖÂ6W76–öäFöæS¢u6W76–öâ6ö×ÆWFRrÂ6W76–öå7FG3¢†²Â’ÓâG¶·Ò¶æ÷vâ+rG¶ÒFò&Wf–WvÀ¢æô6&G3¢tæò6&G2GVR&–v‡Bæ÷r–âF†—2FV6²â6öÖR&6²FöÖ÷'&÷r÷"–6²æ÷F†W"FV6²ârÀ¢6&G4†–çC¢u6†÷'F7WG3¢76R(	BfÆ—Â(	Bv–âÂ"(	B’¶æ÷r—BârÀ¢V—¥F—FÆS¢uV—¢rÂV—¤ÆVFS¢t×VÇF—ÆRÖ6†ö–6RVW7F–öç2v—F‚W‡ÆæF–öç2â÷F–öç2&R6‡VffÆVBWfW'’F–ÖRârÀ¢†÷tÖç“¢t†÷rÖç’VW7F–öç2rÂVW7F–öã¢†’Ââ’ÓâVW7F–öâG¶—ÒöbG¶çÖÀ¢6÷'&V7C¢t6÷'&V7BrÂw&öæs¢tæ÷BV—FRârÂ&–v‡Ev3¢t6÷'&V7Bç7vW#¢rÂ66÷&S¢u66÷&RrÂ&Wf–Ws¢uv†BFò&Wf—6—BrÀ¢ÆÅ&–v‡C¢tWfW'’ç7vW"—26÷'&V7BâvVÆÂFöæRrÂæ÷DVæ÷Vvƒ¢tæ÷BVæ÷Vv‚VW7F–öç2f÷"F†W6Rf–ÇFW'3²ÆÂf–Æ&ÆRVW7F–öç2vW&RW6VBârÀ¢æõVW7F–öç3¢uF†W&R&RæòVW7F–öç2f÷"F†—26öÖ&–æF–öâârÀ¢6–ÕF—FÆS¢tæF–öæÂWfÇVF–öâÖö6²W†ÒrÂ6–ÔÆVFS¢u&7F–6R–âF†R7G–ÆRöbF†Rw&FRÓ‚W'2âF†R66÷&R—2âW7F–ÖFRÂæ÷Bâöff–6–Âw&FRârÀ¢6–ÔÖC¢tÖF†VÖF–72rÂ6–Õ&öÓ¢u&öÖæ–ârÂGW&F–öã¢tGW&F–öârÂæõF–ÖW#¢tæòF–ÖW"rÂÖ–çWFW3¢†Ò’ÓâG¶×ÒÖ–æÀ¢6–ÔÖDFW63¢s"×VÇF—ÆRÖ6†ö–6R—FV×2…'G2(	4”’’²2gVÆÂ×6öÇWF–öâ&ö&ÆV×2…'B””’’Â66÷&VBv—F‚wV–FRÖ&¶–ær66†VÖRârÀ¢6–Õ&öÔFW63¢tFW‡Bw&—GFVâf÷"F†—2Âb&VF–æræBÆæwVvR—FV×2ÂÇW2â&wVÖVçFF—fRW76’76W76VBv—F‚6†V6¶Æ—7BârÀ¢6–Õ7G'V7GW&S¢tÇv—26†V6²F†R&VÂ7G'V7GW&Rƒ"†÷W'2Â2'G2’öâ7V&–V7FRæVGRç&òârÀ¢6–Õ7F'C¢u7F'BÖö6²W†ÒrÂ6–Õ7V&Ö—C¢t†æB–ârÂ6–Ô6öæf—&Ó¢t†æB–â–÷W"W#ò–÷Rvöî(	—B&R&ÆRFò6†ævR–÷W"ç7vW'2ârÀ¢'D“¢u'G2(	4”’+r×VÇF—ÆRÖ6†ö–6R—FV×2ƒRG2V6‚’rÂ'D””“¢u'B””’+r&ö&ÆV×2ƒG2V6‚’rÀ¢6öÇfTöåW#¢u6öÇfRöâW#²gFW"†æF–ær–âÂ6ö×&Rv—F‚F†RÖ&¶–ær7FW2æBF–6²v†B–÷Rv÷BârÀ¢w&—FT†W&S¢uw&—FR–÷W"W76’†W&RrÂv÷&G3¢†â’ÓâG¶çÒv÷&G6Â&VEFW‡C¢u&VBF†RFW‡BrÂ'E&öÓ¢u'B’+r&VF–ærƒRG2V6‚’rÂ'E&öÓ#¢u'B”’+rw&—F–ærƒcG2’rÀ¢6VÆd6†V6³¢u6VÆbÖ76W76ÖVçBv—F‚F†RwV–FRÖ&¶–ær66†VÖRrÂ7FWG3¢‡’ÓâG·ÒG6Âöf–6—S¢sG2v—fVâ'’FVfVÇBrÀ¢6–Õ&W7VÇC¢tW7F–ÖFVB&W7VÇBrÂW7Dw&FS¢tW7F–ÖFVBw&FRrÂ6fU&W7VÇC¢u6fR&W7VÇBrÂ6fVC¢u&W7VÇB6fVBFò&öw&W72rÀ¢F–ÖUW¢uF–ÖR—2Wâ–÷W"W"v2†æFVB–âWFöÖF–6ÆÇ’ârÂF–ÖTÆVgC¢uF–ÖRÆVgBrÀ¢öff–6–ÄÆ–æ³¢töff–6–ÂW'2æBÖ&¶–ær66†VÖW2rÂ6–Ô†—7F÷'“¢u–÷W"Öö6²W†×2rÀ¢fö7W5F—FÆS¢tfö7W2bÆârÂfö7W4ÆVFS¢töÖöF÷&òF–ÖW"f÷"6†÷'B6W76–öç2æBrÖF’Æâ–÷R6âF–6²öfbârÀ¢fö7W3¢tfö7W2#^("rÂ6†÷'C¢t'&V²^("rÂÆöæs¢t'&V²^("rÂ7F'C¢u7F'BrÂW6S¢uW6RrÂ&W6WC¢u&W6WBrÂFöæS¢u6W76–öâ6ö×ÆWFRF¶R'&V²ârÂ'&V´FöæS¢t'&V²—2÷fW"ârÀ¢6W76–öç5FöF“¢tfö7W26W76–öç2–âF÷FÂrÂÆåF—FÆS¢srÖF’ÆârÀ¢Æã¢²u–6²–÷W"w&FRæBF¶RR×VW7F–öâV—¢rÂu&VB"&öÖæ–â7GVG’6†VWG2rÂs#f÷&×VÆfÆ6†6&G2rÂtöæRöÖöF÷&òöâ–÷W"vV¶W7B7V&¦V7BrÂt×VW7F–öâÖF‡2V—¢rÂu&R×&VBÖ—7F¶W2æBF†RvÆ÷76'’rÂtgVÆÂÖö6²W†Ò…&öÖæ–â÷"ÖF‡2’uÒÀ¢F—3¢²uWB–÷W"†öæRv’æB6–ÆVæ6Ræ÷F–f–6F–öç2ârÂuw&—FR(	32vöÇ2&Vf÷&R7F'F–ærF†RF–ÖW"ârÂu&Wf–WrgFW"Â2æBrF—2(	BfÆ6†6&G2FòF†—2f÷"–÷RârÂtgFW"B6W76–öç2ÂF¶RÆöær'&V²âuÒÀ¢F“¢†â’ÓâF’G¶çÖÀ¢&öuF—FÆS¢u–÷W"&öw&W72rÂ&ötÆVFS¢u7FF—7F–726ö×WFVBÆö6ÆÇ’g&öÒ–÷W"7F—f—G’–âF†—2ârÀ¢7F—f—G“¢t7F—f—G’–âF†RÆ7B#‚F—2rÂ64'•7V&£¢t67W&7’'’7V&¦V7BrÂ&FvW3¢t&FvW2rÂæõ6–×3¢tæò6fVBÖö6²W†×2–WBârÀ¢F„FFS¢tFFRrÂF…G—S¢uW"rÂF…66÷&S¢uö–çG2rÂF„w&FS¢tW7Bâw&FRrÀ¢FF¢u–÷W"FFrÂW‡÷'D'Fã¢tW‡÷'B„¥4ôâ’rÂ–×÷'D'Fã¢t–×÷'BrÂ&W6WD'Fã¢tFVÆWFRÆÂ&öw&W72rÂ&W6WD6öæf—&Ó¢tFVÆWFRÆÂ&öw&W73òF†—26ææ÷B&RVæFöæRârÀ¢&W6WDFöæS¢u&öw&W72FVÆWFVBrÂ–×÷'DFöæS¢u&öw&W72–×÷'FVBrÂ–×÷'D&C¢uF†—2f–ÆR—6î(	—BfÆ–Bv–Öæ¦—R76RW‡÷'BrÂ–×÷'E7F÷&vS¢uF†R–×÷'B6÷VÆBæ÷B&R6fVBâ–÷W"7W'&VçB&öw&W72—2Væ6†ævVBârÀ¢&—f7“¢tæ÷F†–ærÆVfW2–÷W"'&÷w6W#¢F†W&R&Ræò66÷VçG2Â6W'fW'2÷"æÇ—F–72ârÀ¢&FvTæWs¢†"’ÓâæWr&FvS¢G¶'ÖÂ‡v–ã¢†â’Óâ²G¶çÒ…ÂÆWfVÃ¢†â’ÓâÆWfVÂG¶çÖÀ¢&÷WEF—FÆS¢t&÷WBb6÷W&6W2rÂ&÷WDÆVFS¢uv†Bv–Öæ¦—R76R—2ÂæBv†B—B—6î(	—BârÀ¢&÷WEv†C¢uv†B—B—2rÂ&÷WEv†D&öG“¢tW'6öæÂg&öçBÖVæB&ö¦V7C¢&Wf—6–öâf÷"w&FW2^(	3‚Â'V–ÇBöâF†R6ÖR&–æ6—ÆR2$276R(	B6†÷'B6öçFVçBÂ–ÖÖVF–FR&7F–6RÂ&öw&W726fVBÆö6ÆÇ’Â66W76–&–Æ—G’æBGvòÆæwVvW2ârÀ¢&÷WDæ÷C¢uv†B—B—6î(	—BrÂ&÷WDæ÷D&öG“¢t—B—2æ÷BFV6†–ærÖFW&–ÂÂ—B—2æ÷BVæF÷'6VB'’F†RÖ–æ—7G'’öbVGV6F–öâæB—BFöW2æ÷B&WÆ6RFW‡F&öö·2ÂF†R7W'&–7VÇVÒÂFV6†W'2÷"öff–6–ÂW†ÒW'2âf÷&×VÆ2æBW‡ÆæF–öç2&R7VÖÖ&–W2f÷"&Wf—6–öâæBÖ’6–×Æ–g’â–b6öÖWF†–ærF–ffW'2g&öÒv†B–÷RÆV&æVB–â6Æ72Â–÷W"FV6†W"æBFW‡F&öö²6öÖRf—'7BârÀ¢&÷WD“¢t66W76–&–Æ—G’rÂ&÷WD”&öG“¢tgVÆÂ¶W–&ö&Bæf–vF–öâÂ6¶—Æ–æ²ÂÆ–v‡BöF&²F†VÖRÂ†–v‚6öçG&7BÂÆ&vW"FW‡BÂÆW†VæBföçBÂv–FW"76–ærÂ&VGV6VBÖ÷F–öâÂF÷V6‚F&vWG2öbBÆV7BCB‚Âf÷&×VÆ2&VB6÷'&V7FÇ’'’67&VVâ&VFW'2æBf÷&6VBÖ6öÆ÷W'27W÷'BârÀ¢&÷WE&—f7“¢u&—f7’rÂ&÷WE&—f7”&öG“¢u&öw&W72æB6WGF–æw2&R6fVBöæÇ’–âÆö6Å7F÷&vR–â–÷W"'&÷w6W"â–÷R6âW‡÷'B÷"FVÆWFRF†VÒç—F–ÖRg&öÒF†R&öw&W72vRârÀ¢&÷WDÆ–æ·3¢töff–6–Â6÷W&6W2rÂ&÷WD6Ã¢uF†R##rW†ÒFFW26öÖRg&öÒF†RG&gB6ÆVæF"V&Æ—6†VB'’F†RÖ–æ—7G'’öbVGV6F–öâ„VwW7B##b’æBÖ’6†ævRâÇv—26†V6²VGRç&òârÀ¢&÷WDWF†÷#¢tÖFR'’ÆW&æG&VV+r6öFUVâ÷'FföÆ–ò&ö¦V7BÂ–âFWfVÆ÷ÖVçBâp¢Ğ¢Ó°¢6öç7BBÒ†²’Óâ²6öç7BbÒEµ4UBæÆæuÕ¶µÓ²&WGW&âbÓÓÒVæFVf–æVBò…Bç&õ¶µÒóò²’¢c²Ó°¢6öç7B–6²Ò†ò’Óâ†òbbG—VöbòÓÓÒvö&¦V7Brbbw&òr–âò’ò†õµ4UBæÆæuÒóòòç&ò’¢ó°¢6öç7B7V&¢Ò†–B’ÓâBå5T$¤T5E2æf–æB‚‡2’Óâ2æ–BÓÓÒ–B“°¢6öç7B7V&¤æÖRÒ†–B’Óâ–6²‡7V&¢†–B’“° ¢ò¢)H)H)H)H)H)H)H)H)H)H)H)H)Hf÷&×VÆS¢Ö–æ’×'6W")H)H)H)H)H)H)H)H)H)H)H)H)H¢ğ¢gVæ7F–öâ'6TÖF‚‡7&2’°¢ÆWB’Ò°¢gVæ7F–öâ6W‡7F÷2’°¢6öç7B÷WBÒµÓ²ÆWB'VbÒrs°¢6öç7BfÇW6‚Ò‚’Óâ²–b†'Vb’²÷WBçW6‚‡²³¢wG‡BrÂc¢'VbÒ“²'VbÒrs²ÒÓ°¢v†–ÆR†’Â7&2æÆVæwF‚’°¢6öç7B2Ò7&5¶•Ó°¢–b‡7F÷2æ–æ6ÇVFW2†2’’'&V³°¢–b†2ÓÓÒu²rbb7&2æ–æFW„öb‚wÂrÂ’’â’’°¢fÇW6‚‚“²’²³²6öç7BâÒ6W‚wÂr“²’²³²6öç7BBÒ6W‚uÒr“²’²³²÷WBçW6‚‡²³¢vg"rÂâÂBÒ“°¢ÒVÇ6R–b†2ÓÓÒ~(‰¢rbb7&5¶’²ÒÓÓÒw²r’°¢fÇW6‚‚“²’³Ò#²6öç7BbÒ6W‚wÒr“²’²³²÷WBçW6‚‡²³¢w7rÂbÒ“°¢ÒVÇ6R–b‚†2ÓÓÒuârÇÂ2ÓÓÒuòr’bb’²Â7&2æÆVæwF‚’°¢fÇW6‚‚“²’²³°¢ÆWBc°¢–b‡7&5¶•ÒÓÓÒw²r’²’²³²bÒ6W‚wÒr“²’²³²ÒVÇ6R²bÒ·²³¢wG‡BrÂc¢7&5¶•ÒÕÓ²’²³²Ğ¢÷WBçW6‚‡²³¢2ÓÓÒuâròw7Wr¢w7V"rÂbÒ“°¢ÒVÇ6R²'Vb³Ò3²’²³²Ğ¢Ğ¢fÇW6‚‚“²&WGW&â÷WC°¢Ğ¢&WGW&â6W‚rr“°¢Ğ¢6öç7B‡FÖÂÒ†æöFW2’ÓâæöFW2æÖ‚†â’Óâ°¢–b†âæ²ÓÓÒwG‡Br’&WGW&âW62†âçb“°¢–b†âæ²ÓÓÒvg"r’&WGW&âÇ7â6Æ73Ò&g"#ãÇ7â6Æ73Ò&g"Öâ#âG¶‡FÖÂ†âæâ—ÓÂ÷7ããÇ7â6Æ73Ò&g"ÖB#âG¶‡FÖÂ†âæB—ÓÂ÷7ããÂ÷7ãæ°¢–b†âæ²ÓÓÒw7r’&WGW&âÇ7â6Æ73Ò'7#î(‰£Ç7â6Æ73Ò'7Ö–â#âG¶‡FÖÂ†âçb—ÓÂ÷7ããÂ÷7ãæ°¢&WGW&âÂG¶âæ·ÓâG¶‡FÖÂ†âçb—ÓÂòG¶âæ·Óæ°¢Ò’æ¦ö–â‚rr“°¢6öç7B5T²Ò°¢&ó¢²|+rs¢r÷&’rÂ|9rs¢r÷&’rÂs¢s¢r:æ×H7,‰¶—BÆrÂsÒs¢rVvÂrÂ~(‰"s¢rÖ–çW2rÂr²s¢rÇW2rÂ|+s¢rÇW26RÖ–çW2rÂ|øs¢w’rÂ|éBs¢vFVÇFrÂ~(yBs¢rV6†—fÆVçB7RrÂ~(y"s¢r&W§VÇLH2rÂ~(˜‚s¢r&÷†–ÖF—brÂ|+s¢rw&FRrÂ~(šBs¢rÖ’Ö–26RVvÂ7RrÂ~(šRs¢rÖ’Ö&R6RVvÂ7RrÂsÂs¢rÖ’Ö–2FV<:'BrÂsâs¢rÖ’Ö&RFV<:'BrÂ~(šs¢rF–fW&—BFRrÂ|øs¢w&òrÂ|ërs¢vWFrÂ|ë²s¢vÆÖ&FrÂ~(Šs¢wVæv†—VÂrÂrRs¢rÆ7WLH2rÂ~(
+bs¢r‰–’‰–Ö’FW'FRrÒÀ¢Vã¢²|+rs¢rF–ÖW2rÂ|9rs¢rF–ÖW2rÂs¢s¢rF—f–FVB'’rÂsÒs¢rWVÇ2rÂ~(‰"s¢rÖ–çW2rÂr²s¢rÇW2rÂ|+s¢rÇW2÷"Ö–çW2rÂ|øs¢w’rÂ|éBs¢vFVÇFrÂ~(yBs¢r–bæBöæÇ’–brÂ~(y"s¢rv—fW2rÂ~(˜‚s¢r&÷†–ÖFVÇ’rÂ|+s¢rFVw&VW2rÂ~(šBs¢rBÖ÷7BrÂ~(šRs¢rBÆV7BrÂsÂs¢rÆW72F†ârÂsâs¢rw&VFW"F†ârÂ~(šs¢ræ÷BWVÂFòrÂ|øs¢w&†òrÂ|ërs¢vWFrÂ|ë²s¢vÆÖ&FrÂ~(Šs¢vævÆRrÂrRs¢rW&6VçBrÂ~(
+bs¢ræB6òöârĞ¢Ó°¢gVæ7F–öâ7V²†æöFW2ÂÆær’°¢6öç7BÒÒ5Tµ¶ÆæuÓ°¢6öç7BrÒÆærÓÓÒvVâp¢ò²÷fW#¢r÷fW"rÂ&ö÷C¢w7V&R&ö÷BöbrÂ7¢r7V&VBrÂ7V&S¢r7V&VBrÂ÷s¢rFòF†R÷vW"rÂ7V#¢r7V"rÂ÷Vã¢r‚rÂ6Æ÷6S¢r’rĞ¢¢²÷fW#¢r7W&rÂ&ö÷C¢w&F–6ÂF–ârÂ7¢rÆH7G&BrÂ7V&S¢rÆ7V"rÂ÷s¢rÆWFW&VrÂ7V#¢r–æF–6RrÂ÷Vã¢r‚rÂ6Æ÷6S¢r’rÓ°¢&WGW&âæöFW2æÖ‚†â’Óâ°¢–b†âæ²ÓÓÒwG‡Br’°¢6öç7B'2ÒÆærÓÓÒvVâròv'6öÇWFRfÇVRöbr¢vÖöGVÇVÂÇV’s°¢6öç7BbÒâçbç&WÆ6R‚õÇÂ…Çr•ÇÂörÂ…òÂ‚’ÓâG¶'7ÒG·‡Ò¢òò(	å$~(	ÒÂ(	äÆÆ(	ÒÂ(	æ.(	Ò7VçB&öGW6RFRÆ—FW&S¢ÆR6—F–Ò6W&BÂçR6RVâ7Wl:&ç@¢ç&WÆ6R‚õ´Õ¦×¬øÒ²örÂ‡r’Óâ‡ræÆVæwF‚ÃÒRbbrÓÒurbb‚õ´Õ¬øÕ´Õ¦×¬ø×Å¶×¬øÕ´Õ¬øÒòçFW7B‡r’ÇÂ²v"rÂv2rÂv‚rÂv&2rÂvÆ‚rÂtÆÂuÒæ–æ6ÇVFW2‡r’’’òrç7Æ—B‚rr’æ¦ö–â‚rr’¢r“°¢&WGW&â²ââçeÒæÖ‚†2’ÓâÕ¶5Òóò2’æ¦ö–â‚rr“°¢Ğ¢–b†âæ²ÓÓÒvg"r’&WGW&âræ÷Vâ²7V²†âæâÂÆær’²ræ÷fW"²7V²†âæBÂÆær’²ræ6Æ÷6S°¢–b†âæ²ÓÓÒw7r’&WGW&ârç&ö÷B²ræ÷Vâ²7V²†âçbÂÆær’²ræ6Æ÷6S°¢–b†âæ²ÓÓÒw7Wr’²6öç7B2Ò7V²†âçbÂÆær’çG&–Ò‚“²&WGW&â‡2ÓÓÒs"ròrç7¢2ÓÓÒs2ròræ7V&R¢rç÷r²2’²rs²Ğ¢&WGW&ârç7V"²7V²†âçbÂÆær’²rs°¢Ò’æ¦ö–â‚rr’ç&WÆ6R‚õÇ2²örÂrr’çG&–Ò‚“°¢Ğ¢6öç7BÖF„66†RÒæWrÖ‚“°¢gVæ7F–öâ&VæFW$ÖF‚‡7&2Â6Ç2ÒvbÖÖF‚r’°¢–b‚ÖF„66†Ræ†2‡7&2’’ÖF„66†Rç6WB‡7&2Â'6TÖF‚‡7&2’“°¢6öç7BæöFW2ÒÖF„66†RævWB‡7&2“°¢&WGW&âÇ7â6Æ73Ò"G¶6Ç7Ò#ãÇ7â&–Ö†–FFVãÒ'G'VR#âG¶‡FÖÂ†æöFW2—ÓÂ÷7ããÇ7â6Æ73Ò'7"#âG¶W62‡7V²†æöFW2Â4UBæÆær’—ÓÂ÷7ããÂ÷7ãæ°¢Ğ¢6öç7BÆ–äÖF‚Ò‡7&2’Óâ7&2ç&WÆ6R‚õÅ²…µçÅÅÕÒ¢•ÇÂ…µåÅÕÒ¢•ÅÒörÂr‚C’ò‚C"’r’ç&WÆ6R‚ş(‰¥Ç²…µçÕÒ¢•ÇÒörÂ~(‰¢‚C’r’ç&WÆ6R‚õÅåÇ²…µçÕÒ¢•ÇÒörÂuâ‚C’r’ç&WÆ6R‚õõÇ²…µçÕÒ¢•ÇÒörÂuòCr“° ¢ò¢)H)H)H)H)H)H)H)H)H)H)H)H)HWF–Â)H)H)H)H)H)H)H)H)H)H)H)H)H¢ğ¢6öç7BFöF’Ò‚’Óâ²6öç7BBÒæWrFFR‚“²&WGW&âG¶BævWDgVÆÅ–V"‚—ÒÒGµ7G&–ær†BævWDÖöçF‚‚’²’çE7F'Bƒ"Âsr—ÒÒGµ7G&–ær†BævWDFFR‚’’çE7F'Bƒ"Âsr—Ö²Ó°¢6öç7BF”¶W’Ò†B’ÓâG¶BævWDgVÆÅ–V"‚—ÒÒGµ7G&–ær†BævWDÖöçF‚‚’²’çE7F'Bƒ"Âsr—ÒÒGµ7G&–ær†BævWDFFR‚’’çE7F'Bƒ"Âsr—Ö°¢6öç7B6‡VffÆRÒ†’Óâ²Òç6Æ–6R‚“²f÷"†ÆWB’ÒæÆVæwF‚Ò²’â²’ÒÒ’²6öç7B¢ÒÖF‚æfÆö÷"„ÖF‚ç&æFöÒ‚’¢†’²’“²¶¶•ÒÂ¶¥ÕÒÒ¶¶¥ÒÂ¶•ÕÓ²Ò&WGW&â²Ó°¢6öç7B–äw&FRÒ†rÂ6VÂ’Óâ6VÂÇÂ„'&’æ—4'&’†r’òræ–æ6ÇVFW2‡6VÂ’¢rÓÓÒ6VÂ“°¢6öç7Bæ÷&ÒÒ‡2’Óâ7G&–ær‡2’çFôÆö6ÆTÆ÷vW$66R‚’ææ÷&ÖÆ—¦R‚tädBr’ç&WÆ6R‚õ¼ÈÜÚõÒörÂrr“°¢6öç7B&W÷'EVW7F–öåW&ÂÒ‡’Óâ²6öç7BÒæWrU$Å6V&6…&×2‡²—FVÓ¢G·ç7ÒÒG·æwÖÂ7V&¦V7C¢ç2Âw&FS¢ærÂ¢–6²‡ç’Ò“²&WGW&â6fVVF&6³òG·Ö²Ó°¢gVæ7F–öâ6ö×WFVæ7’‡’°¢–b‡çF÷–2bbG—VöbçF÷–2ÓÓÒw7G&–ærr’&WGW&â²–C¢çF÷–2Â&ó¢çF÷–4Æ&VÂÇÂçF÷–2ÂVã¢çF÷–4Æ&VÄVâÇÂçF÷–4Æ&VÂÇÂçF÷–2Ó°¢6öç7BFW‡BÒæ÷&Ò†G·–6²‡ç—ÒG·–6²‡ç‚—Ö“°¢6öç7B†2Ò‚ââçFW&×2’ÓâFW&×2ç6öÖR‚‡r’ÓâFW‡Bæ–æ6ÇVFW2†æ÷&Ò‡r’’“°¢6öç7BF÷–72Ò°¢ÖC¢°¢²vçVÖ&W"rÂtçVÖW&R‰–’÷W&‰¶–’rÂtçVÖ&W'2æB÷W&F–öç2rÂ²w&W7GVÂrÂvF—f–FRrÂvF—f—¢rÂwWFW&RrÂvW‡öæVçBrÂv×VÇF—ÇRrÂvg&2rÂw&ö6VçBrÂvÖVârÂw&VÖ–æFW"rÂw÷vW"uÕÒÀ¢²vÆvV'&rÂtÆvV',H2‰–’V7V‰¶–’rÂtÆvV'&æBWVF–öç2rÂ²vV7VF’rÂvV7V‰²rÂvæV7Væ÷62rÂw‚W7FRrÂw&÷÷'BrÂw&÷'BrÂvWVF–öârÂwVæ¶æ÷vâuÕÒÀ¢²vvVöÖWG'’rÂtvVöÖWG&–R‰–’ÜH77W&&RrÂtvVöÖWG'’æBÖV7W&VÖVçBrÂ²wVæv†’rÂwG&—Væv†’rÂvG&WGVæv†’rÂv&–RrÂwW&–ÖWG'RrÂv6W&2rÂv6ÒrÂv6Ü+"rÂvvVöÖWG"rÂvævÆRrÂwG&–ævÆRrÂv&VrÂwW&–ÖWFW"uÕÒÀ¢²vFFrÂtFFR‰–’&ö&&–Æ—FFRrÂtFFæB&ö&&–Æ—G’rÂ²w&ö&&–ÂrÂvÖVF–&—FÖWF–2rÂvw&f–2rÂvF–w&ÒrÂvfW&vRrÂvF–RrÂw¦"uÕĞ¢ÒÀ¢&öÓ¢°¢²w&VF–ærrÂ|8æì‰¶VÆVvW&VFW‡GVÇV’rÂu&VF–ær6ö×&V†Vç6–öârÂ²wFW‡GVÂrÂvg&vÖVçBrÂvWF÷'VÂrÂv–FVV&–æ6—ÂrÂwW'6öæ¢rÂv6—FBrÂwFW‡BrÂv6†&7FW"rÂvÖ–â–FVuÕÒÀ¢²vw&ÖÖ"rÂtw&ÖF–<H2rÂtw&ÖÖ"rÂ²w7V'7FçF—brÂwfW&"rÂvF¦V7F—brÂw&öçVÖRrÂw&VF–6BrÂw7V&–V7GVÂrÂw'FRFRf÷&&—&RrÂvw&ÖF–2rÂvæ÷VârÂwfW&"rÂvF¦V7F—fRuÕÒÀ¢²ww&—F–ærrÂt6ö×Væ–6&R‰–’&VF7F&RrÂuw&—F–æræB6öÖ×Væ–6F–öârÂ²w67&–RrÂvf÷&×VÆV¢rÂvVçVì‰²rÂw&÷÷¦’rÂwVæ7GVrÂv÷'Föw&brÂww&—FRrÂw6VçFVæ6RuÕĞ¢ÒÀ¢f—£¢µ²w‡—6–72rÂtfVæöÖVæR‰–’ÜH7&–Ö’f—¦–6RrÂu‡—6–6ÂVçF—F–W2æB†VæöÖVærÂ²wf—FW¢rÂvF—7FârÂwF–×rÂvf÷,‰²rÂvVæW&v–RrÂvVÆV7G&–2rÂwFV×W&GW"rÂvFVç6—G’rÂw7VVBrÂvf÷&6RuÕÕÒÀ¢6†“¢µ²v6†VÖ—7G'’rÂu7V'7Fì‰¶R‰–’&V<‰¶–’rÂu7V'7Fæ6W2æB&V7F–öç2rÂ²vFöÒrÂvÖöÆV7VÂrÂvVÆVÖVçBrÂw7V'7FârÂw&V<‰²rÂw6öÇWF–öârÂv6†VÖ–6ÂuÕÕÒÀ¢&–ó¢µ²v&–öÆöw’rÂt÷&væ—6ÖR‰–’f–‰¼H2rÂt÷&væ—6×2æBÆ–fRrÂ²v6VÇVÂrÂwÆçBrÂvæ–ÖÂrÂv÷&væ—6ÒrÂw6—7FVÒrÂvV6÷6—7FVÒrÂv&öG’rÂw†÷F÷7–çF†W6—2uÕÕÒÀ¢—7C¢µ²v†—7F÷'’rÂt7&öæöÆöv–R‰–’WfVæ–ÖVçFRrÂt6‡&öæöÆöw’æBWfVçG2rÂ²vçVÂrÂw6V6öÂrÂvFöÖârÂw,H7¦&ö’rÂvWfVæ–ÖVçBrÂv6W¢rÂv6öç6V6–ârÂv6VçGW'’rÂvWfVçBuÕÕÒÀ¢vVó¢µ²vvVöw&‡’rÂtŒH7,‰¶’‰–’vVöw&f–RrÂtÖ2æBvVöw&‡’rÂ²v†'BrÂv6öçF–æVçBrÂv6Æ–ÒrÂw÷VÆrÂw&VÆ–VbrÂw,:'RrÂvö6VârÂvÖrÂv6÷VçG'’uÕÕÒÀ¢Væs¢µ²vVævÆ—6‚rÂufö6'VÆ"‰–’w&ÖF–<H2rÂufö6'VÆ'’æBw&ÖÖ"rÂ²v6†ö÷6RrÂv6ö×ÆWFRrÂwfW&"rÂwFVç6RrÂwv÷&BrÂw6VçFVæ6RrÂwfö6'VÆ"rÂvw&ÖÖ"uÕÕĞ¢Ó°¢6öç7B÷F–öç2ÒF÷–75·ç5ÒÇÂµÓ°¢6öç7BÖF6‚Ò÷F–öç2æf–æB‚…²ÂÂÂFW&×5Ò’Óâ†2‚ââçFW&×2’“°¢6öç7BfÆÆ&6²Ò²ÖC¢²vÖF‚ÖÖ—†VBrÂt6Æ7VÂ‰–’&‰¶–öæÖVçBrÂt6Æ7VÆF–öâæB&V6öæ–æruÒÂ&öÓ¢²w&öÖæ–âÖÖ—†VBrÂtÆ–Ö,H2‰–’FW‡BrÂtÆæwVvRæBFW‡BuÒÂf—£¢²w‡—6–72ÖÖ—†VBrÂtæü‰¶—Væ’FRf—¦–<H2rÂu‡—6–726öæ6WG2uÒÂ6†“¢²v6†VÖ—7G'’ÖÖ—†VBrÂtæü‰¶—Væ’FR6†–Ö–RrÂt6†VÖ—7G'’6öæ6WG2uÒÂ&–ó¢²v&–öÆöw’ÖÖ—†VBrÂtæü‰¶—Væ’FR&–öÆöv–RrÂt&–öÆöw’6öæ6WG2uÒÂ—7C¢²v†—7F÷'’ÖÖ—†VBrÂtæü‰¶—Væ’FR—7F÷&–RrÂt†—7F÷'’6öæ6WG2uÒÂvVó¢²vvVöw&‡’ÖÖ—†VBrÂtæü‰¶—Væ’FRvVöw&f–RrÂtvVöw&‡’6öæ6WG2uÒÂVæs¢²vVævÆ—6‚ÖÖ—†VBrÂtÆ–Ö&VævÆW¬H2rÂtVævÆ—6‚ÆæwVvRuÒÕ·ç5ÒÇÂ²vvVæW&ÂrÂt6ö×WFVì‰¼H2vVæW&ÌH2rÂtvVæW&Â6¶–ÆÇ2uÓ°¢&WGW&âÖF6‚ò²–C¢ÖF6…³ÒÂ&ó¢ÖF6…³ÒÂVã¢ÖF6…³%ÒÒ¢²–C¢fÆÆ&6µ³ÒÂ&ó¢fÆÆ&6µ³ÒÂVã¢fÆÆ&6µ³%ÒÓ°¢Ğ¢6öç7Bf×DFFRÒ†—6ò’ÓâæWrFFR†—6ò’çFôÆö6ÆTFFU7G&–ær…4UBæÆærÓÓÒvVâròvVâÔt"r¢w&òÕ$òrÂ²F“¢vçVÖW&–2rÂÖöçFƒ¢w6†÷'BrÂ–V#¢vçVÖW&–2rÒ“°¢6öç7BF—5VçF–ÂÒ†—6ò’ÓâÖF‚æ6V–Â‚†æWrFFR†—6ò²uC“££r’ÒæWrFFR‚’’òƒcC“° ¢gVæ7F–öâ7G&V²‚’°¢ÆWBâÒ²6öç7BBÒæWrFFR‚“°¢–b‚2æF—5¶F”¶W’†B•Ò’Bç6WDFFR†BævWDFFR‚’Ò“°¢v†–ÆR…2æF—5¶F”¶W’†B•Ò’²â²³²Bç6WDFFR†BævWDFFR‚’Ò“²Ğ¢&WGW&âã°¢Ğ¢6öç7BÆWfVÂÒ‚’Óâ²ÖF‚æfÆö÷"…2ç‡òS“°¢6öç7B67W&7’Ò‡2’Óâ²6öç7BÒ2ò2çV—¥·5Ò¢ö&¦V7BçfÇVW2…2çV—¢’ç&VGV6R‚†Â"’Óâ‡²ö³¢æö²²"æö²Â&C¢æ&B²"æ&BÒ’Â²ö³¢Â&C¢Ò“²–b‚’&WGW&âçVÆÃ²6öç7BâÒæö²²æ&C²&WGW&ââòÖF‚ç&÷VæB‡æö²òâ¢’¢çVÆÃ²Ó°¢6öç7BF–ff–7VÇG’Ò‡’Óâ°¢6öç7BG‡BÒæ÷&Ò†G·–6²‡ç—ÒG·–6²‡ç‚—Ö“°¢–b‚öV7VGÆV7V‰·Ç&F–6ÇÇ&÷÷'GÇ—&Ö–GÆæWWG&Æ—§ÆV6†–Æ–'&GÆ&wVÖVçFF—gÇ66ÆWÇ66%¶H5ÒòçFW7B‡G‡B’’&WGW&âv6†ÆÆVævRs°¢–b‡ærãÒrÇÂ÷&ö6VçGÆg&7GÇG&—Væv†—ÆVæW&v–ÆFVç6—FGÆf÷F÷6–çFW§Ç&VF–6GÇ&W6VçB6–×ÆRòçFW7B‡G‡B’’&WGW&âvÖVF—VÒs°¢&WGW&âvV7’s°¢Ó°¢6öç7BF–fdÆ&VÂÒ†¶W’’Óâ‡²V7“¢G‚‚tÖ’66W6–&–ÂrÂtvVçFÆR7F'Br’ÂÖVF—VÓ¢G‚‚tæ—fVÂÖVF—RrÂtÖVF—VÒr’Â6†ÆÆVævS¢G‚‚u&÷fö6&RrÂt6†ÆÆVævRr’Õ¶¶W•Ò“°¢6öç7B6’Ò‡FW‡B’Óâ²–b‚‚w7VV6…7–çF†W6—2r–âv–æF÷r’’²Fö7B‡G‚‚t6—F—&Vfö6ÌH2çRW7FRF—7öæ–&–ÌH2:æâ6W7B'&÷w6W"ârÂu7VV6‚—2Væf–Æ&ÆR–âF†—2'&÷w6W"âr’“²&WGW&ã²Ò7VV6…7–çF†W6—2æ6æ6VÂ‚“²6öç7BRÒæWr7VV6…7–çF†W6—5WGFW&æ6R…7G&–ær‡FW‡B’“²RæÆærÒ4UBæÆærÓÓÒvVâròvVâÔt"r¢w&òÕ$òs²7VV6…7–çF†W6—2ç7V²‡R“²Ó°¢6öç7BwV–FRÒ²VÃ¢çVÆÂÂöã¢fÇ6RÓ°¢gVæ7F–öâ6WE&VF–ætwV–FR†öâ’²wV–FRæöâÒöã²–b†öâbbwV–FRæVÂ’²wV–FRæVÂÒFö7VÖVçBæ7&VFTVÆVÖVçB‚vF—br“²wV–FRæVÂæ6Æ74æÖRÒw&VBÖwV–FRs²wV–FRæVÂç6WDGG&–'WFR‚v&–Ö†–FFVârÂwG'VRr“²Fö7VÖVçBæ&öG’æVæB†wV–FRæVÂ“²Ò–b†wV–FRæVÂ’wV–FRæVÂæ†–FFVâÒöã²B‚r7&VF–ærÖwV–FRÖ'Fâr“òç6WDGG&–'WFR‚v&–×&W76VBrÂ7G&–ær†öâ’“²Ğ¢gVæ7F–öâ&–çEv÷&·6†VWB‡VW7F–öç2’°¢6öç7BrÒv–æF÷ræ÷Vâ‚rrÂuö&Ææ²r“²–b‚r’²Fö7B‡G‚‚uW&Ö—FRfW&V7G&FR&–çF&RVçG'R7&Vfœ‰–ârÂtÆÆ÷rF†R&–çBv–æF÷rFò7&VFRF†Rv÷&·6†VWBâr’“²&WGW&ã²Ğ¢6öç7BÆærÒ4UBæÆæs²6öç7BF—FÆRÒG‚‚tfœ‰œH2FRÇV7'R+rv–Öæ¦—R76RrÂu&7F–6Rv÷&·6†VWB+rv–Öæ¦—R76Rr“°¢ræFö7VÖVçBçw&—FR†ÂFö7G—R‡FÖÃãÆ‡FÖÂÆæsÒ"G¶ÆæwÒ#ãÆÖWF6†'6WCÒ'WFbÓ‚#ãÇF—FÆSâG·F—FÆWÓÂ÷F—FÆSãÇ7G–ÆSæ&öG—¶föçC£g‚7—7FVÒ×V“¶Ö‚×v–GFƒ£ƒSƒ¶Ö&v–ã£'&VÒWFó¶6öÆ÷#¢3Öƒ¶föçB×6—¦S£#G‡ÖÆ—¶Ö&v–ã£ã'&VÒ¶'&V²Ö–ç6–FS¦fö–GÒæç7vW'¶Ö&v–ã¢ã7&VÒã7&VÒã'&V×Òç76W¶†V–v‡C£"ãg&VÓ¶&÷&FW"Ö&÷GFöÓ£‚6öÆ–B6&&#¶Ö&v–ã¢ãW&VÒÓÂ÷7G–ÆSãÆƒâG·F—FÆWÓÂöƒãÇâG·G‚‚tçVÖS¢õõõõõõõõõõõõõõõõõõõòFF¢õõõõõõõõõòrÂtæÖS¢õõõõõõõõõõõõõõõõõõõòFFS¢õõõõõõõõõòr—ÓÂ÷ãÆöÃâG·VW7F–öç2æÖ‡ÓâÆÆ“ãÇ7G&öæsâG¶W62‡–6²‡ç’—ÓÂ÷7G&öæsâG·æòæÖ‚†òÆ’“ÓæÆF—b6Æ73Ò&ç7vW"#âG²t$4Bu¶•×ÒâG¶W62‡–6²†ò’—ÓÂöF—cæ’æ¦ö–â‚rr—ÓÆF—b6Æ73Ò'76R#ãÂöF—cãÂöÆ“æ’æ¦ö–â‚rr—ÓÂööÃãÇ67&—Cçv–æF÷ræöæÆöCÒ‚“Óçv–æF÷rç&–çB‚“ÅÂ÷67&—CãÂö‡FÖÃæ“²ræFö7VÖVçBæ6Æ÷6R‚“°¢Ğ¢¼ó~í¢G§²ÚîÆ­yÓÓâ°¢6öç7B2ÒRçF&vWBæ6Æ÷6W7B‚u¶FF×ÆåÒr“²–b‚2’&WGW&ã°¢6öç7B’Ò2æFF6WBçÆã²–b†2æ6†V6¶VB’²2çÆå¶•ÒÒFöF’‚“²v–âƒR“²ÒVÇ6R²FVÆWFR2çÆå¶•Ó²6fR‚“²Ğ¢Ò“°¢Ó° ¢ò¢)H)H)H)H)H)H)H)H)H)H)H)H)H&öw&W2)H)H)H)H)H)H)H)H)H)H)H)H)H¢ğ¢d”Uu2ç&öw&W2Ò†VÂ’Óâ°¢6öç7BF—2ÒµÓ²6öç7BBÒæWrFFR‚“²Bç6WDFFR†BævWDFFR‚’Ò#r“°¢f÷"†ÆWB’Ò²’Â#ƒ²’²²’²6öç7B²ÒF”¶W’†B“²6öç7BbÒ2æF—5¶µÒÇÂ²F—2çW6‚…¶²ÂeÒ“²Bç6WDFFR†BævWDFFR‚’²“²Ğ¢6öç7BÇfÂÒ‡b’ÓâbÓÓÒò¢bÂ#ò¢bÂcò"¢3°¢6öç7B7BÒB‚w7Br“°¢VÂæ–ææW$…DÔÂÒ†VB‚~)k"rÂB‚w&öuF—FÆRr’ÂB‚w&ötÆVFRr’’² ¢ÆF—b6Æ73Ò&w&–BsB#à¢Gµµ²w‡rÂ2ç‡ÒÂ²w7G&V²rÂ7G&V²‚•ÒÂ²wV—§¦W2rÂ2çV—§¦W5ÒÂ²v62rÂ67W&7’‚’ÓÒçVÆÂò~(	Br¢67W&7’‚’²rRuÒÂ²v6&G2rÂ2ç&Wf–Ww5ÒÂ²v¶æ÷vârÂö&¦V7Bæ¶W—2…2æ¶æ÷vâ’æÆVæwF…ÒÂ²vÖVÖ÷2rÂö&¦V7Bæ¶W—2…2æÖVÖõ&VB’æÆVæwF…ÒÂ²wöÖ÷2rÂ2çöÖ÷5ÕĞ¢æÖ‚…¶²ÂåÒ’ÓâÆF—b6Æ73Ò'7FB#ãÆ#âG¶çÓÂö#ãÇ7ãâG·7E¶µ×ÓÂ÷7ããÂöF—cæ’æ¦ö–â‚rr—Ğ¢ÂöF—cà¢Ç6Æ73Ò'6ÖÆÂ×WFVB"7G–ÆSÒ&Ö&v–â×F÷¢ãW&VÒ#âG·B‚vÆWfVÂr’†ÆWfVÂ‚’—ÓÂ÷à¢G·&VæFW$ÆÄÖ7FW'’‚—Ğ¢Ç6V7F–öâ6Æ73Ò&6&B7F6²#ãÆƒ#âG·G‚‚tWföÇ\‰¶–F–væ÷7F–6VÆ÷"rÂtF–væ÷7F–2G&VæBr—ÓÂöƒ#à¢G²…2æF–væ÷7F–72ÇÂµÒ’æÆVæwF‚òÆF—b6Æ73Ò'G&VæBÖÆ–æR"&öÆSÒ&–Ör"&–ÖÆ&VÃÒ"G·G‚‚tWföÇ\‰¶–VÇF–ÖVÆ÷"F–væ÷7F–6RrÂuG&VæBöb&V6VçBF–væ÷7F–72r—Ò#âGµ2æF–væ÷7F–72ç6Æ–6R‚Ó‚’æÖ†CÓæÆ’7G–ÆSÒ&†V–v‡C¢G´ÖF‚æÖ‚ƒ‚ÄÖF‚ç&÷VæB†Bæ6÷'&V7BôÖF‚æÖ‚ƒÆBçF÷FÂ’£’—ÒS²#ãÇ7ãâG´ÖF‚ç&÷VæB†Bæ6÷'&V7BôÖF‚æÖ‚ƒÆBçF÷FÂ’£—ÒSÂ÷7ããÂö“æ’æ¦ö–â‚rr—ÓÂöF—cãÇ6Æ73Ò'6ÖÆÂ×WFVB#âGµ2æF–væ÷7F–72ç6Æ–6R‚Ó‚’æÖ†CÓæG¶f×DFFR†BæFFR—Ò+rG¶Bæ6÷'&V7GÒòG¶BçF÷FÇÖ’æ¦ö–â‚~8r—ÓÂ÷æ¢Ç6Æ73Ò&×WFVB#âG·G‚‚tGWH2F÷\H2F–væ÷7F–6RÂfV’WFV6ö×&&W§VÇFFVÆR:æâF–×ârÂtgFW"GvòF–væ÷7F–72Â–÷R6â6ö×&R&W7VÇG2÷fW"F–ÖRâr—ÓÂ÷æÓÂ÷6V7F–öãà¢Ç6V7F–öâ6Æ73Ò&6&B#ãÆƒ#âG·B‚v7F—f—G’r—ÓÂöƒ#à¢ÆF—b6Æ73Ò&†VB"&öÆSÒ&–Ör"&–ÖÆ&VÃÒ"G·B‚v7F—f—G’r—Ó¢G¶F—2æf–ÇFW"‚‡‚’Óâ…³Ò’æÆVæwF‡Òó#‚#âG¶F—2æÖ‚…¶²ÂeÒ’ÓâÆ’FFÖÃÒ"G¶ÇfÂ‡b—Ò"F—FÆSÒ"G¶·Ó¢G·gÒ…#ãÂö“æ’æ¦ö–â‚rr—ÓÂöF—cà¢Â÷6V7F–öãà¢Ç6V7F–öâ6Æ73Ò&6&B#ãÆƒ#âG·B‚v64'•7V&¢r—ÓÂöƒ#à¢ÆF—b6Æ73Ò&&'2#âG´Bå5T$¤T5E2æÖ‚‡2’Óâ²6öç7BÒ67W&7’‡2æ–B“²6öç7BÒ2çV—¥·2æ–EÓ²&WGW&âÆF—b6Æ73Ò&&"×&÷r"7G–ÆSÒ"ÒÖƒ¢G·2æ‡VWÒ#ãÇ7ãâG¶W62‡–6²‡2’—ÓÂ÷7ããÇ7â6Æ73Ò&&""&öÆSÒ&–Ör"&–ÖÆ&VÃÒ"G¶W62‡–6²‡2’—Ó¢G¶ÓÒçVÆÂò~(	Br¢²rRwÒ#ãÆ’7G–ÆSÒ'v–GFƒ¢G¶ÇÂÒR#ãÂö“ãÂ÷7ããÇ7â6Æ73Ò&Ööæò#âG¶ÓÒçVÆÂò~(	Br¢²rRwÒG·òÇ7â6Æ73Ò'7"#â‚G·æö·ÒòG·æö²²æ&GÒ“Â÷7ãæ¢rwÓÂ÷7ããÂöF—cæ²Ò’æ¦ö–â‚rr—ÓÂöF—cà¢Â÷6V7F–öãà¢Ç6V7F–öããÆƒ#âG·B‚v&FvW2r—ÓÂöƒ#à¢ÇVÂ6Æ73Ò&w&–Bs2"7G–ÆSÒ&Æ—7B×7G–ÆS¦æöæS·FF–æs£¶Ö&v–ã£#âG´Bä$DtU2æÖ‚†"’ÓâÆÆ’6Æ73Ò&6&B&FvRGµ2æ&FvW5¶"æ–EÒòvöâr¢rwÒ#ãÇ7â6Æ73Ò&–6ò"&–Ö†–FFVãÒ'G'VR#âGµ2æ&FvW5¶"æ–EÒò"æ–6öâ¢	ùI"wÓÂ÷7ããÇ7ããÇ7G&öæsâG¶W62‡–6²†"çB’—ÓÂ÷7G&öæsãÆ'#ãÇ7â6Æ73Ò'6ÖÆÂ×WFVB#âG¶W62‡–6²†"æB’—ÓÂ÷7ãâGµ2æ&FvW5¶"æ–EÒòÇ7â6Æ73Ò'7"#â)É3Â÷7ãæ¢rwÓÂ÷7ããÂöÆ“æ’æ¦ö–â‚rr—ÓÂ÷VÃà¢Â÷6V7F–öãà¢Ç6V7F–öâ6Æ73Ò&6&B#ãÆƒ#âG·B‚w6–Ô†—7F÷'’r—ÓÂöƒ#âGµ2ç6–×2æÆVæwF‚ò†—7EF&ÆR‚’¢Ç6Æ73Ò&×WFVB#âG·B‚væõ6–×2r—ÓÂ÷æÓÂ÷6V7F–öãà¢Ç6V7F–öâ6Æ73Ò&6&B7F6²#ãÆƒ#âG·B‚vFFr—ÓÂöƒ#ãÇ6Æ73Ò&×WFVB#âG·B‚w&—f7’r—ÓÂ÷à¢ÆF—b6Æ73Ò'&÷r#ãÆ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò&'Fâ"–CÒ'ÖW‡÷'B#î*I2G·B‚vW‡÷'D'Fâr—ÓÂö'WGFöãà¢Æ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò&'Fâ"–CÒ&wV&F–â×&W÷'B#âG·G‚‚u&÷'BVçG'RfÖ–Æ–R÷&öfW6÷"rÂtfÖ–Ç’÷FV6†W"&W÷'Br—ÓÂö'WGFöãà¢Æ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò&'Fâ"–CÒ'Ö–×÷'BÖ'Fâ#î*I"G·B‚v–×÷'D'Fâr—ÓÂö'WGFöããÆ–çWBG—SÒ&f–ÆR"–CÒ'Ö–×÷'B"66WCÒ&Æ–6F–öâö§6öâÂæ§6öâ"†–FFVãà¢Æ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò&'FâFævW""–CÒ'×&W6WB#âG·B‚w&W6WD'Fâr—ÓÂö'WGFöããÂöF—cà¢Â÷6V7F–öãæ°¢VÂæFDWfVçDÆ—7FVæW"‚v6Æ–6²rÂ†R’Óâ°¢6öç7B"ÒRçF&vWBæ6Æ÷6W7B‚v'WGFöâr“²–b‚"’&WGW&ã°¢–b†"æ–BÓÓÒwÖ–×÷'BÖ'Fâr’B‚r7Ö–×÷'BrÂVÂ’æ6Æ–6²‚“°¢VÇ6R–b†"æ–BÓÓÒvwV&F–â×&W÷'Br’°¢6öç7B7V&¦V7E&÷w2ÒBå5T$¤T5E2æÖ‡3ÓæÇG#ãÇFCâG¶W62‡–6²‡2’—ÓÂ÷FCãÇFCâG¶67W&7’‡2æ–B“ÓÖçVÆÃò~(	Bs¦67W&7’‡2æ–B’²rRwÓÂ÷FCãÇFCâGµ2çV—¥·2æ–EÓòæö·ÇÃÒòG²…2çV—¥·2æ–EÓòæö·ÇÃ’²…2çV—¥·2æ–EÓòæ&GÇÃ—ÓÂ÷FCãÇFCâGµ2çV—¥F–ÖSòå·2æ–EÓòæ6÷VçCôÖF‚ç&÷VæB…2çV—¥F–ÖU·2æ–EÒç6V6öæG2õ2çV—¥F–ÖU·2æ–EÒæ6÷VçB’²rr·G‚‚w6V2rÂw6V2r“¢~(	BwÓÂ÷FCãÂ÷G#æ’æ¦ö–â‚rr“°¢6öç7B‡FÖÃÖÂFö7G—R‡FÖÃãÆ‡FÖÂÆæsÒ"Gµ4UBæÆæwÒ#ãÆÖWF6†'6WCÒ'WFbÓ‚#ãÇF—FÆSâG·G‚‚u&÷'BFR&öw&W2rÂu&öw&W72&W÷'Br—ÓÂ÷F—FÆSãÇ7G–ÆSæ&öG—¶föçC£g‚7—7FVÒ×V“¶Ö‚×v–GFƒ£ƒSƒ¶Ö&v–ã£'&VÒWFó¶6öÆ÷#¢3C#37Öƒ¶6öÆ÷#¢3#3Cf3w×F&ÆW¶&÷&FW"Ö6öÆÆ6S¦6öÆÆ6S·v–GFƒ£W×FBÇF‡·FF–æs¢ãcW&VÓ¶&÷&FW"Ö&÷GFöÓ£‚6öÆ–B666G×6ÖÆÇ¶6öÆ÷#¢3SSgÓÂ÷7G–ÆSãÆƒäv–Öæ¦—R76R+rG·G‚‚u&÷'BÆö6ÂrÂtÆö6Â&W÷'Br—ÓÂöƒãÇâG·G‚‚tvVæW&BrÂtvVæW&FVBr—Ó¢G¶æWrFFR‚’çFôÆö6ÆTFFU7G&–ær…4UBæÆæsÓÓÒvVâsòvVâÔt"s¢w&òÕ$òr—ÓÂ÷ãÇâGµ2ç‡Ò…+rGµ2çV—§¦W7ÒG·G‚‚wV—¢×W&’rÂwV—§¦W2r—Ò+rGµ2æÖ—7F¶W3òæÆVæwF‡ÇÃÒG·G‚‚vw&\‰–VÆ’:æâ&Vv—7G'RrÂvÆövvVBÖ—7F¶W2r—ÓÂ÷ãÇF&ÆSãÇF†VCãÇG#ãÇFƒâG·G‚‚tÖFW&–RrÂu7V&¦V7Br—ÓÂ÷FƒãÇFƒâG·G‚‚t7W&F\‰¶RrÂt67W&7’r—ÓÂ÷FƒãÇFƒâG·G‚‚u,H77Vç7W&’rÂtç7vW'2r—ÓÂ÷FƒãÇFƒâG·G‚‚uF–×ÖVF—Rö—FVÒrÂtfrâF–ÖRö—FVÒr—ÓÂ÷FƒãÂ÷G#ãÂ÷F†VCãÇF&öG“âG·7V&¦V7E&÷w7ÓÂ÷F&öG“ãÂ÷F&ÆSãÆƒ#âG·G‚‚u6–×VÌH7&’&V6VçFRrÂu&V6VçBÖö6²W†×2r—ÓÂöƒ#ãÇVÃâG²…2ç6–×7ÇÅµÒ’ç6Æ–6R‚ÓR’ç&WfW'6R‚’æÖ‡3ÓæÆÆ“âG¶f×DFFR‡2æB—Ò+rG·2æ³ÓÓÒvÖBs÷B‚w6–ÔÖBr“§B‚w6–Õ&öÒr—Ò+rG·2çÒóG·2æÖ–çWFW3ö+rG·2æÖ–çWFW7ÒG·G‚‚vÖ–ârÂvÖ–âr—Ö¢rwÓÂöÆ“æ’æ¦ö–â‚rr—ÇÂsÆÆ“î(	CÂöÆ“âwÓÂ÷VÃãÇãÇ6ÖÆÃâG·G‚‚u&÷'B÷&–VçFF—bÂ6Æ7VÆBÆö6ÂR&¦7F—f—LH<‰¶–’:æâÆ–6‰¶–RâçRW7FRæ÷LH2‰–6öÆ,H2âW‡÷'GVÂçRG&–Ö—FRFFRWFöÖBârÂt–æF–6F—fR&W÷'BÂvVæW&FVBÆö6ÆÇ’g&öÒ7F—f—G’â—B—2æ÷B66†ööÂw&FRâW‡÷'BFöW2æ÷B6VæBFFWFöÖF–6ÆÇ’âr—ÓÂ÷6ÖÆÃãÂ÷ãÂö‡FÖÃæ°¢6öç7BÖFö7VÖVçBæ7&VFTVÆVÖVçB‚vr“¶æ‡&VcÕU$Âæ7&VFTö&¦V7EU$Â†æWr&Æö"…¶‡FÖÅÒÇ·G—S¢wFW‡Bö‡FÖÂwÒ’“¶æF÷væÆöCÖv–Öæ¦—R×76R×&÷'BÒG·FöF’‚—Òæ‡FÖÆ¶æ6Æ–6²‚“·6WEF–ÖV÷WB‚‚“ÓåU$Âç&Wfö¶Tö&¦V7EU$Â†æ‡&Vb’Ã“°¢Ğ¢VÇ6R–b†"æ–BÓÓÒwÖW‡÷'Br’°¢6öç7B&6·WÒ²¢tv–Öæ¦—R76RrÂf÷&ÖC¢vv–Öæ¦—R×76RÖ&6·WrÂfW'6–öã¢"ÂW‡÷'FVDC¢æWrFFR‚’çFô•4õ7G&–ær‚’Â&öw&W73¢2Ó°¢6öç7B&Æö"ÒæWr&Æö"…´¥4ôâç7G&–æv–g’†&6·WÂçVÆÂÂ"•ÒÂ²G—S¢vÆ–6F–öâö§6öârÒ“°¢6öç7BÒFö7VÖVçBæ7&VFTVÆVÖVçB‚vr“²æ‡&VbÒU$Âæ7&VFTö&¦V7EU$Â†&Æö"“²æF÷væÆöBÒv–Öæ¦—R×76RÒG·FöF’‚—Òæ§6öæ²æ6Æ–6²‚“²6WEF–ÖV÷WB‚‚’ÓâU$Âç&Wfö¶Tö&¦V7EU$Â†æ‡&Vb’Â“°¢ÒVÇ6R–b†"æ–BÓÓÒw×&W6WBrbb6öæf—&Ò‡B‚w&W6WD6öæf—&Òr’’’²2Òg&W6‚‚“²6fR‚“²Fö7B‡B‚w&W6WDFöæRr’“²&÷WFR‚“²Ğ¢Ò“°¢B‚r7Ö–×÷'BrÂVÂ’æFDWfVçDÆ—7FVæW"‚v6†ævRrÂ7–æ2†R’Óâ°¢6öç7BbÒRçF&vWBæf–ÆW5³Ó²–b‚b’&WGW&ã°¢G'’°¢–b†bç6—¦Râ%óó’F‡&÷ræWrW'&÷"‚wFöòÖÆ&vRr“°¢6öç7B&rÒ¥4ôâç'6R†v—BbçFW‡B‚’“°¢6öç7B–×÷'FVBÒv–æF÷räu5õ$ôu$U52ææ÷&ÖÆ—¦R‡&r“²–b‚–×÷'FVB’F‡&÷ræWrW'&÷"‚v–çfÆ–BÖ&6·Wr“°¢–b‚7F÷&Rç6WB„´U’Â–×÷'FVB’’²Fö7B‡B‚v–×÷'E7F÷&vRr’“²&WGW&ã²Ğ¢2Ò–×÷'FVC²Fö7B‡B‚v–×÷'DFöæRr’“²&÷WFR‚“°¢Ò6F6‚²Fö7B‡B‚v–×÷'D&Br’“²Ğ¢f–æÆÇ’²RçF&vWBçfÇVRÒrs²Ğ¢Ò“°¢Ó° ¢ò¢)H)H)H)H)H)H)H)H)H)H)H)H)H’6ö6‚b&Vv—7G'VÂw&\‰–VÆ–Æ÷")H)H)H)H)H)H)H)H)H)H)H)H)H¢ğ¢6öç7BG‚Ò‡&òÂVâ’Óâ4UBæÆærÓÓÒw&òrò&ò¢Vã°¢gVæ7F–öâW‡Æ–äÖ—7F¶R†Ò’°¢6öç7BF—2Ò°¢ÖC¢G‚‚u67&–RFFVÆRÂÆVvRf÷&×VÆÂ:ææÆö7V–\‰—FRfÆ÷&–ÆR‰–’fW&–f–<H2Væ—FFVâÆV7V‰¶–’ÂlH26VV‰–’÷W&‰¶–R:æâÖ&VÆRH7,‰¶’‰–’fW&–f–<H2&W§VÇFGVÂ&–â:ææÆö7V—&RârÀ¢uw&—FRF†R¶æ÷vâFFÂ6†ö÷6RF†Rf÷&×VÆÂ7V'7F—GWFRfÇVW2æB6†V6²F†RVæ—Bâf÷"WVF–öç2ÂFòF†R6ÖR÷W&F–öâöâ&÷F‚6–FW2æBfW&–g’'’7V'7F—GWF–öââr’À¢&öÓ¢G‚‚t6—F\‰—FR6W&–ì‰¶Â6WLH2F÷fF:æâFW‡B‰–’,H77VæFR:æâ&÷÷¦œ‰¶–’6Æ&RâVçG'Rw&ÖF–<H2ÂVæR:æçG&V&&V÷G&—f—LH2‰–’fW&–f–<H2&öÇVÂ7Wl:&çGVÇV’:æâVçVì‰²ârÀ¢u&VBF†RF6²Âf–æBWf–FVæ6R–âF†RFW‡BæBç7vW"–â6ÆV"6VçFVæ6W2âf÷"w&ÖÖ"Â6²F†R&–v‡BVW7F–öâæB6†V6²F†Rv÷&N(	—2&öÆR–âF†R6VçFVæ6Râr’À¢f—£¢G‚‚tæ÷FV¬H2ÜH7&–Ö–ÆR‰–’Væ—LH<‰¶–ÆRÂ67&–Rf÷&×VÆÂG&ç6f÷&ÜH2Væ—LH<‰¶–ÆRF<H2W7FRæWfö–R‰–’fW&–f–<H2F<H2&W§VÇFGVÂ&R6Vç2f—¦–2ârÀ¢tæ÷FRF†RVçF—F–W2æBVæ—G2Âw&—FRF†Rf÷&×VÆÂ6öçfW'BVæ—G2v†VâæVVFVBæB6†V6²v†WF†W"F†R&W7VÇBÖ¶W2‡—6–6Â6Vç6Râr’À¢6†–Ó¢G‚‚t–FVçF–f–<H27V'7Fì‰¶VÆR‰–’ÜH7&–Ö–ÆR7Væ÷67WFRÂ67&–R&VÆ‰¶–föÆ÷6—LH2‰–’fW&–f–<H26–Ö&öÇW&–ÆR‰–’Væ—LH<‰¶–ÆR:ææ–çFRFR6Æ7VÂârÀ¢t–FVçF–g’F†R7V'7Fæ6W2æB¶æ÷vâVçF—F–W2Âw&—FRF†R&VÆF–öç6†—W6VBæB6†V6²7–Ö&öÇ2æBVæ—G2&Vf÷&R6Æ7VÆF–ærâr’À¢—7C¢G‚‚tÆV|H2WfVæ–ÖVçGVÂFR6W¬H2‰–’6öç6V6–ì‰¼H2â6öç7G'V–\‰—FRòÖ–æ’Ö7&öæöÆöv–R‰–’6WLH27Wf–çFVÆR6&R–æF–<H2÷&F–æV:æâF–×ârÀ¢t6öææV7BF†RWfVçBFò—G26W6RæB6öç6WVVæ6Râ'V–ÆBÖ–æ’×F–ÖVÆ–æRæBÆöö²f÷"v÷&G2F†B6–væÂF–ÖR÷&FW"âr’À¢vVó¢G‚‚u÷&æ\‰—FRFRÆÆVvVæLH2Â÷&–VçF&R‰–’66,H2â–FVçF–f–<H26–Ö&öÇVÂ‰–’&VÆ‰¶–F–çG&RF—7Fì‰¶FRR†'LH2‰–’F—7Fì‰¶&VÌH2ârÀ¢u7F'Bv—F‚F†RÆVvVæBÂ÷&–VçFF–öâæB66ÆRâ–FVçF–g’F†R7–Ö&öÂæBF†R&VÆF–öç6†—&WGvVVâÖF—7Fæ6RæB&VÂF—7Fæ6Râr’À¢Væs¢G‚‚t–FVçF–f–<H27V&–V7GVÂÂF–×VÂ‰–’f÷&ÖfW&'VÇV’âfW&–f–<H2W'6öæ‰–’7Wf–çFVÆRÖ–æF–6—R&V7VÒWfW'’F’Â–W7FW&F’6RFöÖ÷'&÷rârÀ¢t–FVçF–g’F†R7V&¦V7BÂFVç6RæBfW&"f÷&Òâ6†V6²F†RW'6öâæB6ÇVRv÷&G27V6‚2WfW'’F’Â–W7FW&F’÷"FöÖ÷'&÷râr¢Ó°¢&WGW&âÇ7G&öæsâG·G‚‚tW‡Æ–6‰¶–RVçG'RrÂtW‡ÆæF–öâf÷"r—ÒG¶W62‡7V&¤æÖR†Òç2’—ÓÂ÷7G&öæsãÇâG¶W62‡–6²†Òç‚’—ÓÂ÷ãÇãÇ7G&öæsâG·G‚‚u‰–’FR&W&&RrÂu&W—"7FW2r—ÓÂ÷7G&öæsãÆ'#âG·F—5¶Òç5ÒÇÂF—2æÖGÓÂ÷ãÇ6Æ73Ò&†–çB#âG·G‚‚t’ÆW2rÂu–÷R6†÷6Rr—Ó¢G¶W62‡–6²†Òæ6†÷6Vâ’—Ò+rG·G‚‚t6÷&V7BrÂt6÷'&V7Br—Ó¢G¶W62‡–6²†Òæ6÷'&V7B’—ÓÂ÷æ°¢Ğ¢gVæ7F–öâ6ö6„ç7vW"‡FW‡B’°¢6öç7BÒæ÷&Ò‡FW‡BÇÂrr“°¢–b‚çG&–Ò‚’’&WGW&âG‚‚u67&–Rò:æçG&V&&R6öæ7&WLH2ÂFRW†V×ÇS¢(	ä7VÒ6Æ7VÆW¢&–ş(	Ò6R(	äFR6RÒw&\‰–—Cş(	ÒârÂuw&—FR6öæ7&WFRVW7F–öâÂf÷"W†×ÆS¢(	Ä†÷rFò’6Æ7VÆFR&Vş(	Ò÷"(	Åv‡’v2×’ç7vW"w&öæsş(	Òr“°¢–b‡æ–æ6ÇVFW2‚vg&2r’’&WGW&âG‚‚sÇ7G&öæsäg&<‰¶–“£Â÷7G&öæsâçVÖ—F÷'VÂ&LH2:æâ<:'FRH7,‰¶’VvÆRW7FR:æ×H7,‰¶—B:æçG&VwVÂÂ–"çVÜH7,H7F÷'VÂ<:'FRH7,‰¶’Ç\H6ÒâÆGVæ&RÂ6WLH2VâçVÖ—F÷"6ö×Vâ:ææ–çFR<H2GVæ’çVÜH7,H7F÷&–’ârÂsÇ7G&öæsäg&7F–öç3£Â÷7G&öæsâF†RFVæöÖ–æF÷"6†÷w2†÷rÖç’WVÂ'G2Ö¶RF†Rv†öÆRÂv†–ÆRF†RçVÖW&F÷"6†÷w2†÷rÖç’'G2vRF¶Râf÷"FF—F–öâÂf–æB6öÖÖöâFVæöÖ–æF÷"&Vf÷&RFF–ærçVÖW&F÷'2âr“°¢–b‡æ–æ6ÇVFW2‚w&ö6VçBr’ÇÂæ–æ6ÇVFW2‚wW&6VçBr’’&WGW&âG‚‚sÇ7G&öæså&ö6VçFS£Â÷7G&öæsâRF–ââÒ‡9râ’òâW†V×ÇS¢#RRF–âƒÒ#âfW&–f–<H2&–âW7F–Ö&S¢#RRW7FRVâ6fW'BârÂsÇ7G&öæsåW&6VçFvW3£Â÷7G&öæsâRöbâÒ‡9râ’òâW†×ÆS¢#RRöbƒÒ#â6†V6²'’W7F–ÖF–öã¢#RR—2öæRV'FW"âr“°¢–b‡æ–æ6ÇVFW2‚v&–Rr’ÇÂæ–æ6ÇVFW2‚v&Vr’’&WGW&âG‚‚sÇ7G&öæsä&–£Â÷7G&öæsâ–FVçF–f–<H2f÷&ÖÂGRF–ÖVç6—Væ–ÆRÆ6VV‰–’Væ—FFRÂ67&–Rf÷&×VÆ‰–’ö’:ææÆö7V–\‰—FRfÆ÷&–ÆRâG&WGVæv†“¢ÒÂ9rÂâG&—Væv†“¢Ò†"9r‚’ò"ârÂsÇ7G&öæsä&V£Â÷7G&öæsâ–FVçF–g’F†R6†RÂW6RF†R6ÖRVæ—Bf÷"F–ÖVç6–öç2Âw&—FRF†Rf÷&×VÆæBF†Vâ7V'7F—GWFRfÇVW2â&V7FævÆS¢ÒÂ9rÂâG&–ævÆS¢Ò†"9r‚’ò"âr“°¢–b‡æ–æ6ÇVFW2‚vV7Vr’ÇÂæ–æ6ÇVFW2‚vWVF–öâr’’&WGW&âG‚‚sÇ7G&öæsäV7V‰¶–“£Â÷7G&öæsâ—¦öÆV¬H2æV7Væ÷67WFlH6<:&æB6VV‰–’÷W&‰¶–R:æâÖ&VÆRÖVÖ'&RâÆf–æÂÂ:ææÆö7V–\‰—FRfÆö&V|H76—LH2VçG'RfW&–f–6&RârÂsÇ7G&öæsäWVF–öç3£Â÷7G&öæsâ—6öÆFRF†RVæ¶æ÷vâ'’Fö–ærF†R6ÖR÷W&F–öâöâ&÷F‚6–FW2âf–æÆÇ’Â7V'7F—GWFRF†R&W7VÇBFò6†V6²—Bâr“°¢–b‡æ–æ6ÇVFW2‚v–FVRr’ÇÂæ–æ6ÇVFW2‚w7V&–V7Br’ÇÂæ–æ6ÇVFW2‚wFW‡Br’ÇÂæ–æ6ÇVFW2‚vÖ–â–FVr’’&WGW&âG‚‚sÇ7G&öæsä–FVV&–æ6—ÌH3£Â÷7G&öæsâ:æçG&V,H26RÖW6¢,H6Ü:&æRF<H2VÆ–Ö–æ’FWFÆ––ÆRâ6WLH2–FVV&WWFLH26R7W<‰¶–çWLH2FRW†V×ÆR‰–’f÷&×VÆV¢Öò:æâ(	3"&÷÷¦œ‰¶–’ârÂsÇ7G&öæsäÖ–â–FV£Â÷7G&öæsâ6²v†BÖW76vR&VÖ–ç2–b–÷R&VÖ÷fRFWF–Ç2âf–æBF†R&WVFVB–FV÷"F†RöæR7W÷'FVB'’W†×ÆW2æBW‡&W72—B–â(	3"6VçFVæ6W2âr“°¢–b‡æ–æ6ÇVFW2‚vw&\‰’r’ÇÂæ–æ6ÇVFW2‚vw&W2r’ÇÂæ–æ6ÇVFW2‚vÖ—7F¶Rr’ÇÂæ–æ6ÇVFW2‚ww&öærr’’°¢6öç7BÆ7BÒ…2æÖ—7F¶W2ÇÂµÒ’ç6Æ–6R‚Ó•³Ó°¢&WGW&âÆ7BòW‡Æ–äÖ—7F¶R†Æ7B’¢G‚‚tçRW†—7LH2:ææ<H2òw&\‰–VÌH2:æç&Vv—7G&LH2â8ææ6WRVâV—¢Â–"W‡Æ–6‰¶–fH7&V–6’ârÂtæòÖ—7F¶R†2&VVâ&V6÷&FVB–WBâ7F'BV—¢æBF†RW‡ÆæF–öâv–ÆÂV"†W&Râr“°¢Ğ¢&WGW&âG‚‚sÇ7G&öæsäÖWFöFFR:æçlH<‰¶&S£Â÷7G&öæsâ:æ×'FR:æçG&V&&V:æâG&V“¢6R‰—F—RÂ6RG&V'V–R<H2fÇR‰–’6R&VwVÌH2ÆV|H26VÆRF÷\H2âW‡Æ–<H2,H77Vç7VÂ7R&÷&––ÆR7Wf–çFR‰–’fW&–f–<H2ÖÂ&–çG"×VâW†V×ÇR6–×ÇRârÂsÇ7G&öæså7GVG’ÖWF†öC£Â÷7G&öæsâ7Æ—BF†RVW7F–öâ–çFòF‡&VR'G3¢v†B’¶æ÷rÂv†B’æVVBFòf–æBæBv†B'VÆR6öææV7G2F†VÒâW‡Æ–âF†Rç7vW"–â–÷W"÷vâv÷&G2æB6†V6²—Bv—F‚6–×ÆRW†×ÆRâr“°¢Ğ¢d”Uu2æ6ö6‚Ò†VÂ’Óâ°¢6öç7B&VæFW"Ò‚’Óâ°¢6öç7B&V6÷&G2Ò…2æÖ—7F¶W2ÇÂµÒ’ç6Æ–6R‚’ç&WfW'6R‚“°¢VÂæ–ææW$…DÔÂÒ†VB‚~)ÊbrÂG‚‚t’6ö6‚(	B:æçG&V,H7&’‰–’w&\‰–VÆ’rÂt’6ö6‚(	BVW7F–öç2æBÖ—7F¶W2r’ÂG‚‚|8æçG&V,H2:æâ7Wf–çFR6–×ÆRâ&–Ö\‰—F’v†–F&RÆö6ÌH2Â÷&–VçFF—lH2Â6öç7G'V—LH2F–âW‡Æ–6‰¶––ÆRÆ–6‰¶–V’ârÂt6²–â6–×ÆRv÷&G2â–÷RvWBÆö6ÂÂ÷&–VçFF–öâwV–Fæ6R'V–ÇBg&öÒF†R(	—2W‡ÆæF–öç2âr’’² ¢Ç6V7F–öâ6Æ73Ò&6&B7F6²#à¢Æƒ#âG·G‚‚t6Rg&V’<H2:æì‰¶VÆVv“òrÂuv†BFò–÷RvçBFòVæFW'7FæCòr—ÓÂöƒ#à¢Ç6Æ73Ò&×WFVB#âG·G‚‚tW†V×ÆS¢(	ä7VÒ6Æ7VÆW¢&–ş(	ÒÂ(	äW‡Æ–<H2ÖÖ’&ö6VçFVÆ^(	ÒÂ(	äFR6RÒw&\‰–—Cş(	ÒÂ(	ä6RW7FR–FVV&–æ6—ÌH3ş(	ÒrÂtW†×ÆW3¢(	Ä†÷rFò’6Æ7VÆFR&Vş(	ÒÂ(	ÄW‡Æ–âW&6VçFvW>(	ÒÂ(	Åv‡’v2×’ç7vW"w&öæsş(	ÒÂ(	Åv†B—2F†RÖ–â–FVş(	Òr—ÓÂ÷à¢ÆÆ&VÂ6Æ73Ò'7""f÷#Ò&6ö6‚×#âG·G‚‚|8æçG&V&&VFrÂu–÷W"VW7F–öâr—ÓÂöÆ&VÃà¢ÇFW‡F&V–CÒ&6ö6‚×"6Æ73Ò'w&—FR"&÷w3Ò#B"Æ6V†öÆFW#Ò"G·G‚‚u67&–R:æçG&V&&V–6(
+brÂuw&—FR–÷W"VW7F–öâ†W&^(
+br—Ò#ãÂ÷FW‡F&Và¢ÆF—b6Æ73Ò'&÷r#ãÆ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò&'Fâ&–Ö'’"–CÒ&6ö6‚Ö6²#î)ÊbG·G‚‚tW‡Æ–<H2rÂtW‡Æ–âr—ÓÂö'WGFöããÆ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò&'Fâ"–CÒ&6ö6‚ÖÖ—7F¶W2#âG·G‚‚tæÆ—¦V¬H2w&\‰–VÆ–ÆRÖVÆRrÂtæÇ—6R×’Ö—7F¶W2r—ÓÂö'WGFöããÂöF—cà¢ÆF—b–CÒ&6ö6‚Öç7vW""6Æ73Ò&fVVF&6²"†–FFVâ&–ÖÆ—fSÒ'öÆ—FR#ãÂöF—cà¢Ç6Æ73Ò&†–çB#âG·G‚‚t’6ö6‚W7FRÆö6Â‰–’÷&–VçFF—c²çRG&–Ö—FR:æçG&V,H7&–ÆRÆVâ6W'f–6—RW‡FW&âÂçRW7FR&öfW6÷"‰–’çR:ææÆö7V–\‰—FRÖFW&–ÇVÂF–F7F–26R&&V×VÂöf–6–ÂârÂt’6ö6‚—2Æö6ÂæBf÷"÷&–VçFF–öã²—BFöW2æ÷B6VæBVW7F–öç2FòâW‡FW&æÂ6W'f–6RÂ—2æ÷BFV6†W"æBFöW2æ÷B&WÆ6RFV6†–ærÖFW&–Â÷"öff–6–ÂÖ&¶–ær66†VÖW2âr—ÓÂ÷à¢Â÷6V7F–öãà¢Ç6V7F–öâ6Æ73Ò&6&B7F6²#à¢ÆF—b6Æ73Ò'&÷r#ãÆƒ"7G–ÆSÒ&Ö&v–ã£#âG·G‚‚u,H77Vç7W&’w&\‰–—FR6ÇfFRrÂu6fVBw&öærç7vW'2r—ÓÂöƒ#ãÇ7â6Æ73Ò&6†—#âG·&V6÷&G2æÆVæwF‡ÓÂ÷7ããÂöF—cà¢G·&V6÷&G2æÆVæwF‚òÆF—b6Æ73Ò'7F6²#âG·&V6÷&G2æÖ‚†ÒÂ’’ÓâÆ'F–6ÆR6Æ73Ò&Ö—7F¶RÖ6&B#ãÇ7G&öæsâG¶W62‡7V&¤æÖR†Òç2’—Ò+rG¶W62‡–6²†Òç’—ÓÂ÷7G&öæsãÇ6Æ73Ò'6ÖÆÂ×WFVB#âG·G‚‚t’ÆW2rÂu–÷R6†÷6Rr—Ó¢G¶W62‡–6²†Òæ6†÷6Vâ’—Ò+rG·G‚‚t6÷&V7BrÂt6÷'&V7Br—Ó¢G¶W62‡–6²†Òæ6÷'&V7B’—ÓÂ÷ãÆF—b6Æ73Ò&fVVF&6²#âG¶W‡Æ–äÖ—7F¶R†Ò—ÓÂöF—cãÆ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò&'Fâ6Ò"FFÖÖ—7F¶SÒ"G¶—Ò#âG·G‚‚tW‡Æ–<H2:æâ’6ö6‚rÂtW‡Æ–â–â’6ö6‚r—Ò(i#Âö'WGFöããÂö'F–6ÆSæ’æ¦ö–â‚rr—ÓÂöF—cãÆ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò&'FâFævW""–CÒ&6ö6‚Ö6ÆV"#âG·G‚‚|‰‡FW&vR&Vv—7G'VÂrÂt6ÆV"Æörr—ÓÂö'WGFöãæ¢Ç6Æ73Ò&×WFVB#âG·G‚‚|8ææ<H2çR’w&\‰–VÆ’6ÇfFRâGWH2VâV—¢Âf–V6&R,H77Vç2w&\‰–—BfH7&V–6’7RW‡Æ–6‰¶–’ârÂtæòÖ—7F¶W26fVB–WBâgFW"V—¢ÂWfW'’w&öærç7vW"v–ÆÂV"†W&Rv—F‚W‡ÆæF–öç2âr—ÓÂ÷æĞ¢Â÷6V7F–öãæ°¢6öç7Bç7vW"ÒB‚r66ö6‚Öç7vW"rÂVÂ“°¢6öç7BVW7F–öâÒB‚r66ö6‚×rÂVÂ“°¢B‚r66ö6‚Ö6²rÂVÂ’æöæ6Æ–6²Ò‚’Óâ²ç7vW"æ†–FFVâÒfÇ6S²ç7vW"æ–ææW$…DÔÂÒ6ö6„ç7vW"‡VW7F–öâçfÇVR“²Ó°¢B‚r66ö6‚ÖÖ—7F¶W2rÂVÂ’æöæ6Æ–6²Ò‚’Óâ²ç7vW"æ†–FFVâÒfÇ6S²ç7vW"æ–ææW$…DÔÂÒ&V6÷&G2æÆVæwF‚òW‡Æ–äÖ—7F¶R‡&V6÷&G5³Ò’¢6ö6„ç7vW"‚vw&\‰–VÆ’r“²Ó°¢BB‚u¶FFÖÖ—7F¶UÒrÂVÂ’æf÷$V6‚‚†"’Óâ²"æöæ6Æ–6²Ò‚’Óâ²ç7vW"æ†–FFVâÒfÇ6S²ç7vW"æ–ææW$…DÔÂÒW‡Æ–äÖ—7F¶R‡&V6÷&G5´çVÖ&W"†"æFF6WBæÖ—7F¶R•Ò“²ç7vW"ç67&öÆÄ–çFõf–Wr‡²&Æö6³¢væV&W7BrÒ“²Ó²Ò“°¢B‚r66ö6‚Ö6ÆV"rÂVÂ“òæFDWfVçDÆ—7FVæW"‚v6Æ–6²rÂ‚’Óâ²2æÖ—7F¶W2ÒµÓ²6fR‚“²&÷WFR‚“²Ò“°¢Ó°¢&VæFW"‚“°¢Ó° ¢ò¢)H)H)H)H)H)H)H)H)H)H)H)H)H&†—lH2öf–6–ÌH2b–ç7G'VÖVçFRw&GV—FR)H)H)H)H)H)H)H)H)H)H)H)H)H¢ğ¢d”Uu2æ&†—fÒ†VÂ’Óâ°¢6öç7B–V'2ÒBä$4„•dRÇÂµÓ°¢ÆWB6VÆV7FVBÒvÆÂs°¢6öç7B–çBÒ‚’Óâ°¢6öç7BÆ—7BÒ6VÆV7FVBÓÓÒvÆÂrò–V'2¢–V'2æf–ÇFW"‚‡‚’Óâ7G&–ær‡‚ç–V"’ÓÓÒ6VÆV7FVB“°¢VÂæ–ææW$…DÔÂÒ†VB‚~)j2rÂG‚‚u7V&–V7FR‰–’&&VÖRrÂu7BW'2æBÖ&¶–ær66†VÖW2r’ÂG‚‚tÇV7&V¬H26–æwW"Âö’fW&–f–<H2f–V6&RVæ7B:æâ7W'6öf–6–ÌH2âÆ–æ·W&–ÆR7VçBw&GV—FR‰–’GV2<H7G&R&†—fÖ–æ—7FW'VÇV’ârÂuv÷&²–æFWVæFVçFÇ’ÂF†Vâ6†V6²V6‚ö–çB–âF†Röff–6–Â6÷W&6RâF†RÆ–æ·2&Rg&VRæB÷VâF†RÖ–æ—7G'’&6†—fRâr’’² ¢Ç6V7F–öâ6Æ73Ò&6&B7F6²#à¢ÆF—b6Æ73Ò&f–ÇFW'2#ãÆÆ&VÂ6Æ73Ò'7""f÷#Ò&&6†—fR×–V"#âG·G‚‚tÆVvRçVÂrÂt6†ö÷6R–V"r—ÓÂöÆ&VÃãÇ6VÆV7B–CÒ&&6†—fR×–V""6Æ73Ò'6V&6‚#ãÆ÷F–öâfÇVSÒ&ÆÂ#âG·G‚‚uFü‰¶’æ–’rÂtÆÂ–V'2r—ÓÂö÷F–öãâG·–V'2æÖ‚‡‚’ÓâÆ÷F–öâfÇVSÒ"G·‚ç–V'Ò"G·6VÆV7FVBÓÓÒ7G&–ær‡‚ç–V"’òw6VÆV7FVBr¢rwÓâG·‚ç–V'ÓÂö÷F–öãæ’æ¦ö–â‚rr—ÓÂ÷6VÆV7CãÇ7â6Æ73Ò&6†—#âG¶Æ—7BæÆVæwF‡ÒG·G‚‚væ’F—7öæ–&–Æ’rÂw–V'2f–Æ&ÆRr—ÓÂ÷7ããÂöF—cà¢ÆF—b6Æ73Ò&w&–Bs"#âG¶Æ—7BæÖ‚‡‚’ÓâÆ'F–6ÆR6Æ73Ò&6&B&6†—fRÖ6&B#ãÆF—b6Æ73Ò'&÷r#ãÇ7â6Æ73Ò&&–r"&–Ö†–FFVãÒ'G'VR#ï	ù8CÂ÷7ããÆF—cãÆƒ"7G–ÆSÒ&Ö&v–ã£#âG·‚ç–V'ÓÂöƒ#ãÇ6Æ73Ò'6ÖÆÂ×WFVB#âG¶W62‡–6²‡‚çB’—ÓÂ÷ãÂöF—cãÂöF—cãÇâG¶W62‡–6²‡‚æB’—ÓÂ÷ãÇ6Æ73Ò'6÷W&6RÖÖWF#ãÇ7G&öæsâG·G‚‚u7W'<H2öf–6–ÌH2rÂtöff–6–Â6÷W&6Rr—Ó£Â÷7G&öæsâG¶W62‡‚ç6÷W&6RÇÂw7V&–V7FRæVGRç&òr—Ò+rG·G‚‚vâ6VÆV7FBrÂw6VÆV7FVB–V"r—Ó¢G·‚ç–V'ÒâG·G‚‚uv–æöf–6–ÌH2W&Ö—FRÆVvW&V&ö&V’‰–’fœ‰––W'VÇV’÷&–v–æÂârÂuF†Röff–6–Â&6†—fRÆWG2–÷R6†ö÷6RF†R7V&¦V7BæB÷&–v–æÂf–ÆRâr—ÓÂ÷ãÆ6Æ73Ò&'Fâ&–Ö'’"‡&VcÒ"G·‚çWÒ"F&vWCÒ%ö&Ææ²"&VÃÒ&æö÷VæW"æ÷&VfW'&W"#âG·G‚‚tFW66†–FR&†—föf–6–ÌH2rÂt÷Vâöff–6–Â&6†—fRr—Ò(isÂöãÂö'F–6ÆSæ’æ¦ö–â‚rr—ÓÂöF—cà¢Ç6Æ73Ò&†–çB#âG·G‚‚uVçG'R6Æ6VÆRn(	5d”’ÂÆ–6‰¶–öfW,H2W†W&6œ‰¶–’÷&–VçFF—fS²&†—f7FæF&F—¦LH2W7FR&VÆWfçLH2:æâ&–æ6—ÂVçG'RWfÇV&Væ‰¶–öæÌH2FRÆ6Æ6d””’ÖârÂtf÷"w&FW2^(	3rÂF†R&÷f–FW2÷&–VçFF–öâ&7F–6S²F†R7FæF&F—¦VB&6†—fR—2Ö–æÇ’&VÆWfçBFòF†RæF–öæÂ76W76ÖVçB–âw&FR‚âr—ÓÂ÷à¢Â÷6V7F–öãæ°¢Ó°¢–çB‚“°¢B‚r6&6†—fR×–V"rÂVÂ’æFDWfVçDÆ—7FVæW"‚v6†ævRrÂ†R’Óâ²6VÆV7FVBÒRçF&vWBçfÇVS²–çB‚“²B‚r6&6†—fR×–V"rÂVÂ’æfö7W2‚“²Ò“°¢Ó° ¢d”Uu2æ–ç7G'VÖVçFRÒ†VÂ’Óâ°¢6öç7BFöF”¶W’ÒFöF’‚“°¢6öç7BööÂÒBåT•¢æf–ÇFW"‚‡’Óâ4UBæw&FRÇÂærÓÓÒ4UBæw&FR“°¢6öç7B†6‚Ò²ââçFöF”¶W•Òç&VGV6R‚†âÂ2’Óââ²2æ6†$6öFTBƒ’Â“°¢6öç7BF–Ç’ÒööÅ¶†6‚RÖF‚æÖ‚ƒÂööÂæÆVæwF‚•ÒÇÂBåT•¥³Ó°¢6öç7B6†ÆÆVævTFöæRÒ2æ6†ÆÆVævSòæFFRÓÓÒFöF”¶W“°¢6öç7B6†&UFW‡BÒ‚’ÓâG‚†ÒGµ2ç‡Ò…:æâv–Öæ¦—R76RÂGµ2çV—§¦W7ÒV—¢×W&’‰–’G¶67W&7’‚’óòÒR7W&F\‰¶RæÂ’†fRGµ2ç‡Ò…–âv–Öæ¦—R76RÂGµ2çV—§¦W7ÒV—§¦W2æBG¶67W&7’‚’óòÒR67W&7’æ“°¢6öç7BF÷væÆöD6W'F–f–6FRÒ‚’Óâ°¢6öç7BF—FÆRÒG‚‚t6W'F–f–6BFR&öw&W2rÂu&öw&W726W'F–f–6FRr“°¢6öç7B&öG’ÒÂFö7G—R‡FÖÃãÆ‡FÖÂÆæsÒ"Gµ4UBæÆæwÒ#ãÆÖWF6†'6WCÒ'WFbÓ‚#ãÇF—FÆSâG·F—FÆWÓÂ÷F—FÆSãÇ7G–ÆSæ&öG—¶föçBÖfÖ–Ç“§7—7FVÒ×V“·FF–æs£G&VÓ·FW‡BÖÆ–vã¦6VçFW#¶&6¶w&÷VæC¢3###¶6öÆ÷#¢6VfcVfgÖÖ–ç¶Ö‚×v–GFƒ£sƒ¶Ö&v–ã¦WFó¶&÷&FW#£'‚6öÆ–B3c–S&33¶&÷&FW"×&F—W3£#Gƒ·FF–æs£7&V×Öƒ¶6öÆ÷#¢3c–S&37Ö'¶föçB×6—¦S£"ã'&V×ÓÂ÷7G–ÆSãÆÖ–ããÇäv–Öæ¦—R76R+rW†Õ76Rn(	5d””“Â÷ãÆƒâG·F—FÆWÓÂöƒãÇâG·G‚‚t6W7BFö7VÖVçB&VfÆV7LH2&öw&W7VÂÆö6ÂF–âÆ–6‰¶–RârÂuF†—2Fö7VÖVçB&VfÆV7G2Æö6Â&öw&W72g&öÒF†Râr—ÓÂ÷ãÇãÆ#âGµ2ç‡Ò…Âö#ãÂ÷ãÇâGµ2çV—§¦W7ÒG·G‚‚wV—¢×W&’rÂwV—§¦W2r—Ò+rGµ2ç&Wf–Ww7ÒG·G‚‚v6'Föæ‰–R&WWFFRrÂv6&G2&Wf–WvVBr—Ò+rGµ2æÖ—7F¶W3òæÆVæwF‚ÇÂÒG·G‚‚vw&\‰–VÆ’FR&WlH7§WBrÂvÖ—7F¶W2Fò&Wf–Wrr—ÓÂ÷ãÇâG¶æWrFFR‚’çFôÆö6ÆTFFU7G&–ær…4UBæÆærÓÓÒvVâròvVâÔt"r¢w&òÕ$òr—ÓÂ÷ãÂöÖ–ããÂö‡FÖÃæ°¢6öç7BÒFö7VÖVçBæ7&VFTVÆVÖVçB‚vr“²æ‡&VbÒU$Âæ7&VFTö&¦V7EU$Â†æWr&Æö"…¶&öG•ÒÂ²G—S¢wFW‡Bö‡FÖÂrÒ’“²æF÷væÆöBÒv–Öæ¦—R×76RÒG·FöF”¶W—Ò×&öw&W2æ‡FÖÆ²æ6Æ–6²‚“²6WEF–ÖV÷WB‚‚’ÓâU$Âç&Wfö¶Tö&¦V7EU$Â†æ‡&Vb’Â“°¢Ó°¢6öç7B6÷’Ò‡fÇVRÂö²’Óâæf–vF÷"æ6Æ—&ö&Còçw&—FUFW‡B‡fÇVR’çF†Vâ‚‚’ÓâFö7B†ö²’Â‚’ÓâFö7B‡G‚‚t6÷–&VçRW7FRF—7öæ–&–ÌH2:æâ6W7B'&÷w6W"ârÂt6÷’—2æ÷Bf–Æ&ÆR–âF†—2'&÷w6W"âr’’“°¢6öç7B–çBÒ‚’Óâ°¢VÂæ–ææW$…DÔÂÒ†VB‚~)ÊbrÂG‚‚t–ç7G'VÖVçFRw&GV—FRrÂtg&VRFööÆ¶—Br’ÂG‚‚u&÷fö<H7&’Â'F¦&RÂ&–çF&RÂ&6·W‰–’6W'F–f–6FRÆö6ÆR(	BlH7,H26öçB‰–’lH7,H26W'f–6–’ÌH7F—FRârÂt6†ÆÆVævW2Â6†&–ærÂ&–çF–ærÂ&6·WæBÆö6Â6W'F–f–6FW2(	Bæò66÷VçBæBæò–B6W'f–6W2âr’’² ¢ÆF—b6Æ73Ò&w&–Bs"#à¢Ç6V7F–öâ6Æ73Ò&6&B7F6²#ãÆF—b6Æ73Ò'&÷r#ãÆƒ"7G–ÆSÒ&Ö&v–ã£#âG·G‚‚u&÷fö6&V¦–ÆV’rÂtF–Ç’6†ÆÆVævRr—ÓÂöƒ#ãÇ7â6Æ73Ò&6†—#âG·FöF”¶W—ÓÂ÷7ããÂöF—cãÇ6Æ73Ò&×WFVB#âG·G‚‚tò:æçG&V&&R67W'LH2ÆV<H2WFöÖBF–âÖFW&–FârÂt6†÷'BVW7F–öâ6VÆV7FVBWFöÖF–6ÆÇ’g&öÒ–÷W"7V&¦V7Bâr—ÓÂ÷ãÆƒ3âG¶W62‡–6²†F–Ç’ç’—ÓÂöƒ3ãÆF—b6Æ73Ò'7F6²#âG¶F–Ç’æòæÖ‚†òÂ’’ÓâÆ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò&'Fâ6†ÆÆVævRÖ÷F–öâ"FFÖ6†ÆÆVævSÒ"G¶—Ò"G¶6†ÆÆVævTFöæRòvF—6&ÆVBr¢rwÓâGµ7G&–æræg&öÔ6†$6öFRƒcR²’—Ò+rG¶W62‡–6²†ò’—ÓÂö'WGFöãæ’æ¦ö–â‚rr—ÓÂöF—cãÆF—b–CÒ&6†ÆÆVævRÖfVVF&6²"&–ÖÆ—fSÒ'öÆ—FR#âG¶6†ÆÆVævTFöæRòÇ6Æ73Ò&fVVF&6²ö²#âG·G‚‚u&÷fö6&VFR¦’W7FRf–æÆ—¦LH2ârÂuFöF(	—26†ÆÆVævR—26ö×ÆWFRâr—ÓÂ÷æ¢rwÓÂöF—cãÂ÷6V7F–öãà¢Ç6V7F–öâ6Æ73Ò&6&B7F6²#ãÆƒ#âG·G‚‚u'F¦V¬H2‰–’H77G&V¬H2rÂu6†&RæB¶VWr—ÓÂöƒ#ãÇ6Æ73Ò&×WFVB#âG·G‚‚tgVæ<‰¶–’Æö6ÆRÂlH7,H26öçB‰–’lH7,H26W'fW"ârÂtÆö6ÂfVGW&W2Âv—F‚æò66÷VçBæBæò6W'fW"âr—ÓÂ÷ãÆF—b6Æ73Ò'&÷r#ãÆ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò&'Fâ&–Ö'’"–CÒ'6†&R×&öw&W72#î(irG·G‚‚u'F¦V¬H2&öw&W7VÂrÂu6†&R&öw&W72r—ÓÂö'WGFöããÆ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò&'Fâ"–CÒ&6÷’ÖÆ–æ²#î*x’G·G‚‚t6÷–¬H2Æ–æ·VÂrÂt6÷’Æ–æ²r—ÓÂö'WGFöããÆ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò&'Fâ"–CÒ'&–çB×&W÷'B#î(é’G·G‚‚u&–çFV¬H2rÂu&–çBr—ÓÂö'WGFöããÂöF—cãÆF—b6Æ73Ò'&÷r#ãÆ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò&'Fâ"–CÒ&F÷væÆöBÖ6W'F–f–6FR#î)ÊbG·G‚‚tFW66&<H26W'F–f–6GVÂrÂtF÷væÆöB6W'F–f–6FRr—ÓÂö'WGFöããÆ6Æ73Ò&'Fâ"‡&VcÒ"7&öw&W2#âG·G‚‚ufW¦’&öw&W7VÂrÂuf–Wr&öw&W72r—Ò(i#ÂöãÂöF—cãÂ÷6V7F–öãà¢ÂöF—cà¢Ç6V7F–öâ6Æ73Ò&6&B7F6²#ãÆƒ#âG·G‚‚u67W'LH7GW&’FR:æçlH<‰¶&RrÂu7GVG’6†÷'F7WG2r—ÓÂöƒ#ãÆF—b6Æ73Ò&w&–Bs2#ãÆ6Æ73Ò&6&B"‡&VcÒ"66ö6‚#ãÇ7G&öæsî)Êb’6ö6ƒÂ÷7G&öæsãÇ7â6Æ73Ò'6ÖÆÂ×WFVB#âG·G‚‚|8æçG&V,H2‰–’&W,H2w&\‰–VÆ–ÆRârÂt6²æB&W—"Ö—7F¶W2âr—ÓÂ÷7ããÂöãÆ6Æ73Ò&6&B"‡&VcÒ"6&†—f#ãÇ7G&öæsî)j2G·G‚‚u7V&–V7FR‰–’&&VÖRrÂuW'2æB66†VÖW2r—ÓÂ÷7G&öæsãÇ7â6Æ73Ò'6ÖÆÂ×WFVB#âG·G‚‚t&†—föf–6–ÌH2Ræ’ârÂtöff–6–Â&6†—fR'’–V"âr—ÓÂ÷7ããÂöãÆ6Æ73Ò&6&B"‡&VcÒ"7&öw&W2#ãÇ7G&öæsî)k"G·G‚‚t&6·WÆö6ÂrÂtÆö6Â&6·Wr—ÓÂ÷7G&öæsãÇ7â6Æ73Ò'6ÖÆÂ×WFVB#âG·G‚‚tW‡÷'LH26R–×÷'LH2&öw&W7VÂârÂtW‡÷'B÷"–×÷'B&öw&W72âr—ÓÂ÷7ããÂöãÂöF—cãÂ÷6V7F–öãæ°¢B‚r76†&R×&öw&W72rÂVÂ’æöæ6Æ–6²Ò7–æ2‚’Óâ²6öç7BFW‡BÒ6†&UFW‡B‚“²–b†æf–vF÷"ç6†&R’²G'’²v—Bæf–vF÷"ç6†&R‡²F—FÆS¢tv–Öæ¦—R76RrÂFW‡BÂW&Ã¢Æö6F–öâæ‡&VbÒ“²Ò6F6‚·ÒÒVÇ6R6÷’†G·FW‡GÕÆâG¶Æö6F–öâæ‡&VgÖÂG‚‚u&öw&W7VÂf÷7B6÷–BârÂu&öw&W726÷–VBâr’“²Ó°¢B‚r66÷’ÖÆ–æ²rÂVÂ’æöæ6Æ–6²Ò‚’Óâ6÷’†Æö6F–öâæ‡&VbÂG‚‚tÆ–æ·VÂf÷7B6÷–BârÂtÆ–æ²6÷–VBâr’“°¢B‚r7&–çB×&W÷'BrÂVÂ’æöæ6Æ–6²Ò‚’Óâv–æF÷rç&–çB‚“°¢B‚r6F÷væÆöBÖ6W'F–f–6FRrÂVÂ’æöæ6Æ–6²ÒF÷væÆöD6W'F–f–6FS°¢BB‚u¶FFÖ6†ÆÆVævUÒrÂVÂ’æf÷$V6‚‚†"’Óâ²"æöæ6Æ–6²Ò‚’Óâ²6öç7B6†÷6VâÒçVÖ&W"†"æFF6WBæ6†ÆÆVævR“²6öç7Bö²Ò6†÷6VâÓÓÒF–Ç’æ²2æ6†ÆÆVævRÒ²FFS¢FöF”¶W’Â–C¢F–Ç’ç2²wÂr²–6²†F–Ç’ç’Â6†÷6VâÂ6÷'&V7C¢F–Ç’æÓ²–b‚ö²’&V6÷&DÖ—7F¶R†F–Ç’Â6†÷6Vâ“²v–â†ö²ò¢"“²–çB‚“²B‚r66†ÆÆVævRÖfVVF&6²rÂVÂ“òæfö7W2‚“²Ó²Ò“°¢Ó°¢–çB‚“°¢Ó°  ¢d”Uu2æfVVF&6²Ò†VÂÂ’Óâ°¢6öç7B&V6÷&G2Ò…2æfVVF&6²ÇÂµÒ’ç6Æ–6R‚’ç&WfW'6R‚“°¢6öç7B÷F–öâÒ‡fÇVRÂ&òÂVâÂ6VÆV7FVB’ÓâsÆ÷F–öâfÇVSÒ"r²fÇVR²r"r²‡6VÆV7FVBòr6VÆV7FVBr¢rr’²sâr²G‚‡&òÂVâ’²sÂö÷F–öãâs°¢6öç7B–çBÒ‚’Óâ°¢6öç7BFWf–6RÒ²w†öæRrÂwF&ÆWBrÂvFW6·F÷uÓ°¢6öç7Bw&FRÒ²sRrÂsbrÂsrrÂs‚uÓ°¢6öç7BF6²Òµ²wV—¢rÂuV—¢rÂuV—¢uÒÂ²v6ö6‚rÂt’6ö6‚rÂt’6ö6‚uÒÂ²vf÷&×VÆ2rÂtf÷&×VÆRrÂtf÷&×VÆ2uÒÂ²w6–×VÆF–öârÂu6–×VÆ&RrÂtÖö6²W†ÒuÒÂ²v&6†—fRrÂu7V&–V7FR‰–’&&VÖRrÂuW'2æB66†VÖW2uÒÂ²v66W76–&–Æ—G’rÂt66W6–&–Æ—FFRrÂt66W76–&–Æ—G’uÕÓ°¢6öç7B6FVv÷&–W2Òµ²v6öçFVçBrÂt6öì‰¶–çWBò,H77Vç2w&\‰–—BrÂt6öçFVçBò–æ6÷'&V7Bç7vW"uÒÂ²wW6&–Æ—G’rÂtæf–v&R6RWF–Æ—¦&RrÂtæf–vF–öâ÷"W6&–Æ—G’uÒÂ²v66W76–&–Æ—G’rÂt66W6–&–Æ—FFRòfœ‰–&RrÂt66W76–&–Æ—G’òF—7Æ’uÒÂ²v–FVrÂt–FVRFR:æÖ'VìH7LH<‰¶—&RrÂt–×&÷fVÖVçB–FVuÒÂ²v÷F†W"rÂtÇF6WfrÂt÷F†W"uÕÓ°¢VÂæ–ææW$…DÔÂÒ†VB‚~)É2rÂG‚‚uFW7F&RbfVVF&6²rÂuFW7F–ærbfVVF&6²r’ÂG‚‚t§WLH2Æ:æÖ'VìH7LH<‰¶—&VÆ–6‰¶–V’lH7,H26öçB‰–’lH7,H26öÆV7F&RFRFFRW'6öæÆRârÂt†VÇ–×&÷fRF†Rv—F†÷WBâ66÷VçBæBv—F†÷WB6öÆÆV7F–ærW'6öæÂFFâr’’°¢sÇ6V7F–öâ6Æ73Ò&6&B7F6²#âr°¢sÆƒ#âr²G‚‚u6W6—VæR67W'LH2FRFW7F&RrÂu6†÷'BFW7F–ær6W76–öâr’²sÂöƒ#âr°¢sÇ6Æ73Ò&×WFVB#âr²G‚‚tÆVvRò6&6–ìH2ÂÇV7&V¬H2^(	3Ö–çWFRÂö’6ÇfV¬H2ö'6W'f‰¶–âFFVÆR,H6Ü:&âFö":æâ6W7B'&÷w6W"ârÂt6†ö÷6RF6²Âv÷&²f÷"^(	3Ö–çWFW2ÂF†Vâ6fR–÷W"ö'6W'fF–öââFF7F—2–âF†—2'&÷w6W"öæÇ’âr’²sÂ÷âr°¢sÆf÷&Ò–CÒ&fVVF&6²Öf÷&Ò"6Æ73Ò'7F6²#âr°¢sÆF—b6Æ73Ò&w&–Bs"#âr°¢sÆÆ&VÂ6Æ73Ò'7F6²#ãÇ7ãâr²G‚‚tF—7÷¦—F—brÂtFWf–6Rr’²sÂ÷7ããÇ6VÆV7B–CÒ&f"ÖFWf–6R"6Æ73Ò'6V&6‚#âr²FWf–6RæÖ‚‡b’Óâ÷F–öâ‡bÂbÓÓÒw†öæRròuFVÆVföâr¢bÓÓÒwF&ÆWBròuF&ÆWLH2r¢tFW6·F÷rÂe³ÒçFõWW$66R‚’²bç6Æ–6Rƒ’ÂfÇ6R’’æ¦ö–â‚rr’²sÂ÷6VÆV7CãÂöÆ&VÃâr°¢sÆÆ&VÂ6Æ73Ò'7F6²#ãÇ7ãâr²G‚‚t6Æ6rÂtw&FRr’²sÂ÷7ããÇ6VÆV7B–CÒ&f"Öw&FR"6Æ73Ò'6V&6‚#âr²w&FRæÖ‚‡b’Óâ÷F–öâ‡bÂt6Æ6r²b²rÖrÂtw&FRr²bÂfÇ6R’’æ¦ö–â‚rr’²sÂ÷6VÆV7CãÂöÆ&VÃâr°¢sÆÆ&VÂ6Æ73Ò'7F6²#ãÇ7ãâr²G‚‚t6R’FW7FCòrÂuv†BF–B–÷RFW7Còr’²sÂ÷7ããÇ6VÆV7B–CÒ&f"×F6²"6Æ73Ò'6V&6‚#âr²F6²æÖ‚‡b’Óâ÷F–öâ‡e³ÒÂe³ÒÂe³%ÒÂfÇ6R’’æ¦ö–â‚rr’²sÂ÷6VÆV7CãÂöÆ&VÃâr°¢sÆÆ&VÂ6Æ73Ò'7F6²#ãÇ7ãâr²G‚‚t6FVv÷&–RfVVF&6²rÂtfVVF&6²6FVv÷'’r’²sÂ÷7ããÇ6VÆV7B–CÒ&f"Ö6FVv÷'’"6Æ73Ò'6V&6‚#âr²6FVv÷&–W2æÖ‚‡b’Óâ÷F–öâ‡e³ÒÂe³ÒÂe³%ÒÂfÇ6R’’æ¦ö–â‚rr’²sÂ÷6VÆV7CãÂöÆ&VÃâr°¢sÆÆ&VÂ6Æ73Ò'7F6²#ãÇ7ãâr²G‚‚t<:'BFR\‰–÷"f÷7CòrÂt†÷rV7’v2—Còr’²sÂ÷7ããÇ6VÆV7B–CÒ&f"×&F–ær"6Æ73Ò'6V&6‚#âr²³Â"Â2ÂBÂUÒæÖ‚‡b’Óâ÷F–öâ…7G&–ær‡b’Â7G&–ær‡b’²róRrÂ7G&–ær‡b’²róRrÂbÓÓÒR’’æ¦ö–â‚rr’²sÂ÷6VÆV7CãÂöÆ&VÃâr°¢sÂöF—câr°¢sÆÆ&VÂ6Æ73Ò'7F6²#ãÇ7ãâr²G‚‚t6Rf÷7BæV6Æ"6RF–f–6–ÃòrÂuv†Bv2Væ6ÆV"÷"F–ff–7VÇCòr’²sÂ÷7ããÇFW‡F&V–CÒ&f"Öæ÷FR"6Æ73Ò'w&—FR"&÷w3Ò#B"Æ6V†öÆFW#Ò"r²G‚‚u67&–Rö'6W'f‰¶––6(
+brÂuw&—FR–÷W"ö'6W'fF–öâ†W&^(
+br’²r#ãÂ÷FW‡F&VãÂöÆ&VÃâr°¢sÆÆ&VÂ6Æ73Ò&6†V6²#ãÆ–çWBG—SÒ&6†V6¶&÷‚"–CÒ&f"Ö66W72#âÇ7ãâr²G‚‚tÒ:æçL:&Ææ—Bò&ö&ÆVÜH2FR66W6–&–Æ—FFR6Rfœ‰–&RârÂt’f÷VæBâ66W76–&–Æ—G’÷"F—7Æ’—77VRâr’²sÂ÷7ããÂöÆ&VÃâr°¢sÆF—b6Æ73Ò'&÷r#ãÆ'WGFöâ6Æ73Ò&'Fâ&–Ö'’"G—SÒ'7V&Ö—B#î)É2r²G‚‚u6ÇfV¬H2fVVF&6·VÂrÂu6fRfVVF&6²r’²sÂö'WGFöããÆ'WGFöâ6Æ73Ò&'Fâ"G—SÒ&'WGFöâ"–CÒ&fVVF&6²ÖW‡÷'B#î(i2r²G‚‚tW‡÷'LH2ö'6W'f‰¶––ÆRrÂtW‡÷'Bö'6W'fF–öç2r’²sÂö'WGFöããÂöF—câr°¢sÂöf÷&Óâr°¢sÇ6Æ73Ò&†–çB#âr²G‚‚tçR6W&RçVÖRÂVÖ–ÂÂ6öçB6RFFRFW7&RVÆWbâVçG'RfVVF&6²W‡FW&âÂW‡÷'LH2fœ‰––W'VÂ‰–’G&–Ö—FRÖÂÖçVÂW'6öæV’6&R6ö÷&FöæV¬H2FW7F&VârÂtæòæÖRÂVÖ–ÂÂ66÷VçB÷"7GVFVçBFF—2&WVW7FVBâf÷"W‡FW&æÂfVVF&6²ÂW‡÷'BF†Rf–ÆRæB6VæB—BÖçVÆÇ’FòF†RW'6öâ6ö÷&F–æF–ærFW7F–ærâr’²sÂ÷âr°¢sÂ÷6V7F–öãâr°¢sÇ6V7F–öâ6Æ73Ò&6&B7F6²#âr°¢sÆF—b6Æ73Ò'&÷r#ãÆƒ"7G–ÆSÒ&Ö&v–ã£#âr²G‚‚tö'6W'f‰¶–’6ÇfFRÆö6ÂrÂtÆö6ÆÇ’6fVBö'6W'fF–öç2r’²sÂöƒ#ãÇ7â6Æ73Ò&6†—#âr²&V6÷&G2æÆVæwF‚²sÂ÷7ããÂöF—câr°¢‡&V6÷&G2æÆVæwF‚òsÆF—b6Æ73Ò'7F6²#âr²&V6÷&G2æÖ‚‡"’ÓâsÆ'F–6ÆR6Æ73Ò&fVVF&6²Ö6&B#ãÇ7G&öæsâr²W62‡"çF6²’²r+rr²W62‡"æFWf–6R’²r+rr²W62‡"æw&FR’²sÂ÷7G&öæsãÇ6Æ73Ò'6ÖÆÂ×WFVB#âr²W62‡"æ6FVv÷'’ÇÂrr’²r+rr²W62†æWrFFR‡"çv†Vâ’çFôÆö6ÆU7G&–ær…4UBæÆærÓÓÒvVâròvVâÔt"r¢w&òÕ$òr’’²r+rr²W62‡"ç&F–ær’²róRr²‡"æ66W76–&–Æ—G’òr+rr²G‚‚v66W6–&–Æ—FFRrÂv66W76–&–Æ—G’r’¢rr’²sÂ÷ãÇâr²W62‡"ææ÷FRÇÂG‚‚tlH7,H2ö'6W'f‰¶–R67&—<H2ârÂtæòw&—GFVâö'6W'fF–öââr’’²sÂ÷ãÂö'F–6ÆSâr’æ¦ö–â‚rr’²sÂöF—cãÆ'WGFöâ6Æ73Ò&'FâFævW""G—SÒ&'WGFöâ"–CÒ&fVVF&6²Ö6ÆV"#âr²G‚‚|‰‡FW&vRö'6W'f‰¶––ÆRrÂt6ÆV"ö'6W'fF–öç2r’²sÂö'WGFöãâr¢sÇ6Æ73Ò&×WFVB#âr²G‚‚|8ææ<H2çRW†—7LH2ö'6W'f‰¶–’â8ææ6WR7Rò6W6—VæRFRRÖ–çWFRârÂtæòö'6W'fF–öç2–WBâ7F'Bv—F‚RÖÖ–çWFR6W76–öââr’²sÂ÷âr’°¢sÂ÷6V7F–öãâs°¢B‚r6fVVF&6²Öf÷&ÒrÂVÂ’æFDWfVçDÆ—7FVæW"‚w7V&Ö—BrÂ†WfVçB’Óâ°¢WfVçBç&WfVçDFVfVÇB‚“°¢6öç7BF6´Æ&VÂÒB‚r6f"×F6²rÂVÂ’ç6VÆV7FVD÷F–öç5³ÓòçFW‡D6öçFVçBÇÂrs°¢6öç7B&V6÷&BÒ²FWf–6S¢B‚r6f"ÖFWf–6RrÂVÂ’çfÇVRÂw&FS¢B‚r6f"Öw&FRrÂVÂ’çfÇVRÂF6³¢F6´Æ&VÂÂ6FVv÷'“¢B‚r6f"Ö6FVv÷'’rÂVÂ’ç6VÆV7FVD÷F–öç5³ÓòçFW‡D6öçFVçBÇÂrrÂ&F–æs¢B‚r6f"×&F–ærrÂVÂ’çfÇVRÂæ÷FS¢B‚r6f"Öæ÷FRrÂVÂ’çfÇVRçG&–Ò‚’Â66W76–&–Æ—G“¢B‚r6f"Ö66W72rÂVÂ’æ6†V6¶VBÂv†Vã¢æWrFFR‚’çFô•4õ7G&–ær‚’Ó°¢2æfVVF&6²Ò²âââ…2æfVVF&6²ÇÂµÒ’Â&V6÷&EÒç6Æ–6R‚ÓS“°¢6fR‚“°¢Fö7B‡G‚‚tfVVF&6²6ÇfBÆö6ÂârÂtfVVF&6²6fVBÆö6ÆÇ’âr’“°¢–çB‚“°¢Ò“°¢B‚r6fVVF&6²ÖW‡÷'BrÂVÂ’æöæ6Æ–6²Ò‚’Óâ°¢6öç7B&Æö"ÒæWr&Æö"…´¥4ôâç7G&–æv–g’‡²¢tv–Öæ¦—R76RrÂW‡÷'FVDC¢æWrFFR‚’çFô•4õ7G&–ær‚’ÂfVVF&6³¢2æfVVF&6²ÇÂµÒÒÂçVÆÂÂ"•ÒÂ²G—S¢vÆ–6F–öâö§6öârÒ“°¢6öç7BÒFö7VÖVçBæ7&VFTVÆVÖVçB‚vr“²æ‡&VbÒU$Âæ7&VFTö&¦V7EU$Â†&Æö"“²æF÷væÆöBÒvv–Öæ¦—R×76RÖfVVF&6²æ§6öâs²æ6Æ–6²‚“²6WEF–ÖV÷WB‚‚’ÓâU$Âç&Wfö¶Tö&¦V7EU$Â†æ‡&Vb’Â“°¢Ó°¢B‚r6fVVF&6²Ö6ÆV"rÂVÂ“òæFDWfVçDÆ—7FVæW"‚v6Æ–6²rÂ‚’Óâ²2æfVVF&6²ÒµÓ²6fR‚“²–çB‚“²Ò“°¢Ó°¢–çB‚“°¢–b‡òævWB‚v—FVÒr’’°¢B‚r6f"×F6²rÂVÂ’çfÇVRÒwV—¢s°¢–b‡ævWB‚vw&FRr’’B‚r6f"Öw&FRrÂVÂ’çfÇVRÒævWB‚vw&FRr“°¢B‚r6f"Öæ÷FRrÂVÂ’çfÇVRÒG·G‚‚u&ö&ÆVÜH26VÖæÆLH2Æ:æçG&V&&VrÂt—77VR&W÷'FVBf÷"VW7F–öâr—Ó¢(	ÂG·ævWB‚wr’ÇÂævWB‚v—FVÒr—Ş(	Ò+rG·ævWB‚w7V&¦V7Br’ÇÂrwÒ+rG·G‚‚tFW67&–R6RG&V'V–RfW&–f–6BârÂtFW67&–&Rv†B6†÷VÆB&R6†V6¶VBâr—Ö°¢B‚r6f"Öæ÷FRrÂVÂ’æfö7W2‚“°¢Ğ¢Ó° ¢ò¢)H)H)H)H)H)H)H)H)H)H)H)H)HFW7&R)H)H)H)H)H)H)H)H)H)H)H)H)H¢ğ¢d”Uu2æFW7&RÒ†VÂ’Óâ°¢VÂæ–ææW$…DÔÂÒ†VB‚v’rÂB‚v&÷WEF—FÆRr’ÂB‚v&÷WDÆVFRr’’² ¢ÆF—b6Æ73Ò&w&–Bs"#à¢Ç6V7F–öâ6Æ73Ò&6&B#ãÆƒ#âG·B‚v&÷WEv†Br—ÓÂöƒ#ãÇâG·B‚v&÷WEv†D&öG’r—ÓÂ÷ãÂ÷6V7F–öãà¢Ç6V7F–öâ6Æ73Ò&6&B"7G–ÆSÒ&&÷&FW#£'‚6öÆ–Bf"‚ÒÖ&B’#ãÆƒ#âG·B‚v&÷WDæ÷Br—ÓÂöƒ#ãÇâG·B‚v&÷WDæ÷D&öG’r—ÓÂ÷ãÂ÷6V7F–öãà¢Ç6V7F–öâ6Æ73Ò&6&B#ãÆƒ#âG·B‚v&÷WD’r—ÓÂöƒ#ãÇâG·B‚v&÷WD”&öG’r—ÓÂ÷ãÂ÷6V7F–öãà¢Ç6V7F–öâ6Æ73Ò&6&B#ãÆƒ#âG·B‚v&÷WE&—f7’r—ÓÂöƒ#ãÇâG·B‚v&÷WE&—f7”&öG’r—ÓÂ÷ãÂ÷6V7F–öãà¢ÂöF—cà¢Ç6V7F–öâ6Æ73Ò&6&B7F6²#ãÆƒ#âG·B‚v&÷WDÆ–æ·2r—ÓÂöƒ#à¢ÇVÃâG´Bäôdd”4”ÂæÖ‚†ò’ÓâÆÆ“ãÆ‡&VcÒ"G¶òçWÒ"F&vWCÒ%ö&Ææ²"&VÃÒ&æö÷VæW"#âG¶W62‡–6²†òçB’—Ò(isÂöãÂöÆ“æ’æ¦ö–â‚rr—ÓÂ÷VÃà¢Ç6Æ73Ò&†–çB#âG·B‚v&÷WD6Âr—ÓÂ÷à¢Â÷6V7F–öãà¢Ç6Æ73Ò'6ÖÆÂ×WFVB#âG·B‚v&÷WDWF†÷"r—Ò+rÆ‡&VcÒ"ââ÷÷'FföÆ–òæ‡FÖÂ#å÷'FföÆ–óÂöâ+rÆ‡&VcÒ&‡GG3¢òöÆW&æG&VVæv—F‡V"æ–òô$6ò"F&vWCÒ%ö&Ææ²"&VÃÒ&æö÷VæW"#ä$276R(isÂöãÂ÷æ°¢Ó° ¢ò¢)H)H)H)H)H)H)H)H)H)H)H)H)Hæf–v‰¶–RbWfVæ–ÖVçFRvÆö&ÆR)H)H)H)H)H)H)H)H)H)H)H)H)H¢ğ¢gVæ7F–öâ÷Väæb‚’²B‚r76–FVæbr’æ6Æ74Æ—7BæFB‚v÷Vâr“²B‚r767&–Òr’æ†–FFVâÒfÇ6S²B‚r6ÖVçRÖ'Fâr’ç6WDGG&–'WFR‚v&–ÖW‡æFVBrÂwG'VRr“²B‚r76–FVæbr’æfö7W2‚“²Ğ¢gVæ7F–öâ6Æ÷6Tæb‚’²–b‚B‚r76–FVæbr’æ6Æ74Æ—7Bæ6öçF–ç2‚v÷Vâr’’&WGW&ã²B‚r76–FVæbr’æ6Æ74Æ—7Bç&VÖ÷fR‚v÷Vâr“²B‚r767&–Òr’æ†–FFVâÒG'VS²B‚r6ÖVçRÖ'Fâr’ç6WDGG&–'WFR‚v&–ÖW‡æFVBrÂvfÇ6Rr“²Ğ¢B‚r6ÖVçRÖ'Fâr’æFDWfVçDÆ—7FVæW"‚v6Æ–6²rÂ‚’ÓâB‚r76–FVæbr’æ6Æ74Æ—7Bæ6öçF–ç2‚v÷Vâr’ò6Æ÷6Tæb‚’¢÷Väæb‚’“°¢B‚r767&–Òr’æFDWfVçDÆ—7FVæW"‚v6Æ–6²rÂ‚’Óâ²6Æ÷6Tæb‚“²B‚r6ÖVçRÖ'Fâr’æfö7W2‚“²Ò“°¢Fö7VÖVçBæFDWfVçDÆ—7FVæW"‚v¶W–F÷vârÂ†R’Óâ²–b†Ræ¶W’ÓÓÒtW66RrbbB‚r76–FVæbr’æ6Æ74Æ—7Bæ6öçF–ç2‚v÷Vâr’’²6Æ÷6Tæb‚“²B‚r6ÖVçRÖ'Fâr’æfö7W2‚“²ÒÒ“° ¢Fö7VÖVçBæFDWfVçDÆ—7FVæW"‚v6Æ–6²rÂ†R’Óâ°¢6öç7BÂÒRçF&vWBæ6Æ÷6W7B‚u¶FF×6WBÖÆæuÒr“²–b†Â’²4UBæÆærÒÂæFF6WBç6WDÆæs²6fU6WB‚“²ÖF„66†Ræ6ÆV"‚“²Ç•6WGF–æw2‚“²Æ&VÄwV–FR‚“²&÷WFR†fÇ6R“²Âæfö7W2‚“²Ğ¢6öç7BF‚ÒRçF&vWBæ6Æ÷6W7B‚u¶FF×6WB×F†VÖUÒr“²–b‡F‚’²4UBçF†VÖRÒF‚æFF6WBç6WEF†VÖS²6fU6WB‚“²Ç•6WGF–æw2‚“²Ğ¢6öç7B7¢ÒRçF&vWBæ6Æ÷6W7B‚u¶FF×6WB×6—¦UÒr“²–b‡7¢’²4UBç6—¦RÒ7¢æFF6WBç6WE6—¦S²6fU6WB‚“²Ç•6WGF–æw2‚“²Ğ¢Ò“°¢B‚r7F†VÖRÖ'Fâr’æFDWfVçDÆ—7FVæW"‚v6Æ–6²rÂ‚’Óâ²4UBçF†VÖRÒ—4F&²‚’òvÆ–v‡Br¢vF&²s²6fU6WB‚“²Ç•6WGF–æw2‚“²Ò“°¢B‚r7&VF–ærÖwV–FRÖ'Fâr’æFDWfVçDÆ—7FVæW"‚v6Æ–6²rÂ‚’Óâ6WE&VF–ætwV–FR‚wV–FRæöâ’“°¢6öç7BæWGv÷&µ7FGW2ÒB‚r6æWGv÷&²×7FGW2r“°¢6öç7B–çDæWGv÷&²Ò‡7FFR’Óâ²–b‚æWGv÷&µ7FGW2’&WGW&ã²6öç7Böfc×7FFSÓÓÒvöffÆ–æRs²æWGv÷&µ7FGW2æFF6WBç7FFS×7FFS²æWGv÷&µ7FGW2çFW‡D6öçFVçCÖöfc÷G‚‚töffÆ–æR+r66†RÆö6ÂrÂtöffÆ–æR+rÆö6Â66†Rr“§G‚‚töæÆ–æRrÂtöæÆ–æRr“²æWGv÷&µ7FGW2çF—FÆSÖöfc÷G‚‚tÆ–6‰¶–föÆ÷6\‰—FRfœ‰––W&VÆR6ÇfFRR6W7BF—7÷¦—F—bârÂuF†R—2W6–ærf–ÆW26fVBöâF†—2FWf–6Râr“§G‚‚t6öì‰¶–çWGVÂÆ–6‰¶–V’W7FR66W6–&–ÂöæÆ–æRârÂt6öçFVçB—2f–Æ&ÆRöæÆ–æRâr“¶æWGv÷&µ7FGW2ç6WDGG&–'WFR‚v&–ÖÆ&VÂrÆæWGv÷&µ7FGW2çFW‡D6öçFVçB“²Ó°¢v–æF÷ræFDWfVçDÆ—7FVæW"‚vöæÆ–æRrÂ‚“Óç–çDæWGv÷&²‚vöæÆ–æRr’“²v–æF÷ræFDWfVçDÆ—7FVæW"‚vöffÆ–æRrÂ‚“Óç–çDæWGv÷&²‚vöffÆ–æRr’“²–çDæWGv÷&²†æf–vF÷"æöäÆ–æSòvöæÆ–æRs¢vöffÆ–æRr“°¢6öç7BÆ&VÄwV–FSÒ‚“Óç¶6öç7BÆ&VÃÖwV–FRæöã÷G‚‚tFW¦7F—fV¬H2v†–GVÂFR6—F—&RrÂuGW&âöfb&VF–ærwV–FRr“§G‚‚t7F—fV¬H2v†–GVÂFR6—F—&RrÂuGW&âöâ&VF–ærwV–FRr“²B‚r7&VF–ærÖwV–FRÖ'Fâr’ç6WDGG&–'WFR‚v&–ÖÆ&VÂrÆÆ&VÂ“²B‚r7&VF–ærÖwV–FRÖ'Fâr’çF—FÆSÖÆ&VÃ·Ó°¢Æ&VÄwV–FR‚“°¢B‚r7&VF–ærÖwV–FRÖ'Fâr’æFDWfVçDÆ—7FVæW"‚v6Æ–6²rÆÆ&VÄwV–FR“°¢B‚r76WGF–æw2Ö'Fâr’æFDWfVçDÆ—7FVæW"‚v6Æ–6²rÂ‚’ÓâB‚r76WGF–æw2r’ç6†÷tÖöFÂ‚’“°¢B‚r76WBÖföçBr’æFDWfVçDÆ—7FVæW"‚v6†ævRrÂ†R’Óâ²4UBæföçBÒRçF&vWBæ6†V6¶VBòvÆW†VæBr¢rs²6fU6WB‚“²Ç•6WGF–æw2‚“²Ò“°¢B‚r76WB×76–ærr’æFDWfVçDÆ—7FVæW"‚v6†ævRrÂ†R’Óâ²4UBç76–ærÒRçF&vWBæ6†V6¶VC²6fU6WB‚“²Ç•6WGF–æw2‚“²Ò“°¢B‚r76WBÖ6öçG&7Br’æFDWfVçDÆ—7FVæW"‚v6†ævRrÂ†R’Óâ²4UBæ6öçG&7BÒRçF&vWBæ6†V6¶VC²6fU6WB‚“²Ç•6WGF–æw2‚“²Ò“°¢B‚r76WBÖÖ÷F–öâr’æFDWfVçDÆ—7FVæW"‚v6†ævRrÂ†R’Óâ²4UBæÖ÷F–öâÒRçF&vWBæ6†V6¶VBòw&VGV6Rr¢rs²6fU6WB‚“²Ç•6WGF–æw2‚“²Ò“°¢B‚r76WB×6÷VæBr’æFDWfVçDÆ—7FVæW"‚v6†ævRrÂ†R’Óâ²4UBç6÷VæBÒRçF&vWBæ6†V6¶VC²6fU6WB‚“²Ò“°¢ÖF6„ÖVF–‚r‡&VfW'2Ö6öÆ÷"×66†VÖS¢F&²’r’æFDWfVçDÆ—7FVæW#òâ‚v6†ævRrÂÇ•6WGF–æw2“°¢v–æF÷ræFDWfVçDÆ—7FVæW"‚v†6†6†ævRrÂ‚’Óâ&÷WFR‚’“°¢v–æF÷ræFDWfVçDÆ—7FVæW"‚v&Vf÷&W&–çBrÂ‚’ÓâBB‚vFWF–Ç2r’æf÷$V6‚‚†B’Óâ²Bæ÷VâÒG'VS²Ò’“° ¢Ç•6WGF–æw2‚“°¢&÷WFR†fÇ6R“° ¢–b‚w6W'f–6Uv÷&¶W"r–âæf–vF÷"bbÆö6F–öâç&÷Fö6öÂÓÓÒv‡GG3¢r’æf–vF÷"ç6W'f–6Uv÷&¶W"ç&Vv—7FW"‚w7ræ§2r’çF†Vâ‡&VsÓç²–b‡&Vrçv—F–ær—¶æWGv÷&µ7FGW2çFW‡D6öçFVçC×G‚‚t7GVÆ—¦&RF—7öæ–&–ÌH2rÂuWFFR&VG’r“¶æWGv÷&µ7FGW2æFF6WBç7FFSÒwWFFRs¶æWGv÷&µ7FGW2ç6WDGG&–'WFR‚v&–ÖÆ&VÂrÆæWGv÷&µ7FGW2çFW‡D6öçFVçB“·Ò&VræFDWfVçDÆ—7FVæW"‚wWFFVf÷VæBrÂ‚“Óç¶6öç7Bv÷&¶W#×&Vræ–ç7FÆÆ–æs·v÷&¶W#òæFDWfVçDÆ—7FVæW"‚w7FFV6†ævRrÂ‚“Óç¶–b‡v÷&¶W"ç7FFSÓÓÒv–ç7FÆÆVBrbfæf–vF÷"ç6W'f–6Uv÷&¶W"æ6öçG&öÆÆW"—¶æWGv÷&µ7FGW2çFW‡D6öçFVçC×G‚‚t7GVÆ—¦&R+r&\:ææ6&<H2v–ærÂuWFFR+r&VÆöBvRr“¶æWGv÷&µ7FGW2æFF6WBç7FFSÒwWFFRs¶æWGv÷&µ7FGW2ç6WDGG&–'WFR‚v&–ÖÆ&VÂrÆæWGv÷&µ7FGW2çFW‡D6öçFVçB“¶æWGv÷&µ7FGW2çF—FÆS×G‚‚ufW'6—VæVæ÷\H2W7FRFW6<H7&6LH2â&\:ææ6&<H2v–æ<:&æB’FW&Ö–æBârÂuF†RæWrfW'6–öâ—2F÷væÆöFVBâ&VÆöBv†Vâ–÷R&R&VG’âr“·×Ò“·Ò“²Ò’æ6F6‚‚‚’Óâ·Ò“° ¢òòW‡W2VçG'RFW7FP¢v–æF÷räu2Ò²'6TÖF‚Â7V²ÂÆ–äÖF‚Â'V–ÆDFV6²Â7FFS¢‚’Óâ2Ó°§Ò’‚“° 

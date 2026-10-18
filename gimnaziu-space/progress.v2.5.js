@@ -9,7 +9,7 @@ window.GS_PROGRESS = (() => {
   const isoDate = (v) => typeof v === 'string' && Number.isFinite(Date.parse(v));
   const safeKey = (k) => typeof k === 'string' && k.length > 0 && k.length <= 180 && !['__proto__', 'prototype', 'constructor'].includes(k);
   const localized = (v) => typeof v === 'string' || (isRecord(v) && typeof v.ro === 'string' && typeof v.en === 'string');
-  const fresh = () => ({ v: 1, xp: 0, days: {}, quiz: {}, quizTime: {}, quizzes: 0, perfect: 0, cards: {}, reviews: 0, known: {}, fav: {}, memoRead: {}, pomos: 0, sims: [], plan: {}, badges: {}, mistakes: [], challenge: null, feedback: [], diagnostics: [], mastery: {} });
+  const fresh = () => ({ v: 1, xp: 0, days: {}, quiz: {}, quizTime: {}, quizzes: 0, perfect: 0, cards: {}, reviews: 0, known: {}, fav: {}, memoRead: {}, pomos: 0, sims: [], pisa: [], plan: {}, badges: {}, mistakes: [], challenge: null, feedback: [], diagnostics: [], mastery: {} });
   const map = (src, check) => {
     if (src === undefined) return {};
     if (!isRecord(src)) return null;
@@ -110,6 +110,14 @@ window.GS_PROGRESS = (() => {
         const skills = v.skills.map(skill);
         if (skills.some((x) => x === null)) return null;
         out.diagnostics.push({ date: v.date, subject: v.subject, grade: v.grade, total: v.total, correct: v.correct, skills });
+      }
+    }
+    if (s.pisa !== undefined) {
+      if (!Array.isArray(s.pisa) || s.pisa.length > 100) return null;
+      out.pisa = [];
+      for (const v of s.pisa) {
+        if (!isRecord(v) || !isoDate(v.date) || !integer(v.total, 20) || v.total < 1 || !integer(v.correct, v.total)) return null;
+        out.pisa.push({ date: v.date, total: v.total, correct: v.correct });
       }
     }
     out.mastery = map(s.mastery, skill);

@@ -22,6 +22,8 @@ Aplicație de recapitulare pentru clasele V–VIII și Evaluarea Națională, co
 | Cartonașe | Repetare spațiată Leitner în 5 cutii, generată automat din formule, memoratoare, date istorice și glosar |
 | Quiz + AI Coach | 104 de întrebări cu explicații, registru persistent al greșelilor cu repetare spațiată și AI Coach local pentru întrebări și explicații |
 | Diagnostic + quiz adaptiv | Test scurt, tendință diagnostic, filtre după subiect și dificultate orientativă, quiz adaptiv și mod de repetare a greșelilor |
+| Compare | Compară două diagnostice după scor și competențe comune sau două sesiuni PISA practice; valorile rămân locale și sunt orientative |
+| PISA · aplică | Șase sarcini originale bilingve din lectură, matematică și științe, cu explicații și istoric local; nu sunt itemi sau scoruri oficiale PISA |
 | Simulare EN | Matematică (12 itemi + 3 probleme cu barem orientativ) și Română (text original, 6 itemi, compunere cu listă de verificare), cu cronometru |
 | Focus & plan | Pomodoro 25/5/15, plan adaptiv de 7 zile și mod de concentrare |
 | Progres | XP, serii, activitate, tendința diagnosticelor, timp mediu per item, raport local pentru familie/profesor, 12 insigne, istoric simulări, export/import/ștergere |

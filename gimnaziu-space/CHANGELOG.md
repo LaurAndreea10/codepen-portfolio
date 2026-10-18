@@ -70,3 +70,11 @@ Pachet de validare și lansare fără costuri:
 - Backup JSON cu format explicit, compatibil cu exporturile v1 și validare completă a structurilor nested înainte de import; un fișier invalid sau prea mare nu suprascrie datele curente.
 - Adăugat test automat pentru structura celor 104 de întrebări, textele RO/EN, răspunsuri, clase, materii, rutele arhivei și validarea backupurilor.
 - Verificarea curriculumului rămâne marcată ca revizie de profesor; testul automat nu pretinde că validează adevărul fiecărei explicații.
+
+## 2.6.0 — 2026-10-18
+
+- Adăugată pagina Compare pentru a pune alături diagnostice și sesiuni PISA practice, cu progres pe competențe comune.
+- Adăugat set PISA-style de șase sarcini originale, bilingve, din lectură, matematică și științe, cu explicații și istoric local.
+- Rezultatele PISA intră în backupul verificat; datele vechi rămân compatibile.
+- Actualizat cache-ul PWA și descrierile pentru noile module.
+- Pagina precizează că sarcinile sunt orientative, nu itemi, punctaje sau evaluări oficiale OECD/PISA.
