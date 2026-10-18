@@ -11,3 +11,10 @@ Prima versiune.
 - Pomodoro, plan de 7 zile, progres, insigne, export/import
 - RO/EN, temă luminoasă/întunecată, setări de accesibilitate, PWA offline
 - Mențiune vizibilă pe fiecare pagină: nu este material didactic oficial
+
+
+## v2.0.0 · Unificare ExamSpace V–VIII · 2026-10-18
+
+- Gimnaziu Space devine aplicația principală pentru clasele V–VIII.
+- Au fost reunite AI Coach, registrul persistent al răspunsurilor greșite și explicațiile cu pași de reparare.
+- Păstrate: formule, memoratoare, quizuri, simulări, subiecte și bareme, RO/EN, dark mode și accesibilitate.

@@ -13,7 +13,7 @@
     get(k, fb) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch { return fb; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } }
   };
-  const fresh = () => ({ v: 1, xp: 0, days: {}, quiz: {}, quizzes: 0, perfect: 0, cards: {}, reviews: 0, known: {}, fav: {}, memoRead: {}, pomos: 0, sims: [], plan: {}, badges: {} });
+  const fresh = () => ({ v: 1, xp: 0, days: {}, quiz: {}, quizzes: 0, perfect: 0, cards: {}, reviews: 0, known: {}, fav: {}, memoRead: {}, pomos: 0, sims: [], plan: {}, badges: {}, mistakes: [] });
   const validate = (s) => (s && typeof s === 'object' && s.v === 1 && typeof s.xp === 'number') ? Object.assign(fresh(), s) : fresh();
   let S = validate(store.get(KEY));
   let SET = Object.assign({ lang: 'ro', theme: 'system', size: '1', font: '', contrast: false, motion: '', spacing: false, sound: true, grade: 0 }, store.get(SKEY, {}));
@@ -26,7 +26,7 @@
       skip: 'Sari la conținut', menu: 'Meniu', settings: 'Setări de accesibilitate', settingsTitle: 'Setări de accesibilitate', close: 'Închide',
       navLearn: 'Învață', navPractice: 'Exersează', navYou: 'Tu', navNote: 'Nu este material didactic oficial.',
       'nav.acasa': 'Acasă', 'nav.clase': 'Pe clase', 'nav.formule': 'Formule', 'nav.formuleShort': 'Formule', 'nav.memorator': 'Memoratoare', 'nav.memoShort': 'Memo',
-      'nav.glosar': 'Glosar', 'nav.cartonase': 'Cartonașe', 'nav.quiz': 'Quiz', 'nav.simulare': 'Simulare EN', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progres', 'nav.despre': 'Despre & surse',
+      'nav.glosar': 'Glosar', 'nav.coach': 'AI Coach', 'nav.cartonase': 'Cartonașe', 'nav.quiz': 'Quiz', 'nav.simulare': 'Simulare EN', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progres', 'nav.despre': 'Despre & surse',
       'disc.title': 'Important:', 'disc.body': 'aplicație de recapitulare creată independent. Nu este material didactic oficial și nu înlocuiește manualele, profesorul sau documentele Ministerului Educației.',
       'set.theme': 'Temă', 'set.system': 'Ca sistemul', 'set.light': 'Luminoasă', 'set.dark': 'Întunecată', 'set.size': 'Mărimea textului',
       'set.font': 'Font ușor de citit (Lexend)', 'set.spacing': 'Spațiere mai mare între rânduri', 'set.contrast': 'Contrast ridicat', 'set.motion': 'Reduce animațiile', 'set.sound': 'Sunet la final de Pomodoro',
@@ -46,7 +46,7 @@
       demoFlag: 'DATE DE EXEMPLU', demoText: 'Valorile de aici sunt inventate, ca să vezi cum arată aplicația după câteva săptămâni de folosire.',
       mineEmpty: 'Încă nu ai progres. Începe cu un quiz scurt sau câteva cartonașe — totul se actualizează automat.',
       st: { xp: 'XP', streak: 'zile la rând', quizzes: 'quiz-uri', acc: 'acuratețe', cards: 'cartonașe repetate', known: 'formule știute', memos: 'memoratoare citite', pomos: 'sesiuni de focus' },
-      coachTitle: 'Coach local', coachNote: 'Sugestii calculate în browser, din activitatea ta. Nu trimite date nicăieri și nu folosește AI.',
+      coachTitle: 'Coach local', coachNote: 'Sugestii calculate în browser, din activitatea ta. Nu trimite date nicăieri. AI Coach oferă explicații orientative.',
       quick: 'Pornire rapidă', quickQuiz: 'Quiz de 5 întrebări', quickCards: 'Repetă cartonașe', quickFormulas: 'Formulele clasei mele', quickSim: 'Simulare EN',
       subjectsTitle: 'Materii',
       coach: {
@@ -128,7 +128,7 @@
       skip: 'Skip to content', menu: 'Menu', settings: 'Accessibility settings', settingsTitle: 'Accessibility settings', close: 'Close',
       navLearn: 'Learn', navPractice: 'Practise', navYou: 'You', navNote: 'Not official teaching material.',
       'nav.acasa': 'Home', 'nav.clase': 'By grade', 'nav.formule': 'Formulas', 'nav.formuleShort': 'Formulas', 'nav.memorator': 'Study sheets', 'nav.memoShort': 'Sheets',
-      'nav.glosar': 'Glossary', 'nav.cartonase': 'Flashcards', 'nav.quiz': 'Quiz', 'nav.simulare': 'Mock exam', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progress', 'nav.despre': 'About & sources',
+      'nav.glosar': 'Glossary', 'nav.coach': 'AI Coach', 'nav.cartonase': 'Flashcards', 'nav.quiz': 'Quiz', 'nav.simulare': 'Mock exam', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progress', 'nav.despre': 'About & sources',
       'disc.title': 'Important:', 'disc.body': 'an independently made revision app. It is not official teaching material and does not replace textbooks, teachers or Ministry of Education documents.',
       'set.theme': 'Theme', 'set.system': 'System', 'set.light': 'Light', 'set.dark': 'Dark', 'set.size': 'Text size',
       'set.font': 'Easy-to-read font (Lexend)', 'set.spacing': 'Wider line spacing', 'set.contrast': 'High contrast', 'set.motion': 'Reduce motion', 'set.sound': 'Sound when a Pomodoro ends',
@@ -788,7 +788,14 @@
       const { q } = run.qs[run.i];
       const ok = oi === q.a;
       S.quiz[q.s] = S.quiz[q.s] || { ok: 0, bad: 0 };
-      ok ? (S.quiz[q.s].ok++, run.ok++) : (S.quiz[q.s].bad++, run.wrong.push(q));
+      if (ok) {
+        S.quiz[q.s].ok++; run.ok++;
+      } else {
+        S.quiz[q.s].bad++; run.wrong.push(q);
+        const mistake = { id: q.s + '|' + pick(q.q), s: q.s, g: q.g, q: q.q, chosen: q.o[oi], correct: q.o[q.a], x: q.x, when: new Date().toISOString() };
+        S.mistakes = [...(S.mistakes || [])].filter((m) => m && m.id !== mistake.id).concat(mistake).slice(-50);
+        save();
+      }
       gain(ok ? 5 : 0, true);
       $$('.opt', el).forEach((b) => {
         b.disabled = true; const v = Number(b.dataset.oi);
@@ -1048,6 +1055,68 @@
       try { const data = JSON.parse(await f.text()); if (data?.v !== 1 || typeof data.xp !== 'number') throw 0; S = validate(data); save(); toast(t('importDone')); route(); }
       catch { toast(t('importBad')); }
     });
+  };
+
+  /* ───────────── AI Coach & registrul greșelilor ───────────── */
+  const tx = (ro, en) => SET.lang === 'ro' ? ro : en;
+  function explainMistake(m) {
+    const tips = {
+      mat: tx('Scrie datele, alege formula, înlocuiește valorile și verifică unitatea. La ecuații, fă aceeași operație în ambele părți și verifică rezultatul prin înlocuire.',
+        'Write the known data, choose the formula, substitute values and check the unit. For equations, do the same operation on both sides and verify by substitution.'),
+      rom: tx('Citește cerința, caută dovada în text și răspunde în propoziții clare. Pentru gramatică, pune întrebarea potrivită și verifică rolul cuvântului în enunț.',
+        'Read the task, find evidence in the text and answer in clear sentences. For grammar, ask the right question and check the word’s role in the sentence.'),
+      fiz: tx('Notează mărimile și unitățile, scrie formula, transformă unitățile dacă este nevoie și verifică dacă rezultatul are sens fizic.',
+        'Note the quantities and units, write the formula, convert units when needed and check whether the result makes physical sense.'),
+      chim: tx('Identifică substanțele și mărimile cunoscute, scrie relația folosită și verifică simbolurile și unitățile înainte de calcul.',
+        'Identify the substances and known quantities, write the relationship used and check symbols and units before calculating.'),
+      ist: tx('Leagă evenimentul de cauză și consecință. Construiește o mini-cronologie și caută cuvintele care indică ordinea în timp.',
+        'Connect the event to its cause and consequence. Build a mini-timeline and look for words that signal time order.'),
+      geo: tx('Pornește de la legendă, orientare și scară. Identifică simbolul și relația dintre distanța de pe hartă și distanța reală.',
+        'Start with the legend, orientation and scale. Identify the symbol and the relationship between map distance and real distance.'),
+      eng: tx('Identifică subiectul, timpul și forma verbului. Verifică persoana și cuvintele-indiciu precum every day, yesterday sau tomorrow.',
+        'Identify the subject, tense and verb form. Check the person and clue words such as every day, yesterday or tomorrow.')
+    };
+    return `<strong>${tx('Explicație pentru', 'Explanation for')} ${esc(subjName(m.s))}</strong><p>${esc(pick(m.x))}</p><p><strong>${tx('Pași de reparare', 'Repair steps')}</strong><br>${tips[m.s] || tips.mat}</p><p class="hint">${tx('Ai ales', 'You chose')}: ${esc(pick(m.chosen))} · ${tx('Corect', 'Correct')}: ${esc(pick(m.correct))}</p>`;
+  }
+  function coachAnswer(text) {
+    const q = norm(text || '');
+    if (!q.trim()) return tx('Scrie o întrebare concretă, de exemplu: „Cum calculez aria?” sau „De ce am greșit?”.', 'Write a concrete question, for example: “How do I calculate area?” or “Why was my answer wrong?”');
+    if (q.includes('frac')) return tx('<strong>Fracții:</strong> numitorul arată în câte părți egale este împărțit întregul, iar numărătorul câte părți luăm. La adunare, caută un numitor comun înainte să aduni numărătorii.', '<strong>Fractions:</strong> the denominator shows how many equal parts make the whole, while the numerator shows how many parts we take. For addition, find a common denominator before adding numerators.');
+    if (q.includes('procent') || q.includes('percent')) return tx('<strong>Procente:</strong> p% din N = (p × N) / 100. Exemplu: 25% din 80 = 20. Verifică prin estimare: 25% este un sfert.', '<strong>Percentages:</strong> p% of N = (p × N) / 100. Example: 25% of 80 = 20. Check by estimation: 25% is one quarter.');
+    if (q.includes('arie') || q.includes('area')) return tx('<strong>Aria:</strong> identifică forma, adu dimensiunile la aceeași unitate, scrie formula și apoi înlocuiește valorile. Dreptunghi: A = L × l. Triunghi: A = (b × h) / 2.', '<strong>Area:</strong> identify the shape, use the same unit for dimensions, write the formula and then substitute values. Rectangle: A = L × l. Triangle: A = (b × h) / 2.');
+    if (q.includes('ecua') || q.includes('equation')) return tx('<strong>Ecuații:</strong> izolează necunoscuta făcând aceeași operație în ambele membre. La final, înlocuiește valoarea găsită pentru verificare.', '<strong>Equations:</strong> isolate the unknown by doing the same operation on both sides. Finally, substitute the result to check it.');
+    if (q.includes('idee') || q.includes('subiect') || q.includes('text') || q.includes('main idea')) return tx('<strong>Ideea principală:</strong> întreabă ce mesaj rămâne dacă elimini detaliile. Caută ideea repetată sau susținută de exemple și formuleaz-o în 1–2 propoziții.', '<strong>Main idea:</strong> ask what message remains if you remove details. Find the repeated idea or the one supported by examples and express it in 1–2 sentences.');
+    if (q.includes('greș') || q.includes('gres') || q.includes('mistake') || q.includes('wrong')) {
+      const last = (S.mistakes || []).slice(-1)[0];
+      return last ? explainMistake(last) : tx('Nu există încă o greșeală înregistrată. Începe un quiz, iar explicația va apărea aici.', 'No mistake has been recorded yet. Start a quiz and the explanation will appear here.');
+    }
+    return tx('<strong>Metoda de învățare:</strong> împarte întrebarea în trei: ce știu, ce trebuie să aflu și ce regulă leagă cele două. Explică răspunsul cu propriile cuvinte și verifică-l printr-un exemplu simplu.', '<strong>Study method:</strong> split the question into three parts: what I know, what I need to find and what rule connects them. Explain the answer in your own words and check it with a simple example.');
+  }
+  VIEWS.coach = (el) => {
+    const render = () => {
+      const records = (S.mistakes || []).slice().reverse();
+      el.innerHTML = head('✦', tx('AI Coach — întrebări și greșeli', 'AI Coach — questions and mistakes'), tx('Întreabă în cuvinte simple. Primești ghidare locală, orientativă, construită din explicațiile aplicației.', 'Ask in simple words. You get local, orientation guidance built from the app’s explanations.')) + `
+        <section class="card stack">
+          <h2>${tx('Ce vrei să înțelegi?', 'What do you want to understand?')}</h2>
+          <p class="muted">${tx('Exemple: „Cum calculez aria?”, „Explică-mi procentele”, „De ce am greșit?”, „Ce este ideea principală?”', 'Examples: “How do I calculate area?”, “Explain percentages”, “Why was my answer wrong?”, “What is the main idea?”')}</p>
+          <label class="sr" for="coach-q">${tx('Întrebarea ta', 'Your question')}</label>
+          <textarea id="coach-q" class="write" rows="4" placeholder="${tx('Scrie întrebarea aici…', 'Write your question here…')}"></textarea>
+          <div class="row"><button type="button" class="btn primary" id="coach-ask">✦ ${tx('Explică', 'Explain')}</button><button type="button" class="btn" id="coach-mistakes">${tx('Analizează greșelile mele', 'Analyse my mistakes')}</button></div>
+          <div id="coach-answer" class="feedback" hidden aria-live="polite"></div>
+          <p class="hint">${tx('AI Coach este local și orientativ; nu trimite întrebările la un serviciu extern, nu este profesor și nu înlocuiește materialul didactic sau baremul oficial.', 'AI Coach is local and for orientation; it does not send questions to an external service, is not a teacher and does not replace teaching material or official marking schemes.')}</p>
+        </section>
+        <section class="card stack">
+          <div class="row"><h2 style="margin:0">${tx('Răspunsuri greșite salvate', 'Saved wrong answers')}</h2><span class="chip">${records.length}</span></div>
+          ${records.length ? `<div class="stack">${records.map((m, i) => `<article class="mistake-card"><strong>${esc(subjName(m.s))} · ${esc(pick(m.q))}</strong><p class="small muted">${tx('Ai ales', 'You chose')}: ${esc(pick(m.chosen))} · ${tx('Corect', 'Correct')}: ${esc(pick(m.correct))}</p><div class="feedback">${explainMistake(m)}</div><button type="button" class="btn sm" data-mistake="${i}">${tx('Explică în AI Coach', 'Explain in AI Coach')} →</button></article>`).join('')}</div><button type="button" class="btn danger" id="coach-clear">${tx('Șterge registrul', 'Clear log')}</button>` : `<p class="muted">${tx('Încă nu ai greșeli salvate. După un quiz, fiecare răspuns greșit va apărea aici cu explicații.', 'No mistakes saved yet. After a quiz, every wrong answer will appear here with explanations.')}</p>`}
+        </section>`;
+      const answer = $('#coach-answer', el);
+      const question = $('#coach-q', el);
+      $('#coach-ask', el).onclick = () => { answer.hidden = false; answer.innerHTML = coachAnswer(question.value); };
+      $('#coach-mistakes', el).onclick = () => { answer.hidden = false; answer.innerHTML = records.length ? explainMistake(records[0]) : coachAnswer('greșeli'); };
+      $('[data-mistake]', el).forEach((b) => { b.onclick = () => { answer.hidden = false; answer.innerHTML = explainMistake(records[Number(b.dataset.mistake)]); answer.scrollIntoView({ block: 'nearest' }); }; });
+      $('#coach-clear', el)?.addEventListener('click', () => { S.mistakes = []; save(); render(); });
+    };
+    render();
   };
 
   /* ───────────── Despre ───────────── */

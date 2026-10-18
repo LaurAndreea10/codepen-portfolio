@@ -1,6 +1,6 @@
 'use strict';
 // Gimnaziu Space service worker: network-first pentru pagini, stale-while-revalidate pentru fișiere.
-const CACHE = 'gimnaziu-space-v1.0.0';
+const CACHE = 'gimnaziu-space-v2.0.0';
 const ROOT = new URL('./', self.location.href).href;
 const ASSETS = ['./', 'index.html', 'styles.css', 'data.js', 'app.js', 'manifest.webmanifest', 'icon.svg'].map(p => new URL(p, ROOT).href);
 

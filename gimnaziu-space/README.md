@@ -1,4 +1,4 @@
-# Gimnaziu Space · clasele V–VIII
+# Gimnaziu Space · ExamSpace unificat · clasele V–VIII
 
 Aplicație de recapitulare pentru clasele V–VIII și Evaluarea Națională, construită pe același principiu ca [BAC Space](https://laurandreea10.github.io/BACapp/): conținut scurt, exercițiu imediat, progres salvat local, accesibilitate și două limbi (RO/EN).
 
@@ -16,10 +16,14 @@ Aplicație de recapitulare pentru clasele V–VIII și Evaluarea Națională, co
 | Memoratoare | 27 de fișe (gramatică, figuri de stil, ortografie, compuneri, divizibilitate, unități, trigonometrie, științe, geografie, engleză) + 29 de repere cronologice; printabile |
 | Glosar | 39 de termeni explicați pe scurt |
 | Cartonașe | Repetare spațiată Leitner în 5 cutii, generată automat din formule, memoratoare, date istorice și glosar |
-| Quiz | 83 de întrebări cu explicații, variante amestecate, scurtături A–D |
+| Quiz + AI Coach | 83 de întrebări cu explicații, registru persistent al greșelilor și AI Coach local pentru întrebări și explicații |
 | Simulare EN | Matematică (12 itemi + 3 probleme cu barem orientativ) și Română (text original, 6 itemi, compunere cu listă de verificare), cu cronometru |
 | Focus & plan | Pomodoro 25/5/15 și plan de 7 zile |
 | Progres | XP, serie de zile, activitate pe 28 de zile, acuratețe pe materii, 12 insigne, istoric simulări, export/import/ștergere |
+
+## Unificare cu ExamSpace V–VIII
+
+Gimnaziu Space este acum aplicația principală și reunește modulele ExamSpace V–VIII: arhiva de subiecte și bareme, lecțiile, formulele, memoratoarele, simulările, AI Coach și registrul local al răspunsurilor greșite. Vechiul URL `examspace-v-viii/` rămâne o rută compatibilă către această aplicație.
 
 ## Accesibilitate
 
