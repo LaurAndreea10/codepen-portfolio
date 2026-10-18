@@ -1,19 +1,10 @@
 (() => {
   'use strict';
 
-  const PREVIOUS_MAIN = 'main-core.js?v=20261013-perf';
+  const PREVIOUS_MAIN = 'main-core.js?v=20261018-inventory-92';
 
-  // Single source of truth for CodePen growth.
-  // 83 projects were already represented before this Pen was added.
-  const CODEPEN_BASE_COUNT = 83;
-  const CODEPEN_NEW_PROJECTS = [
-    {
-      id: '019d2b3a-2991-75d3-9c59-15de01ca8079',
-      label: 'Latest CodePen',
-      url: 'https://codepen.io/editor/Laura-Andreea-the-typescripter/pen/019d2b3a-2991-75d3-9c59-15de01ca8079'
-    }
-  ];
-  const CODEPEN_COUNT = Number(window.PORTFOLIO_CONFIG?.projectCount || (CODEPEN_BASE_COUNT + CODEPEN_NEW_PROJECTS.length));
+  const CODEPEN_NEW_PROJECTS = [{id:'019d2b3a-2991-75d3-9c59-15de01ca8079',label:'Latest CodePen',url:'https://codepen.io/editor/Laura-Andreea-the-typescripter/pen/019d2b3a-2991-75d3-9c59-15de01ca8079'}];
+  const CODEPEN_COUNT = Number(window.PORTFOLIO_CONFIG?.projectCount ?? 92);
 
   const ACTIVE_RO = [];
   const ACTIVE_EN = [];

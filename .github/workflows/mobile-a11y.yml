@@ -8,6 +8,21 @@ on:
   push:
     branches: [main]
     paths:
+      - "gimnaziu-space/**"
+      - "projects/examspace-v-viii.html"
+      - "ghost-talk/**"
+      - "crm-offline-queue.html"
+      - "livada/**"
+      - "booscary/**"
+      - "scripts/recent-project-*.mjs"
+      - "scripts/serve-portfolio.mjs"
+      - "serpent-prism/**"
+      - "pentarena/**"
+      - "slidestorm-arena/**"
+      - "odyssey-quest/**"
+      - "curious-garden/**"
+      - "canva-collection.html"
+      - "en/canva-collection.html"
       - "skydreams-portal/**"
       - "kygo-world/**"
       - "en/index.html"
@@ -16,6 +31,21 @@ on:
       - ".github/workflows/mobile-a11y.yml"
   pull_request:
     paths:
+      - "gimnaziu-space/**"
+      - "projects/examspace-v-viii.html"
+      - "ghost-talk/**"
+      - "crm-offline-queue.html"
+      - "livada/**"
+      - "booscary/**"
+      - "scripts/recent-project-*.mjs"
+      - "scripts/serve-portfolio.mjs"
+      - "serpent-prism/**"
+      - "pentarena/**"
+      - "slidestorm-arena/**"
+      - "odyssey-quest/**"
+      - "curious-garden/**"
+      - "canva-collection.html"
+      - "en/canva-collection.html"
       - "skydreams-portal/**"
       - "kygo-world/**"
       - "en/index.html"
@@ -40,15 +70,15 @@ jobs:
         run: |
           npm install --no-save playwright@1.55.0 @axe-core/playwright@4.10.2
           npx playwright install --with-deps chromium
-      - name: Wait for GitHub Pages deployment
-        if: github.event_name == 'push'
-        run: sleep 90
       - name: Audit 360, 390 and 412 px
         run: node scripts/mobile-a11y.mjs
+      - name: Verify RO/EN, light/dark, reduced motion and forced colours
+        if: always()
+        run: node scripts/recent-project-matrix.mjs
       - name: Publish real mobile captures
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: recent-projects-mobile-390
-          path: audit-artifacts/recent-projects/*.png
+          path: audit-artifacts/recent-projects/
           if-no-files-found: warn

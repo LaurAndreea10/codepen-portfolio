@@ -22,6 +22,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Verify generated project metrics
+        run: node scripts/sync-project-metrics.mjs --check
       - name: Generate sitemap
         run: node scripts/generate-sitemap.mjs
       - name: Confirm generated sitemap is committed

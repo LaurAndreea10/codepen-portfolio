@@ -1,5 +1,7 @@
 import { chromium } from "playwright";
 import AxeBuilder from "@axe-core/playwright";
+import { recentTargets } from "./recent-project-targets.mjs";
+import { servePortfolio } from "./serve-portfolio.mjs";
 import { mkdir } from "node:fs/promises";
 
 const targets = [
@@ -14,11 +16,15 @@ const targets = [
   { name: "Canva Collection RO", url: "https://laurandreea10.github.io/codepen-portfolio/canva-collection.html", controls: ["#theme", "#contrast"] },
   { name: "Canva Collection EN", url: "https://laurandreea10.github.io/codepen-portfolio/en/canva-collection.html", controls: ["#theme", "#contrast"] }
 ];
+targets.push(...recentTargets.map(t => ({ name: t.name, url: `https://laurandreea10.github.io/codepen-portfolio/${t.path}` })));
+const local = process.env.PORTFOLIO_AUDIT_BASE ? null : await servePortfolio();
+const base = process.env.PORTFOLIO_AUDIT_BASE || local.base;
+for (const target of targets) target.url = target.url.replace("https://laurandreea10.github.io/codepen-portfolio/", base);
 const widths = [360, 390, 412];
 const failures = [];
 const warnings = [];
 await mkdir("audit-artifacts/recent-projects", { recursive: true });
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true }).catch(error => { local?.server.close(); throw error; });
 
 try {
   for (const target of targets) {
@@ -167,12 +173,13 @@ try {
         if ((await page.locator("html").getAttribute("lang")) !== "en") failures.push("SkyDreams Portal: English language toggle failed");
       }
 
-      console.log(`PASS ${target.name} @ ${width}px — axe serious/critical 0, no horizontal overflow`);
+      console.log(`CHECKED ${target.name} @ ${width}px — diagnostics collected`);
       await context.close();
     }
   }
 } finally {
   await browser.close();
+  if (local) await new Promise(resolve => local.server.close(resolve));
 }
 
 for (const warning of warnings) console.warn(`WARNING: ${warning}`);

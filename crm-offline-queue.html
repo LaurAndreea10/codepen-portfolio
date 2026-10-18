@@ -15,6 +15,8 @@
 @media(max-width:380px){.button{width:100%}.controls{width:100%}.controls .button{width:auto;flex:1}.queue-item{grid-template-columns:1fr}.queue-item .state{grid-row:auto;grid-column:auto}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 @media(forced-colors:active){.card,.button,input,.check,.status-line,.queue-item{border:2px solid CanvasText}.connection::before,.queue-state::before{forced-color-adjust:none}}
+
+@media(forced-colors:active){.primary,.primary span{forced-color-adjust:none;background:Highlight!important;color:HighlightText!important;border-color:Highlight!important}}
 </style>
 </head>
 <body>
@@ -22,7 +24,7 @@
 <header class="topbar">
 <a class="brand" href="evolution-lab.html">← Evolution Lab</a>
 <div class="controls" aria-label="Preferințe interfață">
-<button class="button" id="languageButton" type="button" aria-label="Switch to English">EN</button>
+<button class="button" id="languageButton" type="button" aria-label="EN — Switch to English">EN</button>
 <button class="button" id="themeButton" type="button" data-i18n="themeLight">Temă deschisă</button>
 </div>
 </header>
@@ -260,7 +262,7 @@
     });
     elements.input.placeholder = t("placeholder");
     elements.language.textContent = language === "ro" ? "EN" : "RO";
-    elements.language.setAttribute("aria-label", language === "ro" ? "Switch to English" : "Schimbă în română");
+    elements.language.setAttribute("aria-label", language === "ro" ? "EN — Switch to English" : "RO — Schimbă în română");
     elements.theme.textContent = theme === "dark" ? t("themeLight") : t("themeDark");
     updateConnectionStatus();
     renderQueue();

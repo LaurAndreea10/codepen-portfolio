@@ -48,3 +48,9 @@ Limită cunoscută: jocul cere o mișcare de tragere sau atingere; nu are contro
 ## Fișiere / Files
 
 `index.html` · `style.css` · `app.js` · `icon.svg` · `CHANGELOG.md` · `joc/` (`index.html`, `joc.css`, `joc.js`, `sw.js`, `manifest.webmanifest`)
+
+### Audit mobil · 18 octombrie 2026
+
+Fontul variabil Bricolage Grotesque este găzduit local, cu subseturile Latin și Latin Extended pentru RO/EN; licența SIL OFL este în `fonts/OFL.txt`. Landing page-ul și jocul folosesc aceleași preferințe light/dark, contrast și mișcare redusă. Preferințele jocului și progresul existent sunt păstrate.
+
+Verificări: `node scripts/recent-project-matrix.mjs` din rădăcina repository-ului; matricea este rulată pe sursa din checkout, nu pe o versiune Pages anterioară PR-ului.
