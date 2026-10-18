@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gimnaziu Space · clasele V–VIII</title>
+<meta name="description" content="Gimnaziu Space — aplicație de recapitulare pentru clasele V–VIII și Evaluarea Națională: formule, memoratoare, cartonașe, quiz-uri și simulări, în română și engleză. Nu este material didactic oficial.">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/gimnaziu-space/">
+<meta name="theme-color" content="#f6f3ea" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b1020" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Gimnaziu Space · clasele V–VIII">
+<meta property="og:description" content="Formule, memoratoare, cartonașe, quiz-uri și simulări pentru gimnaziu și Evaluarea Națională. RO/EN, dark mode, accesibil.">
+<meta property="og:type" content="website">
+<meta name="author" content="Laura Andreea">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:opsz,wght@9..144,500..800&family=JetBrains+Mono:wght@400;600&family=Lexend:wght@400;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script>
+  /* Aplică tema și setările înainte de randare, ca să nu clipească pagina. */
+  (function () {
+    try {
+      var s = JSON.parse(localStorage.getItem('gimnaziu-space:settings') || '{}');
+      var d = document.documentElement;
+      if (s.theme === 'light' || s.theme === 'dark') d.dataset.theme = s.theme;
+      if (s.contrast) d.dataset.contrast = 'high';
+      if (s.font === 'lexend') d.dataset.font = 'lexend';
+      if (s.motion === 'reduce') d.dataset.motion = 'reduce';
+      if (s.size) d.style.setProperty('--scale', s.size);
+      if (s.spacing) d.dataset.spacing = 'wide';
+      if (s.lang === 'en') d.lang = 'en';
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Sari la conținut</a>
+
+<header class="topbar">
+  <button type="button" class="icon-btn menu-btn" id="menu-btn" aria-expanded="false" aria-controls="sidenav">
+    <span aria-hidden="true">☰</span><span class="sr" data-i18n="menu">Meniu</span>
+  </button>
+  <a class="brand" href="#acasa">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="8"/><path d="M9 21.5 15 9l2.4 5M12 16.5h6.5M19.5 22.5l3.5-7.5"/></svg>
+    <span class="brand-name">Gimnaziu <em>Space</em></span>
+  </a>
+  <div class="top-tools">
+    <div class="seg" role="group" aria-label="Limba / Language">
+      <button type="button" data-set-lang="ro" aria-pressed="true">RO</button>
+      <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <button type="button" class="icon-btn" id="theme-btn">
+      <svg class="theme-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z"/></svg><span class="sr" id="theme-label">Temă</span>
+    </button>
+    <button type="button" class="icon-btn" id="settings-btn" aria-haspopup="dialog">
+      <span aria-hidden="true">Aa</span><span class="sr" data-i18n="settings">Setări de accesibilitate</span>
+    </button>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="sidenav" id="sidenav" aria-label="Secțiuni">
+    <p class="nav-group" data-i18n="navLearn">Învață</p>
+    <a href="#acasa" data-nav="acasa"><span aria-hidden="true">⌂</span><span data-i18n="nav.acasa">Acasă</span></a>
+    <a href="#clase" data-nav="clase"><span aria-hidden="true">Ⅴ</span><span data-i18n="nav.clase">Pe clase</span></a>
+    <a href="#formule" data-nav="formule"><span aria-hidden="true">∑</span><span data-i18n="nav.formule">Formule</span></a>
+    <a href="#memorator" data-nav="memorator"><span aria-hidden="true">▤</span><span data-i18n="nav.memorator">Memoratoare</span></a>
+    <a href="#glosar" data-nav="glosar"><span aria-hidden="true">Aa</span><span data-i18n="nav.glosar">Glosar</span></a>
+    <p class="nav-group" data-i18n="navPractice">Exersează</p>
+    <a href="#cartonase" data-nav="cartonase"><span aria-hidden="true">❖</span><span data-i18n="nav.cartonase">Cartonașe</span></a>
+    <a href="#quiz" data-nav="quiz"><span aria-hidden="true">?</span><span data-i18n="nav.quiz">Quiz</span></a>
+    <a href="#simulare" data-nav="simulare"><span aria-hidden="true">✎</span><span data-i18n="nav.simulare">Simulare EN</span></a>
+    <a href="#focus" data-nav="focus"><span aria-hidden="true">◷</span><span data-i18n="nav.focus">Focus & plan</span></a>
+    <p class="nav-group" data-i18n="navYou">Tu</p>
+    <a href="#progres" data-nav="progres"><span aria-hidden="true">▲</span><span data-i18n="nav.progres">Progres</span></a>
+    <a href="#despre" data-nav="despre"><span aria-hidden="true">i</span><span data-i18n="nav.despre">Despre & surse</span></a>
+    <p class="nav-note" data-i18n="navNote">Nu este material didactic oficial.</p>
+  </nav>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <main id="main" tabindex="-1">
+    <div class="disclaimer" role="note">
+      <strong data-i18n="disc.title">Important:</strong>
+      <span data-i18n="disc.body">aplicație de recapitulare creată independent. Nu este material didactic oficial și nu înlocuiește manualele, profesorul sau documentele Ministerului Educației.</span>
+    </div>
+    <div id="view"></div>
+  </main>
+</div>
+
+<nav class="tabbar" aria-label="Navigare rapidă">
+  <a href="#acasa" data-nav="acasa"><span aria-hidden="true">⌂</span><span data-i18n="nav.acasa">Acasă</span></a>
+  <a href="#formule" data-nav="formule"><span aria-hidden="true">∑</span><span data-i18n="nav.formuleShort">Formule</span></a>
+  <a href="#memorator" data-nav="memorator"><span aria-hidden="true">▤</span><span data-i18n="nav.memoShort">Memo</span></a>
+  <a href="#quiz" data-nav="quiz"><span aria-hidden="true">?</span><span data-i18n="nav.quiz">Quiz</span></a>
+  <a href="#progres" data-nav="progres"><span aria-hidden="true">▲</span><span data-i18n="nav.progres">Progres</span></a>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="sr" id="announcer" aria-live="polite"></div>
+
+<dialog id="settings" aria-labelledby="settings-title">
+  <form method="dialog" class="dlg">
+    <div class="dlg-head">
+      <h2 id="settings-title" data-i18n="settingsTitle">Setări de accesibilitate</h2>
+      <button class="icon-btn" value="close"><span aria-hidden="true">✕</span><span class="sr" data-i18n="close">Închide</span></button>
+    </div>
+    <fieldset>
+      <legend data-i18n="set.theme">Temă</legend>
+      <div class="seg wide" role="group">
+        <button type="button" data-set-theme="system" data-i18n="set.system">Ca sistemul</button>
+        <button type="button" data-set-theme="light" data-i18n="set.light">Luminoasă</button>
+        <button type="button" data-set-theme="dark" data-i18n="set.dark">Întunecată</button>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend data-i18n="set.size">Mărimea textului</legend>
+      <div class="seg wide" role="group">
+        <button type="button" data-set-size="1">A</button>
+        <button type="button" data-set-size="1.15" class="big1">A</button>
+        <button type="button" data-set-size="1.3" class="big2">A</button>
+      </div>
+    </fieldset>
+    <div class="switches">
+      <label class="switch"><input type="checkbox" id="set-font"><span data-i18n="set.font">Font ușor de citit (Lexend)</span></label>
+      <label class="switch"><input type="checkbox" id="set-spacing"><span data-i18n="set.spacing">Spațiere mai mare între rânduri</span></label>
+      <label class="switch"><input type="checkbox" id="set-contrast"><span data-i18n="set.contrast">Contrast ridicat</span></label>
+      <label class="switch"><input type="checkbox" id="set-motion"><span data-i18n="set.motion">Reduce animațiile</span></label>
+      <label class="switch"><input type="checkbox" id="set-sound"><span data-i18n="set.sound">Sunet la final de Pomodoro</span></label>
+    </div>
+    <p class="hint" data-i18n="set.hint">Setările se salvează doar în acest browser.</p>
+  </form>
+</dialog>
+
+<noscript><p class="noscript">Aplicația are nevoie de JavaScript. / This app needs JavaScript.</p></noscript>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
