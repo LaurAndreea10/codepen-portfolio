@@ -886,13 +886,13 @@
   /* ───────────── Compare: rezultate puse față în față ───────────── */
   VIEWS.compare = (el, p) => {
     let kind = p.get('type') === 'pisa' ? 'pisa' : 'diagnostic';
-    let left = 0, right = 1;
+    let left = -1, right = -1;
     const list = () => kind === 'pisa' ? (S.pisa || []) : (S.diagnostics || []);
     const score = (r) => Math.round(r.correct / r.total * 100);
     const render = () => {
       const records = list();
       const options = records.map((r, i) => `<option value="${i}">${fmtDate(kind === 'pisa' ? r.date : r.date)} · ${r.correct}/${r.total} · ${score(r)}%</option>`).reverse().join('');
-      if (records.length >= 2) { left = Math.min(left, records.length - 1); right = Math.min(right, records.length - 1); if (left === right) { left = 0; right = 1; } }
+      if (records.length >= 2) { if (left < 0 || right < 0) { left = records.length - 2; right = records.length - 1; } left = Math.min(left, records.length - 1); right = Math.min(right, records.length - 1); if (left === right) { left = left === 0 ? 1 : 0; } }
       const a = records[left], b = records[right];
       const labels = kind === 'pisa'
         ? tx('Două sesiuni PISA · aceleași tipuri de sarcini, itemi diferiți', 'Two PISA practice sessions · same task types, different items')
@@ -925,7 +925,7 @@
         $('#compare-right', el).onchange = e => { right = Number(e.target.value); if (right === left) left = right === 0 ? 1 : 0; render(); };
       }
     };
-    el.addEventListener('click', e => { const b = e.target.closest('[data-type]'); if (b) { kind = b.dataset.type; left = 0; right = 1; render(); } });
+    el.addEventListener('click', e => { const b = e.target.closest('[data-type]'); if (b) { kind = b.dataset.type; left = -1; right = -1; render(); } });
     render();
   };
 
