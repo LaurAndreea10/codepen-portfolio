@@ -54,3 +54,14 @@ Datele EN VIII 2027 (simulare 16–18 martie, română 22 iunie, matematică 24 
 
 ---
 Realizat de Laura Andreea · proiect din portofoliul CodePen, în dezvoltare.
+
+
+## Funcții implementate fără costuri recurente
+
+- AI Coach local, fără API plătit, cu explicații pentru concepte și răspunsuri greșite.
+- Registru persistent al greșelilor, repetare, explicații și pași de reparare.
+- Arhivă pe ani pentru subiecte și bareme, cu link către sursa oficială.
+- Provocarea zilei, XP, serii, insigne, progres și certificat local.
+- Partajare prin Web Share/clipboard, printare, backup JSON și export local.
+- PWA/offline, dark/light, contrast ridicat, text mărit, Lexend, reduced motion și tastatură.
+- Fără cont, server, reclame, analytics sau servicii AI cu plată.

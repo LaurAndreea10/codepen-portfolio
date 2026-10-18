@@ -18,3 +18,10 @@ Prima versiune.
 - Gimnaziu Space devine aplicația principală pentru clasele V–VIII.
 - Au fost reunite AI Coach, registrul persistent al răspunsurilor greșite și explicațiile cu pași de reparare.
 - Păstrate: formule, memoratoare, quizuri, simulări, subiecte și bareme, RO/EN, dark mode și accesibilitate.
+
+
+## v2.1.0 · Pachet complet fără costuri · 2026-10-18
+
+- Adăugate arhiva filtrabilă pentru subiecte și bareme și ruta Instrumente gratuite.
+- Adăugate provocarea zilei, partajarea progresului, copierea linkului, printarea și certificatul HTML local.
+- Extins backupul local, modul offline, comportamentul mobil și stilurile de printare.

@@ -13,7 +13,7 @@
     get(k, fb) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch { return fb; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } }
   };
-  const fresh = () => ({ v: 1, xp: 0, days: {}, quiz: {}, quizzes: 0, perfect: 0, cards: {}, reviews: 0, known: {}, fav: {}, memoRead: {}, pomos: 0, sims: [], plan: {}, badges: {}, mistakes: [] });
+  const fresh = () => ({ v: 1, xp: 0, days: {}, quiz: {}, quizzes: 0, perfect: 0, cards: {}, reviews: 0, known: {}, fav: {}, memoRead: {}, pomos: 0, sims: [], plan: {}, badges: {}, mistakes: [], challenge: null });
   const validate = (s) => (s && typeof s === 'object' && s.v === 1 && typeof s.xp === 'number') ? Object.assign(fresh(), s) : fresh();
   let S = validate(store.get(KEY));
   let SET = Object.assign({ lang: 'ro', theme: 'system', size: '1', font: '', contrast: false, motion: '', spacing: false, sound: true, grade: 0 }, store.get(SKEY, {}));
@@ -26,7 +26,7 @@
       skip: 'Sari la conținut', menu: 'Meniu', settings: 'Setări de accesibilitate', settingsTitle: 'Setări de accesibilitate', close: 'Închide',
       navLearn: 'Învață', navPractice: 'Exersează', navYou: 'Tu', navNote: 'Nu este material didactic oficial.',
       'nav.acasa': 'Acasă', 'nav.clase': 'Pe clase', 'nav.formule': 'Formule', 'nav.formuleShort': 'Formule', 'nav.memorator': 'Memoratoare', 'nav.memoShort': 'Memo',
-      'nav.glosar': 'Glosar', 'nav.coach': 'AI Coach', 'nav.cartonase': 'Cartonașe', 'nav.quiz': 'Quiz', 'nav.simulare': 'Simulare EN', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progres', 'nav.despre': 'Despre & surse',
+      'nav.glosar': 'Glosar', 'nav.coach': 'AI Coach', 'nav.cartonase': 'Cartonașe', 'nav.quiz': 'Quiz', 'nav.simulare': 'Simulare EN', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progres', 'nav.despre': 'Despre & surse', 'nav.arhiva': 'Subiecte & bareme', 'nav.instrumente': 'Instrumente',
       'disc.title': 'Important:', 'disc.body': 'aplicație de recapitulare creată independent. Nu este material didactic oficial și nu înlocuiește manualele, profesorul sau documentele Ministerului Educației.',
       'set.theme': 'Temă', 'set.system': 'Ca sistemul', 'set.light': 'Luminoasă', 'set.dark': 'Întunecată', 'set.size': 'Mărimea textului',
       'set.font': 'Font ușor de citit (Lexend)', 'set.spacing': 'Spațiere mai mare între rânduri', 'set.contrast': 'Contrast ridicat', 'set.motion': 'Reduce animațiile', 'set.sound': 'Sunet la final de Pomodoro',
@@ -128,7 +128,7 @@
       skip: 'Skip to content', menu: 'Menu', settings: 'Accessibility settings', settingsTitle: 'Accessibility settings', close: 'Close',
       navLearn: 'Learn', navPractice: 'Practise', navYou: 'You', navNote: 'Not official teaching material.',
       'nav.acasa': 'Home', 'nav.clase': 'By grade', 'nav.formule': 'Formulas', 'nav.formuleShort': 'Formulas', 'nav.memorator': 'Study sheets', 'nav.memoShort': 'Sheets',
-      'nav.glosar': 'Glossary', 'nav.coach': 'AI Coach', 'nav.cartonase': 'Flashcards', 'nav.quiz': 'Quiz', 'nav.simulare': 'Mock exam', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progress', 'nav.despre': 'About & sources',
+      'nav.glosar': 'Glossary', 'nav.coach': 'AI Coach', 'nav.cartonase': 'Flashcards', 'nav.quiz': 'Quiz', 'nav.simulare': 'Mock exam', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progress', 'nav.despre': 'About & sources', 'nav.arhiva': 'Papers & schemes', 'nav.instrumente': 'Toolkit',
       'disc.title': 'Important:', 'disc.body': 'an independently made revision app. It is not official teaching material and does not replace textbooks, teachers or Ministry of Education documents.',
       'set.theme': 'Theme', 'set.system': 'System', 'set.light': 'Light', 'set.dark': 'Dark', 'set.size': 'Text size',
       'set.font': 'Easy-to-read font (Lexend)', 'set.spacing': 'Wider line spacing', 'set.contrast': 'High contrast', 'set.motion': 'Reduce motion', 'set.sound': 'Sound when a Pomodoro ends',
@@ -299,6 +299,12 @@
   }
   const level = () => 1 + Math.floor(S.xp / 150);
   const accuracy = (s) => { const q = s ? S.quiz[s] : Object.values(S.quiz).reduce((a, b) => ({ ok: a.ok + b.ok, bad: a.bad + b.bad }), { ok: 0, bad: 0 }); if (!q) return null; const n = q.ok + q.bad; return n ? Math.round(q.ok / n * 100) : null; };
+  function recordMistake(q, oi) {
+    const mistake = { id: q.s + '|' + pick(q.q), s: q.s, g: q.g, q: q.q, chosen: q.o[oi], correct: q.o[q.a], x: q.x, when: new Date().toISOString() };
+    S.mistakes = [...(S.mistakes || [])].filter((m) => m && m.id !== mistake.id).concat(mistake).slice(-50);
+    save();
+  }
+
 
   function gain(xp, silent) {
     S.xp += xp; const k = today(); S.days[k] = (S.days[k] || 0) + xp;
@@ -792,9 +798,7 @@
         S.quiz[q.s].ok++; run.ok++;
       } else {
         S.quiz[q.s].bad++; run.wrong.push(q);
-        const mistake = { id: q.s + '|' + pick(q.q), s: q.s, g: q.g, q: q.q, chosen: q.o[oi], correct: q.o[q.a], x: q.x, when: new Date().toISOString() };
-        S.mistakes = [...(S.mistakes || [])].filter((m) => m && m.id !== mistake.id).concat(mistake).slice(-50);
-        save();
+        recordMistake(q, oi);
       }
       gain(ok ? 5 : 0, true);
       $$('.opt', el).forEach((b) => {
@@ -1117,6 +1121,52 @@
       $('#coach-clear', el)?.addEventListener('click', () => { S.mistakes = []; save(); route(); });
     };
     render();
+  };
+
+  /* ───────────── Arhivă oficială & instrumente gratuite ───────────── */
+  VIEWS.arhiva = (el) => {
+    const years = D.ARCHIVE || [];
+    let selected = 'all';
+    const paint = () => {
+      const list = selected === 'all' ? years : years.filter((x) => String(x.year) === selected);
+      el.innerHTML = head('▣', tx('Subiecte și bareme', 'Past papers and marking schemes'), tx('Lucrează singur, apoi verifică fiecare punct în sursa oficială. Linkurile sunt gratuite și duc către arhiva Ministerului.', 'Work independently, then check each point in the official source. The links are free and open the Ministry archive.')) + `
+        <section class="card stack">
+          <div class="filters"><label class="sr" for="archive-year">${tx('Alege anul', 'Choose year')}</label><select id="archive-year" class="search"><option value="all">${tx('Toți anii', 'All years')}</option>${years.map((x) => `<option value="${x.year}" ${selected === String(x.year) ? 'selected' : ''}>${x.year}</option>`).join('')}</select><span class="chip">${list.length} ${tx('ani disponibili', 'years available')}</span></div>
+          <div class="grid g2">${list.map((x) => `<article class="card archive-card"><div class="row"><span class="big" aria-hidden="true">📄</span><div><h2 style="margin:0">${x.year}</h2><p class="small muted">${esc(pick(x.t))}</p></div></div><p>${esc(pick(x.d))}</p><a class="btn primary" href="${x.u}" target="_blank" rel="noopener noreferrer">${tx('Deschide arhiva oficială', 'Open official archive')} ↗</a></article>`).join('')}</div>
+          <p class="hint">${tx('Pentru clasele V–VII, aplicația oferă exerciții orientative; arhiva standardizată este relevantă în principal pentru Evaluarea Națională de la clasa a VIII-a.', 'For grades 5–7, the app provides orientation practice; the standardized archive is mainly relevant to the National Assessment in grade 8.')}</p>
+        </section>`;
+    };
+    paint();
+    $('#archive-year', el).addEventListener('change', (e) => { selected = e.target.value; paint(); $('#archive-year', el).focus(); });
+  };
+
+  VIEWS.instrumente = (el) => {
+    const todayKey = today();
+    const pool = D.QUIZ.filter((q) => !SET.grade || q.g === SET.grade);
+    const hash = [...todayKey].reduce((n, c) => n + c.charCodeAt(0), 0);
+    const daily = pool[hash % Math.max(1, pool.length)] || D.QUIZ[0];
+    const challengeDone = S.challenge?.date === todayKey;
+    const shareText = () => tx(`Am ${S.xp} XP în Gimnaziu Space, ${S.quizzes} quiz-uri și ${accuracy() ?? 0}% acuratețe.`, `I have ${S.xp} XP in Gimnaziu Space, ${S.quizzes} quizzes and ${accuracy() ?? 0}% accuracy.`);
+    const downloadCertificate = () => {
+      const title = tx('Certificat de progres', 'Progress certificate');
+      const body = `<!doctype html><html lang="${SET.lang}"><meta charset="utf-8"><title>${title}</title><style>body{font-family:system-ui;padding:4rem;text-align:center;background:#0b1220;color:#eff5ff}main{max-width:700px;margin:auto;border:2px solid #69e2c3;border-radius:24px;padding:3rem}h1{color:#69e2c3}b{font-size:2.2rem}</style><main><p>Gimnaziu Space · ExamSpace V–VIII</p><h1>${title}</h1><p>${tx('Acest document reflectă progresul local din aplicație.', 'This document reflects local progress from the app.')}</p><p><b>${S.xp} XP</b></p><p>${S.quizzes} ${tx('quiz-uri', 'quizzes')} · ${S.reviews} ${tx('cartonașe repetate', 'cards reviewed')} · ${S.mistakes?.length || 0} ${tx('greșeli de revăzut', 'mistakes to review')}</p><p>${new Date().toLocaleDateString(SET.lang === 'en' ? 'en-GB' : 'ro-RO')}</p></main></html>`;
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], { type: 'text/html' })); a.download = `gimnaziu-space-${todayKey}-progres.html`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    };
+    const copy = (value, ok) => navigator.clipboard?.writeText(value).then(() => toast(ok), () => toast(tx('Copiarea nu este disponibilă în acest browser.', 'Copy is not available in this browser.')));
+    const paint = () => {
+      el.innerHTML = head('✦', tx('Instrumente gratuite', 'Free toolkit'), tx('Provocări, partajare, printare, backup și certificate locale — fără cont și fără servicii plătite.', 'Challenges, sharing, printing, backup and local certificates — no account and no paid services.')) + `
+        <div class="grid g2">
+          <section class="card stack"><div class="row"><h2 style="margin:0">${tx('Provocarea zilei', 'Daily challenge')}</h2><span class="chip">${todayKey}</span></div><p class="muted">${tx('O întrebare scurtă aleasă automat din materia ta.', 'A short question selected automatically from your subject.')}</p><h3>${esc(pick(daily.q))}</h3><div class="stack">${daily.o.map((o, i) => `<button type="button" class="btn challenge-option" data-challenge="${i}" ${challengeDone ? 'disabled' : ''}>${String.fromCharCode(65 + i)} · ${esc(pick(o))}</button>`).join('')}</div><div id="challenge-feedback" aria-live="polite">${challengeDone ? `<p class="feedback ok">${tx('Provocarea de azi este finalizată.', 'Today’s challenge is complete.')}</p>` : ''}</div></section>
+          <section class="card stack"><h2>${tx('Partajează și păstrează', 'Share and keep')}</h2><p class="muted">${tx('Funcții locale, fără cont și fără server.', 'Local features, with no account and no server.')}</p><div class="row"><button type="button" class="btn primary" id="share-progress">↗ ${tx('Partajează progresul', 'Share progress')}</button><button type="button" class="btn" id="copy-link">⧉ ${tx('Copiază linkul', 'Copy link')}</button><button type="button" class="btn" id="print-report">⎙ ${tx('Printează', 'Print')}</button></div><div class="row"><button type="button" class="btn" id="download-certificate">✦ ${tx('Descarcă certificatul', 'Download certificate')}</button><a class="btn" href="#progres">${tx('Vezi progresul', 'View progress')} →</a></div></section>
+        </div>
+        <section class="card stack"><h2>${tx('Scurtături de învățare', 'Study shortcuts')}</h2><div class="grid g3"><a class="card" href="#coach"><strong>✦ AI Coach</strong><span class="small muted">${tx('Întreabă și repară greșelile.', 'Ask and repair mistakes.')}</span></a><a class="card" href="#arhiva"><strong>▣ ${tx('Subiecte și bareme', 'Papers and schemes')}</strong><span class="small muted">${tx('Arhiva oficială pe ani.', 'Official archive by year.')}</span></a><a class="card" href="#progres"><strong>▲ ${tx('Backup local', 'Local backup')}</strong><span class="small muted">${tx('Exportă sau importă progresul.', 'Export or import progress.')}</span></a></div></section>`;
+      $('#share-progress', el).onclick = async () => { const text = shareText(); if (navigator.share) { try { await navigator.share({ title: 'Gimnaziu Space', text, url: location.href }); } catch {} } else copy(`${text}\n${location.href}`, tx('Progresul a fost copiat.', 'Progress copied.')); };
+      $('#copy-link', el).onclick = () => copy(location.href, tx('Linkul a fost copiat.', 'Link copied.'));
+      $('#print-report', el).onclick = () => window.print();
+      $('#download-certificate', el).onclick = downloadCertificate;
+      $('[data-challenge]', el).forEach((b) => { b.onclick = () => { const chosen = Number(b.dataset.challenge); const ok = chosen === daily.a; S.challenge = { date: todayKey, id: daily.s + '|' + pick(daily.q), chosen, correct: daily.a }; if (!ok) recordMistake(daily, chosen); gain(ok ? 10 : 2); paint(); $('#challenge-feedback', el)?.focus(); }; });
+    };
+    paint();
   };
 
   /* ───────────── Despre ───────────── */

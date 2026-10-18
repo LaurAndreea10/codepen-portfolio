@@ -641,4 +641,15 @@ const EXAM_DATES = {
   mat: '2027-06-24'
 };
 
-window.GS_DATA = { SUBJECTS, FORMULAS, MEMOS, TIMELINE, GLOSSARY, QUIZ, SIM_ROM_TEXT, SIM_ROM, SIM_ROM_WRITE, SIM_MAT_PROBLEMS, BADGES, OFFICIAL, EXAM_DATES };
+
+const ARCHIVE = [
+  { year: 2026, u: 'https://subiecte.edu.ro/', t: L('Evaluarea Națională 2026 — subiecte și bareme', 'National Assessment 2026 — papers and marking schemes'), d: L('Selectează anul și proba în arhiva oficială.', 'Select the year and subject in the official archive.') },
+  { year: 2025, u: 'https://subiecte.edu.ro/', t: L('Evaluarea Națională 2025 — subiecte și bareme', 'National Assessment 2025 — papers and marking schemes'), d: L('Arhivă oficială pentru verificarea rezolvărilor.', 'Official archive for checking your solutions.') },
+  { year: 2024, u: 'https://subiecte.edu.ro/', t: L('Evaluarea Națională 2024 — subiecte și bareme', 'National Assessment 2024 — papers and marking schemes'), d: L('Lucrează subiectul înainte să deschizi baremul.', 'Work through the paper before opening the marking scheme.') },
+  { year: 2023, u: 'https://subiecte.edu.ro/', t: L('Evaluarea Națională 2023 — subiecte și bareme', 'National Assessment 2023 — papers and marking schemes'), d: L('Folosește baremul pentru autoevaluare, nu ca răspuns copiat.', 'Use the marking scheme for self-checking, not as a copied answer.') },
+  { year: 2022, u: 'https://subiecte.edu.ro/', t: L('Evaluarea Națională 2022 — subiecte și bareme', 'National Assessment 2022 — papers and marking schemes'), d: L('Păstrează timpul și punctajul într-un jurnal local.', 'Keep the time and score in a local journal.') },
+  { year: 2021, u: 'https://subiecte.edu.ro/', t: L('Evaluarea Națională 2021 — subiecte și bareme', 'National Assessment 2021 — papers and marking schemes'), d: L('Compară pașii de rezolvare, nu doar rezultatul final.', 'Compare the solving steps, not only the final result.') },
+  { year: 2020, u: 'https://subiecte.edu.ro/', t: L('Evaluarea Națională 2020 — subiecte și bareme', 'National Assessment 2020 — papers and marking schemes'), d: L('Arhiva oficială rămâne sursa pentru fișierele originale.', 'The official archive remains the source for original files.') }
+];
+
+window.GS_DATA = { SUBJECTS, FORMULAS, MEMOS, TIMELINE, GLOSSARY, QUIZ, SIM_ROM_TEXT, SIM_ROM, SIM_ROM_WRITE, SIM_MAT_PROBLEMS, BADGES, OFFICIAL, EXAM_DATES, ARCHIVE };
