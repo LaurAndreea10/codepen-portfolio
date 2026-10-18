@@ -51,3 +51,11 @@ Validăm dacă aplicația este ușor de folosit pe telefon, tabletă și desktop
 - Toate variantele tematice de simulare păstrează baremul orientativ și cronometrul coerente.
 
 Nu introduceți nume, emailuri, fotografii sau alte date personale în observații.
+
+## Verificări pentru learning lab 2.7
+
+- Acasă: fără istoric, recomandarea deschide un quiz adaptiv de 5 întrebări; după o greșeală salvată, recomandă materia acelei greșeli și deschide recapitularea.
+- Progres: „Creează fișa de recapitulare” tipărește până la 20 de greșeli cu răspuns ales, răspuns corect și explicație. Verifică și starea fără greșeli (buton dezactivat).
+- Acasă → „Acoperirea băncii”: numerele corespund întrebărilor din banca actuală pe clasă și materie; fiecare număr deschide quizul filtrat. Verifică RO/EN și tastatura.
+- Matricea trebuie să precizeze că numărul de itemi nu certifică acoperirea programei. Testează lățimea de 320–520 px și fără scroll orizontal.
+- După instalare/actualizare PWA, verifică încărcarea learning-lab.v2.7.js; apoi repetă traseul în mod offline.
