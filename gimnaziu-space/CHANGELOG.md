@@ -86,3 +86,10 @@ Pachet de validare și lansare fără costuri:
 - Acasă → „Acoperirea băncii” afișează câte întrebări sunt etichetate pentru fiecare materie și clasă, cu legături către quizurile filtrate.
 - Matricea descrie doar banca actuală de întrebări și precizează că nu certifică acoperirea programei.
 - Extensie bilingvă în fișier separat, fără conturi, servicii externe sau date trimise în afara browserului; cache-ul offline a fost actualizat.
+
+## 2.8.0 — 2026-10-18
+
+- Integrată o rută COMPER bilingvă cu selectoare pentru materia, etapa I/II și clasa V–VIII.
+- Adăugate linkuri către subiectele și baremele oficial publicate pentru ediția 2025–2026, matematică și limba română, ambele etape.
+- Arhiva COMPER completă rămâne sursa pentru edițiile anterioare și pentru materialele publicate ulterior; documentele nu sunt copiate sau găzduite de Gimnaziu Space.
+- Adăugată distincția clară dintre documentele COMPER și exercițiile proprii din quiz; actualizat cache-ul PWA.
