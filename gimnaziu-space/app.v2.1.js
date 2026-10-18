@@ -13,7 +13,7 @@
     get(k, fb) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch { return fb; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } }
   };
-  const fresh = () => ({ v: 1, xp: 0, days: {}, quiz: {}, quizzes: 0, perfect: 0, cards: {}, reviews: 0, known: {}, fav: {}, memoRead: {}, pomos: 0, sims: [], plan: {}, badges: {}, mistakes: [], challenge: null });
+  const fresh = () => ({ v: 1, xp: 0, days: {}, quiz: {}, quizzes: 0, perfect: 0, cards: {}, reviews: 0, known: {}, fav: {}, memoRead: {}, pomos: 0, sims: [], plan: {}, badges: {}, mistakes: [], challenge: null, feedback: [] });
   const validate = (s) => (s && typeof s === 'object' && s.v === 1 && typeof s.xp === 'number') ? Object.assign(fresh(), s) : fresh();
   let S = validate(store.get(KEY));
   let SET = Object.assign({ lang: 'ro', theme: 'system', size: '1', font: '', contrast: false, motion: '', spacing: false, sound: true, grade: 0 }, store.get(SKEY, {}));
@@ -26,7 +26,7 @@
       skip: 'Sari la conținut', menu: 'Meniu', settings: 'Setări de accesibilitate', settingsTitle: 'Setări de accesibilitate', close: 'Închide',
       navLearn: 'Învață', navPractice: 'Exersează', navYou: 'Tu', navNote: 'Nu este material didactic oficial.',
       'nav.acasa': 'Acasă', 'nav.clase': 'Pe clase', 'nav.formule': 'Formule', 'nav.formuleShort': 'Formule', 'nav.memorator': 'Memoratoare', 'nav.memoShort': 'Memo',
-      'nav.glosar': 'Glosar', 'nav.coach': 'AI Coach', 'nav.cartonase': 'Cartonașe', 'nav.quiz': 'Quiz', 'nav.simulare': 'Simulare EN', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progres', 'nav.despre': 'Despre & surse', 'nav.arhiva': 'Subiecte & bareme', 'nav.instrumente': 'Instrumente',
+      'nav.glosar': 'Glosar', 'nav.coach': 'AI Coach', 'nav.cartonase': 'Cartonașe', 'nav.quiz': 'Quiz', 'nav.simulare': 'Simulare EN', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progres', 'nav.despre': 'Despre & surse', 'nav.arhiva': 'Subiecte & bareme', 'nav.instrumente': 'Instrumente', 'nav.feedback': 'Testare & feedback',
       'disc.title': 'Important:', 'disc.body': 'aplicație de recapitulare creată independent. Nu este material didactic oficial și nu înlocuiește manualele, profesorul sau documentele Ministerului Educației.',
       'set.theme': 'Temă', 'set.system': 'Ca sistemul', 'set.light': 'Luminoasă', 'set.dark': 'Întunecată', 'set.size': 'Mărimea textului',
       'set.font': 'Font ușor de citit (Lexend)', 'set.spacing': 'Spațiere mai mare între rânduri', 'set.contrast': 'Contrast ridicat', 'set.motion': 'Reduce animațiile', 'set.sound': 'Sunet la final de Pomodoro',
@@ -128,7 +128,7 @@
       skip: 'Skip to content', menu: 'Menu', settings: 'Accessibility settings', settingsTitle: 'Accessibility settings', close: 'Close',
       navLearn: 'Learn', navPractice: 'Practise', navYou: 'You', navNote: 'Not official teaching material.',
       'nav.acasa': 'Home', 'nav.clase': 'By grade', 'nav.formule': 'Formulas', 'nav.formuleShort': 'Formulas', 'nav.memorator': 'Study sheets', 'nav.memoShort': 'Sheets',
-      'nav.glosar': 'Glossary', 'nav.coach': 'AI Coach', 'nav.cartonase': 'Flashcards', 'nav.quiz': 'Quiz', 'nav.simulare': 'Mock exam', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progress', 'nav.despre': 'About & sources', 'nav.arhiva': 'Papers & schemes', 'nav.instrumente': 'Toolkit',
+      'nav.glosar': 'Glossary', 'nav.coach': 'AI Coach', 'nav.cartonase': 'Flashcards', 'nav.quiz': 'Quiz', 'nav.simulare': 'Mock exam', 'nav.focus': 'Focus & plan', 'nav.progres': 'Progress', 'nav.despre': 'About & sources', 'nav.arhiva': 'Papers & schemes', 'nav.instrumente': 'Toolkit', 'nav.feedback': 'Testing & feedback',
       'disc.title': 'Important:', 'disc.body': 'an independently made revision app. It is not official teaching material and does not replace textbooks, teachers or Ministry of Education documents.',
       'set.theme': 'Theme', 'set.system': 'System', 'set.light': 'Light', 'set.dark': 'Dark', 'set.size': 'Text size',
       'set.font': 'Easy-to-read font (Lexend)', 'set.spacing': 'Wider line spacing', 'set.contrast': 'High contrast', 'set.motion': 'Reduce motion', 'set.sound': 'Sound when a Pomodoro ends',
@@ -1165,6 +1165,53 @@
       $('#print-report', el).onclick = () => window.print();
       $('#download-certificate', el).onclick = downloadCertificate;
       $$('[data-challenge]', el).forEach((b) => { b.onclick = () => { const chosen = Number(b.dataset.challenge); const ok = chosen === daily.a; S.challenge = { date: todayKey, id: daily.s + '|' + pick(daily.q), chosen, correct: daily.a }; if (!ok) recordMistake(daily, chosen); gain(ok ? 10 : 2); paint(); $('#challenge-feedback', el)?.focus(); }; });
+    };
+    paint();
+  };
+
+
+  VIEWS.feedback = (el) => {
+    const records = (S.feedback || []).slice().reverse();
+    const option = (value, ro, en, selected) => '<option value="' + value + '"' + (selected ? ' selected' : '') + '>' + tx(ro, en) + '</option>';
+    const paint = () => {
+      const device = ['phone', 'tablet', 'desktop'];
+      const grade = ['5', '6', '7', '8'];
+      const task = [['quiz', 'Quiz', 'Quiz'], ['coach', 'AI Coach', 'AI Coach'], ['formulas', 'Formule', 'Formulas'], ['simulation', 'Simulare', 'Mock exam'], ['archive', 'Subiecte și bareme', 'Papers and schemes'], ['accessibility', 'Accesibilitate', 'Accessibility']];
+      el.innerHTML = head('✓', tx('Testare & feedback', 'Testing & feedback'), tx('Ajută la îmbunătățirea aplicației fără cont și fără colectare de date personale.', 'Help improve the app without an account and without collecting personal data.')) +
+        '<section class="card stack">' +
+          '<h2>' + tx('Sesiune scurtă de testare', 'Short testing session') + '</h2>' +
+          '<p class="muted">' + tx('Alege o sarcină, lucrează 5–10 minute, apoi salvează observația. Datele rămân doar în acest browser.', 'Choose a task, work for 5–10 minutes, then save your observation. Data stays in this browser only.') + '</p>' +
+          '<form id="feedback-form" class="stack">' +
+            '<div class="grid g2">' +
+              '<label class="stack"><span>' + tx('Dispozitiv', 'Device') + '</span><select id="fb-device" class="search">' + device.map((v) => option(v, v === 'phone' ? 'Telefon' : v === 'tablet' ? 'Tabletă' : 'Desktop', v[0].toUpperCase() + v.slice(1), false)).join('') + '</select></label>' +
+              '<label class="stack"><span>' + tx('Clasa', 'Grade') + '</span><select id="fb-grade" class="search">' + grade.map((v) => option(v, 'Clasa a ' + v + '-a', 'Grade ' + v, false)).join('') + '</select></label>' +
+              '<label class="stack"><span>' + tx('Ce ai testat?', 'What did you test?') + '</span><select id="fb-task" class="search">' + task.map((v) => option(v[0], v[1], v[2], false)).join('') + '</select></label>' +
+              '<label class="stack"><span>' + tx('Cât de ușor a fost?', 'How easy was it?') + '</span><select id="fb-rating" class="search">' + [1, 2, 3, 4, 5].map((v) => option(String(v), String(v) + '/5', String(v) + '/5', v === 5)).join('') + '</select></label>' +
+            '</div>' +
+            '<label class="stack"><span>' + tx('Ce a fost neclar sau dificil?', 'What was unclear or difficult?') + '</span><textarea id="fb-note" class="write" rows="4" placeholder="' + tx('Scrie observația aici…', 'Write your observation here…') + '"></textarea></label>' +
+            '<label class="check"><input type="checkbox" id="fb-access"> <span>' + tx('Am întâlnit o problemă de accesibilitate sau afișare.', 'I found an accessibility or display issue.') + '</span></label>' +
+            '<div class="row"><button class="btn primary" type="submit">✓ ' + tx('Salvează feedbackul', 'Save feedback') + '</button><button class="btn" type="button" id="feedback-export">↓ ' + tx('Exportă observațiile', 'Export observations') + '</button></div>' +
+          '</form>' +
+          '<p class="hint">' + tx('Nu cere nume, email, cont sau date despre elev. Pentru feedback extern, exportă fișierul și trimite-l manual persoanei care coordonează testarea.', 'No name, email, account or student data is requested. For external feedback, export the file and send it manually to the person coordinating testing.') + '</p>' +
+        '</section>' +
+        '<section class="card stack">' +
+          '<div class="row"><h2 style="margin:0">' + tx('Observații salvate local', 'Locally saved observations') + '</h2><span class="chip">' + records.length + '</span></div>' +
+          (records.length ? '<div class="stack">' + records.map((r) => '<article class="feedback-card"><strong>' + esc(r.task) + ' · ' + esc(r.device) + ' · ' + esc(r.grade) + '</strong><p class="small muted">' + esc(new Date(r.when).toLocaleString(SET.lang === 'en' ? 'en-GB' : 'ro-RO')) + ' · ' + esc(r.rating) + '/5' + (r.accessibility ? ' · ' + tx('accesibilitate', 'accessibility') : '') + '</p><p>' + esc(r.note || tx('Fără observație scrisă.', 'No written observation.')) + '</p></article>').join('') + '</div><button class="btn danger" type="button" id="feedback-clear">' + tx('Șterge observațiile', 'Clear observations') + '</button>' : '<p class="muted">' + tx('Încă nu există observații. Începe cu o sesiune de 5 minute.', 'No observations yet. Start with a 5-minute session.') + '</p>') +
+        '</section>';
+      $('#feedback-form', el).addEventListener('submit', (event) => {
+        event.preventDefault();
+        const taskLabel = $('#fb-task', el).selectedOptions[0]?.textContent || '';
+        const record = { device: $('#fb-device', el).value, grade: $('#fb-grade', el).value, task: taskLabel, rating: $('#fb-rating', el).value, note: $('#fb-note', el).value.trim(), accessibility: $('#fb-access', el).checked, when: new Date().toISOString() };
+        S.feedback = [...(S.feedback || []), record].slice(-50);
+        save();
+        toast(tx('Feedback salvat local.', 'Feedback saved locally.'));
+        paint();
+      });
+      $('#feedback-export', el).onclick = () => {
+        const blob = new Blob([JSON.stringify({ app: 'Gimnaziu Space', exportedAt: new Date().toISOString(), feedback: S.feedback || [] }, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'gimnaziu-space-feedback.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      };
+      $('#feedback-clear', el)?.addEventListener('click', () => { S.feedback = []; save(); paint(); });
     };
     paint();
   };

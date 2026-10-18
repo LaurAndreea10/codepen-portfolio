@@ -25,3 +25,16 @@ Prima versiune.
 - Adăugate arhiva filtrabilă pentru subiecte și bareme și ruta Instrumente gratuite.
 - Adăugate provocarea zilei, partajarea progresului, copierea linkului, printarea și certificatul HTML local.
 - Extins backupul local, modul offline, comportamentul mobil și stilurile de printare.
+
+
+## 2.2.0 — 2026-10-18
+
+Pachet de validare și lansare fără costuri:
+
+- rută locală „Testare & feedback” pentru sesiuni cu elevi;
+- export JSON al observațiilor de testare;
+- ghid pentru mobil, tabletă, desktop, tastatură și accesibilitate;
+- checklist de verificare a conținutului și lansării;
+- texte pregătite pentru Facebook și LinkedIn;
+- ghid pentru capturi reale și trasee live;
+- bundle și service worker actualizate.

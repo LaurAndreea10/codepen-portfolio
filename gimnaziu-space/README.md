@@ -65,3 +65,14 @@ Realizat de Laura Andreea · proiect din portofoliul CodePen, în dezvoltare.
 - Partajare prin Web Share/clipboard, printare, backup JSON și export local.
 - PWA/offline, dark/light, contrast ridicat, text mărit, Lexend, reduced motion și tastatură.
 - Fără cont, server, reclame, analytics sau servicii AI cu plată.
+
+
+## Testare și lansare
+
+- [Ghid de testare pe dispozitive și cu elevi](TESTARE.md)
+- [Verificarea formulelor, explicațiilor și baremelor](CONTENT-REVIEW.md)
+- [Checklist de lansare](LAUNCH_CHECKLIST.md)
+- [Texte pregătite pentru Facebook și LinkedIn](SOCIAL-POSTS.md)
+- [Capturi și trasee live](SCREENSHOTS.md)
+
+Aplicația include acum ruta **Testare & feedback**, unde observațiile se salvează local și pot fi exportate ca JSON. Nu există formular extern, cont, analytics sau colectare automată de date personale.
