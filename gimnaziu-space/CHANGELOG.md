@@ -63,3 +63,10 @@ Pachet de validare și lansare fără costuri:
 ## 2.4.1 — 2026-10-18
 
 - Versionate separat URL-urile pentru date și stiluri, pentru ca browserele cu cache PWA vechi să preia corect actualizarea 2.4.
+
+## 2.5.0 — 2026-10-18
+
+- Bara mobilă are cinci scurtături fără coloane implicite; toate celelalte secțiuni rămân în meniul principal.
+- Backup JSON cu format explicit, compatibil cu exporturile v1 și validare completă a structurilor nested înainte de import; un fișier invalid sau prea mare nu suprascrie datele curente.
+- Adăugat test automat pentru structura celor 104 de întrebări, textele RO/EN, răspunsuri, clase, materii, rutele arhivei și validarea backupurilor.
+- Verificarea curriculumului rămâne marcată ca revizie de profesor; testul automat nu pretinde că validează adevărul fiecărei explicații.

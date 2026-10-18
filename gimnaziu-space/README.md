@@ -8,6 +8,10 @@ Aplicație de recapitulare pentru clasele V–VIII și Evaluarea Națională, co
 
 ## Ce conține
 
+- Bara de navigare mobilă păstrează cinci destinații rapide; paginile rămase se deschid din meniu.
+- Backupul de progres are format verificabil și păstrează exporturile vechi; importul invalid nu înlocuiește datele curente.
+- `node validate-content.mjs` controlează automat structura întrebărilor și a backupurilor. Revizia academică și accesibilitatea pe dispozitive reale cer în continuare verificare umană.
+
 | Secțiune | Ce face |
 |---|---|
 | Acasă | Alegerea clasei, numărătoare inversă până la simularea și probele EN 2027 (calendar în proiect), **Demo de prezentare** vs **Experiența mea** (pornește de la zero), coach local |

@@ -31,6 +31,13 @@ Validăm dacă aplicația este ușor de folosit pe telefon, tabletă și desktop
 14. Compară două diagnostice și verifică timpii din raportul local.
 15. Închide conexiunea și verifică indicatorul offline; reconectează și verifică actualizarea.
 
+## Verificări versiunea 2.5
+
+- `node validate-content.mjs` — structură quiz, traduceri, indexuri de răspuns, ani arhivă și cazuri de backup invalid.
+- Telefon (320–520 px): bara de jos are cinci destinații și nu creează coloane implicite sau scroll orizontal; celelalte secțiuni rămân în meniul principal.
+- Backup: exportă progresul, importă-l înapoi, apoi încearcă un JSON cu un câmp nested invalid; importul invalid trebuie respins fără să schimbe progresul salvat.
+- Linkuri oficiale: verifică fiecare an în browser. Testul automat confirmă doar hostul și forma rutei; disponibilitatea paginilor ține de site-ul Ministerului.
+
 ## Criterii de acceptare
 
 - Elevul găsește prima activitate în maximum 30 de secunde.

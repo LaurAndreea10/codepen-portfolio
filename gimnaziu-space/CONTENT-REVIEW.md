@@ -1,5 +1,11 @@
 # Verificarea conținutului
 
+## Audit automat · 18 octombrie 2026
+
+`node validate-content.mjs` verifică numărul și structura itemilor, câmpurile RO/EN, variantele, indicii răspunsurilor, clasele, materiile, forma linkurilor arhivă și respingerea backupurilor malformate. Auditul automat nu certifică adevărul fiecărei explicații și nici alinierea curriculară; acestea rămân de verificat de profesor.
+
+În testul live, linkul pentru 2026 a fost găsit în arhiva oficială. Pagina oficială de arhivă listează anii 2023–2025. Testarea directă a rutelor vechi 2020–2025 a primit erori de conexiune/timeout în mediul de verificare, deci disponibilitatea lor individuală nu este confirmată aici. Păstrează verificarea manuală înainte de folosire la clasă.
+
 ## Înainte de lansare
 
 - [ ] Formulele sunt comparate cu manualul și programa folosite la clasă.
