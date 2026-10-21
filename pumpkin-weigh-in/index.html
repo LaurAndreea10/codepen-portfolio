@@ -1,0 +1,1748 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pumpkin Weigh-In — #codepenchallenge</title>
+<meta name="description" content="Pumpkin Weigh-In — CodePen Challenge: cântar de dovleci cu șase categorii, de la Tiny Gourd la Legendary, RO/EN, lb/kg și teste Jest.">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/pumpkin-weigh-in/">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+/* ═══ Pumpkin Weigh-In — temă, scenă, cadran, public ═══ */
+
+:root {
+  color-scheme: dark;
+
+  --ink: #f8eedd;
+  --ink-soft: #b6a593;
+  --night-0: #0d0718;
+  --night-1: #1a0d2b;
+  --night-2: #2d1340;
+  --panel: rgba(255, 255, 255, 0.05);
+  --line: rgba(255, 255, 255, 0.12);
+
+  --stem: #6b4a2f;
+  --leaf: #4f8f4a;
+  --gold: #ffd36b;
+  --danger: #ff7a7a;
+
+  --radius: 18px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Setate din JS */
+  --fill: 0;
+  --needle: -90deg;
+  --pumpkin-scale: 0.6;
+}
+
+/* Fiecare categorie își aduce propria paletă. */
+.weigh-in[data-tier="tiny"]      { --tier: #b8e3a0; --tier-deep: #76a860; --cheer: 0; }
+.weigh-in[data-tier="mini"]      { --tier: #ffd9a8; --tier-deep: #e8a95f; --cheer: 1; }
+.weigh-in[data-tier="carving"]   { --tier: #ff9c3d; --tier-deep: #d9661a; --cheer: 2; }
+.weigh-in[data-tier="giant"]     { --tier: #ff6a1f; --tier-deep: #b83f08; --cheer: 3; }
+.weigh-in[data-tier="record"]    { --tier: #ffd36b; --tier-deep: #e09b12; --cheer: 4; }
+.weigh-in[data-tier="legendary"] { --tier: #c79bff; --tier-deep: #7b3fd4; --cheer: 5; }
+.weigh-in[data-tier="invalid"]   { --tier: #8b8095; --tier-deep: #4d4556; --cheer: 0; }
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  /* Gutter-ul lateral ține textul departe de bara de sistem pe telefon. */
+  padding-block: 24px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background:
+    radial-gradient(120% 80% at 50% 0%, var(--night-2), transparent 60%),
+    linear-gradient(180deg, var(--night-1), var(--night-0));
+  color: var(--ink);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+.weigh-in {
+  max-width: 560px;
+  margin: 0 auto;
+  display: grid;
+  gap: 22px;
+}
+
+/* ─── Antet ─── */
+.intro { position: relative; text-align: center; }
+
+/* Comutatorul de limbă, ancorat în colțul antetului. */
+.lang {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.lang button {
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+}
+.lang button[aria-pressed="true"] {
+  background: var(--tier);
+  color: #22130a;
+}
+.lang button:focus-visible,
+.units button:focus-visible {
+  outline: 2px solid var(--tier);
+  outline-offset: 2px;
+}
+
+.eyebrow {
+  /* Loc pentru comutatorul de limbă pe ecrane înguste. */
+  margin: 0 0 8px;
+  padding-top: 4px;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--tier);
+  transition: color 0.5s var(--ease);
+}
+
+.intro h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 8vw, 2.6rem);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.lede {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+/* ─── 1. Scena ─── */
+.stage {
+  position: relative;
+  height: 300px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  background:
+    radial-gradient(90% 70% at 50% 110%, rgba(255, 138, 43, 0.16), transparent 70%),
+    linear-gradient(180deg, #120a24, #26123a 60%, #1a0e2c);
+}
+
+.moon {
+  position: absolute;
+  top: 22px; right: 28px;
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff6e0, #e8d7a8);
+  box-shadow: 0 0 36px rgba(255, 240, 200, 0.45);
+}
+.moon::after {
+  content: "";
+  position: absolute;
+  inset: 8px 10px auto auto;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: rgba(190, 170, 130, 0.5);
+}
+
+.star {
+  position: absolute;
+  left: var(--x); top: var(--y);
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: #fff;
+  animation: twinkle 3.2s var(--d) infinite ease-in-out;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.8); }
+  50%      { opacity: 1;    transform: scale(1.4); }
+}
+
+.bat {
+  position: absolute;
+  width: 18px; height: 8px;
+  background:
+    radial-gradient(circle at 50% 120%, transparent 55%, #0d0618 56%) 0 0 / 50% 100% no-repeat,
+    radial-gradient(circle at 50% 120%, transparent 55%, #0d0618 56%) 100% 0 / 50% 100% no-repeat;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
+  opacity: 0.85;
+}
+.bat--1 { top: 22%; animation: fly 11s linear infinite; }
+.bat--2 { top: 34%; animation: fly 15s linear infinite 2s; transform: scale(0.75); }
+.bat--3 { top: 14%; animation: fly 19s linear infinite 5s; transform: scale(1.2); }
+@keyframes fly {
+  from { left: -10%; }
+  to   { left: 110%; }
+}
+
+.fog {
+  position: absolute;
+  left: -20%; right: -20%; bottom: 0;
+  height: 90px;
+  background: linear-gradient(180deg, transparent, rgba(190, 170, 220, 0.14));
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* ─── Dovleacul, construit din CSS ─── */
+.pumpkin {
+  position: absolute;
+  left: 50%;
+  bottom: 86px;
+  transform: translateX(-50%) scale(var(--pumpkin-scale));
+  transform-origin: 50% 100%;
+  transition: transform 0.55s var(--ease);
+}
+
+.pumpkin__glow {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 230px; height: 230px;
+  margin: -115px 0 0 -115px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--tier), transparent 62%);
+  opacity: calc(0.1 + var(--cheer) * 0.1);
+  filter: blur(14px);
+  transition: opacity 0.5s var(--ease), background 0.5s var(--ease);
+}
+
+.pumpkin__body {
+  position: relative;
+  display: block;
+  width: 168px; height: 128px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 30%, var(--tier), var(--tier-deep) 72%);
+  box-shadow: inset -10px -12px 24px rgba(0, 0, 0, 0.35);
+  transition: background 0.5s var(--ease);
+}
+
+.rib {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.09), transparent);
+}
+.rib--c      { width: 52px;  margin-left: -26px; }
+.rib--l      { width: 100px; margin-left: -50px; }
+.rib--r      { width: 100px; margin-left: -50px; }
+.rib--far-l  { width: 142px; margin-left: -71px; }
+.rib--far-r  { width: 142px; margin-left: -71px; }
+
+.pumpkin__stem {
+  position: absolute;
+  left: 50%; top: -20px;
+  width: 14px; height: 30px;
+  margin-left: -7px;
+  border-radius: 6px 6px 3px 3px;
+  background: linear-gradient(180deg, #8a6038, var(--stem));
+  transform: rotate(-6deg);
+}
+
+.pumpkin__leaf {
+  position: absolute;
+  left: 62%; top: -14px;
+  width: 34px; height: 20px;
+  border-radius: 0 100% 0 100%;
+  background: linear-gradient(135deg, #6fb268, var(--leaf));
+  transform: rotate(-16deg);
+}
+
+.pumpkin__vine {
+  position: absolute;
+  left: 38%; top: -24px;
+  width: 26px; height: 22px;
+  border: 2px solid var(--leaf);
+  border-color: var(--leaf) transparent transparent var(--leaf);
+  border-radius: 50%;
+  transform: rotate(28deg);
+}
+
+.pumpkin__shadow {
+  position: absolute;
+  left: 50%; bottom: -14px;
+  width: 150px; height: 20px;
+  margin-left: -75px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  filter: blur(7px);
+}
+
+/* ─── Fața: geometria vine din variabile, forma din categorie ─── */
+
+/*
+ * Fiecare categorie își scrie propria față prin aceste variabile. Regulile de
+ * desen de mai jos nu se schimbă niciodată — doar valorile. O categorie nouă
+ * înseamnă un bloc de variabile, nu un set nou de selectoare.
+ */
+.face {
+  position: absolute;
+  inset: 24% 0 auto;
+
+  --eye-w: 20px;
+  --eye-h: 17px;
+  --eye-x: 36px;
+  --eye-tilt: 6deg;
+  --eye-clip: polygon(50% 0, 100% 100%, 0 100%);
+
+  --mouth-w: 70px;
+  --mouth-h: 22px;
+  --mouth-top: 32px;
+  --mouth-clip: polygon(
+    0 0, 14% 70%, 28% 10%, 42% 76%, 58% 10%, 72% 76%, 86% 10%, 100% 0,
+    92% 100%, 8% 100%
+  );
+
+  opacity: calc(0.15 + var(--cheer) * 0.17);
+  transition: opacity 0.5s var(--ease);
+}
+
+.face__eye {
+  position: absolute;
+  top: 0;
+  width: var(--eye-w);
+  height: var(--eye-h);
+  background: #2a0f05;
+  clip-path: var(--eye-clip);
+  box-shadow: 0 0 10px rgba(255, 210, 120, 0.5);
+  transition: width 0.45s var(--ease), height 0.45s var(--ease);
+}
+.face__eye--l { left: var(--eye-x);  transform: rotate(var(--eye-tilt)); }
+.face__eye--r { right: var(--eye-x); transform: rotate(calc(var(--eye-tilt) * -1)); }
+
+.face__mouth {
+  position: absolute;
+  top: var(--mouth-top);
+  left: 50%;
+  width: var(--mouth-w);
+  height: var(--mouth-h);
+  margin-left: calc(var(--mouth-w) / -2);
+  background: #2a0f05;
+  clip-path: var(--mouth-clip);
+  box-shadow: 0 0 12px rgba(255, 190, 90, 0.45);
+  transition: width 0.45s var(--ease), height 0.45s var(--ease);
+}
+
+/* Bostănel timid: doi ochi rotunzi și o gură mică, mirată. */
+.weigh-in[data-tier="tiny"] .face {
+  --eye-w: 9px; --eye-h: 9px; --eye-x: 48px; --eye-tilt: 0deg;
+  --eye-clip: circle(50%);
+  --mouth-w: 26px; --mouth-h: 14px; --mouth-top: 28px;
+  --mouth-clip: ellipse(50% 50%);
+}
+
+/* Mini: primii trei dinți. */
+.weigh-in[data-tier="mini"] .face {
+  --eye-w: 14px; --eye-h: 12px; --eye-x: 44px; --eye-tilt: 4deg;
+  --mouth-w: 46px; --mouth-h: 16px; --mouth-top: 30px;
+  --mouth-clip: polygon(
+    0 0, 25% 72%, 50% 10%, 75% 72%, 100% 0,
+    90% 100%, 10% 100%
+  );
+}
+
+/* Carving păstrează felinarul clasic din variabilele implicite. */
+
+/* Giant: ochi mai mari, rânjet lat. */
+.weigh-in[data-tier="giant"] .face {
+  --eye-w: 24px; --eye-h: 20px; --eye-x: 32px; --eye-tilt: 8deg;
+  --mouth-w: 88px; --mouth-h: 26px; --mouth-top: 34px;
+  --mouth-clip: polygon(
+    0 0, 11% 74%, 22% 8%, 33% 78%, 44% 8%, 56% 78%, 67% 8%, 78% 74%, 100% 0,
+    93% 100%, 7% 100%
+  );
+}
+
+/* Record Breaker: sprâncene înclinate, gura cât fața. */
+.weigh-in[data-tier="record"] .face {
+  --eye-w: 28px; --eye-h: 22px; --eye-x: 28px; --eye-tilt: 14deg;
+  --mouth-w: 102px; --mouth-h: 28px; --mouth-top: 34px;
+  --mouth-clip: polygon(
+    0 0, 9% 78%, 18% 6%, 28% 82%, 38% 6%, 50% 84%, 62% 6%, 72% 82%, 82% 6%,
+    91% 78%, 100% 0, 94% 100%, 6% 100%
+  );
+}
+
+/* Legendary: ochi-romb și un rânjet pe toată lățimea. */
+.weigh-in[data-tier="legendary"] .face {
+  --eye-w: 30px; --eye-h: 26px; --eye-x: 24px; --eye-tilt: 0deg;
+  --eye-clip: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  --mouth-w: 118px; --mouth-h: 34px; --mouth-top: 32px;
+  --mouth-clip: polygon(
+    0 0, 8% 80%, 16% 4%, 25% 84%, 33% 4%, 42% 86%, 50% 4%, 58% 86%, 67% 4%,
+    75% 84%, 84% 4%, 92% 80%, 100% 0, 96% 100%, 4% 100%
+  );
+}
+
+/* Greutate invalidă: privire goală, gură dreaptă. Dovleacul nu înțelege. */
+.weigh-in[data-tier="invalid"] .face {
+  --eye-w: 14px; --eye-h: 14px; --eye-x: 44px; --eye-tilt: 0deg;
+  --eye-clip: circle(50%);
+  --mouth-w: 40px; --mouth-h: 5px; --mouth-top: 34px;
+  --mouth-clip: none;
+  opacity: 0.55;
+}
+
+/* ─── Cântarul de sub dovleac ─── */
+.platform {
+  position: absolute;
+  left: 50%; bottom: 26px;
+  transform: translateX(-50%);
+  display: grid;
+  justify-items: center;
+}
+.platform__plate {
+  width: 196px; height: 14px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #6d6478, #3b3545);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.4);
+}
+.platform__post {
+  width: 26px; height: 26px;
+  background: linear-gradient(90deg, #4a4356, #2f2a3a);
+}
+.platform__base {
+  width: 150px; height: 16px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #5a5368, #2b2636);
+}
+
+/* ─── Confetti pentru Record Breaker ─── */
+.confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.weigh-in[data-tier="record"] .confetti,
+.weigh-in[data-tier="legendary"] .confetti { opacity: 1; }
+
+.confetti i {
+  position: absolute;
+  top: -12px;
+  left: var(--x);
+  width: 7px; height: 11px;
+  background: var(--c);
+  border-radius: 1px;
+  animation: fall var(--dur) linear var(--d) infinite;
+}
+@keyframes fall {
+  from { transform: translateY(0) rotate(0deg); opacity: 1; }
+  to   { transform: translateY(320px) rotate(540deg); opacity: 0.1; }
+}
+
+/* ─── 2. Afișajul digital ─── */
+.display {
+  text-align: center;
+  padding: 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.display__value {
+  margin: 0;
+  font-size: clamp(2rem, 11vw, 3rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  color: var(--tier);
+  transition: color 0.4s var(--ease);
+}
+.display__unit {
+  font-size: 0.4em;
+  font-weight: 600;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.display__secondary {
+  margin: 2px 0 0;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── 3. Controale ─── */
+.controls { display: grid; gap: 12px; }
+
+.units {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.units button {
+  flex: 1;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+}
+.units button[aria-pressed="true"] {
+  background: var(--tier);
+  color: #22130a;
+  font-weight: 600;
+}
+
+.field { display: grid; gap: 6px; }
+.field__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+/* Câmpul cu − / + de o parte și de alta (idee din „Pumpkin RED", Pablo). */
+.field-box {
+  position: relative;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 52px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+/* Linia de accent care se umple de la stânga la focus. */
+.field-box::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 3px;
+  background: var(--tier);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--ease), background 0.4s;
+}
+.field-box:focus-within {
+  border-color: var(--tier);
+  box-shadow: 0 0 24px -8px var(--tier);
+}
+.field-box:focus-within::after { transform: scaleX(1); }
+
+.field input {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 6px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  caret-color: var(--tier);
+  font: inherit;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+
+.step {
+  border: 0;
+  background: transparent;
+  color: var(--tier);
+  font: inherit;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+  transition: background 0.15s, color 0.15s;
+}
+.step--down { border-right: 1px solid var(--line); }
+.step--up   { border-left: 1px solid var(--line); }
+.step:hover,
+.step:focus-visible { background: var(--tier); color: #22130a; outline: none; }
+.step:active,
+.step.is-holding    { background: var(--tier-deep); color: var(--ink); }
+
+.weigh-in[data-tier="invalid"] .field-box { border-color: var(--danger); }
+
+/* Cântarul „refuză" un text: un tremurat scurt, pe pași. */
+.field-box.is-rejected { animation: reject 0.35s steps(2, end); }
+@keyframes reject {
+  0%, 100% { translate: 0 0; }
+  25%      { translate: -5px 0; }
+  50%      { translate: 5px 0; }
+  75%      { translate: -3px 0; }
+}
+
+.hint {
+  margin: -4px 0 0;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+.hint code, .foot code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.92em;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--tier) calc(var(--fill) * 100%),
+    rgba(255, 255, 255, 0.12) 0
+  );
+  cursor: pointer;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 3px solid #1a0d2b;
+  background: var(--tier);
+  box-shadow: 0 0 12px var(--tier);
+}
+.slider::-moz-range-thumb {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 3px solid #1a0d2b;
+  background: var(--tier);
+}
+
+.slider__markers {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── 4. Cadranul ─── */
+.gauge-wrap {
+  display: grid;
+  justify-items: center;
+  padding: 10px 0 0;
+}
+.gauge { width: 100%; max-width: 320px; }
+
+.gauge__band {
+  fill: none;
+  stroke-width: 13;
+  stroke-linecap: butt;
+  opacity: 0.3;
+  transition: opacity 0.4s, stroke-width 0.4s;
+}
+.gauge__band--tiny      { stroke: #b8e3a0; }
+.gauge__band--mini      { stroke: #ffd9a8; }
+.gauge__band--carving   { stroke: #ff9c3d; }
+.gauge__band--giant     { stroke: #ff6a1f; }
+.gauge__band--record    { stroke: #ffd36b; }
+.gauge__band--legendary { stroke: #c79bff; }
+
+.weigh-in[data-tier="tiny"]      .gauge__band--tiny,
+.weigh-in[data-tier="mini"]      .gauge__band--mini,
+.weigh-in[data-tier="carving"]   .gauge__band--carving,
+.weigh-in[data-tier="giant"]     .gauge__band--giant,
+.weigh-in[data-tier="record"]    .gauge__band--record,
+.weigh-in[data-tier="legendary"] .gauge__band--legendary {
+  opacity: 1;
+  stroke-width: 17;
+}
+
+.gauge__needle {
+  fill: var(--ink);
+  transform: rotate(var(--needle));
+  transform-origin: 100px 100px;
+  transition: transform 0.6s var(--ease);
+}
+.gauge__hub { fill: var(--tier); transition: fill 0.4s; }
+.gauge__tick { fill: var(--ink-soft); font-size: 9px; }
+
+/* ─── 5. Panglica ─── */
+.verdict { text-align: center; }
+
+.ribbon {
+  position: relative;
+  display: inline-grid;
+  justify-items: center;
+}
+.ribbon__badge {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 2px;
+  padding: 14px 30px;
+  border-radius: 999px;
+  border: 2px solid var(--tier);
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.1), transparent);
+  box-shadow: 0 0 26px -6px var(--tier);
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+.ribbon__label {
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.ribbon__category {
+  font-size: 1.5rem;
+  color: var(--tier);
+  transition: color 0.4s;
+}
+.ribbon__tail {
+  position: absolute;
+  z-index: 1;
+  top: 70%;
+  width: 22px; height: 56px;
+  background: var(--tier-deep);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
+  transition: background 0.4s;
+}
+.ribbon__tail--l { left: 26%; transform: rotate(8deg); }
+.ribbon__tail--r { right: 26%; transform: rotate(-8deg); }
+
+.weigh-in[data-tier="record"] .ribbon__badge,
+.weigh-in[data-tier="legendary"] .ribbon__badge {
+  animation: pop 1.4s var(--ease) infinite alternate;
+}
+.weigh-in[data-tier="legendary"] .ribbon__badge { animation-duration: 0.9s; }
+@keyframes pop {
+  from { transform: scale(1); }
+  to   { transform: scale(1.045); }
+}
+
+.prize {
+  margin: 34px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+.weigh-in[data-tier="invalid"] .prize { color: var(--danger); }
+
+/* ─── 6. Traseul categoriilor ─── */
+.track-wrap { display: grid; gap: 10px; }
+
+.track {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+.track__fill {
+  display: block;
+  height: 100%;
+  width: calc(var(--fill) * 100%);
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    #b8e3a0, #ffd9a8, #ff9c3d, #ff6a1f, #ffd36b, #c79bff
+  );
+  transition: width 0.6s var(--ease);
+}
+
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tiers li {
+  display: grid;
+  gap: 2px;
+  padding: 9px 4px;
+  text-align: center;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: var(--panel);
+  color: var(--ink-soft);
+  font-size: 0.68rem;
+  transition: all 0.35s var(--ease);
+}
+.tiers li strong { font-size: 0.8rem; }
+.tiers li[aria-current="true"] {
+  border-color: var(--tier);
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.09);
+  transform: translateY(-2px);
+}
+
+/* ─── 7. Publicul ─── */
+.crowd {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 7px;
+  height: 46px;
+}
+.fan {
+  position: relative;
+  width: 16px; height: 26px;
+  border-radius: 8px 8px 3px 3px;
+  background: hsl(calc(260 + var(--i) * 9) 30% 42%);
+  animation: cheer 0.7s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * 0.07s);
+  animation-play-state: paused;
+  opacity: 0.5;
+  transition: opacity 0.4s;
+}
+.fan::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: -10px;
+  width: 12px; height: 12px;
+  margin-left: -6px;
+  border-radius: 50%;
+  background: hsl(calc(28 + var(--i) * 6) 42% 68%);
+}
+@keyframes cheer {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-9px); }
+}
+
+.weigh-in[data-tier="carving"] .fan,
+.weigh-in[data-tier="giant"] .fan,
+.weigh-in[data-tier="record"] .fan,
+.weigh-in[data-tier="legendary"] .fan {
+  animation-play-state: running;
+  opacity: 1;
+}
+.weigh-in[data-tier="giant"] .fan     { animation-duration: 0.5s; }
+.weigh-in[data-tier="record"] .fan    { animation-duration: 0.36s; }
+.weigh-in[data-tier="legendary"] .fan { animation-duration: 0.26s; }
+
+/* ─── Subsol ─── */
+.foot {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+.foot a { color: var(--tier); }
+.foot p { margin: 6px 0 0; }
+
+
+/* ═══ Idei din „Grow & Weigh" (zirak9), redesenate pe tema nopții ═══ */
+
+/* ─── Butonul de udat ─── */
+.water {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 18px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--tier), var(--tier-deep));
+  color: #22130a;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.45), 0 10px 22px -10px var(--tier);
+  margin-bottom: 6px;
+  transition: transform 0.1s, box-shadow 0.1s, background 0.4s;
+}
+.water svg { width: 18px; height: 18px; flex: none; }
+.water__amount { opacity: 0.7; font-variant-numeric: tabular-nums; }
+.water:active {
+  transform: translateY(5px);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.45), 0 4px 12px -8px var(--tier);
+}
+.water:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* ─── Picăturile care cad pe dovleac la udare ─── */
+.rain { position: absolute; inset: 0; pointer-events: none; }
+.rain i {
+  position: absolute;
+  top: -16px;
+  left: var(--x);
+  width: 6px; height: 10px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: linear-gradient(180deg, #d8f3ff, #6cc4ff);
+  opacity: 0;
+}
+.stage.is-watering .rain i { animation: drop 0.7s ease-in var(--d) both; }
+@keyframes drop {
+  0%   { transform: translateY(0);     opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translateY(150px); opacity: 0; }
+}
+
+/* Dovleacul „bea" apa: se turtește și revine. */
+.pumpkin__body { transform-origin: 50% 100%; }
+.stage.is-watering .pumpkin__body { animation: squash 0.55s var(--ease) 0.35s; }
+@keyframes squash {
+  0%, 100% { scale: 1 1; }
+  35%      { scale: 1.08 0.9; }
+  65%      { scale: 0.96 1.05; }
+}
+
+/* ─── Scântei și frunze în jurul dovleacului, de la Carving în sus ─── */
+.sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+}
+.sparkles span {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  font-size: 1.15rem;
+  animation: float-sparkle 1.3s ease-in-out var(--d) infinite alternate;
+}
+@keyframes float-sparkle {
+  from { transform: translateY(0) scale(0.85) rotate(0deg);   opacity: 0.55; }
+  to   { transform: translateY(-8px) scale(1.12) rotate(12deg); opacity: 1; }
+}
+.weigh-in[data-tier="carving"]   .sparkles,
+.weigh-in[data-tier="giant"]     .sparkles,
+.weigh-in[data-tier="record"]    .sparkles,
+.weigh-in[data-tier="legendary"] .sparkles { opacity: 1; }
+
+/* ─── Obrăjori pentru dovlecii mici ─── */
+.blush {
+  position: absolute;
+  top: 54%;
+  width: 22px; height: 12px;
+  border-radius: 50%;
+  background: #ff8da1;
+  filter: blur(1px);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+}
+.blush--l { left: 24px; }
+.blush--r { right: 24px; }
+.weigh-in[data-tier="tiny"] .blush,
+.weigh-in[data-tier="mini"] .blush { opacity: 0.55; }
+
+/* ─── Categoria „sare" când se schimbă ─── */
+.ribbon__category.is-popping { animation: category-pop 0.45s var(--ease); }
+@keyframes category-pop {
+  0%   { scale: 0.7; opacity: 0.3; }
+  60%  { scale: 1.18; opacity: 1; }
+  100% { scale: 1; }
+}
+
+/* ═══ Idei din pen-ul cu yokai, redesenate pe tema nopții ═══ */
+
+/* ─── Inelul spiritual din jurul dovleacului ─── */
+.halo {
+  position: absolute;
+  left: 50%; top: 64px;
+  width: 214px; height: 214px;
+  margin: -107px 0 0 -107px;
+  border-radius: 50%;
+  border: 1px solid var(--tier);
+  box-shadow:
+    0 0 30px -6px var(--tier),
+    inset 0 0 30px -10px var(--tier);
+  opacity: calc(0.12 + var(--cheer) * 0.15);
+  transition: opacity 0.5s var(--ease), border-color 0.5s;
+  pointer-events: none;
+}
+.halo--outer {
+  width: 244px; height: 244px;
+  margin: -122px 0 0 -122px;
+  border: 1px dashed var(--tier-deep);
+  box-shadow: none;
+  animation: halo-spin 40s linear infinite;
+}
+@keyframes halo-spin { to { rotate: 360deg; } }
+.weigh-in[data-tier="record"] .halo:not(.halo--outer),
+.weigh-in[data-tier="legendary"] .halo:not(.halo--outer) {
+  animation: halo-pulse 1.4s ease-in-out infinite;
+}
+@keyframes halo-pulse { 50% { scale: 1.05; } }
+
+/* ─── Coarnele de oni, doar pentru Record și Legendary ─── */
+.horn {
+  position: absolute;
+  top: -30px;
+  width: 24px; height: 40px;
+  background: linear-gradient(180deg, #f8eedd, #c9b29c);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  opacity: 0;
+  translate: 0 12px;
+  transition: opacity 0.4s var(--ease), translate 0.4s var(--ease);
+}
+.horn--l { left: 24px;  rotate: -22deg; }
+.horn--r { right: 24px; rotate: 22deg; }
+.weigh-in[data-tier="record"] .horn,
+.weigh-in[data-tier="legendary"] .horn { opacity: 1; translate: 0 0; }
+
+/* ─── Hitodama: flăcări de spirit care plutesc ─── */
+.hito {
+  position: absolute;
+  left: var(--x); top: var(--y);
+  width: var(--s); height: var(--s);
+  border-radius: 0 50% 50% 50%;
+  rotate: 45deg;
+  background: radial-gradient(circle at 60% 60%, #fff3dc, var(--tier) 70%);
+  box-shadow: 0 0 12px var(--tier);
+  opacity: calc(0.2 + var(--cheer) * 0.16);
+  animation: bob 4s ease-in-out var(--d) infinite;
+  transition: opacity 0.5s var(--ease);
+}
+@keyframes bob { 50% { translate: 0 -10px; } }
+
+/* ─── Colțuri de ramă în culoarea categoriei ─── */
+.stage::before,
+.stage::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  width: 18px; height: 18px;
+  border: 2px solid var(--tier);
+  pointer-events: none;
+  transition: border-color 0.5s;
+}
+.stage::before { top: 10px; left: 10px; border-right: 0; border-bottom: 0; }
+.stage::after  { bottom: 10px; right: 10px; border-left: 0; border-top: 0; }
+
+/* ─── Spiritul invocat, sub premiu ─── */
+.spirit {
+  margin: 8px 0 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: var(--tier);
+  transition: color 0.4s;
+}
+
+/* ─── Respectăm preferința pentru mai puțină mișcare ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .stage { height: 260px; }
+  /* Comutatorul trece deasupra titlului, ca să nu-l înghesuie. */
+  .lang { position: static; justify-content: center; margin: 0 auto 12px; width: max-content; }
+  .eyebrow { padding-top: 0; }
+  /* Șase categorii nu încap pe un rând de telefon — două rânduri de câte trei. */
+  .tiers { grid-template-columns: repeat(3, 1fr); }
+  .tiers li { font-size: 0.62rem; }
+  .tiers li strong { font-size: 0.74rem; }
+  .slider__markers { font-size: 0.58rem; }
+}
+
+</style>
+</head>
+<body>
+<main class="weigh-in" data-tier="tiny" lang="ro">
+  <header class="intro">
+    <div class="lang" role="group" data-ro-label="Limba paginii" data-en-label="Page language">
+      <button type="button" data-lang="ro" aria-pressed="true">RO</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+
+    <p class="eyebrow"
+       data-ro="Halloween 2026 · CodePen Challenge"
+       data-en="Halloween 2026 · CodePen Challenge">Halloween 2026 · CodePen Challenge</p>
+    <h1>Pumpkin Weigh-In</h1>
+    <p class="lede"
+       data-ro="Pune dovleacul pe cântar și vezi ce premiu ia în livadă."
+       data-en="Put your pumpkin on the scale and see which prize it wins.">
+      Pune dovleacul pe cântar și vezi ce premiu ia în livadă.
+    </p>
+  </header>
+
+  <!-- ░░ 1. Scena de noapte + dovleacul care crește ░░ -->
+  <section class="stage" aria-hidden="true">
+    <span class="moon"></span>
+    <span class="star" style="--x: 8%; --y: 18%; --d: 0s"></span>
+    <span class="star" style="--x: 22%; --y: 9%; --d: 1.1s"></span>
+    <span class="star" style="--x: 71%; --y: 14%; --d: .6s"></span>
+    <span class="star" style="--x: 88%; --y: 26%; --d: 1.7s"></span>
+    <span class="star" style="--x: 45%; --y: 6%; --d: 2.2s"></span>
+    <span class="bat bat--1"></span>
+    <span class="bat bat--2"></span>
+    <span class="bat bat--3"></span>
+
+    <div class="pumpkin">
+      <span class="halo halo--outer"></span>
+      <span class="halo"></span>
+      <span class="pumpkin__glow"></span>
+      <i class="horn horn--l"></i>
+      <i class="horn horn--r"></i>
+      <span class="pumpkin__vine"></span>
+      <span class="pumpkin__leaf"></span>
+      <span class="pumpkin__stem"></span>
+      <span class="pumpkin__body">
+        <i class="rib rib--far-l"></i>
+        <i class="rib rib--l"></i>
+        <i class="rib rib--c"></i>
+        <i class="rib rib--r"></i>
+        <i class="rib rib--far-r"></i>
+        <i class="blush blush--l"></i>
+        <i class="blush blush--r"></i>
+        <span class="face">
+          <i class="face__eye face__eye--l"></i>
+          <i class="face__eye face__eye--r"></i>
+          <i class="face__mouth"></i>
+        </span>
+      </span>
+      <span class="pumpkin__shadow"></span>
+    </div>
+
+    <div class="platform">
+      <span class="platform__plate"></span>
+      <span class="platform__post"></span>
+      <span class="platform__base"></span>
+    </div>
+
+    <div class="sparkles">
+      <span style="--x: 24%; --y: 34%; --d: 0s">✨</span>
+      <span style="--x: 70%; --y: 40%; --d: .4s">🍂</span>
+      <span style="--x: 30%; --y: 62%; --d: .8s">🍁</span>
+      <span style="--x: 66%; --y: 66%; --d: 1.1s">✨</span>
+    </div>
+    <div class="rain" id="rain"></div>
+    <span class="hito" style="--x: 9%;  --y: 46%; --s: 11px; --d: 0s"></span>
+    <span class="hito" style="--x: 84%; --y: 52%; --s: 8px;  --d: -1.3s"></span>
+    <span class="hito" style="--x: 16%; --y: 74%; --s: 7px;  --d: -2.6s"></span>
+
+    <div class="fog"></div>
+    <div class="confetti" id="confetti"></div>
+  </section>
+
+  <!-- ░░ 2. Afișajul digital ░░ -->
+  <section class="display">
+    <p class="display__value">
+      <span id="readout">0</span>
+      <span class="display__unit" id="readout-unit">lb</span>
+    </p>
+    <p class="display__secondary" id="secondary-readout">≈ 0 kg</p>
+  </section>
+
+  <!-- ░░ 3. Controale: unitate, câmp liber, glisor ░░ -->
+  <section class="controls">
+    <div class="units" role="group"
+         data-ro-label="Unitate de măsură" data-en-label="Unit of measure">
+      <button type="button" data-unit="lb" aria-pressed="true"
+              data-ro="livre" data-en="pounds">livre</button>
+      <button type="button" data-unit="kg" aria-pressed="false"
+              data-ro="kilograme" data-en="kilograms">kilograme</button>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="weight"
+             data-ro="Scrie greutatea" data-en="Type the weight">Scrie greutatea</label>
+      <div class="field-box" id="field-box">
+        <button class="step step--down" type="button" data-step="-1"
+                data-ro-label="Scade greutatea" data-en-label="Decrease weight"
+                aria-label="Scade greutatea">−</button>
+        <input
+          id="weight"
+          type="text"
+          inputmode="decimal"
+          autocomplete="off"
+          spellcheck="false"
+          value="0"
+          aria-describedby="field-hint hold-hint"
+        />
+        <button class="step step--up" type="button" data-step="1"
+                data-ro-label="Crește greutatea" data-en-label="Increase weight"
+                aria-label="Crește greutatea">+</button>
+      </div>
+    </div>
+    <p class="hint" id="field-hint" data-rich
+       data-ro="Merge și text — încearcă <code>heavy</code> sau <code>-5</code>."
+       data-en="Text works too — try <code>heavy</code> or <code>-5</code>.">
+      Merge și text — încearcă <code>heavy</code> sau <code>-5</code>.
+    </p>
+    <p class="hint" id="hold-hint"
+       data-ro="Ține apăsat pe + sau − și greutatea urcă tot mai repede."
+       data-en="Hold + or − and the weight changes faster and faster.">
+      Ține apăsat pe + sau − și greutatea urcă tot mai repede.
+    </p>
+
+    <button class="water" id="water" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
+      </svg>
+      <span data-ro="Udă dovleacul" data-en="Water the pumpkin">Udă dovleacul</span>
+      <span class="water__amount" id="water-amount">+10 lb</span>
+    </button>
+
+    <input
+      id="scale"
+      class="slider"
+      type="range"
+      min="0"
+      max="1000"
+      step="1"
+      value="0"
+      data-ro-label="Glisorul cântarului"
+      data-en-label="Scale slider"
+      aria-label="Glisorul cântarului"
+    />
+    <div class="slider__markers" aria-hidden="true">
+      <span data-marker="0">0</span>
+      <span data-marker="1">1</span>
+      <span data-marker="10">10</span>
+      <span data-marker="50">50</span>
+      <span data-marker="1000">1000</span>
+      <span data-marker="2749">2749</span>
+      <span data-marker="4000">4000</span>
+    </div>
+  </section>
+
+  <!-- ░░ 4. Cadranul analogic ░░ -->
+  <section class="gauge-wrap">
+    <svg class="gauge" viewBox="0 0 200 118" role="img"
+         data-ro-label="Cadranul cântarului" data-en-label="Scale dial"
+         aria-label="Cadranul cântarului">
+      <path class="gauge__band gauge__band--tiny"
+            d="M20,100 A80,80 0 0 1 30.72,60" />
+      <path class="gauge__band gauge__band--mini"
+            d="M30.72,60 A80,80 0 0 1 60,30.72" />
+      <path class="gauge__band gauge__band--carving"
+            d="M60,30.72 A80,80 0 0 1 100,20" />
+      <path class="gauge__band gauge__band--giant"
+            d="M100,20 A80,80 0 0 1 140,30.72" />
+      <path class="gauge__band gauge__band--record"
+            d="M140,30.72 A80,80 0 0 1 169.28,60" />
+      <path class="gauge__band gauge__band--legendary"
+            d="M169.28,60 A80,80 0 0 1 180,100" />
+
+      <g class="gauge__needle">
+        <polygon points="97.5,100 102.5,100 100,30" />
+      </g>
+      <circle class="gauge__hub" cx="100" cy="100" r="7" />
+      <text class="gauge__tick" x="18" y="114">0</text>
+      <text class="gauge__tick" x="100" y="114" text-anchor="middle"
+            data-ro="livre" data-en="pounds">livre</text>
+      <text class="gauge__tick" x="182" y="114" text-anchor="end">4000</text>
+    </svg>
+  </section>
+
+  <!-- ░░ 5. Verdictul + panglica de premiu ░░ -->
+  <section class="verdict" aria-live="polite" aria-atomic="true">
+    <div class="ribbon">
+      <span class="ribbon__tail ribbon__tail--l"></span>
+      <span class="ribbon__tail ribbon__tail--r"></span>
+      <span class="ribbon__badge">
+        <span class="ribbon__label"
+              data-ro="categoria" data-en="category">categoria</span>
+        <!-- Numele categoriei vine din pumpkin.js și rămâne în engleză
+             în ambele limbi: exact pe el cad assert-urile din Jest. -->
+        <strong class="ribbon__category" id="category">Tiny Gourd</strong>
+      </span>
+    </div>
+    <p class="prize" id="prize">Încape în palmă — tot dovleac se cheamă.</p>
+    <p class="spirit" id="spirit">木霊 · Kodama, spiritul mic al pădurii</p>
+  </section>
+
+  <!-- ░░ 6. Traseul categoriilor ░░ -->
+  <section class="track-wrap">
+    <div class="track" aria-hidden="true"><span class="track__fill"></span></div>
+    <ol class="tiers">
+      <li data-tier-name="Tiny Gourd">
+        <strong>Tiny</strong>
+        <span data-ro="sub 1 lb" data-en="under 1 lb">sub 1 lb</span>
+      </li>
+      <li data-tier-name="Mini">
+        <strong>Mini</strong><span>1 – 10</span>
+      </li>
+      <li data-tier-name="Carving">
+        <strong>Carving</strong><span>10 – 50</span>
+      </li>
+      <li data-tier-name="Giant">
+        <strong>Giant</strong><span>50 – 1000</span>
+      </li>
+      <li data-tier-name="Record Breaker!">
+        <strong>Record</strong><span>1000 – 2749</span>
+      </li>
+      <li data-tier-name="Legendary">
+        <strong>Legendary</strong><span>2749 lb +</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ░░ 7. Publicul care se entuziasmează ░░ -->
+  <section class="crowd" aria-hidden="true">
+    <span class="fan" style="--i: 0"></span>
+    <span class="fan" style="--i: 1"></span>
+    <span class="fan" style="--i: 2"></span>
+    <span class="fan" style="--i: 3"></span>
+    <span class="fan" style="--i: 4"></span>
+    <span class="fan" style="--i: 5"></span>
+    <span class="fan" style="--i: 6"></span>
+    <span class="fan" style="--i: 7"></span>
+    <span class="fan" style="--i: 8"></span>
+    <span class="fan" style="--i: 9"></span>
+    <span class="fan" style="--i: 10"></span>
+    <span class="fan" style="--i: 11"></span>
+  </section>
+
+  <footer class="foot">
+    <a href="test-results.html"
+       data-ro="Vezi rezultatele Jest" data-en="View Jest test results">
+      Vezi rezultatele Jest
+    </a>
+    <p data-rich
+       data-ro="Făcut pentru <strong>#codepenchallenge</strong> · <code>cpc-weigh-pumpkin</code>"
+       data-en="Made for the <strong>#codepenchallenge</strong> · <code>cpc-weigh-pumpkin</code>">
+      Făcut pentru <strong>#codepenchallenge</strong> · <code>cpc-weigh-pumpkin</code>
+    </p>
+    <p data-rich
+       data-ro="Interacțiuni inspirate de <em>Grow &amp; Weigh</em> (zirak9), <em>Pumpkin RED</em> (Pablo) și pen-ul cu spirite yokai."
+       data-en="Interactions inspired by <em>Grow &amp; Weigh</em> (zirak9), <em>Pumpkin RED</em> (Pablo) and the yokai spirits pen.">
+      Interacțiuni inspirate de <em>Grow &amp; Weigh</em> (zirak9), <em>Pumpkin RED</em> (Pablo) și pen-ul cu spirite yokai.
+    </p>
+  </footer>
+</main>
+
+<script type="module">
+import {
+  weighPumpkin,
+  weighPumpkinInKilograms,
+  POUNDS_PER_KILOGRAM,
+  WORLD_RECORD_POUNDS,
+  INVALID_WEIGHT
+} from "./pumpkin.js";
+
+/**
+ * Stratul de prezentare: citește input-ul, întreabă pumpkin.js și desenează.
+ * Nicio regulă de categorisire nu trăiește aici.
+ */
+
+/**
+ * Opririle cântarului, în livre — exact pragurile categoriilor, plus un capăt
+ * de scală. Glisorul se mișcă liniar *în interiorul* fiecărei benzi, așa că
+ * Tiny Gourd primește la fel de mult spațiu ca Giant; altfel prima livră ar
+ * ocupa 0,02% din cursă și n-ai putea nimeri niciodată 0,4 lb.
+ */
+const SCALE_STOPS = [0, 1, 10, 50, 1000, WORLD_RECORD_POUNDS, 4000];
+const BANDS = SCALE_STOPS.length - 1;
+const SLIDER_RESOLUTION = 1000;
+
+/** Cât adaugă o udare, în unitatea curentă (idee din „Grow & Weigh"). */
+const WATER_STEP = { lb: 10, kg: 5 };
+
+/**
+ * Ținut apăsat pe + / − (idee din „Pumpkin RED"): după o mică pauză, pasul
+ * crește de la 1 la 10 la 50, iar ritmul se întețește — ca să ajungi la
+ * recordul mondial fără să apeși de 2749 de ori.
+ */
+const HOLD_DELAY = 380;
+const stepSize = (ticks) => (ticks < 8 ? 1 : ticks < 20 ? 10 : 50);
+const tickDelay = (ticks) => Math.max(40, 140 - ticks * 6);
+
+const TIERS = {
+  "Tiny Gourd": "tiny",
+  Mini: "mini",
+  Carving: "carving",
+  Giant: "giant",
+  "Record Breaker!": "record",
+  Legendary: "legendary",
+  [INVALID_WEIGHT]: "invalid"
+};
+
+/**
+ * Textele care depind de rezultat. Cheile sunt numele categoriilor venite din
+ * pumpkin.js — numele în sine nu se traduce niciodată, fiindcă exact pe el cad
+ * assert-urile din Jest; se traduce doar ce spunem noi despre el.
+ */
+const COPY = {
+  ro: {
+    locale: "ro-RO",
+    waiting: "cântarul așteaptă",
+    prizes: {
+      "Tiny Gourd": "Încape în palmă — tot dovleac se cheamă.",
+      Mini: "Campion de buzunar al livezii.",
+      Carving: "Gata pentru masa de sculptat.",
+      Giant: "Un uriaș al tărâmului de dovleci!",
+      "Record Breaker!": "Toată livada aplaudă în picioare!",
+      Legendary: `Atinge recordul mondial de ${WORLD_RECORD_POUNDS} lb. Legendar.`,
+      [INVALID_WEIGHT]: "Cântarul are nevoie de un număr pozitiv."
+    },
+    spirits: {
+      "Tiny Gourd": "木霊 · Kodama, spiritul mic al pădurii",
+      Mini: "小鬼 · Ko-oni, drăcușorul",
+      Carving: "狐 · Kitsune, vulpea isteață",
+      Giant: "大入道 · Ōnyūdō, călugărul uriaș",
+      "Record Breaker!": "鬼神 · Kishin, zeul-demon",
+      Legendary: "大天狗 · Dai-tengu, stăpânul munților",
+      [INVALID_WEIGHT]: "Niciun spirit nu răspunde."
+    }
+  },
+  en: {
+    locale: "en-US",
+    waiting: "scale is waiting",
+    prizes: {
+      "Tiny Gourd": "Fits in your palm — still counts as a pumpkin.",
+      Mini: "A little patch champion.",
+      Carving: "Ready for the carving table.",
+      Giant: "A giant of the pumpkin patch!",
+      "Record Breaker!": "The whole patch is cheering!",
+      Legendary: `Matches the ${WORLD_RECORD_POUNDS} lb world record. Legendary.`,
+      [INVALID_WEIGHT]: "The scale needs a positive number."
+    },
+    spirits: {
+      "Tiny Gourd": "木霊 · Kodama, the tiny forest spirit",
+      Mini: "小鬼 · Ko-oni, the little imp",
+      Carving: "狐 · Kitsune, the clever fox",
+      Giant: "大入道 · Ōnyūdō, the towering monk",
+      "Record Breaker!": "鬼神 · Kishin, the demon god",
+      Legendary: "大天狗 · Dai-tengu, lord of the mountains",
+      [INVALID_WEIGHT]: "No spirit answers."
+    }
+  }
+};
+
+const CONFETTI_COLORS = ["#ffd36b", "#ff8a2b", "#ff5f6d", "#8be9a0", "#8fd3ff"];
+
+const ui = {
+  root: document.querySelector(".weigh-in"),
+  stage: document.querySelector(".stage"),
+  field: document.querySelector("#weight"),
+  fieldBox: document.querySelector("#field-box"),
+  steps: document.querySelectorAll("[data-step]"),
+  water: document.querySelector("#water"),
+  waterAmount: document.querySelector("#water-amount"),
+  slider: document.querySelector("#scale"),
+  unitButtons: document.querySelectorAll("[data-unit]"),
+  langButtons: document.querySelectorAll("[data-lang]"),
+  readout: document.querySelector("#readout"),
+  readoutUnit: document.querySelector("#readout-unit"),
+  secondary: document.querySelector("#secondary-readout"),
+  category: document.querySelector("#category"),
+  prize: document.querySelector("#prize"),
+  spirit: document.querySelector("#spirit"),
+  tiers: document.querySelectorAll("[data-tier-name]"),
+  markers: document.querySelectorAll("[data-marker]"),
+  confetti: document.querySelector("#confetti"),
+  rain: document.querySelector("#rain")
+};
+
+let unit = "lb";
+let lang = "ro";
+let lastCategory = null;
+let hold = null;
+
+/* ─── Helpere mici și pure ─── */
+
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const round = (value, decimals = 1) => {
+  const factor = 10 ** decimals;
+  return Math.round(value * factor) / factor;
+};
+
+/** Pentru afișare: cu separator de mii, în limba curentă. */
+const format = (value) =>
+  value.toLocaleString(COPY[lang].locale, { maximumFractionDigits: 1 });
+
+/**
+ * Pentru câmpul de input: fără separator de mii, cu punct zecimal.
+ * Obligatoriu separat de `format`: un „1.000" scris în câmp s-ar reciti ca 1,
+ * iar tot ce trece de 999 de livre ar cădea înapoi la Mini.
+ */
+const toFieldValue = (value) => String(round(value));
+
+const toPounds = (value) => (unit === "kg" ? value * POUNDS_PER_KILOGRAM : value);
+const fromPounds = (pounds) => (unit === "kg" ? pounds / POUNDS_PER_KILOGRAM : pounds);
+
+/** Repornește o animație CSS chiar dacă clasa e deja pe element. */
+function replay(element, className) {
+  element.classList.remove(className);
+  void element.offsetWidth;
+  element.classList.add(className);
+}
+
+/** Livre → poziție 0–1 pe cântar (liniar pe bandă). */
+function weightToFraction(pounds) {
+  const weight = clamp(pounds, 0, SCALE_STOPS[BANDS]);
+
+  for (let band = 1; band <= BANDS; band += 1) {
+    if (weight <= SCALE_STOPS[band]) {
+      const low = SCALE_STOPS[band - 1];
+      const span = SCALE_STOPS[band] - low;
+      return (band - 1 + (weight - low) / span) / BANDS;
+    }
+  }
+
+  return 1;
+}
+
+/** Poziție 0–1 → livre. Inversa funcției de mai sus. */
+function fractionToWeight(fraction) {
+  const position = clamp(fraction, 0, 1) * BANDS;
+  const band = Math.min(Math.floor(position), BANDS - 1);
+  const low = SCALE_STOPS[band];
+
+  return low + (position - band) * (SCALE_STOPS[band + 1] - low);
+}
+
+/* ─── Citirea input-ului ─── */
+
+/** Ce a scris omul, ca număr (NaN dacă e gol sau text). */
+function parseField() {
+  // Acceptăm și virgula zecimală: „12,5" e tot un număr.
+  const raw = ui.field.value.trim().replace(/\s/g, "").replace(",", ".");
+  return raw === "" ? NaN : Number(raw);
+}
+
+function readScale() {
+  const entered = parseField();
+  const category =
+    unit === "kg" ? weighPumpkinInKilograms(entered) : weighPumpkin(entered);
+
+  return { category, pounds: toPounds(entered) };
+}
+
+/**
+ * Mută greutatea cu `delta` în unitatea curentă. Dacă în câmp e ceva invalid,
+ * pornim de la zero — butoanele repară cântarul, nu-l blochează.
+ */
+function nudge(delta) {
+  const current = parseField();
+  const start = Number.isFinite(current) && current >= 0 ? current : 0;
+
+  ui.field.value = toFieldValue(Math.max(0, start + delta));
+  render();
+}
+
+/* ─── Limba ─── */
+
+/**
+ * Comută textele statice. Fiecare element își poartă ambele variante în
+ * `data-ro` / `data-en`, așa că aici nu există niciun text scris de mână —
+ * traduci pagina editând HTML-ul, nu funcția asta.
+ */
+function applyLanguage() {
+  ui.root.lang = lang;
+
+  document.querySelectorAll(`[data-${lang}]`).forEach((element) => {
+    const text = element.dataset[lang];
+
+    if (element.hasAttribute("data-rich")) {
+      element.innerHTML = text;
+    } else {
+      element.textContent = text;
+    }
+  });
+
+  // Etichetele pentru cititoarele de ecran stau separat, ca să nu se amestece
+  // cu textul vizibil al aceluiași element.
+  document.querySelectorAll(`[data-${lang}-label]`).forEach((element) => {
+    element.setAttribute("aria-label", element.dataset[`${lang}Label`]);
+  });
+}
+
+/* ─── Desenarea ─── */
+
+function render({ syncSlider = true } = {}) {
+  const { category, pounds } = readScale();
+  const valid = category !== INVALID_WEIGHT;
+  const fraction = valid ? weightToFraction(pounds) : 0;
+  const copy = COPY[lang];
+
+  ui.root.dataset.tier = TIERS[category];
+  ui.root.style.setProperty("--fill", fraction);
+  ui.root.style.setProperty("--needle", `${-90 + fraction * 180}deg`);
+  // Plafonul e 1.0: peste atât, codița depășește scena și se taie la
+  // overflow — se vedea mai ales în panoul îngust de previzualizare.
+  ui.root.style.setProperty("--pumpkin-scale", valid ? 0.42 + fraction * 0.58 : 0.4);
+
+  ui.readout.textContent = valid ? format(round(fromPounds(pounds))) : "—";
+  ui.readoutUnit.textContent = unit;
+  ui.secondary.textContent = valid
+    ? `≈ ${format(round(unit === "kg" ? pounds : pounds / POUNDS_PER_KILOGRAM))} ${
+        unit === "kg" ? "lb" : "kg"
+      }`
+    : copy.waiting;
+
+  ui.category.textContent = category;
+  ui.prize.textContent = copy.prizes[category];
+  // Spiritul e doar decor: numele categoriei rămâne exact cel din pumpkin.js.
+  ui.spirit.textContent = copy.spirits[category];
+  ui.waterAmount.textContent = `+${WATER_STEP[unit]} ${unit}`;
+
+  ui.tiers.forEach((item) => {
+    item.setAttribute("aria-current", String(item.dataset.tierName === category));
+  });
+
+  // Categoria „sare" doar când chiar se schimbă — nu la fiecare livră.
+  if (lastCategory !== null && category !== lastCategory) {
+    replay(ui.category, "is-popping");
+    if (!valid) replay(ui.fieldBox, "is-rejected");
+  }
+  lastCategory = category;
+
+  if (syncSlider) {
+    ui.slider.value = Math.round(fraction * SLIDER_RESOLUTION);
+  }
+}
+
+function updateMarkers() {
+  ui.markers.forEach((marker) => {
+    const pounds = Number(marker.dataset.marker);
+    marker.textContent = format(round(fromPounds(pounds), 0));
+  });
+}
+
+/* ─── Ținut apăsat pe + / − ─── */
+
+function stopHold() {
+  if (!hold) return;
+  clearTimeout(hold.timer);
+  hold.button.classList.remove("is-holding");
+  hold = null;
+}
+
+function startHold(button) {
+  stopHold();
+
+  const direction = Number(button.dataset.step);
+  let ticks = 0;
+
+  const repeat = () => {
+    ticks += 1;
+    nudge(direction * stepSize(ticks));
+    hold.timer = setTimeout(repeat, tickDelay(ticks));
+  };
+
+  button.classList.add("is-holding");
+  nudge(direction);
+  hold = { button, timer: setTimeout(repeat, HOLD_DELAY) };
+}
+
+/* ─── Evenimente ─── */
+
+ui.field.addEventListener("input", () => render());
+
+ui.slider.addEventListener("input", () => {
+  const pounds = fractionToWeight(Number(ui.slider.value) / SLIDER_RESOLUTION);
+  ui.field.value = toFieldValue(fromPounds(pounds));
+  render({ syncSlider: false });
+});
+
+ui.steps.forEach((button) => {
+  button.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    button.setPointerCapture?.(event.pointerId);
+    startHold(button);
+  });
+
+  ["pointerup", "pointercancel", "lostpointercapture"].forEach((type) => {
+    button.addEventListener(type, stopHold);
+  });
+
+  // Tastatura (Enter / Space) dă un click fără pointer: detail === 0.
+  button.addEventListener("click", (event) => {
+    if (event.detail === 0) nudge(Number(button.dataset.step));
+  });
+});
+
+window.addEventListener("blur", stopHold);
+
+ui.water.addEventListener("click", () => {
+  nudge(WATER_STEP[unit]);
+  replay(ui.stage, "is-watering");
+});
+
+ui.stage.addEventListener("animationend", (event) => {
+  if (event.animationName === "squash") ui.stage.classList.remove("is-watering");
+});
+
+ui.unitButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (button.dataset.unit === unit) return;
+
+    const { pounds } = readScale();
+    unit = button.dataset.unit;
+
+    ui.unitButtons.forEach((other) => {
+      other.setAttribute("aria-pressed", String(other.dataset.unit === unit));
+    });
+
+    if (Number.isFinite(pounds)) {
+      ui.field.value = toFieldValue(fromPounds(pounds));
+    }
+
+    updateMarkers();
+    render();
+  });
+});
+
+ui.langButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (button.dataset.lang === lang) return;
+
+    lang = button.dataset.lang;
+
+    ui.langButtons.forEach((other) => {
+      other.setAttribute("aria-pressed", String(other.dataset.lang === lang));
+    });
+
+    applyLanguage();
+    updateMarkers();
+    render();
+  });
+});
+
+/* ─── Confetti și picături, construite o singură dată ─── */
+
+function scatter(container, count, decorate) {
+  const fragment = document.createDocumentFragment();
+
+  for (let index = 0; index < count; index += 1) {
+    const piece = document.createElement("i");
+    decorate(piece, index);
+    fragment.append(piece);
+  }
+
+  container.append(fragment);
+}
+
+scatter(ui.confetti, 30, (piece, index) => {
+  piece.style.setProperty("--x", `${Math.random() * 100}%`);
+  piece.style.setProperty("--d", `${(Math.random() * 2.5).toFixed(2)}s`);
+  piece.style.setProperty("--dur", `${(2 + Math.random() * 1.8).toFixed(2)}s`);
+  piece.style.setProperty("--c", CONFETTI_COLORS[index % CONFETTI_COLORS.length]);
+});
+
+// Picăturile cad doar deasupra dovleacului, eșalonate.
+scatter(ui.rain, 9, (piece, index) => {
+  piece.style.setProperty("--x", `${38 + index * 3}%`);
+  piece.style.setProperty("--d", `${((index * 7) % 9) * 0.04}s`);
+});
+
+applyLanguage();
+updateMarkers();
+render();
+
+</script>
+</body>
+</html>

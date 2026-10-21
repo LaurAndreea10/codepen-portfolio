@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pumpkin Weigh-In — Jest test results</title>
+<meta name="description" content="Pumpkin Weigh-In test suite: the same Jest test file (pumpkin.test.js) run live in your browser with a small Jest-compatible runner, showing every passing and failing check.">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/pumpkin-weigh-in/test-results.html">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0d0718; color: #f8eedd; font: 15px/1.6 ui-monospace, "JetBrains Mono", Menlo, monospace; }
+  main { max-width: 760px; margin: 0 auto; padding: 28px 16px 40px; }
+  h1 { font-size: 18px; margin: 0 0 6px; }
+  p { color: #b6a593; margin: 0 0 18px; }
+  .suite { margin-top: 14px; }
+  .t { padding-left: 2ch; color: #b6a593; }
+  .ok { color: #5fe0a0; } .no { color: #ff6b7d; }
+  pre { margin: 2px 0 6px 4ch; color: #ff6b7d; white-space: pre-wrap; font: inherit; }
+  #summary { margin-top: 18px; padding-top: 12px; border-top: 1px solid #2d1340; }
+  a { color: #ff9c3d; }
+</style>
+</head>
+<body>
+<main>
+  <h1>pumpkin.test.js</h1>
+  <p>The same test file Jest runs, executed here in your browser with a small Jest-compatible runner. <a href="./">Back to Pumpkin Weigh-In</a></p>
+  <div id="report" aria-live="polite">Running…</div>
+  <div id="summary"></div>
+</main>
+<script type="module">
+  // Minimal describe / test / expect, enough for pumpkin.test.js (it only uses toBe).
+  const suites = [];
+  let current = null;
+  window.describe = (name, fn) => { current = { name, tests: [] }; suites.push(current); fn(); current = null; };
+  window.test = window.it = (name, fn) => current.tests.push({ name, fn });
+  window.expect = (received) => ({
+    toBe(expected) {
+      if (!Object.is(received, expected)) {
+        throw new Error(`Expected: ${JSON.stringify(expected)}\nReceived: ${JSON.stringify(received)}`);
+      }
+    },
+  });
+
+  await import("./pumpkin.test.js");
+
+  const report = document.getElementById("report");
+  report.textContent = "";
+  let passed = 0, failed = 0;
+  for (const suite of suites) {
+    const heading = document.createElement("div");
+    heading.className = "suite";
+    heading.textContent = suite.name;
+    report.append(heading);
+    for (const t of suite.tests) {
+      const row = document.createElement("div");
+      row.className = "t";
+      let error = null;
+      try { t.fn(); passed++; } catch (e) { error = e; failed++; }
+      row.innerHTML = error ? '<span class="no">✕</span> ' : '<span class="ok">✓</span> ';
+      row.append(t.name);
+      report.append(row);
+      if (error) {
+        const pre = document.createElement("pre");
+        pre.textContent = error.message;
+        report.append(pre);
+      }
+    }
+  }
+  document.getElementById("summary").innerHTML =
+    `Tests: ${failed ? `<span class="no">${failed} failed</span>, ` : ""}<span class="ok">${passed} passed</span>, ${passed + failed} total`;
+  document.title = (failed ? "✕ " : "✓ ") + document.title;
+</script>
+</body>
+</html>
