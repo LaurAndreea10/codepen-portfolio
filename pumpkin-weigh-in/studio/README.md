@@ -39,7 +39,7 @@ Import validates schema, entries and bounded artwork before replacing data. A fa
 
 ## Validation
 
-`npm test` runs ten Node test groups. `npm run test:browser` runs browser integration checks after `npm install` and `npx playwright install chromium`. See `VALIDATION.md` for the checks actually executed and their limits. `test-results.html` and the in-app Logic checks button run small live browser checks; neither claims to be the official CodePen report.
+`npm test` runs eleven Node test groups. `npm run test:browser` runs browser integration checks after `npm install` and `npx playwright install chromium`. See `VALIDATION.md` for the checks actually executed and their limits. `test-results.html` and the in-app Logic checks button run small live browser checks; neither claims to be the official CodePen report.
 
 In the existing portfolio repository, Studio lives under `pumpkin-weigh-in/studio/`, and the classic `index.pen.html` and original Jest suite remain available. Root challenge Jest tests and Studio Node tests are separate.
 

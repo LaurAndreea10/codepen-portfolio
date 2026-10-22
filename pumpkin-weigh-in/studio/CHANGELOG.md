@@ -10,6 +10,7 @@
 - Up to 1000 named weigh-ins, filtering, sorting, comparison, mean/median/max, category histogram, record progression. JSON backup/import with schema validation, CSV export, PNG certificate, SVG export, print and shareable basic designs.
 - Synthesized optional sounds/ambience, volume, dark/light, high contrast, reduced motion, paused scenery, larger text, low effects, display choice and configurable long presses.
 - Offline app shell, install manifest, scoped service worker and user-controlled updates. No accounts, remote AI, analytics or paid services.
+- Growth regression: twelve available actions allow the 100 lb target to be reached; winning precision/growth paths are tested. Canonical weight restores consistently with lb/kg/g preferences.
 - Automated verification: Node logic tests; browser flows for all modes, persistence/import, export, keyboard, small screens, timing and offline; axe scans of all five panels.
 
 ## 1.1.0 · 21 October 2026 · Classic version

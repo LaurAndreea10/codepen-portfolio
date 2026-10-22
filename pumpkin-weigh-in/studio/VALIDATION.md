@@ -2,7 +2,7 @@
 
 ## Confirmed locally
 
-- Ten Node groups passed: category boundaries and adjacent values, kg conversion, strict invalid-value handling, backup validation and artwork roundtrip, malformed input, statistics, deterministic daily seed, accuracy score and share-code roundtrip.
+- Eleven Node groups passed: category boundaries and adjacent values, kg conversion, strict invalid-value handling, backup validation and artwork roundtrip, malformed input, statistics, deterministic daily seed, accuracy score and share-code roundtrip.
 - Twelve browser flow groups passed in headless Chromium: scale/unit roundtrip; keyboard and hold; studio drawing/undo/redo/gallery/PNG; collection/favorites/duplicate/delete/recovery; valid and invalid import; all nine game modes and once-per-day XP; timed round/pause/resume; settings/RO-EN/tutorial/small-screen layout; axe scans; persistent/offline reload, direct single-file use and unavailable local storage.
 - At 320 px, all five areas had no horizontal document overflow with enlarged text enabled. Desktop checked at 1200 px.
 - Axe WCAG 2 A/AA and 2.1 AA scans: no violations reported in the five sampled panels. This is not a complete accessibility certification.
