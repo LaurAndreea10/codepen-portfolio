@@ -1,0 +1,5 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Pumpkin logic checks</title><body style="background:#160c24;color:#f8eedd;font:18px system-ui;padding:24px"><h1>Browser logic checks</h1><p>These checks use the actual pumpkin.js module. They are separate from CodePen’s official Jest tests.</p><pre id="results"></pre><a style="color:#ffd09a" href="./index.html">Back</a><script type="module">
+import {weighPumpkin as w,INVALID_WEIGHT as BAD} from './pumpkin.js';
+const cases=[[0,'Tiny Gourd'],[.99,'Tiny Gourd'],[1,'Mini'],[10,'Carving'],[50,'Giant'],[1000,'Record Breaker!'],[2749,'Legendary'],[-5,BAD],['heavy',BAD],['',BAD],[null,BAD],[Infinity,BAD]];
+let pass=0;for(const [n,expected] of cases){const ok=w(n)===expected;pass+=Number(ok);document.querySelector('#results').textContent+=`${ok?'PASS':'FAIL'} ${String(n)} → ${w(n)}\n`;}document.querySelector('#results').textContent+=`\n${pass}/${cases.length} passed`;
+</script></body></html>
