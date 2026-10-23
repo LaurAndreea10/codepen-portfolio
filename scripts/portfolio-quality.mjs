@@ -1,5 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 
+import { projectInventory } from './project-inventory.mjs';
+
 const evidence = JSON.parse(readFileSync("data/portfolio-evidence.json", "utf8"));
 const configSource = readFileSync("portfolio-config.js", "utf8");
 const ro = readFileSync("portfolio.html", "utf8");
@@ -9,7 +11,8 @@ const failures = [];
 
 const countMatch = configSource.match(/projectCount:\s*(\d+)/);
 if (!countMatch) failures.push("portfolio-config.js: missing projectCount");
-const canonicalCount = countMatch ? Number(countMatch[1]) : NaN;
+const canonicalCount = projectInventory().projects.length;
+if (Number(countMatch?.[1]) !== canonicalCount) failures.push('portfolio-config.js: count differs from inventory');
 
 for (const project of [...evidence.featured, ...evidence.recent]) {
   if (!ro.includes(project.name)) failures.push(`RO missing project: ${project.name}`);
@@ -34,7 +37,7 @@ for (const [file, html, configPath] of [
 }
 
 const freshnessChecks = [
-  ["portfolio-config.js", configSource, /updated:\s*["']2026-10-11["']/],
+  ["portfolio-config.js", configSource, new RegExp(`updated:\\s*["']${projectInventory().updated}["']`)],
   ["portfolio.html", ro, /Serpent Prism v2\.0\.0/],
   ["portfolio.html", ro, /datetime=["']2026-10-11["']/],
   ["en/index.html", en, /Serpent Prism v2\.0\.0/],

@@ -1,16 +1,16 @@
 (() => {
   "use strict";
   const config = Object.freeze({
-    projectCount: 89,
+    projectCount: 92,
     repositoryCount: "20+",
     accessibilityScore: 100,
     updated: "2026-10-18"
   });
   window.PORTFOLIO_CONFIG = config;
 
-  // Only rewrites stale project counts ("85 proiecte", "86 live projects"), never other numbers.
-  const COUNT_RE = /\b(?:84|85|86|87|88|89)(?=\s+(?:de\s+)?(?:proiecte|projects|live|public))/gi;
-  const HAS_COUNT = /\b(?:84|85|86|87)(?=\s+(?:de\s+)?(?:proiecte|projects|live|public))/i;
+  // Generated static metrics are checked in CI; this also handles dynamically inserted labels.
+  const COUNT_RE = /\b(?:[6-9]\d|\d{3,})(?=\s+(?:de\s+)?(?:proiecte|projects|(?:live|public)\s+projects))/gi;
+  const HAS_COUNT = /\b(?:[6-9]\d|\d{3,})(?=\s+(?:de\s+)?(?:proiecte|projects|(?:live|public)\s+projects))/i;
   function replaceCount(value) {
     return value.replace(COUNT_RE, String(config.projectCount));
   }

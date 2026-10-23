@@ -7,7 +7,7 @@
     lang: 'portfolio-lang'
   };
 
-  const CODEPEN_COUNT = '66';
+  const CODEPEN_COUNT = String(window.PORTFOLIO_CONFIG?.projectCount ?? 92);
 
   const translations = {
     ro: {
@@ -234,7 +234,7 @@
     if (!els.themeToggle) return;
     const isLight = els.body.classList.contains('light');
     els.themeToggle.textContent = isLight ? translations[currentLang].themeDark : translations[currentLang].themeLight;
-    els.themeToggle.setAttribute('aria-label', currentLang === 'ro' ? 'Schimbă tema vizuală' : 'Change visual theme');
+    els.themeToggle.removeAttribute('aria-label');
   }
   function applyThemeFromStorage() { els.body.classList.toggle('light', localStorage.getItem(STORAGE_KEYS.theme) === 'light'); syncThemeButton(); }
   function applyContrastFromStorage() {

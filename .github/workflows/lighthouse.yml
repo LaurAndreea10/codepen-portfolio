@@ -4,28 +4,28 @@ on:
   schedule:
     - cron: '0 9 * * 1'
 
+permissions:
+  contents: read
+
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Wait for Pages deploy
-        if: github.event_name == 'push'
-        run: sleep 90
-      - name: Lighthouse CI
-        uses: treosh/lighthouse-ci-action@v11
+      - uses: actions/setup-node@v4
         with:
-          urls: |
-            https://laurandreea10.github.io/codepen-portfolio/portfolio.html
-            https://laurandreea10.github.io/codepen-portfolio/en/
-            https://laurandreea10.github.io/codepen-portfolio/project-health.html
-            https://laurandreea10.github.io/codepen-portfolio/growth-suite.html
-            https://laurandreea10.github.io/codepen-portfolio/en/growth-suite.html
-            https://laurandreea10.github.io/codepen-portfolio/evolution-lab.html
-            https://laurandreea10.github.io/codepen-portfolio/portfolio-summary.html
-            https://laurandreea10.github.io/-BUGFLOW/
-            https://laurandreea10.github.io/codepen-portfolio/skydreams-portal/
-            https://laurandreea10.github.io/codepen-portfolio/kygo-world/
-            https://laurandreea10.github.io/Revenue-Landscape/
-          uploadArtifacts: true
-          temporaryPublicStorage: true
+          node-version: 22
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.13.x
+      - name: Audit the live deployment with the shared mobile budgets
+        run: |
+          node scripts/lighthouse-live-config.mjs
+          lhci autorun --config=audit-artifacts/lighthouse-live.json
+      - name: Upload Lighthouse evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-lighthouse-reports
+          path: .lighthouseci/
+          if-no-files-found: warn
+          retention-days: 14
