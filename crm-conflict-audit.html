@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Capstone CRM browser-only: detectarea conflictelor de versiune, rezolvare accesibilă și jurnal de audit exportabil.">
+<meta name="color-scheme" content="dark light">
+<title>Conflict CRM și jurnal de audit — Practice Lab 12</title>
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/crm-conflict-audit.html">
+<style>
+:root{color-scheme:dark;--bg:#07111f;--panel:#0d1c31;--panel2:#142842;--text:#f4f7ff;--muted:#b8c8df;--line:#355274;--accent:#82b2ff;--good:#6ee7ad;--warn:#ffd166;--danger:#ff92a0;--shadow:0 22px 64px rgba(0,0,0,.34)}
+[data-theme="light"]{color-scheme:light;--bg:#eef5ff;--panel:#fff;--panel2:#f4f8ff;--text:#132238;--muted:#52647d;--line:#b5c8df;--accent:#245fc5;--good:#08794d;--warn:#765100;--danger:#aa2638;--shadow:0 18px 48px rgba(36,74,125,.15)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 0,color-mix(in srgb,var(--accent) 18%,transparent),transparent 34%),var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,textarea{font:inherit}.shell{width:min(100% - 2rem,1040px);margin:auto;padding:1rem 0 3rem}.topbar,.controls,.actions,.record-head,.audit-head{display:flex;flex-wrap:wrap;align-items:center;gap:.65rem}.topbar,.record-head,.audit-head{justify-content:space-between}.topbar{margin-bottom:2rem}.brand{color:var(--text);font-weight:850;text-decoration:none}.button{min-height:44px;border:1px solid var(--line);border-radius:.8rem;background:var(--panel2);color:var(--text);padding:.65rem .9rem;font-weight:800;cursor:pointer}.button.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}.button.warn{border-color:var(--warn);color:var(--warn)}.button:disabled{cursor:not-allowed;opacity:.58}.button:hover:not(:disabled){filter:brightness(1.08)}:focus-visible{outline:3px solid var(--warn);outline-offset:3px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-size:.78rem;font-weight:900}h1{max-width:14ch;margin:.35rem 0 1rem;font-size:clamp(2rem,8vw,4.4rem);line-height:1.02}.lede{max-width:72ch;color:var(--muted);font-size:1.07rem}.layout{display:grid;gap:1rem;margin-top:2rem}.card{border:1px solid var(--line);border-radius:1.15rem;background:color-mix(in srgb,var(--panel) 95%,transparent);box-shadow:var(--shadow);padding:clamp(1rem,4vw,1.5rem)}.card h2{margin:.1rem 0 .8rem;font-size:1.22rem}.version{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:.35rem .65rem;color:var(--accent);font-weight:850}label{display:block;margin:.9rem 0 .4rem;font-weight:800}textarea{display:block;width:100%;min-height:130px;resize:vertical;border:1px solid var(--line);border-radius:.85rem;background:var(--panel2);color:var(--text);padding:.85rem}.help,.status{color:var(--muted)}.status{min-height:1.6em;margin:1rem 0 0}.actions{margin-top:1rem}.comparison{display:grid;gap:.75rem}.preview{border:1px solid var(--line);border-radius:.9rem;background:var(--panel2);padding:1rem}.preview h3{margin:0 0 .35rem;font-size:1rem}.preview p{margin:.3rem 0;overflow-wrap:anywhere}.preview small{color:var(--muted)}.audit-list{display:grid;gap:.65rem;margin:0;padding:0;list-style:none}.audit-item{border-left:3px solid var(--good);background:var(--panel2);border-radius:.35rem .8rem .8rem .35rem;padding:.75rem .9rem}.audit-item strong,.audit-item span{display:block}.audit-item span{color:var(--muted);font-size:.9rem}.empty{color:var(--muted)}dialog{width:min(100% - 2rem,720px);max-height:calc(100vh - 2rem);overflow:auto;border:1px solid var(--line);border-radius:1.1rem;background:var(--panel);color:var(--text);box-shadow:0 28px 90px rgba(0,0,0,.6);padding:clamp(1rem,4vw,1.5rem)}dialog::backdrop{background:rgba(2,8,18,.78)}dialog h2{margin-top:0}.dialog-grid{display:grid;gap:.75rem}.dialog-actions{display:grid;gap:.65rem;margin-top:1rem}.dialog-note{color:var(--muted);font-size:.92rem}.facts{margin:0;padding-left:1.2rem;color:var(--muted)}.facts li+li{margin-top:.5rem}
+@media(min-width:780px){.shell{padding-top:1.5rem}.layout{grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr)}.dialog-grid{grid-template-columns:1fr 1fr}.dialog-actions{grid-template-columns:1fr 1fr}}
+@media(max-width:390px){.button{width:100%}.controls{width:100%}.controls .button{width:auto;flex:1}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media(forced-colors:active){.card,.button,textarea,.preview,dialog,.audit-item{border:2px solid CanvasText}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="topbar">
+<a class="brand" href="evolution-lab.html">← Evolution Lab</a>
+<div class="controls" aria-label="Preferințe interfață">
+<button class="button" id="languageButton" type="button" aria-label="Switch to English">EN</button>
+<button class="button" id="themeButton" type="button" data-i18n="themeLight">Temă deschisă</button>
+</div>
+</header>
+<main>
+<span class="eyebrow">Practice Lab II · 12 · Capstone</span>
+<h1 data-i18n="title">Conflictul devine o decizie verificabilă.</h1>
+<p class="lede" data-i18n="intro">Aceeași notă CRM a fost modificată local și pe un server simulat. Aplicația compară versiunile, oprește sincronizarea și păstrează în jurnal alegerea utilizatorului.</p>
+
+<div class="layout">
+<div>
+<section class="card" aria-labelledby="recordTitle">
+<div class="record-head"><h2 id="recordTitle">Atelier Nova</h2><span class="version" id="localVersion">Local v3</span></div>
+<label for="localNote" data-i18n="noteLabel">Notă locală</label>
+<textarea id="localNote" maxlength="240" aria-describedby="noteHelp"></textarea>
+<p class="help" id="noteHelp" data-i18n="noteHelp">Editează nota, apoi verifică sincronizarea.</p>
+<div class="actions">
+<button class="button primary" id="compareButton" type="button" data-i18n="compare">Verifică sincronizarea</button>
+<button class="button warn" id="newConflictButton" type="button" data-i18n="newConflict">Generează un conflict nou</button>
+</div>
+<p class="status" id="status" role="status" aria-live="polite" aria-atomic="true" data-i18n="ready">Pregătit pentru comparație.</p>
+</section>
+
+<section class="card" aria-labelledby="auditTitle" style="margin-top:1rem">
+<div class="audit-head"><h2 id="auditTitle" data-i18n="auditTitle">Jurnal de audit</h2><button class="button" id="exportButton" type="button" data-i18n="export">Exportă JSON</button></div>
+<p class="empty" id="emptyAudit" data-i18n="emptyAudit">Nicio decizie înregistrată.</p>
+<ul class="audit-list" id="auditList" aria-label="Jurnal de audit"></ul>
+</section>
+</div>
+
+<aside class="card" aria-labelledby="serverTitle">
+<div class="record-head"><h2 id="serverTitle" data-i18n="serverTitle">Server simulat</h2><span class="version" id="serverVersion">Server v4</span></div>
+<div class="preview"><h3 data-i18n="serverNote">Nota serverului</h3><p id="serverNote"></p></div>
+<h2 style="margin-top:1.2rem" data-i18n="evidenceTitle">Ce demonstrează</h2>
+<ul class="facts">
+<li data-i18n="factOne">Comparare prin ID, versiune și conținut.</li>
+<li data-i18n="factTwo">Dialog nativ, focus controlat și anulare sigură.</li>
+<li data-i18n="factThree">Jurnal persistent validat înainte de restaurare.</li>
+<li data-i18n="factFour">Export JSON versionat prin Blob API.</li>
+</ul>
+</aside>
+</div>
+</main>
+</div>
+
+<dialog id="conflictDialog" aria-labelledby="conflictTitle" aria-describedby="conflictDescription">
+<h2 id="conflictTitle" data-i18n="conflictTitle">Conflict detectat</h2>
+<p id="conflictDescription" class="dialog-note" data-i18n="conflictDescription">Alege explicit versiunea care trebuie păstrată. Escape anulează fără modificări.</p>
+<div class="dialog-grid">
+<section class="preview">
+<h3 data-i18n="localChoice">Versiunea locală</h3>
+<p id="localPreview"></p>
+<small id="localPreviewVersion"></small>
+</section>
+<section class="preview">
+<h3 data-i18n="serverChoice">Versiunea serverului</h3>
+<p id="serverPreview"></p>
+<small id="serverPreviewVersion"></small>
+</section>
+</div>
+<div class="dialog-actions">
+<button class="button primary" id="keepLocalButton" type="button" data-choice="local" data-i18n="keepLocal">Păstrează versiunea locală</button>
+<button class="button" id="useServerButton" type="button" data-choice="server" data-i18n="useServer">Folosește versiunea serverului</button>
+</div>
+</dialog>
+
+<script>
+(() => {
+  "use strict";
+
+  const STATE_KEY = "crm-conflict-state-v1";
+  const AUDIT_KEY = "crm-conflict-audit-v1";
+  const LANGUAGE_KEY = "portfolio-language";
+  const THEME_KEY = "portfolio-theme";
+  const MAX_AUDIT_ENTRIES = 200;
+
+  const translations = {
+    ro: {
+      title:"Conflictul devine o decizie verificabilă.",intro:"Aceeași notă CRM a fost modificată local și pe un server simulat. Aplicația compară versiunile, oprește sincronizarea și păstrează în jurnal alegerea utilizatorului.",
+      noteLabel:"Notă locală",noteHelp:"Editează nota, apoi verifică sincronizarea.",compare:"Verifică sincronizarea",newConflict:"Generează un conflict nou",ready:"Pregătit pentru comparație.",
+      auditTitle:"Jurnal de audit",export:"Exportă JSON",emptyAudit:"Nicio decizie înregistrată.",serverTitle:"Server simulat",serverNote:"Nota serverului",
+      evidenceTitle:"Ce demonstrează",factOne:"Comparare prin ID, versiune și conținut.",factTwo:"Dialog nativ, focus controlat și anulare sigură.",factThree:"Jurnal persistent validat înainte de restaurare.",factFour:"Export JSON versionat prin Blob API.",
+      conflictTitle:"Conflict detectat",conflictDescription:"Alege explicit versiunea care trebuie păstrată. Escape anulează fără modificări.",localChoice:"Versiunea locală",serverChoice:"Versiunea serverului",keepLocal:"Păstrează versiunea locală",useServer:"Folosește versiunea serverului",
+      localVersion:n=>`Local v${n}`,serverVersion:n=>`Server v${n}`,noConflict:"Nu există conflict. Versiunile sunt sincronizate.",conflictOpened:"Conflict detectat. Alege o versiune.",cancelled:"Rezolvarea a fost anulată; datele nu au fost modificate.",
+      localResolved:n=>`Versiunea locală a fost păstrată. Versiunea rezolvată este v${n}.`,serverResolved:n=>`Versiunea serverului a fost aplicată. Versiunea curentă este v${n}.`,
+      conflictGenerated:"A fost generată o versiune nouă pe server.",auditInvalid:"Jurnalul local invalid a fost ignorat.",stateInvalid:"Starea locală invalidă a fost ignorată.",nothingExport:"Nu există decizii de exportat.",exported:"Jurnalul de audit a fost exportat.",
+      choseLocal:"Păstrat local",choseServer:"Folosit serverul",versions:(a,b,c)=>`Local v${a} · Server v${b} → v${c}`,themeLight:"Temă deschisă",themeDark:"Temă închisă"
+    },
+    en: {
+      title:"Conflict becomes a verifiable decision.",intro:"The same CRM note was changed locally and on a simulated server. The app compares versions, stops synchronization and records the user's decision.",
+      noteLabel:"Local note",noteHelp:"Edit the note, then check synchronization.",compare:"Check synchronization",newConflict:"Generate a new conflict",ready:"Ready to compare.",
+      auditTitle:"Audit log",export:"Export JSON",emptyAudit:"No recorded decisions.",serverTitle:"Simulated server",serverNote:"Server note",
+      evidenceTitle:"What it demonstrates",factOne:"Comparison by ID, version and content.",factTwo:"Native dialog, controlled focus and safe cancellation.",factThree:"Persistent log validated before restoration.",factFour:"Versioned JSON export through the Blob API.",
+      conflictTitle:"Conflict detected",conflictDescription:"Explicitly choose the version to keep. Escape cancels without changes.",localChoice:"Local version",serverChoice:"Server version",keepLocal:"Keep the local version",useServer:"Use the server version",
+      localVersion:n=>`Local v${n}`,serverVersion:n=>`Server v${n}`,noConflict:"There is no conflict. The versions are synchronized.",conflictOpened:"Conflict detected. Choose a version.",cancelled:"Resolution was cancelled; no data was changed.",
+      localResolved:n=>`The local version was kept. The resolved version is v${n}.`,serverResolved:n=>`The server version was applied. The current version is v${n}.`,
+      conflictGenerated:"A new server version was generated.",auditInvalid:"The invalid local audit log was ignored.",stateInvalid:"Invalid local state was ignored.",nothingExport:"There are no decisions to export.",exported:"The audit log was exported.",
+      choseLocal:"Kept local",choseServer:"Used server",versions:(a,b,c)=>`Local v${a} · Server v${b} → v${c}`,themeLight:"Light theme",themeDark:"Dark theme"
+    }
+  };
+
+  const elements = {
+    note:document.querySelector("#localNote"),localVersion:document.querySelector("#localVersion"),serverVersion:document.querySelector("#serverVersion"),serverNote:document.querySelector("#serverNote"),
+    compare:document.querySelector("#compareButton"),newConflict:document.querySelector("#newConflictButton"),status:document.querySelector("#status"),
+    dialog:document.querySelector("#conflictDialog"),localPreview:document.querySelector("#localPreview"),serverPreview:document.querySelector("#serverPreview"),localPreviewVersion:document.querySelector("#localPreviewVersion"),serverPreviewVersion:document.querySelector("#serverPreviewVersion"),
+    keepLocal:document.querySelector("#keepLocalButton"),useServer:document.querySelector("#useServerButton"),auditList:document.querySelector("#auditList"),emptyAudit:document.querySelector("#emptyAudit"),export:document.querySelector("#exportButton"),
+    language:document.querySelector("#languageButton"),theme:document.querySelector("#themeButton")
+  };
+
+  const initialLocal = {id:"client-01",version:3,note:"Trimite oferta actualizată."};
+  const initialServer = {id:"client-01",version:4,note:"Programează un apel pentru joi."};
+  const safeRead = (key,fallback) => { try{return localStorage.getItem(key)||fallback;}catch{return fallback;} };
+  const safeWrite = (key,value) => { try{localStorage.setItem(key,value);return true;}catch{return false;} };
+  const createId = () => crypto.randomUUID?.() || `audit-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  const isRecord = record => record && record.id==="client-01" && Number.isInteger(record.version) && record.version>0 && typeof record.note==="string" && record.note.length<=240;
+  const isAuditEntry = entry => entry && typeof entry.id==="string" && entry.recordId==="client-01" && ["local","server"].includes(entry.choice) && Number.isInteger(entry.previousLocalVersion) && Number.isInteger(entry.serverVersion) && Number.isInteger(entry.resolvedVersion) && Number.isFinite(entry.createdAt);
+
+  let language=safeRead(LANGUAGE_KEY,"ro")==="en"?"en":"ro";
+  let theme=safeRead(THEME_KEY,"dark")==="light"?"light":"dark";
+  let localRecord={...initialLocal};
+  let serverRecord={...initialServer};
+  let auditLog=[];
+  let resolving=false;
+  let conflictSnapshot=null;
+  const t=key=>translations[language][key];
+
+  function detectConflict(local,server){
+    return local.id===server.id && (local.version!==server.version || local.note!==server.note);
+  }
+
+  function restore(){
+    const stateRaw=safeRead(STATE_KEY,"");
+    if(stateRaw){
+      try{
+        const parsed=JSON.parse(stateRaw);
+        if(!parsed || !isRecord(parsed.local) || !isRecord(parsed.server)) throw new Error("invalid");
+        localRecord=parsed.local;serverRecord=parsed.server;
+      }catch{elements.status.textContent=t("stateInvalid");}
+    }
+    const auditRaw=safeRead(AUDIT_KEY,"");
+    if(auditRaw){
+      try{
+        const parsed=JSON.parse(auditRaw);
+        if(!Array.isArray(parsed)||parsed.length>MAX_AUDIT_ENTRIES||!parsed.every(isAuditEntry)) throw new Error("invalid");
+        auditLog=parsed;
+      }catch{auditLog=[];elements.status.textContent=t("auditInvalid");}
+    }
+  }
+
+  function persist(){
+    safeWrite(STATE_KEY,JSON.stringify({local:localRecord,server:serverRecord}));
+    safeWrite(AUDIT_KEY,JSON.stringify(auditLog));
+  }
+
+  function formatDate(timestamp){
+    return new Intl.DateTimeFormat(language==="ro"?"ro-RO":"en-GB",{dateStyle:"medium",timeStyle:"short"}).format(new Date(timestamp));
+  }
+
+  function renderAudit(){
+    elements.auditList.replaceChildren();
+    elements.emptyAudit.hidden=auditLog.length>0;
+    auditLog.slice().reverse().forEach(entry=>{
+      const item=document.createElement("li");item.className="audit-item";
+      const title=document.createElement("strong");title.textContent=entry.choice==="local"?t("choseLocal"):t("choseServer");
+      const versions=document.createElement("span");versions.textContent=t("versions")(entry.previousLocalVersion,entry.serverVersion,entry.resolvedVersion);
+      const date=document.createElement("span");date.textContent=formatDate(entry.createdAt);
+      item.append(title,versions,date);elements.auditList.append(item);
+    });
+    elements.export.disabled=auditLog.length===0;
+  }
+
+  function render(){
+    elements.note.value=localRecord.note;
+    elements.localVersion.textContent=t("localVersion")(localRecord.version);
+    elements.serverVersion.textContent=t("serverVersion")(serverRecord.version);
+    elements.serverNote.textContent=serverRecord.note;
+    renderAudit();
+  }
+
+  function openConflict(){
+    localRecord={...localRecord,note:elements.note.value.trim().slice(0,240)};
+    if(!detectConflict(localRecord,serverRecord)){
+      elements.status.textContent=t("noConflict");persist();render();return;
+    }
+    conflictSnapshot={local:{...localRecord},server:{...serverRecord}};
+    elements.localPreview.textContent=conflictSnapshot.local.note;
+    elements.serverPreview.textContent=conflictSnapshot.server.note;
+    elements.localPreviewVersion.textContent=t("localVersion")(conflictSnapshot.local.version);
+    elements.serverPreviewVersion.textContent=t("serverVersion")(conflictSnapshot.server.version);
+    elements.status.textContent=t("conflictOpened");
+    elements.dialog.showModal();
+    window.setTimeout(()=>elements.keepLocal.focus(),0);
+  }
+
+  function resolveConflict(choice){
+    if(resolving||!conflictSnapshot)return;
+    resolving=true;
+    const beforeLocal=conflictSnapshot.local.version;
+    const beforeServer=conflictSnapshot.server.version;
+    if(choice==="local"){
+      const resolvedVersion=Math.max(beforeLocal,beforeServer)+1;
+      localRecord={...conflictSnapshot.local,version:resolvedVersion};
+      serverRecord={...localRecord};
+      elements.status.textContent=t("localResolved")(resolvedVersion);
+    }else{
+      localRecord={...conflictSnapshot.server};
+      serverRecord={...conflictSnapshot.server};
+      elements.status.textContent=t("serverResolved")(localRecord.version);
+    }
+    auditLog.push({id:createId(),recordId:localRecord.id,choice,previousLocalVersion:beforeLocal,serverVersion:beforeServer,resolvedVersion:localRecord.version,createdAt:Date.now()});
+    if(auditLog.length>MAX_AUDIT_ENTRIES)auditLog=auditLog.slice(-MAX_AUDIT_ENTRIES);
+    persist();elements.dialog.close(choice);conflictSnapshot=null;resolving=false;render();
+  }
+
+  function generateConflict(){
+    localRecord={...localRecord,note:elements.note.value.trim().slice(0,240)};
+    serverRecord={id:localRecord.id,version:Math.max(localRecord.version,serverRecord.version)+1,note:language==="ro"?"Confirmă termenii comerciali până vineri.":"Confirm the commercial terms by Friday."};
+    persist();render();elements.status.textContent=t("conflictGenerated");
+  }
+
+  function exportAudit(){
+    if(!auditLog.length||!auditLog.every(isAuditEntry)){elements.status.textContent=t("nothingExport");return;}
+    const payload={schemaVersion:1,exportedAt:new Date().toISOString(),entries:auditLog};
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement("a");link.href=url;link.download="crm-audit-log.json";
+    document.body.append(link);link.click();link.remove();URL.revokeObjectURL(url);
+    elements.status.textContent=t("exported");
+  }
+
+  function applyLanguage(){
+    document.documentElement.lang=language;
+    document.querySelectorAll("[data-i18n]").forEach(node=>{const value=t(node.dataset.i18n);if(typeof value==="string")node.textContent=value;});
+    elements.language.textContent=language==="ro"?"EN":"RO";
+    elements.language.setAttribute("aria-label",language==="ro"?"Switch to English":"Schimbă în română");
+    elements.theme.textContent=theme==="dark"?t("themeLight"):t("themeDark");
+    render();
+  }
+
+  function applyTheme(){document.documentElement.dataset.theme=theme;elements.theme.textContent=theme==="dark"?t("themeLight"):t("themeDark");}
+
+  elements.compare.addEventListener("click",openConflict);
+  elements.newConflict.addEventListener("click",generateConflict);
+  elements.keepLocal.addEventListener("click",()=>resolveConflict("local"));
+  elements.useServer.addEventListener("click",()=>resolveConflict("server"));
+  elements.dialog.addEventListener("cancel",()=>{conflictSnapshot=null;elements.status.textContent=t("cancelled");});
+  elements.dialog.addEventListener("close",()=>{elements.compare.focus();});
+  elements.export.addEventListener("click",exportAudit);
+  elements.language.addEventListener("click",()=>{language=language==="ro"?"en":"ro";safeWrite(LANGUAGE_KEY,language);applyLanguage();});
+  elements.theme.addEventListener("click",()=>{theme=theme==="dark"?"light":"dark";safeWrite(THEME_KEY,theme);applyTheme();});
+
+  restore();applyTheme();applyLanguage();
+})();
+</script>
+</body>
+</html>
