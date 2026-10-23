@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.dirname(fileURLToPath(import.meta.url));
+const read=name=>fs.readFileSync(path.join(root,name),'utf8');
+let html=read('index.html').replace('<link rel="stylesheet" href="./style.css">',()=>'<style>'+read('style.css')+'</style>');
+html=html.replace(/<link rel="(?:manifest|icon)"[^>]*>/g,'');
+const logic=read('pumpkin.js').replace(/^export /gm,'');
+const engine=read('engine.js').replace(/^export /gm,'');
+const app=read('app.js').replace(/^import .*?;\n/gm,'');
+html=html.replace('<script type="module" src="./app.js"></script>',()=>'<script type="module">'+logic+'\nconst LB=POUNDS_PER_KILOGRAM;\n'+engine+'\n'+app+'</script>');
+const output=path.join(root,'pumpkin-weigh-in-complete.html');fs.writeFileSync(output,html);console.log(output);

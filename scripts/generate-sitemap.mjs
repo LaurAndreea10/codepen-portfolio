@@ -12,6 +12,8 @@ const pages = [
   ["ghost-talk/simple/", "monthly", "0.5", "2026-10-13"],
   ["ghost-talk/test-results.html", "monthly", "0.4", "2026-10-13"],
   ["pumpkin-weigh-in/", "monthly", "0.6", "2026-10-21"],
+  ["pumpkin-weigh-in/studio/", "monthly", "0.6", "2026-10-22"],
+  ["pumpkin-weigh-in/studio/case-study.html", "monthly", "0.5", "2026-10-22"],
   ["pumpkin-weigh-in/test-results.html", "monthly", "0.4", "2026-10-21"],
   ["projects/link-video-editor-studio.html", "monthly", "0.8", "2026-10-11"],
   ["projects/link-video-editor-studio-en.html", "monthly", "0.7", "2026-10-11"],
@@ -211,6 +213,7 @@ const entries = pages
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries}\n</urlset>\n`;
 writeFileSync("sitemap.xml", xml);
 console.log(`Generated sitemap.xml with ${pages.length} canonical URLs.`);
+
 
 
 

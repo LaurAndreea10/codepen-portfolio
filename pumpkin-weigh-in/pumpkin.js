@@ -7,13 +7,13 @@
 export const POUNDS_PER_KILOGRAM = 2.2046226218;
 
 /**
- * Recordul mondial Guinness: 2749 lb (Travis Gienger, octombrie 2023).
+ * Reper istoric al provocării: 2749 lb (Travis Gienger, octombrie 2023).
  * Un dovleac care îl atinge sau îl depășește nu mai e doar „record breaker" —
  * e legendar. Constantă exportată, ca testul să nu repete numărul.
  */
 export const WORLD_RECORD_POUNDS = 2749;
 
-/** Răspunsul pentru orice intrare care nu e un număr pozitiv. */
+/** Răspunsul pentru intrări care nu sunt numere finite, mai mari sau egale cu zero. */
 export const INVALID_WEIGHT = "Invalid weight";
 
 /**
@@ -40,6 +40,9 @@ export const CATEGORY_NAMES = CATEGORIES.map((category) => category.name);
  * @returns {string} numele categoriei sau INVALID_WEIGHT
  */
 export function weighPumpkin(pounds) {
+  // Reject empty/coercible values before Number() can turn them into zero.
+  if ((typeof pounds !== "number" && typeof pounds !== "string") ||
+      (typeof pounds === "string" && pounds.trim() === "")) return INVALID_WEIGHT;
   const weight = Number(pounds);
 
   if (!Number.isFinite(weight) || weight < 0) {
@@ -57,6 +60,9 @@ export function weighPumpkin(pounds) {
  * @returns {string}
  */
 export function weighPumpkinInKilograms(kilograms) {
+  // Reject empty/coercible values before Number() can turn them into zero.
+  if ((typeof kilograms !== "number" && typeof kilograms !== "string") ||
+      (typeof kilograms === "string" && kilograms.trim() === "")) return INVALID_WEIGHT;
   const weight = Number(kilograms);
 
   if (!Number.isFinite(weight) || weight < 0) {
@@ -65,3 +71,4 @@ export function weighPumpkinInKilograms(kilograms) {
 
   return weighPumpkin(weight * POUNDS_PER_KILOGRAM);
 }
+

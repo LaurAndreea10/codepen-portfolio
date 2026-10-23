@@ -98,3 +98,19 @@ describe("🎃 Pumpkin Weigh-In — kilograms", () => {
     expect(weighPumpkinInKilograms("a lot")).toBe(INVALID_WEIGHT);
   });
 });
+
+
+
+describe("strict validation before number coercion", () => {
+  test("empty and nonnumeric types do not become Tiny Gourd", () => {
+    ["", " ", null, undefined, true, false, [], {}, Symbol("weight")].forEach(value => {
+      expect(weighPumpkin(value)).toBe(INVALID_WEIGHT);
+      expect(weighPumpkinInKilograms(value)).toBe(INVALID_WEIGHT);
+    });
+  });
+  test("zero and numeric strings remain valid in both units", () => {
+    expect(weighPumpkin(0)).toBe("Tiny Gourd");
+    expect(weighPumpkinInKilograms(0)).toBe("Tiny Gourd");
+    expect(weighPumpkinInKilograms("10")).toBe("Carving");
+  });
+});

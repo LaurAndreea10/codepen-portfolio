@@ -1,3 +1,11 @@
+# Night Fair Studio 2.0 · 2026-10-22
+
+Nou: [Studio](studio/) · [Ghid](studio/README.md) · [Studiu de caz RO/EN](studio/case-study.html) · [Changelog](studio/CHANGELOG.md).
+Cântarul clasic de mai jos și versiunea CodePen rămân disponibile. Studio adaugă cinci zone, nouă moduri de joc, atelier, colecție, backup și PWA offline.
+Verificările locale Studio sunt documentate separat în `studio/VALIDATION.md`; CI/production și testarea pe telefon real rămân de confirmat.
+
+---
+
 # Pumpkin Weigh-In
 
 **v1.1.0 · 2026-10-21** · [Joacă](https://laurandreea10.github.io/codepen-portfolio/pumpkin-weigh-in/) · [Rezultatele testelor](https://laurandreea10.github.io/codepen-portfolio/pumpkin-weigh-in/test-results.html) · [Cod pentru CodePen](index.pen.html)
@@ -16,7 +24,7 @@ Intrarea mea pentru săptămâna a treia din CodePen Challenge, Halloween 2026 (
 | 2749 și peste | Legendary |
 | text, negativ, gol | Invalid weight |
 
-Pe o linie, dovleacul urcă la categoria mai mare: 10 lb e Carving, 1000 lb e Record Breaker!. Pragul Legendary e recordul mondial Guinness (2749 lb, Travis Gienger, 2023) și stă într-o constantă exportată, `WORLD_RECORD_POUNDS`.
+Pe o linie, dovleacul urcă la categoria mai mare: 10 lb e Carving, 1000 lb e Record Breaker!. Pragul Legendary folosește reperul istoric Guinness (2749 lb, Travis Gienger, 2023) și stă într-o constantă exportată, `WORLD_RECORD_POUNDS`.
 
 ## Cum funcționează `weighPumpkin(pounds)`
 
@@ -60,3 +68,4 @@ npm test            # 14 teste Jest, acoperire 100% pentru pumpkin.js
 ```
 
 Verificat automat în Chromium la 390 și 1280 px. Telefonul real și cititorul de ecran rămân de confirmat.
+

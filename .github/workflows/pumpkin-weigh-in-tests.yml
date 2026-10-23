@@ -59,3 +59,20 @@ jobs:
           name: pumpkin-weigh-in-screenshots
           path: ${{ runner.temp }}/pumpkin-shots
           if-no-files-found: ignore
+
+
+  studio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: pumpkin-weigh-in/studio
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
