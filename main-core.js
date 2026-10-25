@@ -62,18 +62,32 @@
     }
   };
 
+  // The "Updated" date comes from the page (<time id="now-datetime">), i.e. the
+  // day the Now list was really edited. It used to be today's date, so the
+  // badge always claimed "updated today". Today is only the fallback.
+  const NOW_SOURCE = (() => {
+    const el = document.getElementById('now-datetime');
+    const v = el && el.getAttribute('datetime');
+    return v && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null;
+  })();
+  function nowDate() {
+    if (NOW_SOURCE) { const [y, m, d] = NOW_SOURCE.split('-').map(Number); return new Date(y, m - 1, d); }
+    return new Date();
+  }
+
   function getNowDatetime() {
-    const now = new Date();
+    const now = nowDate();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   }
 
   function getNowLabel(lang) {
-    const now = new Date();
+    const now = nowDate();
     const monthsRo = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
     const monthsEn = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     if (lang === 'en') return `${monthsEn[now.getMonth()]} ${String(now.getDate()).padStart(2,'0')}, ${now.getFullYear()}`;
     return `${String(now.getDate()).padStart(2,'0')} ${monthsRo[now.getMonth()]} ${now.getFullYear()}`;
   }
+
 
   const shippedRo = [
 {"title": "SlideStorm Arena v2.4.0", "body": "100 de niveluri, 8 sporturi, 11 moduri, constructor de trasee, progres local validat și opțiuni de accesibilitate; grafică pe 10 teme, sunet și muzică, zi–noapte, ceață și vânt (v2.4.0). Testarea practică pe mobil rămâne de confirmat.", "tag": "Oct 2026", "link": {"href": "slidestorm-arena/", "label": "Joacă"}},
@@ -375,7 +389,7 @@
     const note = els.nowSection.querySelector('.now-note');
     if (eyebrow) eyebrow.textContent = t.nowLabel;
     if (title) title.textContent = t.nowTitle;
-    if (badge) badge.innerHTML = `${t.nowUpdatedPrefix} <time datetime="${copy.datetime}">${copy.label}</time>`;
+    if (badge) badge.innerHTML = `${t.nowUpdatedPrefix} <time id="now-datetime" datetime="${copy.datetime}">${copy.label}</time>`;
     if (note) note.innerHTML = copy.note;
     const tabA = els.nowSection.querySelector('#now-tab-active'), tabD = els.nowSection.querySelector('#now-tab-done'), tabH = els.nowSection.querySelector('#now-tab-history');
     if (tabA) tabA.textContent = copy.tabs.active; if (tabD) tabD.textContent = copy.tabs.done; if (tabH) tabH.textContent = copy.tabs.history;
