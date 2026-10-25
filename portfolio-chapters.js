@@ -232,7 +232,48 @@
     if (tool.parentElement !== slot) slot.appendChild(tool);
   }
 
+
+  /* ---------- "Mai mult" menu (disclosure) ---------- */
+  function initNavMore() {
+    const wrap = document.querySelector('[data-nav-more]');
+    if (!wrap) return;
+    const btn = wrap.querySelector('.nav-more-btn');
+    const panel = wrap.querySelector('.nav-more-panel');
+    if (!btn || !panel) return;
+    const set = (open, focusBtn) => {
+      btn.setAttribute('aria-expanded', String(open));
+      panel.hidden = !open;
+      if (!open && focusBtn) btn.focus();
+    };
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') !== 'true';
+      set(open, false);
+      if (open) { const first = panel.querySelector('a, button'); if (first) first.focus(); }
+    });
+    // Links close the menu; theme and contrast toggles keep it open so both can be tried.
+    panel.addEventListener('click', (e) => {
+      const el = e.target.closest('a, button');
+      if (el && el.tagName === 'A') set(false, false);
+    });
+    wrap.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.hidden) { e.stopPropagation(); set(false, true); }
+    });
+    // Clicks inside the 30s panel (opened from this menu) keep the menu, so focus can return to it.
+    document.addEventListener('click', (e) => { if (!panel.hidden && !wrap.contains(e.target) && !e.target.closest('#scan-panel')) set(false, false); });
+    wrap.addEventListener('focusout', (e) => { if (!panel.hidden && e.relatedTarget && !wrap.contains(e.relatedTarget) && !e.relatedTarget.closest('#scan-panel')) set(false, false); });
+  }
+
+  /* The 30s summary can also be opened from the hero strip, next to 60s and 90s. */
+  function initDurationPicker() {
+    document.querySelectorAll('[data-open-scan]').forEach((btn) => btn.addEventListener('click', () => {
+      const toggle = document.getElementById('scanToggle');
+      if (toggle) toggle.click();
+    }));
+  }
+
   function init() {
+    initNavMore();
+    initDurationPicker();
     initOffset();
     initNowBar();
     initCollectionTabs();

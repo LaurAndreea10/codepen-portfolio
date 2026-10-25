@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const PREVIOUS_MAIN = 'main-core.js?v=20261013-perf';
+  const PREVIOUS_MAIN = 'main-core.js?v=20261025';
 
   // Single source of truth for CodePen growth.
   // 83 projects were already represented before this Pen was added.
@@ -20,7 +20,7 @@
 
   function en(){ return document.documentElement.lang === 'en'; }
 
-  const STATIC_NOW_RO = { active: '', done: '', history: '', captured: false };
+  const STATIC_NOW_RO = { active: '', done: '', history: '', dateTime: '', dateText: '', captured: false };
 
   function captureStaticNowRo(){
     if(STATIC_NOW_RO.captured) return;
@@ -31,6 +31,8 @@
     STATIC_NOW_RO.active=active.innerHTML;
     STATIC_NOW_RO.done=done.innerHTML;
     STATIC_NOW_RO.history=history.innerHTML;
+    const date=document.getElementById('now-datetime');
+    if(date){ STATIC_NOW_RO.dateTime=date.getAttribute('datetime')||''; STATIC_NOW_RO.dateText=date.textContent; }
     STATIC_NOW_RO.captured=true;
   }
 
@@ -94,10 +96,11 @@
     if(title) title.textContent='La ce lucrez acum';
     const note=document.querySelector('#now .now-note');
     if(note) note.textContent='O listă scurtă și intenționat actuală: ce este activ, de ce contează și care este următorul pas concret.';
+    // Restore the date written in the page (it was pinned to 9 October here).
     const date=document.getElementById('now-datetime');
-    if(date){
-      date.dateTime='2026-10-09';
-      date.textContent='9 Octombrie 2026';
+    if(date && STATIC_NOW_RO.dateTime){
+      date.dateTime=STATIC_NOW_RO.dateTime;
+      date.textContent=STATIC_NOW_RO.dateText;
     }
   }
 

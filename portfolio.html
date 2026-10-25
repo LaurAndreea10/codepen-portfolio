@@ -40,7 +40,7 @@
   <link rel="preload" as="image" href="alpis-fusion-demo-poster.svg" media="(min-width: 900px)" fetchpriority="high" />
 
   <!-- The system font stack avoids late web-font swaps and their layout shift. -->
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=20261025" />
   <!-- portfolio-upgrades CSS now lives in portfolio-plus.css (loaded below, non-blocking): it only styles parts that scripts add later. -->
 
   <script type="application/ld+json">
@@ -165,20 +165,25 @@
           <span id="brandText">Laura Andreea</span>
         </a>
         <div class="nav-links" aria-label="Secțiuni principale">
-          <a class="pill" href="#now">La ce lucrez</a>
           <a class="pill" href="#ch-lucrari">Lucrări</a>
           <a class="pill" href="#ch-colectii">Colecții</a>
           <a class="pill" href="#ch-proces">Proces</a>
           <a class="pill" href="evolution-lab.html">Evoluție</a>
           <a class="pill" href="#ch-jurnal">Jurnal</a>
           <a class="pill" href="#ch-despre">Despre</a>
-          <a class="pill" href="canva-collection.html">Canva</a>
-          <a class="pill" href="portfolio-summary.html" aria-label="Deschide rezumatul portofoliului în 60 de secunde">60″</a>
-          <button class="pill pill-scan" id="scanToggle" type="button" aria-label="Rezumat portofoliu în 30 de secunde" aria-expanded="false" aria-controls="scan-panel">⚡ 30s</button>
           <button class="pill plus-search-pill" type="button" data-plus-open="palette" aria-label="Caută în tot portofoliul (Ctrl+K sau /)">⌕ Caută <kbd data-plus-key>Ctrl K</kbd></button>
           <a class="pill" href="en/" hreflang="en" lang="en" aria-label="English version of the portfolio">EN</a>
-          <button class="pill" id="themeToggle" type="button" aria-label="Schimbă tema vizuală">☀️ Light</button>
-          <button class="pill" id="contrastToggle" type="button" aria-pressed="false" aria-label="Activează contrast ridicat">Contrast ridicat</button>
+          <div class="nav-more" data-nav-more>
+            <button class="pill nav-more-btn" type="button" aria-expanded="false" aria-controls="navMorePanel">Mai mult <span aria-hidden="true">▾</span></button>
+            <div class="nav-more-panel glass" id="navMorePanel" hidden>
+              <a class="pill" href="#now">La ce lucrez</a>
+              <a class="pill" href="canva-collection.html">Canva</a>
+              <a class="pill" href="portfolio-summary.html" aria-label="Deschide rezumatul portofoliului în 60 de secunde">60″ · Rezumat</a>
+              <button class="pill pill-scan" id="scanToggle" type="button" aria-label="Rezumat portofoliu în 30 de secunde" aria-expanded="false" aria-controls="scan-panel">⚡ 30s · Rezumat</button>
+              <button class="pill" id="themeToggle" type="button" aria-label="Schimbă tema vizuală">☀️ Light</button>
+              <button class="pill" id="contrastToggle" type="button" aria-pressed="false" aria-label="Activează contrast ridicat">Contrast ridicat</button>
+            </div>
+          </div>
         </div>
       </nav>
     </div>
@@ -326,7 +331,7 @@
                 id="heroPreviewFrame"
                 title="Preview live proiect"
                 referrerpolicy="strict-origin-when-cross-origin"
-                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                sandbox="allow-scripts allow-forms allow-popups"
                 style="display:none"
               ></iframe>
               <div class="hero-preview-stage">
@@ -356,6 +361,12 @@
               <span class="snapshot-proof-chip">Lighthouse A11y 100 · portofoliu</span>
               <span class="snapshot-proof-chip">RO / EN</span>
               <span class="snapshot-proof-chip">BUGFLOW v10 · security hardening</span>
+            </div>
+            <div class="snapshot-durations" role="group" aria-label="Rezumate, după timpul pe care îl ai">
+              <span>Ai timp de:</span>
+              <button type="button" data-open-scan aria-controls="scan-panel">⚡ 30 s</button>
+              <a href="portfolio-summary.html">60 s</a>
+              <a href="guided-tour.html">Tur ghidat · 90 s</a>
             </div>
           </div>
         </div>
@@ -850,7 +861,7 @@
               <span class="eyebrow eyebrow-green">Now</span>
               <h2 id="now-title" class="now-title">La ce lucrez acum</h2>
             </div>
-            <p class="now-badge">Actualizat: <time id="now-datetime" datetime="2026-10-11">11 Octombrie 2026</time></p>
+            <p class="now-badge">Actualizat: <time id="now-datetime" datetime="2026-10-21">21 Octombrie 2026</time></p>
           </div>
 
           <div class="now-tabs" role="tablist" aria-label="Activitate curent&#x103;">
@@ -1172,10 +1183,10 @@
   </footer>
 
   <script src="curious-garden/feedback-display.js" defer></script>
-  <script src="portfolio-config.js?v=20261009-growth-quest" defer></script>
-  <script src="main.js?v=20261013-perf" defer></script>
+  <script src="portfolio-config.js?v=20261025" defer></script>
+  <script src="main.js?v=20261025" defer></script>
   <script src="portfolio-upgrades.js?v=20261011b" defer></script>
-  <script src="portfolio-chapters.js?v=20261014b" defer></script>
+  <script src="portfolio-chapters.js?v=20261025" defer></script>
   <script src="portfolio-plus.js?v=20261025b" defer></script>
 
 </body>

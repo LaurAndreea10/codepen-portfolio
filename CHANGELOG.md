@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-10-25 — Evaluare și îmbunătățiri: meniu, rezumate, accesibilitate 100, date corecte
+
+- RO:
+  - **Navigație pe un rând**: 8 butoane la vedere (inclusiv Evoluție, Caută, EN) și meniul „Mai mult” cu La ce lucrez, Canva, rezumatele 60″ și 30 s, tema și contrastul. Nimic eliminat; meniul se închide cu Esc și la click în afară.
+  - **Rezumate grupate** în banda Snapshot: „Ai timp de: 30 s · 60 s · Tur ghidat 90 s”.
+  - **Data din „La ce lucrez acum”** e cea reală (21 octombrie). Înainte, `main-core.js` afișa mereu data zilei curente, iar `main.js` o fixa la 9 octombrie.
+  - **Numărul de proiecte** aliniat la 89 peste tot (pagina spunea 88, README 45); sincronizarea din `portfolio-config.js` rulează când browserul e liber.
+  - **Accesibilitate**: Lighthouse 97 → 100 pe mobil; cardurile Insights lizibile în tema light; ținte de click de minimum 24 px; skip links într-un `nav`.
+  - **Securitate**: iframe-ul din preview-ul hero nu mai combină `allow-scripts` cu `allow-same-origin` (avertismentul din consolă a dispărut; carusela arată la fel).
+  - **Performanță**: codul Portfolio Plus rulează când browserul e liber, iar CSS-ul lui nu mai blochează prima afișare (LCP pe mobil ~4,7 s → ~3,3 s față de versiunea publicată).
+  - Testul de calitate trece din nou (data din config nu mai e fixată pe 11 octombrie).
+- EN: one-row navigation with a “More” menu, summaries grouped by time, the real Now date, 89 projects everywhere, Lighthouse accessibility 100, iframe sandbox warning fixed, faster mobile start-up.
+
 ## 2026-10-25 — Portfolio Plus: căutare, Arcade Pass, secțiuni noi, previzualizări sociale
 
 - RO: totul adăugat, nimic eliminat; carusela Alpis, bara Now, linkul Evoluție și layout-ul Bento rămân neschimbate.
