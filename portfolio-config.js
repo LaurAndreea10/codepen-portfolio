@@ -10,7 +10,8 @@
 
   // Only rewrites stale project counts ("85 proiecte", "86 live projects"), never other numbers.
   const COUNT_RE = /\b(?:84|85|86|87|88|89)(?=\s+(?:de\s+)?(?:proiecte|projects|live|public))/gi;
-  const HAS_COUNT = /\b(?:84|85|86|87)(?=\s+(?:de\s+)?(?:proiecte|projects|live|public))/i;
+  // Any listed count that differs from the canonical one is stale (88 was missing here before).
+  const HAS_COUNT = new RegExp(String.raw`\b(?!${config.projectCount}\b)(?:84|85|86|87|88|89)(?=\s+(?:de\s+)?(?:proiecte|projects|live|public))`, "i");
   function replaceCount(value) {
     return value.replace(COUNT_RE, String(config.projectCount));
   }
@@ -42,9 +43,12 @@
     });
   }
 
+  // The pages already ship the canonical number, so this is only a safety net:
+  // run it when the browser is idle instead of during start-up.
+  const later = () => ("requestIdleCallback" in window) ? requestIdleCallback(syncPublicMetrics, { timeout: 3000 }) : setTimeout(syncPublicMetrics, 300);
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", syncPublicMetrics, { once: true });
+    document.addEventListener("DOMContentLoaded", later, { once: true });
   } else {
-    syncPublicMetrics();
+    later();
   }
 })();

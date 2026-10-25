@@ -223,11 +223,13 @@
   /* Small "played" stamp on project cards elsewhere on the page. */
   function markPlayed() {
     const s = pass.read();
+    const cache = new Map();
+    const gameOf = (href) => { if (!cache.has(href)) cache.set(href, gameForUrl(href)); return cache.get(href); };
     document.querySelectorAll('.project-card, .card').forEach((card) => {
       if (card.closest('[data-plus="arcade-pass"]')) return;
-      const link = [...card.querySelectorAll('a[href]')].find((a) => gameForUrl(a.getAttribute('href')));
+      const link = [...card.querySelectorAll('a[href]')].find((a) => gameOf(a.getAttribute('href')));
       const old = card.querySelector('.plus-played-stamp');
-      const g = link && gameForUrl(link.getAttribute('href'));
+      const g = link && gameOf(link.getAttribute('href'));
       if (g && s.visited[g.id]) {
         if (!old) {
           const stamp = document.createElement('span');
@@ -627,16 +629,42 @@
     document.querySelectorAll('[data-plus-key]').forEach((k) => { k.textContent = mac ? '⌘K' : 'Ctrl K'; });
   }
 
-  /* ---------- Boot ---------- */
+  /* ---------- Boot ----------
+     Only the cheap parts run at load (keyboard shortcut, visit tracking).
+     Everything that touches many nodes waits for an idle moment, and the
+     Arcade Pass / GitHub panels render only when they come near the viewport,
+     so the first paint and the mobile main thread stay as before. */
+  const idle = (fn, timeout) => ('requestIdleCallback' in window)
+    ? window.requestIdleCallback(fn, { timeout: timeout || 2000 })
+    : setTimeout(fn, 200);
+
+  function whenNear(selector, fn) {
+    const els = [...document.querySelectorAll(selector)];
+    if (!els.length) return;
+    if (!('IntersectionObserver' in window)) { idle(fn); return; }
+    let done = false;
+    const io = new IntersectionObserver((entries) => {
+      if (done || !entries.some((e) => e.isIntersecting)) return;
+      done = true; io.disconnect(); fn();
+    }, { rootMargin: '600px 0px' });
+    els.forEach((el) => io.observe(el));
+    // A hash link straight to the section renders it at once.
+    if (els.some((el) => el.closest('section') && location.hash === '#' + el.closest('section').id)) { done = true; io.disconnect(); fn(); }
+  }
+
+  function hasVisits() { return Object.keys(pass.read().visited || {}).length > 0; }
+
   function init() {
     initVisitTracking();
     initPalette();
-    renderPass();
-    addBadges();
-    markPlayed();
-    renderGitHub();
+    whenNear('[data-plus="arcade-pass"]', renderPass);
+    whenNear('[data-plus="github-live"]', renderGitHub);
+    idle(() => {
+      addBadges();
+      if (hasVisits()) markPlayed();
+    }, 3000);
     // Some cards are re-rendered by older scripts after load.
-    setTimeout(() => { addBadges(); markPlayed(); }, 800);
+    setTimeout(() => idle(() => { addBadges(); if (hasVisits()) markPlayed(); }), 2500);
   }
   window.PortfolioPlus = { open: openPalette, close: closePalette, games: GAMES };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });

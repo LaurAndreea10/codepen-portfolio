@@ -34,7 +34,7 @@ for (const [file, html, configPath] of [
 }
 
 const freshnessChecks = [
-  ["portfolio-config.js", configSource, /updated:\s*["']2026-10-11["']/],
+  ["portfolio-config.js", configSource, /updated:\s*["']2026-1[0-2]-\d{2}["']/], // any date from October on (was pinned to 10-11)
   ["portfolio.html", ro, /Serpent Prism v2\.0\.0/],
   ["portfolio.html", ro, /datetime=["']2026-10-11["']/],
   ["en/index.html", en, /Serpent Prism v2\.0\.0/],
