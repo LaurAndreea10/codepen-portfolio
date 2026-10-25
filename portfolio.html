@@ -30,38 +30,18 @@
   <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/" />
   <meta property="og:site_name" content="CodePen Portfolio — Laura Andreea" />
   <meta property="og:locale" content="ro_RO" />
-  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/alpis-fusion-demo-poster.svg" />
+  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg" />
   <meta property="og:image:alt" content="Preview portofoliu Laura Andreea — CRM &amp; Dashboard Developer" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Laura Andreea — Front-end CRM &amp; Dashboard Developer" />
   <meta name="twitter:description" content="CRM · Marketing · Front-end autodidact. 88 proiecte live · Vite + React · GitHub Actions · UI/UX cu logică de produs." />
-  <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/alpis-fusion-demo-poster.svg" />
+  <meta name="twitter:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg" />
 
   <link rel="preload" as="image" href="alpis-fusion-demo-poster.svg" media="(min-width: 900px)" fetchpriority="high" />
 
   <!-- The system font stack avoids late web-font swaps and their layout shift. -->
   <link rel="stylesheet" href="style.css" />
-  <!-- portfolio-upgrades.css inlined (only this page uses it): one less render-blocking request. -->
-  <style id="portfolio-upgrades">
-/* Portfolio delivery upgrades — 2026-09-04 */
-.portfolio-tools{margin:0 0 28px;padding:20px;border-radius:22px}
-.portfolio-tools-grid{display:grid;grid-template-columns:minmax(220px,1fr) repeat(2,minmax(150px,.35fr));gap:12px}
-.portfolio-tools label{display:grid;gap:7px;color:var(--muted);font-size:.82rem;font-weight:700}
-.portfolio-tools input,.portfolio-tools select{width:100%;min-height:46px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg-2);color:var(--text);font:inherit}
-.portfolio-results{margin-top:12px;color:var(--muted);font-size:.86rem}
-.portfolio-empty{grid-column:1/-1;padding:24px;text-align:center;color:var(--muted)}
-.featured-challenges,.a11y-scorecard{padding:54px 0}
-.challenge-grid,.scorecard-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:22px}
-.challenge-card,.scorecard-card{padding:20px;border-radius:20px}
-.challenge-card h3,.scorecard-card h3{margin:9px 0}.challenge-card p,.scorecard-card p{color:var(--muted);line-height:1.65}
-.challenge-card .card-actions{margin-top:18px}.score-value{display:inline-flex;padding:6px 10px;border-radius:999px;background:rgba(34,197,94,.14);color:#86efac;font-weight:800}
-.score-list{margin:14px 0 0;padding-left:20px;color:var(--muted);line-height:1.8}
-.portfolio-meta-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-.project-card[hidden]{display:none!important}
-@media(max-width:980px){.challenge-grid,.scorecard-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:720px){.portfolio-tools-grid,.challenge-grid,.scorecard-grid{grid-template-columns:1fr}.portfolio-tools{padding:16px}}
-@media(prefers-reduced-motion:reduce){.portfolio-tools *,.challenge-card,.scorecard-card{scroll-behavior:auto!important;transition:none!important}}
-  </style>
+  <!-- portfolio-upgrades CSS now lives in portfolio-plus.css (loaded below): still one request, smaller HTML. -->
 
   <script type="application/ld+json">
   {
@@ -149,6 +129,7 @@
   <!-- Fraunces only styles the Colecții chapter (below the fold), so it loads without blocking render. -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&amp;display=swap" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="portfolio-chapters.css?v=20261014b" />
+  <link rel="stylesheet" href="portfolio-plus.css?v=20261025" />
 </head>
 <body>
 
@@ -159,6 +140,7 @@
     <a class="skip-link" href="#ch-proces">Sari la proces și dovezi</a>
     <a class="skip-link" href="#ch-jurnal">Sari la jurnal</a>
     <a class="skip-link" href="#contact">Sari la contact</a>
+    <a class="skip-link" href="#arcade-pass">Sari la Arcade Pass</a>
     <a class="skip-link" href="portfolio-summary.html">Deschide rezumatul de 60 de secunde</a>
   </div>
 
@@ -192,6 +174,7 @@
           <a class="pill" href="canva-collection.html">Canva</a>
           <a class="pill" href="portfolio-summary.html" aria-label="Deschide rezumatul portofoliului în 60 de secunde">60″</a>
           <button class="pill pill-scan" id="scanToggle" type="button" aria-label="Rezumat portofoliu în 30 de secunde" aria-expanded="false" aria-controls="scan-panel">⚡ 30s</button>
+          <button class="pill plus-search-pill" type="button" data-plus-open="palette" aria-label="Caută în tot portofoliul (Ctrl+K sau /)">⌕ Caută <kbd data-plus-key>Ctrl K</kbd></button>
           <a class="pill" href="en/" hreflang="en" lang="en" aria-label="English version of the portfolio">EN</a>
           <button class="pill" id="themeToggle" type="button" aria-label="Schimbă tema vizuală">☀️ Light</button>
           <button class="pill" id="contrastToggle" type="button" aria-pressed="false" aria-label="Activează contrast ridicat">Contrast ridicat</button>
@@ -583,6 +566,66 @@
       </div>
     </section>
 
+    <section id="challenge-seasons" class="plus-section" aria-labelledby="challenge-seasons-title">
+<div class="container">
+<div class="section-head bento-head">
+<div>
+<span class="eyebrow bento-label">Sezoane de challenge · 03</span>
+<h2 id="challenge-seasons-title">CodePen Challenge, grupate pe sezon</h2>
+<p class="section-subtitle">Regula oficială în centru, dovedită cu teste; restul e joacă pe deasupra.</p>
+</div>
+<a class="btn btn-secondary" href="https://codepen.io/challenges/2026/october" target="_blank" rel="noopener noreferrer">Challenge-ul pe CodePen ↗</a>
+</div>
+<div class="plus-season">
+<div class="plus-season-cover">
+<span class="plus-season-moon" aria-hidden="true">🌕</span>
+<span class="plus-step">OCTOMBRIE 2026</span>
+<h3>Sezonul Halloween</h3>
+<p>Trei challenge-uri, trei reguli mici: o numărătoare FizzBuzz, o limbă a fantomelor și un cântar de dovleci, fiecare cu teste publice.</p>
+</div>
+<div class="plus-season-list">
+<article class="plus-card">
+<span class="plus-season-emoji" aria-hidden="true">🎃</span>
+<h3>Halloween BooScary</h3>
+<p>FizzBuzz cu Boo / Scary / BooScary: numărătoarea rămâne poarta spre fiecare activitate.</p>
+<div class="plus-chiprow"><span>Regula FizzBuzz</span><span>314 teste</span><span>RO/EN</span></div>
+<div class="plus-links"><a href="booscary/">Joacă</a><a href="booscary/case-study.html">Studiu de caz</a><a href="booscary/README.md">Istoric</a></div>
+</article>
+<article class="plus-card">
+<span class="plus-season-emoji" aria-hidden="true">👻</span>
+<h3>Ghost Talk</h3>
+<p>owl → owl-boo, candy → andy-coo: regula explicată pas cu pas, cu dialecte și jocuri pe deasupra.</p>
+<div class="plus-chiprow"><span>Jest</span><span>Cazuri-limită</span></div>
+<div class="plus-links"><a href="ghost-talk/">Joacă</a><a href="ghost-talk/test-results.html">Rezultatele testelor</a><a href="ghost-talk/README.md">Ghid</a></div>
+</article>
+<article class="plus-card">
+<span class="plus-season-emoji" aria-hidden="true">⚖️</span>
+<h3>Pumpkin Weigh-In</h3>
+<p>Săptămâna 3: dovleacul urcă pe cântar și primește categoria, de la Tiny Gourd la Legendary.</p>
+<div class="plus-chiprow"><span>Săptămâna 3</span><span>Jest</span></div>
+<div class="plus-links"><a href="pumpkin-weigh-in/">Joacă</a><a href="pumpkin-weigh-in/test-results.html">Rezultatele testelor</a><a href="pumpkin-weigh-in/index.pen.html">Cod CodePen</a></div>
+</article>
+</div>
+</div>
+</div>
+</section>
+
+    <section id="arcade-pass" class="plus-section" aria-labelledby="arcade-pass-title">
+<div class="container">
+<div class="section-head bento-head">
+<div>
+<span class="eyebrow bento-label">Arcade Pass · 16 jocuri</span>
+<h2 id="arcade-pass-title">Toate jocurile, într-un singur pass</h2>
+<p class="section-subtitle">Fiecare joc deschis de aici primește o ștampilă și deblochează realizări. Progresul stă doar în browserul tău.</p>
+</div>
+<button class="btn btn-secondary" type="button" data-plus-open="palette" data-plus-cat="game">Caută un joc <kbd class="plus-kbd" data-plus-key>Ctrl K</kbd></button>
+</div>
+<div class="plus-pass" data-plus="arcade-pass">
+<p class="plus-muted"><a href="#latest-github">Vezi jocurile din colecții</a></p>
+</div>
+</div>
+</section>
+
     
     </section>
 
@@ -635,6 +678,51 @@
       </div>
     </section>
 
+    <section id="learning-now" class="plus-section" aria-labelledby="learning-now-title">
+<div class="container">
+<div class="section-head">
+<div>
+<span class="eyebrow eyebrow-green">Ce învăț acum</span>
+<h2 id="learning-now-title">Direcțiile pe care exersez, fiecare cu proiectul din care vine</h2>
+<p class="section-subtitle">Pornește din limitele notate deschis în README-uri.</p>
+</div>
+<a class="btn btn-secondary" href="#now">Vezi jurnalul &rarr;</a>
+</div>
+<div class="plus-grid plus-grid--five">
+<article class="plus-card">
+<span class="plus-status is-practice">Exersez</span>
+<h3>Testare automată</h3>
+<p>Teste pentru regula din centrul fiecărui challenge: Jest pentru logică, Playwright pentru browser, rezultate publicate.</p>
+<div class="plus-links"><a href="pumpkin-weigh-in/test-results.html">Pumpkin Weigh-In</a><a href="ghost-talk/test-results.html">Ghost Talk</a></div>
+</article>
+<article class="plus-card">
+<span class="plus-status is-consolidate">Consolidez</span>
+<h3>TypeScript și arhitectură local-first</h3>
+<p>Model de date local, adaptor înlocuibil și un plan documentat pentru backend, aplicate în ClientFlow PRO.</p>
+<div class="plus-links"><a href="projects/clientflow.html">Case study ClientFlow</a></div>
+</article>
+<article class="plus-card">
+<span class="plus-status is-consolidate">Consolidez</span>
+<h3>PWA și offline-first</h3>
+<p>Service worker, cache versionat și backup local, ca jocurile și uneltele să meargă și fără internet.</p>
+<div class="plus-links"><a href="growth-quest/README.md">Growth Quest</a><a href="odyssey-quest/case-study.html">Odyssey Quest</a></div>
+</article>
+<article class="plus-card">
+<span class="plus-status is-explore">Explorez</span>
+<h3>WebRTC între dispozitive</h3>
+<p>Duelul direct dintre două dispozitive din Odyssey Quest 2.1; transferul real între rețele diferite rămâne de verificat.</p>
+<div class="plus-links"><a href="odyssey-quest/case-study.html">Studiu de caz</a></div>
+</article>
+<article class="plus-card">
+<span class="plus-status is-next">Următorul pas</span>
+<h3>Verificare pe telefon real și cu cititor de ecran</h3>
+<p>În mai multe proiecte am notat-o ca neconfirmată. Vreau s-o transform dintr-o notă de limită într-o rutină la fiecare versiune.</p>
+<div class="plus-links"><a href="mobile-test-lab.html">Mobile Test Lab</a><a href="accessibility-lab.html">Accessibility Lab</a></div>
+</article>
+</div>
+</div>
+</section>
+
     
 
     <section id="proof-of-work" class="pow-section" aria-labelledby="proof-title">
@@ -676,6 +764,22 @@
         <div class="pow-note"><strong>De ce Proof of Work?</strong> Lucrez pe proiecte personale. Dovada mea este codul public, deploy-ul real &#x219;i istoricul vizibil de versiuni.</div>
       </div>
     </section>
+
+    <section id="github-live" class="plus-section" aria-labelledby="github-live-title">
+<div class="container">
+<div class="section-head">
+<div>
+<span class="eyebrow">Live din GitHub</span>
+<h2 id="github-live-title">Activitatea de pe GitHub, citită la deschiderea paginii</h2>
+<p class="section-subtitle">Numere citite direct din API-ul public GitHub, nu scrise de mână.</p>
+</div>
+<a class="btn btn-secondary" href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">Profil GitHub ↗</a>
+</div>
+<div class="plus-gh" data-plus="github-live" aria-live="polite">
+<p class="plus-muted">Tot codul e public pe <a href="https://github.com/LaurAndreea10" target="_blank" rel="noopener noreferrer">github.com/LaurAndreea10</a>.</p>
+</div>
+</div>
+</section>
 
     
 
@@ -978,6 +1082,49 @@
       </div>
     </section>
 
+    <section id="ai-workflow" class="plus-section" aria-labelledby="ai-workflow-title">
+<div class="container">
+<div class="section-head">
+<div>
+<span class="eyebrow">Cum lucrez cu AI</span>
+<h2 id="ai-workflow-title">AI ca partener de construcție și de învățare</h2>
+<p class="section-subtitle">Folosesc Claude ca să construiesc mai repede și să înțeleg mai bine ce construiesc. Regula mea: nimic nu ajunge public neverificat.</p>
+</div>
+<a class="btn btn-secondary" href="uses.html">Uneltele mele &rarr;</a>
+</div>
+<div class="plus-grid plus-ai-flow">
+<article class="plus-card"><span class="plus-step">01 · REGULA</span><h3>Definesc problema</h3><p>Pornesc de la ce trebuie să rămână în centru, de exemplu regula oficială a unui CodePen Challenge.</p></article>
+<article class="plus-card"><span class="plus-step">02 · CONSTRUIESC</span><h3>Implementez cu Claude</h3><p>Lucrez împreună cu AI și cer explicații pentru deciziile pe care nu le înțeleg încă, ca să rămână lecția, nu doar codul.</p></article>
+<article class="plus-card"><span class="plus-step">03 · VERIFIC</span><h3>Testez</h3><p>Teste automate, Lighthouse și axe; acolo unde există, rezultatele testelor sunt publice.</p></article>
+<article class="plus-card"><span class="plus-step">04 · NOTEZ</span><h3>Scriu limitele</h3><p>Ce n-am verificat încă, de pildă pe telefon real sau cu cititor de ecran, scriu explicit în README și în jurnal.</p></article>
+</div>
+<ul class="plus-ai-principles" aria-label="Principii">
+<li>Drafturile asistate de AI sunt marcate ca atare</li>
+<li>Cod public, cu istoric de versiuni</li>
+<li>Certificare Anthropic: Claude Code in Action</li>
+</ul>
+</div>
+</section>
+
+    <section id="certifications" class="plus-section" aria-labelledby="certifications-title">
+<div class="container">
+<div class="section-head">
+<div>
+<span class="eyebrow">Certificări</span>
+<h2 id="certifications-title">Ce am învățat structurat, pe lângă proiecte</h2>
+<p class="section-subtitle">Toate apar pe profilul LinkedIn, unde pot fi verificate.</p>
+</div>
+<a class="btn btn-secondary" href="https://www.linkedin.com/in/laura-andreea-p-8b230014b/details/certifications/" target="_blank" rel="noopener noreferrer">Verifică pe LinkedIn ↗</a>
+</div>
+<ul class="plus-cert-grid" role="list">
+<li class="plus-cert"><span class="plus-cert-issuer">Anthropic Academy</span><strong>Claude Code in Action</strong><span>AI în fluxul de dezvoltare</span></li>
+<li class="plus-cert"><span class="plus-cert-issuer">LinkedIn Learning</span><strong>JavaScript Essential Training</strong><span>Fundamente JavaScript</span></li>
+<li class="plus-cert"><span class="plus-cert-issuer">freeCodeCamp</span><strong>Responsive Web Design · Data Analysis</strong><span>HTML/CSS responsive și analiză de date</span></li>
+<li class="plus-cert"><span class="plus-cert-issuer">Google</span><strong>Digital Marketing &amp; E-commerce</strong><span>Baza din marketing, legată de proiectele CRM</span></li>
+</ul>
+</div>
+</section>
+
     
 
     <section class="final-cta-section" aria-labelledby="final-cta-title">
@@ -1028,6 +1175,7 @@
   <script src="main.js?v=20261013-perf" defer></script>
   <script src="portfolio-upgrades.js?v=20261011b" defer></script>
   <script src="portfolio-chapters.js?v=20261014b" defer></script>
+  <script src="portfolio-plus.js?v=20261025" defer></script>
 
 </body>
 </html>

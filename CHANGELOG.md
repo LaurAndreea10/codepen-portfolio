@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-10-25 — Portfolio Plus: căutare, Arcade Pass, secțiuni noi, previzualizări sociale
+
+- RO: totul adăugat, nimic eliminat; carusela Alpis, bara Now, linkul Evoluție și layout-ul Bento rămân neschimbate.
+  - **Căutare Ctrl+K / „/”** peste tot catalogul (`data/catalog.json`, generat cu `node scripts/build-catalog.mjs`) plus cardurile și secțiunile paginii; filtre pe categorii, toleranță la greșeli de tastare, link direct `portfolio.html?q=kygo`.
+  - **Arcade Pass**: 16 jocuri, ștampilă la fiecare joc deschis din portofoliu, 6 realizări; progres doar în localStorage.
+  - Secțiuni noi: **Sezoane de challenge** (Halloween 2026), **Ce învăț acum**, **Live din GitHub** (API public, cache 1 h), **Cum lucrez cu AI**, **Certificări** (verificare pe LinkedIn); badge-uri automate pe cardurile din colecții.
+  - **404.html** cu Kygo, mini-joc opțional și căutare.
+  - **Previzualizări sociale**: `og-cover.jpg` (referit de 36 de pagini, lipsea), JPG în loc de SVG pentru og:image, imagini noi pentru 11 jocuri (`python3 scripts/build-og-images.py`).
+  - CSS-ul inline `portfolio-upgrades` mutat în `portfolio-plus.css`, ca pagina să rămână sub bugetul de 150 KB.
+- EN: everything added, nothing removed. Ctrl+K search across the whole catalogue, Arcade Pass, challenge seasons, learning now, live GitHub stats, AI workflow, certifications, a custom 404 page and real JPG social previews; the same sections on `en/`.
+- Verificat automat în Chromium la 1280 și 390 px, temă light și dark, tastatură (Ctrl+K, săgeți, Enter, Esc, focus trap). Telefonul fizic și cititorul de ecran rămân neconfirmate. / Automated Chromium checks; real phone and screen reader remain unverified.
+
 ## 2026-10-14 — Puck & Pool Arena v1.1.0
 
 - RO: proiect nou, separat de PentArena — air hockey × biliard ca joc de țintire: un puc lovește patru bile spre șase buzunare (+100) și poarta din dreapta (+50). 12 niveluri cu țintă și limită de lovituri, campionat pe ture contra AI în 3 ligi, trei arene 2.5D, slider de unghi și forță, tastatură și touch. RO/EN, dark/light, contrast ridicat și mișcare redusă.
