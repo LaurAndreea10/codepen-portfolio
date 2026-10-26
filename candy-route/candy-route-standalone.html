@@ -1,15 +1,19 @@
 <!doctype html><html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Candy Route — Jest Trick-or-Treat · LaurAi</title><meta name="description" content="Puzzle Halloween: găsește traseul cu cele mai multe bomboane fără case vecine. 30 de niveluri, provocare zilnică, RO/EN."><link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/candy-route/"><style>:root{color-scheme:dark;--bg:#100d1b;--panel:#201a2e;--ink:#fff5e8;--muted:#c3b8ce;--line:#655472;--accent:#ffbd70;--pick:#bbf7bc;--shadow:#05020b}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top right,#392543,transparent 60%),var(--bg);color:var(--ink);font:16px/1.6 system-ui,sans-serif}body.light{color-scheme:light;--bg:#fff6ed;--panel:#fffdf9;--ink:#292032;--muted:#62536b;--line:#9a849e;--accent:#874200;--pick:#17632c;--shadow:#e2d5db}body.contrast{--bg:#000;--panel:#000;--ink:#fff;--muted:#fff;--line:#fff;--accent:#ffdf00;--pick:#00ff80}main{max-width:1100px;margin:auto;padding:clamp(16px,4vw,44px)}h1{font-family:Georgia,serif;font-size:clamp(2.3rem,7vw,4.8rem);line-height:1.1;margin:.2em 0}h2{font-size:1.15rem}.eyebrow{letter-spacing:.16em;font-size:.75rem;color:var(--accent)}.heading,.actions,.controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.heading{justify-content:space-between}.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:24px;margin:20px 0;box-shadow:0 12px 28px -22px var(--shadow)}button,input,select{font:inherit;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:10px 14px;min-height:46px}button{cursor:pointer}button:hover{border-color:var(--accent)}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}button[aria-pressed=true]{border-color:var(--pick);box-shadow:inset 0 0 0 2px var(--pick)}button:disabled{opacity:.55;cursor:not-allowed}label{display:block}label span{display:block;color:var(--muted);font-size:.85rem}#length{width:85px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stats>div{border-bottom:2px solid var(--line);padding:12px}.stats span{display:block;color:var(--muted);font-size:.85rem}.stats strong{font-size:2rem;color:var(--accent)}.stage{position:relative;overflow:hidden}.moon{position:absolute;right:25px;top:0;color:var(--accent);font-size:4rem;opacity:.3;pointer-events:none}.street{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:14px;margin:28px 0;padding-bottom:18px;border-bottom:4px dashed var(--line)}.house{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 4px;min-height:150px;transition:transform .2s,background .2s}.house[aria-pressed=true]{transform:translateY(-6px)}.house .icon{font-size:2.6rem;line-height:1.3}.house .number{font-size:.8rem;color:var(--muted)}.house .amount{font-size:1.2rem;font-weight:700}.house.hinted{outline:3px dashed var(--accent);outline-offset:3px}.house.blocked{border-style:dashed}.house.blocked .icon{filter:grayscale(1);opacity:.5}#message{min-height:2em;color:var(--pick);font-weight:600}#values{flex:1;min-width:180px;width:100%}#error{color:var(--accent)}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;text-align:left}th,td{padding:10px;border-bottom:1px solid var(--line)}caption{text-align:left;color:var(--muted)}summary{cursor:pointer;font-weight:700}footer{text-align:center;color:var(--muted);font-size:.85rem}a{color:var(--accent)}body.still *,body.still *::before,body.still *::after{transition:none!important;animation:none!important}@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}@media(max-width:500px){.panel{padding:16px}.stats{gap:4px}.stats>div{padding:6px}.stats strong{font-size:1.6rem}.street{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.house{min-height:130px}.controls>label:first-child{width:100%}.controls select{width:100%}.actions button{flex-grow:1}}
 [hidden]{display:none!important}.button-link{display:inline-flex;align-items:center;min-height:46px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;color:var(--ink);text-decoration:none;cursor:pointer}progress{width:100%;height:14px;margin-top:20px;accent-color:var(--pick)}.level-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:14px}.level-grid button{font-size:.85rem;text-align:left}.level-grid [aria-current]{border:2px solid var(--accent)}.current-step{background:var(--bg);color:var(--accent);font-weight:700}.house.studying{outline:3px solid var(--accent);outline-offset:3px}#session-title{position:relative}#session-title:focus{outline:3px solid var(--accent)}#attempt-status{font-size:.85rem;color:var(--muted)}#share-url{width:100%;min-width:0;flex:1}#import-file{max-width:100%;font-size:.85rem}#level-select{max-width:100%}dialog{max-width:min(550px,90vw);border:2px solid var(--line);border-radius:20px;padding:24px;background:var(--panel);color:var(--ink)}dialog::backdrop{background:#000b}.stats{scroll-margin-top:20px}button[aria-pressed=true]{transform:none}#notice,#storage-status{overflow-wrap:anywhere}@media(max-width:500px){.level-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.level-grid button{font-size:.75rem;padding:8px}.actions{align-items:stretch}#import-file{width:100%}nav a{flex:1}}
 body.light{background:radial-gradient(ellipse at top right,#eadced,transparent 60%),var(--bg)}body.contrast{background:var(--bg)}.house .icon{display:block;position:relative;width:50px;height:45px;margin:28px auto 12px;background:#574367;border:2px solid var(--line);border-radius:3px}.house .icon::before{content:'';position:absolute;top:-24px;left:-10px;border-left:33px solid transparent;border-right:33px solid transparent;border-bottom:24px solid #956341}.house .door{position:absolute;bottom:0;left:18px;width:13px;height:23px;background:#201525;border-radius:7px 7px 0 0}.house .window{position:absolute;width:9px;height:10px;top:7px;background:#ba925b;border:1px solid #302438}.house .window.one{left:5px}.house .window.two{right:5px}.house[aria-pressed=true] .icon{background:#8d6e46}.house[aria-pressed=true] .window{background:#ffdc83;box-shadow:0 0 12px #ffbd70}.house[aria-pressed=true] .door{background:#ffdc83}.candy-dot{position:relative;display:inline-block;width:15px;height:10px;border-radius:50%;background:var(--accent);margin:0 5px;vertical-align:middle}.candy-dot::before,.candy-dot::after{content:'';position:absolute;top:1px;border-top:4px solid transparent;border-bottom:4px solid transparent}.candy-dot::before{left:-5px;border-left:5px solid var(--accent)}.candy-dot::after{right:-5px;border-right:5px solid var(--accent)}.brand-candy{width:28px;height:18px;transform:rotate(-24deg);margin-right:10px}.brand-candy::before,.brand-candy::after{top:3px;border-top-width:6px;border-bottom-width:6px}.moon{width:48px;height:48px;top:22px;right:30px;border-radius:50%;box-shadow:10px 4px 0 0 var(--accent);opacity:.25}
+/* Navy, cyan and amber, inspired by the attached Candy Route prototype. */
+:root{--bg:#0b1426;--panel:#111f38;--ink:#e6edf8;--muted:#b5c5df;--line:#526b96;--accent:#ffb347;--pick:#ffcb80;--route:#3fd5e6;--danger:#ff9393}body{background:radial-gradient(ellipse at top,#1a2a4d 0%,var(--bg) 65%)}body.light{--route:#006472;--danger:#9e2020;background:radial-gradient(ellipse at top right,#eadced,transparent 60%),var(--bg)}body.contrast{--route:#00ffff;--danger:#ffb3b3;background:var(--bg)}.street-wrap{position:relative;padding-bottom:18px}.street{border-bottom:0;position:relative;z-index:1;margin-bottom:10px}.road{height:14px;border-radius:8px;background:repeating-linear-gradient(90deg,var(--line) 0 24px,var(--panel) 24px 36px)}.street-wrap.loop .road{outline:2px dashed var(--accent);outline-offset:4px}.house.best-route{box-shadow:0 0 0 3px var(--route),0 0 20px -8px var(--route)}.house.best-route::after{content:'★';position:absolute;top:-12px;right:-5px;display:grid;place-items:center;border-radius:50%;width:25px;height:25px;color:var(--bg);background:var(--route);font-size:16px;font-weight:700}.house.trick .amount{color:var(--danger)}.zero-index{font:500 .7rem ui-monospace,monospace;color:var(--muted)}#route-legend{font-size:.85rem;color:var(--muted)}.stats>div{background:var(--panel);border:1px solid var(--line);border-radius:14px}.stats #best{color:var(--route)}.strategy-match td:nth-child(2),.matrix-win{color:var(--route);font-weight:700}.strategy-loss td:nth-child(3){color:var(--danger);font-weight:700}#strategy-results,#matrix-results{margin-top:18px}.strategy-lab th[scope=row]{text-align:left}#take-skip-matrix{width:max-content;min-width:100%}#take-skip-matrix th,#take-skip-matrix td{white-space:nowrap;text-align:center}#take-skip-matrix th[scope=row]{text-align:left}#matrix-results .table-wrap{border:1px solid var(--line);border-radius:10px}#solve,#check{border-color:var(--accent)}
+.table-wrap:focus-visible{outline:3px solid var(--route);outline-offset:4px}
 </style></head><body><noscript><p>Activează JavaScript pentru joc. Enable JavaScript to play.</p></noscript><main>
-  <header><p class="eyebrow">LAURAI · JEST TRICK-OR-TREAT · V2.0</p><div class="heading"><h1><span class="candy-dot brand-candy" aria-hidden="true"></span> Candy Route</h1><div class="actions"><button id="lang" type="button">EN</button><button id="theme" type="button" aria-pressed="false">☀ / ☾</button></div></div><p data-t="intro"></p></header>
+  <header><p class="eyebrow">LAURAI · JEST TRICK-OR-TREAT · V2.1</p><div class="heading"><h1><span class="candy-dot brand-candy" aria-hidden="true"></span> Candy Route</h1><div class="actions"><button id="lang" type="button">EN</button><button id="theme" type="button" aria-pressed="false">☀ / ☾</button></div></div><p data-t="intro"></p></header>
   <nav class="panel actions" aria-label="Game"><button id="free" type="button" data-t="free"></button><button id="daily" type="button" data-t="daily"></button><button id="tutorial" type="button" data-t="tutorial"></button><a class="button-link" href="#campaign" data-t="campaign"></a></nav>
   <details class="panel" id="campaign"><summary id="campaign-title" data-t="campaign"></summary><p data-t="campaignHint"></p><p data-t="howStars"></p><label for="level-select" data-t="level"></label><div class="actions"><select id="level-select"></select><button id="load-level" type="button" data-t="apply"></button></div><progress id="campaign-progress" max="30" value="0"></progress><p id="progress-label"></p><div id="level-grid" class="level-grid"></div></details>
   <section class="panel controls" aria-label="Settings"><label><span data-t="mode"></span><select id="mode"><option value="classic" data-t="classic"></option><option value="tricks" data-t="tricks"></option><option value="circle" data-t="circle"></option></select></label><label><span data-t="length"></span><input id="length" type="number" min="1" max="40" value="8"></label><button id="new-street" type="button" data-t="newStreet"></button><button id="sound" type="button" aria-pressed="false" data-t="sound"></button><button id="contrast" type="button" aria-pressed="false" data-t="contrast"></button><button id="motion" type="button" aria-pressed="false" data-t="motion"></button></section>
   <section class="stats" aria-label="Score"><div><span data-t="yours"></span><strong id="yours">0</strong></div><div><span data-t="best"></span><strong id="best">0</strong></div><div><span data-t="wins"></span><strong id="wins">0</strong></div></section>
   <section id="tutorial-panel" class="panel" hidden aria-labelledby="tutorial-title"><h2 id="tutorial-title" data-t="tutorialTitle"></h2><p id="tutorial-text" role="status"></p><div class="actions"><button id="finish-tutorial" type="button" data-t="finishTutorial"></button><button id="exit-tutorial" type="button" data-t="exitTutorial"></button></div></section>
-  <section class="panel stage" aria-labelledby="session-title"><div class="moon" aria-hidden="true"></div><h2 id="session-title" tabindex="-1"></h2><p id="attempt-status"></p><p id="rule"></p><p data-t="keyboard"></p><div id="street" class="street" role="group"></div><p id="message" role="status"></p><div class="actions"><button id="undo" type="button" data-t="undo"></button><button id="clear" type="button" data-t="clear"></button><button id="hint" type="button" data-t="hint"></button><button id="solve" type="button" data-t="solve"></button><button id="check" type="button" data-t="check"></button><button id="retry" type="button" data-t="retry"></button><button id="next-level" type="button" data-t="nextLevel"></button></div></section>
+  <section class="panel stage" aria-labelledby="session-title"><div class="moon" aria-hidden="true"></div><h2 id="session-title" tabindex="-1"></h2><p id="attempt-status"></p><p id="rule"></p><p data-t="keyboard"></p><div id="street-wrap" class="street-wrap"><div id="street" class="street" role="group"></div><div class="road" aria-hidden="true"></div></div><p id="route-legend" data-t="routeLegend"></p><p id="message" role="status"></p><div class="actions"><button id="undo" type="button" data-t="undo"></button><button id="clear" type="button" data-t="clear"></button><button id="hint" type="button" data-t="hint"></button><button id="solve" type="button" data-t="solve"></button><button id="overlay-route" type="button" data-t="overlayRoute" aria-pressed="false"></button><button id="check" type="button" data-t="check"></button><button id="retry" type="button" data-t="retry"></button><button id="next-level" type="button" data-t="nextLevel"></button></div></section>
   <section class="panel"><h2 data-t="custom"></h2><form id="editor"><label for="values" data-t="values"></label><div class="actions"><input id="values" value="2, 7, 9, 3, 1" maxlength="400" required><button type="submit" data-t="apply"></button><button id="example" type="button" data-t="example"></button></div><p id="error" role="alert"></p></form></section>
+  <section class="panel strategy-lab" aria-labelledby="strategy-title"><h2 id="strategy-title" data-t="strategyTitle"></h2><p data-t="strategyIntro"></p><p data-t="studyReveal"></p><div class="actions"><button id="compare-strategies" type="button" data-t="compare" aria-expanded="false" aria-controls="strategy-results"></button><button id="show-matrix" type="button" data-t="showMatrix" aria-expanded="false" aria-controls="matrix-results"></button></div><div id="strategy-results" hidden><p id="comparison-note"></p><div class="table-wrap"><table><caption data-t="strategyTitle"></caption><thead><tr><th scope="col" data-t="method"></th><th scope="col" data-t="haul"></th><th scope="col" data-t="difference"></th><th scope="col" data-t="kind"></th></tr></thead><tbody id="strategy-rows"></tbody></table></div><p data-t="complexityMethods"></p></div><div id="matrix-results" hidden><h3 data-t="matrix"></h3><p data-t="matrixIntro"></p><div class="table-wrap"><table id="take-skip-matrix"><caption data-t="matrix"></caption></table></div></div></section>
   <details class="panel" id="explanation"><summary data-t="explain"></summary><p data-t="formula"></p><p id="circle-note"></p><section aria-labelledby="study-title"><h2 id="study-title" data-t="study"></h2><p id="step-message" role="status"></p><div class="actions"><button id="step-back" type="button" data-t="stepBack"></button><button id="step-next" type="button" data-t="stepNext"></button><button id="step-play" type="button" data-t="playSteps"></button><button id="step-reset" type="button" data-t="restartSteps"></button></div><p id="step-position"></p><div class="table-wrap"><table><caption data-t="table"></caption><thead><tr><th data-t="house"></th><th data-t="take"></th><th data-t="skip"></th><th data-t="best"></th></tr></thead><tbody id="steps"></tbody></table></div><p data-t="complexity"></p></section></details>
   <section class="panel" aria-labelledby="backup-title"><h2 id="backup-title" data-t="backup"></h2><div class="actions"><button id="share" type="button" data-t="share"></button><button id="export" type="button" data-t="export"></button><label class="button-link" for="import-file" data-t="import"></label><input id="import-file" type="file" accept=".json,application/json"><button id="reset-progress" type="button" data-t="resetProgress"></button></div><div id="share-box" hidden><label for="share-url" data-t="shareLabel"></label><div class="actions"><input id="share-url" readonly><button id="copy-link" type="button" data-t="copyLink"></button></div></div><p id="notice" role="status"></p><p id="storage-status" role="status"></p></section>
   <footer><a href="./test-results.html" id="jest-link" data-t="tests"></a><p>#cpc-jest-trick-or-treat · #codepenchallenge</p></footer>
@@ -19,7 +23,7 @@ body.light{background:radial-gradient(ellipse at top right,#eadced,transparent 6
 <script type="module">/** Maximum non-adjacent sum. Visiting no houses is allowed.
  * O(n) time, O(1) extra memory; never changes the input.
  */
-function maxCandy(houses) {
+function maxCandy(houses = []) {
   let previous = 0;
   let twoBack = 0;
   for (const candy of houses) {
@@ -31,7 +35,7 @@ function maxCandy(houses) {
 }
 
 /** Reconstruct one optimal route. On ties, prefer skipping the later house. */
-function bestRoute(houses, circular = false) {
+function bestRoute(houses = [], circular = false) {
   function linear(start, end) {
     const dp = [0, 0];
     const steps = [];
@@ -55,6 +59,83 @@ function bestRoute(houses, circular = false) {
   const withoutLast = linear(0, houses.length - 1);
   const withoutFirst = linear(1, houses.length);
   return withoutLast.total >= withoutFirst.total ? withoutLast : withoutFirst;
+}
+
+// APIs from the attached implementation, using the existing deterministic solver.
+function candyRoute(houses = []) { return bestRoute(houses).indices; }
+function maxCandyCulDeSac(houses = []) { return bestRoute(houses, true).total; }
+function culDeSacRoute(houses = []) { return bestRoute(houses, true).indices; }
+function sumOf(houses, route) { return route.reduce((sum, i) => sum + houses[i], 0); }
+function isValidRoute(route, length, { culDeSac = false } = {}) {
+  if (!Number.isInteger(length) || length < 0 || !Array.isArray(route)) return false;
+  if (route.some(i => !Number.isInteger(i) || i < 0 || i >= length)) return false;
+  const sorted = [...route].sort((a,b) => a-b);
+  if (sorted.some((i,k) => k > 0 && i - sorted[k-1] < 2)) return false;
+  return !(culDeSac && length > 1 && sorted[0] === 0 && sorted.at(-1) === length-1);
+}
+
+/** Exponential oracle, intentionally restricted to at most 20 houses. */
+function maxCandyBruteForce(houses = []) {
+  if (houses.length > 20) throw new RangeError('Brute force supports at most 20 houses. Use maxCandy for long streets.');
+  let best = 0;
+  for (let mask=0; mask < 2 ** houses.length; mask++) {
+    if (mask & (mask >> 1)) continue;
+    let total=0;
+    for (let i=0;i<houses.length;i++) if (mask & (1<<i)) total+=houses[i];
+    best=Math.max(best,total);
+  }
+  return best;
+}
+
+/** Top-down memoization; long inputs use iterative DP to avoid call-stack overflow. */
+function maxCandyMemo(houses = []) {
+  if (houses.length > 1000) return maxCandy(houses);
+  const memo=new Map();
+  function go(i) {
+    if(i>=houses.length)return 0;
+    if(!memo.has(i))memo.set(i,Math.max(houses[i]+go(i+2),go(i+1)));
+    return memo.get(i);
+  }
+  return go(0);
+}
+
+/** Legal baseline, not an optimal algorithm. In circles, drop the weaker endpoint. */
+function everyOtherHouse(houses = [], { circular = false } = {}) {
+  const totals=[0,1].map(parity=>{
+    const route=houses.map((_,i)=>i).filter(i=>i%2===parity && houses[i]>0);
+    if(circular && houses.length>1 && route[0]===0 && route.at(-1)===houses.length-1){
+      if(houses[0]<=houses.at(-1))route.shift();else route.pop();
+    }
+    return sumOf(houses,route);
+  });
+  return Math.max(0,...totals);
+}
+
+/** Biggest-pile greedy baseline; supports the same adjacency rule as the current game. */
+function biggestPileFirst(houses = [], { circular = false } = {}) {
+  const blocked=new Set();let total=0;
+  [...houses.keys()].sort((a,b)=>houses[b]-houses[a] || a-b).forEach(i=>{
+    if(blocked.has(i)||houses[i]<=0)return;
+    total+=houses[i];blocked.add(i).add(i-1).add(i+1);
+    if(circular && houses.length>1){if(i===0)blocked.add(houses.length-1);if(i===houses.length-1)blocked.add(0);}
+  });
+  return total;
+}
+
+/** Compare methods under identical rules. Avoid exponential work in the UI above 18 houses. */
+function compareStrategies(houses = [], circular = false) {
+  function exact(fn){
+    if(!circular || houses.length<=1)return fn(houses);
+    return Math.max(fn(houses.slice(0,-1)),fn(houses.slice(1)));
+  }
+  const optimal=bestRoute(houses,circular).total;
+  return [
+    {id:'dp',total:optimal,exact:true},
+    {id:'memo',total:exact(maxCandyMemo),exact:true},
+    {id:'brute',total:houses.length<=18?exact(maxCandyBruteForce):null,exact:true},
+    {id:'alternate',total:everyOtherHouse(houses,{circular}),exact:false},
+    {id:'greedy',total:biggestPileFirst(houses,{circular}),exact:false}
+  ].map(row=>({...row,gap:row.total===null?null:optimal-row.total}));
 }
 
 // Pure game rules; shared by browser and tests.
@@ -151,16 +232,22 @@ Object.assign(copy.ro,{
 Object.assign(copy.en,{
  campaign:'Campaign · 30 levels',free:'Free play',daily:'Daily challenge',tutorial:'Tutorial',level:'Level',lockedLevel:'Locked — finish the previous level',stars:'stars',practiced:'Practiced',notPlayed:'Not played',nextLevel:'Next level',retry:'Retry',check:'Check route',progress:'Campaign progress',dailyDate:'Challenge using the date in Romania',tutorialTitle:'Learn in three steps',tutorial0:'1 / 3 — Choose house 1: collect 4 candies.',tutorial1:'2 / 3 — Try house 2. It is next to the first house and must be blocked.',tutorial2:'3 / 3 — Choose house 3: your total becomes 8, better than house 2 alone.',tutorial3:'🎉 Tutorial complete! You learned to avoid adjacent houses.',finishTutorial:'Finish tutorial',exitTutorial:'Exit tutorial',stepBack:'Previous step',stepNext:'Next step',playSteps:'Play steps',pauseSteps:'Pause',restartSteps:'Restart explanation',stepStart:'Press Next step to compare visiting and skipping each house. This explanation reveals the solution and marks the attempt as practiced.',stepText:'House {house}: visit = {take}; skip = {skip}. Keep {best}.',stepPosition:'Step {current} of {total}',study:'Visual algorithm walkthrough',revealed:'Solution revealed: practiced attempt. Retry to earn stars.',hintGrade:'Solved with a hint · ★★',perfectGrade:'Solved without help · ★★★',noneSelected:'Check your selection: the total is not optimal yet.',backup:'Sharing and backup',export:'Export JSON',import:'Import JSON',share:'Create link',shareLabel:'Link to this street (without personal progress)',copyLink:'Copy link',copied:'Link copied.',copyManual:'Select and copy the link from the field.',shareLocal:'Host this HTML file on a website for a public link. This link is local.',importOk:'Backup imported and validated.',importError:'Invalid, incomplete or oversized backup. Existing data was preserved.',exported:'Backup exported.',resetProgress:'Reset progress',resetTitle:'Reset all progress?',resetBody:'This deletes stars, daily records, scores and the current attempt. Language and visual preferences are preserved. You can export a backup first.',cancel:'Cancel',confirmReset:'Delete progress',resetDone:'Progress reset.',storageError:'Local saving is unavailable. Export JSON to keep your progress.',campaignHint:'First 5: basics · 6–15: traps · 16–20: tricks · 21–30: circles. Complete or practice a level to unlock the next.',session:'Current attempt',dayOld:'This challenge is from an earlier day. Press Daily challenge for today’s street.',sharedLoaded:'Shared street loaded in free play.',invalidShare:'This link contains an invalid street. Your saved attempt was preserved.',campaignFinished:'🏆 You completed all 30 levels! You can improve your stars.',howStars:'★★★ without help · ★★ with hints · Practiced if you reveal the solution or steps. Retry for a better result.',shareTooLarge:'Invalid or oversized link.',tests:'Jest tests · CodePen',keyboard:'Keyboard: Tab to navigate, Enter or Space to select. Blocked neighboring houses cannot be selected.'
 });
+Object.assign(copy.ro,{
+ overlayRoute:'Evidențiază ruta',hideRoute:'Ascunde marcajele',optimalMark:'pe o rută optimă',routeLegend:'Marcaj cyan + stea: ruta optimă. Ambre: selecția ta. Indicii # pornesc de la zero.',strategyTitle:'Laborator de strategii',strategyIntro:'Compară algoritmii exacți cu două strategii intuitive. Toate respectă regula străzii curente; strategiile intuitive pot pierde bomboane.',compare:'Compară strategiile',hideCompare:'Ascunde comparația',method:'Metodă',haul:'Total',difference:'Pierdut față de optim',kind:'Tip',exact:'Exact',heuristic:'Euristică',dpMethod:'Programare dinamică',memoMethod:'Memoizare',bruteMethod:'Forță brută',alternateMethod:'Din două în două',greedyMethod:'Cea mai mare întâi',bruteLimit:'Omis peste 18 case',circleCompare:'În cerc, strategiile intuitive respectă și legătura dintre prima și ultima casă. La alternare eliminăm capătul mai slab când cele două se ating.',negativeCompare:'Casele cu valori negative pot fi sărite, inclusiv de strategiile intuitive.',matrix:'Tabel vizitez / sar',showMatrix:'Arată tabelul complet',hideMatrix:'Ascunde tabelul complet',matrixIntro:'Coloanele sunt casele, cu indici de la zero. Vizitez = sar anterior + bomboane; sar = maximul anterior. O celulă evidențiată arată totalul mai bun la acel pas. Pentru cerc arătăm varianta câștigătoare fără unul dintre capete.',candiesRow:'Bomboane',complexityMethods:'DP: O(n) timp / O(1) memorie pentru total. Memo: O(n) timp / O(n) memorie pe străzi scurte. Forță brută: O(n·2ⁿ); limitată în interfață la 18 case.',studyReveal:'Comparația și tabelul complet sunt materiale de studiu: încercarea este marcată exersată.',caseLabel:'Casa / index'
+});
+Object.assign(copy.en,{
+ overlayRoute:'Highlight best route',hideRoute:'Hide route marks',optimalMark:'on an optimal route',routeLegend:'Cyan + star: optimal route. Amber: your selection. # indices start at zero.',strategyTitle:'Strategy lab',strategyIntro:'Compare exact algorithms against two intuitive strategies. All obey the current street rule; the intuitive strategies may miss candy.',compare:'Compare strategies',hideCompare:'Hide comparison',method:'Method',haul:'Total',difference:'Lost against optimal',kind:'Type',exact:'Exact',heuristic:'Heuristic',dpMethod:'Dynamic programming',memoMethod:'Memoization',bruteMethod:'Brute force',alternateMethod:'Every other house',greedyMethod:'Biggest pile first',bruteLimit:'Skipped above 18 houses',circleCompare:'In circles, heuristics also respect the link between the first and last house. Alternation drops the weaker endpoint when the two touch.',negativeCompare:'Negative houses may be skipped, including by the heuristic strategies.',matrix:'Take / skip matrix',showMatrix:'Show full matrix',hideMatrix:'Hide full matrix',matrixIntro:'Columns are houses, using zero-based indices. Take = previous skip + candy; skip = previous maximum. Highlighted cells show the better total at each step. For a circle we show the winning case excluding one endpoint.',candiesRow:'Candy',complexityMethods:'DP: O(n) time / O(1) memory for the total. Memo: O(n) time / O(n) memory on short streets. Brute force: O(n·2ⁿ); limited to 18 houses in the interface.',studyReveal:'The comparison and full matrix are study material: this attempt is marked practiced.',caseLabel:'House / index'
+});
 
 const $=id=>document.getElementById(id);
-let state=freshState(),history=[],hintIndex=-1,sound=false,audio,step=0,timer=null,tutorialStep=0,noticeKey='',transient='',storageFailed=false;
+let state=freshState(),history=[],hintIndex=-1,sound=false,audio,step=0,timer=null,tutorialStep=0,noticeKey='',transient='',storageFailed=false,routeVisible=false,comparisonOpen=false,matrixOpen=false;
 try{const saved=localStorage.getItem(STORAGE_KEY);state=saved?validateState(JSON.parse(saved)):migrateV1(JSON.parse(localStorage.getItem('laurai-candy-v1')));}catch{}
 const a=()=>state.attempt,t=()=>copy[state.lang];
 function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));storageFailed=false;}catch{storageFailed=true;}$('storage-status').textContent=storageFailed?t().storageError:'';}
 function stop(){if(timer!==null)clearInterval(timer);timer=null;}
 function focusStage(){$('session-title').focus();}
 function load(street,mode='classic',kind='free',level=1,day=''){
- stop();history=[];hintIndex=-1;step=0;tutorialStep=0;transient='';noticeKey='';$('error').textContent='';$('share-box').hidden=true;
+ stop();history=[];hintIndex=-1;step=0;tutorialStep=0;routeVisible=false;comparisonOpen=false;matrixOpen=false;transient='';noticeKey='';$('error').textContent='';$('share-box').hidden=true;
  if(location.hash.startsWith('#street=')){try{window.history.replaceState(null,'',location.pathname+location.search);}catch{}}
  state.attempt={kind,level,day,mode,street:[...street],picked:[],hinted:false,revealed:false,credited:false};
  $('length').value=street.length;$('values').value=street.join(', ');render();focusStage();
@@ -213,27 +300,58 @@ function render(){
  let title=c.free;if(a().kind==='campaign')title=`${c.level} ${a().level} / 30`;if(a().kind==='daily')title=`${c.daily} · ${a().day}`;if(a().kind==='tutorial')title=c.tutorial;
  $('session-title').textContent=title;$('street').setAttribute('aria-label',title);
  $('attempt-status').textContent=a().revealed?c.revealed:a().kind==='daily'&&a().day!==localDay()?c.dayOld:c.howStars;
+ $('street-wrap').classList.toggle('loop',a().mode==='circle');
+ const bestIndices=new Set(routeVisible?result().indices:[]);
  const focusIndex=document.activeElement?.dataset.index;
  $('street').replaceChildren(...a().street.map((n,i)=>{
   const b=document.createElement('button'),picked=a().picked.includes(i),locked=!picked&&blocked(i),study=result().steps[step-1]?.index===i;
-  b.type='button';b.className='house'+(locked?' blocked':'')+(hintIndex===i?' hinted':'')+(study?' studying':'');b.dataset.index=i;b.setAttribute('aria-pressed',String(picked));b.setAttribute('aria-disabled',String(locked));
-  b.setAttribute('aria-label',`${c.visit} ${i+1}, ${n} ${c.candy}, ${c[picked?'selected':locked?'locked':'available']}`);
-  b.innerHTML=`<span class="number">${c.house} ${i+1}</span><span class="icon" aria-hidden="true"><span class="door"></span><span class="window one"></span><span class="window two"></span></span><span class="amount">${n} <span class="candy-dot" aria-hidden="true"></span></span>`;b.onclick=()=>select(i);return b;
+  b.type='button';b.className='house'+(locked?' blocked':'')+(hintIndex===i?' hinted':'')+(study?' studying':'')+(n<0?' trick':'')+(bestIndices.has(i)?' best-route':'');b.dataset.index=i;b.setAttribute('aria-pressed',String(picked));b.setAttribute('aria-disabled',String(locked));
+  b.setAttribute('aria-label',`${c.visit} ${i+1}, ${n} ${c.candy}, ${c[picked?'selected':locked?'locked':'available']}${bestIndices.has(i)?', '+c.optimalMark:''}`);
+  b.innerHTML=`<span class="number">${c.house} ${i+1}</span><span class="icon" aria-hidden="true"><span class="door"></span><span class="window one"></span><span class="window two"></span></span><span class="amount">${n} <span class="candy-dot" aria-hidden="true"></span></span><span class="zero-index" aria-hidden="true">#${i}</span>`;b.onclick=()=>select(i);return b;
  }));
  if(focusIndex!==undefined)$('street').querySelector(`[data-index="${focusIndex}"]`)?.focus();
  const best=a().mode==='circle'?result().total:maxCandy(a().street),yours=total();$('yours').textContent=yours;$('best').textContent=best;$('wins').textContent=state.wins;
  $('message').textContent=transient?c[transient]:hintIndex>=0?c.hinted:yours===best?(a().revealed?c.shown:a().hinted?c.hintGrade:c.won):c.playing;
  $('rule').textContent=a().mode==='circle'?c.circleRule:a().mode==='tricks'?c.negative:c.rule;
  $('undo').disabled=!history.length||a().kind==='tutorial';$('clear').disabled=!a().picked.length||a().kind==='tutorial';
- for(const id of ['hint','solve','check','retry'])$(id).disabled=a().kind==='tutorial';
+ for(const id of ['hint','solve','check','retry','overlay-route','compare-strategies','show-matrix'])$(id).disabled=a().kind==='tutorial';
  $('next-level').hidden=a().kind!=='campaign';$('next-level').disabled=a().level===30||!unlocked(state.progress,a().level+1);
  if(a().kind==='campaign'&&a().level===30&&(state.progress[30]?.stars||state.progress[30]?.practiced))$('message').textContent=c.campaignFinished;
  $('notice').textContent=noticeKey?c[noticeKey]:'';
- renderCampaign();renderSteps();persist();
+ renderCampaign();renderSteps();renderLab();persist();
 }
 function generate(){const raw=Number($('length').value),n=Number.isFinite(raw)?Math.max(1,Math.min(40,Math.trunc(raw))):8;const mode=$('mode').value;load(Array.from({length:n},()=>mode==='tricks'?Math.floor(Math.random()*21)-6:Math.floor(Math.random()*10)+1),mode);}
 function reveal(){a().revealed=true;}
 function advance(){if(step>=result().steps.length){stop();render();return;}reveal();step++;if(step>=result().steps.length)stop();render();}
+function renderLab(){
+ const c=t();
+ document.querySelectorAll('.table-wrap').forEach(el=>{el.tabIndex=0;el.setAttribute('role','region');el.setAttribute('aria-label',el.closest('#matrix-results')?c.matrix:el.closest('#strategy-results')?c.strategyTitle:c.table);});
+ $('overlay-route').textContent=routeVisible?c.hideRoute:c.overlayRoute;
+ $('overlay-route').setAttribute('aria-pressed',String(routeVisible));
+ $('strategy-results').hidden=!comparisonOpen;$('matrix-results').hidden=!matrixOpen;
+ $('compare-strategies').textContent=comparisonOpen?c.hideCompare:c.compare;
+ $('compare-strategies').setAttribute('aria-expanded',String(comparisonOpen));
+ $('show-matrix').textContent=matrixOpen?c.hideMatrix:c.showMatrix;
+ $('show-matrix').setAttribute('aria-expanded',String(matrixOpen));
+ if(comparisonOpen){
+  const labels={dp:c.dpMethod,memo:c.memoMethod,brute:c.bruteMethod,alternate:c.alternateMethod,greedy:c.greedyMethod};
+  $('comparison-note').textContent=a().mode==='circle'?c.circleCompare:c.negativeCompare;
+  $('strategy-rows').replaceChildren(...compareStrategies(a().street,a().mode==='circle').map(row=>{
+   const tr=document.createElement('tr');tr.dataset.strategy=row.id;
+   const label=document.createElement('th');label.scope='row';label.textContent=labels[row.id];tr.append(label);
+   for(const value of [row.total===null?c.bruteLimit:row.total,row.gap===null?'—':row.gap,row.exact?c.exact:c.heuristic]){const cell=document.createElement('td');cell.textContent=value;tr.append(cell);}
+   tr.className=row.gap===0?'strategy-match':row.gap>0?'strategy-loss':'';return tr;
+  }));
+ }
+ if(matrixOpen){
+  const steps=result().steps,table=$('take-skip-matrix');table.replaceChildren();
+  const caption=document.createElement('caption');caption.textContent=c.matrix;table.append(caption);
+  const head=document.createElement('thead'),headRow=document.createElement('tr'),corner=document.createElement('th');corner.scope='col';corner.textContent=c.caseLabel;headRow.append(corner);
+  for(const s of steps){const th=document.createElement('th');th.scope='col';th.textContent=`#${s.index} · ${s.candy}`;headRow.append(th);}head.append(headRow);table.append(head);
+  const body=document.createElement('tbody');
+  for(const [key,label] of [['take',c.take],['skip',c.skip]]){const tr=document.createElement('tr'),th=document.createElement('th');th.scope='row';th.textContent=label;tr.append(th);for(const s of steps){const td=document.createElement('td');td.textContent=s[key];if(s[key]>=s[key==='take'?'skip':'take'])td.className='matrix-win';tr.append(td);}body.append(tr);}table.append(body);
+ }
+}
 $('new-street').onclick=generate;$('mode').onchange=generate;
 $('free').onclick=()=>load([2,7,9,3,1,4,2,6]);
 $('daily').onclick=()=>{const day=localDay();load(dailyStreet(day),'classic','daily',1,day);};
@@ -246,6 +364,9 @@ for(const [id,key] of [['theme','light'],['contrast','contrast'],['motion','stil
 $('sound').onclick=()=>{sound=!sound;tone();render();};
 $('undo').onclick=()=>{if(history.length){a().picked=history.pop();hintIndex=-1;transient='';render();}};
 $('clear').onclick=()=>{checkpoint();a().picked=[];hintIndex=-1;transient='';render();};
+$('overlay-route').onclick=()=>{routeVisible=!routeVisible;if(routeVisible)reveal();render();};
+$('compare-strategies').onclick=()=>{comparisonOpen=!comparisonOpen;if(comparisonOpen)reveal();render();};
+$('show-matrix').onclick=()=>{matrixOpen=!matrixOpen;if(matrixOpen)reveal();render();};
 $('solve').onclick=()=>{checkpoint();reveal();a().picked=result().indices;hintIndex=-1;transient='';evaluate();render();};
 $('hint').onclick=()=>{a().hinted=true;hintIndex=result().indices.find(i=>!a().picked.includes(i))??-1;transient='';render();};
 $('check').onclick=()=>{evaluate();transient=total()===result().total?(a().revealed?'revealed':a().hinted?'hintGrade':'perfectGrade'):'noneSelected';render();};
@@ -255,11 +376,11 @@ $('explanation').addEventListener('toggle',()=>{if(!$('explanation').open){stop(
 $('example').onclick=()=>load([5,1,1,5]);
 $('editor').onsubmit=e=>{e.preventDefault();const tokens=$('values').value.split(',').map(s=>s.trim()),values=tokens.map(Number),mode=$('mode').value;if(tokens.some(s=>!/^[-+]?\d+$/.test(s))||values.length<1||values.length>40||values.some(n=>!Number.isInteger(n)||n<(mode==='tricks'?-99:0)||n>99)){$('error').textContent=t().invalid;return;}load(values,mode);};
 $('export').onclick=()=>{persist();const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='candy-route-backup-'+localDay()+'.json';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);noticeKey='exported';render();};
-$('import-file').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>1000000)throw Error('Too large');const validated=validateState(JSON.parse(await file.text()));stop();state=validated;history=[];step=0;hintIndex=-1;tutorialStep=0;transient='';$('share-box').hidden=true;$('values').value=a().street.join(', ');$('length').value=a().street.length;noticeKey='importOk';}catch{noticeKey='importError';}e.target.value='';render();};
+$('import-file').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>1000000)throw Error('Too large');const validated=validateState(JSON.parse(await file.text()));stop();state=validated;history=[];step=0;hintIndex=-1;routeVisible=false;comparisonOpen=false;matrixOpen=false;tutorialStep=0;transient='';$('share-box').hidden=true;$('values').value=a().street.join(', ');$('length').value=a().street.length;noticeKey='importOk';}catch{noticeKey='importError';}e.target.value='';render();};
 $('share').onclick=()=>{const url=new URL(location.href);url.hash=shareHash(a());$('share-url').value=url.href;$('share-box').hidden=false;noticeKey=location.protocol==='file:'?'shareLocal':'copyManual';render();};
 $('copy-link').onclick=async()=>{try{if(!navigator.clipboard)throw Error('No clipboard');await navigator.clipboard.writeText($('share-url').value);noticeKey='copied';}catch{$('share-url').focus();$('share-url').select();noticeKey='copyManual';}render();};
 $('reset-progress').onclick=()=>{$('reset-dialog').returnValue='';$('reset-dialog').showModal();};
-$('reset-dialog').addEventListener('close',()=>{if($('reset-dialog').returnValue!=='reset')return;const old=state;state=freshState();for(const key of ['lang','light','contrast','still'])state[key]=old[key];try{localStorage.removeItem('laurai-candy-v1');}catch{}stop();history=[];step=0;hintIndex=-1;tutorialStep=0;transient='';noticeKey='resetDone';$('values').value=a().street.join(', ');$('length').value=a().street.length;render();});
+$('reset-dialog').addEventListener('close',()=>{if($('reset-dialog').returnValue!=='reset')return;const old=state;state=freshState();for(const key of ['lang','light','contrast','still'])state[key]=old[key];try{localStorage.removeItem('laurai-candy-v1');}catch{}stop();history=[];step=0;hintIndex=-1;tutorialStep=0;routeVisible=false;comparisonOpen=false;matrixOpen=false;transient='';noticeKey='resetDone';$('values').value=a().street.join(', ');$('length').value=a().street.length;render();});
 function shared(){if(!location.hash.startsWith('#street='))return;try{if(location.hash.length>4000)throw Error('Too large');const payload=parseShared(location.hash);load(payload.street,payload.mode);noticeKey='sharedLoaded';render();}catch{noticeKey='invalidShare';render();}}
 window.addEventListener('hashchange',shared);document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();renderSteps();}});
 document.querySelector('a[href="#campaign"]').onclick=()=>{$('campaign').open=true;};

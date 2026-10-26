@@ -1,5 +1,15 @@
 # Candy Route — istoric / history
 
+## 2.1.0 — 26 octombrie 2026
+
+- Integrate elementele din candy.js, candy.test.js și index (20).html atașate: paletă navy/cyan/ambre, drum, indicii # și marcaje optime cu stele.
+- Evidențierea rutei păstrează selecția manuală; ascunderea nu șterge asistența.
+- Laborator cu cinci strategii și pierderea față de optim; aceleași reguli pentru liniar/circular, cu negative omise.
+- Tabel vizitez/sar cu totalurile câștigătoare și regiuni derulabile accesibile din tastatură.
+- API-uri compatibile cu testele atașate. Validarea indicilor întregi, limită brute-force și fallback pentru memoizarea pe străzi lungi.
+- 68 teste Jest, 14 teste Node, 18 grupuri de verificări browser; zero erori de pagină și zero încălcări axe în layout-urile și temele testate.
+- Campania, ziua, stelele și formatul de backup v2 sunt păstrate.
+
 ## 2.0.0 — 26 octombrie 2026
 
 - Tutorial interactiv în trei pași, cu demonstrarea vecinului blocat.

@@ -1,4 +1,4 @@
-# Candy Route v2.0 — Jest Trick-or-Treat
+# Candy Route v2.1 — Jest Trick-or-Treat
 
 Joc fără dependențe de runtime: deschide `candy-route-standalone.html` direct în browser. Pentru varianta modulară `index.html`, pornește un server în acest folder cu `python3 -m http.server 8000` și deschide http://localhost:8000.
 
@@ -46,6 +46,18 @@ Dacă localStorage este indisponibil, jocul continuă și afișează un mesaj; p
 - `npx playwright install chromium`, apoi `npm run test:ui`: server HTTP temporar, interacțiuni Chromium și axe. Scriptul verifică toate cele 30 de niveluri, tutorialul, stelele, undo, ziua, linkurile distribuite, import/export, resetarea, persistența, lipsa stocării și layout-ul la 360/390/768/1280 px. Variabilele opționale `CANDY_BROWSER`, `CANDY_PLAYWRIGHT_MODULE`, `CANDY_AXE_MODULE` permit folosirea dependențelor deja instalate.
 - `npm run build`: reconstruiește HTML-ul modular și cel independent din surse; nu edita separat versiunile generate.
 
-Rezultatele locale: 33 teste Jest și 14 teste Node trecute; 15 grupuri de verificări în Chromium și zero încălcări axe în cele patru layout-uri testate. Aceste verificări nu certifică accesibilitatea completă. Telefonul fizic, cititorul de ecran real, rularea în editorul CodePen și deploy-ul public rămân de confirmat.
+Rezultatele locale: 68 teste Jest și 14 teste Node trecute; 18 grupuri de verificări în Chromium și zero încălcări axe în cele patru layout-uri testate. Aceste verificări nu certifică accesibilitatea completă. Telefonul fizic, cititorul de ecran real, rularea în editorul CodePen și deploy-ul public rămân de confirmat.
 
-Vezi `CHANGELOG.md` pentru istoricul v1 → v2.
+## Elemente preluate din fișierele atașate — v2.1
+
+- Paleta navy/cyan/ambre, cardurile KPI, drumul și marcajul circular, indicii # de la zero și marcajele optime cyan cu stele.
+- Butonul Evidențiază ruta nu modifică selecția manuală. Ascunderea marcajelor nu anulează faptul că a fost consultată soluția.
+- Laborator de strategii: DP, memoizare, brute-force, alternare și greedy. Tabelul arată suma, diferența față de optim și tipul metodei.
+- Comparațiile folosesc aceleași reguli ca jocul curent. În cerc, alternarea elimină capătul mai slab când ambele capete ar fi vizitate; greedy blochează și vecinul de peste capăt. Casele negative pot fi sărite.
+- Tabel orizontal vizitez/sar, cu totalul mai bun evidențiat la fiecare casă. În cerc, tabelul arată una dintre cele două variante liniare câștigătoare, nu tratează cercul ca pe o stradă dreaptă.
+- Tabelele care depășesc lățimea ecranului au regiuni focalizabile și nume accesibile pentru navigare din tastatură.
+- API-urile atașate sunt disponibile din `candy.js`: `candyRoute`, `maxCandyCulDeSac`, `culDeSacRoute`, `sumOf`, `isValidRoute`, `maxCandyBruteForce`, `maxCandyMemo`, `everyOtherHouse`, `biggestPileFirst`. `compareStrategies` alimentează laboratorul.
+- Validatorul refuză indici fracționari, NaN, duplicate și indici din afara străzii. Brute-force refuză explicit peste 20 de case; interfața îl omite peste 18 pentru a limita munca exponențială. Memoizarea folosește DP iterativ peste 1.000 de case pentru a evita depășirea stivei.
+- `attachment.test.js` păstrează exact testele din atașament; `strategies.test.js` adaugă regresii pentru limite și comparații circulare. Cele 68 de teste includ testele din atașament, testele v2 și regresiile noi.
+
+Verificările axe suplimentare includ dark și high contrast la 390 px. Fișierele atașate originale sunt păstrate; pachetul combină elementele lor cu funcțiile v2. Vezi `CHANGELOG.md` pentru istoricul v1 → v2.1.
