@@ -1375,10 +1375,10 @@ export function initStudio(bridge) {
       "s-difficulty",
       [
         ["6", L("Ușor · 6 case", "Easy · 6 houses")],
-        ["10", L("Mediu · 10 case", "Medium · 10 houses")],
+        ["8", L("Standard · 8 case", "Standard · 8 houses")],
         ["16", L("Avansat · 16 case", "Advanced · 16 houses")],
       ],
-      "10",
+      "8",
     );
     difficulty.onchange = () =>
       (host.querySelector("#s-length").value = difficulty.value);

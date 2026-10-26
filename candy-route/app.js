@@ -22,7 +22,7 @@ function blocked(i){const p=new Set(a().picked);return p.has(i-1)||p.has(i+1)||(
 function result(){return bestRoute(a().street,a().mode==='circle');}
 function total(){return a().picked.reduce((sum,i)=>sum+a().street[i],0);}
 function checkpoint(){history.push([...a().picked]);if(history.length>100)history.shift();}
-function tone(kind='pick'){if(!sound)return;try{audio??=new(window.AudioContext||window.webkitAudioContext)();void audio.resume().catch(()=>{});const o=audio.createOscillator(),g=audio.createGain();o.connect(g);g.connect(audio.destination);o.frequency.value=kind==='win'?880:kind==='blocked'?180:660;g.gain.setValueAtTime(Math.max(.0001,volume*.12),audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.12);o.start();o.stop(audio.currentTime+.12);}catch{}}
+function tone(kind='pick'){if(!sound||volume<=0)return;try{audio??=new(window.AudioContext||window.webkitAudioContext)();void audio.resume().catch(()=>{});const o=audio.createOscillator(),g=audio.createGain();o.connect(g);g.connect(audio.destination);o.frequency.value=kind==='win'?880:kind==='blocked'?180:660;g.gain.setValueAtTime(Math.max(.0001,volume*.12),audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.12);o.start();o.stop(audio.currentTime+.12);}catch{}}
 function evaluate(){if(total()===result().total)award(state);}
 function select(i){
  if(a().kind==='tutorial'){
