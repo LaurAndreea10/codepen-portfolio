@@ -1,3 +1,13 @@
+# v3.0.0 — 2026-10-26
+
+- Studio cu 12 variante și solver exhaustiv limitat la 16 case; regula originală maxCandy rămâne neschimbată.
+- Hartă de campanie, moduri Relaxat/Expert, editor, generator reproductibil, soluții multiple, PNG, colecții și pachete.
+- Patru profiluri locale, backup complet validat atomic, păstrarea indiciilor și explorării, duel local și coduri de rezultat.
+- Laborator cu dependențe, pseudocod pas cu pas, recursie, cache, operații, scalare și exerciții.
+- Calendar, obiective, insigne, companion cosmetic, sezoane, sunete diferențiate și ecran extins.
+- PWA offline; actualizarea așteaptă închiderea clienților vechi.
+- Acoperire detaliată: COVERAGE.md. Telefonul fizic, screen reader real, CodePen Jest și deploy production rămân de confirmat.
+
 # Candy Route — istoric / history
 
 ## 2.1.0 — 26 octombrie 2026
