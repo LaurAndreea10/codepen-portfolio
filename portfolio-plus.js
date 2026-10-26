@@ -101,6 +101,7 @@
      Arcade Pass
      ========================================================= */
   const GAMES = [
+    { id: 'candy-route', icon: '🍬', ro: 'Candy Route', en: 'Candy Route', path: 'candy-route/', halloween: true },
     { id: 'kygo', icon: '🐩', ro: 'Kygo World', en: 'Kygo World', path: 'kygo-world/' },
     { id: 'pentarena', icon: '🏟️', ro: 'PentArena', en: 'PentArena', path: 'pentarena/', sport: true },
     { id: 'slidestorm', icon: '🌊', ro: 'SlideStorm Arena', en: 'SlideStorm Arena', path: 'slidestorm-arena/', sport: true },

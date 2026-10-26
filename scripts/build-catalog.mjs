@@ -46,7 +46,7 @@ for (const p of projects) {
     id: `p${p.id}`,
     kind: "project",
     cat: p.category,
-    game: p.category === "game",
+    game: p.category === "game" || p.slug === "candy-route",
     title: { ro: p.title.ro, en: p.title.en || p.title.ro },
     desc: { ro: p.description?.ro || "", en: p.description?.en || p.description?.ro || "" },
     tags: p.tags || [],

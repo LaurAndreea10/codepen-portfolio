@@ -1,0 +1,269 @@
+<!doctype html><html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Candy Route — Jest Trick-or-Treat · LaurAi</title><meta name="description" content="Puzzle Halloween: găsește traseul cu cele mai multe bomboane fără case vecine. 30 de niveluri, provocare zilnică, RO/EN."><link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/candy-route/"><style>:root{color-scheme:dark;--bg:#100d1b;--panel:#201a2e;--ink:#fff5e8;--muted:#c3b8ce;--line:#655472;--accent:#ffbd70;--pick:#bbf7bc;--shadow:#05020b}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top right,#392543,transparent 60%),var(--bg);color:var(--ink);font:16px/1.6 system-ui,sans-serif}body.light{color-scheme:light;--bg:#fff6ed;--panel:#fffdf9;--ink:#292032;--muted:#62536b;--line:#9a849e;--accent:#874200;--pick:#17632c;--shadow:#e2d5db}body.contrast{--bg:#000;--panel:#000;--ink:#fff;--muted:#fff;--line:#fff;--accent:#ffdf00;--pick:#00ff80}main{max-width:1100px;margin:auto;padding:clamp(16px,4vw,44px)}h1{font-family:Georgia,serif;font-size:clamp(2.3rem,7vw,4.8rem);line-height:1.1;margin:.2em 0}h2{font-size:1.15rem}.eyebrow{letter-spacing:.16em;font-size:.75rem;color:var(--accent)}.heading,.actions,.controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.heading{justify-content:space-between}.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:24px;margin:20px 0;box-shadow:0 12px 28px -22px var(--shadow)}button,input,select{font:inherit;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:10px 14px;min-height:46px}button{cursor:pointer}button:hover{border-color:var(--accent)}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}button[aria-pressed=true]{border-color:var(--pick);box-shadow:inset 0 0 0 2px var(--pick)}button:disabled{opacity:.55;cursor:not-allowed}label{display:block}label span{display:block;color:var(--muted);font-size:.85rem}#length{width:85px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stats>div{border-bottom:2px solid var(--line);padding:12px}.stats span{display:block;color:var(--muted);font-size:.85rem}.stats strong{font-size:2rem;color:var(--accent)}.stage{position:relative;overflow:hidden}.moon{position:absolute;right:25px;top:0;color:var(--accent);font-size:4rem;opacity:.3;pointer-events:none}.street{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:14px;margin:28px 0;padding-bottom:18px;border-bottom:4px dashed var(--line)}.house{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 4px;min-height:150px;transition:transform .2s,background .2s}.house[aria-pressed=true]{transform:translateY(-6px)}.house .icon{font-size:2.6rem;line-height:1.3}.house .number{font-size:.8rem;color:var(--muted)}.house .amount{font-size:1.2rem;font-weight:700}.house.hinted{outline:3px dashed var(--accent);outline-offset:3px}.house.blocked{border-style:dashed}.house.blocked .icon{filter:grayscale(1);opacity:.5}#message{min-height:2em;color:var(--pick);font-weight:600}#values{flex:1;min-width:180px;width:100%}#error{color:var(--accent)}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;text-align:left}th,td{padding:10px;border-bottom:1px solid var(--line)}caption{text-align:left;color:var(--muted)}summary{cursor:pointer;font-weight:700}footer{text-align:center;color:var(--muted);font-size:.85rem}a{color:var(--accent)}body.still *,body.still *::before,body.still *::after{transition:none!important;animation:none!important}@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}@media(max-width:500px){.panel{padding:16px}.stats{gap:4px}.stats>div{padding:6px}.stats strong{font-size:1.6rem}.street{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.house{min-height:130px}.controls>label:first-child{width:100%}.controls select{width:100%}.actions button{flex-grow:1}}
+[hidden]{display:none!important}.button-link{display:inline-flex;align-items:center;min-height:46px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;color:var(--ink);text-decoration:none;cursor:pointer}progress{width:100%;height:14px;margin-top:20px;accent-color:var(--pick)}.level-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:14px}.level-grid button{font-size:.85rem;text-align:left}.level-grid [aria-current]{border:2px solid var(--accent)}.current-step{background:var(--bg);color:var(--accent);font-weight:700}.house.studying{outline:3px solid var(--accent);outline-offset:3px}#session-title{position:relative}#session-title:focus{outline:3px solid var(--accent)}#attempt-status{font-size:.85rem;color:var(--muted)}#share-url{width:100%;min-width:0;flex:1}#import-file{max-width:100%;font-size:.85rem}#level-select{max-width:100%}dialog{max-width:min(550px,90vw);border:2px solid var(--line);border-radius:20px;padding:24px;background:var(--panel);color:var(--ink)}dialog::backdrop{background:#000b}.stats{scroll-margin-top:20px}button[aria-pressed=true]{transform:none}#notice,#storage-status{overflow-wrap:anywhere}@media(max-width:500px){.level-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.level-grid button{font-size:.75rem;padding:8px}.actions{align-items:stretch}#import-file{width:100%}nav a{flex:1}}
+body.light{background:radial-gradient(ellipse at top right,#eadced,transparent 60%),var(--bg)}body.contrast{background:var(--bg)}.house .icon{display:block;position:relative;width:50px;height:45px;margin:28px auto 12px;background:#574367;border:2px solid var(--line);border-radius:3px}.house .icon::before{content:'';position:absolute;top:-24px;left:-10px;border-left:33px solid transparent;border-right:33px solid transparent;border-bottom:24px solid #956341}.house .door{position:absolute;bottom:0;left:18px;width:13px;height:23px;background:#201525;border-radius:7px 7px 0 0}.house .window{position:absolute;width:9px;height:10px;top:7px;background:#ba925b;border:1px solid #302438}.house .window.one{left:5px}.house .window.two{right:5px}.house[aria-pressed=true] .icon{background:#8d6e46}.house[aria-pressed=true] .window{background:#ffdc83;box-shadow:0 0 12px #ffbd70}.house[aria-pressed=true] .door{background:#ffdc83}.candy-dot{position:relative;display:inline-block;width:15px;height:10px;border-radius:50%;background:var(--accent);margin:0 5px;vertical-align:middle}.candy-dot::before,.candy-dot::after{content:'';position:absolute;top:1px;border-top:4px solid transparent;border-bottom:4px solid transparent}.candy-dot::before{left:-5px;border-left:5px solid var(--accent)}.candy-dot::after{right:-5px;border-right:5px solid var(--accent)}.brand-candy{width:28px;height:18px;transform:rotate(-24deg);margin-right:10px}.brand-candy::before,.brand-candy::after{top:3px;border-top-width:6px;border-bottom-width:6px}.moon{width:48px;height:48px;top:22px;right:30px;border-radius:50%;box-shadow:10px 4px 0 0 var(--accent);opacity:.25}
+</style></head><body><noscript><p>Activează JavaScript pentru joc. Enable JavaScript to play.</p></noscript><main>
+  <header><p class="eyebrow">LAURAI · JEST TRICK-OR-TREAT · V2.0</p><div class="heading"><h1><span class="candy-dot brand-candy" aria-hidden="true"></span> Candy Route</h1><div class="actions"><button id="lang" type="button">EN</button><button id="theme" type="button" aria-pressed="false">☀ / ☾</button></div></div><p data-t="intro"></p></header>
+  <nav class="panel actions" aria-label="Game"><button id="free" type="button" data-t="free"></button><button id="daily" type="button" data-t="daily"></button><button id="tutorial" type="button" data-t="tutorial"></button><a class="button-link" href="#campaign" data-t="campaign"></a></nav>
+  <details class="panel" id="campaign"><summary id="campaign-title" data-t="campaign"></summary><p data-t="campaignHint"></p><p data-t="howStars"></p><label for="level-select" data-t="level"></label><div class="actions"><select id="level-select"></select><button id="load-level" type="button" data-t="apply"></button></div><progress id="campaign-progress" max="30" value="0"></progress><p id="progress-label"></p><div id="level-grid" class="level-grid"></div></details>
+  <section class="panel controls" aria-label="Settings"><label><span data-t="mode"></span><select id="mode"><option value="classic" data-t="classic"></option><option value="tricks" data-t="tricks"></option><option value="circle" data-t="circle"></option></select></label><label><span data-t="length"></span><input id="length" type="number" min="1" max="40" value="8"></label><button id="new-street" type="button" data-t="newStreet"></button><button id="sound" type="button" aria-pressed="false" data-t="sound"></button><button id="contrast" type="button" aria-pressed="false" data-t="contrast"></button><button id="motion" type="button" aria-pressed="false" data-t="motion"></button></section>
+  <section class="stats" aria-label="Score"><div><span data-t="yours"></span><strong id="yours">0</strong></div><div><span data-t="best"></span><strong id="best">0</strong></div><div><span data-t="wins"></span><strong id="wins">0</strong></div></section>
+  <section id="tutorial-panel" class="panel" hidden aria-labelledby="tutorial-title"><h2 id="tutorial-title" data-t="tutorialTitle"></h2><p id="tutorial-text" role="status"></p><div class="actions"><button id="finish-tutorial" type="button" data-t="finishTutorial"></button><button id="exit-tutorial" type="button" data-t="exitTutorial"></button></div></section>
+  <section class="panel stage" aria-labelledby="session-title"><div class="moon" aria-hidden="true"></div><h2 id="session-title" tabindex="-1"></h2><p id="attempt-status"></p><p id="rule"></p><p data-t="keyboard"></p><div id="street" class="street" role="group"></div><p id="message" role="status"></p><div class="actions"><button id="undo" type="button" data-t="undo"></button><button id="clear" type="button" data-t="clear"></button><button id="hint" type="button" data-t="hint"></button><button id="solve" type="button" data-t="solve"></button><button id="check" type="button" data-t="check"></button><button id="retry" type="button" data-t="retry"></button><button id="next-level" type="button" data-t="nextLevel"></button></div></section>
+  <section class="panel"><h2 data-t="custom"></h2><form id="editor"><label for="values" data-t="values"></label><div class="actions"><input id="values" value="2, 7, 9, 3, 1" maxlength="400" required><button type="submit" data-t="apply"></button><button id="example" type="button" data-t="example"></button></div><p id="error" role="alert"></p></form></section>
+  <details class="panel" id="explanation"><summary data-t="explain"></summary><p data-t="formula"></p><p id="circle-note"></p><section aria-labelledby="study-title"><h2 id="study-title" data-t="study"></h2><p id="step-message" role="status"></p><div class="actions"><button id="step-back" type="button" data-t="stepBack"></button><button id="step-next" type="button" data-t="stepNext"></button><button id="step-play" type="button" data-t="playSteps"></button><button id="step-reset" type="button" data-t="restartSteps"></button></div><p id="step-position"></p><div class="table-wrap"><table><caption data-t="table"></caption><thead><tr><th data-t="house"></th><th data-t="take"></th><th data-t="skip"></th><th data-t="best"></th></tr></thead><tbody id="steps"></tbody></table></div><p data-t="complexity"></p></section></details>
+  <section class="panel" aria-labelledby="backup-title"><h2 id="backup-title" data-t="backup"></h2><div class="actions"><button id="share" type="button" data-t="share"></button><button id="export" type="button" data-t="export"></button><label class="button-link" for="import-file" data-t="import"></label><input id="import-file" type="file" accept=".json,application/json"><button id="reset-progress" type="button" data-t="resetProgress"></button></div><div id="share-box" hidden><label for="share-url" data-t="shareLabel"></label><div class="actions"><input id="share-url" readonly><button id="copy-link" type="button" data-t="copyLink"></button></div></div><p id="notice" role="status"></p><p id="storage-status" role="status"></p></section>
+  <footer><a href="./test-results.html" id="jest-link" data-t="tests"></a><p>#cpc-jest-trick-or-treat · #codepenchallenge</p></footer>
+  <dialog id="reset-dialog" aria-labelledby="reset-title" aria-describedby="reset-description"><h2 id="reset-title" data-t="resetTitle"></h2><p id="reset-description" data-t="resetBody"></p><form method="dialog" class="actions"><button value="cancel" data-t="cancel" autofocus></button><button value="reset" data-t="confirmReset"></button></form></dialog>
+</main>
+
+<script type="module">/** Maximum non-adjacent sum. Visiting no houses is allowed.
+ * O(n) time, O(1) extra memory; never changes the input.
+ */
+function maxCandy(houses) {
+  let previous = 0;
+  let twoBack = 0;
+  for (const candy of houses) {
+    const current = Math.max(previous, twoBack + candy);
+    twoBack = previous;
+    previous = current;
+  }
+  return previous;
+}
+
+/** Reconstruct one optimal route. On ties, prefer skipping the later house. */
+function bestRoute(houses, circular = false) {
+  function linear(start, end) {
+    const dp = [0, 0];
+    const steps = [];
+    for (let i = start; i < end; i++) {
+      const take = dp[dp.length - 2] + houses[i];
+      const skip = dp[dp.length - 1];
+      dp.push(Math.max(skip, take));
+      steps.push({ index: i, candy: houses[i], take, skip, best: Math.max(skip, take) });
+    }
+    const indices = [];
+    let k = end - start;
+    while (k > 0) {
+      if (dp[k + 1] > dp[k]) {
+        indices.push(start + k - 1);
+        k -= 2;
+      } else k--;
+    }
+    return { total: dp.at(-1), indices: indices.reverse(), steps };
+  }
+  if (!circular || houses.length <= 1) return linear(0, houses.length);
+  const withoutLast = linear(0, houses.length - 1);
+  const withoutFirst = linear(1, houses.length);
+  return withoutLast.total >= withoutFirst.total ? withoutLast : withoutFirst;
+}
+
+// Pure game rules; shared by browser and tests.
+const VERSION = 2;
+const STORAGE_KEY = 'laurai-candy-v2';
+const rows = [
+ [3],[2,7],[4,1,4],[1,2,3,1],[2,7,9,3,1],
+ [5,1,1,5],[4,5,4],[6,7,6,1],[3,9,4,2,8],[8,2,2,8,1,7],
+ [7,8,7,1,9,2],[3,4,5,6,7,8,9],[10,1,2,10,2,1,10],[6,7,6,7,6,7,6,1],[9,2,8,3,7,4,6,5],
+ [5,-2,6],[-3,7,-1,8,-4],[4,-5,-2,6,1,-3,9],[0,-2,8,-1,0,7],[-4,-1,-8],
+ [2,3,2],[5,1,1,5],[1,2,3,1],[9,2,8,2,9],[4,8,4,8,4,8],
+ [10,1,3,9,2,8,1],[8,9,8,1,6,7,6,2],[6,1,9,2,8,3,7,4],[2,7,9,3,1,8,4,6,5],[9,1,8,2,7,3,6,4,5,10]
+];
+const LEVELS = Object.freeze(rows.map((street,i)=>Object.freeze({id:i+1,mode:i>=20?'circle':i>=15?'tricks':'classic',street:Object.freeze(street)})));
+function localDay(date=new Date()) {
+ const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Bucharest',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(date);
+ return ['year','month','day'].map(k=>parts.find(p=>p.type===k).value).join('-');
+}
+function dailyStreet(day=localDay()) {
+ let seed=2166136261;
+ for(const c of 'CandyRoute-v2:'+day)seed=Math.imul(seed^c.charCodeAt(0),16777619)>>>0;
+ return Array.from({length:12},()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed%15+1;});
+}
+function legalPick(street,mode,indices) {
+ if(!Array.isArray(indices)||indices.some(i=>!Number.isInteger(i)||i<0||i>=street.length)||new Set(indices).size!==indices.length)return false;
+ const p=new Set(indices);
+ return indices.every(i=>!p.has(i-1)&&!p.has(i+1))&&!(mode==='circle'&&street.length>1&&p.has(0)&&p.has(street.length-1));
+}
+function validStreet(street,mode) {
+ return ['classic','tricks','circle'].includes(mode)&&Array.isArray(street)&&street.length>=1&&street.length<=40&&street.every(n=>Number.isInteger(n)&&n>=(mode==='tricks'?-99:0)&&n<=99);
+}
+function freshState() {
+ return {version:VERSION,lang:'ro',wins:0,light:false,contrast:false,still:false,tutorialDone:false,progress:{},daily:{},attempt:{kind:'free',level:1,day:'',mode:'classic',street:[2,7,9,3,1,4,2,6],picked:[],hinted:false,revealed:false,credited:false}};
+}
+function record(value) {
+ if(!value||typeof value!=='object'||Array.isArray(value)||!Number.isInteger(value.stars)||value.stars<0||value.stars>3||typeof value.practiced!=='boolean')throw Error('Invalid progress');
+ return {stars:value.stars,practiced:value.practiced};
+}
+function unlocked(progress,id){return id===1||!!(progress[id-1]?.stars||progress[id-1]?.practiced);}
+function validateState(s) {
+ if(!s||s.version!==VERSION||!['ro','en'].includes(s.lang)||!Number.isSafeInteger(s.wins)||s.wins<0)throw Error('Invalid version or score');
+ const clean=freshState();clean.lang=s.lang;clean.wins=s.wins;
+ for(const key of ['light','contrast','still','tutorialDone']){if(typeof s[key]!=='boolean')throw Error('Invalid preference');clean[key]=s[key];}
+ for(const field of ['progress','daily']){
+  if(!s[field]||typeof s[field]!=='object'||Array.isArray(s[field]))throw Error('Invalid records');
+  if(Object.keys(s[field]).length>(field==='daily'?3660:30))throw Error('Too many records');
+  for(const [key,value] of Object.entries(s[field])){
+   if(field==='progress'?!/^(?:[1-9]|[12]\d|30)$/.test(key):!/^\d{4}-\d{2}-\d{2}$/.test(key))throw Error('Invalid record key');
+   clean[field][key]=record(value);
+  }
+ }
+ const a=s.attempt;
+ if(!a||!['free','campaign','daily','tutorial'].includes(a.kind)||!validStreet(a.street,a.mode)||!legalPick(a.street,a.mode,a.picked))throw Error('Invalid attempt');
+ if(!Number.isInteger(a.level)||a.level<1||a.level>30||typeof a.day!=='string')throw Error('Invalid target');
+ for(const key of ['hinted','revealed','credited'])if(typeof a[key]!=='boolean')throw Error('Invalid attempt flags');
+ if(a.kind==='campaign'){
+  const l=LEVELS[a.level-1];if(!unlocked(clean.progress,a.level)||a.mode!==l.mode||JSON.stringify(a.street)!==JSON.stringify(l.street))throw Error('Invalid campaign street');
+ }
+ if(a.kind==='daily'&&(!/^\d{4}-\d{2}-\d{2}$/.test(a.day)||a.mode!=='classic'||JSON.stringify(a.street)!==JSON.stringify(dailyStreet(a.day))))throw Error('Invalid daily street');
+ clean.attempt={kind:a.kind,level:a.level,day:a.day,mode:a.mode,street:[...a.street],picked:[...a.picked],hinted:a.hinted,revealed:a.revealed,credited:a.credited};
+ return clean;
+}
+function gradeAttempt(a){return a.revealed?{stars:0,practiced:true}:{stars:a.hinted?2:3,practiced:false};}
+function award(state) {
+ const a=state.attempt;if(a.kind==='tutorial')return;
+ const result=gradeAttempt(a);
+ const records=a.kind==='campaign'?state.progress:a.kind==='daily'?state.daily:null;
+ const key=a.kind==='campaign'?a.level:a.day;
+ const wasSolved=records?.[key]?.stars>0;
+ if(records){const old=records[key]??{stars:0,practiced:false};records[key]={stars:Math.max(old.stars,result.stars),practiced:old.practiced||result.practiced};}
+ if(!a.credited&&!a.revealed){if(!wasSolved)state.wins++;a.credited=true;}
+}
+function migrateV1(old) {
+ const s=freshState();if(!old||!validStreet(old.street,old.mode)||!legalPick(old.street,old.mode,old.picked))return s;
+ s.lang=old.lang==='en'?'en':'ro';s.wins=Number.isSafeInteger(old.wins)&&old.wins>=0?old.wins:0;
+ for(const key of ['light','contrast','still'])s[key]=old[key]===true;
+ Object.assign(s.attempt,{mode:old.mode,street:[...old.street],picked:[...old.picked],hinted:old.assisted===true,revealed:old.assisted===true,credited:old.credited===true});return s;
+}
+function parseShared(hash) {
+ if(!hash.startsWith('#street='))return null;
+ const payload=JSON.parse(decodeURIComponent(hash.slice(8)));
+ if(payload.version!==1||!validStreet(payload.street,payload.mode))throw Error('Invalid shared street');
+ return {mode:payload.mode,street:[...payload.street]};
+}
+function shareHash(a){return '#street='+encodeURIComponent(JSON.stringify({version:1,mode:a.mode,street:a.street}));}
+
+const copy = {
+ ro: { intro:'O stradă misterioasă. O singură regulă: nu vizita două case vecine.',mode:'Mod de joc',classic:'Clasic',tricks:'Trucuri · valori negative',circle:'Stradă circulară',length:'Case (1–40)',newStreet:'Stradă nouă',sound:'Sunet',contrast:'Contrast ridicat',motion:'Mișcare redusă',yours:'Bomboanele tale',best:'Maxim posibil',wins:'Străzi rezolvate',undo:'Înapoi',clear:'Golește',hint:'Indiciu',solve:'Arată traseul',custom:'Creează propria stradă',values:'Valori întregi separate prin virgulă (−99…99)',apply:'Aplică',example:'Exemplu dificil',explain:'Cum se calculează traseul?',formula:'La fiecare casă alegem maximul dintre: totalul anterior (sărim casa) și totalul de acum două case + bomboanele casei curente (o vizităm). Pornim de la zero: putem să nu vizităm nicio casă.',table:'Calcule pentru traseul optim',house:'Casa',take:'Vizităm',skip:'Sărim',complexity:'maxCandy: timp O(n), memorie O(1). Reconstrucția traseului: timp și memorie O(n). La egalitate păstrăm varianta care sare casa curentă.',tests:'Vezi rezultatele Jest',rule:'Selectează casele. Vecinii caselor alese sunt blocați.',circleRule:'Prima și ultima casă sunt vecine. O singură casă poate fi vizitată.',playing:'Mai poți îmbunătăți traseul?',won:'🎉 Ai găsit un traseu optim!',shown:'✨ Traseu optim afișat. Încearcă o stradă nouă!',hinted:'💡 O casă din traseul optim este evidențiată. Poți avea nevoie să deselectezi vecinii.',blocked:'Această casă este vecină cu una selectată.',invalid:'Introdu 1–40 de numere întregi între −99 și 99. Valorile negative sunt disponibile în modul Trucuri.',circularNote:'Pentru cerc comparăm două variante: fără ultima casă și fără prima. Tabelul arată varianta câștigătoare.',negative:'În modul Trucuri, unele case iau bomboane. Le poți evita.',visit:'Vizitează casa',selected:'selectată',available:'disponibilă',locked:'blocată',candy:'bomboane' },
+ en: { intro:'A mysterious street. One rule: never visit neighboring houses.',mode:'Game mode',classic:'Classic',tricks:'Tricks · negative values',circle:'Circular street',length:'Houses (1–40)',newStreet:'New street',sound:'Sound',contrast:'High contrast',motion:'Reduced motion',yours:'Your haul',best:'Best possible',wins:'Streets solved',undo:'Undo',clear:'Clear',hint:'Hint',solve:'Show route',custom:'Build your own street',values:'Comma-separated integers (−99…99)',apply:'Apply',example:'Tricky example',explain:'How does the route work?',formula:'At each house take the maximum of: the previous total (skip this house), or the total two houses back + this house’s candy (visit it). Start at zero: visiting no houses is allowed.',table:'Optimal route calculations',house:'House',take:'Visit',skip:'Skip',complexity:'maxCandy: O(n) time, O(1) memory. Route reconstruction: O(n) time and memory. On ties, prefer skipping the current house.',tests:'View Jest test results',rule:'Choose houses. Neighbors of chosen houses are blocked.',circleRule:'The first and last houses are neighbors. A single house can be visited.',playing:'Can you find a better route?',won:'🎉 You found an optimal route!',shown:'✨ Optimal route revealed. Try a new street!',hinted:'💡 A house on the optimal route is highlighted. You may need to deselect its neighbors.',blocked:'This house is next to a selected house.',invalid:'Enter 1–40 integers between −99 and 99. Negative values require Tricks mode.',circularNote:'For a circle, compare two routes: excluding the last house and excluding the first. The table shows the winning case.',negative:'In Tricks mode some houses take candy away. You can skip them.',visit:'Visit house',selected:'selected',available:'available',locked:'blocked',candy:'candies' }
+};
+Object.assign(copy.ro,{
+ campaign:'Campanie · 30 de niveluri',free:'Joacă liber',daily:'Provocarea zilei',tutorial:'Tutorial',level:'Nivel',lockedLevel:'Blocat — termină nivelul anterior',stars:'stele',practiced:'Exersat',notPlayed:'Nejucat',nextLevel:'Nivelul următor',retry:'Reîncearcă',check:'Verifică traseul',progress:'Progres campanie',dailyDate:'Provocare pentru data României',tutorialTitle:'Învață în trei pași',tutorial0:'1 / 3 — Alege casa 1: primești 4 bomboane.',tutorial1:'2 / 3 — Încearcă acum casa 2. Este vecină cu prima și trebuie blocată.',tutorial2:'3 / 3 — Alege casa 3: totalul devine 8, mai bun decât casa 2 singură.',tutorial3:'🎉 Tutorial încheiat! Ai învățat să eviți casele vecine.',finishTutorial:'Încheie tutorialul',exitTutorial:'Ieși din tutorial',stepBack:'Pasul anterior',stepNext:'Pasul următor',playSteps:'Redă pașii',pauseSteps:'Pauză',restartSteps:'Reia explicația',stepStart:'Apasă „Pasul următor” pentru a compara vizitarea cu sărirea unei case. Explicația dezvăluie soluția și marchează încercarea ca exersată.',stepText:'Casa {house}: dacă vizităm = {take}; dacă sărim = {skip}. Păstrăm {best}.',stepPosition:'Pas {current} din {total}',study:'Explicație vizuală a algoritmului',revealed:'Soluția a fost dezvăluită: încercare exersată. Reîncearcă pentru stele.',hintGrade:'Rezolvat cu indiciu · ★★',perfectGrade:'Rezolvat fără ajutor · ★★★',noneSelected:'Verifică selecția: suma nu este încă optimă.',backup:'Distribuire și backup',export:'Export JSON',import:'Import JSON',share:'Creează link',shareLabel:'Link pentru această stradă (fără progres personal)',copyLink:'Copiază linkul',copied:'Link copiat.',copyManual:'Selectează și copiază linkul din câmp.',shareLocal:'Salvează fișierul HTML pe un site pentru un link public. Acesta este un link local.',importOk:'Backup importat și validat.',importError:'Backup invalid, incomplet sau prea mare. Datele existente au fost păstrate.',exported:'Backup exportat.',resetProgress:'Resetează progresul',resetTitle:'Resetezi tot progresul?',resetBody:'Se șterg stelele, provocările zilnice, scorul și încercarea curentă. Preferințele vizuale și limba se păstrează. Poți exporta mai întâi un backup.',cancel:'Anulează',confirmReset:'Șterge progresul',resetDone:'Progres resetat.',storageError:'Salvarea locală nu este disponibilă. Exportă JSON ca să păstrezi progresul.',campaignHint:'Primele 5: bazele · 6–15: capcane · 16–20: trucuri · 21–30: cercuri. Termină sau exersează un nivel pentru a-l deschide pe următorul.',session:'Încercare curentă',dayOld:'Aceasta este o provocare dintr-o zi anterioară. Apasă Provocarea zilei pentru cea de azi.',sharedLoaded:'Stradă distribuită încărcată în modul liber.',invalidShare:'Linkul conține o stradă invalidă. Încercarea salvată a fost păstrată.',campaignFinished:'🏆 Ai parcurs toate cele 30 de niveluri! Poți îmbunătăți stelele.',howStars:'★★★ fără ajutor · ★★ cu indiciu · Exersat dacă vezi soluția sau pașii. Reîncearcă pentru un rezultat mai bun.',shareTooLarge:'Link prea mare sau invalid.',tests:'Teste Jest · CodePen',keyboard:'Tastatură: Tab pentru navigare, Enter sau Space pentru selectare. Vecinii blocați nu se pot selecta.'
+});
+Object.assign(copy.en,{
+ campaign:'Campaign · 30 levels',free:'Free play',daily:'Daily challenge',tutorial:'Tutorial',level:'Level',lockedLevel:'Locked — finish the previous level',stars:'stars',practiced:'Practiced',notPlayed:'Not played',nextLevel:'Next level',retry:'Retry',check:'Check route',progress:'Campaign progress',dailyDate:'Challenge using the date in Romania',tutorialTitle:'Learn in three steps',tutorial0:'1 / 3 — Choose house 1: collect 4 candies.',tutorial1:'2 / 3 — Try house 2. It is next to the first house and must be blocked.',tutorial2:'3 / 3 — Choose house 3: your total becomes 8, better than house 2 alone.',tutorial3:'🎉 Tutorial complete! You learned to avoid adjacent houses.',finishTutorial:'Finish tutorial',exitTutorial:'Exit tutorial',stepBack:'Previous step',stepNext:'Next step',playSteps:'Play steps',pauseSteps:'Pause',restartSteps:'Restart explanation',stepStart:'Press Next step to compare visiting and skipping each house. This explanation reveals the solution and marks the attempt as practiced.',stepText:'House {house}: visit = {take}; skip = {skip}. Keep {best}.',stepPosition:'Step {current} of {total}',study:'Visual algorithm walkthrough',revealed:'Solution revealed: practiced attempt. Retry to earn stars.',hintGrade:'Solved with a hint · ★★',perfectGrade:'Solved without help · ★★★',noneSelected:'Check your selection: the total is not optimal yet.',backup:'Sharing and backup',export:'Export JSON',import:'Import JSON',share:'Create link',shareLabel:'Link to this street (without personal progress)',copyLink:'Copy link',copied:'Link copied.',copyManual:'Select and copy the link from the field.',shareLocal:'Host this HTML file on a website for a public link. This link is local.',importOk:'Backup imported and validated.',importError:'Invalid, incomplete or oversized backup. Existing data was preserved.',exported:'Backup exported.',resetProgress:'Reset progress',resetTitle:'Reset all progress?',resetBody:'This deletes stars, daily records, scores and the current attempt. Language and visual preferences are preserved. You can export a backup first.',cancel:'Cancel',confirmReset:'Delete progress',resetDone:'Progress reset.',storageError:'Local saving is unavailable. Export JSON to keep your progress.',campaignHint:'First 5: basics · 6–15: traps · 16–20: tricks · 21–30: circles. Complete or practice a level to unlock the next.',session:'Current attempt',dayOld:'This challenge is from an earlier day. Press Daily challenge for today’s street.',sharedLoaded:'Shared street loaded in free play.',invalidShare:'This link contains an invalid street. Your saved attempt was preserved.',campaignFinished:'🏆 You completed all 30 levels! You can improve your stars.',howStars:'★★★ without help · ★★ with hints · Practiced if you reveal the solution or steps. Retry for a better result.',shareTooLarge:'Invalid or oversized link.',tests:'Jest tests · CodePen',keyboard:'Keyboard: Tab to navigate, Enter or Space to select. Blocked neighboring houses cannot be selected.'
+});
+
+const $=id=>document.getElementById(id);
+let state=freshState(),history=[],hintIndex=-1,sound=false,audio,step=0,timer=null,tutorialStep=0,noticeKey='',transient='',storageFailed=false;
+try{const saved=localStorage.getItem(STORAGE_KEY);state=saved?validateState(JSON.parse(saved)):migrateV1(JSON.parse(localStorage.getItem('laurai-candy-v1')));}catch{}
+const a=()=>state.attempt,t=()=>copy[state.lang];
+function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));storageFailed=false;}catch{storageFailed=true;}$('storage-status').textContent=storageFailed?t().storageError:'';}
+function stop(){if(timer!==null)clearInterval(timer);timer=null;}
+function focusStage(){$('session-title').focus();}
+function load(street,mode='classic',kind='free',level=1,day=''){
+ stop();history=[];hintIndex=-1;step=0;tutorialStep=0;transient='';noticeKey='';$('error').textContent='';$('share-box').hidden=true;
+ if(location.hash.startsWith('#street=')){try{window.history.replaceState(null,'',location.pathname+location.search);}catch{}}
+ state.attempt={kind,level,day,mode,street:[...street],picked:[],hinted:false,revealed:false,credited:false};
+ $('length').value=street.length;$('values').value=street.join(', ');render();focusStage();
+}
+function loadLevel(id){if(unlocked(state.progress,id)){const l=LEVELS[id-1];load(l.street,l.mode,'campaign',id);}}
+function blocked(i){const p=new Set(a().picked);return p.has(i-1)||p.has(i+1)||(a().mode==='circle'&&a().street.length>1&&((i===0&&p.has(a().street.length-1))||(i===a().street.length-1&&p.has(0))));}
+function result(){return bestRoute(a().street,a().mode==='circle');}
+function total(){return a().picked.reduce((sum,i)=>sum+a().street[i],0);}
+function checkpoint(){history.push([...a().picked]);if(history.length>100)history.shift();}
+function tone(){if(!sound)return;try{audio??=new(window.AudioContext||window.webkitAudioContext)();void audio.resume().catch(()=>{});const o=audio.createOscillator(),g=audio.createGain();o.connect(g);g.connect(audio.destination);o.frequency.value=660;g.gain.setValueAtTime(.04,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.12);o.start();o.stop(audio.currentTime+.12);}catch{}}
+function evaluate(){if(total()===result().total)award(state);}
+function select(i){
+ if(a().kind==='tutorial'){
+  if(tutorialStep===0&&i===0){a().picked=[0];tutorialStep=1;}
+  else if(tutorialStep===1&&i===1){tutorialStep=2;}
+  else if(tutorialStep===2&&i===2){a().picked=[0,2];tutorialStep=3;state.tutorialDone=true;}
+  render();return;
+ }
+ if(!a().picked.includes(i)&&blocked(i)){transient='blocked';render();return;}
+ checkpoint();a().picked=a().picked.includes(i)?a().picked.filter(j=>j!==i):[...a().picked,i];hintIndex=-1;transient='';tone();evaluate();render();
+}
+function recordLabel(r){return r?.stars?'★'.repeat(r.stars):r?.practiced?t().practiced:t().notPlayed;}
+function renderCampaign(){
+ const completed=Object.values(state.progress).filter(r=>r.stars||r.practiced).length;
+ const stars=Object.values(state.progress).reduce((s,r)=>s+r.stars,0);
+ $('campaign-progress').value=completed;$('campaign-progress').setAttribute('aria-label',t().progress);$('progress-label').textContent=`${completed} / 30 · ${stars} / 90 ${t().stars}`;
+ const previous=Number($('level-select').value)||1;
+ const options=LEVELS.map(l=>{const o=document.createElement('option');o.value=l.id;o.disabled=!unlocked(state.progress,l.id);o.textContent=`${t().level} ${l.id} · ${recordLabel(state.progress[l.id])}${o.disabled?' 🔒':''}`;return o;});
+ $('level-select').replaceChildren(...options);$('level-select').value=a().kind==='campaign'?a().level:(unlocked(state.progress,previous)?previous:1);
+ $('level-grid').replaceChildren(...LEVELS.map(l=>{const b=document.createElement('button');b.type='button';b.disabled=!unlocked(state.progress,l.id);b.textContent=`${l.id} · ${recordLabel(state.progress[l.id])}`;b.setAttribute('aria-label',`${t().level} ${l.id}: ${recordLabel(state.progress[l.id])}${b.disabled?', '+t().lockedLevel:''}`);if(a().kind==='campaign'&&a().level===l.id)b.setAttribute('aria-current','step');b.onclick=()=>loadLevel(l.id);return b;}));
+}
+function renderSteps(){
+ const r=result(),shown=r.steps.slice(0,step);
+ $('circle-note').textContent=a().mode==='circle'?t().circularNote:'';
+ const current=shown.at(-1);
+ $('step-message').textContent=current?t().stepText.replace('{house}',current.index+1).replace('{take}',current.take).replace('{skip}',current.skip).replace('{best}',current.best):t().stepStart;
+ $('step-position').textContent=t().stepPosition.replace('{current}',step).replace('{total}',r.steps.length);
+ $('steps').replaceChildren(...shown.map((s,i)=>{const tr=document.createElement('tr');if(i===shown.length-1)tr.className='current-step';for(const value of [s.index+1,s.take,s.skip,s.best]){const td=document.createElement('td');td.textContent=value;tr.append(td);}return tr;}));
+ $('step-back').disabled=step===0;$('step-next').disabled=step>=r.steps.length;$('step-play').textContent=timer===null?t().playSteps:t().pauseSteps;$('step-play').disabled=step>=r.steps.length&&timer===null;
+}
+function render(){
+ const c=t();document.documentElement.lang=state.lang;
+ for(const [key,cls] of [['light','light'],['contrast','contrast'],['still','still']])document.body.classList.toggle(cls,state[key]);
+ document.querySelectorAll('[data-t]').forEach(el=>el.textContent=c[el.dataset.t]??el.dataset.t);
+ $('lang').textContent=state.lang==='ro'?'EN':'RO';$('lang').setAttribute('aria-label',state.lang==='ro'?'Switch to English':'Schimbă în română');$('theme').setAttribute('aria-label',state.lang==='ro'?'Temă luminoasă':'Light theme');
+ for(const [id,active] of [['theme',state.light],['contrast',state.contrast],['motion',state.still],['sound',sound]])$(id).setAttribute('aria-pressed',String(active));
+ for(const id of ['free','daily','tutorial'])$(id).setAttribute('aria-pressed',String(a().kind===id));
+ $('mode').value=a().mode;$('mode').disabled=a().kind!=='free';$('length').disabled=a().kind!=='free';$('new-street').disabled=a().kind!=='free';
+ $('tutorial-panel').hidden=a().kind!=='tutorial';$('tutorial-text').textContent=c['tutorial'+tutorialStep];$('finish-tutorial').disabled=tutorialStep!==3;
+ let title=c.free;if(a().kind==='campaign')title=`${c.level} ${a().level} / 30`;if(a().kind==='daily')title=`${c.daily} · ${a().day}`;if(a().kind==='tutorial')title=c.tutorial;
+ $('session-title').textContent=title;$('street').setAttribute('aria-label',title);
+ $('attempt-status').textContent=a().revealed?c.revealed:a().kind==='daily'&&a().day!==localDay()?c.dayOld:c.howStars;
+ const focusIndex=document.activeElement?.dataset.index;
+ $('street').replaceChildren(...a().street.map((n,i)=>{
+  const b=document.createElement('button'),picked=a().picked.includes(i),locked=!picked&&blocked(i),study=result().steps[step-1]?.index===i;
+  b.type='button';b.className='house'+(locked?' blocked':'')+(hintIndex===i?' hinted':'')+(study?' studying':'');b.dataset.index=i;b.setAttribute('aria-pressed',String(picked));b.setAttribute('aria-disabled',String(locked));
+  b.setAttribute('aria-label',`${c.visit} ${i+1}, ${n} ${c.candy}, ${c[picked?'selected':locked?'locked':'available']}`);
+  b.innerHTML=`<span class="number">${c.house} ${i+1}</span><span class="icon" aria-hidden="true"><span class="door"></span><span class="window one"></span><span class="window two"></span></span><span class="amount">${n} <span class="candy-dot" aria-hidden="true"></span></span>`;b.onclick=()=>select(i);return b;
+ }));
+ if(focusIndex!==undefined)$('street').querySelector(`[data-index="${focusIndex}"]`)?.focus();
+ const best=a().mode==='circle'?result().total:maxCandy(a().street),yours=total();$('yours').textContent=yours;$('best').textContent=best;$('wins').textContent=state.wins;
+ $('message').textContent=transient?c[transient]:hintIndex>=0?c.hinted:yours===best?(a().revealed?c.shown:a().hinted?c.hintGrade:c.won):c.playing;
+ $('rule').textContent=a().mode==='circle'?c.circleRule:a().mode==='tricks'?c.negative:c.rule;
+ $('undo').disabled=!history.length||a().kind==='tutorial';$('clear').disabled=!a().picked.length||a().kind==='tutorial';
+ for(const id of ['hint','solve','check','retry'])$(id).disabled=a().kind==='tutorial';
+ $('next-level').hidden=a().kind!=='campaign';$('next-level').disabled=a().level===30||!unlocked(state.progress,a().level+1);
+ if(a().kind==='campaign'&&a().level===30&&(state.progress[30]?.stars||state.progress[30]?.practiced))$('message').textContent=c.campaignFinished;
+ $('notice').textContent=noticeKey?c[noticeKey]:'';
+ renderCampaign();renderSteps();persist();
+}
+function generate(){const raw=Number($('length').value),n=Number.isFinite(raw)?Math.max(1,Math.min(40,Math.trunc(raw))):8;const mode=$('mode').value;load(Array.from({length:n},()=>mode==='tricks'?Math.floor(Math.random()*21)-6:Math.floor(Math.random()*10)+1),mode);}
+function reveal(){a().revealed=true;}
+function advance(){if(step>=result().steps.length){stop();render();return;}reveal();step++;if(step>=result().steps.length)stop();render();}
+$('new-street').onclick=generate;$('mode').onchange=generate;
+$('free').onclick=()=>load([2,7,9,3,1,4,2,6]);
+$('daily').onclick=()=>{const day=localDay();load(dailyStreet(day),'classic','daily',1,day);};
+$('tutorial').onclick=()=>load([4,5,4],'classic','tutorial');
+$('finish-tutorial').onclick=()=>loadLevel(1);$('exit-tutorial').onclick=()=>load([2,7,9,3,1]);
+$('load-level').onclick=()=>loadLevel(Number($('level-select').value));$('next-level').onclick=()=>loadLevel(a().level+1);
+$('retry').onclick=()=>{const old=a();load(old.street,old.mode,old.kind,old.level,old.day);if(old.kind==='free'){a().credited=old.credited;render();}};
+$('lang').onclick=()=>{state.lang=state.lang==='ro'?'en':'ro';$('error').textContent='';render();};
+for(const [id,key] of [['theme','light'],['contrast','contrast'],['motion','still']])$(id).onclick=()=>{state[key]=!state[key];if(key==='still'&&state.still)stop();render();};
+$('sound').onclick=()=>{sound=!sound;tone();render();};
+$('undo').onclick=()=>{if(history.length){a().picked=history.pop();hintIndex=-1;transient='';render();}};
+$('clear').onclick=()=>{checkpoint();a().picked=[];hintIndex=-1;transient='';render();};
+$('solve').onclick=()=>{checkpoint();reveal();a().picked=result().indices;hintIndex=-1;transient='';evaluate();render();};
+$('hint').onclick=()=>{a().hinted=true;hintIndex=result().indices.find(i=>!a().picked.includes(i))??-1;transient='';render();};
+$('check').onclick=()=>{evaluate();transient=total()===result().total?(a().revealed?'revealed':a().hinted?'hintGrade':'perfectGrade'):'noneSelected';render();};
+$('step-next').onclick=advance;$('step-back').onclick=()=>{stop();step=Math.max(0,step-1);render();};$('step-reset').onclick=()=>{stop();step=0;render();};
+$('step-play').onclick=()=>{if(timer!==null){stop();render();return;}advance();if(step<result().steps.length)timer=setInterval(advance,1500);render();};
+$('explanation').addEventListener('toggle',()=>{if(!$('explanation').open){stop();renderSteps();}});
+$('example').onclick=()=>load([5,1,1,5]);
+$('editor').onsubmit=e=>{e.preventDefault();const tokens=$('values').value.split(',').map(s=>s.trim()),values=tokens.map(Number),mode=$('mode').value;if(tokens.some(s=>!/^[-+]?\d+$/.test(s))||values.length<1||values.length>40||values.some(n=>!Number.isInteger(n)||n<(mode==='tricks'?-99:0)||n>99)){$('error').textContent=t().invalid;return;}load(values,mode);};
+$('export').onclick=()=>{persist();const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='candy-route-backup-'+localDay()+'.json';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);noticeKey='exported';render();};
+$('import-file').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>1000000)throw Error('Too large');const validated=validateState(JSON.parse(await file.text()));stop();state=validated;history=[];step=0;hintIndex=-1;tutorialStep=0;transient='';$('share-box').hidden=true;$('values').value=a().street.join(', ');$('length').value=a().street.length;noticeKey='importOk';}catch{noticeKey='importError';}e.target.value='';render();};
+$('share').onclick=()=>{const url=new URL(location.href);url.hash=shareHash(a());$('share-url').value=url.href;$('share-box').hidden=false;noticeKey=location.protocol==='file:'?'shareLocal':'copyManual';render();};
+$('copy-link').onclick=async()=>{try{if(!navigator.clipboard)throw Error('No clipboard');await navigator.clipboard.writeText($('share-url').value);noticeKey='copied';}catch{$('share-url').focus();$('share-url').select();noticeKey='copyManual';}render();};
+$('reset-progress').onclick=()=>{$('reset-dialog').returnValue='';$('reset-dialog').showModal();};
+$('reset-dialog').addEventListener('close',()=>{if($('reset-dialog').returnValue!=='reset')return;const old=state;state=freshState();for(const key of ['lang','light','contrast','still'])state[key]=old[key];try{localStorage.removeItem('laurai-candy-v1');}catch{}stop();history=[];step=0;hintIndex=-1;tutorialStep=0;transient='';noticeKey='resetDone';$('values').value=a().street.join(', ');$('length').value=a().street.length;render();});
+function shared(){if(!location.hash.startsWith('#street='))return;try{if(location.hash.length>4000)throw Error('Too large');const payload=parseShared(location.hash);load(payload.street,payload.mode);noticeKey='sharedLoaded';render();}catch{noticeKey='invalidShare';render();}}
+window.addEventListener('hashchange',shared);document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();renderSteps();}});
+document.querySelector('a[href="#campaign"]').onclick=()=>{$('campaign').open=true;};
+if(a().kind==='tutorial')tutorialStep=a().picked.includes(2)?3:a().picked.includes(0)?1:0;
+const requestedLang=new URLSearchParams(location.search).get('lang');if(['ro','en'].includes(requestedLang))state.lang=requestedLang;
+$('length').value=a().street.length;$('values').value=a().street.join(', ');render();shared();
+</script></body></html>
