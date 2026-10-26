@@ -1,3 +1,9 @@
+# v3 · Actualizare
+
+Versiunea v2.1 și launcher-ul Arcade World au fost deja merged (PR #106 și respectiv #26). V3 actualizează aceeași rută, catalogul și înregistrările existente; nu crește numărul de proiecte și nu dublează cardul Arcade. Studiul de caz intră în sitemap. Publicarea v3 se verifică după merge/deploy.
+
+## Istoricul integrării v2
+
 # Integrare / Integration
 
 Sursele v2 sunt pregătite pentru ruta `codepen-portfolio/candy-route/`.

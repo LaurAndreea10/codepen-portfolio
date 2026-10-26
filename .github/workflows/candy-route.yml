@@ -28,8 +28,11 @@ jobs:
       - run: npm run test:jest
       - run: npx playwright install --with-deps chromium
       - run: npm run test:ui
+      - run: npm run test:studio-ui
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: candy-route-browser-results
-          path: candy-route/browser-results.json
+          path: |
+            candy-route/browser-results.json
+            candy-route/studio-browser-results.json

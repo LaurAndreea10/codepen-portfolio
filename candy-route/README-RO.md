@@ -1,3 +1,19 @@
+# Candy Route v3 · Studio
+
+Versiunea v3 păstrează campania și backupurile v2. Studio folosește cheia separată `laurai-candy-studio-v1`; profilul activ include o copie a progresului original. Limite: 16 case pentru variante, 40 în modul liber original, 4 profiluri, 100 de puzzle-uri/profil.
+
+Lista completă: [COVERAGE.md](COVERAGE.md). Studiu de caz: [case-study.html](case-study.html).
+
+Comenzi: `npm ci`, `npm run build`, `npm test`, `npm run test:jest`, `npm run test:ui`, `npm run test:studio-ui`. Testele browser cer Chromium instalat (`npx playwright install chromium`) sau `CANDY_BROWSER=/cale/executabil`.
+
+Pentru CodePen adaugă blocurile `studio-rules.js` și `studio.js` alături de cele existente. `index.pen.html` importă `app.js`; alternativ folosește HTML-ul standalone generat. Nu lipi JavaScript-ul modular în blocul HTML. Editorul CodePen nu a fost operat din această sesiune.
+
+Backupul original exportă doar profilul curent v2. „Backup complet” din Studio include profilurile, sesiunile, colecțiile și preferințele Studio. Mută cursorul pe o casă și apasă Enter/Space pentru selecție; toate acțiunile editorului au butoane.
+
+Offline necesită prima încărcare online completă. Închide toate ferestrele jocului și redeschide pentru activarea unei versiuni noi. Ștergerea datelor site-ului elimină progresul; exportă backup înainte.
+
+## Documentația versiunilor anterioare
+
 # Candy Route v2.1 — Jest Trick-or-Treat
 
 Joc fără dependențe de runtime: deschide `candy-route-standalone.html` direct în browser. Pentru varianta modulară `index.html`, pornește un server în acest folder cu `python3 -m http.server 8000` și deschide http://localhost:8000.
