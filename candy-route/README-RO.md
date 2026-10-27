@@ -1,3 +1,20 @@
+# Candy Route v4 · Aventură
+
+V4 adaugă ecranul Joacă/Campanie/Studio și păstrează progresul original. Din Setări se poate deschide interfața clasică completă; linkul direct este `?view=classic`. Funcțiile locale nu necesită server, cont nou sau abonament.
+
+- Lista noii etape: [ADVENTURE-COVERAGE.md](ADVENTURE-COVERAGE.md), cu 60 de rânduri și stări explicite pentru verificările externe.
+- Multiplayer: [ARENA.md](ARENA.md). Codul serverului este pregătit și testat local; nu este găzduit public.
+- Studiu de caz: [adventure-case-study.html](adventure-case-study.html).
+- Teste noi: `npm run test:adventure-ui`; `npm test` include regulile și serverul.
+
+Salvarea Aventură folosește cheia separată `laurai-candy-adventure-v1`, cu date per profil Studio. Pentru mutarea tuturor datelor folosește „Export toate datele v4”; importul afișează întâi un sumar și cere confirmare în interfață. Backupurile v2 și Studio v1 rămân acceptate în instrumentele lor și nu includ istoricul Aventură. Tokenurile Arena sunt în sessionStorage, nu în backupuri.
+
+Limite: 16 case pentru regulile avansate, 1.000 încercări Aventură/profil, 20 campanii/profil, 20 niveluri/campanie, 50 observații reale/profil. Vizitele au ordine crescătoare, cu destinația la final; costul deplasării nu explorează toate permutările unui TSP.
+
+Pentru CodePen, adaugă și modulele `adventure-rules.js` și `adventure.js`, pe lângă modulele v3. Alternativa este HTML-ul standalone generat. Serverul Arena nu se lipește într-un bloc client CodePen.
+
+## Documentația v3 păstrată
+
 # Candy Route v3 · Studio
 
 Versiunea v3 păstrează campania și backupurile v2. Studio folosește cheia separată `laurai-candy-studio-v1`; profilul activ include o copie a progresului original. Limite: 16 case pentru variante, 40 în modul liber original, 4 profiluri, 100 de puzzle-uri/profil.

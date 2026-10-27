@@ -1,5 +1,5 @@
-const CACHE='candy-route-v3-1';
-const ASSETS=['./','./index.html','./style.css','./app.js','./candy.js','./game.js','./i18n.js','./studio.js','./studio-rules.js','./manifest.webmanifest','./icon.svg'];
+const CACHE='candy-route-v4-1';
+const ASSETS=['./','./index.html','./style.css','./app.js','./candy.js','./game.js','./i18n.js','./studio.js','./studio-rules.js','./adventure.js','./adventure-rules.js','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
 // Waiting workers activate when all old clients close, avoiding mixed module versions.
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('candy-route-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
