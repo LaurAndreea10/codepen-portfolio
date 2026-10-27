@@ -1,3 +1,7 @@
+# V4 · 27 octombrie 2026
+
+PR #107 și Arcade World #27 sunt merged. Această etapă actualizează aceeași rută și același proiect (metrica centrală rămâne 90), păstrează datele și istoricul anterior și adaugă studiul de caz v4 în sitemap. Noul server Arena este opțional și nu este găzduit pe GitHub Pages. Deploy-ul v4 și testele reale rămân de confirmat separat.
+
 # v3 · Actualizare
 
 Versiunea v2.1 și launcher-ul Arcade World au fost deja merged (PR #106 și respectiv #26). V3 actualizează aceeași rută, catalogul și înregistrările existente; nu crește numărul de proiecte și nu dublează cardul Arcade. Studiul de caz intră în sitemap. Publicarea v3 se verifică după merge/deploy.

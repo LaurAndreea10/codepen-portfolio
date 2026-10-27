@@ -1,11 +1,13 @@
+import { initAdventure } from './adventure.js';
 import { initStudio } from './studio.js';
 import { maxCandy, bestRoute, compareStrategies } from './candy.js';
 import { copy } from './i18n.js';
 import { LEVELS, STORAGE_KEY, freshState, validateState, migrateV1, dailyStreet, localDay, unlocked, award, parseShared, shareHash } from './game.js';
+const entryHash=location.hash;
 const $=id=>document.getElementById(id);
 let state=freshState(),history=[],hintIndex=-1,sound=false,audio,step=0,timer=null,tutorialStep=0,noticeKey='',transient='',storageFailed=false,routeVisible=false,comparisonOpen=false,matrixOpen=false;
 try{const saved=localStorage.getItem(STORAGE_KEY);state=saved?validateState(JSON.parse(saved)):migrateV1(JSON.parse(localStorage.getItem('laurai-candy-v1')));}catch{}
-let studio,volume=.3;
+let studio,adventure,volume=.3;
 try{sound=localStorage.getItem('laurai-candy-sound')==='true';}catch{}
 const a=()=>state.attempt,t=()=>copy[state.lang];
 function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));storageFailed=false;}catch{storageFailed=true;}$('storage-status').textContent=storageFailed?t().storageError:'';}
@@ -83,7 +85,7 @@ function render(){
  $('next-level').hidden=a().kind!=='campaign';$('next-level').disabled=a().level===30||!unlocked(state.progress,a().level+1);
  if(a().kind==='campaign'&&a().level===30&&(state.progress[30]?.stars||state.progress[30]?.practiced))$('message').textContent=c.campaignFinished;
  $('notice').textContent=noticeKey?c[noticeKey]:'';
- renderCampaign();renderSteps();renderLab();persist();studio?.refresh();
+ renderCampaign();renderSteps();renderLab();persist();studio?.refresh();adventure?.refresh();
 }
 function generate(){const raw=Number($('length').value),n=Number.isFinite(raw)?Math.max(1,Math.min(40,Math.trunc(raw))):8;const mode=$('mode').value;load(Array.from({length:n},()=>mode==='tricks'?Math.floor(Math.random()*21)-6:Math.floor(Math.random()*10)+1),mode);}
 function reveal(){a().revealed=true;}
@@ -155,3 +157,5 @@ $('length').value=a().street.length;$('values').value=a().street.join(', ');rend
 
 studio=initStudio({getSound:()=>sound,setSound:v=>{sound=v;try{localStorage.setItem('laurai-candy-sound',String(v));}catch{}},get:()=>state,level:loadLevel,volume:v=>{volume=v;},restore:next=>{stop();state=validateState(next);history=[];step=0;hintIndex=-1;routeVisible=false;comparisonOpen=false;matrixOpen=false;tutorialStep=0;transient='';noticeKey='';$('values').value=a().street.join(', ');$('length').value=a().street.length;render();}});
 if('serviceWorker' in navigator && location.protocol!=='file:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
+
+adventure=initAdventure({entryHash:()=>entryHash,notice:()=>$('notice').textContent,state:()=>state,studio,level:loadLevel,restoreCore:next=>{stop();state=validateState(next);history=[];step=0;hintIndex=-1;routeVisible=false;comparisonOpen=false;matrixOpen=false;transient='';noticeKey='';$('values').value=a().street.join(', ');$('length').value=a().street.length;render();}});

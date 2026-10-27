@@ -72,7 +72,7 @@ async function solve() {
   await b("Verifică ruta").click();
 }
 try {
-  await page.goto(root);
+  await page.goto(root+'?view=classic');
   await page.waitForSelector("#studio");
   assert.deepEqual(errors, []);
   for (const mode of [
@@ -270,7 +270,8 @@ try {
     resolve(dir, "studio-browser-results.json"),
     JSON.stringify(
       {
-        version: "3.0.0",
+        version: "4.0.0",
+        view: "classic-studio",
         date: new Date().toISOString(),
         checks,
         axe,

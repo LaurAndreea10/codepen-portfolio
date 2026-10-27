@@ -7,6 +7,6 @@ const head=`<!doctype html><html lang="ro"><head><meta charset="utf-8"><meta nam
 const noscript='<noscript><p>Activează JavaScript pentru joc. Enable JavaScript to play.</p></noscript>';
 const html=read('index.pen.html');
 writeFileSync(join(dir,'index.html'),head+'<link rel="stylesheet" href="./style.css"></head><body>'+noscript+html.replace('href="/test-results.html"','href="./test-results.html"')+'</body></html>\n');
-const code=['candy.js','game.js','i18n.js','studio-rules.js','studio.js','app.js'].map(name=>read(name).replace(/^import[\s\S]*?from\s+['"][^'"]+['"];?\n/gm,'').replace(/^export /gm,'')).join('\n');
+const code=['candy.js','game.js','i18n.js','studio-rules.js','studio.js','adventure-rules.js','adventure.js','app.js'].map(name=>read(name).replace(/^import[\s\S]*?from\s+['"][^'"]+['"];?\n/gm,'').replace(/^export /gm,'')).join('\n');
 const standalone=head+'<style>'+read('style.css')+'</style></head><body>'+noscript+html.replace('<script type="module" src="./app.js"></script>','').replace('href="/test-results.html"','href="./test-results.html"')+'<script type="module">'+code+'</script></body></html>\n';
 writeFileSync(join(dir,'candy-route-standalone.html'),standalone);

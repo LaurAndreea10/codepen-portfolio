@@ -1,3 +1,16 @@
+# v4.0.0 — 2026-10-27
+
+- Ecran de start Joacă/Campanie/Studio, navigare separată, interfață clasică păstrată, tutorial contextual și rezumat.
+- Cinci cartiere cu personaje, alegeri persistente, final personalizat, case distincte, decor, vreme și mers pe traseu.
+- Șapte reguli Aventură: clasic, cartiere, minimum opriri, recuperare energie, diversitate, livrare și deplasare. Solver exact limitat la 16 case.
+- Editor vizual pentru costuri, tipuri, resurse și conexiuni, campanii personale și pachete de turneu validate.
+- Campionat contra Greedy/Alternator/Strateg, cooperare și două grile locale, inclusiv restaurarea selecțiilor.
+- Server Arena opțional: camere, tokenuri per filă, reluare după reload, scoruri calculate de server și clasament. Găzduirea publică nu este activată.
+- Exerciții de reparare/debug/DP/reconstrucție, benchmark măsurat, istoric de greșeli, recomandări, obiective, CSV și raport săptămânal în aplicație.
+- Mod textual, dimensiuni independente, săgeți/scurtături, orientare sonoră opt-in și mișcare configurabilă.
+- Backup complet v4 cu previzualizare și confirmare; tokenurile Arena sunt excluse. Cache offline v4, mesaj de actualizare, demonstrație și jurnal de observații reale.
+- Acoperirea cerințelor și limitele sunt în ADVENTURE-COVERAGE.md. Telefonul real, cititorul de ecran, CodePen, deploy și Arena publică rămân neconfirmate.
+
 # v3.0.0 — 2026-10-26
 
 - Studio cu 12 variante și solver exhaustiv limitat la 16 case; regula originală maxCandy rămâne neschimbată.

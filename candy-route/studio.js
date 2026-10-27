@@ -1696,7 +1696,7 @@ export function initStudio(bridge) {
     if (caseLink) {
       caseLink.textContent = L("Studiu de caz", "Case study");
       caseLink.href =
-        "./case-study.html" + (bridge.get().lang === "en" ? "?lang=en" : "");
+        "./adventure-case-study.html" + (bridge.get().lang === "en" ? "?lang=en" : "");
     }
     expand.textContent = expanded
       ? L("Închide ecranul mare", "Close expanded game")
@@ -1792,5 +1792,5 @@ export function initStudio(bridge) {
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) stopReplay();
   });
-  return { refresh };
+  return { refresh, identity:()=>data.active, snapshot:()=>{save();return structuredClone(data);}, restoreSnapshot:next=>{const clean=validateStudio(next,validateState);data=clean;recovery=false;warning="";bridge.setSound(data.sound);switchCore(profile().core??freshState());duel=null;render();save();} };
 }
