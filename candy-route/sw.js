@@ -1,4 +1,4 @@
-const CACHE='candy-route-v4-1';
+const CACHE='candy-route-v4-2';
 const ASSETS=['./','./index.html','./style.css','./app.js','./candy.js','./game.js','./i18n.js','./studio.js','./studio-rules.js','./adventure.js','./adventure-rules.js','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
 // Waiting workers activate when all old clients close, avoiding mixed module versions.

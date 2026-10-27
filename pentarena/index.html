@@ -19,9 +19,15 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preload" href="fonts/fraunces-latin-800-italic.woff2" as="font" type="font/woff2" crossorigin>
+<script>document.documentElement.classList.add("pentarena-loading")</script>
+<style>html.pentarena-loading #main{visibility:hidden}</style>
+<link rel="preload" href="game.js" as="script">
 <link rel="stylesheet" href="style.css">
+<script defer src="game.js" onerror="document.documentElement.classList.remove('pentarena-loading')"></script>
+<script defer src="pwa.js"></script>
 </head>
 <body>
+<noscript><p>Activează JavaScript pentru a juca. Enable JavaScript to play.</p></noscript>
 <a class="skip" href="#main" data-i18n="skip">Sari la conținut</a>
 <div id="menu">
   <header class="top">
@@ -42,8 +48,8 @@
     <section class="hero" aria-labelledby="heroTitle">
       <div>
         <h2 id="heroTitle">Cinci probe. <em>Un singur campion.</em></h2>
-        <p data-i18n="heroSub"></p>
-        <div class="chips"><span class="tag" data-i18n="tag1"></span><span class="tag" data-i18n="tag2"></span><span class="tag" data-i18n="tag3"></span><span class="tag" data-i18n="tag4"></span></div>
+        <p data-i18n="heroSub">Cinci sporturi arcade, un adversar AI și o carieră în trei ligi.</p>
+        <div class="chips"><span class="tag" data-i18n="tag1">5 sporturi + bonus</span><span class="tag" data-i18n="tag2">Carieră în 3 ligi</span><span class="tag" data-i18n="tag3">1–2 jucători</span><span class="tag" data-i18n="tag4">Progres local</span></div>
       </div>
       <div class="panel">
         <div class="lvl"><div class="badge" id="lvlBadge" aria-hidden="true">1</div><div class="meta"><div class="row"><span class="lbl" id="lvlLabel"></span><span class="coins" id="coins"></span></div><div class="bar" role="progressbar" id="xpBar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div><span class="lbl" id="xpText"></span></div></div>
@@ -134,8 +140,8 @@
 </div></dialog>
 <div id="toasts"></div>
 <p id="live" class="sr" role="status" aria-live="polite" aria-atomic="true"></p>
-<script src="game.js"></script>
-<script src="pwa.js"></script>
+
+
 </body>
 </html>
 

@@ -37,3 +37,7 @@ Serverul limitează camerele la 50, corpul unei cereri la 20 KB, clasamentul la 
 ## Teste
 
 `node --test arena.test.mjs` verifică două sesiuni, tokenuri distincte, respingerea rutelor invalide, scoruri calculate de server, interdicția trimiterii repetate, origini, expirare și limite. `npm run test:adventure-ui` include un meci între două pagini de browser și reluarea conexiunii după reload, folosind un server local temporar.
+
+## Container de găzduire
+
+Dockerfile folosește Node 22, fără instalarea dependențelor de test. Contextul de build este directorul `candy-route`. Serverul ascultă pe `0.0.0.0` în container și acceptă `PORT` al gazdei, dacă nu setezi explicit `CANDY_ARENA_PORT`. Pentru activare în Render este necesară conectarea contului și alegerea serviciului; nu a fost creat niciun serviciu public sau abonament în această sesiune. Tokenurile rămân excluse din backupuri.

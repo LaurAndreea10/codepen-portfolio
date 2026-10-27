@@ -39,11 +39,11 @@ try{
  const axeResults=[];
  for(const width of [360,390,768,1280]){
   await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`overflow ${width}`);
-  const findings=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();axeResults.push({width,violations:findings.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>n.target)}))});
+  const findings=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa']).analyze();axeResults.push({width,violations:findings.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>n.target)}))});
  }
  checks.push('responsive 360/390/768/1280 px with 40 houses');
  await page.setViewportSize({width:390,height:844});
- for(const variant of ['dark','high-contrast']){if(variant==='dark'&&await page.locator('body').evaluate(e=>e.classList.contains('light')))await click('theme');if(variant==='high-contrast')await click('contrast');const findings=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();axeResults.push({width:390,variant,violations:findings.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>n.target)}))});}
+ for(const variant of ['dark','high-contrast']){if(variant==='dark'&&await page.locator('body').evaluate(e=>e.classList.contains('light')))await click('theme');if(variant==='high-contrast')await click('contrast');const findings=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa']).analyze();axeResults.push({width:390,variant,violations:findings.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>n.target)}))});}
  await click('contrast');await custom('5,1,1,5');await click('overlay-route');await click('compare-strategies');await click('show-matrix');
 
  await page.setViewportSize({width:1280,height:900});await page.screenshot({path:'/tmp/candy-desktop-v2.png',fullPage:true});await page.setViewportSize({width:390,height:844});await page.screenshot({path:'/tmp/candy-mobile-v2.png',fullPage:true});

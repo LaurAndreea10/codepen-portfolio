@@ -234,7 +234,7 @@ if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(process.argv[1]).href
 ) {
-  const port = Number(process.env.CANDY_ARENA_PORT ?? 3377);
+  const port = Number(process.env.CANDY_ARENA_PORT ?? process.env.PORT ?? 3377);
   if (!Number.isInteger(port) || port < 1 || port > 65535)
     throw Error("Invalid port");
   const server = createArenaServer({
