@@ -98,7 +98,7 @@
       outro1: 'Fructul nu e un obicei.', outro2: 'E un anotimp.',
       backPortfolio: 'Înapoi la portofoliu', seeCode: 'Vezi codul pe GitHub', readme: 'Cum e construit',
       disclaimer: 'LIVADA este un brand fictiv, creat de Laura Andreea ca studiu de landing page. Produsele, livezile și cifrele sunt inventate; nu se vinde nimic.',
-      langBtn: 'EN', langLabel: 'Switch to English', logoLabel: 'LIVADA, începutul paginii'
+      langBtn: 'EN', langLabel: 'EN — Switch to English', logoLabel: 'LIVADA, începutul paginii'
     },
     en: {
       skip: 'Skip to content', introSkip: 'Skip', navLabel: 'Sections',
@@ -128,7 +128,7 @@
       outro1: 'Fruit isn’t a habit.', outro2: 'It’s a season.',
       backPortfolio: 'Back to the portfolio', seeCode: 'See the code on GitHub', readme: 'How it’s built',
       disclaimer: 'LIVADA is a fictional brand, made by Laura Andreea as a landing-page study. The products, orchards and figures are invented; nothing is for sale.',
-      langBtn: 'RO', langLabel: 'Comută în română', logoLabel: 'LIVADA, top of page'
+      langBtn: 'RO', langLabel: 'RO — Comută în română', logoLabel: 'LIVADA, top of page'
     }
   };
 
@@ -239,7 +239,7 @@
       b.tabIndex = j === i ? 0 : -1;
       b.textContent = FLAVORS[j].name[lang].split(' ')[0];
     });
-    panel.setAttribute('aria-labelledby', 'flavor-name');
+    panel.setAttribute('aria-labelledby', 'flavor-tab-' + i);
     if (changed && !reduced) {
       panel.classList.remove('swap'); void panel.offsetWidth; panel.classList.add('swap');
       $('.flavor-bottle').style.transform = `rotate(${[-4, 3, -2, 4][i]}deg)`;
@@ -368,7 +368,7 @@
   /* ---------------- calendar ---------------- */
   function renderCalendar() {
     const nowM = new Date().getMonth() + 1;
-    $('#cal-months').innerHTML = '<span role="columnheader"></span>' +
+    $('#cal-months').innerHTML = '<span role="columnheader">'+(lang==='ro'?'Fruct':'Fruit')+'</span>' +
       t('months').map((m, i) => `<span role="columnheader"${i + 1 === nowM ? ' aria-current="date"' : ''}>${m}</span>`).join('');
     $('#cal-body').innerHTML = FLAVORS.map(f => {
       const cells = Array.from({ length: 12 }, (_, i) => {
@@ -376,7 +376,7 @@
         const cls = ['cal-cell', on ? 'on' : '', on && !f.months.includes(m - 1) ? 'edge-l' : '', on && !f.months.includes(m + 1) ? 'edge-r' : '', m === nowM ? 'now' : ''].join(' ');
         return `<span role="cell" class="${cls}" style="--c:${f.bg}" aria-label="${t('monthsLong')[i]}: ${on ? t('harvestOn') : t('harvestOff')}"></span>`;
       }).join('');
-      return `<div class="cal-row" role="row"><span class="cal-name" role="rowheader"><svg aria-hidden="true"><use href="#${f.sym}"/></svg><span>${f.name[lang]}</span></span>${cells}</div>`;
+      return `<div class="cal-row" role="row"><span class="cal-name" role="rowheader" aria-label="${f.name[lang]}"><svg aria-hidden="true"><use href="#${f.sym}"/></svg><span>${f.name[lang]}</span></span>${cells}</div>`;
     }).join('');
   }
 

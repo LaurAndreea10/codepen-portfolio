@@ -1,5 +1,5 @@
 /* LIVADA: Culesul — cache offline pentru fișierele jocului */
-const CACHE = 'livada-culesul-1.1.0';
+const CACHE = 'livada-culesul-1.1.0-r2';
 const FILES = ['./', './index.html', './joc.css', './joc.js', './manifest.webmanifest', '../icon.svg'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));

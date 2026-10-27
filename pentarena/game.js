@@ -1026,10 +1026,11 @@ function startCareer(id){if(ST.leagues[id]==='locked')return null;run={mode:'car
 function startDaily(){const d=dailyFor(todayKey());run={mode:'daily',daily:d,res:[]};return startMatch(d.sport);}
 
 function dateParts(){const d=new Date();return{day:d.getDate(),mon:d.toLocaleDateString(LANG==='ro'?'ro-RO':'en-GB',{month:'short'})};}
+let cardObserver=null;
 function renderMenu(){if(!HAS_DOM)return;document.documentElement.lang=LANG;document.body.classList.toggle('contrast',ST.prefs.contrast);document.body.classList.toggle('calm',ST.prefs.motion);syncTouch();document.body.classList.toggle('light',ST.prefs.theme==='light'||(ST.prefs.theme==='auto'&&root.matchMedia('(prefers-color-scheme: light)').matches));
   $('heroTitle').innerHTML=`${tr('heroA')} <em>${tr('heroB')}</em>`;
   document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=tr(el.dataset.i18n);});
-  const lb=$('langBtn');lb.textContent=LANG==='ro'?'EN':'RO';lb.lang=LANG==='ro'?'en':'ro';lb.setAttribute('aria-label',LANG==='ro'?'Switch to English':'Schimbă în română');
+  const lb=$('langBtn');lb.textContent=LANG==='ro'?'EN':'RO';lb.lang=LANG==='ro'?'en':'ro';lb.setAttribute('aria-label',LANG==='ro'?'EN — Switch to English':'RO — Schimbă în română');
   $('pauseBtn').setAttribute('aria-label',tr('paused'));$('exitBtn').setAttribute('aria-label',tr('menu'));
   const lv=levelOf(ST.xp),a=xpFor(lv),b=xpFor(lv+1),pct=Math.round((ST.xp-a)/(b-a)*100);
   setTxt('lvlBadge',lv);setTxt('lvlLabel',`${tr('level')} ${lv}`);setTxt('coins',tr('coinsN',ST.coins));setTxt('xpText',tr('xpOf',ST.xp,b));
@@ -1041,11 +1042,11 @@ function renderMenu(){if(!HAS_DOM)return;document.documentElement.lang=LANG;docu
   $('dailyDate').innerHTML=`<b>${dp.day}</b>${esc(dp.mon)}`;setTxt('dailySport',`${tr(d.sport)} · ${tr(d.diff)}`);setTxt('dailyCond',tr('cond_'+d.cond.type,d.cond.n));
   const ds=$('dailyStatus');ds.textContent=done?tr('dailyDone'):tr('dailyReward');ds.className=done?'done':'';$('dailyBtn').textContent=done?tr('play'):tr('dailyAccept');
   renderWeekly();renderResume();setTxt('styleHint',tr('style_'+ST.prefs.aiStyle));
-  const cards=$('cards');cards.innerHTML='';
+  const cards=$('cards');if(cardObserver)cardObserver.disconnect();const drawCard=(el,k)=>{const tc=el.querySelector('canvas').getContext('2d');if(!tc)return;tc.setTransform(.5,0,0,.5,0,0);const keep=M,kr=ROT;try{ROT=false;M={D:1,A:1,mods:false,len:1,two:false,rival:null};new SPORTS[k]().draw(tc);}finally{M=keep;ROT=kr;}};cardObserver=typeof root.IntersectionObserver==='function'?new root.IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){cardObserver.unobserve(entry.target);drawCard(entry.target,entry.target.dataset.previewSport);}},{rootMargin:'100px'}):null;cards.innerHTML='';
   ALL_KEYS.forEach((k,i)=>{const s=ST.stats[k]||{w:0,l:0,d:0},el=document.createElement('article'),bonus=BONUS_KEYS.includes(k);el.className='card'+(bonus?' bonus':'');
     el.innerHTML=`<canvas width="480" height="300" aria-hidden="true"></canvas><div class="body"><span class="eyebrow">${bonus?tr('bonusEvent'):tr('event')+' '+(i+1)}</span><h3>${tr(k)}</h3><p>${tr('d_'+k)}</p><div class="new"><span class="sr">${tr('newIn')}: </span>${tr('n_'+k)}</div>
       <div class="foot"><span class="rec" aria-label="${s.w} ${tr('wins')}">${s.w}${tr('wS')} · ${s.l}${tr('lS')} · ${s.d}${tr('dS')}</span><button class="btn train" type="button" data-training="${k}">${tr('guided')}<span class="sr"> ${tr(k)}</span>${ST.trainingDone.includes(k)?' ✓':''}</button><button class="play" type="button" data-k="${k}">${tr('play')}<span class="sr"> ${tr(k)}</span></button></div></div>`;
-    cards.appendChild(el);const tc=el.querySelector('canvas').getContext('2d');tc.setTransform(.5,0,0,.5,0,0);const keep=M,kr=ROT;ROT=false;M={D:1,A:1,mods:false,len:1,two:false,rival:null};try{new SPORTS[k]().draw(tc);}catch(e){}M=keep;ROT=kr;});
+    cards.appendChild(el);el.dataset.previewSport=k;if(cardObserver)cardObserver.observe(el);else drawCard(el,k);});
   cards.querySelectorAll('[data-training]').forEach(b=>b.onclick=()=>{SFX.click();startTraining(b.dataset.training);});
   cards.querySelectorAll('.play').forEach(b=>b.onclick=()=>{SFX.click();startQuick(b.dataset.k);});
   $('leagues').innerHTML=LEAGUES.map(L=>{const st=ST.leagues[L.id];return `<article class="league" style="--lc:${L.col}"><h3>${tr('league_'+L.id)}</h3><div class="rival"><span class="mono" aria-hidden="true">${L.rival[0]}</span><p>${tr('rd_'+L.id)}</p></div>
@@ -1118,7 +1119,7 @@ function boot(){load();cv=$('cv');ctx=cv.getContext('2d');cv.tabIndex=0;
   $('applyBackup').onclick=()=>{if(!pending)return;ST=pending;pending=null;clearCheckpoint();LANG=ST.prefs.lang;save();renderMenu();setTxt('backupStatus',tr('backupDone'));$('applyBackup').disabled=true;};
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&game&&!game.sport.over){setPause(true);writeCheckpoint();}});addEventListener('pagehide',writeCheckpoint);
   $('resumeMatch').onclick=resumeCheckpoint;$('discardMatch').onclick=()=>{if(root.confirm(tr('discardAsk'))){clearCheckpoint();renderResume();}};$('claimWeekly').onclick=()=>{if(claimWeekly()){SFX.power();renderMenu();announce(tr('weeklyClaimed'));}};
-  UI.ready=true;renderMenu();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(!game)renderMenu();});
+  UI.ready=true;renderMenu();document.documentElement.classList.remove("pentarena-loading");if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(!game)renderMenu();});
   root.requestAnimationFrame(loop);}
 
 /* ================= public API (tests, PWA) ================= */

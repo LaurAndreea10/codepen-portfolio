@@ -59,7 +59,7 @@ function render(){
  const c=t();document.documentElement.lang=state.lang;
  for(const [key,cls] of [['light','light'],['contrast','contrast'],['still','still']])document.body.classList.toggle(cls,state[key]);
  document.querySelectorAll('[data-t]').forEach(el=>el.textContent=c[el.dataset.t]??el.dataset.t);
- $('lang').textContent=state.lang==='ro'?'EN':'RO';$('lang').setAttribute('aria-label',state.lang==='ro'?'Switch to English':'Schimbă în română');$('theme').setAttribute('aria-label',state.lang==='ro'?'Temă luminoasă':'Light theme');
+ $('lang').textContent=state.lang==='ro'?'EN':'RO';$('lang').setAttribute('aria-label',state.lang==='ro'?'EN — Switch to English':'RO — Schimbă în română');$('theme').setAttribute('aria-label',state.lang==='ro'?'Temă luminoasă':'Light theme');
  for(const [id,active] of [['theme',state.light],['contrast',state.contrast],['motion',state.still],['sound',sound]])$(id).setAttribute('aria-pressed',String(active));
  for(const id of ['free','daily','tutorial'])$(id).setAttribute('aria-pressed',String(a().kind===id));
  $('mode').value=a().mode;$('mode').disabled=a().kind!=='free';$('length').disabled=a().kind!=='free';$('new-street').disabled=a().kind!=='free';
@@ -73,8 +73,8 @@ function render(){
  $('street').replaceChildren(...a().street.map((n,i)=>{
   const b=document.createElement('button'),picked=a().picked.includes(i),locked=!picked&&blocked(i),study=result().steps[step-1]?.index===i;
   b.type='button';b.className='house'+(locked?' blocked':'')+(hintIndex===i?' hinted':'')+(study?' studying':'')+(n<0?' trick':'')+(bestIndices.has(i)?' best-route':'');b.dataset.index=i;b.setAttribute('aria-pressed',String(picked));b.setAttribute('aria-disabled',String(locked));
-  b.setAttribute('aria-label',`${c.visit} ${i+1}, ${n} ${c.candy}, ${c[picked?'selected':locked?'locked':'available']}${bestIndices.has(i)?', '+c.optimalMark:''}`);
-  b.innerHTML=`<span class="number">${c.house} ${i+1}</span><span class="icon" aria-hidden="true"><span class="door"></span><span class="window one"></span><span class="window two"></span></span><span class="amount">${n} <span class="candy-dot" aria-hidden="true"></span></span><span class="zero-index" aria-hidden="true">#${i}</span>`;b.onclick=()=>select(i);return b;
+  b.setAttribute('aria-description',`${c.candy}, ${c[picked?'selected':locked?'locked':'available']}${bestIndices.has(i)?', '+c.optimalMark:''}`);
+  b.innerHTML=`<span class="number">${c.house} ${i+1}</span> <span class="icon" aria-hidden="true"><span class="door"></span><span class="window one"></span><span class="window two"></span></span><span class="amount">${n} <span class="candy-dot" aria-hidden="true"></span></span><span class="zero-index" aria-hidden="true">#${i}</span>`;b.onclick=()=>select(i);return b;
  }));
  if(focusIndex!==undefined)$('street').querySelector(`[data-index="${focusIndex}"]`)?.focus();
  const best=a().mode==='circle'?result().total:maxCandy(a().street),yours=total();$('yours').textContent=yours;$('best').textContent=best;$('wins').textContent=state.wins;

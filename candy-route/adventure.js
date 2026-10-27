@@ -334,19 +334,13 @@ export function initAdventure(bridge) {
           "This house blocks its neighbors. Choose farther away.",
         );
       const target = active ?? document.querySelector(".house");
-      if (target && !target.querySelector(".adv-tutorial-tip")) {
-        const tip = node(
-          "small",
-          active
-            ? L("Acum ocolește vecina.", "Now skip the neighbor.")
-            : L("Începe cu această casă.", "Start with this house."),
-          target,
-          "adv-tutorial-tip",
-        );
-        tip.id = "adv-context-tip";
-        target.setAttribute("aria-describedby", tip.id);
+      if (target) {
+        let tip=document.getElementById("adv-context-tip");
+        if(!tip){tip=node("small","",document.getElementById("street-wrap"),"adv-tutorial-tip");tip.id="adv-context-tip";}
+        tip.textContent=active?L("Acum ocolește vecina.","Now skip the neighbor."):L("Începe cu această casă.","Start with this house.");
+        target.setAttribute("aria-describedby",tip.id);
       }
-    }
+    } else { document.getElementById("adv-context-tip")?.remove(); }
   }
   const story = () => [
     [
