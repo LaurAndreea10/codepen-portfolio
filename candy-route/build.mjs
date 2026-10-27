@@ -5,7 +5,7 @@ const dir=dirname(fileURLToPath(import.meta.url));
 const read=name=>readFileSync(join(dir,name),'utf8');
 const head=`<!doctype html><html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Candy Route — Jest Trick-or-Treat · LaurAi</title><meta name="description" content="Puzzle Halloween: găsește traseul cu cele mai multe bomboane fără case vecine. 30 de niveluri, provocare zilnică, RO/EN."><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b1426"><link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/candy-route/">`;
 const noscript='<noscript><p>Activează JavaScript pentru joc. Enable JavaScript to play.</p></noscript>';
-const html=read('index.pen.html');
+const html=read('index.pen.html').replace(/^<meta name="robots"[^>]*>\n?/,'').replace('href="test-results.html"','href="/test-results.html"');
 writeFileSync(join(dir,'index.html'),head+'<link rel="stylesheet" href="./style.css"></head><body>'+noscript+html.replace('href="/test-results.html"','href="./test-results.html"')+'</body></html>\n');
 const code=['candy.js','game.js','i18n.js','studio-rules.js','studio.js','adventure-rules.js','adventure.js','app.js'].map(name=>read(name).replace(/^import[\s\S]*?from\s+['"][^'"]+['"];?\n/gm,'').replace(/^export /gm,'')).join('\n');
 const standalone=head+'<style>'+read('style.css')+'</style></head><body>'+noscript+html.replace('<script type="module" src="./app.js"></script>','').replace('href="/test-results.html"','href="./test-results.html"')+'<script type="module">'+code+'</script></body></html>\n';
