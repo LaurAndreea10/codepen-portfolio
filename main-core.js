@@ -11,7 +11,7 @@
 
   const translations = {
     ro: {
-      documentTitle: 'Laura Andreea — Front-end CRM & Dashboard Developer',
+      documentTitle: 'Laura Andreea — Dezvoltatoare front-end CRM & dashboard-uri',
       langButton: 'RO | EN',
       themeLight: '☀️ Light',
       themeDark: '🌙 Dark',
