@@ -8,7 +8,7 @@ canonical_url: https://laurandreea10.github.io/codepen-portfolio/insights/retros
 
 Construiesc în timpul liber, iar fiecare versiune intră în [changelog](https://laurandreea10.github.io/codepen-portfolio/changelog.html). La final de lună mă opresc să văd tot tabloul: ce am livrat, ce am învățat și, la fel de important, ce n-am verificat încă.
 
-> **Octombrie în cifre: 4 proiecte noi sau versiuni majore, sezonul Halloween pe CodePen, portofoliul ajuns la 90 de proiecte live și accesibilitate Lighthouse 100 pe mobil.**
+> **Octombrie în cifre: 4 proiecte noi sau versiuni majore, sezonul Halloween pe CodePen, portofoliul ajuns la 91 de proiecte live și accesibilitate Lighthouse 100 pe mobil.**
 
 ## Ce am livrat
 

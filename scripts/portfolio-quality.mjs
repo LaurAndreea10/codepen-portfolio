@@ -95,6 +95,10 @@ for (const file of ["index.html", "portfolio.html", "en/index.html", "recruiter-
   }
 }
 
+// The Ctrl+K search must find as many projects as the pages announce.
+const searchable = JSON.parse(readFileSync("data/catalog.json", "utf8")).items.filter((item) => item.kind === "project").length;
+if (searchable !== canonicalCount) failures.push(`data/catalog.json: ${searchable} searchable projects, pages announce ${canonicalCount} (run node scripts/build-catalog.mjs)`);
+
 // README states how many entries projects.json holds.
 const catalogSize = JSON.parse(readFileSync("projects.json", "utf8")).length;
 const readme = readFileSync("README.md", "utf8");
