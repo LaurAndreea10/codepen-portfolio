@@ -1,0 +1,16 @@
+# Carpați Enduro — istoric / changelog
+
+## 1.0.0 — 2026-10-29 · Finalizat
+
+- RO: joc moto 3D (Three.js 0.170 ca ES module, rezervă 2D clasic) care combină enduro, motocross și trial.
+  - Carieră pe 24 de niveluri, de la Nivelul 1, în 8 regiuni, cu duel cu campionul la final de regiune.
+  - 9 moduri: Cursă, Contratimp cu ghost, Trial, Hill Climb, Supraviețuire, Stunt, Eliminare, Duel, Antrenament liber; provocarea zilei și coduri de provocare.
+  - Școala de pilotaj: 7 lecții ghidate cu obiective bifate pe ecran și duel cu antrenorul AI.
+  - Evenimente sezoniere: Halloween, Ziua României, Crăciun, Mărțișor, Paște (dată ortodoxă calculată), Vacanța de vară — câte trei provocări și un model exclusiv.
+  - Vreme: ploaie cu bălți, ninsoare, ceață, frunze; zi, apus, noapte cu far.
+  - Magazin (12 modele, 5 căști, 5 efecte), recompense (bonus zilnic pe 7 zile, rang, realizări), garaj cu 5 motociclete și upgrade-uri.
+  - Camere: Lateral, Cinematic, Urmărire, Cască (POV); sunet de motor, vânt și ploaie; vibrații pe mobil cu intensitate reglabilă.
+  - Accesibilitate: tastatură, controller, butoane mari repoziționabile, mod cu 2 butoane, accelerație automată, asistență la echilibru, viteză de joc redusă, contrast ridicat, mișcare redusă, RO/EN, dark/light.
+  - PWA: manifest, service worker, joc offline după prima vizită.
+  - Teste automate în Chromium (desktop și telefon emulat, 3D și fallback 2D). Telefonul fizic și cititorul de ecran rămân de verificat.
+- EN: 3D motorcycle game mixing enduro, motocross and trial: 24-level career from Level 1, 9 modes, riding school, seasonal events, weather, shop and rewards, four cameras, haptics, full accessibility options and an offline PWA. Automated Chromium checks; real phone and screen reader remain unverified.

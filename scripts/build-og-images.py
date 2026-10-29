@@ -55,6 +55,7 @@ GAMES = [
     ("pumpkin-weigh-in", "⚖️", "Pumpkin Weigh-In", "Cântar de dovleci, de la Tiny Gourd la Legendary.", ["CodePen Challenge", "Jest", "lb / kg"], "#f59e0b", "rgba(245,158,11,.36)"),
     ("serpent-prism", "🐍", "Serpent Prism", "Snake × Zuma: potrivește culorile într-o arenă de sticlă.", ["Canvas", "RO/EN", "PWA"], "#22d3ee", "rgba(34,211,238,.32)"),
     ("slidestorm-arena", "🌊", "SlideStorm Arena", "Tobogane, apă, dune și sporturi: 100 de niveluri.", ["Canvas", "RO/EN", "Zen mode"], "#38bdf8", "rgba(56,189,248,.34)"),
+    ("carpati-enduro", "🏍️", "Carpați Enduro", "Joc moto 3D: enduro, motocross și trial prin 8 regiuni.", ["Three.js", "RO/EN", "PWA"], "#f5a524", "rgba(245,165,36,.34)"),
     ("puck-pool-arena", "🎱", "Puck & Pool Arena", "Air hockey × biliard, contra AI sau pe ture.", ["Canvas", "AI", "RO/EN"], "#22c55e", "rgba(34,197,94,.32)"),
     ("livada", "🍎", "LIVADA", "Landing page cinematic pentru un suc presat la rece din livezile Moldovei.", ["Scroll", "RO/EN", "Landing page"], "#ef4444", "rgba(239,68,68,.34)"),
     ("livada-joc", "🍒", "LIVADA: Culesul", "Joc de tăiat fructe: viespi, mărul de aur și patru moduri.", ["Canvas", "RO/EN", "Offline"], "#f43f5e", "rgba(244,63,94,.34)"),

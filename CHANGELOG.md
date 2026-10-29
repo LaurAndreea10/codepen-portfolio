@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-29 — Carpați Enduro v1.0.0 · Finalizat
+
+- RO: proiect nou — joc moto 3D (Three.js 0.170 ca ES module, rezervă 2D) care combină enduro, motocross și trial: carieră de la Nivelul 1 la 24 în opt regiuni, nouă moduri, școală de pilotaj cu 7 lecții ghidate și duel cu antrenorul AI, evenimente sezoniere (Halloween, Ziua României, Crăciun, Mărțișor, Paște, vară) cu modele exclusive, vreme cu bălți și frunze, magazin, recompense, patru camere și vibrații pe mobil. RO/EN, dark/light, contrast ridicat, mișcare redusă, PWA offline.
+  - Portofoliu: card nou în colecția de jocuri, „Finalizat recent”, istoric, Arcade Pass (18 jocuri), catalog, sitemap, imagine Open Graph; numărul de proiecte trece la 91.
+- EN: new project — a 3D motorcycle game mixing enduro, motocross and trial with a 24-level career, nine modes, a riding school, seasonal events, weather, a shop, rewards, four cameras and phone vibration; offline PWA. Portfolio count is now 91.
+- Teste automate în Chromium (desktop și telefon emulat, 3D și fallback 2D); `portfolio-quality` și `seo-audit` trec. Telefonul fizic și cititorul de ecran rămân neconfirmate. / Automated Chromium checks; real phone and screen reader remain unverified.
+- [Joacă / Play](carpati-enduro/) · [Istoric / History](carpati-enduro/CHANGELOG.md).
+
 ## 2026-10-25 — Evaluare și îmbunătățiri: meniu, rezumate, accesibilitate 100, date corecte
 
 - RO:

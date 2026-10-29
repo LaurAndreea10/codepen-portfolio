@@ -40,7 +40,7 @@
       ach: {
         first: ['Primul pas', 'Deschide primul joc'], explorer: ['Explorator', 'Deschide 5 jocuri diferite'],
         marathon: ['Maratonist', 'Deschide 10 jocuri diferite'], halloween: ['Sezonul Halloween', 'Toate cele 3 challenge-uri de Halloween'],
-        athlete: ['Atlet', 'Toate cele 4 jocuri sportive'], complete: ['Arcade complet', 'Toate jocurile din pass']
+        athlete: ['Atlet', 'Toate cele 5 jocuri sportive'], complete: ['Arcade complet', 'Toate jocurile din pass']
       },
       gh: {
         title: 'Live din GitHub', repos: 'repo-uri publice', active: 'actualizate în ultimele 30 de zile', last: 'ultimul push',
@@ -62,7 +62,7 @@
       ach: {
         first: ['First step', 'Open your first game'], explorer: ['Explorer', 'Open 5 different games'],
         marathon: ['Marathon', 'Open 10 different games'], halloween: ['Halloween season', 'All 3 Halloween challenges'],
-        athlete: ['Athlete', 'All 4 sports games'], complete: ['Arcade complete', 'Every game in the pass']
+        athlete: ['Athlete', 'All 5 sports games'], complete: ['Arcade complete', 'Every game in the pass']
       },
       gh: {
         title: 'Live from GitHub', repos: 'public repositories', active: 'updated in the last 30 days', last: 'last push',
@@ -117,7 +117,8 @@
     { id: 'loop', icon: '🌀', ro: 'LOOP — Cosmic Relay', en: 'LOOP — Cosmic Relay', url: 'https://laurandreea10.github.io/LOOP-Cosmic-Relay/' },
     { id: 'booscary', icon: '🎃', ro: 'Halloween BooScary', en: 'Halloween BooScary', path: 'booscary/', halloween: true },
     { id: 'ghosttalk', icon: '👻', ro: 'Ghost Talk', en: 'Ghost Talk', path: 'ghost-talk/', halloween: true },
-    { id: 'pumpkin', icon: '⚖️', ro: 'Pumpkin Weigh-In', en: 'Pumpkin Weigh-In', path: 'pumpkin-weigh-in/', halloween: true }
+    { id: 'pumpkin', icon: '⚖️', ro: 'Pumpkin Weigh-In', en: 'Pumpkin Weigh-In', path: 'pumpkin-weigh-in/', halloween: true },
+    { id: 'carpati', icon: '🏍️', ro: 'Carpați Enduro', en: 'Carpați Enduro', path: 'carpati-enduro/', sport: true }
   ];
   GAMES.forEach((g) => { g.href = g.url || abs(g.path); });
   const PASS_KEY = 'la-arcade-pass-v1';
