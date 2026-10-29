@@ -155,6 +155,11 @@ input[type=range]{width:100%;accent-color:var(--accent);min-height:32px}
 
 /* career */
 .reg{display:flex;flex-direction:column;gap:10px}
+.chapter-story{display:grid;gap:5px;padding:14px 16px;border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:12px;background:var(--surface)}
+.chapter-story h4{margin:0;font-family:var(--f-display);font-size:1.08rem;font-weight:800}
+.chapter-story p{margin:0;color:var(--muted);max-width:72ch}
+.chapter-story .chapter-count{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.story-stage{display:block;margin-top:2px;color:var(--accent);font-size:.78rem;font-weight:600}
 .reg-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .reg-h h3{font-family:var(--f-display);font-size:1.3rem;font-weight:800}
 .ev{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);text-align:left;min-height:96px}
@@ -705,6 +710,19 @@ const CHAMPS=['Matei «Rădăcina»','Ioana «Creasta»','Radu «Bolovan»','Ele
 const CAREER=[];
 ['tt','trial','hill','stunt','elim','tt','trial','surv'].forEach((m2,i)=>{
  CAREER.push({id:'c'+i+'a',r:i,mode:'race',lvl:i},{id:'c'+i+'b',r:i,mode:m2,lvl:i},{id:'c'+i+'c',r:i,mode:'duel',lvl:i});});
+const CAREER_STORIES=[
+ [{title:'Capitolul 1 · Potecile pădurii',text:'O furtună a acoperit marcajele vechi. Învață să citești rădăcinile, buștenii și noroiul, apoi câștigă duelul cu pilotul pădurii.'},{title:'Chapter 1 · Forest trails',text:'A storm has hidden the old trail markers. Learn to read roots, logs and mud, then challenge the forest’s local champion.'}],
+ [{title:'Capitolul 2 · Creasta alpină',text:'Vântul schimbă traseul pe muchia muntelui. Ține motocicleta stabilă pe urcări și coborâri pentru a deschide trecătoarea.'},{title:'Chapter 2 · Alpine ridge',text:'Wind has changed the route along the mountain ridge. Keep the bike steady on climbs and descents to open the pass.'}],
+ [{title:'Capitolul 3 · Cariera veche',text:'Un traseu de piatră a rămas închis după o alunecare. Treci treptele și stâncile fără să pierzi controlul.'},{title:'Chapter 3 · The old quarry',text:'A rock trail has been closed after a slide. Clear its steps and boulders without losing control.'}],
+ [{title:'Capitolul 4 · Poteca mlaștinii',text:'Nivelul apei a crescut, iar podețele sunt instabile. Găsește ritmul potrivit prin bălți și bușteni.'},{title:'Chapter 4 · The swamp trail',text:'The water is rising and the boardwalks are unstable. Find the right rhythm through puddles and logs.'}],
+ [{title:'Capitolul 5 · Dunele fierbinți',text:'Nisipul mișcător și căldura pun la încercare fiecare accelerație. Ajungi la punctul de control și păstrează combustibil pentru duel.'},{title:'Chapter 5 · The hot dunes',text:'Shifting sand and heat punish every throttle input. Reach the checkpoint and save fuel for the duel.'}],
+ [{title:'Capitolul 6 · Trecătoarea înghețată',text:'Urmele dispar sub ninsoare. Dozează gazul pe gheață și găsește linia sigură spre refugiu.'},{title:'Chapter 6 · The frozen pass',text:'Tracks disappear beneath the snowfall. Use measured throttle on the ice and find the safe line to shelter.'}],
+ [{title:'Capitolul 7 · Arena Carpaților',text:'Stadionul găzduiește finala regională. Leagă săriturile curate și câștigă publicul înaintea confruntării.'},{title:'Chapter 7 · Carpathian arena',text:'The stadium hosts the regional final. Link clean jumps and win over the crowd before the showdown.'}],
+ [{title:'Capitolul 8 · Insula vulcanică',text:'Ultima expediție traversează cenușa și rocile fierbinți. Învinge campionul insulei și încheie sezonul Carpaților.'},{title:'Chapter 8 · The volcanic island',text:'The final expedition crosses ash and hot rock. Defeat the island champion and finish the Carpathian season.'}]
+];
+const CAREER_STAGE_COPY=[
+ [{ro:'Etapa 1 · Descoperă traseul',en:'Stage 1 · Read the trail'},{ro:'Etapa 2 · Stăpânește terenul',en:'Stage 2 · Master the terrain'},{ro:'Etapa 3 · Înfruntă rivalul',en:'Stage 3 · Face the rival'}]
+];
 const COLORS=['#22d3ee','#f5a524','#ef4444','#22c55e','#a855f7','#f97316','#e5e7eb','#3b82f6'];
 
 /* ---------- seasonal events ---------- */
@@ -1698,10 +1716,15 @@ function startEvent(e){startRace(evOpts(e))}
 function buildCareer(){coinsTxt();const L=$('#careerList');L.innerHTML='';
  REGIONS.forEach((RG,i)=>{const un=regionUnlocked(i);const sec=document.createElement('section');sec.className='reg';const ms=CAREER.filter(e=>e.r===i).reduce((s,e)=>s+((SV.career[e.id]||{}).m||0),0);
   sec.innerHTML=`<div class="reg-h"><span class="plate">${i+1}</span><h3>${regionName(i)}</h3><span class="muted">${t('rd_'+RG.id)}</span><span class="lock">${un?ms+' / 9 ★':'🔒 '+t('locked')}</span></div>`;
+  const chapter=CAREER_STORIES[i];const story=document.createElement('div');story.className='chapter-story';
+  const chapterCount=document.createElement('span');chapterCount.className='chapter-count';chapterCount.textContent=LI?'Chapter '+(i+1)+' of 8 · '+ms+'/9 medals':'Capitolul '+(i+1)+' din 8 · '+ms+'/9 medalii';
+  const chapterTitle=document.createElement('h4');chapterTitle.textContent=chapter[LI].title;
+  const chapterText=document.createElement('p');chapterText.textContent=chapter[LI].text;story.append(chapterCount,chapterTitle,chapterText);sec.appendChild(story);
   const g=document.createElement('div');g.className='grid wide';
   CAREER.filter(e=>e.r===i).forEach(e=>{const idx=CAREER.indexOf(e),lu=lvlUnlocked(idx);const c=SV.career[e.id]||{m:0,b:null};const o=evOpts(e);const b=document.createElement('button');b.className='ev';b.disabled=!lu;if(!lu)b.style.opacity=.5;if(idx===nextLvl())b.style.outline='3px solid var(--amber)';
    const best=c.b==null?'':(SCOREMODE[e.mode]?' · '+c.b+(e.mode==='stunt'?' pts':' m'):' · '+fmtT(c.b));
    b.innerHTML=`<span class="lvl-chip">${lu?'':'🔒 '}${t('lvl_n',{n:idx+1})}</span><strong>${t('m_'+e.mode)}${e.mode==='duel'?' — '+CHAMPS[i]:''}</strong><small>${t('w_'+o.w)} · ${t('t_'+o.tod)}${best}</small><span class="medal m${c.m}"><i>${['–','III','II','I'][c.m]}</i>${t('med'+c.m)}</span>`;
+   const stage=document.createElement('small');stage.className='story-stage';stage.textContent=LI?CAREER_STAGE_COPY[0][idx%3].en:CAREER_STAGE_COPY[0][idx%3].ro;b.appendChild(stage);
    b.onclick=()=>startEvent(e);g.appendChild(b)});
   sec.appendChild(g);L.appendChild(sec)})}
 function statBars(B,id,prev){const s=bikeStats(id);const row=(k,v,pv)=>`<span>${t(k)}</span><span class="sbar"><b style="width:${clamp(pv??v,0,1)*100}%"></b><i style="width:${clamp(v,0,1)*100}%"></i></span><span class="num">${Math.round(v*100)}</span>`;
