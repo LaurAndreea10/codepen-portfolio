@@ -692,10 +692,11 @@ const SKEY='carpati-enduro-v1';
 const prefersReduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const DEF_SET={lang:'ro',theme:'dark',contrast:false,text:1,phys:'arcade',autoThr:false,simple:false,toggle:false,bs:1,hand:'r',touch:'auto',assist:1,speed:1,adaptive:false,reduce:prefersReduce,noFlash:false,vib:true,shake:true,vEng:.5,vSfx:.7,vMus:.25,cam:'side',vibL:1,liv:'solid',helm:'solid',fx:'dust',gfx:matchMedia('(pointer: coarse)').matches?'med':'high',name:'Pilot',num:7,color:'#22d3ee',suit:'#f5a524',
  q:{mode:'race',r:0,diff:1,opp:3,w:'rand',tod:'d'}};
-function defSave(){return{v:1,coins:300,xp:0,earned:0,sel:'enduro',bikes:{enduro:{up:{eng:0,tire:0,susp:0,brk:0}}},career:{},storyLog:[],chapterAwards:{},objectiveAwards:{},chapterEndings:{},cups:{},training:{},ghosts:{},gOrder:[],lb:{},lbMeta:{},lbOrder:[],stats:{m:0,wins:0,crashes:0,jumps:0,flips:0,time:0,races:0,regions:[]},ach:{},daily:{},tut:false,school:{},evt:{},shop:{liv:['solid'],helm:['solid'],fx:['dust']},rew:{day:null,streak:0,rank:1,ach:{}},set:JSON.parse(JSON.stringify(DEF_SET))}}
+function defSave(){return{v:1,coins:300,xp:0,earned:0,sel:'enduro',bikes:{enduro:{up:{eng:0,tire:0,susp:0,brk:0}}},career:{},storyLog:[],chapterAwards:{},objectiveAwards:{},chapterEndings:{},cups:{},training:{},ghosts:{},gOrder:[],lb:{},lbMeta:{},lbOrder:[],stats:{m:0,wins:0,crashes:0,jumps:0,flips:0,time:0,races:0,regions:[]},ach:{},daily:{},tut:false,onboarding:0,school:{},evt:{},shop:{liv:['solid'],helm:['solid'],fx:['dust']},rew:{day:null,streak:0,rank:1,ach:{}},set:JSON.parse(JSON.stringify(DEF_SET))}}
 let SV=null;
 try{SV=JSON.parse(localStorage.getItem(SKEY))}catch(e){SV=null}
 if(!SV||SV.v!==1)SV=defSave();
+SV.onboarding=Number.isFinite(SV.onboarding)?SV.onboarding:0;
 SV.set=Object.assign(JSON.parse(JSON.stringify(DEF_SET)),SV.set||{});
 if(SV.set.vib===false&&SV.set.vibL===1)SV.set.vibL=0;
 SV.school=SV.school||{};SV.evt=SV.evt||{};SV.storyLog=Array.isArray(SV.storyLog)?SV.storyLog:[];SV.chapterAwards=SV.chapterAwards&&typeof SV.chapterAwards==='object'?SV.chapterAwards:{};SV.objectiveAwards=SV.objectiveAwards&&typeof SV.objectiveAwards==='object'?SV.objectiveAwards:{};SV.chapterEndings=SV.chapterEndings&&typeof SV.chapterEndings==='object'?SV.chapterEndings:{};SV.cups=SV.cups&&typeof SV.cups==='object'?SV.cups:{};SV.training=SV.training&&typeof SV.training==='object'?SV.training:{};SV.shop=SV.shop||{liv:['solid'],helm:['solid'],fx:['dust']};SV.rew=SV.rew||{day:null,streak:0,rank:1,ach:{}};
@@ -1784,11 +1785,11 @@ function hideScreens(){if(cePanel)cePanel.hidden=true;SCREENS.forEach(s=>$('#scr
 function show(id){hideScreens();const e=$('#scr-'+id);e.hidden=false;e.scrollTop=0;({menu:buildMenu,select:buildSelect,career:buildCareer,garage:buildGarage,records:buildRecords,settings:buildSettings,help:buildHelp,school:buildSchool,events:buildEvents,shop:buildShop,rewards:buildRewards}[id]||(()=>{}))();const h=e.querySelector('h1,h2');if(h){h.tabIndex=-1;h.focus({preventScroll:true})}}
 function goMenu(){if(ceStatsSnapshot){SV.stats=ceStatsSnapshot;ceStatsSnapshot=null;}ceSeq++;ceEndReplay();if(ceFriend&&S.name!==ceFriend.original){S.name=ceFriend.original;save()}AU.engOff();AU.ambOff();G.les=null;$('#guide').hidden=true;G.state='attract';G.paused=false;G.attractInit=false;G.bike=null;G.done=false;$('#hud').hidden=true;$('#touch').hidden=true;$('#pause').hidden=true;$('#results').hidden=true;showCd('');show('menu')}
 function showFirstVisitTutorial(){
- if(SV.tut||$('#scr-menu').hidden)return;
+ if(SV.onboarding>=1||$('#scr-menu').hidden)return;
  let step=0;const overlay=document.createElement('div');overlay.id='first-visit-guide';overlay.className='career-brief';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-labelledby','onb-title');overlay.setAttribute('aria-describedby','onb-desc');
  const card=document.createElement('section');card.className='career-brief-card';overlay.appendChild(card);$('#app').appendChild(overlay);
  const titles=['onb_controls','onb_career','onb_camera'],descs=['onb_controls_d','onb_career_d','onb_camera_d'];
- function finish(start){SV.tut=true;save();overlay.remove();if(start)startEvent(CAREER[0])}
+ function finish(start){SV.onboarding=1;save();overlay.remove();if(start)startEvent(CAREER[0])}
  function render(){
   card.replaceChildren();const count=ceEl('span',t('onb_step',{n:step+1}),'eyebrow'),title=ceEl('h2',t('onb_title'));title.id='onb-title';const intro=ceEl('p',t('onb_intro'));intro.id='onb-desc';const section=ceEl('h3',t(titles[step]),'sec-h'),detail=ceEl('p',t(descs[step]));card.append(count,title,intro,section,detail);
   const actions=ceEl('div',null,'career-brief-actions');
@@ -1959,7 +1960,7 @@ $('#btnTheme').onclick=()=>{const dark=S.theme==='dark'||(S.theme==='system'&&ma
 $('#setBack').onclick=()=>show('menu');
 $('#riderName').oninput=e=>{S.name=e.currentTarget.value.slice(0,20);save();$('#mName').textContent=S.name||'Pilot'};
 $('#riderName').onblur=e=>{S.name=e.currentTarget.value.trim().slice(0,20)||'Pilot';e.currentTarget.value=S.name;save();$('#mName').textContent=S.name};
-$('#btnTut').onclick=()=>{SV.tut=true;save();startRace({mode:'free',r:0,seed:12345,diff:0,w:'c',tod:'d',tut:true})};
+$('#btnTut').onclick=()=>{SV.onboarding=1;save();startRace({mode:'free',r:0,seed:12345,diff:0,w:'c',tod:'d',tut:true})};
 $('#hPause').onclick=()=>togglePause();
 const CAMS=['side','cine','chase','pov','low','high','front','orbit'];function cycleCam(){S.cam=CAMS[(CAMS.indexOf(S.cam)+1)%CAMS.length];save();toast(t('set_cam')+': '+t('cam_'+S.cam));hap('tap')}
 $('#hCam').onclick=()=>cycleCam();
