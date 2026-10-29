@@ -579,7 +579,7 @@ career_help:['Începi de la Nivelul 1. Orice medalie deschide nivelul următor, 
 h_delta:['Diferență față de ghost','Delta to ghost'],h_targets:['Ținte medalii','Medal targets'],res_ghost_splits:['Diferență pe sectoare','Sector delta'],res_combo:['Cel mai bun combo','Best combo'],
 drill_attempts:['Încercări','Attempts'],drill_best:['Cel mai bun timp','Best time'],drill_stars:['Stele','Stars'],
 skill_braking:['Frânare','Braking'],skill_wheelie:['Wheelie','Wheelie'],skill_landing:['Sărituri și aterizări','Jumps and landings'],skill_obstacles:['Obstacole','Obstacles'],
-cup_points:['Puncte de campionat','Championship points'],cup_target:['Țintă pentru titlu','Title target'],cup_champion:['Campion regional','Regional champion'],cup_result:['Campionat regional câștigat · {n}/9 puncte · +300 monede.','Regional championship won · {n}/9 points · +300 coins.'],cup_progress:['Campionat regional: {n}/9 puncte; ai nevoie de 6 pentru titlu.','Regional championship: {n}/9 points; 6 needed for the title.'],
+cup_points:['Puncte de campionat','Championship points'],cup_target:['Țintă pentru titlu','Title target'],cup_champion:['Campion regional','Regional champion'],cup_result:['Campionat regional câștigat · {n}/9 puncte.','Regional championship won · {n}/9 points.'],cup_progress:['Campionat regional: {n}/9 puncte; ai nevoie de 6 pentru titlu.','Regional championship: {n}/9 points; 6 needed for the title.'],
 locked:['Blocat','Locked'],lvl:['Rang','Rank'],
 m_race:['Cursă','Race'],m_tt:['Contratimp','Time Trial'],m_trial:['Trial','Trial'],m_hill:['Hill Climb','Hill Climb'],m_surv:['Supraviețuire','Survival'],m_stunt:['Trucuri','Tricks'],m_elim:['Eliminare','Elimination'],m_duel:['Duel cu campionul','Champion duel'],m_free:['Antrenament liber','Free ride'],
 md_race:['Concurezi cu adversari AI până la linia de sosire.','Race AI riders to the finish line.'],
@@ -1303,7 +1303,7 @@ function results(fin,forcePos){
  ceOnResult(fin,pos);sr_(h.textContent+'. '+vtxt+'. '+t('med'+med));
 }
 
-function lessonResults(ok){const o=G.opts,L=G.les.def;let reward=0;const p=SV.training[L.id]||(SV.training[L.id]={attempts:1,completions:0,best:0,stars:0});p.completions=p.completions||0;p.last=G.t;if(ok){p.completions++;const stars=G.crashes===0?3:G.crashes===1?2:1;p.stars=Math.max(p.stars||0,stars);if(!p.best||G.t<p.best)p.best=G.t}
+function lessonResults(ok){const o=G.opts,L=G.les.def;let reward=0;const training=SV.training[L.id]||(SV.training[L.id]={attempts:1,completions:0,best:0,stars:0});training.completions=training.completions||0;training.last=G.t;if(ok){training.completions++;const stars=G.crashes===0?3:G.crashes===1?2:1;training.stars=Math.max(training.stars||0,stars);if(!training.best||G.t<training.best)training.best=G.t}
  if(ok&&!SV.school[L.id]){SV.school[L.id]=todayStr();reward=120;SV.coins+=reward;SV.earned+=reward;SV.xp+=60}save();
  const d=$('#resBody');d.innerHTML='';const h=document.createElement('h2');h.id='h-res';h.textContent=ok?t('les_done'):t('les_fail');d.appendChild(h);
  const p=document.createElement('p');p.className='muted';p.style.margin='0';p.textContent=t('les_'+L.id);d.appendChild(p);
@@ -1831,7 +1831,7 @@ function buildCareer(){coinsTxt();const L=$('#careerList');L.innerHTML='';
   const chapter=CAREER_STORIES[i];const story=document.createElement('div');story.className='chapter-story';
   const chapterCount=document.createElement('span');chapterCount.className='chapter-count';chapterCount.textContent=LI?'Chapter '+(i+1)+' of 8 · '+ms+'/9 medals':'Capitolul '+(i+1)+' din 8 · '+ms+'/9 medalii';
   const chapterTitle=document.createElement('h4');chapterTitle.textContent=chapter[LI].title;
-  const chapterText=document.createElement('p');chapterText.textContent=chapter[LI].text;story.append(chapterCount,chapterTitle,chapterText);sec.appendChild(story);
+  const chapterText=document.createElement('p');chapterText.textContent=chapter[LI].text;const cup=SV.cups[i]||{};const cupLine=document.createElement('p');cupLine.className='muted';cupLine.textContent=cup.champion?'🏆 '+t('cup_champion')+' · '+t('cup_points')+': '+(cup.score||ms)+'/9':t('cup_progress',{n:cup.score||ms});story.append(chapterCount,chapterTitle,chapterText,cupLine);sec.appendChild(story);
   const g=document.createElement('div');g.className='grid wide';
   CAREER.filter(e=>e.r===i).forEach(e=>{const idx=CAREER.indexOf(e),lu=lvlUnlocked(idx);const c=SV.career[e.id]||{m:0,b:null};const o=evOpts(e);const b=document.createElement('button');b.className='ev';b.disabled=!lu;if(!lu)b.style.opacity=.5;if(idx===nextLvl())b.style.outline='3px solid var(--amber)';
    const best=c.b==null?'':(SCOREMODE[e.mode]?' · '+c.b+(e.mode==='stunt'?' pts':' m'):' · '+fmtT(c.b));
