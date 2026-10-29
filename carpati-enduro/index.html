@@ -1914,7 +1914,7 @@ $('#btnDaily').onclick=()=>startRace(dailyOpts());
 $('#btnCareer').onclick=()=>{AU.init();const nl=nextLvl();if(nl<0)show('career');else if(nl===0&&!SV.career[CAREER[0].id])startEvent(CAREER[0]);else show('career')};
 function quickOptions(mode){const q=S.q,pick=(v,a)=>v==='rand'?a[Math.floor(Math.random()*a.length)]:v;return{mode,r:regionUnlocked(q.r)?q.r:0,seed:Math.floor(Math.random()*2e9),diff:q.diff,opp:q.opp,w:pick(q.w,['c','r','f','s','l']),tod:pick(q.tod,['d','u','n'])}}
 function launchQuickMode(mode){AU.init();startRace(quickOptions(mode))}
-$('[data-mode-launch]').forEach(b=>b.addEventListener('click',()=>launchQuickMode(b.dataset.modeLaunch)));
+$$('[data-mode-launch]').forEach(b=>b.addEventListener('click',()=>launchQuickMode(b.dataset.modeLaunch)));
 $('#btnGo').onclick=()=>startRace(quickOptions(S.q.mode));
 $('#btnCode').onclick=()=>{const o=parseCode($('#codeIn').value);if(!o){toast(t('bad_code'));return}startRace(o)};
 $('#btnLang').onclick=()=>{S.lang=S.lang==='ro'?'en':'ro';save();applyI18n()};
