@@ -1,5 +1,14 @@
 # Carpați Enduro — istoric / changelog
 
+## 2.1.0 — 2026-10-29 · Advanced trails and online server
+
+- Completes additional code across all 24 directions: moving lifts/seesaws, physical forks, shallow deformation, wheel-physics AI, RPM/torque transmission, progressive wetness and day/night sky blending.
+- Adds leagues, class licenses, trophy display, champion stories/liveries, equipment/decal controls, regional missions, a tracked objective, school reference ghosts and a control exam.
+- Adds real simultaneous split-screen/co-op, placed objects/custom checkpoints, comparison ghosts, replay highlights, crash heatmap, single-switch controls and opt-in adaptive graphics.
+- Adds a dependency-free Node server and browser client for accounts, revision-protected cloud saves, four-player private lobbies, synchronized starts, live pose exchange and a bounded community leaderboard. No production host is configured; the server is not advertised as publicly active.
+- Adds anniversary rides, yearly event rewards, photo filters, an exported WebM tutorial and an itch.io-ready HTML package. The package is not uploaded to an itch.io account.
+- Keeps earlier progress/history and separate ranking rules. Physical device, complete 3D and deployed cross-device checks remain unconfirmed; see QA.md.
+
 ## 2.0.0 — 2026-10-29 · Expedition Studio
 
 - Păstrează meniul, cariera de 24 niveluri și progresul V1; adaugă un centru cu zece secțiuni RO/EN.

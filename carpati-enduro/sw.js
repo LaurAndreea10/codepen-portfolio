@@ -1,6 +1,6 @@
 /* Cache only this game's assets; never delete another portfolio app's caches. */
-const PREFIX='carpati-enduro-',CACHE=PREFIX+'v2.0.0';
-const CORE=['./','./index.html','./expedition-core.js','./case-study.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./icons/maskable-512.png','./icons/apple-touch-icon.png'];
+const PREFIX='carpati-enduro-',CACHE=PREFIX+'v2.1.0';
+const CORE=['./','./index.html','./expedition-core.js','./trail-systems.js','./case-study.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./icons/maskable-512.png','./icons/apple-touch-icon.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE))));
 // Waiting workers activate only when the user leaves the old page or explicitly updates.
 self.addEventListener('message',event=>{if(event.data&&event.data.type==='ACTIVATE_UPDATE')self.skipWaiting()});

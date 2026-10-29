@@ -1,38 +1,47 @@
-# Acoperirea celor 24 de direcții — Expedition 2.0
+# Cele 24 de direcții — Expedition 2.1
 
-Aceasta este o extindere funcțională a jocului existent. Tabelul separă implementarea concretă de ideile care nu sunt încă livrate; **nu toate subpunctele listei inițiale sunt finalizate**. Nicio opțiune online nu simulează existența unui serviciu.
+Tabelul descrie funcții concrete din cod, nu promite activarea unui serviciu care nu este găzduit. Jocul static și modurile locale sunt implementate. Serverul online este implementat și testat prin API, dar **nu există încă un endpoint HTTPS de producție configurat**. Publicarea pe itch.io necesită contul destinatar; pachetul HTML este pregătit.
 
-| # | Direcție | Disponibil în această versiune | Subpuncte rămase |
-|---|---|---|---|
-| 1 | Fizică și control | Presiune/aderență/viteză, suspensii, frână față/spate, sensibilitate, trepte și ambreiaj opțional; asistența existentă | Model complet de transmisie și feedback vizual dedicat fiecărei cauze a căderii |
-| 2 | Obstacole | Terenul existent plus rădăcini, poduri statice și scări; suprafețe și dificultate configurabile | Balansoare, platforme mobile și deformarea terenului |
-| 3 | Trasee și regiuni | Cele 8 regiuni păstrate; variante sigură/rapidă/tehnică, puncte panoramice, obiecte de explorat și trasee prin seed | Ramificații fizice în aceeași cursă, sate și hărți geografice noi |
-| 4 | Vreme | Vreme dinamică opțională în expediții, efect asupra aderenței pentru pilot și AI, vânt cu indicator, replay al tranzițiilor | Umezire graduală, ciclu continuu zi/noapte și urme persistente |
-| 5 | Moduri | Cele 10 probe noi, cu obiective și reguli distincte, pe lângă cele 9 moduri originale | Echilibrare extinsă pe dispozitive reale |
-| 6 | Carieră | Cariera existentă păstrată; trei serii în câte trei etape, timpi cumulați, trofee locale, licențe de probă, sponsor fictiv | Ligi elaborate, licențe pe clasă și sală de trofee 3D |
-| 7 | AI | Personalitățile existente păstrate; anticiparea obstacolelor după stil, viteza adaptată vremii, nume constante în rally | AI cu aceleași constrângeri fizice ca pilotul și alegerea ramificațiilor |
-| 8 | Campioni | Triada cu trei dueluri succesive, rivalul anunțat, progres și trofeu la final | Secvențe narative și recompense cosmetice proprii fiecărui nou campion |
-| 9 | Garaj | Cele 5 clase păstrate; reglaje individuale, preseturi și test gratuit fără recompense | Istoric dedicat fiecărei motociclete și mai multe compromisuri de upgrade |
-| 10 | Personalizare | Culori libere, 8 ținute salvate, echipamentul și modelele originale, fotografie exportabilă | Editor de stickere, jante și articole de echipament suplimentare |
-| 11 | Power-up-uri | Boost, scut, aderență, slow time, magnet, reparație; o activare/cursă și categorie de record separată | Alte combinații și echilibrare pe fiecare disciplină |
-| 12 | Misiuni | Misiuni zilnice/săptămânale deterministe, progres, revendicare unică și contract săptămânal | Lanțuri narative pe regiuni și urmărirea unui obiectiv selectat în HUD |
-| 13 | Școală | Cele 7 lecții păstrate; recomandare contextuală după cursă, practică repetabilă și replay/ghost | Ghost demonstrativ special pentru fiecare lecție și examene noi |
-| 14 | Analiză | Istoric filtrabil, sectoare, locul căderilor, viteze, grafic și sugestie de îmbunătățire | Numărătoare pe obstacol și hărți comparative detaliate |
-| 15 | Ghost/replay | Import/export JSON, pauză/viteză/seek/camere, traseu și vreme păstrate, recorduri separate după reguli | Mai multe ghosturi simultan și marcaje automate de momente în timeline |
-| 16 | Editor | Segmente, înălțime, suprafață, profil modelat prin drag sau numere, Undo/Redo, testare și export validat | Obiecte 3D plasabile liber și configurarea arbitrară a checkpointurilor |
-| 17 | Prieteni | 2–4 jucători pe rând, runde și clasament; provocare asincronă prin fișier ghost | Split-screen real, cooperare, curse live, lobby și clasamente globale |
-| 18 | Accesibilitate | Comenzi repoziționabile, grupare pentru o mână, preset cu două comenzi, sensibilitate și opțiunile originale | Audit complet cu cititor de ecran și control cu o singură comandă |
-| 19 | Mobil | Aranjament responsive, butoane configurabile, checkpoint reluat ca antrenament, mod economic | Adaptare automată a calității după FPS și validare pe telefoane fizice |
-| 20 | Imagine/sunet | Camerele și animațiile existente, motor cu timbru pe clasă, marcaje de obiectiv în 2D/3D și fotografie 2D | Decoruri noi, animații de pilot refăcute și filtre foto configurabile |
-| 21 | Salvare/PWA | Migrare locală, backup validat, recuperare, 4 sloturi, versiune, cache limitat la acest joc | Conturi și sincronizare cloud; validare în modul avion pe dispozitiv |
-| 22 | Evenimente | Cele 6 evenimente originale, previzualizare și arhivă locală a rezultatelor | Festival aniversar și reguli noi de revenire a recompenselor |
-| 23 | Stabilitate | Teste core/SW/browser, idempotența recompenselor, importuri validate, cronometre izolate pe cursă, protejarea cache-urilor vecine | Testare manuală extinsă la rate de cadre diferite și pe hardware real |
-| 24 | Distribuție | Studiu RO/EN, changelog păstrat, card PNG, link feedback și patch Arcade World cu bridge validat | Video tutorial și publicare itch.io, care necesită acces la contul respectiv |
+| # | Direcție | Implementare |
+|---|---|---|
+| 1 | Fizică și control | Contacte pe roți, presiune/aderență/viteză, suspensie/agilitate, frână față/spate, model de cuplu/RPM, trepte automate/manuale, ambreiaj și feedback despre unghiul căderii. Model arcade, nu simulator mecanic de inginerie. |
+| 2 | Obstacole | Rădăcini, scări, bușteni, pietre, poduri; platforme verticale mobile și balansoare care răspund la încărcare; șleauri limitate pe suprafețe moi. |
+| 3 | Trasee | Cele 8 regiuni, rute configurabile, două ramificații fizice în expediții, puncte panoramice, explorare, cabane și hartă stilizată selectabilă. |
+| 4 | Vreme | Ploaie/zăpadă/ceață/frunze, vânt, umezire/uscare graduală, cer cu tranziții zi/apus/noapte, urme de roți. |
+| 5 | Moduri | Cele 9 moduri originale plus Sprint, Hard Enduro, Precision, Checkpoint Rush, Delivery, Rescue, Rally Raid, Expedition, Champions Trilogy și Exploration. |
+| 6 | Carieră | Cariera originală păstrată, serii de etape, patru ligi cu promovare, licențe pe clasă după trei sosiri curate și sală de trofee cu perspectivă CSS 3D. |
+| 7 | AI | Personalități și anticipare, adaptare la vreme; în expediții, adversarii folosesc corpuri independente pe roți și același rezolvitor de constrângeri/contacte ca pilotul; aleg și variante de ramificație. |
+| 8 | Campioni | Dueluri, triadă, introduceri narative scurte, nume/stiluri distincte și modele de campion câștigate prin victorie. |
+| 9 | Garaj | Cinci clase, reglaje/preseturi pe motocicletă, costuri/compromisuri ale upgrade-urilor, test gratuit și istoric al motocicletelor. |
+| 10 | Personalizare | Culori, ținute, căști, text/culoare/poziție de sticker, jante, mănuși, cizme și ochelari. Aspectul poate fi fotografiat. |
+| 11 | Bonusuri | Boost, scut, aderență, slow time, magnet și reparație; activare unică, alegere între etape și categorii separate de recorduri. |
+| 12 | Misiuni | Misiuni zilnice/săptămânale, sponsor fictiv, lanțuri regionale și obiectiv selectat vizibil în cursă; recompense revendicabile o singură dată. |
+| 13 | Școală | Cele 7 lecții păstrate, ghost demonstrativ generat prin simulare pentru fiecare lecție, examen de control și recomandări după încercări. |
+| 14 | Analiză | Timpi/sectoare, viteze medie/maximă, căderi localizate, numărări pe sectoare de obstacole, grafic și hartă de frecvență a căderilor. |
+| 15 | Ghost/replay | Import/export, seek/pauză/viteză/camere, trei ghosturi de comparație, marcaje jump/crash/checkpoint, geometria/ramificațiile și vremea reluării. |
+| 16 | Editor | 3–40 segmente, suprafață/înălțime, profil modelat prin drag sau numere, obiecte plasabile la poziții procentuale, checkpointuri proprii, Undo/Redo, test și export validat. |
+| 17 | Prieteni | Competiție pe rând, split-screen simultan cu două corpuri fizice și comenzi independente, cooperare locală; client/server pentru lobby privat de 2–4 persoane, pornire sincronizată, poziții live, cooperare și clasament comunitar. Online necesită găzduire. |
+| 18 | Accesibilitate | RO/EN, contrast, text mare, comenzi repoziționabile, sensibilitate, asistență, reducerea mișcării, grupare pentru o mână și control cu o singură comandă. Auditul real cu cititor de ecran rămâne neconfirmat. |
+| 19 | Mobil | Layout responsive, comenzi tactile, checkpoint salvat, mod economic și reducere opțională a calității după FPS. Dispozitivul fizic rămâne de verificat. |
+| 20 | Imagine/sunet | Camerele și motoarele pe clase, decor adăugat, animație suplimentară a pilotului, obiective vizibile, fotografie și filtre natural/warm/mono/vivid. Exportul foto rămâne 2D. |
+| 21 | Salvare/PWA | Migrare/backup/recuperare, patru sloturi, versiune, cache izolat; server pentru conturi și salvări private între dispozitive, cu revizii pentru conflicte. Serverul nu este găzduit public în acest PR. |
+| 22 | Evenimente | Cele 6 ediții păstrate, arhivă, reluarea recompenselor în ediții anuale și festival aniversar cu trei probe. |
+| 23 | Stabilitate | Teste de date/fizică/server/cache, suita browser, recompense idempotente și timer-e izolate; workflow CI dedicat testelor Node. Echilibrarea și măsurătorile pe hardware real nu sunt înlocuite de aceste verificări. |
+| 24 | Distribuție | Studiu RO/EN, changelog păstrat, card PNG, feedback, integrare Arcade World, tutorial WebM exportat și ZIP HTML pentru itch.io. Uploadul într-un cont itch.io nu a fost efectuat. |
 
-## Servicii care lipsesc efectiv
+## Ce rămâne efectiv în afara implementării publicate
 
-Nu există un backend pentru conturi, cloud save, lobby și multiplayer live în repository-ul static. Aceste funcții necesită alegerea și configurarea unui serviciu, un protocol de sincronizare și teste de rețea. Nu au fost create conturi, abonamente sau baze de date externe. Integrarea Arcade World este pregătită într-un PR separat; până la merge și deploy, site-ul public nu o primește.
+1. Găzduirea serverului online pe un endpoint HTTPS cu disc persistent, apoi testarea cu două dispozitive. GitHub Pages nu poate rula Node. Codul nu conține conturi, parole reale, abonamente sau destinații de server inventate.
+2. Uploadul pachetului într-un cont itch.io identificat și autentificat.
+3. Verificarea pe telefon fizic, cititor de ecran, modul avion și randarea WebGL completă. Browserul de previzualizare verifică alternativa 2D când WebGL este indisponibil.
+4. Integrarea/merge și deployment-ul PR-urilor. Codul dintr-un PR nu este prezentat drept versiune publică deja livrată.
 
-## Compatibilitate
+## Limite de produs
 
-Progresul V1 rămâne sub aceeași cheie. Fizica și regulile V2 au chei de clasament distincte. Backupurile vechi sunt normalizate, iar înainte de import se păstrează copia de recuperare. Datele vechi nu sunt declarate recorduri compatibile cu noua fizică.
+- Harta este stilizată; nu este hartă de navigație reală a Carpaților.
+- Multiplayerul folosește schimb de poziții prin HTTP, cu latența pollingului; nu folosește rollback netcode.
+- Clasamentul online este etichetat „comunitate”; serverul nu reproduce integral simularea pentru anti-cheat.
+- Split-screen-ul și trofeele folosesc Canvas 2D, respectiv perspectivă CSS 3D; nu adaugă un al doilea motor WebGL.
+- Reluările redau poziții înregistrate, nu o simulare deterministă completă a tuturor inputurilor.
+- Deformarea terenului este superficială și plafonată; nu simulează volum de noroi sau distrugere structurală.
+- Rezultatele V1/V2 sunt păstrate; regulile V2.1 au categorii distincte de record.

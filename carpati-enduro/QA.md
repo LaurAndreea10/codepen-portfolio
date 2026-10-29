@@ -1,49 +1,29 @@
-# Expedition 2.0 — verificări, 29 octombrie 2026
+# Expedition 2.1 — verificări, 29 octombrie 2026
 
-## Confirmat automat
+## Confirmat local
 
-- `node --check`: JavaScript-ul jocului, nucleul de date și service worker-ul.
-- 10 teste Node pentru trasee, importuri, migrarea progresului, misiuni, validarea ghosturilor și separarea regulilor de clasament.
-- 3 teste Node pentru service worker: curățare limitată la cache-urile jocului, existența shell-ului offline și ignorarea altor aplicații/hosturi.
-- 3 teste Node în patch-ul Arcade World: contract valid de rezultat, respingerea origin/source/session greșite și respingerea datelor nevalide.
-- 20 de scenarii în browserul Chromium al previzualizării, inclusiv:
-  - cele 8 regiuni × 9 moduri originale pornesc și simulează fără coordonate nefinite;
-  - cele 10 discipline noi generează teren finit și pornesc;
-  - cele 10 secțiuni Studio în RO și EN;
-  - lățimi de 320, 390 și 768px cu text 130%, fără overflow orizontal al panoului;
-  - teren reproductibil, suprafață configurată și cod de traseu cu diacritice;
-  - geometria expediției păstrată în replay;
-  - efectul presiunii asupra aderenței/vitezei;
-  - bonus activabil o singură dată și categorii separate după reguli;
-  - antrenament fără monede/XP și recompense neduplicate;
-  - expirarea Checkpoint Rush și blocarea finalizării fără obiective;
-  - replay cu poziții finite, respingerea importului invalid și checkpoint reluat ca antrenament;
-  - rezultate întârziate care nu redeschid o cursă abandonată;
-  - nicio eroare de execuție în joc în timpul acestor scenarii.
+- Sintaxa scriptului principal, a nucleului de date, a sistemelor avansate, a service worker-ului și a serverului Node.
+- **24 teste Node în joc:** 10 contracte de date, 8 sisteme avansate, 3 scenarii server și 3 contracte de cache. Integrarea Arcade World are separat **3 teste** de validare a mesajelor.
+- **27 scenarii în browserul Chromium al previzualizării:** RO/EN și cele 10 panouri Studio; lățimi 320/390/768px cu text 130%; inițializare/simulare pentru 8 regiuni × 9 moduri originale; cele 10 probe noi; teren reproductibil și coduri cu diacritice; geometria reluării; reglaje fizice; categorii de record; bonus unic; recompense idempotente; antrenament fără monede/XP; timeout și obiective; seek; import respins; checkpoint reluat; timer-e izolate; persistența sistemelor avansate; AI pe roți; ramificație care schimbă suprafața de coliziune; platforme/checkpointuri plasate; motociclete independente în split-screen; ghost demonstrativ finit; nicio destinație/identitate online inventată și nicio eroare de execuție în scenarii.
+- Testele serverului fac cereri HTTP reale către un server temporar, cu parole sintetice și director temporar: login/hash salvat, origini respinse, acces neautentificat, separarea utilizatorilor, două uploaduri concurente (200/409), rolul gazdei/readiness, poziții live și rezultat idempotent.
+- Split-screen inspectat vizual: două motociclete, două zone de teren și comenzi independente; pauză comună.
+- Tutorial generat și descărcat prin aplicație. `ffprobe`: WebM/VP8, 960×540, aproximativ 10,16 secunde pentru fișierul exportat.
+- ZIP itch.io verificat cu `ZipFile.testzip()`: `index.html` la rădăcină, scripturi, manifest, iconițe și tutorial prezente.
+- Workflow Node dedicat inclus. Rezultatele locale de mai sus nu reprezintă confirmarea automată a rulării sale în GitHub CI.
 
-`tests/runtime.html` este un harness de previzualizare pe un origin de test; nu este un benchmark și nu dovedește finalizarea manuală a fiecărui traseu. Testarea la lățimi mobile folosește un iframe, nu un telefon fizic.
+![Split-screen în previzualizare](docs/split-screen.jpg)
 
-Previzualizarea Chromium nu a putut crea un context WebGL; jocul a pornit corect prin alternativa 2D. Scenariile de execuție de mai sus verifică această alternativă, nu randarea 3D.
+## Neconfirmat și limite
 
-![Expedition Studio în previzualizare](docs/expedition-studio.jpg)
+- Browserul de previzualizare nu poate crea un context WebGL; verificările vizuale/de execuție folosesc alternativa **2D**. Randarea 3D completă a noilor obiecte și echipamente rămâne de verificat pe un dispozitiv cu WebGL.
+- Lățimile mobile sunt testate prin iframe. Aceste verificări nu măsoară frame pacing, temperatură sau autonomie pe un telefon real.
+- Nu există încă un server HTTPS de producție configurat. Testele API nu reprezintă o sesiune de browser între două telefoane. Conturile/lobby-ul/cloud-ul nu sunt prezentate drept servicii publice deja active.
+- Auditul real cu cititor de ecran, instalarea/relansarea în mod avion și echilibrarea prin sesiuni lungi rămân neconfirmate.
+- Reluările redau poziții înregistrate; nu reexecută determinist toate inputurile. Ramificațiile și marcajele sunt incluse, dar modelul nu promite reproducerea volumetrică a urmelor.
+- Foto export folosește randarea 2D, cu filtre aplicate imaginii finale.
+- Timpii rivalilor nesosiți în Rally Raid sunt estimați și etichetați astfel.
+- Checkpoint resume începe o încercare nouă de antrenament; nu promite restaurarea exactă a timpului și AI-ului.
+- În multiplayer, HTTP polling introduce latență; clasamentul este comunitar, fără validare anti-cheat completă prin re-simulare.
+- ZIP-ul este pregătit pentru itch.io, dar nu a fost urcat într-un cont. PR-urile rămân separate de deployment-ul public.
 
-## Neconfirmat
-
-- Frame pacing, temperatură și autonomie pe un telefon fizic.
-- Folosirea completă cu un cititor de ecran și accesibilitatea motorului vizual în timp real.
-- Instalarea și relansarea din modul avion pe Android/iOS.
-- Paritatea vizuală 2D/3D pentru fiecare combinație de traseu, vreme și cameră.
-- Echilibrarea tuturor etapelor, dificultăților și claselor prin sesiuni lungi de joc.
-- Deployment-ul GitHub Pages al acestei versiuni: modificările sunt propuse în PR.
-
-## Limite funcționale explicite
-
-- Relay/multiplayer live, conturi, cloud și clasamente globale: fără backend conectat.
-- Jocul cu prietenii este pe rând pe același dispozitiv sau prin ghost importat; nu este split-screen.
-- Reluările păstrează poziții înregistrate, nu reexecută determinist toate acțiunile fizice.
-- Fotografia exportată este o randare 2D de 1200×675, inclusiv atunci când jucătorul folosește 3D.
-- Timpii rivalilor care nu au sosit încă în Rally Raid sunt estimați și sunt etichetați astfel.
-- Save Run păstrează checkpointul pentru o încercare nouă de antrenament; nu promite reluarea exactă a cronometrului, AI-ului și obiectelor.
-- Numai ultima reluare și 60 de rezultate recente sunt păstrate pentru a limita stocarea locală.
-
-Vezi FEATURE-COVERAGE.md pentru toate cele 24 de direcții și subpunctele rămase.
+Pentru acoperirea celor 24 de direcții, vezi FEATURE-COVERAGE.md. Pentru server și găzduire, vezi server/README.md.
