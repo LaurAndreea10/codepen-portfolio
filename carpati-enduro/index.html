@@ -10,7 +10,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Carpați Enduro">
-<title>Carpați Enduro</title>
+<title>Carpați Enduro — Expedition 2</title>
+<meta name="application-version" content="2.0.0">
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Carpați Enduro — joc moto gratuit în browser: enduro, motocross și trial. Curse cu adversari AI, contratimp cu ghost, hill climb, stunt și provocarea zilei. RO/EN, dark mode, accesibil, pe mobil și PC.">
 <meta name="keywords" content="joc moto, enduro, trial, motocross, hill climb, joc browser, joc gratuit, motorcycle game, dirt bike game">
@@ -31,7 +32,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Carpați Enduro">
 <meta name="twitter:description" content="Joc moto × enduro × trial în browser. RO/EN, accesibil, mobil + PC.">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Carpați Enduro","description":"Joc moto 2D în browser care combină curse enduro, motocross și trial, cu adversari AI, ghost și provocare zilnică.","genre":["Racing","Sports","Arcade"],"gamePlatform":["Web browser","Mobile","Desktop"],"inLanguage":["ro","en"],"applicationCategory":"Game","operatingSystem":"Any","isAccessibleForFree":true,"author":{"@type":"Person","name":"Laura Andreea"},"accessibilityFeature":["highContrastDisplay","largePrint","alternativeText","reducedMotion"],"accessibilityControl":["fullKeyboardControl","fullTouchControl","fullMouseControl"],"offers":{"@type":"Offer","price":"0","priceCurrency":"RON"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Carpați Enduro","description":"Joc moto în browser cu randare 3D și alternativă 2D care combină curse enduro, motocross și trial, cu adversari AI, ghost și provocare zilnică.","genre":["Racing","Sports","Arcade"],"gamePlatform":["Web browser","Mobile","Desktop"],"inLanguage":["ro","en"],"applicationCategory":"Game","operatingSystem":"Any","isAccessibleForFree":true,"author":{"@type":"Person","name":"Laura Andreea"},"accessibilityFeature":["highContrastDisplay","largePrint","alternativeText","reducedMotion"],"accessibilityControl":["fullKeyboardControl","fullTouchControl","fullMouseControl"],"offers":{"@type":"Offer","price":"0","priceCurrency":"RON"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,700;1,9..144,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap">
@@ -524,6 +525,7 @@ kbd{font-family:var(--f-mono);font-size:.8rem;padding:2px 6px;border-radius:6px;
 </div>
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js"}}</script>
+<script src="./expedition-core.js"></script>
 <script>
 (async()=>{
 /* Three.js as an ES module via the import map; if it fails or hangs, the game boots in classic 2D */
@@ -668,7 +670,7 @@ SV.set=Object.assign(JSON.parse(JSON.stringify(DEF_SET)),SV.set||{});
 if(SV.set.vib===false&&SV.set.vibL===1)SV.set.vibL=0;
 SV.school=SV.school||{};SV.evt=SV.evt||{};SV.shop=SV.shop||{liv:['solid'],helm:['solid'],fx:['dust']};SV.rew=SV.rew||{day:null,streak:0,rank:1,ach:{}};
 let S=SV.set;
-function save(){try{localStorage.setItem(SKEY,JSON.stringify(SV))}catch(e){try{SV.ghosts={};SV.gOrder=[];localStorage.setItem(SKEY,JSON.stringify(SV))}catch(_){}}}
+function save(){try{localStorage.setItem(SKEY,JSON.stringify(SV));return true}catch(e){console.warn('Progress could not be saved',e);const el=document.querySelector('#sr');if(el)el.textContent=S&&S.lang==='en'?'Storage unavailable. Export a backup.':'Salvarea nu este disponibilă. Exportă un backup.';return false}}
 
 /* ================= data ================= */
 // surfaces: g = grip, d = rolling drag per second, c = top color, m = texture mark (so surface is not told by color alone)
@@ -765,10 +767,10 @@ const ACHS=['first','win','flip','air','wh','km','trial','hill','reg','gold','ch
 const DIFFSKILL=[.66,.77,.87,.95];
 
 function bikeStats(id){
- const B=BIKES.find(b=>b.id===id)||BIKES[0]; const u=(SV.bikes[id]&&SV.bikes[id].up)||{}; const arc=S.phys==='arcade';
- return {id,acc:760*B.pw*(1+.07*(u.eng||0)),vmax:B.vm*(1+.035*(u.eng||0)),grip:B.gr*(1+.05*(u.tire||0))*(arc?1.1:1),
-  susp:Math.max(.12,B.su-.02*(u.susp||0)),brk:1500*(1+.12*(u.brk||0)),leanA:640*B.hd*(arc?1.15:1),leanG:980*B.hd*(arc?1.15:1),
-  wheelie:160*B.pw,fuel:B.fuel,headR:arc?8:11,land:(arc?.55:.35)+.03*(u.susp||0)};
+ const B=BIKES.find(b=>b.id===id)||BIKES[0]; const u=(SV.bikes[id]&&SV.bikes[id].up)||{}; const arc=S.phys==='arcade';const tune=SV.expedition&&SV.expedition.tuning&&SV.expedition.tuning[id]||{};const pressure=clamp(Number(tune.pressure)||1,.7,1.3),spring=clamp(Number(tune.spring)||1,.7,1.3);
+ return {id,acc:760*B.pw*(1+.07*(u.eng||0)),vmax:B.vm*(1+.035*(u.eng||0))*(.9+.1*pressure),grip:B.gr*(1+.05*(u.tire||0))*(arc?1.1:1)*(1.2-.2*pressure),
+  susp:Math.max(.12,(B.su-.02*(u.susp||0))/spring),brk:1500*(1+.12*(u.brk||0)),leanA:640*B.hd*(arc?1.15:1),leanG:980*B.hd*(arc?1.15:1),
+  wheelie:160*B.pw,fuel:B.fuel,headR:arc?8:11,land:(arc?.55:.35)+.03*(u.susp||0)+.1*(1-spring)};
 }
 const level=xp=>Math.floor(Math.sqrt(xp/120))+1;
 const lvlXp=l=>(l-1)*(l-1)*120;
@@ -777,7 +779,7 @@ const lvlXp=l=>(l-1)*(l-1)*120;
 const AU={c:null,m:null,e:null,mt:0,step:0,
  init(){try{if(!this.c){const C=window.AudioContext||window.webkitAudioContext;if(!C)return;this.c=new C();this.m=this.c.createGain();this.m.connect(this.c.destination)}if(this.c.state==='suspended')this.c.resume()}catch(e){this.c=null}},
  engOn(){if(!this.c||this.e)return;const c=this.c,o1=c.createOscillator(),o2=c.createOscillator(),f=c.createBiquadFilter(),g=c.createGain();o1.type='sawtooth';o2.type='square';f.type='lowpass';f.frequency.value=700;g.gain.value=0;o1.connect(f);o2.connect(f);f.connect(g);g.connect(this.m);o1.start();o2.start();this.e={o1,o2,f,g}},
- engSet(rpm,load){if(!this.e)return;const n=this.c.currentTime,fr=34+rpm*92;this.e.o1.frequency.setTargetAtTime(fr,n,.04);this.e.o2.frequency.setTargetAtTime(fr*.5+3,n,.04);this.e.f.frequency.setTargetAtTime(380+load*1500+rpm*300,n,.06);this.e.g.gain.setTargetAtTime((.03+load*.055)*S.vEng,n,.06)},
+ engSet(rpm,load){if(!this.e)return;const n=this.c.currentTime,kind=SV.sel,fr=(kind==='volt'?95:kind==='rally'?29:kind==='trial'?43:34)+rpm*(kind==='volt'?180:kind==='cross'?115:92);this.e.o1.type=kind==='volt'?'sine':kind==='trial'?'triangle':'sawtooth';this.e.o1.frequency.setTargetAtTime(fr,n,.04);this.e.o2.frequency.setTargetAtTime(fr*.5+3,n,.04);this.e.f.frequency.setTargetAtTime(380+load*1500+rpm*300,n,.06);this.e.g.gain.setTargetAtTime((.03+load*.055)*S.vEng,n,.06)},
  engOff(){if(!this.e)return;const e=this.e;this.e=null;try{e.g.gain.setTargetAtTime(0,this.c.currentTime,.04);setTimeout(()=>{try{e.o1.stop();e.o2.stop()}catch(_){}},300)}catch(_){}},
  tone(f,d=.12,type='sine',v=.2,slide=0){if(!this.c||S.vSfx<=0)return;const c=this.c,n=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f,n);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),n+d);g.gain.setValueAtTime(v*S.vSfx,n);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.connect(g);g.connect(this.m);o.start(n);o.stop(n+d+.03)},
  noise(d=.2,v=.3,fq=800){if(!this.c||S.vSfx<=0)return;const c=this.c,n=c.currentTime,len=Math.floor(c.sampleRate*d),b=c.createBuffer(1,len,c.sampleRate),a=b.getChannelData(0);for(let i=0;i<len;i++)a[i]=(Math.random()*2-1)*(1-i/len);const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=b;f.type='bandpass';f.frequency.value=fq;g.gain.value=v*S.vSfx;s.connect(f);f.connect(g);g.connect(this.m);s.start(n)},
@@ -815,6 +817,9 @@ function makeGen(tr,seed,ri,kind,k0,endless,opt){opt=opt||{};
  const pick=()=>{let tot=0;for(const k in feats)tot+=feats[k];let r=R()*tot;for(const k in feats){r-=feats[k];if(r<=0)return k}return'flat'};
  const coinsAlong=(i0,i1,dy)=>{const n=4;for(let j=0;j<n;j++){const x=lerp(i0,i1,(j+.5)/n)*STEP;tr.pick.push({x,dy,ty:'c',got:0})}};
  const F={
+  roots(k){const n=ri2(30,50);for(let i=0;i<n;i++)P(h-Math.abs(Math.sin(i*.65))*7*k,8)},
+  bridge(k){const n=ri2(70,100);for(let i=0;i<n;i++)P(h-18*k*Math.sin(Math.PI*i/n),8)},
+  stairs(k){const n=4;for(let j=0;j<n;j++){h-=12*k;for(let i=0;i<14;i++)P(h,2)}},
   flat(){const n=ri2(12,30);for(let i=0;i<n;i++)P(h)},
   hill(k){const n=ri2(40,90),a=(18+R()*45)*k;for(let i=1;i<=n;i++)P(h-a*Math.sin(Math.PI*i/n))},
   climb(k){const n=ri2(60,130),dh=-(50+R()*110)*k*(kind==='hill'?1.25:1),h0=h;for(let i=1;i<=n;i++)P(h0+dh*(1-Math.cos(Math.PI*i/n))/2+(base===2?(R()-.5)*3*k:0));h=h0+dh},
@@ -835,7 +840,7 @@ function makeGen(tr,seed,ri,kind,k0,endless,opt){opt=opt||{};
  return {extend(toX){
   while(tr.len<toX){
    const k=endless?Math.min(1.9,k0+tr.len/36000):k0;
-   const f=opt.seq?(opt.seq[si++]||'flat'):pick();(F[f]||F.flat)(k);if(opt.seq&&si<=opt.seq.length)tr.marks.push(tr.len);
+   const stage=opt.stages&&opt.stages[si];const f=opt.seq?(opt.seq[opt.repeat?si++%opt.seq.length:si++]||'flat'):pick();const first=tr.sf.length;(F[f]||F.flat)(k*(stage?stage.grade:1));if(stage&&stage.surface!=null)for(let j=first;j<tr.sf.length;j++)tr.sf[j]=stage.surface;if(opt.seq&&si<=opt.seq.length)tr.marks.push(tr.len);
    const g=ri2(6,14);for(let i=0;i<g;i++)P(h);
    if(R()<.25){const i0=tr.ys.length-g;coinsAlong(i0,tr.ys.length,-38)}
    while(nextCp<tr.len){tr.cps.push(nextCp);nextCp+=cpGap}
@@ -876,20 +881,20 @@ function headHit(p,tr,r){const ys=tr.ys,n=ys.length;const i0=Math.max(0,Math.flo
  for(let i=i0;i<i1;i++){const x1=i*STEP,y1=ys[i],dy=ys[i+1]-y1,ll=STEP*STEP+dy*dy;let u=((p.x-x1)*STEP+(p.y-y1)*dy)/ll;u=clamp(u,0,1);const ex=p.x-(x1+STEP*u),ey=p.y-(y1+dy*u);if(ex*ex+ey*ey<r*r)return true;if(p.y>tr.gy(p.x))return true}return false}
 function bikeAng(b){const[R,F]=b.pts;return Math.atan2(F.y-R.y,F.x-R.x)}
 function bikeStep(b,tr,inp,h,env){
- const P=b.pts,[R,F,C,H]=P,st=b.st;
+ const P=b.pts,[R,F,C,H]=P,st=b.st;const gearCap=EX&&EX.settings.manual?st.vmax*(.3+ceGear*.14):st.vmax;
  let ax=F.x-R.x,ay=F.y-R.y;const L=Math.hypot(ax,ay)||1;ax/=L;ay/=L;const nx=-ay,ny=ax;
  const grounded=!!(b.cR||b.cF);
  for(const p of P)p.vy+=GRAV*h;
  if(!b.crashed){
   const gm=env.grip;
   if(b.cR){const n=b.cR,tx=-n.y,ty=n.x,s=SURF[n.s],grip=s.g*st.grip*gm;let vt=R.vx*tx+R.vy*ty,dv=0;
-   if(inp.thr>0&&env.fuel>0){if(vt<st.vmax)dv+=Math.min(st.acc*5*Math.min(1.15,grip)*inp.thr*h,st.vmax-vt);b.spin=grip<.75?inp.thr:0}else b.spin=0;
-   if(inp.brk>0){if(vt>18)dv-=Math.min(vt,st.brk*2.5*Math.min(1,grip)*h*inp.brk);else if(vt>-150&&!inp.hold)dv-=st.acc*1.6*h*inp.brk}
+   if(inp.thr>0&&env.fuel>0){if(vt<gearCap)dv+=Math.min(st.acc*5*Math.min(1.15,grip)*inp.thr*h,gearCap-vt);b.spin=grip<.75?inp.thr:0}else b.spin=0;
+   if(inp.brk>0){if(vt>18)dv-=Math.min(vt,st.brk*4*(1-(inp.front??.38))*Math.min(1,grip)*h*inp.brk);else if(vt>-150&&!inp.hold)dv-=st.acc*1.6*h*inp.brk}
    dv-=vt*s.d*h;R.vx+=tx*dv;R.vy+=ty*dv;
    if(inp.thr>0&&env.fuel>0){const ang0=Math.atan2(ay,ax),w=st.wheelie*inp.thr*h*clamp(1+ang0/.7,0,1);F.vx-=nx*w;F.vy-=ny*w;R.vx+=nx*w*.3;R.vy+=ny*w*.3}}
   if(b.cR&&b.cR.x<-.45&&inp.thr>0){const lift=(S.phys==='arcade'?1300:800)*h;R.vy-=lift}
   if(b.cF&&b.cF.x<-.45&&(inp.thr>0||inp.lean<0)){const lift=(S.phys==='arcade'?1500:900)*h;F.vy-=lift;F.vx+=lift*.2}
-  if(b.cF){const n=b.cF,tx=-n.y,ty=n.x,s=SURF[n.s];let vt=F.vx*tx+F.vy*ty,dv=-vt*s.d*h;if(inp.brk>0&&vt>18)dv-=Math.min(vt,st.brk*1.5*h*inp.brk);F.vx+=tx*dv;F.vy+=ty*dv}
+  if(b.cF){const n=b.cF,tx=-n.y,ty=n.x,s=SURF[n.s];let vt=F.vx*tx+F.vy*ty,dv=-vt*s.d*h;if(inp.brk>0&&vt>18)dv-=Math.min(vt,st.brk*4*(inp.front??.38)*h*inp.brk);F.vx+=tx*dv;F.vy+=ty*dv}
   let lean=inp.lean;
   const ang=Math.atan2(ay,ax),om=((F.vx-R.vx)*nx+(F.vy-R.vy)*ny)/L;
   if(env.assist>0&&Math.abs(inp.lean)<.1&&!grounded){const gx=(R.x+F.x)/2;const ta=Math.atan2(tr.gy(gx+60)-tr.gy(gx-20),80);let e=ta-ang;e=Math.atan2(Math.sin(e),Math.cos(e));lean=clamp(e*2.2-om*.6,-1,1)*(env.assist===2?1:.75)}
@@ -899,7 +904,7 @@ function bikeStep(b,tr,inp,h,env){
   if(grounded&&(S.phys==='arcade'||env.assist>0)&&inp.lean>=-.1){const ga=Math.atan2(tr.gy(F.x)-tr.gy(R.x),Math.max(1,F.x-R.x)),rel=ang-ga;if(rel>.6)lean=Math.min(lean,-Math.min(1,(rel-.6)*4+(om>0?om*.4:0)))}
   const k=(grounded?st.leanG:st.leanA)*lean*h;F.vx+=nx*k;F.vy+=ny*k;R.vx-=nx*k;R.vy-=ny*k;
   H.vx+=ax*lean*140*h;H.vy+=ay*lean*140*h;
-  const damp=(grounded?1.4:.35)*h,dvw=om*L*.5*damp;F.vx-=nx*dvw;F.vy-=ny*dvw;R.vx+=nx*dvw;R.vy+=ny*dvw;
+  const damp=(grounded?1.4+st.susp:.35)*h,dvw=om*L*.5*damp;F.vx-=nx*dvw;F.vy-=ny*dvw;R.vx+=nx*dvw;R.vy+=ny*dvw;
  }
  for(const p of P){const sp=Math.hypot(p.vx,p.vy);if(sp>2600){p.vx*=2600/sp;p.vy*=2600/sp}p.ox=p.x;p.oy=p.y;p.x+=p.vx*h;p.y+=p.vy*h}
  let cR=null,cF=null;
@@ -925,7 +930,7 @@ function aiStep(a,tr,dt,vref,R){
  let tgt=vref*a.skill*a.boost*(a.style==='aggr'?1.03:a.style==='careful'?.97:1);
  if(sl<0)tgt*=1-Math.min(.62,-sl*.95*(a.style==='tech'?.8:1));else tgt*=1+Math.min(.14,sl*.3);
  tgt*=.42+.58*Math.min(1,s.g);tgt*=1-Math.min(.55,s.d*.35);
- const te=tr.techAt(x);tgt*=1-te*(a.style==='tech'?.32:a.style==='jump'?.5:.58);
+ const te=Math.max(tr.techAt(x),tr.techAt(x+(a.style==='careful'?220:a.style==='tech'?150:80))*.85);tgt*=1-te*(a.style==='tech'?.32:a.style==='jump'?.5:.58);
  if(a.mist>0){a.mist-=dt;tgt*=.28}else if(R()<dt*a.err*(.25+te*2.2))a.mist=.5+R()*1.1;
  if(!a.air)a.v+=clamp(tgt-a.v,-900*dt,430*dt);
  a.x+=a.v*dt/Math.sqrt(1+sl*sl);
@@ -954,17 +959,17 @@ function modeName(m){return t('m_'+m)}
 function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function dailyOpts(){const ds=todayStr(),sd=hashStr('ce-'+ds);return{mode:'tt',r:sd%8,seed:sd,diff:1,opp:0,w:['c','r','f','c','s'][sd%5],tod:['d','u','d','n'][(sd>>>3)%4],key:'daily-'+ds,daily:ds}}
 function trackKey(o){return o.key||(o.ev?'ev-'+o.ev:o.mode+'-'+o.r+'-'+o.seed.toString(36)+'-'+o.w+o.tod)}
-function chCode(o){return'CE-'+o.mode+'-'+o.r+'-'+o.seed.toString(36)+'-'+o.w+o.tod}
-function parseCode(c){const m=/^CE-([a-z]+)-(\d)-([0-9a-z]+)-([crfsl])([dun])$/i.exec(c.trim());if(!m||!MODES.includes(m[1].toLowerCase()))return null;return{mode:m[1].toLowerCase(),r:+m[2],seed:parseInt(m[3],36),diff:1,opp:3,w:m[4].toLowerCase(),tod:m[5].toLowerCase()}}
+function chCode(o){if(o.course||o.discipline)return 'CE2-'+btoa(unescape(encodeURIComponent(JSON.stringify({mode:o.mode,r:o.r,seed:o.seed,diff:o.diff,opp:o.opp,w:o.w,tod:o.tod,route:o.route||0,discipline:o.discipline||'',...(o.course?{course:o.course}:{})})))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');return'CE-'+o.mode+'-'+o.r+'-'+o.seed.toString(36)+'-'+o.w+o.tod}
+function parseCode(c){if(typeof c!=='string'||c.length>24000)return null;if(c.startsWith('CE2-')){try{let raw=c.slice(4).replace(/-/g,'+').replace(/_/g,'/');const o=JSON.parse(decodeURIComponent(escape(atob(raw))));if(!o||!['race','tt','trial','duel'].includes(o.mode)||!Number.isInteger(o.r)||o.r<0||o.r>7||!Number.isInteger(o.seed)||o.seed<0||o.seed>4294967295||!['c','r','f','s','l'].includes(o.w)||!['d','u','n'].includes(o.tod))return null;if(o.discipline&&!ceDisc[o.discipline])return null;return {mode:o.mode,r:o.r,seed:o.seed,diff:Math.floor(clamp(Number.isFinite(o.diff)?o.diff:1,0,3)),opp:Math.floor(clamp(Number(o.opp)||0,0,5)),w:o.w,tod:o.tod,route:Math.floor(clamp(Number(o.route)||0,0,2)),discipline:o.discipline||'',...(o.course?{course:CE.course(o.course)}:{})}}catch{return null}}const m=/^CE-([a-z]+)-(\d)-([0-9a-z]+)-([crfsl])([dun])$/i.exec(c.trim());if(!m||!MODES.includes(m[1].toLowerCase())||+m[2]>7||parseInt(m[3],36)>4294967295)return null;return{mode:m[1].toLowerCase(),r:+m[2],seed:parseInt(m[3],36),diff:1,opp:3,w:m[4].toLowerCase(),tod:m[5].toLowerCase()}}
 
 function startRace(o){
- AU.init();
- const mc=o.school?{L:0}:MCFG[o.mode];const tr=new Track();
+ o=cePrepare(o);AU.init();
+ const mc=o.school?{L:0}:{...MCFG[o.mode]};if(o.discipline&&ceDisc[o.discipline])mc.L=ceDisc[o.discipline][3];if(o.course)mc.L=400+o.course.segments.length*1100;const tr=new Track();
  const k0=o.ev?.75+o.lvl*.1:[.8,1,1.15,1.3][o.diff]||1;
  const les=o.school?LESSONS.find(l=>l.id===o.school):null;
- const gen=makeGen(tr,o.seed,o.r,o.mode,o.mode==='trial'?1.15:les?.85:k0,!!mc.endless,{puddles:o.w==='r',seq:les&&les.seq});
+ const routeSeq=o.discipline?(o.discipline==='precision'?['flat','table','table','table','table','flat']:o.route===0?['flat','hill','bridge','flat','table','descend']:o.route===1?['table','whoops','flat','drop','table']:['roots','logs','stairs','rocks','climb','steps']):null;const gen=makeGen(tr,o.seed,o.r,o.mode,o.mode==='trial'?1.15:les?.85:k0,!!mc.endless,{puddles:o.w==='r',repeat:!!routeSeq&&!o.course,seq:o.course?o.course.segments.map(s=>s.kind):les&&les.seq||routeSeq,stages:o.course&&o.course.segments});
  if(mc.endless)gen.extend(7000);else gen.finishAt(les?les.L:mc.L);
- if(les&&les.zone)tr.zones=[{x0:les.zone[0],x1:les.zone[1]}];
+ if(o.course)ceApplyProfile(tr,o.course);if(les&&les.zone)tr.zones=[{x0:les.zone[0],x1:les.zone[1]}];
  if(o.theme){let k=0;for(const p of tr.pick){if(p.ty!=='c')continue;if(o.mode==='collect'||k%2===0)p.ty='e';k++}
   if(o.mode==='collect'){const R2=rng(o.seed^77);for(let x=900;x<tr.finish-300;x+=420+R2()*380)tr.pick.push({x,dy:-36-R2()*40,ty:'e',got:0})}}
  G.tr=tr;G.gen=gen;G.opts=o;G.mc=mc;
@@ -978,7 +983,7 @@ function startRace(o){
  else if(mc.ai&&!les){const n=o.mode==='elim'?Math.max(3,o.opp||5):(o.opp??3);for(let i=0;i<n;i++){const base=o.ev?.67+o.lvl*.03:DIFFSKILL[o.diff];G.ais.push(newAI(i,base+(sr()-.5)*.08+(i===0?.03:0),STYLES[Math.floor(sr()*4)],AINAMES[(i+o.r)%8],AICOL[(i+o.r)%8],10+Math.floor(sr()*89)))}}
  for(const a of G.ais)a.y=tr.gy(a.x)-WR;
  // ghost
- const key=trackKey(o);G.key=key;G.ghost=(mc.ghost||o.mode==='trial'||o.daily)&&SV.ghosts[key]?SV.ghosts[key]:null;
+ const key=trackKey(o)+'-v2-'+CE.signature(ceRules(o));G.key=key;G.ghost=(mc.ghost||o.mode==='trial'||o.daily)&&SV.ghosts[key]?SV.ghosts[key]:null;
  // pars
  G.par=null;if(o.mode==='tt'||o.mode==='trial'){const f=o.mode==='trial'?.55:1;G.par={g:simTime(tr,.9*f),s:simTime(tr,.8*f),b:simTime(tr,.7*f)};if(o.mode==='trial')G.par.limit=G.par.b*1.6}
  // env
@@ -987,7 +992,7 @@ function startRace(o){
  hideScreens();$('#hud').hidden=false;updateTouchVis();$('#results').hidden=true;$('#pause').hidden=true;
  $('#hFuel').hidden=!mc.fuel;
  buildProg();AU.engOn();AU.ambOn();buildGuide();$('#hud').classList.toggle('lesson',!!les);$('#msg').textContent='';msgTimer=0;$('#stunt').textContent='';
- sr_('' + modeName(o.mode)+', '+regionName(o.r));
+ ceOnStart(o);sr_('' + modeName(o.mode)+', '+regionName(o.r));
 }
 function buildProg(){const p=$('#hProg');p.innerHTML='<div class="fill" id="hFill"></div>';const tr=G.tr;if(!isFinite(tr.finish)){p.style.visibility='hidden';return}p.style.visibility='';
  for(const c of tr.cps){const d=document.createElement('div');d.className='cpm';d.style.left=(c/tr.finish*100)+'%';p.appendChild(d)}
@@ -996,11 +1001,11 @@ function buildProg(){const p=$('#hProg');p.innerHTML='<div class="fill" id="hFil
 
 function respawn(){const b=G.bike;placeBike(b,G.tr,G.respX);G.state=G.state==='crash'?'race':G.state;G.stuckT=0}
 function doCrash(){
- if(G.bike.crashed)return;G.bike.crashed=1.3;G.crashes++;G.jumpStreak=0;SV.stats.crashes++;AU.crash();vib(120);if(S.shake&&!S.reduce)G.cam.shake=10;
+ if(G.bike.crashed)return;if(ceRun&&ceRun.shield){ceRun.shield=false;placeBike(G.bike,G.tr,G.respX);showMsg(ceL('Scut folosit','Shield used'));return}G.bike.crashed=1.3;G.crashes++;G.jumpStreak=0;SV.stats.crashes++;AU.crash();vib(120);if(S.shake&&!S.reduce)G.cam.shake=10;
  showMsg(t('crash'));sr_(t('crash_sr'));
  if(G.opts.mode==='trial'){G.faults+=5;G.secFault+=5}
- if(G.opts.mode==='hill'){setTimeout(()=>{if(G.state!=='attract'&&!G.done)endRun(false)},900);G.bike.crashed=99;return}
- if(G.opts.mode==='surv'){G.lives--;if(G.lives<=0){setTimeout(()=>{if(!G.done)endRun(false)},900);G.bike.crashed=99;return}showMsg(t('crash'),t('lives_left',{n:G.lives}))}
+ if(G.opts.mode==='hill'){const run=ceSeq;setTimeout(()=>{if(run===ceSeq&&G.state!=='attract'&&!G.done)endRun(false)},900);G.bike.crashed=99;return}
+ if(G.opts.mode==='surv'){G.lives--;if(G.lives<=0){const run=ceSeq;setTimeout(()=>{if(run===ceSeq&&!G.done)endRun(false)},900);G.bike.crashed=99;return}showMsg(t('crash'),t('lives_left',{n:G.lives}))}
 }
 let msgTimer=0;function showMsg(a,b){const m=$('#msg');m.innerHTML='';m.append(a);if(b){const s=document.createElement('small');s.textContent=b;m.appendChild(s)}msgTimer=1.6}
 let stuntTimer=0;function showStunt(txt){$('#stunt').textContent=txt;stuntTimer=1.3}
@@ -1015,11 +1020,11 @@ function readInput(){
  if(gp){const b=gp.buttons;thr=Math.max(thr,b[7]?b[7].value:0,b[0]&&b[0].pressed?1:0);brk=Math.max(brk,b[6]?b[6].value:0,b[1]&&b[1].pressed?1:0);const x=gp.axes[0]||0;if(Math.abs(x)>.2)lean+=x;
   const st=b[9]&&b[9].pressed;if(st&&!padPause&&(G.state==='race'||G.state==='count'))togglePause();padPause=st;if(b[3]&&b[3].pressed&&G.state==='race'&&!G.bike.crashed)respawn()}
  if(S.autoThr||S.simple)thr=brk>0?0:1;
- return{thr:clamp(thr,0,1),brk:clamp(brk,0,1),lean:clamp(lean,-1,1)};
+ return ceInput({thr:clamp(thr,0,1),brk:clamp(brk,0,1),lean:clamp(lean,-1,1)});
 }
 
 function update(dt){
- const o=G.opts,tr=G.tr,b=G.bike;
+ dt=ceBefore(dt);const o=G.opts,tr=G.tr,b=G.bike;
  if(G.state==='count'){const c=Math.ceil(G.cd);if(c!==G.lastCd&&c>0&&c<=3){G.lastCd=c;showCd(c);AU.beep(false);hap('tick')}G.cd-=dt;if(G.cd<=0){G.state='race';showCd(t('go'));AU.beep(true);hap('go');setTimeout(()=>showCd(''),600);if(o.tut)showMsg(t('tut1'))}}
  const sdt=dt*S.speed;let inp=G.state==='race'&&!b.crashed&&!G.done?readInput():{thr:0,brk:G.state==='count'?1:0,lean:0,hold:1};
  if(G.done)inp={thr:0,brk:.6,lean:0,hold:1};
@@ -1057,11 +1062,11 @@ function update(dt){
  // stuck hint
  if(G.state==='race'&&!G.done&&!b.crashed&&!G.mc.fuel){const sp=Math.hypot(R.vx,R.vy);if(sp<15){G.stuckT+=sdt;if(G.stuckT>6){G.stuckT=-4;showMsg(t('stuck'))}}else if(G.stuckT>0)G.stuckT=0}
  // AI
- if(G.state==='race'){const R2=Math.random;for(const a of G.ais){if(S.adaptive&&!a.done){const gap=a.x-px;a.boost=gap>700?.92:gap<-700?1.06:1}aiStep(a,tr,sdt,660,R2);if(!a.done&&a.x>=tr.finish){a.done=true;a.time=G.t}}
+ if(G.state==='race'){const R2=Math.random;for(const a of G.ais){if(S.adaptive&&!a.done){const gap=a.x-px;a.boost=gap>700?.92:gap<-700?1.06:1}aiStep(a,tr,sdt,660*Math.min(1,G.env.grip),R2);if(!a.done&&a.x>=tr.finish){a.done=true;a.time=G.t}}
   if(G.mc.elim&&!G.done){G.elimT-=sdt;if(G.elimT<=0){G.elimT=G.mc.elim;eliminate()}}}
  // finish & limits
  if(!G.done&&G.state==='race'){
-  if(px>=tr.finish)finishRace();
+  if(px>=tr.finish){if(ceCanFinish())finishRace();else{showMsg(ceL('Obiectiv incomplet','Objective incomplete'));endRun(false)}}
   if(G.mc.limit&&G.t>=G.mc.limit){showMsg(t('time_up'));endRun(true)}
  }
  // ghost record
@@ -1079,13 +1084,14 @@ function update(dt){
  camFollow(C.x,C.y,R.vx,R.vy,dt);
  // engine
  const spd=Math.hypot(R.vx,R.vy);AU.ambSet(spd,o.w==='r');AU.engSet(clamp(spd/b.st.vmax,0,1.1)+(b.spin||0)*.4+(grounded?0:inp.thr*.5),inp.thr*(G.env.fuel>0?1:0));
+ ceTick(sdt);
  // tutorial hints
  if(o.tut&&G.state==='race'){const s=G.t<5?1:G.t<10?2:G.t<15?3:G.t<20?4:0;if(s&&s!==G.tutStep){G.tutStep=s;showMsg(t('tut'+s))}}
 }
 function eliminate(){const act=[{me:1,x:G.bike.pts[0].x}];G.ais.forEach(a=>{if(!a.out&&!a.done)act.push({a,x:a.x})});if(act.length<=1)return;act.sort((p,q)=>p.x-q.x);const last=act[0];
  if(last.me){showMsg(t('you_out'));endRun(true,act.length);return}last.a.out=true;showMsg(t('elim_out',{n:last.a.name}));sr_(t('elim_out',{n:last.a.name}));
  if(act.length===2){finishRace(1)}}
-function camFollow(x,y,vx,vy,dt){const c=G.cam;const la=S.reduce?60:clamp(vx*.28,-120,240);const tx=x+la,ty=y-40+(S.reduce?0:clamp(vy*.06,-40,80));const k=1-Math.exp(-dt*(S.reduce?3:5));c.x+=(tx-c.x)*k;c.y+=(ty-c.y)*k;
+function camFollow(x,y,vx,vy,dt){const c=G.cam;const la=S.reduce?60:clamp(vx*.28,-120,240);const tx=x+la,ty=y-40+(S.reduce?0:clamp(vy*.06,-40,80));const k=1-Math.exp(-dt*(S.reduce?3:(EX?EX.settings.camera:5)));c.x+=(tx-c.x)*k;c.y+=(ty-c.y)*k;
  let z=Math.min(W/(W<H?500:760),H/460);if(!S.reduce)z*=1-Math.min(Math.hypot(vx,vy)/900,1)*.12;c.z+=(z-c.z)*Math.min(1,dt*2);
  if(c.shake>0){c.sx=(Math.random()-.5)*c.shake;c.sy=(Math.random()-.5)*c.shake;c.shake=Math.max(0,c.shake-dt*30)}else{c.sx=c.sy=0}}
 function partCol(s){return s.k==='mud'?'#5a3e28':s.k==='water'?'#9cd3ff':s.k==='sand'?'#e2c088':s.k==='snow'||s.k==='ice'?'#ffffff':s.k==='ash'?'#6b6266':s.k==='rock'?'#a3a7ae':'#9a7350'}
@@ -1094,8 +1100,8 @@ function burst(x,y,s,n){for(let i=0;i<n;i++)spawnPart(x+(Math.random()-.5)*60,y-
 function updParts(dt){for(const p of G.parts){p.vy+=600*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt}G.parts=G.parts.filter(p=>p.life>0)}
 
 function racePosition(){const px=G.bike.pts[0].x;let pos=1;for(const a of G.ais){if(a.out)continue;if(a.done||a.x>px)pos++}return pos}
-function finishRace(forcePos){if(G.done)return;if(G.les){lessonTick(true);if(G.done)return}G.done=true;AU.fin();hap('finish');showMsg(t('finish'),fmtT(G.t));sr_(t('finish')+' '+fmtT(G.t));setTimeout(()=>results(true,forcePos),1200)}
-function endRun(fin,pos){if(G.done)return;G.done=true;setTimeout(()=>results(fin,pos),1200)}
+function finishRace(forcePos){if(G.done)return;if(G.les){lessonTick(true);if(G.done)return}G.done=true;AU.fin();hap('finish');showMsg(t('finish'),fmtT(G.t));sr_(t('finish')+' '+fmtT(G.t));const run=ceSeq;setTimeout(()=>{if(run===ceSeq&&G.state!=='attract')results(true,forcePos)},1200)}
+function endRun(fin,pos){if(G.done)return;G.done=true;const run=ceSeq;setTimeout(()=>{if(run===ceSeq&&G.state!=='attract')results(fin,pos)},1200)}
 
 
 /* ================= riding school ================= */
@@ -1124,7 +1130,7 @@ function buildGuide(){const g=$('#guide');$$('.tb.hint').forEach(e=>e.classList.
  if(cur)sr_(t('o_'+cur))}
 /* ================= results ================= */
 function results(fin,forcePos){
- AU.engOff();AU.ambOff();const o=G.opts,m=o.mode;let pos=forcePos||0;
+ if(ceRun&&ceRun.claimed)return;AU.engOff();AU.ambOff();const o=G.opts,m=o.mode;let pos=forcePos||0;
  if(o.school)return lessonResults(fin);
  if(G.mc.ai&&!pos){if(m==='elim'){const alive=G.ais.filter(a=>!a.out);pos=1+alive.filter(a=>a.done&&a.time<G.t||!a.done&&a.x>G.bike.pts[0].x).length}else pos=racePosition()}
  const dist=Math.round((G.maxX-120)/PXM);const alt=Math.round((G.startY-G.tr.gy(G.maxX))/PXM);
@@ -1142,8 +1148,8 @@ function results(fin,forcePos){
  else if(m==='collect'){const r=G.itemTotal?G.items/G.itemTotal:0;med=r>=.85?3:r>=.6?2:r>=.35?1:0}
  // objectives
  const objs=[[t('obj_noc'),G.crashes===0&&(fin||score),50],[t('obj_land'),G.cleanL>=3,40],[t('obj_coin'),G.coinTotal>0&&G.coins>=G.coinTotal*.8,30]];
- let coins=m==='free'?0:25+med*35+G.coins*5+Math.floor(G.stunt/60)+(pos===1?40:0);for(const ob of objs)if(ob[1])coins+=ob[2];
- const xp=m==='free'?Math.floor(dist/10):30+med*25+Math.floor(dist/12)+G.flips*10;
+ let coins=m==='free'||o.practice||o.editorTest?0:25+med*35+G.coins*5+Math.floor(G.stunt/60)+(pos===1?40:0);for(const ob of objs)if(ob[1]&&!o.practice&&!o.editorTest)coins+=ob[2];
+ const xp=o.practice||o.editorTest?0:m==='free'?Math.floor(dist/10):30+med*25+Math.floor(dist/12)+G.flips*10;
  const lv0=level(SV.xp);SV.coins+=coins;SV.earned+=coins;SV.xp+=xp;SV.stats.races++;if(pos===1&&G.ais.length)SV.stats.wins++;
  // career
  let prevBest=null,isRec=false;
@@ -1152,14 +1158,14 @@ function results(fin,forcePos){
   if(o.live&&!st.rew&&st.m.every(x=>x>0)){st.rew=true;SV.coins+=600;if(!SV.shop.liv.includes(ev.liv))SV.shop.liv.push(ev.liv);evMsg=t('ev_got',{l:t('liv_'+ev.liv)})}}
  if(o.ev){const c=SV.career[o.ev]||{m:0,b:null};c.m=Math.max(c.m,med);if(fin||score){const better=c.b==null||(score?val>c.b:val<c.b);if(better)c.b=val}SV.career[o.ev]=c}
  // leaderboard + ghost
- if(m!=='free'&&(fin||score)){
+ if(m!=='free'&&!o.practice&&!o.editorTest&&(fin||score)){
   const key=G.key,lb=SV.lb[key]||[];prevBest=lb.length?lb[0].v:null;lb.push({n:S.name||'Pilot',v:score?val:+val.toFixed(2),d:todayStr(),b:SV.sel});lb.sort((a,b)=>score?b.v-a.v:a.v-b.v);SV.lb[key]=lb.slice(0,10);
   isRec=prevBest==null||(score?val>prevBest:val<prevBest);
   SV.lbMeta[key]={mode:m,r:o.r,ev:o.ev||null,daily:o.daily||null,seed:o.seed,w:o.w,tod:o.tod};SV.lbOrder=[key,...SV.lbOrder.filter(k=>k!==key)].slice(0,24);
   if(isRec&&!score&&G.rec.length<14000){SV.ghosts[key]=G.rec;SV.gOrder=[key,...SV.gOrder.filter(k=>k!==key)];while(SV.gOrder.length>6){delete SV.ghosts[SV.gOrder.pop()]}}
   if(o.daily){SV.daily[o.daily]=Math.min(SV.daily[o.daily]||1e9,val)}
  }
- const newAch=checkAch({fin,pos,m});save();
+ const newAch=o.practice||o.editorTest?[]:checkAch({fin,pos,m});save();
  // build dialog
  const d=$('#resBody');d.innerHTML='';
  const h=document.createElement('h2');h.id='h-res';h.textContent=fin||score?t('res_finish'):t('res_over');d.appendChild(h);
@@ -1189,7 +1195,7 @@ function results(fin,forcePos){
  if(m!=='free'&&!o.ev&&!o.event){const c=o.daily?null:chCode(o);mk(t('copy_ch'),'',()=>{const txt=t('ch_text',{m:modeName(m),r:regionName(o.r),v:vtxt,c:c||'—'})+(o.daily?' ('+o.daily+')':'');copyText(txt)})}
  mk(t('menu'),'',()=>goMenu());d.appendChild(bt);
  $('#hud').hidden=true;$('#touch').hidden=true;$('#results').hidden=false;G.state='results';first.focus();
- sr_(h.textContent+'. '+vtxt+'. '+t('med'+med));
+ ceOnResult(fin,pos);sr_(h.textContent+'. '+vtxt+'. '+t('med'+med));
 }
 
 function lessonResults(ok){const o=G.opts,L=G.les.def;let reward=0;
@@ -1201,7 +1207,7 @@ function lessonResults(ok){const o=G.opts,L=G.les.def;let reward=0;
  const bt=document.createElement('div');bt.className='btns';const mk=(txt,cls,fn)=>{const b=document.createElement('button');b.className='btn '+cls;b.textContent=txt;b.onclick=fn;bt.appendChild(b);return b};
  const first=mk(t('retry'),ok?'':'pri',()=>startRace(o));const i=LESSONS.indexOf(L);if(ok&&LESSONS[i+1]){const nb=mk(t('next_les'),'pri',()=>startLesson(LESSONS[i+1]));bt.prepend(nb)}
  mk(t('menu'),'',()=>goMenu());d.appendChild(bt);$('#guide').hidden=true;$$('.tb.hint').forEach(e=>e.classList.remove('hint'));
- $('#hud').hidden=true;$('#touch').hidden=true;$('#results').hidden=false;G.state='results';(bt.querySelector('.pri')||first).focus();sr_(h.textContent)}
+ $('#hud').hidden=true;$('#touch').hidden=true;$('#results').hidden=false;G.state='results';(bt.querySelector('.pri')||first).focus();ceOnResult(ok,0);sr_(h.textContent)}
 function startLesson(L){startRace({mode:L.id==='vsai'?'race':'free',r:L.r,seed:hashStr('les-'+L.id),diff:0,opp:1,w:'c',tod:'d',school:L.id,key:'les-'+L.id})}
 function copyText(txt){const done=()=>toast(t('copied'));try{navigator.clipboard.writeText(txt).then(done,()=>fallbackCopy(txt))}catch(e){fallbackCopy(txt)}}
 function fallbackCopy(txt){const ta=$('#ioText');ta.value=txt;toast(t('copy_fail'));const i=document.createElement('textarea');i.value=txt;i.setAttribute('readonly','');i.style.cssText='width:100%;margin-top:8px';$('#resBody').appendChild(i);i.focus();i.select()}
@@ -1609,7 +1615,7 @@ const R3=(()=>{
   const L=playerLiv(),k=L.c+L.s+L.p+L.h+S.num;if(pv.key!==k){if(pv.b)pv.s.remove(pv.holder);pv.b=makeBike(L,S.num);pv.holder=new T.Group();pv.holder.add(pv.b.g);pv.s.add(pv.holder);pv.key=k;
    pv.b.update({x:0,y:0},{x:WB,y:0},{x:38,y:-30},{x:28,y:-74},0,0,true);pv.b.g.position.set(-WB*SC/2,WR*SC,0)}
   pv.ang+=S.reduce?0:.01;pv.holder.rotation.y=-.5+Math.sin(pv.ang)*.6;pv.r.render(pv.s,pv.c);return true}catch(e){return false}}
- return{ok:true,render,preview,canvas:glc};
+ return{ok:true,render,preview,canvas:glc,project(x,y){const p=V(x,y).project(cam);return{x:(p.x+1)*innerWidth/2,y:(1-p.y)*innerHeight/2,visible:p.z>=-1&&p.z<=1}}};
 })();
 
 /* ================= HUD ================= */
@@ -1639,7 +1645,7 @@ function showCd(v){const e=$('#cd');e.hidden=v==='';e.textContent=v}
 
 /* ================= loop ================= */
 let last=performance.now();
-function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;ceFrame(now);
  try{
   if(G.state==='attract'){if(!S.reduce||!G.attractInit)attractUpdate(dt)}
   else if((G.state==='count'||G.state==='race')&&!G.paused){update(dt);G.hudT-=dt;if(G.hudT<=0){G.hudT=.08;hud()}}
@@ -1647,7 +1653,7 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   if(stuntTimer>0){stuntTimer-=dt;if(stuntTimer<=0)$('#stunt').textContent=''}
   if(!G.paused)AU.music(dt);
   if(R3.ok&&S.gfx!=='2d')R3.render();else render();
-  if(R3.ok&&S.gfx!=='2d'&&!$('#scr-garage').hidden)R3.preview($('#garPv'));
+  if(R3.ok&&S.gfx!=='2d'&&!$('#scr-garage').hidden)R3.preview($('#garPv'));ceDrawMarkers();
  }catch(err){console.error(err)}
  requestAnimationFrame(frame)}
 function attractInit(){const r=Math.floor(Math.random()*8);const o={mode:'race',r,seed:Math.floor(Math.random()*1e9),w:['c','c','f','r','s'][Math.floor(Math.random()*5)],tod:['d','d','u','n'][Math.floor(Math.random()*4)]};
@@ -1657,9 +1663,9 @@ function attractUpdate(dt){if(!G.attractInit||!G.tr||G.bike)attractInit();const 
 
 /* ================= UI ================= */
 const SCREENS=['menu','select','career','garage','records','settings','help','school','events','shop','rewards'];let setReturn='menu';
-function hideScreens(){SCREENS.forEach(s=>$('#scr-'+s).hidden=true)}
+function hideScreens(){if(cePanel)cePanel.hidden=true;SCREENS.forEach(s=>$('#scr-'+s).hidden=true)}
 function show(id){hideScreens();const e=$('#scr-'+id);e.hidden=false;e.scrollTop=0;({menu:buildMenu,select:buildSelect,career:buildCareer,garage:buildGarage,records:buildRecords,settings:buildSettings,help:buildHelp,school:buildSchool,events:buildEvents,shop:buildShop,rewards:buildRewards}[id]||(()=>{}))();const h=e.querySelector('h1,h2');if(h){h.tabIndex=-1;h.focus({preventScroll:true})}}
-function goMenu(){AU.engOff();AU.ambOff();G.les=null;$('#guide').hidden=true;G.state='attract';G.paused=false;G.attractInit=false;G.bike=null;G.done=false;$('#hud').hidden=true;$('#touch').hidden=true;$('#pause').hidden=true;$('#results').hidden=true;showCd('');show('menu')}
+function goMenu(){if(ceStatsSnapshot){SV.stats=ceStatsSnapshot;ceStatsSnapshot=null;}ceSeq++;ceEndReplay();if(ceFriend&&S.name!==ceFriend.original){S.name=ceFriend.original;save()}AU.engOff();AU.ambOff();G.les=null;$('#guide').hidden=true;G.state='attract';G.paused=false;G.attractInit=false;G.bike=null;G.done=false;$('#hud').hidden=true;$('#touch').hidden=true;$('#pause').hidden=true;$('#results').hidden=true;showCd('');show('menu')}
 function coinsTxt(){$$('[data-coins]').forEach(e=>e.textContent='◉ '+SV.coins)}
 function buildMenu(){coinsTxt();const lv=level(SV.xp);$('#mLvl').textContent=t('lvl')+' '+lv;$('#mXp').style.width=clamp((SV.xp-lvlXp(lv))/(lvlXp(lv+1)-lvlXp(lv))*100,0,100)+'%';$('#mCoins').textContent='◉ '+SV.coins;$('#mName').textContent=S.name;$('#mNum').textContent=S.num;
  const d=dailyOpts();const best=SV.daily[d.daily];$('#dailyInfo').textContent=regionName(d.r)+' · '+modeName(d.mode)+(best?' · '+fmtT(best):'');
@@ -1869,11 +1875,228 @@ addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;
 addEventListener('appinstalled',()=>{deferredInstall=null;$('#btnInstall').hidden=true;toast(t('installed'))});
 $('#btnInstall').onclick=async()=>{if(!deferredInstall)return;deferredInstall.prompt();try{await deferredInstall.userChoice}catch(_){}deferredInstall=null;$('#btnInstall').hidden=true};
 if('serviceWorker' in navigator&&document.querySelector('link[rel="manifest"]')&&(location.protocol==='https:'||location.hostname==='localhost')){try{navigator.serviceWorker.register('./sw.js').catch(()=>{})}catch(_){}}
+/* ================= Expedition 2.0: local-first expansion ================= */
+const CE=window.CEExpedition;
+let EX,ceRun=null,ceTab='rides',cePanel,ceStatus,ceDraft=null,ceUndo=[],ceRedo=[],ceTested='',ceFriend=null,ceReplay=null,ceLastFrame=performance.now(),cePowerUntil=0,ceGear=1,ceClutch=false,ceSeq=0;
+const ceL=(ro,en)=>S.lang==='en'?en:ro;
+const ceBaseSave=save;
+function ceSync(){EX=CE.expansion(SV.expedition);SV.expedition=EX;}
+function cePersist(){SV.expedition=EX;save()}
+function ceTune(){return Object.assign({pressure:1,spring:1},EX.tuning[SV.sel]||{})}
+const ceDisc={
+ sprint:['Sprint','Sprint','race',6500],hard:['Hard Enduro','Hard Enduro','trial',14000],precision:['Precizie','Precision','trial',8000],rush:['Checkpoint Rush','Checkpoint Rush','tt',20000],delivery:['Livrare','Delivery','tt',12000],rescue:['Salvare','Rescue','tt',16000],rally:['Rally Raid','Rally Raid','race',15000],rogue:['Expediție','Expedition','race',12000],boss:['Triada campionilor','Champions trilogy','duel',10000],explore:['Explorare','Explore','tt',20000]
+};
+const ceRouteNames=[['Sigură','Safe'],['Rapidă','Fast'],['Tehnică','Technical']];
+function ceButton(label,fn,cls=''){const b=document.createElement('button');b.type='button';b.className='btn '+cls;b.textContent=label;b.onclick=fn;return b}
+function ceEl(tag,txt,cls=''){const e=document.createElement(tag);if(txt!=null)e.textContent=txt;e.className=cls;return e}
+function ceMessage(txt){toast(txt);sr_(txt);if(ceStatus)ceStatus.textContent=txt}
+function ceField(parent,label,opts,value,onchange,type='select'){
+ const wrap=ceEl('label',null,'field');wrap.append(ceEl('span',label,'lbl'));const i=document.createElement(type==='select'?'select':'input');
+ if(type==='select'){for(const [v,n] of opts){const o=document.createElement('option');o.value=v;o.textContent=n;i.append(o)}i.value=String(value);i.onchange=()=>onchange(i.value)}
+ else {i.type=type;i.value=value;if(opts)Object.assign(i,opts);i.onchange=()=>onchange(type==='range'||type==='number'?+i.value:i.value)}wrap.append(i);parent.append(wrap);return i
+}
+function ceCheck(parent,label,key){const w=ceEl('label',null,'row');const i=document.createElement('input');i.type='checkbox';i.checked=!!EX.settings[key];i.onchange=()=>{EX.settings[key]=i.checked;cePersist();ceApply()};w.append(ceEl('span',label,'lbl'),i);parent.append(w)}
+function ceJSON(name,data){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});ceDownload(name,blob)}
+function ceDownload(name,blob){const a=document.createElement('a'),u=URL.createObjectURL(blob);a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),5000)}
+function ceRead(kind,fn){const input=document.createElement('input');input.type='file';input.accept='.json,application/json';input.onchange=async()=>{try{const f=input.files[0];if(!f||f.size>1500000)throw Error();const d=CE.decode(await f.text(),kind);fn(d)}catch{ceMessage(ceL('Fișier invalid sau prea mare. Datele actuale sunt păstrate.','Invalid or oversized file. Current data was kept.'))}};input.click()}
+function ceCard(parent,title,description){const d=ceEl('section',null,'panel ce-stack');d.append(ceEl('h3',title,'sec-h'));if(description)d.append(ceEl('p',description,'muted'));parent.append(d);return d}
+function ceInit(){
+ try{const normalized=CE.save(SV);SV=normalized;SV.set=Object.assign(CE.clone(DEF_SET),SV.set);S=SV.set}catch{try{localStorage.setItem(SKEY+'-recovery-raw',localStorage.getItem(SKEY)||'')}catch{}SV=defSave();S=SV.set}
+ ceSync();const requestedLang=new URLSearchParams(location.search).get('lang');if(requestedLang==='en'||requestedLang==='ro')S.lang=requestedLang;
+ const st=ceEl('style');st.textContent=`.ce-stack{display:flex;flex-direction:column;gap:12px}.ce-stack p{margin:0}.ce-tabs{display:flex;gap:8px;flex-wrap:wrap}.ce-tabs button[aria-pressed=true]{background:var(--accent);color:var(--accent-ink)}#ce-panel{z-index:12;background:var(--bg)}#ce-panel .wrap{padding-bottom:40px}#ce-panel canvas{display:block;max-width:100%;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}.ce-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}.ce-steps{display:flex;flex-direction:column;gap:8px}.ce-step{display:flex;gap:8px;flex-wrap:wrap;align-items:end;padding:12px;border:1px solid var(--line);border-radius:12px}.ce-step label{flex:1;min-width:110px}#ce-live{position:absolute;top:135px;left:12px;max-width:min(66vw,420px);font:12px var(--f-mono);background:var(--hud);color:var(--fg);padding:6px 9px;border-radius:8px;pointer-events:none}#ce-tools{position:absolute;right:12px;top:145px;display:flex;gap:6px;flex-wrap:wrap;max-width:200px;justify-content:end}#ce-tools button{min-width:44px;min-height:44px;padding:6px}#ce-replay{position:absolute;inset:auto 10px 12px;z-index:20;background:var(--surface);padding:12px;border:1px solid var(--line);border-radius:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}#ce-replay input{flex:1;min-width:140px}#touch.ce-custom .tg{display:contents}#touch.ce-custom .tb{position:fixed}#touch.ce-one{justify-content:flex-end}#touch.ce-one .tg{gap:6px}#touch.ce-one .tb{width:calc(58px * var(--bs));height:calc(64px * var(--bs))}#touch .tb{touch-action:none}.ce-note{border-left:4px solid var(--amber);padding:10px;background:var(--surface2)}@media(max-width:480px){#ce-live{top:128px;max-width:60vw;font-size:10px}#ce-tools{top:180px;max-width:104px}.ce-tabs .btn{padding:8px 10px;font-size:.85rem}}`;
+ document.head.append(st);
+ const b=ceButton('Expedition Studio',()=>ceOpen('rides'),'acc');b.id='btnExpedition';$('.menu-list').append(b);
+ cePanel=ceEl('section',null,'screen');cePanel.id='ce-panel';cePanel.hidden=true;cePanel.setAttribute('aria-labelledby','ce-title');$('#app').append(cePanel);
+ const live=ceEl('div');live.id='ce-live';live.hidden=true;$('#app').append(live);
+ const tools=ceEl('div');tools.id='ce-tools';tools.hidden=true;$('#app').append(tools);
+ tools.append(ceButton('⚡',cePower),ceButton('📷',cePhoto),ceButton('−',()=>ceShift(-1)),ceButton('+',()=>ceShift(1)));
+ tools.children[0].setAttribute('aria-label',ceL('Activează bonusul','Activate power-up'));tools.children[1].setAttribute('aria-label',ceL('Mod foto','Photo mode'));tools.children[2].setAttribute('aria-label',ceL('Treaptă inferioară','Shift down'));tools.children[3].setAttribute('aria-label',ceL('Treaptă superioară','Shift up'));
+ const clutch=ceButton(ceL('Ambreiaj','Clutch'),()=>{ceClutch=!ceClutch;clutch.setAttribute('aria-pressed',String(ceClutch))});clutch.id='ce-clutch';tools.append(clutch);
+ const pb=ceButton(ceL('Salvează checkpointul și ieși','Save checkpoint and exit'),ceSuspend);$('#pauseQuick').parentElement.append(pb);
+ const help=ceButton('Expedition Studio',()=>{goMenu();ceOpen('rides')});$('#helpBody').parentElement.append(help);
+ const markers=document.createElement('canvas');markers.id='ce-markers';markers.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none';markers.setAttribute('aria-hidden','true');$('#app').append(markers);
+ const replay=ceEl('div');replay.id='ce-replay';replay.hidden=true;$('#app').append(replay);
+ // Replaces the permissive legacy import; a valid backup is kept before replacement.
+ $('#btnImp').onclick=()=>{try{ceRestore(CE.decode($('#ioText').value,'save'));ceMessage(t('imported'))}catch{ceMessage(t('bad_import'))}};
+ const reset=$('#btnReset').onclick;$('#btnReset').onclick=e=>{reset(e);if(!resetArm){ceSync();ceApply()}};
+ const legacyLang=$('#btnLang').onclick;$('#btnLang').onclick=()=>{legacyLang();ceApply()};
+ ceApply();
+}
+function ceOpen(tab){ceTab=tab;ceEndReplay();if(G.state==='race'||G.state==='count')goMenu();hideScreens();$('#pause').hidden=true;$('#results').hidden=true;cePanel.hidden=false;ceBuild();}
+function ceClose(){cePanel.hidden=true;ceEndReplay();goMenu()}
+function ceBuild(){
+ cePanel.replaceChildren();const wrap=ceEl('div',null,'wrap ce-stack');cePanel.append(wrap);const bar=ceEl('div',null,'bar');bar.append(ceButton('← '+t('menu'),ceClose),ceEl('span','Carpați Enduro '+CE.VERSION,'eyebrow'));wrap.append(bar);
+ const h=ceEl('h2','Expedition Studio','sheet-title');h.id='ce-title';h.tabIndex=-1;wrap.append(h);
+ const tabs=[['rides','Expediții','Rides'],['editor','Editor trasee','Track editor'],['missions','Misiuni','Missions'],['tuning','Atelier','Workshop'],['friends','Prieteni','Friends'],['replays','Reluări','Replays'],['analysis','Analiză','Analysis'],['access','Confort','Comfort'],['saves','Salvări','Saves'],['about','Despre','About']];
+ const nav=ceEl('nav',null,'ce-tabs');nav.setAttribute('aria-label',ceL('Secțiuni Expedition Studio','Expedition Studio sections'));for(const [id,ro,en] of tabs){const b=ceButton(ceL(ro,en),()=>{ceTab=id;ceBuild()});b.setAttribute('aria-pressed',String(id===ceTab));nav.append(b)}wrap.append(nav);
+ const body=ceEl('div',null,'ce-stack');wrap.append(body);ceStatus=ceEl('p',null,'muted');ceStatus.setAttribute('role','status');wrap.append(ceStatus);
+ ({rides:ceRides,editor:ceEditor,missions:ceMissions,tuning:ceWorkshop,friends:ceFriends,replays:ceReplays,analysis:ceAnalysis,access:ceAccess,saves:ceSaves,about:ceAbout}[ceTab]||ceRides)(body);h.focus({preventScroll:true});
+}
+let cePick={r:0,route:0,w:'c',tod:'d',diff:1};
+function ceRides(body){
+ const config=ceCard(body,ceL('Alege expediția','Choose a ride'),ceL('Variante de traseu: sigură, rapidă sau tehnică. Fiecare are teren și dificultate diferite.','Route variants: safe, fast or technical. Each has different terrain and difficulty.'));
+ const fields=ceEl('div',null,'ce-grid');config.append(fields);
+ ceField(fields,t('region'),REGIONS.map((r,i)=>[i,regionName(i)]),cePick.r,v=>cePick.r=+v);
+ ceField(fields,ceL('Rută','Route'),ceRouteNames.map((n,i)=>[i,ceL(...n)]),cePick.route,v=>cePick.route=+v);
+ ceField(fields,t('weather'),['c','r','f','s','l'].map(v=>[v,t('w_'+v)]),cePick.w,v=>cePick.w=v);
+ ceField(fields,t('tod'),['d','u','n'].map(v=>[v,t('t_'+v)]),cePick.tod,v=>cePick.tod=v);
+ ceField(fields,t('difficulty'),[0,1,2,3].map(v=>[v,t('d'+v)]),cePick.diff,v=>cePick.diff=+v);
+ const grid=ceEl('div',null,'ce-grid');body.append(grid);
+ 
+ for(const [id,d] of Object.entries(ceDisc)){const descriptions={sprint:ceL('O cursă scurtă contra a trei adversari.','A short race against three opponents.'),hard:ceL('Bușteni, trepte și stânci; penalizări de trial.','Logs, steps and rocks; trial penalties.'),precision:ceL('Câștigă cu cel puțin 3 aterizări curate și maximum 2 căderi.','Finish with at least 3 clean landings and at most 2 crashes.'),rush:ceL('45 secunde la start; +18 secunde la fiecare checkpoint.','45 seconds at the start; +18 seconds per checkpoint.'),delivery:ceL('Du coletul la sosire. Impacturile mari și căderile îl deteriorează.','Deliver the parcel. Heavy impacts and crashes damage it.'),rescue:ceL('Oprește la cele 3 posturi marcate, apoi ajungi la bază.','Stop at the 3 marked stations, then reach base.'),rally:ceL('Trei etape și clasament pe timp cumulat, cu penalizări pentru căderi.','Three stages and cumulative times with crash penalties.'),rogue:ceL('Trei etape. După fiecare alegi ruta și un bonus pentru etapa următoare.','Three stages. Choose a route and a power-up after each stage.'),boss:ceL('Trei dueluri cu rivali tehnici, rapizi și specialiști în sărituri.','Three duels against technical, fast and jump specialists.'),explore:ceL('Găsește cele 3 puncte panoramice și cele 3 obiecte ascunse.','Discover 3 viewpoints and 3 hidden items.')};const c=ceCard(grid,ceL(d[0],d[1]),descriptions[id]);c.append(ceButton(t('start'),()=>ceLaunch(id), 'pri'))}
+ if(EX.suspended){const c=ceCard(body,ceL('Expediție întreruptă','Interrupted ride'),ceL('Reia de la ultimul checkpoint. Cronometrul și recompensa încep o încercare nouă.','Resume from the last checkpoint. Time and rewards start a new attempt.'));c.append(ceButton(t('continue')==='continue'?ceL('Continuă','Continue'):t('continue'),ceResume,'acc'))}
+ const season=ceCard(body,ceL('Sezoane și licențe','Seasons and licenses'));for(const [k,v] of Object.entries(EX.seasons))season.append(ceEl('p',`${k}: ${v.completed||0} / 3 · ${v.best?fmtT(v.best):'—'}`));season.append(ceEl('p',ceL('Licențe: ','Licenses: ')+Object.keys(EX.licenses).join(' · ')));if(!Object.keys(EX.seasons).length)season.append(ceEl('p',ceL('Finalizează Rally Raid, Expediție sau Triada pentru primul trofeu.','Complete Rally Raid, Expedition or the Trilogy for your first trophy.')));
+}
+function ceLaunch(id,extra={}){const d=ceDisc[id];let seed=hashStr('ce2-'+todayStr()+'-'+id+'-'+cePick.r);const series=['rally','rogue','boss'].includes(id)?{id,stage:0,times:[],aiTotals:[0,0,0],seed,route:cePick.route}:null;
+ startRace({mode:d[2],discipline:id,r:cePick.r,seed,diff:cePick.diff,opp:3,w:cePick.w,tod:cePick.tod,route:cePick.route,series,...extra});}
+function ceNewCourse(){return {format:'CE-TRACK-2',name:ceL('Poteca mea','My trail'),seed:42,region:0,weather:'c',tod:'d',segments:[{kind:'flat',grade:1,surface:null},{kind:'table',grade:1,surface:null},{kind:'logs',grade:1,surface:null},{kind:'climb',grade:1,surface:null},{kind:'descend',grade:1,surface:null},{kind:'flat',grade:1,surface:null}]}}
+function ceRemember(){ceUndo.push(CE.clone(ceDraft));if(ceUndo.length>30)ceUndo.shift();ceRedo=[];ceTested=''}
+function ceEdit(fn){ceRemember();fn();ceDraft=CE.course(ceDraft);ceBuild()}
+const ceKindNames={flat:['Plat','Flat'],hill:['Deal','Hill'],climb:['Urcare','Climb'],descend:['Coborâre','Descent'],table:['Rampă','Jump'],drop:['Drop','Drop'],logs:['Bușteni','Logs'],rocks:['Stânci','Rocks'],steps:['Trepte','Steps'],mud:['Noroi','Mud'],water:['Vad','Water'],whoops:['Denivelări','Whoops'],dunes:['Dune','Dunes'],ice:['Gheață','Ice'],puddle:['Bălți','Puddles'],roots:['Rădăcini','Roots'],bridge:['Pod','Bridge'],stairs:['Scări','Stairs']};
+function ceEditor(body){
+ if(!ceDraft)ceDraft=ceNewCourse();const p=ceCard(body,ceL('Construiește și testează','Build and test'),ceL('3–40 segmente. Înălțimea obstacolelor și suprafața sunt reglabile. Finalizează o probă pentru a valida traseul înainte de export.','3–40 segments. Adjust obstacle height and surface. Complete a test run to validate the course before export.'));
+ const f=ceEl('div',null,'ce-grid');p.append(f);ceField(f,t('name'),{maxLength:40},ceDraft.name,v=>ceEdit(()=>ceDraft.name=v),'text');ceField(f,t('region'),REGIONS.map((r,i)=>[i,regionName(i)]),ceDraft.region,v=>ceEdit(()=>ceDraft.region=+v));ceField(f,t('weather'),['c','r','f','s','l'].map(v=>[v,t('w_'+v)]),ceDraft.weather,v=>ceEdit(()=>ceDraft.weather=v));ceField(f,t('tod'),['d','u','n'].map(v=>[v,t('t_'+v)]),ceDraft.tod,v=>ceEdit(()=>ceDraft.tod=v));ceField(f,'Seed',{min:0,max:4294967295,step:1},ceDraft.seed,v=>ceEdit(()=>ceDraft.seed=v),'number');
+ const canvas=document.createElement('canvas');canvas.width=900;canvas.height=170;canvas.setAttribute('role','img');canvas.setAttribute('aria-label',ceL('Profilul traseului','Track elevation profile'));p.append(canvas);ceDrawCourse(canvas,ceDraft);canvas.style.touchAction='none';canvas.setAttribute('aria-label',ceL('Trage pe profil pentru a modela terenul. Valorile pot fi editate și din lista de mai jos.','Drag on the profile to shape terrain. Values can also be edited in the list below.'));let shaping=false;
+ const shape=e=>{const rect=canvas.getBoundingClientRect(),at=clamp(Math.round((e.clientX-rect.left)/rect.width*20)/20,.05,.95),dy=clamp((e.clientY-rect.top)/rect.height*360-180,-180,180);ceDraft.profile=ceDraft.profile||[];ceDraft.profile=ceDraft.profile.filter(p=>Math.abs(p.at-at)>.001);ceDraft.profile.push({at,dy:Math.round(dy)});ceTested='';ceDrawCourse(canvas,ceDraft)};
+ canvas.onpointerdown=e=>{e.preventDefault();ceRemember();shaping=true;canvas.setPointerCapture(e.pointerId);shape(e)};canvas.onpointermove=e=>{if(shaping)shape(e)};canvas.onpointerup=canvas.onpointercancel=()=>{if(shaping){shaping=false;ceDraft=CE.course(ceDraft);ceBuild()}};
+ if(ceDraft.profile?.length){const coords=ceEl('details');coords.append(ceEl('summary',ceL('Puncte de înălțime','Elevation points')));for(const point of ceDraft.profile){const row=ceEl('div',null,'bar');ceField(row,Math.round(point.at*100)+'%',{min:-180,max:180,step:5},point.dy,v=>ceEdit(()=>point.dy=v),'number');coords.append(row)}p.append(coords,ceButton(ceL('Resetează profilul','Reset elevation'),()=>ceEdit(()=>ceDraft.profile=[])))}
+ const list=ceEl('div',null,'ce-steps');p.append(list);ceDraft.segments.forEach((seg,i)=>{const row=ceEl('div',null,'ce-step');row.append(ceEl('b',String(i+1)));ceField(row,ceL('Obstacol','Obstacle'),CE.KINDS.map(k=>[k,ceL(...ceKindNames[k])]),seg.kind,v=>ceEdit(()=>seg.kind=v));ceField(row,ceL('Înălțime','Height'),[.5,.75,1,1.25,1.5].map(n=>[n,String(n)]),seg.grade,v=>ceEdit(()=>seg.grade=+v));ceField(row,ceL('Suprafață','Surface'),[['',ceL('Automat','Automatic')],...SURF.map((s,i)=>[i,s.k])],seg.surface??'',v=>ceEdit(()=>seg.surface=v===''?null:+v));const up=ceButton('↑',()=>ceEdit(()=>[ceDraft.segments[i-1],ceDraft.segments[i]]=[seg,ceDraft.segments[i-1]]));up.disabled=i===0;up.setAttribute('aria-label',ceL('Mută segmentul în sus','Move segment up'));const del=ceButton('×',()=>ceEdit(()=>ceDraft.segments.splice(i,1)));del.disabled=ceDraft.segments.length<=3;del.setAttribute('aria-label',ceL('Șterge segmentul','Delete segment'));row.append(up,del);list.append(row)});
+ const bar=ceEl('div',null,'bar');p.append(bar);const add=ceButton(ceL('+ Segment','+ Segment'),()=>ceEdit(()=>ceDraft.segments.push({kind:'flat',grade:1,surface:null})));add.disabled=ceDraft.segments.length>=40;bar.append(add);
+ const undo=ceButton('Undo',()=>{ceRedo.push(CE.clone(ceDraft));ceDraft=ceUndo.pop();ceTested='';ceBuild()});undo.disabled=!ceUndo.length;const redo=ceButton('Redo',()=>{ceUndo.push(CE.clone(ceDraft));ceDraft=ceRedo.pop();ceTested='';ceBuild()});redo.disabled=!ceRedo.length;bar.append(undo,redo);
+ bar.append(ceButton(ceL('Testează','Test ride'),()=>ceStartCourse(ceDraft,true),'pri'),ceButton(ceL('Salvează local','Save locally'),()=>{const c=CE.course(ceDraft),id=CE.courseID(c);EX.tracks=EX.tracks.filter(x=>CE.courseID(x)!==id);EX.tracks.unshift(c);EX.tracks=EX.tracks.slice(0,24);cePersist();ceBuild()}),ceButton(t('import'),()=>ceRead('track',c=>{ceRemember();ceDraft=c;ceBuild()})));
+ const exp=ceButton(ceL('Exportă traseul validat','Export validated track'),()=>ceJSON('carpati-track.json',ceDraft));exp.disabled=ceTested!==CE.courseID(ceDraft);bar.append(exp);
+ const saved=ceCard(body,ceL('Traseele tale','Your tracks'));EX.tracks.forEach((c,i)=>{const r=ceEl('div',null,'bar');r.append(ceEl('strong',c.name),ceButton(t('start'),()=>ceStartCourse(c)),ceButton(ceL('Editează','Edit'),()=>{ceRemember();ceDraft=CE.clone(c);ceBuild()}),ceButton(ceL('Șterge','Delete'),()=>{EX.tracks.splice(i,1);cePersist();ceBuild()}));saved.append(r)});
+}
+function ceStartCourse(c,test=false){c=CE.course(c);startRace({mode:'tt',r:c.region,seed:c.seed,w:c.weather,tod:c.tod,diff:1,opp:0,course:c,editorTest:test,route:2})}
+function ceCourseTrack(c){const tr=new Track();const gen=makeGen(tr,c.seed,c.region,'tt',1,false,{stages:c.segments,seq:c.segments.map(s=>s.kind)});gen.finishAt(400+c.segments.length*1100);ceApplyProfile(tr,c);return tr}
+function ceApplyProfile(tr,c){if(!c.profile?.length)return;const points=[{at:0,dy:0},...c.profile,{at:1,dy:0}];const offset=px=>{const at=px/tr.finish;let i=1;while(i<points.length-1&&points[i].at<at)i++;const a=points[i-1],b=points[i],f=clamp((at-a.at)/(b.at-a.at||1),0,1);return lerp(a.dy,b.dy,(1-Math.cos(Math.PI*f))/2)};for(let i=0;i<tr.ys.length;i++)tr.ys[i]+=offset(i*STEP);for(const l of tr.logs)l.y+=offset(l.x);for(let i=0;i<tr.ys.length;i++)tr.tech[i]=Math.min(1,Math.abs((tr.ys[i-1]??tr.ys[i])-2*tr.ys[i]+(tr.ys[i+1]??tr.ys[i]))/7)}
+function ceDrawCourse(canvas,c){const tr=ceCourseTrack(c),x=canvas.getContext('2d'),ys=tr.ys,min=Math.min(...ys),max=Math.max(...ys);x.fillStyle='#111d33';x.fillRect(0,0,canvas.width,canvas.height);x.strokeStyle='#22d3ee';x.lineWidth=3;x.beginPath();for(let i=0;i<ys.length;i++){const xx=i/(ys.length-1)*canvas.width,yy=20+(ys[i]-min)/(max-min||1)*(canvas.height-40);i?x.lineTo(xx,yy):x.moveTo(xx,yy)}x.stroke()}
+function ceMissions(body){for(const weekly of [false,true]){const card=ceCard(body,weekly?ceL('Misiuni săptămânale','Weekly missions'):ceL('Misiuni zilnice','Daily missions'));for(const m of CE.missions(new Date(),weekly)){const labels={finishes:ceL('Curse finalizate','Races completed'),clean:ceL('Curse fără căderi','Crash-free finishes'),jumps:ceL('Sărituri','Jumps')};const n=CE.missionProgress(EX.history,m);const row=ceEl('div',null,'row');row.append(ceEl('span',`${labels[m.metric]}: ${Math.min(n,m.target)} / ${m.target} · ${m.reward} ◉`));const b=ceButton(EX.missions[m.id]?'✓':ceL('Revendică','Claim'),()=>{const amount=CE.claim(EX.missions,m,EX.history);if(amount){SV.coins+=amount;SV.earned+=amount;cePersist();ceBuild()}});b.disabled=!!EX.missions[m.id]||n<m.target;row.append(b);card.append(row)}}
+ const c=ceCard(body,ceL('Contracte de sponsor fictiv','Fictional sponsor contracts'),ceL('Un contract pe săptămână: 3 curse curate pentru 300 de monede.','One contract per week: 3 clean finishes for 300 coins.'));const m={id:CE.period(new Date(),true)+'-sponsor',metric:'clean',target:3,reward:300,weekly:true};const n=CE.missionProgress(EX.history,m);c.append(ceEl('p',`${Math.min(n,3)} / 3`));const b=ceButton(ceL('Încasează','Collect'),()=>{const reward=CE.claim(EX.missions,m,EX.history);SV.coins+=reward;SV.earned+=reward;cePersist();ceBuild()});b.disabled=!!EX.missions[m.id]||n<3;c.append(b);
+}
+function ceWorkshop(body){
+ const c=ceCard(body,ceL('Reglaje pe motocicletă','Per-bike tuning'),ceL('Presiunea mică crește aderența și reduce viteza. Suspensia moale ajută aterizarea și reduce agilitatea.','Lower pressure improves grip and reduces speed. Softer suspension helps landing and reduces agility.'));
+ const tuning=ceTune();ceField(c,ceL('Motocicletă','Motorcycle'),BIKES.map(b=>[b.id,b.name]),SV.sel,v=>{if(!SV.bikes[v]){ceMessage(ceL('Cumpără motocicleta din garaj pentru a o regla.','Buy this motorcycle in the garage to tune it.'));return}SV.sel=v;cePersist();ceBuild()});
+ for(const [k,label] of [['pressure',ceL('Presiune pneuri','Tire pressure')],['spring',ceL('Rigiditate suspensii','Suspension stiffness')]])ceField(c,label,[.7,.85,1,1.15,1.3].map(v=>[v,String(v)]),tuning[k],v=>{EX.tuning[SV.sel]={...ceTune(),[k]:+v};cePersist();ceBuild()});
+ const presets=ceEl('div',null,'bar');c.append(presets);for(const [label,p,s] of [[ceL('Ușor','Easy'),.85,.85],[ceL('Echilibrat','Balanced'),1,1],[ceL('Viteză','Speed'),1.15,1.15]])presets.append(ceButton(label,()=>{EX.tuning[SV.sel]={pressure:p,spring:s};cePersist();ceBuild()}));
+ const stats=bikeStats(SV.sel);c.append(ceEl('p',`${ceL('Accelerație','Acceleration')}: ${Math.round(stats.acc)} · ${ceL('Viteză','Speed')}: ${Math.round(stats.vmax/PXM*3.6)} km/h · ${ceL('Aderență','Grip')}: ${stats.grip.toFixed(2)}`));c.append(ceButton(ceL('Test gratuit','Free test'),()=>startRace({mode:'tt',r:0,seed:12345,diff:0,opp:0,w:'c',tod:'d',practice:true}),'pri'));
+ ceCheck(c,ceL('Cutie manuală: butoanele + / − sau E / Q','Manual gears: + / − buttons or E / Q'),'manual');ceCheck(c,ceL('Ambreiaj manual, comutare prin buton','Manual clutch, toggle using the button'),'clutch');
+ ceField(c,ceL('Distribuție frână spre roata din față','Front brake balance'),[[0,'0%'],[.25,'25%'],[.38,'38%'],[.6,'60%'],[1,'100%']],EX.settings.brake,v=>{EX.settings.brake=+v;cePersist()});
+ const outfit=ceCard(body,ceL('Ținute salvate','Saved outfits'));const color=ceEl('div',null,'ce-grid');outfit.append(color);for(const [k,label] of [['color',t('color')],['suit',t('suit')]])ceField(color,label,null,S[k],v=>{S[k]=v;cePersist()},'color');outfit.append(ceButton(ceL('Salvează ținuta','Save outfit'),()=>{EX.outfits.unshift({color:S.color,suit:S.suit,liv:S.liv,helm:S.helm,num:S.num});EX.outfits=EX.outfits.slice(0,8);cePersist();ceBuild()}));EX.outfits.forEach((o,i)=>outfit.append(ceButton(`${i+1} · ${o.color} / ${o.suit}`,()=>{Object.assign(S,o);cePersist();ceApply()})));
+ const power=ceCard(body,ceL('Bonus opțional','Optional power-up'),ceL('O activare pe cursă, gratuit. Rezultatele au o categorie separată.','One free activation per race. Results use a separate category.'));
+ ceField(power,ceL('Bonus','Power-up'),[['none',ceL('Fără','None')],['boost','Boost · 5s'],['shield',ceL('Scut · 1 cădere','Shield · 1 crash')],['grip',ceL('Aderență · 8s','Grip · 8s')],['slow',ceL('Timp lent · 6s','Slow time · 6s')],['magnet',ceL('Magnet · 10s','Magnet · 10s')],['repair',ceL('Reparație / combustibil','Repair / fuel')]],EX.settings.power,v=>{EX.settings.power=v;cePersist()});
+}
+function ceFriends(body){
+ const c=ceCard(body,ceL('Campionat pe același dispozitiv','Same-device championship'),ceL('2–4 jucători fac pe rând același traseu cu aceeași motocicletă, reglaje și asistență. Timpul include +5s pentru fiecare cădere.','2–4 players take turns on the same course with the same bike, tuning and assists. Time includes +5s per crash.'));
+ let names='Pilot 1, Pilot 2';ceField(c,ceL('Nume separate prin virgulă','Comma-separated names'),{maxLength:90},names,v=>names=v,'text');c.append(ceButton(t('start'),()=>{const players=names.split(',').map(n=>CE.text(n.trim(),16)).filter(Boolean).slice(0,4);if(players.length<2){ceMessage(ceL('Introdu cel puțin două nume.','Enter at least two names.'));return}ceFriend={players,index:0,scores:[],round:0,seed:hashStr(todayStr()+'friends'),original:S.name};ceStartFriend()},'pri'));
+ const g=ceCard(body,ceL('Provocare asincronă','Asynchronous challenge'),ceL('Exportă o reluare și trimite fișierul unui prieten. Importul pornește exact traseul asociat.','Export a replay and send the file to a friend. Import starts its associated course.'));g.append(ceButton(ceL('Importă ghost','Import ghost'),()=>ceRead('ghost',ceRaceGhost)));
+ const online=ceCard(body,ceL('Servicii online','Online services'));online.append(ceEl('p',ceL('Cursele live, lobby-urile, clasamentele globale și salvarea în cloud nu sunt conectate. Această versiune funcționează fără cont și fără server.','Live races, lobbies, global rankings and cloud saves are not connected. This version works without accounts or a server.'),'ce-note'));
+}
+function ceStartFriend(){S.name=ceFriend.players[ceFriend.index];const stage=ceFriend.round;startRace({mode:'tt',r:cePick.r,seed:ceFriend.seed+stage,diff:1,opp:0,w:cePick.w,tod:cePick.tod,friend:true});}
+function ceRaceGhost(g){ceImportedGhost=g;startRace({...g.opts,importedGhost:true,practice:true});}
+let ceImportedGhost=null;
+function ceReplays(body){const c=ceCard(body,ceL('Ultima reluare','Latest replay'),ceL('Pauză, viteză, cronologie și schimbarea camerei. Reluările nu acordă recompense.','Pause, speed, timeline and camera changes. Replays do not award rewards.'));const g=EX.replay;if(g){c.append(ceEl('p',`${g.name} · ${(g.frames.length/120).toFixed(1)}s`));c.append(ceButton(ceL('Redă','Play'),()=>cePlayReplay(g),'pri'),ceButton(ceL('Exportă ghost','Export ghost'),()=>ceJSON('carpati-ghost.json',g)),ceButton(ceL('Concurează','Race ghost'),()=>ceRaceGhost(g)))}else c.append(ceEl('p',ceL('Finalizează un traseu finit pentru prima reluare.','Complete a finite course for your first replay.')));c.append(ceButton(ceL('Importă','Import'),()=>ceRead('ghost',g=>{EX.replay=g;cePersist();ceBuild()})))}
+function cePlayReplay(g){startRace({...g.opts,practice:true,replay:true});G.state='replay';G.done=true;AU.engOff();AU.ambOff();$('#hud').hidden=true;$('#touch').hidden=true;$('#ce-tools').hidden=true;$('#ce-live').hidden=true;ceReplay={g,t:0,speed:1,paused:false};const panel=$('#ce-replay');panel.replaceChildren();panel.hidden=false;
+ const pause=ceButton('Ⅱ',()=>{ceReplay.paused=!ceReplay.paused;pause.textContent=ceReplay.paused?'▶':'Ⅱ'});pause.setAttribute('aria-label',ceL('Pauză / redare','Pause / play'));const input=document.createElement('input');input.type='range';input.min=0;input.max=g.frames.length/120-.05;input.step=.05;input.value=0;input.setAttribute('aria-label',ceL('Poziție în reluare','Replay position'));input.oninput=()=>ceReplay.t=+input.value;input.id='ce-seek';panel.append(pause,input);ceField(panel,ceL('Viteză','Speed'),[[.25,'0.25×'],[.5,'0.5×'],[1,'1×'],[2,'2×']],1,v=>ceReplay.speed=+v);panel.append(ceButton(ceL('Cameră','Camera'),cycleCam),ceButton('📷',cePhoto),ceButton(ceL('Închide','Close'),()=>{ceEndReplay();goMenu();ceOpen('replays')}))}
+function ceEndReplay(){ceReplay=null;const e=$('#ce-replay');if(e)e.hidden=true}
+function ceReplayFrame(dt){if(!ceReplay)return;const r=ceReplay,frames=r.g.frames,total=frames.length/120-.05;if(!r.paused)r.t=Math.min(total,r.t+dt*r.speed);for(const e of r.g.weatherTimeline||[])if(e.t<=r.t)G.opts.w=e.w;if(r.t>=total)r.paused=true;const fi=Math.min(Math.floor(r.t/.05),frames.length/6-2),f=clamp(r.t/.05-fi,0,1),q=k=>lerp(frames[fi*6+k],frames[fi*6+6+k],f);const b=G.bike,[R,F,C,Hh]=b.pts;Object.assign(R,{x:q(0),y:q(1),vx:0,vy:0});Object.assign(F,{x:q(2),y:q(3),vx:0,vy:0});Object.assign(Hh,{x:q(4),y:q(5),vx:0,vy:0});const a=bikeAng(b);C.x=R.x+38*Math.cos(a)+30*Math.sin(a);C.y=R.y+38*Math.sin(a)-30*Math.cos(a);b.rotR=b.rotF=R.x/WR;G.t=r.t;G.ghost=null;camFollow(C.x,C.y,0,0,dt);$('#ce-seek').value=r.t;}
+function ceAnalysis(body){
+ const rows=EX.history.slice().reverse(),c=ceCard(body,ceL('Evoluție și istoric','Progress and history'));if(!rows.length){c.append(ceEl('p',ceL('Joacă o cursă pentru a vedea analiza.','Play a race to see analysis.')));return}
+ let selected=rows[0].key;const filtered=ceEl('div',null,'ce-stack');ceField(c,ceL('Filtru traseu','Course filter'),[['all',ceL('Toate','All')],...Array.from(new Map(rows.map(h=>[h.key,[h.key,h.label]])).values())],selected,v=>{selected=v;draw()});c.append(filtered);
+ function draw(){filtered.replaceChildren();const data=selected==='all'?rows:rows.filter(h=>h.key===selected);const table=ceEl('table');const head=ceEl('tr');for(const s of [ceL('Data / probă','Date / ride'),ceL('Timp','Time'),ceL('Căderi','Crashes'),ceL('Aterizări','Landings')])head.append(ceEl('th',s));table.append(head);for(const h of data.slice(0,30)){const row=ceEl('tr');for(const value of [h.date+' · '+h.label,fmtT(h.time)+(h.fin?'':' · DNF'),h.crashes,h.clean])row.append(ceEl('td',String(value)));table.append(row)}const sc=ceEl('div',null,'tbl-wrap');sc.append(table);filtered.append(sc);
+ const canvas=document.createElement('canvas');canvas.width=900;canvas.height=180;canvas.setAttribute('role','img');canvas.setAttribute('aria-label',ceL('Graficul timpilor; valorile sunt în tabel','Time chart; values are in the table'));filtered.append(canvas);const x=canvas.getContext('2d');x.fillStyle='#111d33';x.fillRect(0,0,900,180);const vals=data.filter(h=>h.fin).slice(0,20).reverse();if(vals.length){const max=Math.max(...vals.map(h=>h.time),1);x.strokeStyle='#22d3ee';x.lineWidth=3;x.beginPath();vals.forEach((h,i)=>{const xx=20+i*860/Math.max(1,vals.length-1),yy=160-h.time/max*140;i?x.lineTo(xx,yy):x.moveTo(xx,yy)});x.stroke()}}
+ draw();const last=rows[0],a=ceCard(body,ceL('Ultima încercare','Latest attempt'));a.append(ceEl('p',ceAdvice(last)));if(last.crashXs?.length)a.append(ceEl('p',ceL('Căderi la metri: ','Crashes at metres: ')+last.crashXs.map(x=>Math.round((x-120)/PXM)).join(', ')));a.append(ceEl('p',ceL('Sectoare: ','Sectors: ')+(last.splits||[]).map(fmtT).join(' · ')));a.append(ceEl('p',`${ceL('Viteză medie / maximă','Average / top speed')}: ${(last.average||0).toFixed(1)} / ${(last.top||0).toFixed(1)} km/h`));a.append(ceButton(ceL('Exportă istoricul','Export history'),()=>ceJSON('carpati-history.json',EX.history)));
+}
+function ceAdvice(h){return h.crashes>2?ceL('Redu accelerația înainte de obstacole și încearcă presiunea 0,85 pentru aderență. Repetă lecția de echilibru.','Ease off before obstacles and try 0.85 tire pressure for grip. Repeat the balance lesson.'):h.jumps>0&&h.clean/h.jumps<.5?ceL('Aliniază roțile cu panta înainte de aterizare. Încearcă asistența 2 și lecția de sărituri.','Align the wheels with the slope before landing. Try assist 2 and the jumps lesson.'):ceL('Control bun. Compară sectoarele cu un ghost și încearcă o rută tehnică.','Good control. Compare sectors with a ghost and try a technical route.')}
+function ceAccess(body){
+ const c=ceCard(body,ceL('Control și confort','Control and comfort'));ceField(c,ceL('Sensibilitate înclinare','Lean sensitivity'),[.3,.5,.75,1,1.25,1.5].map(v=>[v,String(v)]),EX.settings.sensitivity,v=>{EX.settings.sensitivity=+v;cePersist()});ceField(c,ceL('Urmărire cameră','Camera follow'),[[1,ceL('Lină','Smooth')],[3,ceL('Medie','Medium')],[6,ceL('Rapidă','Fast')]],EX.settings.camera,v=>{EX.settings.camera=+v;cePersist()});
+ ceCheck(c,ceL('Comenzi grupate pentru o mână','Controls grouped for one hand'),'oneHand');ceCheck(c,ceL('HUD suplimentar vizibil','Show extended HUD'),'hud');ceCheck(c,ceL('Mod economic: 2D, efecte reduse','Economy mode: 2D, fewer effects'),'economy');ceCheck(c,ceL('Vreme dinamică în expediții','Dynamic weather in expeditions'),'dynamic');ceCheck(c,ceL('Vremea influențează aderența','Weather affects grip'),'weatherPhysics');
+ const preset=ceEl('div',null,'bar');c.append(preset);preset.append(ceButton(ceL('Preset: două comenzi','Preset: two controls'),()=>{S.simple=true;S.autoThr=true;S.assist=2;S.touch='on';S.toggle=true;S.speed=.8;S.bs=1.2;EX.settings.oneHand=true;cePersist();applySettings();ceApply();ceBuild()}),ceButton(ceL('Antrenament fără cronometru limită','Practice without time limit'),()=>startRace({mode:'free',r:0,seed:77,diff:0,w:'c',tod:'d',practice:true})));
+ c.append(ceButton(ceL('Setări complete de accesibilitate','Full accessibility settings'),()=>{cePanel.hidden=true;goMenu();show('settings')}));
+ const layout=ceCard(body,ceL('Poziția comenzilor','Control positions'),ceL('Coordonate în procente din ecran. Testează înainte de cursă; poți reveni oricând la aranjamentul standard.','Coordinates in screen percentages. Test before racing; restore the standard layout at any time.'));
+ for(const key of ['thr','brk','lb','lf']){const row=ceEl('div',null,'bar');row.append(ceEl('b',t(key==='thr'?'k_thr':key==='brk'?'k_brk':key==='lb'?'k_lb':'k_lf')));const p=EX.settings.layout[key]||{x:key==='thr'?83:key==='brk'?66:key==='lb'?4:21,y:70};for(const axis of ['x','y'])ceField(row,axis.toUpperCase(),{min:axis==='x'?0:20,max:axis==='x'?90:85,step:1},p[axis],v=>{EX.settings.layout[key]={...p,[axis]:v};cePersist();ceApply()},'number');layout.append(row)}layout.append(ceButton(ceL('Aranjament standard','Standard layout'),()=>{EX.settings.layout={};EX.settings.oneHand=false;cePersist();ceApply();ceBuild()}));
+}
+function ceApply(){if(!EX)return;const tools=$('#ce-tools');if(tools){tools.children[0].setAttribute('aria-label',ceL('Activează bonusul','Activate power-up'));tools.children[1].setAttribute('aria-label',ceL('Fotografie 2D','2D photo'));$('#ce-clutch').textContent=ceL('Ambreiaj','Clutch')}const touchEl=$('#touch'),layout=EX.settings.layout;touchEl.classList.toggle('ce-custom',Object.keys(layout).length>0);touchEl.classList.toggle('ce-one',EX.settings.oneHand);for(const b of $$('.tb')){const defaults={thr:{x:78,y:72},brk:{x:55,y:72},lb:{x:2,y:72},lf:{x:25,y:72}};const p=Object.keys(layout).length?(layout[b.dataset.act]||defaults[b.dataset.act]):null;b.style.left=p?'min('+p.x+'vw, calc(100vw - '+(76*S.bs)+'px - 8px))':'';b.style.top=p?'min('+p.y+'vh, calc(100vh - '+(76*S.bs)+'px - 8px))':'';b.style.maxWidth=p?'24vw':'';b.style.maxHeight=p?'18vh':''}if(EX.settings.economy){S.gfx='2d';S.reduce=true;S.shake=false}applySettings()}
+function ceBackup(){ceJSON('carpati-backup-v2.json',SV)}
+function ceRestore(d){const valid=CE.save(d);try{localStorage.setItem(SKEY+'-recovery',JSON.stringify(SV))}catch{throw Error('backup')}SV=valid;SV.set=Object.assign(CE.clone(DEF_SET),SV.set);S=SV.set;ceSync();save();applyI18n();ceApply();goMenu()}
+function ceSaves(body){const c=ceCard(body,ceL('Backup și recuperare','Backup and recovery'),ceL('Datele rămân în acest browser. Importul păstrează o copie de recuperare a progresului anterior.','Data stays in this browser. Import keeps a recovery copy of your previous progress.'));c.append(ceButton(ceL('Descarcă backup complet','Download full backup'),ceBackup,'pri'),ceButton(ceL('Importă backup','Import backup'),()=>ceRead('save',ceRestore)),ceButton(ceL('Recuperează copia anterioară','Recover previous backup'),()=>{try{const raw=localStorage.getItem(SKEY+'-recovery');if(!raw)throw Error();ceRestore(CE.decode(raw,'save'));ceMessage(ceL('Progres recuperat.','Progress recovered.'))}catch{ceMessage(ceL('Nu există o copie validă.','No valid recovery copy.'))}}));
+ const profiles=ceCard(body,ceL('Profiluri locale','Local profiles'),ceL('Patru sloturi independente. Profilul activ este salvat înainte de schimbare.','Four independent slots. The active profile is saved before switching.'));
+ for(let i=1;i<=4;i++){const key=SKEY+'-slot-'+i;const row=ceEl('div',null,'bar');row.append(ceEl('strong',ceL('Slot ','Slot ')+i));row.append(ceButton(ceL('Salvează aici','Save here'),()=>{try{localStorage.setItem(key,JSON.stringify(SV));ceMessage(ceL('Slot salvat.','Slot saved.'))}catch{ceMessage(ceL('Spațiul de stocare este plin.','Storage is full.'))}}),ceButton(ceL('Încarcă','Load'),()=>{try{ceRestore(CE.decode(localStorage.getItem(key),'save'))}catch{ceMessage(ceL('Slot gol sau invalid.','Empty or invalid slot.'))}}));profiles.append(row)}
+ if(EX.suspended)c.append(ceButton(ceL('Reia checkpointul salvat','Resume saved checkpoint'),ceResume));
+}
+function ceSuspend(){if(!G.bike||G.done||!['race','count'].includes(G.state))return;const o=G.opts;if(G.mc.endless||o.school||o.series||o.friend){ceMessage(ceL('Salvarea checkpointului este disponibilă în curse finite individuale.','Checkpoint saving is available in finite individual races.'));return}EX.suspended={opts:CE.clone({mode:o.mode,r:o.r,seed:o.seed,w:o.w,tod:o.tod,diff:o.diff,opp:0,...(o.course?{course:o.course}:{})}),checkpoint:G.respX};cePersist();goMenu()}
+function ceResume(){const s=EX.suspended;if(!s)return;startRace({...s.opts,resumeX:s.checkpoint,practice:true});}
+function ceAbout(body){
+ const c=ceCard(body,'Carpați Enduro '+CE.VERSION,ceL('Moto, enduro și trial, cu progres local și comenzi adaptabile.','Motorcycle racing, enduro and trial, with local progress and adaptable controls.'));c.append(ceEl('p',ceL('În Expedition Studio găsești modurile noi, editorul, misiunile, reglajele, jocul local cu prietenii, reluările și backupurile.','Expedition Studio contains new modes, editor, missions, tuning, local friends play, replays and backups.')));
+ for(const [label,url] of [[ceL('Studiu de caz RO/EN','RO/EN case study'),'./case-study.html'],['Changelog','https://github.com/LaurAndreea10/codepen-portfolio/blob/main/carpati-enduro/CHANGELOG.md'],['Arcade World','https://laurandreea10.github.io/ARCADE-WORLD/'],[ceL('Raportează o problemă','Report an issue'),'https://github.com/LaurAndreea10/codepen-portfolio/issues/new']]){const a=ceEl('a',label,'btn');a.href=url;a.target='_blank';a.rel='noopener';c.append(a)}c.append(ceEl('p',ceL('Pentru feedback: include versiunea, dispozitivul, modul și pașii de reproducere.','For feedback: include version, device, mode and reproduction steps.')));
+ const archive=ceCard(body,ceL('Arhivă evenimente','Event archive'));for(const h of EX.eventHistory.slice(-20).reverse())archive.append(ceEl('p',`${h.date} · ${evName(h.id)} · ${h.medal} ★`));if(!EX.eventHistory.length)archive.append(ceEl('p',ceL('Rezultatele evenimentelor viitoare vor apărea aici.','Future event results will appear here.')));
+ const offline=ceCard(body,ceL('Instalare și offline','Install and offline'));offline.append(ceEl('p',ceL('După prima încărcare completă, jocul poate funcționa offline. Randarea 3D depinde de disponibilitatea modulului Three.js; alternativa 2D rămâne disponibilă.','After a complete first load, the game can work offline. 3D rendering depends on the availability of Three.js; the 2D fallback remains available.')));if('serviceWorker'in navigator)offline.append(ceButton(ceL('Verifică actualizări','Check for updates'),async()=>{try{const r=await navigator.serviceWorker.getRegistration();if(r){await r.update();ceMessage(ceL('Verificare efectuată. Reîncarcă din meniu pentru versiunea nouă.','Check complete. Reload from the menu for the new version.'))}}catch{ceMessage(ceL('Actualizarea nu este disponibilă acum.','Update unavailable now.'))}}));
+}
+let ceStatsSnapshot=null;
+function cePrepare(o){o={...o};ceStatsSnapshot=(o.practice||o.editorTest||o.replay)?CE.clone(SV.stats):null;if(o.course)o.course=CE.course(o.course);if(!MCFG[o.mode]||!Number.isInteger(o.r)||o.r<0||o.r>7||!Number.isSafeInteger(o.seed)||o.seed<0||o.seed>4294967295||!['c','r','f','s','l'].includes(o.w)||!['d','u','n'].includes(o.tod))throw Error('Invalid race options');o.diff=Math.floor(clamp(Number.isFinite(o.diff)?o.diff:1,0,3));o.opp=Math.floor(clamp(Number.isFinite(o.opp)?o.opp:3,0,5));return o}
+function ceRules(o){return {version:2,bike:SV.sel,up:SV.bikes[SV.sel]?.up||{},tuning:ceTune(),physics:S.phys,assist:S.assist,speed:S.speed,sensitivity:EX.settings.sensitivity,brake:EX.settings.brake,power:o.bonus||EX.settings.power,manual:EX.settings.manual,clutch:EX.settings.clutch,autoThrottle:S.autoThr,simple:S.simple,difficulty:o.diff??1,opponents:o.opp??3,weatherPhysics:EX.settings.weatherPhysics,dynamic:EX.settings.dynamic,route:o.route||0,discipline:o.discipline||'',course:o.course?CE.courseID(o.course):''}}
+function ceOnStart(o){
+ ceEndReplay();cePanel.hidden=true;keys.clear();for(const k in touch)touch[k]=0;$$('.tb').forEach(b=>b.classList.remove('on'));cePowerUntil=0;ceGear=1;ceClutch=false;ceSeq++;
+ if(o.series&&o.discipline==='rally')G.ais.forEach((a,i)=>a.name=AINAMES[i]);const rules=ceRules(o);ceRun={id:ceSeq,date:todayStr(),rules,signature:CE.signature(rules),crashXs:[],lastCrashes:0,top:0,integral:0,samples:0,claimed:false,powerUsed:false,shield:false,deadline:45,parcel:100,posts:0,found:[],lastImp:0,weather:o.w,weatherTimeline:[{t:0,w:o.w}],weatherAt:25,series:o.series||null};
+ if(o.resumeX){G.respX=clamp(o.resumeX,120,G.tr.finish-300);placeBike(G.bike,G.tr,G.respX);G.maxX=G.respX;G.km0=G.respX;G.cpIdx=G.tr.cps.filter(x=>x<=G.respX).length;G.tr.pick.forEach(p=>{if(p.x<G.respX)p.got=1})}
+ if(o.importedGhost&&ceImportedGhost){G.ghost=ceImportedGhost.frames;ceImportedGhost=null}
+ if(o.discipline==='rescue'||o.discipline==='explore'){G.tr.zones=[.25,.5,.75].map(f=>({x0:G.tr.finish*f-70,x1:G.tr.finish*f+70}));}
+ if(o.discipline==='explore')ceRun.secrets=[.32,.57,.83].map(f=>G.tr.finish*f);
+ const tools=$('#ce-tools');tools.hidden=!!o.replay;tools.children[0].hidden=ceRun.rules.power==='none';tools.children[2].hidden=tools.children[3].hidden=!EX.settings.manual;$('#ce-clutch').hidden=!EX.settings.manual||!EX.settings.clutch;$('#ce-live').hidden=!!o.replay||!EX.settings.hud;ceApply();if(o.mode==='duel'&&G.ais[0])showMsg(G.ais[0].name,ceL('Rival: ','Rival: ')+G.ais[0].style);
+}
+function ceShift(d){if(!EX.settings.manual||G.state!=='race'||G.paused)return;ceGear=clamp(ceGear+d,1,5);ceMessage(ceL('Treapta ','Gear ')+ceGear)}
+function ceInput(inp){if(!ceRun)return inp;inp={...inp};inp.lean*=EX.settings.sensitivity;inp.front=EX.settings.brake;if(EX.settings.manual){inp.thr*=ceClutch?0:.65+ceGear*.07}return inp}
+function cePower(){if(!ceRun||G.state!=='race'||G.done||G.paused||ceRun.powerUsed||ceRun.rules.power==='none')return;ceRun.powerUsed=true;const p=ceRun.rules.power;cePowerUntil=G.t+({boost:5,grip:8,slow:6,magnet:10}[p]||0);if(p==='shield')ceRun.shield=true;if(p==='repair'){G.fuel=Math.min(100,G.fuel+40);ceRun.parcel=Math.min(100,ceRun.parcel+30)}ceMessage(ceL('Bonus activ: ','Power-up active: ')+p);AU.item();}
+function ceBefore(dt){if(!ceRun)return dt;const o=G.opts,p=ceRun.rules.power,active=G.t<cePowerUntil;let wet=1;
+ if(o.discipline&&EX.settings.dynamic&&G.state==='race'&&!G.done&&G.t>=ceRun.weatherAt){ceRun.weatherAt+=25;const choices=['c','r','f','s'];o.w=choices[(Math.floor(G.t/25)+o.seed)%choices.length];ceRun.weatherTimeline.push({t:G.t,w:o.w});}
+ if(EX.settings.weatherPhysics)wet=o.w==='r'?.86:o.w==='s'?.9:o.w==='l'?.95:1;
+ G.env.grip=wet*(active&&p==='grip'?1.5:1);if(o.discipline&&EX.settings.dynamic&&G.state==='race'&&!G.done){ceRun.wind=Math.sin(G.t*.18+(o.seed%30))*22;for(const q of G.bike.pts)q.vx+=ceRun.wind*dt;}else ceRun.wind=0;
+ if(active&&p==='boost'&&G.bike?.cR)for(const q of G.bike.pts)q.vx+=110*dt;
+ if(active&&p==='magnet')for(const pickup of G.tr.pick){if(pickup.ty==='c'&&!pickup.got&&Math.abs(pickup.x-G.bike.pts[0].x)<160){pickup.got=1;G.coins++}}
+ return dt*(active&&p==='slow'?.65:1);
+}
+function ceTick(dt){if(!ceRun||G.done||G.state!=='race')return;const b=G.bike,R=b.pts[0],r=ceRun,o=G.opts,speed=Math.hypot(R.vx,R.vy)/PXM*3.6;r.top=Math.max(r.top,speed);r.integral+=speed*dt;r.samples+=dt;
+ if(G.crashes>r.lastCrashes){r.crashXs.push(R.x);r.lastCrashes=G.crashes;r.parcel=Math.max(0,r.parcel-25)}
+ if(o.discipline==='delivery'&&b.impact>450&&G.t-r.lastImp>.7){r.parcel=Math.max(0,r.parcel-(b.impact-450)/35);r.lastImp=G.t}
+ if(o.discipline==='rush'){r.deadline=45+G.cpIdx*18;if(G.t>=r.deadline)endRun(false)}
+ if(o.discipline==='delivery'&&r.parcel<=0)endRun(false);
+ if(o.discipline==='rescue'){const z=G.tr.zones[r.posts];if(z&&R.x>=z.x0&&R.x<=z.x1&&speed<8){r.posts++;showMsg(ceL('Post salvat','Station rescued'),`${r.posts}/3`);AU.cp()}}
+ if(o.discipline==='explore'){G.tr.zones.forEach((z,i)=>{if(R.x>=z.x0&&R.x<=z.x1&&!r.found.includes('v'+i)){r.found.push('v'+i);showStunt(ceL('Punct panoramic','Viewpoint')+' '+(i+1))}});r.secrets.forEach((x,i)=>{if(Math.abs(R.x-x)<90&&!r.found.includes('s'+i)) {r.found.push('s'+i);showStunt(ceL('Obiect ascuns','Hidden item')+' '+(i+1))}})}
+ const live=$('#ce-live');live.hidden=!EX.settings.hud;let txt=`${ceL('Suprafață','Surface')}: ${SURF[G.tr.surf(R.x)].k} · ${ceL('Treaptă','Gear')} ${EX.settings.manual?ceGear:'A'} · ${r.rules.signature||r.signature}`;
+ if(o.discipline==='delivery')txt+=' · 📦 '+Math.round(r.parcel)+'%';if(o.discipline==='rush')txt+=' · ⏱ '+Math.max(0,r.deadline-G.t).toFixed(1)+'s';if(o.discipline==='rescue'){const z=G.tr.zones[r.posts];txt+=' · '+r.posts+'/3'+(z?' · STOP '+Math.round(((z.x0+z.x1)/2-R.x)/PXM)+'m':'');}if(o.discipline==='explore')txt+=' · '+r.found.length+'/6';if(r.wind)txt+=' · '+ceL('Vânt ','Wind ')+(r.wind>0?'→':'←')+' '+Math.abs(r.wind).toFixed(0);if(r.powerUsed)txt+=' · ⚡';if(o.series)txt+=' · '+(o.series.stage+1)+'/3';live.textContent=txt;
+}
+function ceCanFinish(){if(!ceRun)return true;const o=G.opts,r=ceRun;if(o.discipline==='boss')return racePosition()===1;if(o.discipline==='precision')return G.cleanL>=3&&G.crashes<=2;if(o.discipline==='delivery')return r.parcel>0;if(o.discipline==='rescue')return r.posts>=3;if(o.discipline==='explore')return r.found.length===6;return true}
+function ceOnResult(fin,pos){
+ $('#ce-live').hidden=true;$('#ce-tools').hidden=true;if(!ceRun||ceRun.claimed||G.opts.replay)return;ceRun.claimed=true;const o=G.opts,r=ceRun;if(ceStatsSnapshot)SV.stats=ceStatsSnapshot;
+ const label=(o.discipline?ceL(ceDisc[o.discipline][0],ceDisc[o.discipline][1]):modeName(o.mode))+' · '+regionName(o.r);const h={date:todayStr(),key:G.key,label,time:G.t,fin,crashes:G.crashes,clean:G.cleanL,jumps:G.jumps,top:r.top,average:r.integral/(r.samples||1),splits:G.splits.slice(),crashXs:r.crashXs.slice(),signature:r.signature,discipline:o.discipline||'',bike:SV.sel};
+ if(!o.practice&&!o.editorTest&&!o.school){EX.history.push(h);EX.history=EX.history.slice(-60)}
+ if(o.event){EX.eventHistory.push({date:todayStr(),id:o.event,medal:fin?Math.max(0,4-(pos||racePosition())):0});EX.eventHistory=EX.eventHistory.slice(-24)}
+ if(fin&&o.editorTest)ceTested=CE.courseID(o.course);
+ if(fin&&!o.school&&G.rec.length>=12&&G.rec.length<=72000&&['race','tt','trial','duel'].includes(o.mode)){try{EX.replay=CE.ghost({format:'CE-GHOST-2',name:S.name,signature:r.signature,opts:{mode:o.mode,r:o.r,seed:o.seed,w:r.weather,tod:o.tod,diff:o.diff,opp:0,...(o.discipline?{discipline:o.discipline,route:o.route||0}:{}),...(o.course?{course:o.course}:{})},weatherTimeline:r.weatherTimeline,frames:G.rec.slice()})}catch{}}
+ if(fin&&!o.practice&&!o.editorTest&&G.crashes===0){EX.licenses[o.mode]=todayStr()}
+ if(!o.practice&&!o.editorTest&&!o.school&&window.parent!==window&&location.origin==='https://laurandreea10.github.io')window.parent.postMessage({type:'GAME_SCORE',gameId:'carpati-enduro',completed:!!fin,time:Math.round(G.t*100)/100,crashes:Math.min(999,G.crashes),score:Math.max(0,Math.min(100,Math.round(fin?100-G.crashes*5:0))),version:CE.VERSION},'https://laurandreea10.github.io');cePersist();const panel=ceCard($('#resBody'),ceL('Analiză și continuare','Analysis and next steps'));panel.querySelector('h3').textContent=ceL('Analiză și continuare','Analysis and next steps');panel.append(ceEl('p',ceAdvice(h)));panel.append(ceButton(ceL('Card rezultat PNG','Result card PNG'),()=>ceResultCard(h)),ceButton(ceL('Vezi analiza','View analysis'),()=>{goMenu();ceOpen('analysis')}));if(EX.replay)panel.append(ceButton(ceL('Reluare','Replay'),()=>cePlayReplay(EX.replay)));
+ if(o.editorTest)panel.append(ceButton(ceL('Înapoi la editor','Back to editor'),()=>{goMenu();ceOpen('editor')}));
+ if(o.practice)panel.append(ceEl('p',ceL('Antrenament: fără monede, XP sau recorduri.','Practice: no coins, XP or records.')));
+ if(o.series){const series=CE.clone(o.series);if(fin){series.times.push(G.t+G.crashes*5);if(o.discipline==='rally'){series.aiTotals=series.aiTotals||[0,0,0];G.ais.forEach((a,i)=>{series.aiTotals[i]+=(a.done?a.time:G.t+Math.max(0,G.tr.finish-a.x)/Math.max(100,660*a.skill))});const standings=[{name:S.name,time:series.times.reduce((a,b)=>a+b,0)},...series.aiTotals.map((time,i)=>({name:AINAMES[i],time}))].sort((a,b)=>a.time-b.time);panel.append(ceEl('p',ceL('Clasament cumulat (rivali nesosiți: timp estimat): ','Overall standings (unfinished rivals: estimated time): ')+standings.map((s,i)=>(i+1)+'. '+s.name+' '+fmtT(s.time)).join(' · ')))}if(series.stage<2){series.stage++;const routes=o.discipline==='rogue'?[0,1,2]:[o.route||0];for(const route of routes){const btn=ceButton(ceL('Etapa următoare','Next stage')+' · '+ceL(...ceRouteNames[route]),()=>{const next={...o,seed:series.seed+series.stage*97,r:(o.r+1)%8,series,route};if(o.discipline==='rogue')next.bonus=['shield','grip','boost'][route];startRace(next)},'acc');panel.append(btn)}}else{const total=series.times.reduce((a,b)=>a+b,0),st=EX.seasons[series.id]||{completed:0,best:null};st.completed++;st.best=st.best==null?total:Math.min(st.best,total);EX.seasons[series.id]=st;cePersist();panel.append(ceEl('p','🏆 '+fmtT(total)+' · '+ceL('Sezon finalizat','Season complete')))}}else panel.append(ceEl('p',ceL('Reîncearcă etapa pentru a continua sezonul.','Retry this stage to continue the season.')))}
+ if(o.friend&&ceFriend){ceFriend.scores.push({name:S.name,round:ceFriend.round,time:fin?G.t+G.crashes*5:null});const finished=ceFriend.index===ceFriend.players.length-1;if(finished){const sorted=ceFriend.scores.filter(s=>s.round===ceFriend.round).sort((a,b)=>(a.time??Infinity)-(b.time??Infinity));panel.append(ceEl('p',sorted.map((s,i)=>`${i+1}. ${s.name}: ${s.time==null?'DNF':fmtT(s.time)}`).join(' · ')));S.name=ceFriend.original;save()}
+ if(!finished){ceFriend.index++;panel.append(ceButton(ceL('Următorul jucător: ','Next player: ')+ceFriend.players[ceFriend.index],ceStartFriend,'acc'))}else panel.append(ceButton(ceL('Rundă nouă','New round'),()=>{ceFriend.index=0;ceFriend.round++;ceStartFriend()},'acc'))}
+}
+function ceResultCard(h){const c=document.createElement('canvas');c.width=1200;c.height=630;const x=c.getContext('2d');x.fillStyle='#0b1424';x.fillRect(0,0,1200,630);x.fillStyle='#f5a524';x.font='bold 66px sans-serif';x.fillText('Carpați Enduro',70,110);x.fillStyle='#e8eef8';x.font='32px sans-serif';x.fillText(h.label.slice(0,65),70,190);x.font='bold 92px monospace';x.fillText(h.fin?fmtT(h.time):'DNF',70,320);x.font='30px sans-serif';x.fillText(`${S.name} · ${h.crashes} ${ceL('căderi','crashes')} · ${h.clean} ${ceL('aterizări curate','clean landings')}`,70,410);x.font='23px monospace';x.fillText(h.date+' · v'+CE.VERSION+' · '+h.signature,70,530);c.toBlob(blob=>blob&&ceDownload('carpati-result.png',blob))}
+function cePhoto(){if(!G.bike)return;if(G.state==='race'||G.state==='count')togglePause(true);const c=document.createElement('canvas');c.width=1200;c.height=675;const x=c.getContext('2d');const prev={W,H,DPR,ctx};try{W=1200;H=675;DPR=1;ctx=x;render()}finally{W=prev.W;H=prev.H;DPR=prev.DPR;ctx=prev.ctx}x.fillStyle='rgba(0,0,0,.65)';x.fillRect(0,600,1200,75);x.fillStyle='#fff';x.font='24px sans-serif';x.fillText('Carpați Enduro · '+S.name+' · '+CE.VERSION,30,645);c.toBlob(blob=>blob&&ceDownload('carpati-photo.png',blob));}
+function ceDrawMarkers(){const canvas=$('#ce-markers');if(!canvas)return;canvas.width=innerWidth;canvas.height=innerHeight;const x=canvas.getContext('2d');if(!ceRun||G.state!=='race'||G.done||G.paused)return;const o=G.opts,r=ceRun;if(!['rescue','explore'].includes(o.discipline))return;const project=(px,py)=>R3.ok&&S.gfx!=='2d'?R3.project(px,py):{x:W*.36+(px-G.cam.x)*G.cam.z,y:H*.55+(py-G.cam.y)*G.cam.z,visible:true};const marker=(px,txt,color)=>{const p=project(px,G.tr.gy(px)-100);if(!p.visible||p.x<0||p.x>W||p.y<0||p.y>H)return;x.font='bold 16px sans-serif';x.textAlign='center';x.lineWidth=5;x.strokeStyle='#000';x.strokeText(txt,p.x,p.y);x.fillStyle=color;x.fillText(txt,p.x,p.y)};
+ if(o.discipline==='rescue')G.tr.zones.forEach((z,i)=>marker((z.x0+z.x1)/2,i<r.posts?'✓':'STOP '+(i+1),i<r.posts?'#4ade80':'#fff'));
+ if(o.discipline==='explore'){G.tr.zones.forEach((z,i)=>marker((z.x0+z.x1)/2,r.found.includes('v'+i)?'✓':'⚑ '+(i+1),'#fff'));r.secrets.forEach((px,i)=>{if(Math.abs(px-G.bike.pts[0].x)<700&&!r.found.includes('s'+i))marker(px,'★','#ffd166')})}}
+function ceFrame(now){const dt=Math.min(.1,(now-ceLastFrame)/1000);ceLastFrame=now;ceReplayFrame(dt);if(!['race','count'].includes(G.state)){$('#ce-tools').hidden=true;$('#ce-live').hidden=true}}
+addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;if(G.state==='race'&&!G.paused){if(e.code==='KeyE')ceShift(1);if(e.code==='KeyQ')ceShift(-1);if(e.code==='KeyB')cePower()}});
+/* ================= end expansion ================= */
+
 /* boot */
+ceInit();
 applyI18n();applySettings();show('menu');requestAnimationFrame(frame);
-window.__CE={G,SV,startRace,bikeStats,sim:n=>{for(let i=0;i<n;i++)update(1/60)},get paused(){return G.paused}};
+window.__CE={G,get SV(){return SV},startRace,bikeStats,sim:n=>{for(let i=0;i<n;i++)update(1/60)},get paused(){return G.paused},expedition:{open:ceOpen,launch:ceLaunch,get state(){return EX},get run(){return ceRun},get draft(){return ceDraft},results,goMenu,finish:finishRace,ceStartCourse,cePower,ceRead,ceRestore,cePlayReplay,ceReplayFrame,ceCanFinish,ceRules,chCode,parseCode,ceSuspend,ceResume}};
 })();
 </script>
 
 </body>
 </html>
+
