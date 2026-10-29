@@ -21,6 +21,8 @@
     .topbar{position:sticky;z-index:50;top:0;padding:14px 0;background:linear-gradient(to bottom,rgba(0,0,0,.24),transparent);backdrop-filter:blur(8px)}.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 18px;border-radius:999px}.brand,.nav-links{display:flex;align-items:center}.brand{gap:12px;font-weight:800}.nav-links{gap:10px;flex-wrap:wrap}.pill,.nav-links a{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--panel-2);color:var(--text)}
     .hero{padding:34px 0 18px}.hero-card{position:relative;overflow:hidden;padding:32px;border:1px solid var(--line);border-radius:24px;background:radial-gradient(circle at top left,rgba(79,140,255,.2),transparent 30%),linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));box-shadow:var(--shadow)}.hero-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:24px;align-items:start}.eyebrow{display:inline-flex;margin-bottom:14px;color:var(--accent);font-size:.84rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}h1{max-width:12ch;font-size:clamp(2.2rem,5vw,4.6rem);line-height:.95;letter-spacing:-.04em}.hero-text{max-width:68ch;margin-top:18px;color:var(--muted);font-size:1.04rem;line-height:1.8}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border:1px solid transparent;border-radius:999px;font-weight:700}.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}.btn-secondary{border-color:var(--line);background:var(--panel-2);color:var(--text)}
     @media(max-width:1080px){.hero-layout{grid-template-columns:1fr}}@media(max-width:760px){.container{width:min(100% - 20px,var(--container))}.topbar{padding:8px 0;backdrop-filter:none}.nav{gap:8px;padding:10px 12px;border-radius:18px}.nav-links{gap:6px}.pill,.nav-links a{padding:7px 10px;font-size:.78rem}.glass{backdrop-filter:none}.hero{padding:12px 0}.hero-card{padding:22px 18px;box-shadow:0 10px 28px rgba(0,0,0,.24)}h1{font-size:clamp(2rem,9vw,3rem)}.hero-text{font-size:.96rem;line-height:1.65}}
+  /* Same rules as portfolio-plus.css, which loads late: without them the mobile nav wraps to an extra row, then jumps back (CLS 0.26). */
+  .plus-search-pill{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font:inherit}@media(max-width:760px){.plus-search-pill kbd{display:none}}
   .garden-feedback-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:1rem}.garden-feedback-list figure{margin:0;padding:1rem;background:var(--panel-2);border:1px solid var(--line);border-radius:1rem}.garden-feedback-list blockquote{margin:0 0 .75rem;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6}.garden-feedback-list figcaption{font-weight:700;color:var(--accent)}
   </style>
 
@@ -1045,6 +1047,12 @@
             <p class="project-desc">Deciziile din spatele automatiz&#x103;rilor &#x219;i claritatea pe m&#x103;sur&#x103; ce cresc datele &#x219;i regulile.</p>
             <div class="card-actions"><a class="btn btn-primary" href="insights/ce-as-documenta.html">Cite&#x219;te insight-ul</a></div>
           </article>
+          <article class="project-card glass" aria-labelledby="insight-5-title">
+            <span class="tag">Retrospectiv&#x103;</span>
+            <h3 id="insight-5-title">Retrospectiv&#x103; octombrie 2026</h3>
+            <p class="project-desc">Ce am livrat &icirc;n timpul liber, ce am &icirc;nv&#x103;&#x21B;at &#x219;i ce n-am verificat &icirc;nc&#x103; pe telefon real.</p>
+            <div class="card-actions"><a class="btn btn-primary" href="insights/retrospectiva-octombrie-2026.html">Cite&#x219;te retrospectiva</a></div>
+          </article>
           <article class="project-card glass">
             <span class="tag">Case study</span>
             <h3>Excel-Quest &mdash; de la landing static la produs cu progres salvat</h3>
@@ -1184,7 +1192,8 @@
   </footer>
 
   <script src="curious-garden/feedback-display.js" defer></script>
-  <script src="portfolio-config.js?v=20261026-candy" defer></script>
+  <script src="portfolio-config.js?v=20261029" defer></script>
+  <script src="analytics.js?v=20261029" defer></script>
   <script src="main.js?v=20261025" defer></script>
   <script src="portfolio-upgrades.js?v=20261011b" defer></script>
   <script src="portfolio-chapters.js?v=20261025" defer></script>

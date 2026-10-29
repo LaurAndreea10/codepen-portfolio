@@ -85,6 +85,27 @@ for (const project of evidence.recent.filter((item) => item.localPath)) {
   for (const [label, pattern] of checks) if (!pattern.test(html)) failures.push(`${project.localPath}: missing ${label}`);
 }
 
+// One number everywhere: any "N proiecte live" / "N live projects" on the public pages
+// must match projectCount from portfolio-config.js.
+const STALE_COUNT = /\b(\d{2,3})\s+(?:de\s+)?(?:proiecte\s+live|live\s+projects)\b/gi;
+for (const file of ["index.html", "portfolio.html", "en/index.html", "recruiter-kit.html", "portfolio-summary.html", "en/growth-suite.html", "growth-suite.html", "Intro Portofoliu Laura Andreea.html", "README.md"]) {
+  if (!existsSync(file)) continue;
+  for (const match of readFileSync(file, "utf8").matchAll(STALE_COUNT)) {
+    if (Number(match[1]) !== canonicalCount) failures.push(`${file}: "${match[0]}" differs from canonical ${canonicalCount}`);
+  }
+}
+
+// README states how many entries projects.json holds.
+const catalogSize = JSON.parse(readFileSync("projects.json", "utf8")).length;
+const readme = readFileSync("README.md", "utf8");
+for (const match of readme.matchAll(/\b(\d{2,3})\s+(?:de\s+proiecte\s+din\s+catalog|catalogue\s+projects)/gi)) {
+  if (Number(match[1]) !== catalogSize) failures.push(`README.md: "${match[0]}" but projects.json has ${catalogSize}`);
+}
+
+for (const [file, html, path] of [["portfolio.html", ro, "analytics.js"], ["en/index.html", en, "../analytics.js"]]) {
+  if (!html.includes(`src="${path}`)) failures.push(`${file}: analytics.js is not loaded`);
+}
+
 if (failures.length) {
   console.error(`Portfolio quality audit failed (${failures.length}):\n- ${failures.join("\n- ")}`);
   process.exit(1);

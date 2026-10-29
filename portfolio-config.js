@@ -4,7 +4,11 @@
     projectCount: 90,
     repositoryCount: "20+",
     accessibilityScore: 100,
-    updated: "2026-10-26"
+    updated: "2026-10-29",
+    // Cookieless page and click statistics (analytics.js). Empty = off.
+    // Create a free site at https://www.goatcounter.com/signup and paste its code here,
+    // e.g. "laurandreea10" for https://laurandreea10.goatcounter.com
+    analytics: Object.freeze({ goatcounter: "" })
   });
   window.PORTFOLIO_CONFIG = config;
 

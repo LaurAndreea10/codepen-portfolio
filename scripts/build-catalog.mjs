@@ -104,4 +104,9 @@ for (const [href, ro, en, dro, den] of pages) {
 const out = { generated: new Date().toISOString().slice(0, 10), count: items.length, items };
 writeFileSync("data/catalog.json", JSON.stringify(out, null, 2) + "\n");
 const missing = items.filter((x) => !x.href && !x.live).map((x) => x.title.ro);
+const canonical = Number(readFileSync("portfolio-config.js", "utf8").match(/projectCount:\s*(\d+)/)?.[1]);
+const searchable = items.filter((x) => x.kind === "project").length;
+if (canonical && searchable !== canonical) {
+  console.warn(`Note: portfolio-config.js says ${canonical} projects, the search catalogue has ${searchable}. Add the missing ones to projects.json or the extras list so Ctrl+K finds every project.`);
+}
 console.log(`data/catalog.json: ${items.length} items (${items.filter((x) => x.kind === "project").length} projects, ${pages.length} pages)` + (missing.length ? `\nNo link: ${missing.join(", ")}` : ""));

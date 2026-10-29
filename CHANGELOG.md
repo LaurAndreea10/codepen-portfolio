@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-10-29 — Creștere: statistici, o singură cifră, CLS 0, retrospectivă, cross-post
+
+- RO: structura paginii neschimbată; carusela Alpis, bara Now, linkul Evoluție și layout-ul Bento rămân la fel.
+  - **CLS pe mobil 0,26 → 0**: butonul Caută afișa „Ctrl K” până sosea `portfolio-plus.css` (încărcat asincron), iar meniul trecea pe un rând în plus și sărea înapoi. Cele două reguli sunt acum și în CSS-ul critic. Lighthouse local: RO mobil CLS 0, RO desktop performanță 100, EN mobil 100 pe toate categoriile.
+  - **Statistici fără cookie-uri** (`analytics.js`, GoatCounter): vizualizări plus un eveniment pe fiecare click spre un proiect, link extern, e-mail sau EN. Oprit până când `analytics.goatcounter` din `portfolio-config.js` primește un cod; ignorat pe localhost și când vizitatorul trimite Do Not Track / Global Privacy Control.
+  - **O singură cifră**: 90 de proiecte live peste tot (Experience Kit spunea 88, README 89, intro-ul vechi 82), README aliniat la cele 72 de intrări din `projects.json`. `portfolio-quality.mjs` semnalează acum orice pagină publică cu altă cifră, iar `build-catalog.mjs` avertizează că în căutare sunt 82 de proiecte față de 90.
+  - **Jurnal**: retrospectiva lunii (`insights/retrospectiva-octombrie-2026.html`), card nou în grila existentă, în sitemap.
+  - **Cross-post**: `node scripts/export-insights.mjs` generează `docs/cross-post/*.md` pentru dev.to / Hashnode, cu `canonical_url` către portofoliu.
+  - **Protocol de test pe dispozitiv real** (`docs/TEST-DISPOZITIV-REAL.md`): TalkBack / VoiceOver, pași, format de notare și unde se publică.
+- EN: page structure unchanged. Mobile CLS 0.26 → 0 (critical CSS for the search pill), opt-in cookieless GoatCounter analytics with click events, one project count everywhere enforced by the quality check, an October retrospective in the Journal, dev.to/Hashnode exports with canonical URLs and a real-device / screen-reader test protocol.
+- Verificat în Chromium la 390 și 1280 px: fără erori JS, fără scroll orizontal; evenimentele de analytics testate cu un GoatCounter simulat. Telefonul fizic și cititorul de ecran rămân neconfirmate (de aici protocolul).
+
 ## 2026-10-25 — Evaluare și îmbunătățiri: meniu, rezumate, accesibilitate 100, date corecte
 
 - RO:
