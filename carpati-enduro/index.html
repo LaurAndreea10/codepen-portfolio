@@ -639,7 +639,7 @@ set_adapt:['Adversari adaptivi','Adaptive rivals'],set_adapt_d:['AI-ul se adapte
 set_comfort:['Confort vizual','Visual comfort'],set_reduce:['Mișcare redusă','Reduced motion'],set_reduce_d:['Fără zoom, fără tremurat, mai puține particule','No zoom, no shake, fewer particles'],
 set_flash:['Fără flash-uri','No flashes'],set_vib:['Vibrații','Vibration'],set_shake:['Tremurat cameră','Camera shake'],
 set_sound:['Sunet','Sound'],v_eng:['Motor','Engine'],v_sfx:['Efecte','Effects'],v_mus:['Muzică','Music'],
-tut:['Joacă tutorialul','Play tutorial'],tut1:['Ține GAZ ca să pornești','Hold GAS to ride'],tut2:['ÎNAPOI ridică roata din față','BACK lifts the front wheel'],tut3:['ÎNAINTE coboară fața la aterizare','FWD drops the nose for landing'],tut4:['FRÂNĂ încetinește; ținută pe loc = marșarier','BRAKE slows down; hold when stopped = reverse'],
+tut:['Joacă tutorialul','Play tutorial'],onb_title:['Bun venit la Carpați Enduro','Welcome to Carpați Enduro'],onb_intro:['Tur scurt înainte de start. Îl poți sări oricând.','A quick tour before you start. You can skip it any time.'],onb_step:['Pasul {n} din 3','Step {n} of 3'],onb_controls:['Comenzile','Controls'],onb_controls_d:['Pe mobil, folosește butoanele de pe ecran. Pe PC, accelerează cu ↑ sau W, frânează cu ↓ sau S și înclină cu ←/→ sau A/D.','On mobile, use the on-screen buttons. On PC, accelerate with ↑ or W, brake with ↓ or S, and lean with ←/→ or A/D.'],onb_career:['Începi cu nivelul 1','Start at Level 1'],onb_career_d:['Apasă butonul Carieră: jocul pornește de la primul nivel și continuă de unde ai rămas. Checkpointurile te ajută să reiei traseul.','Choose Career: the game starts at the first level and continues from your progress. Checkpoints help you resume the course.'],onb_camera:['Schimbă perspectiva','Change your view'],onb_camera_d:['Apasă butonul camerei în cursă sau alege una dintre cele opt perspective din Setări. Termină traseul pentru a salva rezultatul.','Tap the camera button during a race or choose one of eight views in Settings. Finish the course to save your result.'],onb_skip:['Sari peste','Skip tour'],onb_back:['Înapoi','Back'],onb_next:['Continuă','Next'],onb_start:['Începe nivelul 1','Start Level 1'],tut1:['Ține GAZ ca să pornești','Hold GAS to ride'],tut2:['ÎNAPOI ridică roata din față','BACK lifts the front wheel'],tut3:['ÎNAINTE coboară fața la aterizare','FWD drops the nose for landing'],tut4:['FRÂNĂ încetinește; ținută pe loc = marșarier','BRAKE slows down; hold when stopped = reverse'],
 st_careful:['prudent','careful'],st_aggr:['agresiv','aggressive'],st_tech:['tehnic','technical'],st_jump:['specialist sărituri','jump specialist'],
 champ:['Campion','Champion'],you:['Tu','You'],
 ach_first:['Prima sosire','First finish'],ach_first_d:['Termină orice cursă','Finish any race'],ach_win:['Primul loc','First place'],ach_win_d:['Câștigă o cursă cu adversari','Win a race against rivals'],ach_flip:['Acrobat','Acrobat'],ach_flip_d:['Fă un salt mortal','Land a flip'],ach_air:['Zbor lung','Long flight'],ach_air_d:['Stai 2 secunde în aer','Stay airborne for 2 seconds'],ach_wh:['Pe o roată','One wheel'],ach_wh_d:['Wheelie de 4 secunde','4-second wheelie'],ach_km:['Maratonist','Marathoner'],ach_km_d:['Parcurge 20 km','Ride 20 km'],ach_trial:['Secțiune perfectă','Perfect trial'],ach_trial_d:['Termină un trial cu 0 penalizări','Finish a trial with 0 points'],ach_hill:['Alpinist','Climber'],ach_hill_d:['500 m în Hill Climb','500 m in Hill Climb'],ach_reg:['Explorator','Explorer'],ach_reg_d:['Concurează în toate cele 8 regiuni','Race in all 8 regions'],ach_gold:['Colecționar','Collector'],ach_gold_d:['5 medalii de aur în carieră','5 career gold medals'],ach_champ:['Regele Carpaților','King of the Carpathians'],ach_champ_d:['Învinge toți cei 8 campioni','Beat all 8 champions'],ach_daily:['Zilnic','Daily'],ach_daily_d:['Termină provocarea zilei','Finish the daily challenge'],
@@ -1783,7 +1783,24 @@ const SCREENS=['menu','select','career','garage','records','settings','help','sc
 function hideScreens(){if(cePanel)cePanel.hidden=true;SCREENS.forEach(s=>$('#scr-'+s).hidden=true)}
 function show(id){hideScreens();const e=$('#scr-'+id);e.hidden=false;e.scrollTop=0;({menu:buildMenu,select:buildSelect,career:buildCareer,garage:buildGarage,records:buildRecords,settings:buildSettings,help:buildHelp,school:buildSchool,events:buildEvents,shop:buildShop,rewards:buildRewards}[id]||(()=>{}))();const h=e.querySelector('h1,h2');if(h){h.tabIndex=-1;h.focus({preventScroll:true})}}
 function goMenu(){if(ceStatsSnapshot){SV.stats=ceStatsSnapshot;ceStatsSnapshot=null;}ceSeq++;ceEndReplay();if(ceFriend&&S.name!==ceFriend.original){S.name=ceFriend.original;save()}AU.engOff();AU.ambOff();G.les=null;$('#guide').hidden=true;G.state='attract';G.paused=false;G.attractInit=false;G.bike=null;G.done=false;$('#hud').hidden=true;$('#touch').hidden=true;$('#pause').hidden=true;$('#results').hidden=true;showCd('');show('menu')}
-function coinsTxt(){$$('[data-coins]').forEach(e=>e.textContent='◉ '+SV.coins)}
+function showFirstVisitTutorial(){
+ if(SV.tut||$('#scr-menu').hidden)return;
+ let step=0;const overlay=document.createElement('div');overlay.id='first-visit-guide';overlay.className='career-brief';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-labelledby','onb-title');overlay.setAttribute('aria-describedby','onb-desc');
+ const card=document.createElement('section');card.className='career-brief-card';overlay.appendChild(card);$('#app').appendChild(overlay);
+ const titles=['onb_controls','onb_career','onb_camera'],descs=['onb_controls_d','onb_career_d','onb_camera_d'];
+ function finish(start){SV.tut=true;save();overlay.remove();if(start)startEvent(CAREER[0])}
+ function render(){
+  card.replaceChildren();const count=ceEl('span',t('onb_step',{n:step+1}),'eyebrow'),title=ceEl('h2',t('onb_title'));title.id='onb-title';const intro=ceEl('p',t('onb_intro'));intro.id='onb-desc';const section=ceEl('h3',t(titles[step]),'sec-h'),detail=ceEl('p',t(descs[step]));card.append(count,title,intro,section,detail);
+  const actions=ceEl('div',null,'career-brief-actions');
+  const skip=ceButton(t('onb_skip'),()=>finish(false));actions.append(skip);
+  if(step>0)actions.append(ceButton(t('onb_back'),()=>{step--;render()}));
+  if(step<2)actions.append(ceButton(t('onb_next'),()=>{step++;render()},'acc'));
+  else actions.append(ceButton(t('onb_start'),()=>finish(true),'pri'));
+  card.append(actions);actions.lastElementChild.focus();
+ }
+ render()
+}
+function coinsTxt(){$('[data-coins]').forEach(e=>e.textContent='◉ '+SV.coins)}
 function buildMenu(){coinsTxt();const lv=level(SV.xp);$('#mLvl').textContent=t('lvl')+' '+lv;$('#mXp').style.width=clamp((SV.xp-lvlXp(lv))/(lvlXp(lv+1)-lvlXp(lv))*100,0,100)+'%';$('#mCoins').textContent='◉ '+SV.coins;$('#mName').textContent=S.name;$('#mNum').textContent=S.num;
  const d=dailyOpts();const best=SV.daily[d.daily+'-'+CE.signature(ceRules(d))];$('#dailyInfo').textContent=regionName(d.r)+' · '+modeName(d.mode)+(best?' · '+fmtT(best):'');
  const nl=nextLvl(),done=CAREER.filter(e=>SV.career[e.id]&&SV.career[e.id].m>0).length;
@@ -1931,7 +1948,7 @@ function buildPauseQuick(){const q=$('#pauseQuick');q.innerHTML='';q.append(segR
 /* ================= events ================= */
 $$('[data-go]').forEach(b=>b.addEventListener('click',()=>{AU.init();show(b.dataset.go)}));
 $('#btnDaily').onclick=()=>startRace(dailyOpts());
-$('#btnCareer').onclick=()=>{AU.init();const nl=nextLvl();if(nl<0)show('career');else if(nl===0&&!SV.career[CAREER[0].id])startEvent(CAREER[0]);else show('career')};
+$('#btnCareer').onclick=()=>{AU.init();const nl=nextLvl();if(nl<0)show('career');else if(nl===0)startEvent(CAREER[0]);else show('career')};
 function quickOptions(mode){const q=S.q,pick=(v,a)=>v==='rand'?a[Math.floor(Math.random()*a.length)]:v;return{mode,r:regionUnlocked(q.r)?q.r:0,seed:Math.floor(Math.random()*2e9),diff:q.diff,opp:q.opp,w:pick(q.w,['c','r','f','s','l']),tod:pick(q.tod,['d','u','n'])}}
 function launchQuickMode(mode){AU.init();startRace(quickOptions(mode))}
 $('#btnQuickTime').onclick=()=>launchQuickMode('tt');$('#btnQuickTraining').onclick=()=>launchQuickMode('free');$('#btnQuickTricks').onclick=()=>launchQuickMode('stunt');
@@ -1942,7 +1959,7 @@ $('#btnTheme').onclick=()=>{const dark=S.theme==='dark'||(S.theme==='system'&&ma
 $('#setBack').onclick=()=>show('menu');
 $('#riderName').oninput=e=>{S.name=e.currentTarget.value.slice(0,20);save();$('#mName').textContent=S.name||'Pilot'};
 $('#riderName').onblur=e=>{S.name=e.currentTarget.value.trim().slice(0,20)||'Pilot';e.currentTarget.value=S.name;save();$('#mName').textContent=S.name};
-$('#btnTut').onclick=()=>startRace({mode:'free',r:0,seed:12345,diff:0,w:'c',tod:'d',tut:true});
+$('#btnTut').onclick=()=>{SV.tut=true;save();startRace({mode:'free',r:0,seed:12345,diff:0,w:'c',tod:'d',tut:true})};
 $('#hPause').onclick=()=>togglePause();
 const CAMS=['side','cine','chase','pov','low','high','front','orbit'];function cycleCam(){S.cam=CAMS[(CAMS.indexOf(S.cam)+1)%CAMS.length];save();toast(t('set_cam')+': '+t('cam_'+S.cam));hap('tap')}
 $('#hCam').onclick=()=>cycleCam();
@@ -2391,7 +2408,7 @@ addEventListener('blur',()=>{if(advSplit){advSplit.paused=true;for(const p of ad
 
 /* boot */
 ceInit();advInit();
-applyI18n();applySettings();show('menu');requestAnimationFrame(frame);
+applyI18n();applySettings();show('menu');showFirstVisitTutorial();requestAnimationFrame(frame);
 window.__CE={G,get SV(){return SV},startRace,bikeStats,sim:n=>{for(let i=0;i<n;i++)update(1/60)},get paused(){return G.paused},expedition:{open:ceOpen,launch:ceLaunch,get state(){return EX},get run(){return ceRun},get draft(){return ceDraft},results,goMenu,finish:finishRace,ceStartCourse,cePower,ceRead,ceRestore,cePlayReplay,ceReplayFrame,ceCanFinish,ceRules,chCode,parseCode,ceSuspend,ceResume},advanced:{get state(){return AD},get run(){return advState},startSplit:advStartSplit,endSplit:advEndSplit,stepSplit:advSplitStep,get split(){return advSplit},chooseRoute:advChooseRoute,contact:advContact,coachGhost:advCoachGhost,get online(){return advOnline},endpoint:advEndpoint}};
 })();
 </script>
