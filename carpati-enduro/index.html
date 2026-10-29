@@ -160,6 +160,18 @@ input[type=range]{width:100%;accent-color:var(--accent);min-height:32px}
 .chapter-story p{margin:0;color:var(--muted);max-width:72ch}
 .chapter-story .chapter-count{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 .story-stage{display:block;margin-top:2px;color:var(--accent);font-size:.78rem;font-weight:600}
+.career-brief{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:rgba(3,8,18,.84);backdrop-filter:blur(8px)}
+.career-brief-card{width:min(100%,700px);max-height:90dvh;overflow:auto;display:grid;gap:14px;padding:clamp(18px,4vw,30px);border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:0 24px 80px #0008}
+.career-brief-card h2{font-family:var(--f-display);font-size:clamp(1.55rem,5vw,2.3rem)}
+.career-brief-card p{margin:0;color:var(--muted)}
+.career-rival{padding:12px 14px;border-left:4px solid var(--amber);background:var(--surface2);border-radius:8px}
+.career-route-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:8px}
+.career-route{min-height:58px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);font-weight:700}
+.career-route[aria-pressed="true"]{outline:3px solid var(--accent);border-color:transparent}
+.career-brief-actions{display:flex;gap:10px;flex-wrap:wrap}
+.ce-journal-entry{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);display:grid;gap:4px}
+.ce-journal-entry p{margin:0;color:var(--muted)}
+@media(max-width:520px){.career-brief-actions .btn{flex:1 1 100%}}
 .reg-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .reg-h h3{font-family:var(--f-display);font-size:1.3rem;font-weight:800}
 .ev{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);text-align:left;min-height:96px}
@@ -668,13 +680,13 @@ const SKEY='carpati-enduro-v1';
 const prefersReduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const DEF_SET={lang:'ro',theme:'dark',contrast:false,text:1,phys:'arcade',autoThr:false,simple:false,toggle:false,bs:1,hand:'r',touch:'auto',assist:1,speed:1,adaptive:false,reduce:prefersReduce,noFlash:false,vib:true,shake:true,vEng:.5,vSfx:.7,vMus:.25,cam:'side',vibL:1,liv:'solid',helm:'solid',fx:'dust',gfx:matchMedia('(pointer: coarse)').matches?'med':'high',name:'Pilot',num:7,color:'#22d3ee',suit:'#f5a524',
  q:{mode:'race',r:0,diff:1,opp:3,w:'rand',tod:'d'}};
-function defSave(){return{v:1,coins:300,xp:0,earned:0,sel:'enduro',bikes:{enduro:{up:{eng:0,tire:0,susp:0,brk:0}}},career:{},ghosts:{},gOrder:[],lb:{},lbMeta:{},lbOrder:[],stats:{m:0,wins:0,crashes:0,jumps:0,flips:0,time:0,races:0,regions:[]},ach:{},daily:{},tut:false,school:{},evt:{},shop:{liv:['solid'],helm:['solid'],fx:['dust']},rew:{day:null,streak:0,rank:1,ach:{}},set:JSON.parse(JSON.stringify(DEF_SET))}}
+function defSave(){return{v:1,coins:300,xp:0,earned:0,sel:'enduro',bikes:{enduro:{up:{eng:0,tire:0,susp:0,brk:0}}},career:{},storyLog:[],chapterAwards:{},ghosts:{},gOrder:[],lb:{},lbMeta:{},lbOrder:[],stats:{m:0,wins:0,crashes:0,jumps:0,flips:0,time:0,races:0,regions:[]},ach:{},daily:{},tut:false,school:{},evt:{},shop:{liv:['solid'],helm:['solid'],fx:['dust']},rew:{day:null,streak:0,rank:1,ach:{}},set:JSON.parse(JSON.stringify(DEF_SET))}}
 let SV=null;
 try{SV=JSON.parse(localStorage.getItem(SKEY))}catch(e){SV=null}
 if(!SV||SV.v!==1)SV=defSave();
 SV.set=Object.assign(JSON.parse(JSON.stringify(DEF_SET)),SV.set||{});
 if(SV.set.vib===false&&SV.set.vibL===1)SV.set.vibL=0;
-SV.school=SV.school||{};SV.evt=SV.evt||{};SV.shop=SV.shop||{liv:['solid'],helm:['solid'],fx:['dust']};SV.rew=SV.rew||{day:null,streak:0,rank:1,ach:{}};
+SV.school=SV.school||{};SV.evt=SV.evt||{};SV.storyLog=Array.isArray(SV.storyLog)?SV.storyLog:[];SV.chapterAwards=SV.chapterAwards&&typeof SV.chapterAwards==='object'?SV.chapterAwards:{};SV.shop=SV.shop||{liv:['solid'],helm:['solid'],fx:['dust']};SV.rew=SV.rew||{day:null,streak:0,rank:1,ach:{}};
 let S=SV.set;
 function save(){try{localStorage.setItem(SKEY,JSON.stringify(SV));return true}catch(e){console.warn('Progress could not be saved',e);const el=document.querySelector('#sr');if(el)el.textContent=S&&S.lang==='en'?'Storage unavailable. Export a backup.':'Salvarea nu este disponibilă. Exportă un backup.';return false}}
 
@@ -723,6 +735,25 @@ const CAREER_STORIES=[
 const CAREER_STAGE_COPY=[
  [{ro:'Etapa 1 · Descoperă traseul',en:'Stage 1 · Read the trail'},{ro:'Etapa 2 · Stăpânește terenul',en:'Stage 2 · Master the terrain'},{ro:'Etapa 3 · Înfruntă rivalul',en:'Stage 3 · Face the rival'}]
 ];
+const CAREER_STAGE_BRIEF=[
+ [{ro:'Învață linia de bază și ajungi la primul punct de control.',en:'Learn the basic line and reach the first checkpoint.'},{ro:'Stăpânește proba tehnică a regiunii și urmărește o aterizare curată.',en:'Master the region’s technical event and aim for a clean landing.'},{ro:'Finala capitolului: învinge campionul local într-un duel.',en:'Chapter final: beat the local champion in a head-to-head duel.'}]
+];
+const CAREER_ROUTE_SEQS=[
+ ['flat','hill','flat','bridge','flat'],
+ ['table','whoops','flat','drop','table'],
+ ['roots','logs','stairs','rocks','climb','steps']
+];
+const CAREER_RIVALS=[
+ [{style:'Pilot tehnic',bio:'Citește fiecare rădăcină și rareori riscă o aterizare.',quote:'„Pădurea îți spune pe unde să mergi. Trebuie doar s-o asculți.”'},{style:'Technical rider',bio:'Reads every root and rarely risks a landing.',quote:'“The forest shows you the line. You only have to listen.”'}],
+ [{style:'Cățător calculat',bio:'Își păstrează ritmul pe urcări și atacă pe coborâri.',quote:'„Pe creastă, controlul valorează mai mult decât viteza.”'},{style:'Measured climber',bio:'Keeps a steady pace uphill and attacks on descents.',quote:'“On the ridge, control matters more than speed.”'}],
+ [{style:'Specialist în piatră',bio:'Folosește treptele și bolovanii ca rampe.',quote:'„Fiecare piatră are o linie. Găsește-o înaintea mea.”'},{style:'Rock specialist',bio:'Uses steps and boulders like ramps.',quote:'“Every rock has a line. Find it before I do.”'}],
+ [{style:'Pilot răbdător',bio:'Își dozează gazul prin noroi și vaduri adânci.',quote:'„Nu te grăbi. Mlaștina pedepsește orice ezitare.”'},{style:'Patient rider',bio:'Meters the throttle through mud and deep water.',quote:'“Take your time. The swamp punishes every mistake.”'}],
+ [{style:'Vânător de dune',bio:'Păstrează combustibil și accelerează doar pe nisipul tare.',quote:'„Duna pare dreaptă până când ajungi la marginea ei.”'},{style:'Dune hunter',bio:'Saves fuel and accelerates only on firm sand.',quote:'“A dune looks straight until you reach its edge.”'}],
+ [{style:'Maestră a gheții',bio:'Alege o linie lină și evită frânările bruște.',quote:'„Gheața nu iartă. Dar îți arată imediat ce ai făcut.”'},{style:'Ice master',bio:'Chooses a smooth line and avoids sudden braking.',quote:'“Ice never forgives. It always shows you what you did.”'}],
+ [{style:'Pilot de arenă',bio:'Leagă săriturile și transformă aterizările curate în avantaj.',quote:'„Publicul ține minte aterizarea, nu doar saltul.”'},{style:'Arena rider',bio:'Links jumps and turns clean landings into an advantage.',quote:'“The crowd remembers the landing, not only the jump.”'}],
+ [{style:'Campion al lavei',bio:'Atacă pe rocă, dar nu-și pierde echilibrul pe cenușă.',quote:'„Ultima probă nu e despre viteză. E despre ce ai învățat.”'},{style:'Lava champion',bio:'Attacks on rock but keeps balance on ash.',quote:'“The last event is not about speed. It is about what you learned.”'}]
+];
+function careerRouteName(i){return S.lang==='en'?['Safe line','Fast line','Technical line'][i]:['Linia sigură','Linia rapidă','Linia tehnică'][i]}
 const COLORS=['#22d3ee','#f5a524','#ef4444','#22c55e','#a855f7','#f97316','#e5e7eb','#3b82f6'];
 
 /* ---------- seasonal events ---------- */
@@ -986,7 +1017,7 @@ function startRace(o){
  const mc=o.school?{L:0}:{...MCFG[o.mode]};if(o.discipline&&ceDisc[o.discipline])mc.L=ceDisc[o.discipline][3];if(o.course)mc.L=400+o.course.segments.length*1100;const tr=new Track();
  const k0=o.ev?.75+o.lvl*.1:[.8,1,1.15,1.3][o.diff]||1;
  const les=o.school?LESSONS.find(l=>l.id===o.school):null;
- const routeSeq=o.discipline?(o.discipline==='precision'?['flat','table','table','table','table','flat']:o.route===0?['flat','hill','bridge','flat','table','descend']:o.route===1?['table','whoops','flat','drop','table']:['roots','logs','stairs','rocks','climb','steps']):null;const gen=makeGen(tr,o.seed,o.r,o.mode,o.mode==='trial'?1.15:les?.85:k0,!!mc.endless,{puddles:o.w==='r',repeat:!!routeSeq&&!o.course,seq:o.course?o.course.segments.map(s=>s.kind):les&&les.seq||routeSeq,stages:o.course&&o.course.segments});
+ const routeSeq=o.discipline?(o.discipline==='precision'?['flat','table','table','table','table','flat']:o.route===0?['flat','hill','bridge','flat','table','descend']:o.route===1?['table','whoops','flat','drop','table']:['roots','logs','stairs','rocks','climb','steps']):o.ev&&Number.isInteger(o.route)?CAREER_ROUTE_SEQS[o.route]:null;const gen=makeGen(tr,o.seed,o.r,o.mode,o.mode==='trial'?1.15:les?.85:k0,!!mc.endless,{puddles:o.w==='r',repeat:!!routeSeq&&!o.course,seq:o.course?o.course.segments.map(s=>s.kind):les&&les.seq||routeSeq,stages:o.course&&o.course.segments});
  if(mc.endless)gen.extend(7000);else gen.finishAt(les?les.L:mc.L);
  if(o.course)ceApplyProfile(tr,o.course);if(les&&les.zone)tr.zones=[{x0:les.zone[0],x1:les.zone[1]}];
  if(o.theme){let k=0;for(const p of tr.pick){if(p.ty!=='c')continue;if(o.mode==='collect'||k%2===0)p.ty='e';k++}
@@ -1171,11 +1202,15 @@ function results(fin,forcePos){
  const xp=o.practice||o.editorTest?0:m==='free'?Math.floor(dist/10):30+med*25+Math.floor(dist/12)+G.flips*10;
  const lv0=level(SV.xp);SV.coins+=coins;SV.earned+=coins;SV.xp+=xp;SV.stats.races++;if(pos===1&&G.ais.length)SV.stats.wins++;
  // career
- let prevBest=null,isRec=false;
+ let prevBest=null,isRec=false,chapterBonus=0,chapterComplete=false;
  let evMsg='';
  if(o.event){const ev=EVENTS.find(e=>e.id===o.event),st=SV.evt[o.event]||(SV.evt[o.event]={m:[0,0,0],rew:false});st.m[o.evk]=Math.max(st.m[o.evk]||0,med);
   if(o.live&&!st.rew&&st.m.every(x=>x>0)){st.rew=true;SV.coins+=600;if(!SV.shop.liv.includes(ev.liv))SV.shop.liv.push(ev.liv);evMsg=t('ev_got',{l:t('liv_'+ev.liv)})}}
- if(o.ev){const c=SV.career[o.ev]||{m:0,b:null};c.m=Math.max(c.m,med);if(fin||score){const better=c.b==null||(score?val>c.b:val<c.b);if(better)c.b=val}SV.career[o.ev]=c}
+ if(o.ev){const c=SV.career[o.ev]||{m:0,b:null};c.m=Math.max(c.m,med);if(fin||score){const better=c.b==null||(score?val>c.b:val<c.b);if(better)c.b=val}SV.career[o.ev]=c;
+  if((fin||score)&&!o.practice&&!o.editorTest){SV.storyLog.unshift({ev:o.ev,region:o.r,date:todayStr(),mode:m,medal:med,crashes:G.crashes,route:Number.isInteger(o.route)?o.route:-1,time:+G.t.toFixed(2)});SV.storyLog=SV.storyLog.slice(0,40);
+   const chapter=CAREER.filter(x=>x.r===o.r);if(chapter.length&&chapter.every(x=>(SV.career[x.id]?.m||0)>0)&&!SV.chapterAwards[o.r]){SV.chapterAwards[o.r]=true;SV.coins+=250;SV.earned+=250;chapterBonus=250;chapterComplete=true}
+  }
+ }
  // leaderboard + ghost
  if(m!=='free'&&!o.practice&&!o.editorTest&&(fin||score)){
   const key=G.key,lb=SV.lb[key]||[];prevBest=lb.length?lb[0].v:null;lb.push({n:S.name||'Pilot',v:score?val:+val.toFixed(2),d:todayStr(),b:SV.sel});lb.sort((a,b)=>score?b.v-a.v:a.v-b.v);SV.lb[key]=lb.slice(0,10);
@@ -1202,10 +1237,11 @@ function results(fin,forcePos){
  if(G.splits.length&&!G.mc.endless)rows.push([t('res_split'),G.splits.slice(0,4).map(fmtT).join(' · ')]);
  if(m!=='stunt')rows.push([t('res_stunt'),G.stunt]);
  if(G.itemTotal&&m!=='collect')rows.push([t('res_items'),G.items+' / '+G.itemTotal]);
- rows.push([t('res_coins'),'+'+coins],[t('res_xp'),'+'+xp+(level(SV.xp)>lv0?' · '+t('lvl')+' '+level(SV.xp)+'!':'')]);
+ rows.push([t('res_coins'),'+'+(coins+chapterBonus)],[t('res_xp'),'+'+xp+(level(SV.xp)>lv0?' · '+t('lvl')+' '+level(SV.xp)+'!':'')]);
  for(const r of rows){const a=document.createElement('span');a.textContent=r[0];const b=document.createElement('span');b.textContent=r[1];kv.append(a,b)}d.appendChild(kv);
  if(m!=='free'){const ob=document.createElement('div');ob.className='obj';ob.innerHTML=`<strong>${t('obj')}</strong>`+objs.map(x=>`<div class="${x[1]?'ok':''}"><b>${x[1]?'✓':'–'}</b>${x[0]} <span class="muted">+${x[2]}</span></div>`).join('');d.appendChild(ob)}
  if(evMsg){const p=document.createElement('p');p.style.cssText='margin:0;font-weight:700;color:var(--amber)';p.textContent=evMsg;d.appendChild(p)}
+ if(chapterComplete){const p=document.createElement('p');p.style.cssText='margin:0;font-weight:700;color:var(--amber)';p.textContent=S.lang==='en'?'Chapter complete! 250 bonus coins and a trophy added to your journal.':'Capitol încheiat! Ai primit 250 de monede și un trofeu în jurnal.';d.appendChild(p)}
  for(const a of newAch){const p=document.createElement('p');p.style.margin='0';p.innerHTML=`<span class="plate">★</span> ${t('ach_unlock',{n:t('ach_'+a)})}`;d.appendChild(p)}
  const bt=document.createElement('div');bt.className='btns';
  const mk=(txt,cls,fn)=>{const b=document.createElement('button');b.className='btn '+cls;b.textContent=txt;b.onclick=fn;bt.appendChild(b);return b};
@@ -1712,7 +1748,31 @@ function lvlUnlocked(idx){return idx===0||!!(SV.career[CAREER[idx-1].id]&&SV.car
 function regionUnlocked(i){return lvlUnlocked(i*3)}
 function nextLvl(){for(let i=0;i<CAREER.length;i++){if(!(SV.career[CAREER[i].id]&&SV.career[CAREER[i].id].m>0))return i}return -1}
 function evOpts(e){const h=hashStr(e.id);return{mode:e.mode,r:e.r,seed:h,diff:1,opp:3,w:['c','c','r','f',e.r===5?'s':'c'][h%5],tod:e.r===6?'n':['d','d','u','d'][(h>>>4)%4],ev:e.id,lvl:e.lvl}}
-function startEvent(e){startRace(evOpts(e))}
+function startEvent(e){
+ const old=$('#career-brief');if(old)old.remove();
+ const idx=CAREER.indexOf(e),chapter=CAREER_STORIES[e.r],phase=Math.max(0,idx%3),rival=CAREER_RIVALS[e.r];
+ let route=0;
+ const overlay=document.createElement('div');overlay.id='career-brief';overlay.className='career-brief';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-labelledby','career-brief-title');
+ const card=document.createElement('section');card.className='career-brief-card';overlay.appendChild(card);
+ const eyebrow=document.createElement('span');eyebrow.className='eyebrow';eyebrow.textContent=(S.lang==='en'?'Chapter ':'Capitolul ')+(e.r+1)+' / 8 · '+(S.lang==='en'?'Stage ':'Etapa ')+(phase+1)+' / 3';card.appendChild(eyebrow);
+ const title=document.createElement('h2');title.id='career-brief-title';title.textContent=phase===2?(S.lang==='en'?'Regional final · ':'Finala regiunii · ')+regionName(e.r):CAREER_STAGE_COPY[0][phase][S.lang==='en'?'en':'ro'];card.appendChild(title);
+ const desc=document.createElement('p');desc.textContent=chapter[S.lang==='en'?1:0].text;card.appendChild(desc);
+ const objective=document.createElement('p');objective.textContent=CAREER_STAGE_BRIEF[0][phase][S.lang==='en'?'en':'ro'];card.appendChild(objective);
+ const rivalCard=document.createElement('div');rivalCard.className='career-rival';
+ const rivalName=document.createElement('strong');rivalName.textContent=CHAMPS[e.r]+' · '+rival[S.lang==='en'?1:0].style;
+ const rivalBio=document.createElement('p');rivalBio.textContent=rival[S.lang==='en'?1:0].bio;
+ const rivalQuote=document.createElement('p');rivalQuote.textContent=rival[S.lang==='en'?1:0].quote;
+ rivalCard.append(rivalName,rivalBio,rivalQuote);card.appendChild(rivalCard);
+ const routeHeading=document.createElement('strong');routeHeading.textContent=S.lang==='en'?'Choose your route':'Alege ruta';card.appendChild(routeHeading);
+ const routes=document.createElement('div');routes.className='career-route-grid';card.appendChild(routes);
+ CAREER_ROUTE_SEQS.forEach((_,i)=>{const b=document.createElement('button');b.type='button';b.className='career-route';b.setAttribute('aria-pressed',String(i===route));b.textContent=careerRouteName(i);b.addEventListener('click',()=>{route=i;for(const x of routes.children)x.setAttribute('aria-pressed',String(x===b))});routes.appendChild(b)});
+ const detail=document.createElement('p');detail.setAttribute('aria-live','polite');detail.textContent=S.lang==='en'?['More forgiving terrain with a longer, steadier line.','Fewer sections, bigger jumps and riskier landings.','More obstacles and the strongest handling challenge.'][route]:['Teren mai iertător, cu o linie mai lungă și constantă.','Mai puține secțiuni, sărituri mai mari și aterizări riscante.','Mai multe obstacole și cea mai tehnică probă.'][route];card.appendChild(detail);
+ routes.addEventListener('click',()=>{detail.textContent=S.lang==='en'?['More forgiving terrain with a longer, steadier line.','Fewer sections, bigger jumps and riskier landings.','More obstacles and the strongest handling challenge.'][route]:['Teren mai iertător, cu o linie mai lungă și constantă.','Mai puține secțiuni, sărituri mai mari și aterizări riscante.','Mai multe obstacole și cea mai tehnică probă.'][route]});
+ const actions=document.createElement('div');actions.className='career-brief-actions';card.appendChild(actions);
+ const cancel=document.createElement('button');cancel.type='button';cancel.className='btn';cancel.textContent=S.lang==='en'?'Back to chapter':'Înapoi la capitole';cancel.addEventListener('click',()=>{overlay.remove();$('#btnCareer').focus()});
+ const begin=document.createElement('button');begin.type='button';begin.className='btn pri';begin.textContent=S.lang==='en'?'Start stage':'Începe etapa';begin.addEventListener('click',()=>{const opts=evOpts(e);opts.route=route;overlay.remove();startRace(opts)});
+ actions.append(cancel,begin);$('#app').appendChild(overlay);cancel.focus();
+}
 function buildCareer(){coinsTxt();const L=$('#careerList');L.innerHTML='';
  REGIONS.forEach((RG,i)=>{const un=regionUnlocked(i);const sec=document.createElement('section');sec.className='reg';const ms=CAREER.filter(e=>e.r===i).reduce((s,e)=>s+((SV.career[e.id]||{}).m||0),0);
   sec.innerHTML=`<div class="reg-h"><span class="plate">${i+1}</span><h3>${regionName(i)}</h3><span class="muted">${t('rd_'+RG.id)}</span><span class="lock">${un?ms+' / 9 ★':'🔒 '+t('locked')}</span></div>`;
@@ -1955,10 +2015,10 @@ function ceClose(){cePanel.hidden=true;ceEndReplay();goMenu()}
 function ceBuild(){
  cePanel.replaceChildren();const wrap=ceEl('div',null,'wrap ce-stack');cePanel.append(wrap);const bar=ceEl('div',null,'bar');bar.append(ceButton('← '+t('menu'),ceClose),ceEl('span','Carpați Enduro '+CE.VERSION,'eyebrow'));wrap.append(bar);
  const h=ceEl('h2','Expedition Studio','sheet-title');h.id='ce-title';h.tabIndex=-1;wrap.append(h);
- const tabs=[['rides','Expediții','Rides'],['editor','Editor trasee','Track editor'],['missions','Misiuni','Missions'],['tuning','Atelier','Workshop'],['friends','Prieteni','Friends'],['replays','Reluări','Replays'],['analysis','Analiză','Analysis'],['access','Confort','Comfort'],['saves','Salvări','Saves'],['about','Despre','About']];
+ const tabs=[['rides','Expediții','Rides'],['editor','Editor trasee','Track editor'],['missions','Misiuni','Missions'],['tuning','Atelier','Workshop'],['friends','Prieteni','Friends'],['replays','Reluări','Replays'],['analysis','Analiză','Analysis'],['journal','Jurnal','Journal'],['access','Confort','Comfort'],['saves','Salvări','Saves'],['about','Despre','About']];
  const nav=ceEl('nav',null,'ce-tabs');nav.setAttribute('aria-label',ceL('Secțiuni Expedition Studio','Expedition Studio sections'));for(const [id,ro,en] of tabs){const b=ceButton(ceL(ro,en),()=>{ceTab=id;ceBuild()});b.setAttribute('aria-pressed',String(id===ceTab));nav.append(b)}wrap.append(nav);
  const body=ceEl('div',null,'ce-stack');wrap.append(body);ceStatus=ceEl('p',null,'muted');ceStatus.setAttribute('role','status');wrap.append(ceStatus);
- ({rides:ceRides,editor:ceEditor,missions:ceMissions,tuning:ceWorkshop,friends:ceFriends,replays:ceReplays,analysis:ceAnalysis,access:ceAccess,saves:ceSaves,about:ceAbout}[ceTab]||ceRides)(body);advBuild(body);h.focus({preventScroll:true});
+ ({rides:ceRides,editor:ceEditor,missions:ceMissions,tuning:ceWorkshop,friends:ceFriends,replays:ceReplays,analysis:ceAnalysis,journal:ceJournal,access:ceAccess,saves:ceSaves,about:ceAbout}[ceTab]||ceRides)(body);advBuild(body);h.focus({preventScroll:true});
 }
 let cePick={r:0,route:0,w:'c',tod:'d',diff:1};
 function ceRides(body){
@@ -2034,6 +2094,23 @@ function ceAnalysis(body){
  function draw(){filtered.replaceChildren();const data=selected==='all'?rows:rows.filter(h=>h.key===selected);const table=ceEl('table');const head=ceEl('tr');for(const s of [ceL('Data / probă','Date / ride'),ceL('Timp','Time'),ceL('Căderi','Crashes'),ceL('Aterizări','Landings')])head.append(ceEl('th',s));table.append(head);for(const h of data.slice(0,30)){const row=ceEl('tr');for(const value of [h.date+' · '+h.label,fmtT(h.time)+(h.fin?'':' · DNF'),h.crashes,h.clean])row.append(ceEl('td',String(value)));table.append(row)}const sc=ceEl('div',null,'tbl-wrap');sc.append(table);filtered.append(sc);
  const canvas=document.createElement('canvas');canvas.width=900;canvas.height=180;canvas.setAttribute('role','img');canvas.setAttribute('aria-label',ceL('Graficul timpilor; valorile sunt în tabel','Time chart; values are in the table'));filtered.append(canvas);const x=canvas.getContext('2d');x.fillStyle='#111d33';x.fillRect(0,0,900,180);const vals=data.filter(h=>h.fin).slice(0,20).reverse();if(vals.length){const max=Math.max(...vals.map(h=>h.time),1);x.strokeStyle='#22d3ee';x.lineWidth=3;x.beginPath();vals.forEach((h,i)=>{const xx=20+i*860/Math.max(1,vals.length-1),yy=160-h.time/max*140;i?x.lineTo(xx,yy):x.moveTo(xx,yy)});x.stroke()}}
  draw();const last=rows[0],a=ceCard(body,ceL('Ultima încercare','Latest attempt'));a.append(ceEl('p',ceAdvice(last)));if(last.crashXs?.length)a.append(ceEl('p',ceL('Căderi la metri: ','Crashes at metres: ')+last.crashXs.map(x=>Math.round((x-120)/PXM)).join(', ')));a.append(ceEl('p',ceL('Sectoare: ','Sectors: ')+(last.splits||[]).map(fmtT).join(' · ')));a.append(ceEl('p',`${ceL('Viteză medie / maximă','Average / top speed')}: ${(last.average||0).toFixed(1)} / ${(last.top||0).toFixed(1)} km/h`));a.append(ceButton(ceL('Exportă istoricul','Export history'),()=>ceJSON('carpati-history.json',EX.history)));
+}
+function ceJournal(body){
+ const c=ceCard(body,ceL('Jurnal de expediție','Expedition journal'),ceL('Etapele de carieră, rutele alese, medaliile și premiile câștigate în acest browser.','Career stages, chosen routes, medals and rewards earned in this browser.'));
+ const awards=CAREER_STORIES.map((chapter,i)=>({chapter,i})).filter(x=>SV.chapterAwards[x.i]);
+ const trophy=ceEl('p',awards.length?ceL('Capitole încheiate: ','Chapters completed: ')+awards.map(x=>regionName(x.i)).join(' · '):ceL('Încă nu ai încheiat un capitol.','No chapter completed yet.'));
+ c.append(trophy);
+ const entries=Array.isArray(SV.storyLog)?SV.storyLog:[];
+ if(!entries.length)c.append(ceEl('p',ceL('Jurnalul se completează după prima probă de carieră.','The journal starts after your first career stage.')));
+ for(const entry of entries.slice(0,40)){
+  const n=CAREER.findIndex(x=>x.id===entry.ev),region=Number.isInteger(entry.region)&&REGIONS[entry.region]?regionName(entry.region):ceL('Regiune','Region');
+  const box=ceEl('article',null,'ce-journal-entry');
+  box.append(ceEl('strong',(entry.date||'')+' · '+(n>=0?t('lvl_n',{n:n+1}):ceL('Etapă','Stage'))+' · '+region));
+  box.append(ceEl('p',ceL('Rută: ','Route: ')+(entry.route>=0?careerRouteName(entry.route):ceL('implicită','default'))+' · '+ceL('Medalie: ','Medal: ')+(entry.medal||0)+' · '+ceL('Căderi: ','Crashes: ')+(entry.crashes||0)));
+  if(entry.chapterComplete)box.append(ceEl('p',ceL('Capitol încheiat · bonus 250 monede','Chapter complete · 250 coin bonus')));
+  c.append(box)
+ }
+ if(entries.length)c.append(ceButton(ceL('Exportă jurnalul','Export journal'),()=>ceJSON('carpati-expedition-journal.json',{entries,awards:SV.chapterAwards})));
 }
 function ceAdvice(h){return h.crashes>2?ceL('Redu accelerația înainte de obstacole și încearcă presiunea 0,85 pentru aderență. Repetă lecția de echilibru.','Ease off before obstacles and try 0.85 tire pressure for grip. Repeat the balance lesson.'):h.jumps>0&&h.clean/h.jumps<.5?ceL('Aliniază roțile cu panta înainte de aterizare. Încearcă asistența 2 și lecția de sărituri.','Align the wheels with the slope before landing. Try assist 2 and the jumps lesson.'):ceL('Control bun. Compară sectoarele cu un ghost și încearcă o rută tehnică.','Good control. Compare sectors with a ghost and try a technical route.')}
 function ceAccess(body){
