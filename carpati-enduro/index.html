@@ -109,6 +109,7 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .logo b{color:var(--amber);font-weight:900}
 .tag{font-size:1.05rem;color:var(--muted);max-width:44ch}
 .who{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-family:var(--f-mono);font-size:.9rem}
+.rider-name{max-width:320px;margin-top:2px}.rider-name input{width:100%;min-height:46px}
 .xpbar{flex:1;min-width:120px;height:8px;border-radius:99px;background:var(--surface2);overflow:hidden;border:1px solid var(--line)}
 .xpbar i{display:block;height:100%;background:var(--accent)}
 .menu-list{display:flex;flex-direction:column;gap:10px;max-width:560px}
@@ -327,6 +328,7 @@ kbd{font-family:var(--f-mono);font-size:.8rem;padding:2px 6px;border-radius:6px;
         <h1 id="h-menu" class="logo">Carpați<br><b>Enduro</b></h1>
         <p class="tag" data-i18n="tag">Moto · Enduro · Trial — curse rapide și trasee tehnice prin noroi, pietre, bușteni, urcări și sărituri.</p>
         <div class="who"><span class="plate" id="mNum">7</span><span id="mName">Pilot</span><span id="mLvl"></span><div class="xpbar" aria-hidden="true"><i id="mXp"></i></div><span class="coins" id="mCoins"></span></div>
+        <label class="field rider-name"><span class="lbl" data-i18n="name">Nume pilot</span><input id="riderName" type="text" maxlength="20" autocomplete="nickname" data-i18n-aria="name" aria-label="Nume pilot"></label>
       </div>
       <nav class="menu-list" aria-label="Meniu">
         <div class="menu-main">
@@ -667,7 +669,7 @@ helm_solid:['Simplă','Plain'],helm_stripe:['Dungă','Stripe'],helm_split:['Bico
 fx_dust:['Praf clasic','Classic dust'],fx_neon:['Neon','Neon'],fx_sparks:['Scântei','Sparks'],fx_confetti:['Confetti','Confetti'],fx_rainbow:['Curcubeu','Rainbow'],
 rw_daily:['Bonus zilnic','Daily bonus'],rw_day:['Ziua {n}','Day {n}'],rw_claim:['Revendică','Claim'],rw_rank:['Recompense de rang','Rank rewards'],rw_rankn:['Rang {n}','Rank {n}'],rw_ach:['Recompense pentru realizări','Achievement rewards'],rw_all:['Revendică tot','Claim all'],rw_nothing:['Nimic de revendicat','Nothing to claim'],rw_none:['Nimic de revendicat acum. Revino mâine pentru bonusul zilnic.','Nothing to claim right now. Come back tomorrow for the daily bonus.'],rw_got:['+{n} monede','+{n} coins'],rw_streak:['Serie: {n} zile la rând','Streak: {n} days in a row'],rw_tomorrow:['Următorul bonus: mâine','Next bonus: tomorrow'],
 install:['Instalează aplicația','Install the app'],installed:['Aplicație instalată','App installed'],
-set_cam:['Cameră','Camera'],set_cam_d:['Cască și Urmărire te pun pe motocicletă. Mișcarea redusă le înlocuiește cu vederea laterală.','Helmet and Chase put you on the bike. Reduced motion swaps them for the side view.'],cam_side:['Lateral','Side'],cam_cine:['Cinematic','Cinematic'],cam_chase:['Urmărire','Chase'],cam_pov:['Cască (POV)','Helmet (POV)'],cam_btn:['Schimbă camera','Change camera'],
+set_cam:['Perspective cameră','Camera perspectives'],set_cam_d:['Alege una dintre opt perspective; poți schimba rapid camera și în timpul cursei. Mișcarea redusă dezactivează orbitarea.','Choose from eight views; switch quickly during a race. Reduced motion disables orbiting.'],cam_side:['Laterală','Side'],cam_cine:['Cinematică','Cinematic'],cam_chase:['Urmărire','Chase'],cam_pov:['Cască (POV)','Helmet (POV)'],cam_low:['Joasă, aproape de traseu','Low track'],cam_high:['Înălțată, panoramică','Elevated panorama'],cam_front:['Frontală','Front-facing'],cam_orbit:['Orbită dinamică','Dynamic orbit'],cam_btn:['Schimbă camera','Change camera'],
 set_vibL:['Vibrații pe mobil','Phone vibration'],vib0:['Oprite','Off'],vib1:['Ușoare','Light'],vib2:['Puternice','Strong'],k_c:['Schimbă camera','Change camera'],
 
 help_ctrl:['Comenzi','Controls'],help_modes:['Moduri','Modes'],help_tips:['Sfaturi','Tips'],help_acc:['Accesibilitate','Accessibility'],
@@ -1677,8 +1679,8 @@ const R3=(()=>{
   const cx=G.cam.x*SC,cy=-G.cam.y*SC;syncChunks(cx);
   // camera fit
   const aspect=innerWidth/innerHeight,tf=Math.tan(cam.fov*Math.PI/360);let wTarget=aspect<1?13:24;const sp=G.bike?Math.hypot(G.bike.pts[0].vx,G.bike.pts[0].vy):300;if(!S.reduce)wTarget*=1+Math.min(sp/900,1)*.14;
-  camMode=(G.state==='attract'||!G.bike)?'side':S.cam;if(S.reduce&&(camMode==='pov'||camMode==='chase'))camMode='side';
-  setFront(camMode==='chase'||camMode==='pov');
+  camMode=(G.state==='attract'||!G.bike)?'side':S.cam;if(S.reduce&&['pov','chase','orbit'].includes(camMode))camMode='side';
+  setFront(camMode==='chase'||camMode==='pov'||camMode==='front');
   let fov=36;
   if(camMode==='side'){const D=Math.max(wTarget/(2*tf*aspect),9/(2*tf));cam.position.set(cx-1+G.cam.sx*SC*3,cy+2.4+D*.1+G.cam.sy*SC*3,D);cam.lookAt(cx+(aspect<1?.6:1.2),cy+(aspect<1?-2.6:.9),0)}
   else{const b=G.bike,[R,F,Cc,Hh]=b.pts,bx=Cc.x*SC,by=-Cc.y*SC,v=Math.hypot(R.vx,R.vy),k=Math.min(1,camDt*3);
@@ -1686,6 +1688,10 @@ const R3=(()=>{
    const shx=G.cam.sx*SC*2,shy=G.cam.sy*SC*2,spdK=Math.min(v/800,1);
    if(camMode==='cine'){fov=40;const D=aspect<1?16:11;cam.position.set(cx-6.5+shx,cy+3.8+shy,D);cam.lookAt(cx+3,cy+.4,0)}
    else if(camMode==='chase'){fov=56+spdK*14;const dx=Math.cos(camHead),dy=Math.sin(camHead),back=aspect<1?8.5:6.8;cam.position.set(bx-dx*back+shx,by-dy*back+2.5+shy,.001);cam.lookAt(bx+dx*9,by+dy*9+.7,0)}
+   else if(camMode==='low'){fov=62;const dx=Math.cos(camHead),dy=Math.sin(camHead);cam.position.set(bx-dx*9+shx,by+.55+shy,1.5);cam.lookAt(bx+dx*13,by+1.4,0)}
+   else if(camMode==='high'){fov=50;const dx=Math.cos(camHead),dy=Math.sin(camHead);cam.position.set(bx-dx*6+shx,by+9+shy,7);cam.lookAt(bx+dx*4,by+.3,0)}
+   else if(camMode==='front'){fov=58;const dx=Math.cos(camHead),dy=Math.sin(camHead);cam.position.set(bx+dx*9+shx,by+3+shy,4);cam.lookAt(bx-dx*2,by+1,0)}
+   else if(camMode==='orbit'){fov=54;const dx=Math.cos(camHead),dy=Math.sin(camHead),a=performance.now()/3400;cam.position.set(bx-dx*6+Math.cos(a)*5+shx,by+3.5+Math.sin(a)*2+shy,4+Math.cos(a)*1.5);cam.lookAt(bx+dx*2,by+.8,0)}
    else{fov=70+spdK*12;const a=-Math.atan2(F.y-R.y,F.x-R.x),hx=Hh.x*SC+Math.cos(a)*.22,hy=-Hh.y*SC+.06,bob=S.shake?Math.sin(performance.now()/90)*.012*spdK:0;cam.position.set(hx+shx*.3,hy+bob+shy*.3,.001);const la=a*.8+camHead*.2;cam.lookAt(hx+Math.cos(la)*10,hy+Math.sin(la)*10-1.1,0)}}
   if(Math.abs(cam.fov-fov)>.05){cam.fov=lerp(cam.fov,fov,.15);cam.updateProjectionMatrix()}
   sun.position.set(cx+sun.userData.off[0],cy+sun.userData.off[1],sun.userData.off[2]);sun.target.position.set(cx,cy,0);
@@ -1784,6 +1790,7 @@ function buildMenu(){coinsTxt();const lv=level(SV.xp);$('#mLvl').textContent=t('
  $('#careerLbl').textContent=nl<0?t('career'):nl===0?t('start_lvl1'):t('cont_lvl',{n:nl+1});
  $('#careerSub').textContent=nl<0?t('career_all',{m:CAREER.reduce((s,e)=>s+((SV.career[e.id]||{}).m||0),0)}):t('lvl_of',{n:done})+' · '+t('m_'+CAREER[nl].mode)+' · '+regionName(CAREER[nl].r);
  $('#schoolSub').textContent=t('school_sub',{n:Object.keys(SV.school).length});
+ const nameInput=$('#riderName');if(nameInput&&document.activeElement!==nameInput)nameInput.value=S.name||'Pilot';
  const act=EVENTS.filter(e=>evWindow(e).active);$('#eventsSub').textContent=act.length?'● '+act.map(e=>evName(e.id)).join(', '):t('evd_'+EVENTS[0].id).split('.')[0];
  $('#rwBadge').hidden=!rewardsPending();$('#btnInstall').hidden=!deferredInstall;
  $('#btnLang').textContent=S.lang==='ro'?'EN':'RO';$('#btnTheme').textContent=S.theme==='light'?'☾':'☀'}
@@ -1893,7 +1900,7 @@ function buildSettings(){const B=$('#setBox');B.innerHTML='';const h=(k)=>{const
   segRow('set_touch','','touch',[['auto',t('tc_auto')],['on',t('tc_on')],['off',t('tc_off')]]),
   segRow('set_assist','set_assist_d','assist',[[0,t('as0')],[1,t('as1')],[2,t('as2')]]),
   segRow('set_speed','set_speed_d','speed',[[1,'100%'],[.8,'80%'],[.6,'60%']]),
-  segRow('set_cam','set_cam_d','cam',[['side',t('cam_side')],['cine',t('cam_cine')],['chase',t('cam_chase')],['pov',t('cam_pov')]]),
+  segRow('set_cam','set_cam_d','cam',[['side',t('cam_side')],['cine',t('cam_cine')],['chase',t('cam_chase')],['pov',t('cam_pov')],['low',t('cam_low')],['high',t('cam_high')],['front',t('cam_front')],['orbit',t('cam_orbit')]]),
   swRow('set_adapt','set_adapt_d','adaptive'));
  h('set_comfort');
  B.append(swRow('set_reduce','set_reduce_d','reduce'),swRow('set_flash','','noFlash'),swRow('set_shake','','shake'),segRow('set_vibL','','vibL',[[0,t('vib0')],[1,t('vib1')],[2,t('vib2')]],()=>hap('cp')));
@@ -1933,9 +1940,11 @@ $('#btnCode').onclick=()=>{const o=parseCode($('#codeIn').value);if(!o){toast(t(
 $('#btnLang').onclick=()=>{S.lang=S.lang==='ro'?'en':'ro';save();applyI18n()};
 $('#btnTheme').onclick=()=>{const dark=S.theme==='dark'||(S.theme==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);S.theme=dark?'light':'dark';save();applySettings();buildMenu()};
 $('#setBack').onclick=()=>show('menu');
+$('#riderName').oninput=e=>{S.name=e.currentTarget.value.slice(0,20);save();$('#mName').textContent=S.name||'Pilot'};
+$('#riderName').onblur=e=>{S.name=e.currentTarget.value.trim().slice(0,20)||'Pilot';e.currentTarget.value=S.name;save();$('#mName').textContent=S.name};
 $('#btnTut').onclick=()=>startRace({mode:'free',r:0,seed:12345,diff:0,w:'c',tod:'d',tut:true});
 $('#hPause').onclick=()=>togglePause();
-const CAMS=['side','cine','chase','pov'];function cycleCam(){S.cam=CAMS[(CAMS.indexOf(S.cam)+1)%4];save();toast(t('set_cam')+': '+t('cam_'+S.cam));hap('tap')}
+const CAMS=['side','cine','chase','pov','low','high','front','orbit'];function cycleCam(){S.cam=CAMS[(CAMS.indexOf(S.cam)+1)%CAMS.length];save();toast(t('set_cam')+': '+t('cam_'+S.cam));hap('tap')}
 $('#hCam').onclick=()=>cycleCam();
 $('#hRespawn').onclick=()=>{if(G.state==='race'&&!G.done&&!G.bike.crashed)respawn()};
 $('#pCont').onclick=()=>togglePause(false);
