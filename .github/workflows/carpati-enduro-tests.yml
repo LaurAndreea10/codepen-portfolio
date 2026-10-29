@@ -1,0 +1,33 @@
+name: Carpați Enduro contracts
+on:
+  pull_request:
+    paths: ['carpati-enduro/**', '.github/workflows/carpati-enduro-tests.yml']
+  push:
+    branches: [main]
+    paths: ['carpati-enduro/**', '.github/workflows/carpati-enduro-tests.yml']
+permissions:
+  contents: read
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check syntax
+        run: |
+          node --check carpati-enduro/expedition-core.js
+          node --check carpati-enduro/trail-systems.js
+          node --check carpati-enduro/sw.js
+          node --check carpati-enduro/server/server.mjs
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          source=Path('carpati-enduro/index.html').read_text()
+          scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',source)
+          Path('/tmp/carpati-main.js').write_text(scripts[-1])
+          PY
+          node --check /tmp/carpati-main.js
+      - name: Data, physics and server tests
+        run: node --test carpati-enduro/tests/*.test.cjs carpati-enduro/tests/server.test.mjs
