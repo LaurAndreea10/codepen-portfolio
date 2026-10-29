@@ -1801,7 +1801,7 @@ function showFirstVisitTutorial(){
  }
  render()
 }
-function coinsTxt(){$('[data-coins]').forEach(e=>e.textContent='◉ '+SV.coins)}
+function coinsTxt(){$$('[data-coins]').forEach(e=>e.textContent='◉ '+SV.coins)}
 function buildMenu(){coinsTxt();const lv=level(SV.xp);$('#mLvl').textContent=t('lvl')+' '+lv;$('#mXp').style.width=clamp((SV.xp-lvlXp(lv))/(lvlXp(lv+1)-lvlXp(lv))*100,0,100)+'%';$('#mCoins').textContent='◉ '+SV.coins;$('#mName').textContent=S.name;$('#mNum').textContent=S.num;
  const d=dailyOpts();const best=SV.daily[d.daily+'-'+CE.signature(ceRules(d))];$('#dailyInfo').textContent=regionName(d.r)+' · '+modeName(d.mode)+(best?' · '+fmtT(best):'');
  const nl=nextLvl(),done=CAREER.filter(e=>SV.career[e.id]&&SV.career[e.id].m>0).length;
