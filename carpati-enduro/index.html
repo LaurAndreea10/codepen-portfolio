@@ -439,6 +439,7 @@ kbd{font-family:var(--f-mono);font-size:.8rem;padding:2px 6px;border-radius:6px;
       <div class="bar"><button class="btn sm" data-go="menu">← <span data-i18n="back">Înapoi</span></button><span class="sp"></span><span class="coins" data-coins></span></div>
       <h2 id="h-sch" class="sheet-title" data-i18n="school">Școala de pilotaj</h2>
       <p class="muted" data-i18n="school_help">Lecții scurte, cu instrucțiuni pas cu pas și obiective bifate pe ecran. Prima finalizare a fiecărei lecții aduce monede.</p>
+      <div class="statg" id="schoolProgress" aria-label="Progresul antrenamentului"></div>
       <div class="grid wide" id="schoolList"></div>
     </div>
   </section>
@@ -483,7 +484,7 @@ kbd{font-family:var(--f-mono);font-size:.8rem;padding:2px 6px;border-radius:6px;
   <!-- HUD -->
   <div id="hud" hidden>
     <div class="hud-top">
-      <div class="pill"><small id="hL1" data-i18n="h_time">Timp</small><b id="hTime">00:00.00</b></div>
+      <div class="pill"><small id="hL1" data-i18n="h_time">Timp</small><b id="hTime">00:00.00</b><small id="hTarget" hidden></small></div>
       <div class="hud-mid">
         <div class="prog" id="hProg" aria-hidden="true"><div class="fill" id="hFill"></div></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -575,6 +576,10 @@ back:['Înapoi','Back'],start:['Start','Start'],mode:['Mod de joc','Game mode'],
 opponents:['Adversari','Opponents'],weather:['Vreme','Weather'],tod:['Moment al zilei','Time of day'],
 code_in:['Ai primit un cod de provocare? Lipește-l aici:','Got a challenge code? Paste it here:'],play_code:['Joacă','Play'],bad_code:['Cod invalid','Invalid code'],
 career_help:['Începi de la Nivelul 1. Orice medalie deschide nivelul următor, iar fiecare regiune se încheie cu duelul cu campionul local.','You start at Level 1. Any medal unlocks the next level, and every region ends with a duel against the local champion.'],
+h_delta:['Diferență față de ghost','Delta to ghost'],h_targets:['Ținte medalii','Medal targets'],res_ghost_splits:['Diferență pe sectoare','Sector delta'],res_combo:['Cel mai bun combo','Best combo'],
+drill_attempts:['Încercări','Attempts'],drill_best:['Cel mai bun timp','Best time'],drill_stars:['Stele','Stars'],
+skill_braking:['Frânare','Braking'],skill_wheelie:['Wheelie','Wheelie'],skill_landing:['Sărituri și aterizări','Jumps and landings'],skill_obstacles:['Obstacole','Obstacles'],
+cup_points:['Puncte de campionat','Championship points'],cup_target:['Țintă pentru titlu','Title target'],cup_champion:['Campion regional','Regional champion'],cup_result:['Campionat regional câștigat · {n}/9 puncte · +300 monede.','Regional championship won · {n}/9 points · +300 coins.'],cup_progress:['Campionat regional: {n}/9 puncte; ai nevoie de 6 pentru titlu.','Regional championship: {n}/9 points; 6 needed for the title.'],
 locked:['Blocat','Locked'],lvl:['Rang','Rank'],
 m_race:['Cursă','Race'],m_tt:['Contratimp','Time Trial'],m_trial:['Trial','Trial'],m_hill:['Hill Climb','Hill Climb'],m_surv:['Supraviețuire','Survival'],m_stunt:['Trucuri','Tricks'],m_elim:['Eliminare','Elimination'],m_duel:['Duel cu campionul','Champion duel'],m_free:['Antrenament liber','Free ride'],
 md_race:['Concurezi cu adversari AI până la linia de sosire.','Race AI riders to the finish line.'],
@@ -599,7 +604,7 @@ lean_back:['Înclinare înapoi','Lean back'],lean_fwd:['Înclinare înainte','Le
 t_back:['ÎNAPOI','BACK'],t_fwd:['ÎNAINTE','FWD'],t_brk:['FRÂNĂ','BRAKE'],t_thr:['GAZ','GAS'],
 rotate:['Rotește telefonul pentru o vedere mai largă','Rotate your phone for a wider view'],
 go:['Start!','Go!'],crash:['Cădere!','Crash!'],crash_sr:['Cădere. Revii la checkpoint.','Crash. Back to checkpoint.'],cp:['Checkpoint','Checkpoint'],cp_clean:['Secțiune curată!','Clean section!'],finish:['Sosire!','Finish!'],
-flip:['Salt mortal','Flip'],backflip:['Salt mortal înapoi','Backflip'],clean:['Aterizare curată','Clean landing'],wheelie:['Wheelie','Wheelie'],air:['Zbor','Air'],
+flip:['Salt mortal','Flip'],backflip:['Salt mortal înapoi','Backflip'],clean:['Aterizare curată','Clean landing'],wheelie:['Wheelie','Wheelie'],air:['Zbor','Air'],combo:['COMBO','COMBO'],
 elim_out:['{n} eliminat','{n} knocked out'],you_out:['Ai fost eliminat','You were knocked out'],fuel_out:['Fără combustibil','Out of fuel'],stuck:['Blocat? Apasă R sau ↺','Stuck? Press R or ↺'],
 lives_left:['Vieți rămase: {n}','Lives left: {n}'],time_up:['Timpul a expirat','Time is up'],land_ok:['OK','OK'],land_bad:['ÎNCLINĂ','LEAN'],
 res_finish:['Ai terminat cursa','Race complete'],res_over:['Cursă încheiată','Run over'],res_time:['Timp','Time'],res_best:['Cel mai bun','Best'],res_pos:['Poziție','Position'],res_medal:['Medalie','Medal'],res_coins:['Monede câștigate','Coins earned'],res_xp:['XP','XP'],res_new:['Record nou!','New record!'],res_score:['Scor','Score'],res_dist:['Distanță','Distance'],res_faults:['Penalizări','Penalty points'],res_stunt:['Puncte stunt','Stunt points'],res_split:['Timpi intermediari','Split times'],
@@ -685,13 +690,13 @@ const SKEY='carpati-enduro-v1';
 const prefersReduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const DEF_SET={lang:'ro',theme:'dark',contrast:false,text:1,phys:'arcade',autoThr:false,simple:false,toggle:false,bs:1,hand:'r',touch:'auto',assist:1,speed:1,adaptive:false,reduce:prefersReduce,noFlash:false,vib:true,shake:true,vEng:.5,vSfx:.7,vMus:.25,cam:'side',vibL:1,liv:'solid',helm:'solid',fx:'dust',gfx:matchMedia('(pointer: coarse)').matches?'med':'high',name:'Pilot',num:7,color:'#22d3ee',suit:'#f5a524',
  q:{mode:'race',r:0,diff:1,opp:3,w:'rand',tod:'d'}};
-function defSave(){return{v:1,coins:300,xp:0,earned:0,sel:'enduro',bikes:{enduro:{up:{eng:0,tire:0,susp:0,brk:0}}},career:{},storyLog:[],chapterAwards:{},objectiveAwards:{},chapterEndings:{},ghosts:{},gOrder:[],lb:{},lbMeta:{},lbOrder:[],stats:{m:0,wins:0,crashes:0,jumps:0,flips:0,time:0,races:0,regions:[]},ach:{},daily:{},tut:false,school:{},evt:{},shop:{liv:['solid'],helm:['solid'],fx:['dust']},rew:{day:null,streak:0,rank:1,ach:{}},set:JSON.parse(JSON.stringify(DEF_SET))}}
+function defSave(){return{v:1,coins:300,xp:0,earned:0,sel:'enduro',bikes:{enduro:{up:{eng:0,tire:0,susp:0,brk:0}}},career:{},storyLog:[],chapterAwards:{},objectiveAwards:{},chapterEndings:{},cups:{},training:{},ghosts:{},gOrder:[],lb:{},lbMeta:{},lbOrder:[],stats:{m:0,wins:0,crashes:0,jumps:0,flips:0,time:0,races:0,regions:[]},ach:{},daily:{},tut:false,school:{},evt:{},shop:{liv:['solid'],helm:['solid'],fx:['dust']},rew:{day:null,streak:0,rank:1,ach:{}},set:JSON.parse(JSON.stringify(DEF_SET))}}
 let SV=null;
 try{SV=JSON.parse(localStorage.getItem(SKEY))}catch(e){SV=null}
 if(!SV||SV.v!==1)SV=defSave();
 SV.set=Object.assign(JSON.parse(JSON.stringify(DEF_SET)),SV.set||{});
 if(SV.set.vib===false&&SV.set.vibL===1)SV.set.vibL=0;
-SV.school=SV.school||{};SV.evt=SV.evt||{};SV.storyLog=Array.isArray(SV.storyLog)?SV.storyLog:[];SV.chapterAwards=SV.chapterAwards&&typeof SV.chapterAwards==='object'?SV.chapterAwards:{};SV.objectiveAwards=SV.objectiveAwards&&typeof SV.objectiveAwards==='object'?SV.objectiveAwards:{};SV.chapterEndings=SV.chapterEndings&&typeof SV.chapterEndings==='object'?SV.chapterEndings:{};SV.shop=SV.shop||{liv:['solid'],helm:['solid'],fx:['dust']};SV.rew=SV.rew||{day:null,streak:0,rank:1,ach:{}};
+SV.school=SV.school||{};SV.evt=SV.evt||{};SV.storyLog=Array.isArray(SV.storyLog)?SV.storyLog:[];SV.chapterAwards=SV.chapterAwards&&typeof SV.chapterAwards==='object'?SV.chapterAwards:{};SV.objectiveAwards=SV.objectiveAwards&&typeof SV.objectiveAwards==='object'?SV.objectiveAwards:{};SV.chapterEndings=SV.chapterEndings&&typeof SV.chapterEndings==='object'?SV.chapterEndings:{};SV.cups=SV.cups&&typeof SV.cups==='object'?SV.cups:{};SV.training=SV.training&&typeof SV.training==='object'?SV.training:{};SV.shop=SV.shop||{liv:['solid'],helm:['solid'],fx:['dust']};SV.rew=SV.rew||{day:null,streak:0,rank:1,ach:{}};
 let S=SV.set;
 function save(){try{localStorage.setItem(SKEY,JSON.stringify(SV));return true}catch(e){console.warn('Progress could not be saved',e);const el=document.querySelector('#sr');if(el)el.textContent=S&&S.lang==='en'?'Storage unavailable. Export a backup.':'Salvarea nu este disponibilă. Exportă un backup.';return false}}
 
@@ -1029,7 +1034,7 @@ const lc=document.createElement('canvas'),lx=lc.getContext('2d');
 function resize(){DPR=Math.min(2,window.devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);lc.width=Math.round(W*DPR/2);lc.height=Math.round(H*DPR/2)}
 addEventListener('resize',resize);resize();
 
-const G={state:'attract',paused:false,tr:null,gen:null,bike:null,ais:[],opts:null,t:0,cd:0,cam:{x:0,y:0,z:1,sx:0,sy:0,shake:0},parts:[],cpIdx:0,respX:120,faults:0,secFault:0,crashes:0,coins:0,coinTotal:0,stunt:0,flips:0,cleanL:0,airMax:0,whMax:0,fuel:100,lives:3,maxX:0,startY:0,rec:[],recAcc:0,ghost:null,splits:[],elimT:0,stuckT:0,msgT:0,stuntT:0,done:false,env:{grip:1,fuel:1,assist:1},hudT:0,km0:0,tutStep:0};
+const G={state:'attract',paused:false,tr:null,gen:null,bike:null,ais:[],opts:null,t:0,cd:0,cam:{x:0,y:0,z:1,sx:0,sy:0,shake:0},parts:[],cpIdx:0,respX:120,faults:0,secFault:0,crashes:0,coins:0,coinTotal:0,stunt:0,stuntCombo:0,stuntComboTimer:0,stuntComboBest:0,ghostSplits:[],flips:0,cleanL:0,airMax:0,whMax:0,fuel:100,lives:3,maxX:0,startY:0,rec:[],recAcc:0,ghost:null,splits:[],elimT:0,stuckT:0,msgT:0,stuntT:0,done:false,env:{grip:1,fuel:1,assist:1},hudT:0,km0:0,tutStep:0};
 const keys=new Set();const touch={thr:0,brk:0,lb:0,lf:0};let padPause=false,padOK=true;
 
 function regionName(i){return t('r_'+REGIONS[i].id)}
@@ -1052,7 +1057,7 @@ function startRace(o){
   if(o.mode==='collect'){const R2=rng(o.seed^77);for(let x=900;x<tr.finish-300;x+=420+R2()*380)tr.pick.push({x,dy:-36-R2()*40,ty:'e',got:0})}}
  G.tr=tr;G.gen=gen;G.opts=o;G.mc=mc;
  G.bike=newBike(tr,120,bikeStats(SV.sel));
- G.t=0;G.cd=3.2;G.state='count';G.paused=false;G.done=false;G.parts=[];G.cpIdx=0;G.respX=120;G.faults=0;G.secFault=0;G.crashes=0;G.coins=0;G.coinTotal=tr.pick.filter(p=>p.ty==='c').length;G.items=0;G.itemTotal=tr.pick.filter(p=>p.ty==='e').length;G.jumps=0;G.jumpStreak=0;G.revD=0;G.keepT=0;G.passed=false;G.inPud=false;G.les=les?{def:les,done:{}}:null;G.stunt=0;G.flips=0;G.cleanL=0;G.airMax=0;G.whMax=0;G.fuel=100;G.lives=mc.lives||0;G.maxX=120;G.startY=tr.gy(120);G.rec=[];G.recAcc=0;G.splits=[];G.elimT=mc.elim||0;G.stuckT=0;G.km0=0;G.lastCd=4;
+ G.t=0;G.cd=3.2;G.state='count';G.paused=false;G.done=false;G.parts=[];G.cpIdx=0;G.respX=120;G.faults=0;G.secFault=0;G.crashes=0;G.coins=0;G.coinTotal=tr.pick.filter(p=>p.ty==='c').length;G.items=0;G.itemTotal=tr.pick.filter(p=>p.ty==='e').length;G.jumps=0;G.jumpStreak=0;G.revD=0;G.keepT=0;G.passed=false;G.inPud=false;G.les=les?{def:les,done:{}}:null;G.stunt=0;G.stuntCombo=0;G.stuntComboTimer=0;G.stuntComboBest=0;G.ghostSplits=[];G.flips=0;G.cleanL=0;G.airMax=0;G.whMax=0;G.fuel=100;G.lives=mc.lives||0;G.maxX=120;G.startY=tr.gy(120);G.rec=[];G.recAcc=0;G.splits=[];G.elimT=mc.elim||0;G.stuckT=0;G.km0=0;G.lastCd=4;
  G.cam.x=G.bike.pts[2].x;G.cam.y=G.bike.pts[2].y;
  // AI
  G.ais=[];const sr=rng(o.seed^0x9e37);
@@ -1061,7 +1066,7 @@ function startRace(o){
  else if(mc.ai&&!les){const n=o.mode==='elim'?Math.max(3,o.opp||5):(o.opp??3);for(let i=0;i<n;i++){const base=o.ev?.67+o.lvl*.03:DIFFSKILL[o.diff];G.ais.push(newAI(i,base+(sr()-.5)*.08+(i===0?.03:0),STYLES[Math.floor(sr()*4)],AINAMES[(i+o.r)%8],AICOL[(i+o.r)%8],10+Math.floor(sr()*89)))}}
  for(const a of G.ais)a.y=tr.gy(a.x)-WR;
  // ghost
- const key=trackKey(o)+'-v2-'+CE.signature(ceRules(o));G.key=key;G.ghost=(mc.ghost||o.mode==='trial'||o.daily)&&SV.ghosts[key]?SV.ghosts[key]:null;
+ const key=trackKey(o)+'-v2-'+CE.signature(ceRules(o));G.key=key;G.ghost=(mc.ghost||o.mode==='trial'||o.daily)&&SV.ghosts[key]?SV.ghosts[key]:null;G.ghostSplits=G.ghost?tr.cps.map(x=>ghostTimeAtX(x,G.ghost)):[];
  // pars
  G.par=null;if(o.mode==='tt'||o.mode==='trial'){const f=o.mode==='trial'?.55:1;G.par={g:simTime(tr,.9*f),s:simTime(tr,.8*f),b:simTime(tr,.7*f)};if(o.mode==='trial')G.par.limit=G.par.b*1.6}
  // env
@@ -1079,7 +1084,7 @@ function buildProg(){const p=$('#hProg');p.innerHTML='<div class="fill" id="hFil
 
 function respawn(){const b=G.bike;placeBike(b,G.tr,G.respX);G.state=G.state==='crash'?'race':G.state;G.stuckT=0}
 function doCrash(){
- if(G.bike.crashed)return;if(ceRun&&ceRun.shield){ceRun.shield=false;placeBike(G.bike,G.tr,G.respX);showMsg(ceL('Scut folosit','Shield used'));return}G.bike.crashed=1.3;G.crashes++;G.jumpStreak=0;SV.stats.crashes++;AU.crash();vib(120);if(S.shake&&!S.reduce)G.cam.shake=10;
+ if(G.bike.crashed)return;G.stuntCombo=0;G.stuntComboTimer=0;if(ceRun&&ceRun.shield){ceRun.shield=false;placeBike(G.bike,G.tr,G.respX);showMsg(ceL('Scut folosit','Shield used'));return}G.bike.crashed=1.3;G.crashes++;G.jumpStreak=0;SV.stats.crashes++;AU.crash();vib(120);if(S.shake&&!S.reduce)G.cam.shake=10;
  showMsg(t('crash'),ceL('Contact cu terenul · unghi ','Ground contact · angle ')+Math.round(bikeAng(G.bike)*180/Math.PI)+'°');sr_(t('crash_sr'));
  if(G.opts.mode==='trial'){G.faults+=5;G.secFault+=5}
  if(G.opts.mode==='hill'){const run=ceSeq;setTimeout(()=>{if(run===ceSeq&&G.state!=='attract'&&!G.done)endRun(false)},900);G.bike.crashed=99;return}
@@ -1087,6 +1092,7 @@ function doCrash(){
 }
 let msgTimer=0;function showMsg(a,b){const m=$('#msg');m.innerHTML='';m.append(a);if(b){const s=document.createElement('small');s.textContent=b;m.appendChild(s)}msgTimer=1.6}
 let stuntTimer=0;function showStunt(txt){$('#stunt').textContent=txt;stuntTimer=1.3}
+function awardTrick(base,label){G.stuntCombo=G.stuntComboTimer>0?G.stuntCombo+1:1;G.stuntComboBest=Math.max(G.stuntComboBest,G.stuntCombo);G.stuntComboTimer=5;const mult=Math.min(5,G.stuntCombo),pts=Math.round(base*mult);G.stunt+=pts;showStunt(label+' · '+t('combo')+' ×'+mult+' · +'+pts);return{mult,pts}}
 function sr_(txt){const e=$('#sr');e.textContent='';setTimeout(()=>e.textContent=txt,30)}
 function toast(txt){const e=$('#toast');e.textContent=txt;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),2200)}
 
@@ -1120,12 +1126,13 @@ function update(dt){
    if(b.air>.45){SV.stats.jumps++;G.jumps++;G.jumpStreak++;const sa=Math.atan2(tr.gy((R.x+F.x)/2+30)-tr.gy((R.x+F.x)/2-30),60);let e=Math.abs(Math.atan2(Math.sin(ang-sa),Math.cos(ang-sa)));const fl=Math.round(Math.abs(b.airRot)/(Math.PI*2));let pts=Math.round(b.air*120),txt=[];
     if(fl>0){G.flips+=fl;SV.stats.flips+=fl;pts+=fl*600;txt.push((b.airRot<0?t('backflip'):t('flip'))+(fl>1?' ×'+fl:''))}
     if(e<.3&&b.cR&&b.cF){G.cleanL++;pts+=150;txt.push(t('clean'))}else txt.push(t('air')+' '+b.air.toFixed(1)+'s');
-    if(b.air>G.airMax)G.airMax=b.air;G.stunt+=pts;showStunt(txt.join(' · ')+'  +'+pts);if(maxImp>500){AU.land(maxImp);hap('land',maxImp)}if(maxImp>900){if(S.shake&&!S.reduce)G.cam.shake=Math.min(8,maxImp/200)}
+    if(b.air>G.airMax)G.airMax=b.air;awardTrick(pts,txt.join(' · '));if(maxImp>500){AU.land(maxImp);hap('land',maxImp)}if(maxImp>900){if(S.shake&&!S.reduce)G.cam.shake=Math.min(8,maxImp/200)}
     if(b.air>1&&!S.reduce)burst((R.x+F.x)/2,tr.gy((R.x+F.x)/2),SURF[tr.surf(R.x)],14)}
    b.air=0;b.airRot=0}
-  if(b.cR&&!b.cF&&ang<-.12){if(b.wheelie===0)hap('wheelie');b.wheelie+=sdt;if(b.wheelie>G.whMax)G.whMax=b.wheelie}else{if(b.wheelie>1.2){const p=Math.round(b.wheelie*90);G.stunt+=p;showStunt(t('wheelie')+' '+b.wheelie.toFixed(1)+'s  +'+p)}b.wheelie=0}
+  if(b.cR&&!b.cF&&ang<-.12){if(b.wheelie===0)hap('wheelie');b.wheelie+=sdt;if(b.wheelie>G.whMax)G.whMax=b.wheelie}else{if(b.wheelie>1.2){const p=Math.round(b.wheelie*90);awardTrick(p,t('wheelie')+' '+b.wheelie.toFixed(1)+'s')}b.wheelie=0}
   b.lastAng=ang;
  }
+ if(G.stuntComboTimer>0){G.stuntComboTimer=Math.max(0,G.stuntComboTimer-sdt);if(!G.stuntComboTimer)G.stuntCombo=0}
  // progress
  const px=R.x;if(px>G.maxX){SV.stats.m+=(px-G.maxX)/PXM;G.maxX=px}
  if(G.mc.endless&&tr.len<px+5000)G.gen.extend(px+8000);
@@ -1233,7 +1240,7 @@ function results(fin,forcePos){
  const xp=o.practice||o.editorTest?0:m==='free'?Math.floor(dist/10):30+med*25+Math.floor(dist/12)+G.flips*10;
  const lv0=level(SV.xp);SV.coins+=coins;SV.earned+=coins;SV.xp+=xp;SV.stats.races++;if(pos===1&&G.ais.length)SV.stats.wins++;
  // career
- let prevBest=null,isRec=false,chapterBonus=0,chapterComplete=false,objectiveBonus=0,objectiveComplete=false,endingText='';
+ let prevBest=null,isRec=false,chapterBonus=0,chapterComplete=false,objectiveBonus=0,objectiveComplete=false,endingText='',cupBonus=0,cupText='';
  let evMsg='';
  if(o.event){const ev=EVENTS.find(e=>e.id===o.event),st=SV.evt[o.event]||(SV.evt[o.event]={m:[0,0,0],rew:false});st.m[o.evk]=Math.max(st.m[o.evk]||0,med);
   if(o.live&&!st.rew&&st.m.every(x=>x>0)){st.rew=true;SV.coins+=600;if(!SV.shop.liv.includes(ev.liv))SV.shop.liv.push(ev.liv);evMsg=t('ev_got',{l:t('liv_'+ev.liv)})}}
@@ -1245,7 +1252,7 @@ function results(fin,forcePos){
    if(phase===2){endingText=careerEnding(Number.isInteger(o.route)?o.route:0,med,objectiveComplete);SV.chapterEndings[o.r]={date:todayStr(),route:Number.isInteger(o.route)?o.route:-1,medal:med,objective:objectiveComplete,text:endingText}}
    SV.storyLog.unshift({ev:o.ev,region:o.r,date:todayStr(),mode:m,medal:med,crashes:G.crashes,route:Number.isInteger(o.route)?o.route:-1,time:+G.t.toFixed(2),objective:objectiveComplete,ending:endingText});
    SV.storyLog=SV.storyLog.slice(0,40);
-   const chapter=CAREER.filter(x=>x.r===o.r);if(chapter.length&&chapter.every(x=>(SV.career[x.id]?.m||0)>0)&&!SV.chapterAwards[o.r]){SV.chapterAwards[o.r]={date:todayStr(),badge:REGION_BADGES[o.r]};SV.coins+=250;SV.earned+=250;chapterBonus=250;chapterComplete=true}
+   const chapter=CAREER.filter(x=>x.r===o.r);const chapterDone=chapter.length&&chapter.every(x=>(SV.career[x.id]?.m||0)>0);if(chapterDone&&!SV.chapterAwards[o.r]){SV.chapterAwards[o.r]={date:todayStr(),badge:REGION_BADGES[o.r]};SV.coins+=250;SV.earned+=250;chapterBonus=250;chapterComplete=true}const cup=SV.cups[o.r]||(SV.cups[o.r]={stages:{},score:0,complete:false,champion:false});cup.stages=cup.stages||{};cup.stages[o.ev]=Math.max(cup.stages[o.ev]||0,c.m||0);cup.score=chapter.reduce((sum,x)=>sum+((SV.career[x.id]||{}).m||0),0);cup.complete=!!chapterDone;cup.updated=todayStr();if(cup.complete&&cup.score>=6&&!cup.champion){cup.champion=true;cup.date=todayStr();cupBonus=300;SV.coins+=cupBonus;SV.earned+=cupBonus}cupText=cup.champion?t('cup_result',{n:cup.score}):t('cup_progress',{n:cup.score});
   }
  }
  // leaderboard + ghost
@@ -1272,13 +1279,17 @@ function results(fin,forcePos){
  if(m==='hill')rows.push([t('h_alt'),alt+' m']);
  if(m==='tt'&&G.par)rows.push(['I / II / III',fmtT(G.par.g)+' · '+fmtT(G.par.s)+' · '+fmtT(G.par.b)]);
  if(G.splits.length&&!G.mc.endless)rows.push([t('res_split'),G.splits.slice(0,4).map(fmtT).join(' · ')]);
+ if(m==='tt'&&G.ghost&&G.splits.length)rows.push([t('res_ghost_splits'),G.splits.slice(0,4).map((v,i)=>{const d=v-(G.ghostSplits[i]||0);return(d>0?'+':'')+d.toFixed(2)+'s'}).join(' · ')]);
+ if(m==='stunt')rows.push([t('res_combo'),'×'+G.stuntComboBest]);
  if(m!=='stunt')rows.push([t('res_stunt'),G.stunt]);
  if(G.itemTotal&&m!=='collect')rows.push([t('res_items'),G.items+' / '+G.itemTotal]);
- rows.push([t('res_coins'),'+'+(coins+chapterBonus+objectiveBonus)],[t('res_xp'),'+'+xp+(level(SV.xp)>lv0?' · '+t('lvl')+' '+level(SV.xp)+'!':'')]);
+ rows.push([t('res_coins'),'+'+(coins+chapterBonus+objectiveBonus+cupBonus)],[t('res_xp'),'+'+xp+(level(SV.xp)>lv0?' · '+t('lvl')+' '+level(SV.xp)+'!':'')]);
  for(const r of rows){const a=document.createElement('span');a.textContent=r[0];const b=document.createElement('span');b.textContent=r[1];kv.append(a,b)}d.appendChild(kv);
  if(m!=='free'){const ob=document.createElement('div');ob.className='obj';ob.innerHTML=`<strong>${t('obj')}</strong>`+objs.map(x=>`<div class="${x[1]?'ok':''}"><b>${x[1]?'✓':'–'}</b>${x[0]} <span class="muted">+${x[2]}</span></div>`).join('');d.appendChild(ob)}
  if(evMsg){const p=document.createElement('p');p.style.cssText='margin:0;font-weight:700;color:var(--amber)';p.textContent=evMsg;d.appendChild(p)}
  if(chapterComplete){const p=document.createElement('p');p.style.cssText='margin:0;font-weight:700;color:var(--amber)';p.textContent=S.lang==='en'?'Chapter complete! 250 bonus coins and a trophy added to your journal.':'Capitol încheiat! Ai primit 250 de monede și un trofeu în jurnal.';d.appendChild(p)}
+ if(cupText&&o.ev){const p=document.createElement('p');p.style.cssText='margin:0;font-weight:700;color:var(--amber)';p.textContent=cupText;d.appendChild(p)}
+ if(cupBonus){const p=document.createElement('p');p.style.cssText='margin:0;font-weight:700;color:var(--good)';p.textContent=S.lang==='en'?'Regional champion trophy claimed: +300 coins.':'Trofeu de campion regional revendicat: +300 monede.';d.appendChild(p)}
  if(objectiveComplete){const p=document.createElement('p');p.style.cssText='margin:0;font-weight:700;color:var(--good)';p.textContent=objectiveBonus?(S.lang==='en'?'Regional objective complete! +120 coins and badge unlocked.':'Obiectiv regional îndeplinit! +120 monede și insignă deblocată.'):(S.lang==='en'?'Regional objective completed again. Badge already claimed.':'Obiectiv regional îndeplinit din nou. Insigna a fost deja revendicată.');d.appendChild(p)}
  if(endingText){const p=document.createElement('p');p.className='career-rival';p.textContent=endingText;d.appendChild(p)}
  for(const a of newAch){const p=document.createElement('p');p.style.margin='0';p.innerHTML=`<span class="plate">★</span> ${t('ach_unlock',{n:t('ach_'+a)})}`;d.appendChild(p)}
@@ -1292,7 +1303,7 @@ function results(fin,forcePos){
  ceOnResult(fin,pos);sr_(h.textContent+'. '+vtxt+'. '+t('med'+med));
 }
 
-function lessonResults(ok){const o=G.opts,L=G.les.def;let reward=0;
+function lessonResults(ok){const o=G.opts,L=G.les.def;let reward=0;const p=SV.training[L.id]||(SV.training[L.id]={attempts:1,completions:0,best:0,stars:0});p.completions=p.completions||0;p.last=G.t;if(ok){p.completions++;const stars=G.crashes===0?3:G.crashes===1?2:1;p.stars=Math.max(p.stars||0,stars);if(!p.best||G.t<p.best)p.best=G.t}
  if(ok&&!SV.school[L.id]){SV.school[L.id]=todayStr();reward=120;SV.coins+=reward;SV.earned+=reward;SV.xp+=60}save();
  const d=$('#resBody');d.innerHTML='';const h=document.createElement('h2');h.id='h-res';h.textContent=ok?t('les_done'):t('les_fail');d.appendChild(h);
  const p=document.createElement('p');p.className='muted';p.style.margin='0';p.textContent=t('les_'+L.id);d.appendChild(p);
@@ -1302,7 +1313,7 @@ function lessonResults(ok){const o=G.opts,L=G.les.def;let reward=0;
  const first=mk(t('retry'),ok?'':'pri',()=>startRace(o));const i=LESSONS.indexOf(L);if(ok&&LESSONS[i+1]){const nb=mk(t('next_les'),'pri',()=>startLesson(LESSONS[i+1]));bt.prepend(nb)}
  mk(t('menu'),'',()=>goMenu());d.appendChild(bt);$('#guide').hidden=true;$$('.tb.hint').forEach(e=>e.classList.remove('hint'));
  $('#hud').hidden=true;$('#touch').hidden=true;$('#results').hidden=false;G.state='results';(bt.querySelector('.pri')||first).focus();ceOnResult(ok,0);sr_(h.textContent)}
-function startLesson(L){startRace({mode:L.id==='vsai'?'race':'free',r:L.r,seed:hashStr('les-'+L.id),diff:0,opp:1,w:'c',tod:'d',school:L.id,key:'les-'+L.id})}
+function startLesson(L){SV.training=SV.training||{};const p=SV.training[L.id]||(SV.training[L.id]={attempts:0,completions:0,best:0,stars:0});p.attempts=(p.attempts||0)+1;save();startRace({mode:L.id==='vsai'?'race':'free',r:L.r,seed:hashStr('les-'+L.id),diff:0,opp:1,w:'c',tod:'d',school:L.id,key:'les-'+L.id})}
 function copyText(txt){const done=()=>toast(t('copied'));try{navigator.clipboard.writeText(txt).then(done,()=>fallbackCopy(txt))}catch(e){fallbackCopy(txt)}}
 function fallbackCopy(txt){const ta=$('#ioText');ta.value=txt;toast(t('copy_fail'));const i=document.createElement('textarea');i.value=txt;i.setAttribute('readonly','');i.style.cssText='width:100%;margin-top:8px';$('#resBody').appendChild(i);i.focus();i.select()}
 
@@ -1717,19 +1728,21 @@ const R3=(()=>{
 })();
 
 /* ================= HUD ================= */
+function ghostTimeAtX(x,ghost=G.ghost){if(!ghost||!ghost.length)return 0;let best=Infinity,idx=0;for(let i=0;i<ghost.length;i+=6){const d=Math.abs(ghost[i]-x);if(d<best){best=d;idx=i/6}}return idx*.05}
 function hud(){
  const o=G.opts,m=o.mode,b=G.bike,R=b.pts[0];
- const L1=$('#hL1'),V2=$('#hV2'),L2=$('#hL2');
+ const L1=$('#hL1'),V2=$('#hV2'),L2=$('#hL2'),target=$('#hTarget');
+ if(m==='tt'&&G.par){target.hidden=false;target.textContent=t('h_targets')+': I '+fmtT(G.par.g)+' · II '+fmtT(G.par.s)+' · III '+fmtT(G.par.b)}else target.hidden=true;
  if(m==='collect'){L1.textContent=t('h_left');$('#hTime').textContent=Math.max(0,G.mc.limit-G.t).toFixed(1)+'s'}else if(m==='hill'||m==='surv'||m==='free'){L1.textContent=t('h_dist');$('#hTime').textContent=Math.round((G.maxX-120)/PXM)+' m'}else if(m==='stunt'){L1.textContent=t('h_left');$('#hTime').textContent=Math.max(0,G.mc.limit-G.t).toFixed(1)+'s'}else{L1.textContent=t('h_time');$('#hTime').textContent=fmtT(G.t)}
  let l2='',v2='';
  if(G.mc.ai){l2=t('h_pos');v2=racePosition()+'/'+(G.ais.filter(a=>!a.out).length+1);if(G.mc.elim)v2+=' · '+Math.ceil(G.elimT)+'s'}
  else if(m==='trial'){l2=t('h_faults');v2=G.faults}
- else if(m==='stunt'){l2=t('h_score');v2=G.stunt}
+ else if(m==='stunt'){l2=t('h_score');v2=G.stunt+(G.stuntComboTimer>0?' · ×'+Math.min(5,G.stuntCombo):'')}
  else if(m==='collect'){l2=t('h_items');v2=G.items+'/'+G.itemTotal}
  else if(G.les){l2='';v2=''}
  else if(m==='hill'){l2=t('h_alt');v2=Math.round((G.startY-R.y)/PXM)+' m'}
  else if(m==='surv'){l2=t('h_lives');v2='♥'.repeat(Math.max(0,G.lives))}
- else if(m==='tt'){l2=G.ghost?t('h_ghost'):t('h_cp');if(G.ghost){const gi=Math.min(Math.floor(G.t/.05),G.ghost.length/6-1);const gx=G.ghost[gi*6]||0;const d=Math.round((R.x-gx)/PXM);v2=(d>=0?'+':'')+d+' m'}else v2=G.cpIdx+'/'+G.tr.cps.length}
+ else if(m==='tt'){l2=G.ghost?t('h_delta'):t('h_cp');if(G.ghost){const gt=ghostTimeAtX(R.x,G.ghost),d=G.t-gt;v2=(d>0?'+':'')+d.toFixed(2)+'s'}else v2=G.cpIdx+'/'+G.tr.cps.length}
  else{l2=t('h_cp');v2=G.cpIdx}
  L2.textContent=l2;V2.textContent=v2;$('#hP2').hidden=!l2;
  $('#hSpd').textContent=Math.round(Math.hypot(R.vx,R.vy)/PXM*3.6);
@@ -1929,7 +1942,7 @@ $('#pCont').onclick=()=>togglePause(false);
 $('#pRestart').onclick=()=>{G.paused=false;$('#pause').hidden=true;startRace(G.opts)};
 $('#pMenu').onclick=()=>{G.paused=false;goMenu()};
 $('#btnExp').onclick=()=>{const c=JSON.parse(JSON.stringify(SV));c.ghosts={};c.gOrder=[];const txt=JSON.stringify(c);$('#ioText').value=txt;copyText(txt)};
-$('#btnImp').onclick=()=>{try{const d=JSON.parse($('#ioText').value);if(!d||d.v!==1||typeof d.coins!=='number')throw 0;d.ghosts=d.ghosts||{};d.gOrder=d.gOrder||[];d.set=Object.assign(JSON.parse(JSON.stringify(DEF_SET)),d.set||{});SV=d;S=SV.set;save();applySettings();applyI18n();toast(t('imported'))}catch(e){toast(t('bad_import'))}};
+$('#btnImp').onclick=()=>{try{const d=JSON.parse($('#ioText').value);if(!d||d.v!==1||typeof d.coins!=='number')throw 0;d.ghosts=d.ghosts||{};d.gOrder=d.gOrder||[];d.cups=d.cups||{};d.training=d.training||{};d.set=Object.assign(JSON.parse(JSON.stringify(DEF_SET)),d.set||{});SV=d;S=SV.set;save();applySettings();applyI18n();toast(t('imported'))}catch(e){toast(t('bad_import'))}};
 let resetArm=0;$('#btnReset').onclick=e=>{const b=e.currentTarget;if(Date.now()-resetArm<4000){const keep=S;SV=defSave();SV.set=keep;S=keep;save();toast(t('reset_done'));b.textContent=t('reset');resetArm=0;return}resetArm=Date.now();b.textContent=t('reset_c');setTimeout(()=>{b.textContent=t('reset')},4000)};
 
 const GAMEKEYS=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','KeyW','KeyA','KeyS','KeyD','Space'];
@@ -1955,9 +1968,9 @@ cv.addEventListener('contextmenu',e=>e.preventDefault());
 
 
 /* ---------- school / events / shop / rewards screens ---------- */
-function buildSchool(){coinsTxt();const L=$('#schoolList');L.innerHTML='';
- LESSONS.forEach((l,i)=>{const done=!!SV.school[l.id];const b=document.createElement('button');b.className='card';
-  b.innerHTML=`<span class="lvl-chip">${t('les_step')} ${i+1}${done?' · ✓':''}</span><h3>${t('les_'+l.id)}</h3><p>${l.obj.map(id=>'• '+t('o_'+id)).join('<br>')}</p>${done?'':'<span class="coins">+120 ◉</span>'}`;
+function buildSchool(){coinsTxt();const progress=$('#schoolProgress');const groups=[['skill_braking','basics'],['skill_wheelie','wheelie'],['skill_landing','jumps'],['skill_obstacles','obst']];progress.innerHTML=groups.map(([label,id])=>{const p=SV.training[id]||{};return`<div class="stat"><span>${t(label)}</span><b>${SV.school[id]?'✓':'—'} · ${p.attempts||0}</b><small>${t('drill_attempts')}: ${p.attempts||0} · ${t('drill_best')}: ${p.best?fmtT(p.best):'—'} · ${t('drill_stars')}: ${'★'.repeat(p.stars||0)||'—'}</small></div>`}).join('');const L=$('#schoolList');L.innerHTML='';
+ LESSONS.forEach((l,i)=>{const done=!!SV.school[l.id],p=SV.training[l.id]||{};const b=document.createElement('button');b.className='card';
+  b.innerHTML=`<span class="lvl-chip">${t('les_step')} ${i+1}${done?' · ✓':''}</span><h3>${t('les_'+l.id)}</h3><p>${l.obj.map(id=>'• '+t('o_'+id)).join('<br>')}</p><small>${t('drill_attempts')}: ${p.attempts||0} · ${t('drill_best')}: ${p.best?fmtT(p.best):'—'} · ${'★'.repeat(p.stars||0)||'—'}</small>${done?'':'<span class="coins">+120 ◉</span>'}`;
   b.onclick=()=>startLesson(l);L.appendChild(b)})}
 function fmtDate(d){return d.toLocaleDateString(S.lang==='en'?'en-GB':'ro-RO',{day:'numeric',month:'long'})}
 function buildEvents(){coinsTxt();const L=$('#eventList');L.innerHTML='';const now=new Date();
