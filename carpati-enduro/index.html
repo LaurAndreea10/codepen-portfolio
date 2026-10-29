@@ -334,6 +334,9 @@ kbd{font-family:var(--f-mono);font-size:.8rem;padding:2px 6px;border-radius:6px;
           <button class="mbtn" data-go="school"><strong data-i18n="school">Școala de pilotaj</strong><span id="schoolSub"></span></button>
           <button class="mbtn" data-go="events"><strong data-i18n="events">Evenimente</strong><span id="eventsSub"></span></button>
           <button class="mbtn" data-go="select"><strong data-i18n="quick">Cursă rapidă</strong><span data-i18n="quick_d">Alegi modul, regiunea și vremea</span></button>
+          <button class="mbtn mode-shortcut" data-mode-launch="tt"><strong data-i18n="m_tt">Contracronometru</strong><span data-i18n="md_tt">Cel mai bun timp, cu ghost-ul recordului tău.</span></button>
+          <button class="mbtn mode-shortcut" data-mode-launch="free"><strong data-i18n="mode_train">Antrenament</strong><span data-i18n="mode_train_d">Exersezi fără cronometru, în ritmul tău.</span></button>
+          <button class="mbtn mode-shortcut" data-mode-launch="stunt"><strong data-i18n="mode_tricks">Trucuri</strong><span data-i18n="mode_tricks_d">Sărituri, wheelie și salturi mortale în 90 de secunde.</span></button>
           <button class="mbtn" id="btnDaily"><strong data-i18n="daily">Provocarea zilei</strong><span id="dailyInfo"></span></button>
           <button class="mbtn" data-go="shop"><strong data-i18n="shop">Magazin</strong><span data-i18n="shop_d">Modele, căști, efecte</span></button>
           <button class="mbtn" data-go="rewards"><strong><span data-i18n="rewards">Recompense</span> <span id="rwBadge" class="badge" hidden>●</span></strong><span data-i18n="rewards_d">Bonus zilnic, rang, realizări</span></button>
@@ -583,6 +586,8 @@ md_stunt:['90 de secunde de sărituri, salturi mortale și wheelie.','90 seconds
 md_elim:['Ultimul concurent iese din cursă la fiecare 16 secunde.','The last rider is knocked out every 16 seconds.'],
 md_duel:['Unu la unu cu cel mai rapid pilot al regiunii.','One-on-one with the fastest rider in the region.'],
 md_free:['Fără cronometru. Exersezi în ritmul tău.','No timer. Practice at your own pace.'],
+mode_train:['Antrenament','Training'],mode_train_d:['Exersezi fără cronometru, în ritmul tău.','Practice at your own pace, without a timer.'],
+mode_tricks:['Trucuri','Tricks'],mode_tricks_d:['Sărituri, wheelie și salturi mortale în 90 de secunde.','Jumps, wheelies and flips in 90 seconds.'],
 r_forest:['Pădure','Forest'],r_mountain:['Munte','Mountain'],r_quarry:['Carieră de piatră','Stone quarry'],r_swamp:['Mlaștină','Swamp'],r_desert:['Deșert','Desert'],r_snow:['Zăpadă','Snow'],r_stadium:['Stadion','Stadium'],r_volcano:['Insulă vulcanică','Volcanic island'],
 rd_forest:['Rădăcini, bușteni, poteci și bălți.','Roots, logs, trails and puddles.'],rd_mountain:['Pietre, pante lungi și coborâri.','Rocks, long slopes and descents.'],rd_quarry:['Trepte de piatră și coborâri abrupte.','Stone steps and steep drops.'],rd_swamp:['Noroi adânc, bălți și bușteni.','Deep mud, puddles and logs.'],rd_desert:['Dune și nisip afânat.','Dunes and loose sand.'],rd_snow:['Gheață și aderență scăzută.','Ice and low grip.'],rd_stadium:['Supercross: whoops și sărituri duble.','Supercross: whoops and doubles.'],rd_volcano:['Rocă neagră, cenușă și salturi mari.','Black rock, ash and big jumps.'],
 d0:['Ușor','Easy'],d1:['Normal','Normal'],d2:['Greu','Hard'],d3:['Pro','Pro'],
@@ -1164,9 +1169,10 @@ function update(dt){
 function eliminate(){const act=[{me:1,x:G.bike.pts[0].x}];G.ais.forEach(a=>{if(!a.out&&!a.done)act.push({a,x:a.x})});if(act.length<=1)return;act.sort((p,q)=>p.x-q.x);const last=act[0];
  if(last.me){showMsg(t('you_out'));endRun(true,act.length);return}last.a.out=true;showMsg(t('elim_out',{n:last.a.name}));sr_(t('elim_out',{n:last.a.name}));
  if(act.length===2){finishRace(1)}}
-function camFollow(x,y,vx,vy,dt){const c=G.cam;const la=S.reduce?60:clamp(vx*.28,-120,240);let z=Math.min(W/(W<H?500:760),H/460);if(!S.reduce)z*=1-Math.min(Math.hypot(vx,vy)/900,1)*.12;c.z+=(z-c.z)*Math.min(1,dt*2);const zoom=Math.max(.001,c.z);
- // Keep the rider's anchor inside a safe screen band, including at high speed and on narrow portrait screens.
- const xMin=x-.26*W/zoom,xMax=x+.11*W/zoom,yMin=y-.18*H/zoom,yMax=y+.28*H/zoom;
+function camFollow(x,y,vx,vy,dt){const c=G.cam;const la=S.reduce?60:clamp(vx*.28,-120,240);let z=Math.min(W/(W<H?500:760),H/460);if(!S.reduce)z*=1-Math.min(Math.hypot(vx,vy)/900,1)*.12;c.z+=(z-c.z)*Math.min(1,dt*2);const zoom=Math.max(.001,c.z),fitRadius=150,shakePad=Math.max(c.shake||0,Math.abs(c.sx||0),Math.abs(c.sy||0));
+ // Fit the complete rider and bike, with extra room for camera shake, at every speed and viewport size.
+ const padX=(fitRadius+shakePad+6)*zoom,padY=(fitRadius+shakePad+6)*zoom;
+ const xMin=x+(.36*W-(W-padX))/zoom,xMax=x+(.36*W-padX)/zoom,yMin=y+(.55*H-(H-padY))/zoom,yMax=y+(.55*H-padY)/zoom;
  const tx=clamp(x+la,xMin,xMax),ty=clamp(y-40+(S.reduce?0:clamp(vy*.06,-40,80)),yMin,yMax),k=1-Math.exp(-dt*(S.reduce?3:(EX?EX.settings.camera:5)));c.x=clamp(c.x+(tx-c.x)*k,xMin,xMax);c.y=clamp(c.y+(ty-c.y)*k,yMin,yMax);
  if(c.shake>0){c.sx=(Math.random()-.5)*c.shake;c.sy=(Math.random()-.5)*c.shake;c.shake=Math.max(0,c.shake-dt*30)}else{c.sx=c.sy=0}}
 function partCol(s){return s.k==='mud'?'#5a3e28':s.k==='water'?'#9cd3ff':s.k==='sand'?'#e2c088':s.k==='snow'||s.k==='ice'?'#ffffff':s.k==='ash'?'#6b6266':s.k==='rock'?'#a3a7ae':'#9a7350'}
@@ -1906,7 +1912,10 @@ function buildPauseQuick(){const q=$('#pauseQuick');q.innerHTML='';q.append(segR
 $$('[data-go]').forEach(b=>b.addEventListener('click',()=>{AU.init();show(b.dataset.go)}));
 $('#btnDaily').onclick=()=>startRace(dailyOpts());
 $('#btnCareer').onclick=()=>{AU.init();const nl=nextLvl();if(nl<0)show('career');else if(nl===0&&!SV.career[CAREER[0].id])startEvent(CAREER[0]);else show('career')};
-$('#btnGo').onclick=()=>{const q=S.q;const pick=(v,a)=>v==='rand'?a[Math.floor(Math.random()*a.length)]:v;startRace({mode:q.mode,r:q.r,seed:Math.floor(Math.random()*2e9),diff:q.diff,opp:q.opp,w:pick(q.w,['c','r','f','s','l']),tod:pick(q.tod,['d','u','n'])})};
+function quickOptions(mode){const q=S.q,pick=(v,a)=>v==='rand'?a[Math.floor(Math.random()*a.length)]:v;return{mode,r:regionUnlocked(q.r)?q.r:0,seed:Math.floor(Math.random()*2e9),diff:q.diff,opp:q.opp,w:pick(q.w,['c','r','f','s','l']),tod:pick(q.tod,['d','u','n'])}}
+function launchQuickMode(mode){AU.init();startRace(quickOptions(mode))}
+$('[data-mode-launch]').forEach(b=>b.addEventListener('click',()=>launchQuickMode(b.dataset.modeLaunch)));
+$('#btnGo').onclick=()=>startRace(quickOptions(S.q.mode));
 $('#btnCode').onclick=()=>{const o=parseCode($('#codeIn').value);if(!o){toast(t('bad_code'));return}startRace(o)};
 $('#btnLang').onclick=()=>{S.lang=S.lang==='ro'?'en':'ro';save();applyI18n()};
 $('#btnTheme').onclick=()=>{const dark=S.theme==='dark'||(S.theme==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);S.theme=dark?'light':'dark';save();applySettings();buildMenu()};
