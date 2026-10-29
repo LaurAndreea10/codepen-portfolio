@@ -1,17 +1,21 @@
 (() => {
   "use strict";
   const config = Object.freeze({
-    projectCount: 90,
+    projectCount: 91,
     repositoryCount: "20+",
     accessibilityScore: 100,
-    updated: "2026-10-26"
+    updated: "2026-10-29",
+    // Cookieless page and click statistics (analytics.js). Empty = off.
+    // Create a free site at https://www.goatcounter.com/signup and paste its code here,
+    // e.g. "laurandreea10" for https://laurandreea10.goatcounter.com
+    analytics: Object.freeze({ goatcounter: "" })
   });
   window.PORTFOLIO_CONFIG = config;
 
-  // Only rewrites stale project counts ("85 proiecte", "86 live projects"), never other numbers.
-  const COUNT_RE = /\b(?:84|85|86|87|88|89)(?=\s+(?:de\s+)?(?:proiecte|projects|live|public))/gi;
+  // Only rewrites stale project counts ("85 proiecte", "90 live projects"), never other numbers.
+  const COUNT_RE = /\b(?:84|85|86|87|88|89|90)(?=\s+(?:de\s+)?(?:proiecte|projects|live|public))/gi;
   // Any listed count that differs from the canonical one is stale (88 was missing here before).
-  const HAS_COUNT = new RegExp(String.raw`\b(?!${config.projectCount}\b)(?:84|85|86|87|88|89)(?=\s+(?:de\s+)?(?:proiecte|projects|live|public))`, "i");
+  const HAS_COUNT = new RegExp(String.raw`\b(?!${config.projectCount}\b)(?:84|85|86|87|88|89|90)(?=\s+(?:de\s+)?(?:proiecte|projects|live|public))`, "i");
   function replaceCount(value) {
     return value.replace(COUNT_RE, String(config.projectCount));
   }
