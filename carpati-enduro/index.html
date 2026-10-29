@@ -680,13 +680,13 @@ const SKEY='carpati-enduro-v1';
 const prefersReduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const DEF_SET={lang:'ro',theme:'dark',contrast:false,text:1,phys:'arcade',autoThr:false,simple:false,toggle:false,bs:1,hand:'r',touch:'auto',assist:1,speed:1,adaptive:false,reduce:prefersReduce,noFlash:false,vib:true,shake:true,vEng:.5,vSfx:.7,vMus:.25,cam:'side',vibL:1,liv:'solid',helm:'solid',fx:'dust',gfx:matchMedia('(pointer: coarse)').matches?'med':'high',name:'Pilot',num:7,color:'#22d3ee',suit:'#f5a524',
  q:{mode:'race',r:0,diff:1,opp:3,w:'rand',tod:'d'}};
-function defSave(){return{v:1,coins:300,xp:0,earned:0,sel:'enduro',bikes:{enduro:{up:{eng:0,tire:0,susp:0,brk:0}}},career:{},storyLog:[],chapterAwards:{},ghosts:{},gOrder:[],lb:{},lbMeta:{},lbOrder:[],stats:{m:0,wins:0,crashes:0,jumps:0,flips:0,time:0,races:0,regions:[]},ach:{},daily:{},tut:false,school:{},evt:{},shop:{liv:['solid'],helm:['solid'],fx:['dust']},rew:{day:null,streak:0,rank:1,ach:{}},set:JSON.parse(JSON.stringify(DEF_SET))}}
+function defSave(){return{v:1,coins:300,xp:0,earned:0,sel:'enduro',bikes:{enduro:{up:{eng:0,tire:0,susp:0,brk:0}}},career:{},storyLog:[],chapterAwards:{},objectiveAwards:{},chapterEndings:{},ghosts:{},gOrder:[],lb:{},lbMeta:{},lbOrder:[],stats:{m:0,wins:0,crashes:0,jumps:0,flips:0,time:0,races:0,regions:[]},ach:{},daily:{},tut:false,school:{},evt:{},shop:{liv:['solid'],helm:['solid'],fx:['dust']},rew:{day:null,streak:0,rank:1,ach:{}},set:JSON.parse(JSON.stringify(DEF_SET))}}
 let SV=null;
 try{SV=JSON.parse(localStorage.getItem(SKEY))}catch(e){SV=null}
 if(!SV||SV.v!==1)SV=defSave();
 SV.set=Object.assign(JSON.parse(JSON.stringify(DEF_SET)),SV.set||{});
 if(SV.set.vib===false&&SV.set.vibL===1)SV.set.vibL=0;
-SV.school=SV.school||{};SV.evt=SV.evt||{};SV.storyLog=Array.isArray(SV.storyLog)?SV.storyLog:[];SV.chapterAwards=SV.chapterAwards&&typeof SV.chapterAwards==='object'?SV.chapterAwards:{};SV.shop=SV.shop||{liv:['solid'],helm:['solid'],fx:['dust']};SV.rew=SV.rew||{day:null,streak:0,rank:1,ach:{}};
+SV.school=SV.school||{};SV.evt=SV.evt||{};SV.storyLog=Array.isArray(SV.storyLog)?SV.storyLog:[];SV.chapterAwards=SV.chapterAwards&&typeof SV.chapterAwards==='object'?SV.chapterAwards:{};SV.objectiveAwards=SV.objectiveAwards&&typeof SV.objectiveAwards==='object'?SV.objectiveAwards:{};SV.chapterEndings=SV.chapterEndings&&typeof SV.chapterEndings==='object'?SV.chapterEndings:{};SV.shop=SV.shop||{liv:['solid'],helm:['solid'],fx:['dust']};SV.rew=SV.rew||{day:null,streak:0,rank:1,ach:{}};
 let S=SV.set;
 function save(){try{localStorage.setItem(SKEY,JSON.stringify(SV));return true}catch(e){console.warn('Progress could not be saved',e);const el=document.querySelector('#sr');if(el)el.textContent=S&&S.lang==='en'?'Storage unavailable. Export a backup.':'Salvarea nu este disponibilă. Exportă un backup.';return false}}
 
@@ -754,6 +754,29 @@ const CAREER_RIVALS=[
  [{style:'Campion al lavei',bio:'Atacă pe rocă, dar nu-și pierde echilibrul pe cenușă.',quote:'„Ultima probă nu e despre viteză. E despre ce ai învățat.”'},{style:'Lava champion',bio:'Attacks on rock but keeps balance on ash.',quote:'“The last event is not about speed. It is about what you learned.”'}]
 ];
 function careerRouteName(i){return S.lang==='en'?['Safe line','Fast line','Technical line'][i]:['Linia sigură','Linia rapidă','Linia tehnică'][i]}
+const CAREER_OBJECTIVES=[
+ {ro:'Pădure: obține cel puțin 2 aterizări curate.',en:'Forest: land cleanly at least 2 times.',check:()=>G.cleanL>=2},
+ {ro:'Munte: execută cel puțin 3 sărituri.',en:'Mountain: complete at least 3 jumps.',check:()=>G.jumps>=3},
+ {ro:'Carieră: încheie proba cu maximum 2 penalizări.',en:'Quarry: finish with no more than 2 faults.',check:()=>G.faults<=2},
+ {ro:'Mlaștină: adună cel puțin 3 monede pe traseu.',en:'Swamp: collect at least 3 coins on the course.',check:()=>G.coins>=3},
+ {ro:'Deșert: execută cel puțin o rotație completă în aer.',en:'Desert: complete at least one full flip in the air.',check:()=>G.flips>=1},
+ {ro:'Zăpadă: termină cu cel mult o cădere.',en:'Snow: finish with no more than one crash.',check:()=>G.crashes<=1},
+ {ro:'Stadion: obține cel puțin 2.500 de puncte de stunt.',en:'Stadium: score at least 2,500 stunt points.',check:()=>G.stunt>=2500},
+ {ro:'Insulă vulcanică: câștigă proba contra rivalului.',en:'Volcanic island: beat the rival in the event.',check:(_,pos)=>pos===1}
+];
+const REGION_BADGES=['🌲','🏔️','🪨','🐸','🌵','❄️','🏟️','🌋'];
+const ENDING_LINES=[
+ {ro:'Ai ajuns la sosire, dar capitolul încă îți cere o probă mai bună.',en:'You reached the finish, but the chapter still asks for a stronger ride.'},
+ {ro:'Ai dovedit că stăpânești traseul și ai câștigat respectul rivalului.',en:'You mastered the trail and earned your rival’s respect.'},
+ {ro:'Ai cucerit regiunea: ruta aleasă și obiectivul îndeplinit ți-au scris legenda.',en:'You conquered the region: your chosen route and completed objective made the legend.'}
+];
+function careerEnding(route,medal,objective){
+ const paths=S.lang==='en'?['You chose the safe line.','You attacked on the fast line.','You took the technical line.']:['Ai ales linia sigură.','Ai atacat pe linia rapidă.','Ai ales linia tehnică.'];
+ const path=paths[route]||(S.lang==='en'?'You rode the default line.':'Ai urmat linia implicită.');
+ const rank=objective&&medal>=3?2:medal>0?1:0;
+ return path+' '+ENDING_LINES[rank][S.lang==='en'?'en':'ro']
+}
+function careerObjectiveMet(region,fin,pos){const objective=CAREER_OBJECTIVES[region];return!!(fin&&objective&&objective.check(fin,pos))}
 const COLORS=['#22d3ee','#f5a524','#ef4444','#22c55e','#a855f7','#f97316','#e5e7eb','#3b82f6'];
 
 /* ---------- seasonal events ---------- */
@@ -1202,13 +1225,19 @@ function results(fin,forcePos){
  const xp=o.practice||o.editorTest?0:m==='free'?Math.floor(dist/10):30+med*25+Math.floor(dist/12)+G.flips*10;
  const lv0=level(SV.xp);SV.coins+=coins;SV.earned+=coins;SV.xp+=xp;SV.stats.races++;if(pos===1&&G.ais.length)SV.stats.wins++;
  // career
- let prevBest=null,isRec=false,chapterBonus=0,chapterComplete=false;
+ let prevBest=null,isRec=false,chapterBonus=0,chapterComplete=false,objectiveBonus=0,objectiveComplete=false,endingText='';
  let evMsg='';
  if(o.event){const ev=EVENTS.find(e=>e.id===o.event),st=SV.evt[o.event]||(SV.evt[o.event]={m:[0,0,0],rew:false});st.m[o.evk]=Math.max(st.m[o.evk]||0,med);
   if(o.live&&!st.rew&&st.m.every(x=>x>0)){st.rew=true;SV.coins+=600;if(!SV.shop.liv.includes(ev.liv))SV.shop.liv.push(ev.liv);evMsg=t('ev_got',{l:t('liv_'+ev.liv)})}}
  if(o.ev){const c=SV.career[o.ev]||{m:0,b:null};c.m=Math.max(c.m,med);if(fin||score){const better=c.b==null||(score?val>c.b:val<c.b);if(better)c.b=val}SV.career[o.ev]=c;
-  if((fin||score)&&!o.practice&&!o.editorTest){SV.storyLog.unshift({ev:o.ev,region:o.r,date:todayStr(),mode:m,medal:med,crashes:G.crashes,route:Number.isInteger(o.route)?o.route:-1,time:+G.t.toFixed(2)});SV.storyLog=SV.storyLog.slice(0,40);
-   const chapter=CAREER.filter(x=>x.r===o.r);if(chapter.length&&chapter.every(x=>(SV.career[x.id]?.m||0)>0)&&!SV.chapterAwards[o.r]){SV.chapterAwards[o.r]=true;SV.coins+=250;SV.earned+=250;chapterBonus=250;chapterComplete=true}
+  if((fin||score)&&!o.practice&&!o.editorTest){
+   objectiveComplete=careerObjectiveMet(o.r,!!fin,pos);
+   if(objectiveComplete&&!SV.objectiveAwards[o.r]){SV.objectiveAwards[o.r]={date:todayStr(),badge:REGION_BADGES[o.r]};SV.coins+=120;SV.earned+=120;objectiveBonus=120}
+   const phase=CAREER.findIndex(x=>x.id===o.ev)%3;
+   if(phase===2){endingText=careerEnding(Number.isInteger(o.route)?o.route:0,med,objectiveComplete);SV.chapterEndings[o.r]={date:todayStr(),route:Number.isInteger(o.route)?o.route:-1,medal:med,objective:objectiveComplete,text:endingText}}
+   SV.storyLog.unshift({ev:o.ev,region:o.r,date:todayStr(),mode:m,medal:med,crashes:G.crashes,route:Number.isInteger(o.route)?o.route:-1,time:+G.t.toFixed(2),objective:objectiveComplete,ending:endingText});
+   SV.storyLog=SV.storyLog.slice(0,40);
+   const chapter=CAREER.filter(x=>x.r===o.r);if(chapter.length&&chapter.every(x=>(SV.career[x.id]?.m||0)>0)&&!SV.chapterAwards[o.r]){SV.chapterAwards[o.r]={date:todayStr(),badge:REGION_BADGES[o.r]};SV.coins+=250;SV.earned+=250;chapterBonus=250;chapterComplete=true}
   }
  }
  // leaderboard + ghost
@@ -1237,11 +1266,13 @@ function results(fin,forcePos){
  if(G.splits.length&&!G.mc.endless)rows.push([t('res_split'),G.splits.slice(0,4).map(fmtT).join(' · ')]);
  if(m!=='stunt')rows.push([t('res_stunt'),G.stunt]);
  if(G.itemTotal&&m!=='collect')rows.push([t('res_items'),G.items+' / '+G.itemTotal]);
- rows.push([t('res_coins'),'+'+(coins+chapterBonus)],[t('res_xp'),'+'+xp+(level(SV.xp)>lv0?' · '+t('lvl')+' '+level(SV.xp)+'!':'')]);
+ rows.push([t('res_coins'),'+'+(coins+chapterBonus+objectiveBonus)],[t('res_xp'),'+'+xp+(level(SV.xp)>lv0?' · '+t('lvl')+' '+level(SV.xp)+'!':'')]);
  for(const r of rows){const a=document.createElement('span');a.textContent=r[0];const b=document.createElement('span');b.textContent=r[1];kv.append(a,b)}d.appendChild(kv);
  if(m!=='free'){const ob=document.createElement('div');ob.className='obj';ob.innerHTML=`<strong>${t('obj')}</strong>`+objs.map(x=>`<div class="${x[1]?'ok':''}"><b>${x[1]?'✓':'–'}</b>${x[0]} <span class="muted">+${x[2]}</span></div>`).join('');d.appendChild(ob)}
  if(evMsg){const p=document.createElement('p');p.style.cssText='margin:0;font-weight:700;color:var(--amber)';p.textContent=evMsg;d.appendChild(p)}
  if(chapterComplete){const p=document.createElement('p');p.style.cssText='margin:0;font-weight:700;color:var(--amber)';p.textContent=S.lang==='en'?'Chapter complete! 250 bonus coins and a trophy added to your journal.':'Capitol încheiat! Ai primit 250 de monede și un trofeu în jurnal.';d.appendChild(p)}
+ if(objectiveComplete){const p=document.createElement('p');p.style.cssText='margin:0;font-weight:700;color:var(--good)';p.textContent=objectiveBonus?(S.lang==='en'?'Regional objective complete! +120 coins and badge unlocked.':'Obiectiv regional îndeplinit! +120 monede și insignă deblocată.'):(S.lang==='en'?'Regional objective completed again. Badge already claimed.':'Obiectiv regional îndeplinit din nou. Insigna a fost deja revendicată.');d.appendChild(p)}
+ if(endingText){const p=document.createElement('p');p.className='career-rival';p.textContent=endingText;d.appendChild(p)}
  for(const a of newAch){const p=document.createElement('p');p.style.margin='0';p.innerHTML=`<span class="plate">★</span> ${t('ach_unlock',{n:t('ach_'+a)})}`;d.appendChild(p)}
  const bt=document.createElement('div');bt.className='btns';
  const mk=(txt,cls,fn)=>{const b=document.createElement('button');b.className='btn '+cls;b.textContent=txt;b.onclick=fn;bt.appendChild(b);return b};
@@ -1757,7 +1788,7 @@ function startEvent(e){
  const eyebrow=document.createElement('span');eyebrow.className='eyebrow';eyebrow.textContent=(S.lang==='en'?'Chapter ':'Capitolul ')+(e.r+1)+' / 8 · '+(S.lang==='en'?'Stage ':'Etapa ')+(phase+1)+' / 3';card.appendChild(eyebrow);
  const title=document.createElement('h2');title.id='career-brief-title';title.textContent=phase===2?(S.lang==='en'?'Regional final · ':'Finala regiunii · ')+regionName(e.r):CAREER_STAGE_COPY[0][phase][S.lang==='en'?'en':'ro'];card.appendChild(title);
  const desc=document.createElement('p');desc.textContent=chapter[S.lang==='en'?1:0].text;card.appendChild(desc);
- const objective=document.createElement('p');objective.textContent=CAREER_STAGE_BRIEF[0][phase][S.lang==='en'?'en':'ro'];card.appendChild(objective);
+ const objective=document.createElement('p');objective.textContent=CAREER_STAGE_BRIEF[0][phase][S.lang==='en'?'en':'ro'];card.appendChild(objective);const regionalGoal=document.createElement('p');regionalGoal.className='career-rival';regionalGoal.textContent=CAREER_OBJECTIVES[e.r][S.lang==='en'?'en':'ro'];card.appendChild(regionalGoal);
  const rivalCard=document.createElement('div');rivalCard.className='career-rival';
  const rivalName=document.createElement('strong');rivalName.textContent=CHAMPS[e.r]+' · '+rival[S.lang==='en'?1:0].style;
  const rivalBio=document.createElement('p');rivalBio.textContent=rival[S.lang==='en'?1:0].bio;
@@ -2094,11 +2125,20 @@ function ceAnalysis(body){
  function draw(){filtered.replaceChildren();const data=selected==='all'?rows:rows.filter(h=>h.key===selected);const table=ceEl('table');const head=ceEl('tr');for(const s of [ceL('Data / probă','Date / ride'),ceL('Timp','Time'),ceL('Căderi','Crashes'),ceL('Aterizări','Landings')])head.append(ceEl('th',s));table.append(head);for(const h of data.slice(0,30)){const row=ceEl('tr');for(const value of [h.date+' · '+h.label,fmtT(h.time)+(h.fin?'':' · DNF'),h.crashes,h.clean])row.append(ceEl('td',String(value)));table.append(row)}const sc=ceEl('div',null,'tbl-wrap');sc.append(table);filtered.append(sc);
  const canvas=document.createElement('canvas');canvas.width=900;canvas.height=180;canvas.setAttribute('role','img');canvas.setAttribute('aria-label',ceL('Graficul timpilor; valorile sunt în tabel','Time chart; values are in the table'));filtered.append(canvas);const x=canvas.getContext('2d');x.fillStyle='#111d33';x.fillRect(0,0,900,180);const vals=data.filter(h=>h.fin).slice(0,20).reverse();if(vals.length){const max=Math.max(...vals.map(h=>h.time),1);x.strokeStyle='#22d3ee';x.lineWidth=3;x.beginPath();vals.forEach((h,i)=>{const xx=20+i*860/Math.max(1,vals.length-1),yy=160-h.time/max*140;i?x.lineTo(xx,yy):x.moveTo(xx,yy)});x.stroke()}}
  draw();const last=rows[0],a=ceCard(body,ceL('Ultima încercare','Latest attempt'));a.append(ceEl('p',ceAdvice(last)));if(last.crashXs?.length)a.append(ceEl('p',ceL('Căderi la metri: ','Crashes at metres: ')+last.crashXs.map(x=>Math.round((x-120)/PXM)).join(', ')));a.append(ceEl('p',ceL('Sectoare: ','Sectors: ')+(last.splits||[]).map(fmtT).join(' · ')));a.append(ceEl('p',`${ceL('Viteză medie / maximă','Average / top speed')}: ${(last.average||0).toFixed(1)} / ${(last.top||0).toFixed(1)} km/h`));a.append(ceButton(ceL('Exportă istoricul','Export history'),()=>ceJSON('carpati-history.json',EX.history)));
+ const compare=ceCard(body,ceL('Comparație pe sectoare','Sector-by-sector ghost comparison'),ceL('Ultima cursă față de cel mai bun timp salvat pe același traseu. Valorile negative sunt mai rapide.','Latest run versus your best saved time on the same course. Negative deltas are faster.'));
+ const peers=EX.history.filter(h=>h.key===last.key&&h.fin&&Array.isArray(h.splits)).sort((x,y)=>x.time-y.time),best=peers[0];
+ if(!best||!last.splits?.length||!best.splits?.length)compare.append(ceEl('p',ceL('Joacă încă o cursă cu checkpointuri pe acest traseu pentru comparație.','Complete another run with checkpoints on this course to compare sectors.')));
+ else{
+  compare.append(ceEl('p',(SV.ghosts[last.key]?ceL('Ghost de referință: ','Reference ghost: '):ceL('Record personal: ','Personal best: '))+fmtT(best.time)+' · '+(best.date||'')));
+  const table=ceEl('table'),head=ceEl('tr');for(const label of [ceL('Sector','Sector'),ceL('Timpul tău','Your time'),ceL('Record','Best'),ceL('Diferență','Delta')])head.append(ceEl('th',label));table.append(head);
+  let prevNow=0,prevBest=0;for(let i=0;i<Math.min(last.splits.length,best.splits.length);i++){const now=Number(last.splits[i])||0,pb=Number(best.splits[i])||0,nowSplit=now-prevNow,bestSplit=pb-prevBest,delta=nowSplit-bestSplit;prevNow=now;prevBest=pb;const row=ceEl('tr');for(const value of [String(i+1),fmtT(nowSplit),fmtT(bestSplit),(delta>0?'+':'')+delta.toFixed(2)+' s'])row.append(ceEl('td',value));table.append(row)}
+  const box=ceEl('div',null,'tbl-wrap');box.append(table);compare.append(box)
+ }
 }
 function ceJournal(body){
  const c=ceCard(body,ceL('Jurnal de expediție','Expedition journal'),ceL('Etapele de carieră, rutele alese, medaliile și premiile câștigate în acest browser.','Career stages, chosen routes, medals and rewards earned in this browser.'));
  const awards=CAREER_STORIES.map((chapter,i)=>({chapter,i})).filter(x=>SV.chapterAwards[x.i]);
- const trophy=ceEl('p',awards.length?ceL('Capitole încheiate: ','Chapters completed: ')+awards.map(x=>regionName(x.i)).join(' · '):ceL('Încă nu ai încheiat un capitol.','No chapter completed yet.'));
+ const trophy=ceEl('p',awards.length?ceL('Capitole încheiate: ','Chapters completed: ')+awards.map(x=>(REGION_BADGES[x.i]||'🏁')+' '+regionName(x.i)).join(' · '):ceL('Încă nu ai încheiat un capitol.','No chapter completed yet.'));
  c.append(trophy);
  const entries=Array.isArray(SV.storyLog)?SV.storyLog:[];
  if(!entries.length)c.append(ceEl('p',ceL('Jurnalul se completează după prima probă de carieră.','The journal starts after your first career stage.')));
@@ -2107,7 +2147,7 @@ function ceJournal(body){
   const box=ceEl('article',null,'ce-journal-entry');
   box.append(ceEl('strong',(entry.date||'')+' · '+(n>=0?t('lvl_n',{n:n+1}):ceL('Etapă','Stage'))+' · '+region));
   box.append(ceEl('p',ceL('Rută: ','Route: ')+(entry.route>=0?careerRouteName(entry.route):ceL('implicită','default'))+' · '+ceL('Medalie: ','Medal: ')+(entry.medal||0)+' · '+ceL('Căderi: ','Crashes: ')+(entry.crashes||0)));
-  if(entry.chapterComplete)box.append(ceEl('p',ceL('Capitol încheiat · bonus 250 monede','Chapter complete · 250 coin bonus')));
+  if(entry.objective)box.append(ceEl('p',ceL('Obiectiv regional completat · insignă obținută','Regional objective complete · badge earned')));if(entry.ending)box.append(ceEl('p',entry.ending));
   c.append(box)
  }
  if(entries.length)c.append(ceButton(ceL('Exportă jurnalul','Export journal'),()=>ceJSON('carpati-expedition-journal.json',{entries,awards:SV.chapterAwards})));
@@ -2123,7 +2163,7 @@ function ceAccess(body){
 }
 function ceApply(){if(!EX)return;const tools=$('#ce-tools');if(tools){tools.children[0].setAttribute('aria-label',ceL('Activează bonusul','Activate power-up'));tools.children[1].setAttribute('aria-label',ceL('Fotografie 2D','2D photo'));$('#ce-clutch').textContent=ceL('Ambreiaj','Clutch')}const touchEl=$('#touch'),layout=EX.settings.layout;touchEl.classList.toggle('ce-custom',Object.keys(layout).length>0);touchEl.classList.toggle('ce-one',EX.settings.oneHand);for(const b of $$('.tb')){const defaults={thr:{x:78,y:72},brk:{x:55,y:72},lb:{x:2,y:72},lf:{x:25,y:72}};const p=Object.keys(layout).length?(layout[b.dataset.act]||defaults[b.dataset.act]):null;b.style.left=p?'min('+p.x+'vw, calc(100vw - '+(76*S.bs)+'px - 8px))':'';b.style.top=p?'min('+p.y+'vh, calc(100vh - '+(76*S.bs)+'px - 8px))':'';b.style.maxWidth=p?'24vw':'';b.style.maxHeight=p?'18vh':''}if(EX.settings.economy){S.gfx='2d';S.reduce=true;S.shake=false}applySettings()}
 function ceBackup(){ceJSON('carpati-backup-v2.json',SV)}
-function ceRestore(d){const valid=CE.save(d);try{localStorage.setItem(SKEY+'-recovery',JSON.stringify(SV))}catch{throw Error('backup')}SV=valid;SV.storyLog=Array.isArray(SV.storyLog)?SV.storyLog:[];SV.chapterAwards=SV.chapterAwards&&typeof SV.chapterAwards==='object'?SV.chapterAwards:{};SV.set=Object.assign(CE.clone(DEF_SET),SV.set);S=SV.set;ceSync();save();applyI18n();ceApply();goMenu()}
+function ceRestore(d){const valid=CE.save(d);try{localStorage.setItem(SKEY+'-recovery',JSON.stringify(SV))}catch{throw Error('backup')}SV=valid;SV.storyLog=Array.isArray(SV.storyLog)?SV.storyLog:[];SV.chapterAwards=SV.chapterAwards&&typeof SV.chapterAwards==='object'?SV.chapterAwards:{};SV.objectiveAwards=SV.objectiveAwards&&typeof SV.objectiveAwards==='object'?SV.objectiveAwards:{};SV.chapterEndings=SV.chapterEndings&&typeof SV.chapterEndings==='object'?SV.chapterEndings:{};SV.set=Object.assign(CE.clone(DEF_SET),SV.set);S=SV.set;ceSync();save();applyI18n();ceApply();goMenu()}
 function ceSaves(body){const c=ceCard(body,ceL('Backup și recuperare','Backup and recovery'),ceL('Datele rămân în acest browser. Importul păstrează o copie de recuperare a progresului anterior.','Data stays in this browser. Import keeps a recovery copy of your previous progress.'));c.append(ceButton(ceL('Descarcă backup complet','Download full backup'),ceBackup,'pri'),ceButton(ceL('Importă backup','Import backup'),()=>ceRead('save',ceRestore)),ceButton(ceL('Recuperează copia anterioară','Recover previous backup'),()=>{try{const raw=localStorage.getItem(SKEY+'-recovery');if(!raw)throw Error();ceRestore(CE.decode(raw,'save'));ceMessage(ceL('Progres recuperat.','Progress recovered.'))}catch{ceMessage(ceL('Nu există o copie validă.','No valid recovery copy.'))}}));
  const profiles=ceCard(body,ceL('Profiluri locale','Local profiles'),ceL('Patru sloturi independente. Profilul activ este salvat înainte de schimbare.','Four independent slots. The active profile is saved before switching.'));
  for(let i=1;i<=4;i++){const key=SKEY+'-slot-'+i;const row=ceEl('div',null,'bar');row.append(ceEl('strong',ceL('Slot ','Slot ')+i));row.append(ceButton(ceL('Salvează aici','Save here'),()=>{try{localStorage.setItem(key,JSON.stringify(SV));ceMessage(ceL('Slot salvat.','Slot saved.'))}catch{ceMessage(ceL('Spațiul de stocare este plin.','Storage is full.'))}}),ceButton(ceL('Încarcă','Load'),()=>{try{ceRestore(CE.decode(localStorage.getItem(key),'save'))}catch{ceMessage(ceL('Slot gol sau invalid.','Empty or invalid slot.'))}}));profiles.append(row)}
