@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Carpați Enduro">
 <title>Carpați Enduro — Expedition 2.1</title>
-<meta name="application-version" content="2.1.0">
+<meta name="application-version" content="2.1.1">
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Carpați Enduro — joc moto gratuit în browser: enduro, motocross și trial. Curse cu adversari AI, contratimp cu ghost, hill climb, stunt și provocarea zilei. RO/EN, dark mode, accesibil, pe mobil și PC.">
 <meta name="keywords" content="joc moto, enduro, trial, motocross, hill climb, joc browser, joc gratuit, motorcycle game, dirt bike game">
@@ -305,6 +305,102 @@ kbd{font-family:var(--f-mono);font-size:.8rem;padding:2px 6px;border-radius:6px;
 @media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important} }
 :root[data-reduce="1"] *{transition:none!important;animation:none!important}
 :root[data-reduce="1"] .tb.hint{box-shadow:0 0 0 5px var(--amber)}
+
+/* ---- menu skins: five player-selectable designs for the main menu (high contrast always wins) ---- */
+.skin-pick{display:flex;flex-direction:column;gap:8px;max-width:560px}
+.skin-pick .chip{display:inline-flex;align-items:center;gap:8px}
+.skin-pick .swd{width:14px;height:14px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.35)}
+:root[data-skin] #scr-menu{color:var(--fg)}
+
+/* 1 · Expediție — the default palette (follows light/dark), plus topographic contours and numbered tiles */
+:root[data-skin="expeditie"]:not([data-contrast="high"]) #scr-menu{
+  background:linear-gradient(100deg,var(--bg) 0%,var(--scrim) 42%,transparent 78%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='240' viewBox='0 0 720 240'%3E%3Cg fill='none' stroke='%2338bdf8' stroke-opacity='.16'%3E%3Cpath d='M0 40C120 10 210 70 320 34S530 4 720 44'/%3E%3Cpath d='M0 80C130 50 210 110 330 74S530 44 720 84'/%3E%3Cpath d='M0 120C140 90 215 150 340 114S530 84 720 124'/%3E%3Cpath d='M0 160C150 130 220 190 350 154S530 124 720 164'/%3E%3Cpath d='M0 200C160 170 225 230 360 194S530 164 720 204'/%3E%3C/g%3E%3C/svg%3E") 0 0/720px 240px}
+:root[data-skin="expeditie"]:not([data-contrast="high"]) #scr-menu .eyebrow{color:var(--amber)}
+:root[data-skin="expeditie"]:not([data-contrast="high"]) #scr-menu .menu-main{counter-reset:ce-m}
+:root[data-skin="expeditie"]:not([data-contrast="high"]) #scr-menu .mbtn{position:relative;padding-right:44px}
+:root[data-skin="expeditie"]:not([data-contrast="high"]) #scr-menu .mbtn::after{counter-increment:ce-m;content:counter(ce-m,decimal-leading-zero);position:absolute;top:12px;right:14px;font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+:root[data-skin="expeditie"]:not([data-contrast="high"]) #scr-menu .mbtn.big::after{color:inherit;opacity:.7}
+
+/* 2 · Paddock — motorsport broadcast: condensed caps, orange slash, square edges */
+:root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu{
+  --bg:#0f0e0d;--surface:#191715;--surface2:#24211e;--line:#3a3530;--fg:#f4f1ec;--muted:#b9b1a8;
+  --accent:#ff6b00;--accent-ink:#0f0e0d;--amber:#ff6b00;--amber-ink:#0f0e0d;--scrim:rgba(15,14,13,.86);
+  --f-display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;--f-body:"Barlow",system-ui,sans-serif;color-scheme:dark;
+  background:linear-gradient(100deg,var(--bg) 0%,var(--scrim) 44%,transparent 76%),
+    linear-gradient(110deg,transparent 64%,rgba(255,107,0,.75) 64%,rgba(255,107,0,.75) 66%,transparent 66%,transparent 68%,rgba(255,107,0,.35) 68%,rgba(255,107,0,.35) 68.6%,transparent 68.6%);
+  font-family:var(--f-body)}
+:root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu .eyebrow{font-family:var(--f-display);font-weight:600;font-size:.95rem;letter-spacing:.18em;color:var(--accent)}
+:root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu .logo{font-weight:800;text-transform:uppercase;letter-spacing:0;font-size:clamp(3rem,9vw,5.6rem);line-height:.88}
+:root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu .logo b{color:var(--accent);font-weight:800}
+:root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu :is(.mbtn,.icon-btn,.plate,.xpbar,.chip,.btn){border-radius:0}
+:root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu .menu-main{gap:4px}
+:root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu .mbtn{border:0;border-bottom:1px solid var(--line);background:rgba(25,23,21,.88)}
+:root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu .mbtn strong{font-weight:800;font-size:1.55rem;text-transform:uppercase;line-height:1.05}
+:root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu .mbtn.big{background:var(--accent);color:var(--accent-ink);border:0;clip-path:polygon(0 0,100% 0,calc(100% - 22px) 100%,0 100%);padding-block:18px}
+:root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu .mbtn.big strong{font-size:2.2rem;font-style:italic}
+:root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu .mbtn:hover{background:#2a2622}
+:root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu .mbtn.big:hover{background:#ff8124}
+@media (max-width:760px){ :root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu{background:linear-gradient(100deg,var(--bg) 0%,var(--scrim) 60%,rgba(15,14,13,.55) 100%)} }
+:root[data-skin="paddock"]:not([data-contrast="high"]) #scr-menu .plate{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-family:var(--f-display);font-style:italic;font-size:1.1rem}
+
+/* 3 · Garaj — night workshop: spotlight, chamfered panels, segmented XP */
+:root[data-skin="garaj"]:not([data-contrast="high"]) #scr-menu{
+  --bg:#08090b;--surface:#111418;--surface2:#1b1f24;--line:#2d343c;--fg:#e7ecef;--muted:#a3aeb8;
+  --accent:#2dd4bf;--accent-ink:#06201c;--amber:#2dd4bf;--amber-ink:#06201c;--scrim:rgba(8,9,11,.86);
+  --f-display:"Chakra Petch",system-ui,sans-serif;color-scheme:dark;
+  background:radial-gradient(ellipse 55% 65% at 28% -12%,rgba(207,233,255,.12),transparent 62%),linear-gradient(100deg,var(--bg) 0%,var(--scrim) 42%,transparent 78%)}
+:root[data-skin="garaj"]:not([data-contrast="high"]) #scr-menu .eyebrow{font-family:var(--f-display);letter-spacing:.24em}
+:root[data-skin="garaj"]:not([data-contrast="high"]) #scr-menu .logo{font-style:normal;font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:clamp(2.4rem,7vw,4.2rem)}
+:root[data-skin="garaj"]:not([data-contrast="high"]) #scr-menu .logo b{color:var(--accent);font-weight:700}
+:root[data-skin="garaj"]:not([data-contrast="high"]) #scr-menu :is(.mbtn,.icon-btn,.chip,.btn){border-radius:0;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
+:root[data-skin="garaj"]:not([data-contrast="high"]) #scr-menu .mbtn{background:rgba(17,20,24,.9)}
+:root[data-skin="garaj"]:not([data-contrast="high"]) #scr-menu .mbtn strong{font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:1.15rem}
+:root[data-skin="garaj"]:not([data-contrast="high"]) #scr-menu .mbtn.big{background:var(--accent);color:var(--accent-ink)}
+:root[data-skin="garaj"]:not([data-contrast="high"]) #scr-menu .mbtn:hover{background:#1b2127;border-color:var(--accent)}
+:root[data-skin="garaj"]:not([data-contrast="high"]) #scr-menu .mbtn.big:hover{background:#5eead4}
+:root[data-skin="garaj"]:not([data-contrast="high"]) #scr-menu .plate{border-radius:0;background:transparent;color:var(--accent);border-color:var(--accent);font-family:var(--f-display)}
+:root[data-skin="garaj"]:not([data-contrast="high"]) #scr-menu .xpbar{border-radius:0;height:10px;background:repeating-linear-gradient(90deg,#1f252b 0 calc(20% - 3px),transparent calc(20% - 3px) 20%);border:0}
+:root[data-skin="garaj"]:not([data-contrast="high"]) #scr-menu .xpbar i{-webkit-mask:repeating-linear-gradient(90deg,#000 0 calc(20% - 3px),transparent calc(20% - 3px) 20%);mask:repeating-linear-gradient(90deg,#000 0 calc(20% - 3px),transparent calc(20% - 3px) 20%)}
+
+/* 4 · Zori în Carpați — open-world dawn: warm tint, glass tiles, landscape career tile */
+:root[data-skin="zori"]:not([data-contrast="high"]) #scr-menu{
+  --bg:#15243d;--surface:rgba(16,26,44,.66);--surface2:rgba(255,255,255,.12);--line:rgba(255,255,255,.24);--fg:#ffffff;--muted:#d8e0ec;
+  --accent:#ffb35c;--accent-ink:#2a1700;--amber:#ffb35c;--amber-ink:#2a1700;--scrim:rgba(21,36,61,.6);
+  --f-display:"Sora",system-ui,sans-serif;--f-body:"Sora",system-ui,sans-serif;color-scheme:dark;
+  background:linear-gradient(100deg,rgba(21,36,61,.94) 0%,rgba(21,36,61,.62) 40%,transparent 76%),linear-gradient(180deg,rgba(58,79,116,.25) 0%,transparent 45%,rgba(243,178,122,.26) 100%);
+  font-family:var(--f-body)}
+:root[data-skin="zori"]:not([data-contrast="high"]) #scr-menu .eyebrow{font-family:var(--f-body);letter-spacing:.22em;color:var(--accent)}
+:root[data-skin="zori"]:not([data-contrast="high"]) #scr-menu .logo{font-style:normal;font-weight:700;letter-spacing:-.035em}
+:root[data-skin="zori"]:not([data-contrast="high"]) #scr-menu .logo b{color:var(--accent);font-weight:700}
+:root[data-skin="zori"]:not([data-contrast="high"]) #scr-menu :is(.icon-btn,.plate,.chip){border-radius:999px}
+:root[data-skin="zori"]:not([data-contrast="high"]) #scr-menu .plate{border-color:transparent;background:var(--accent);color:var(--accent-ink)}
+:root[data-skin="zori"]:not([data-contrast="high"]) #scr-menu .mbtn{border-radius:18px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);min-height:84px}
+:root[data-skin="zori"]:not([data-contrast="high"]) #scr-menu .mbtn strong{font-weight:700;letter-spacing:-.02em;font-size:1.2rem}
+:root[data-skin="zori"]:not([data-contrast="high"]) #scr-menu .mbtn.big{min-height:150px;justify-content:flex-end;color:#fff;border:1px solid var(--line);
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 120' preserveAspectRatio='none'%3E%3Cpath d='M0 70L70 30L130 56L210 10L280 50L340 28L400 52V120H0Z' fill='%23243a30'/%3E%3Cpath d='M0 100L90 72L170 92L260 64L340 88L400 78V120H0Z' fill='%23152219'/%3E%3C/svg%3E") bottom/100% 70% no-repeat,radial-gradient(circle at 78% 40%,rgba(255,226,176,.9) 0 18px,transparent 19px),linear-gradient(180deg,#3a4f74,#c98a6b)}
+:root[data-skin="zori"]:not([data-contrast="high"]) #scr-menu .mbtn.big strong{font-size:1.9rem;text-shadow:0 1px 8px rgba(0,0,0,.45)}
+:root[data-skin="zori"]:not([data-contrast="high"]) #scr-menu .mbtn.big span{text-shadow:0 1px 6px rgba(0,0,0,.6)}
+:root[data-skin="zori"]:not([data-contrast="high"]) #scr-menu .mbtn:hover{border-color:var(--accent)}
+
+/* 5 · Telemetrie — light technical sheet: graph paper, hairline grid of modes */
+:root[data-skin="telemetrie"]:not([data-contrast="high"]) #scr-menu{
+  --bg:#f4f2ed;--surface:#ffffff;--surface2:#ebe8e1;--line:#d8d3c8;--fg:#16181d;--muted:#4f525a;
+  --accent:#c2410c;--accent-ink:#ffffff;--amber:#16181d;--amber-ink:#ffffff;--scrim:rgba(244,242,237,.9);--plate:#16181d;--plate-ink:#f4f2ed;
+  --f-display:"IBM Plex Sans",system-ui,sans-serif;--f-body:"IBM Plex Sans",system-ui,sans-serif;--f-mono:"IBM Plex Mono",ui-monospace,monospace;color-scheme:light;
+  background:linear-gradient(100deg,var(--bg) 0%,rgba(244,242,237,.93) 46%,rgba(244,242,237,.15) 80%),
+    repeating-linear-gradient(0deg,transparent 0 23px,rgba(140,130,110,.18) 23px 24px),repeating-linear-gradient(90deg,transparent 0 23px,rgba(140,130,110,.18) 23px 24px);
+  font-family:var(--f-body)}
+:root[data-skin="telemetrie"]:not([data-contrast="high"]) #scr-menu .logo{font-style:normal;font-weight:700;letter-spacing:-.025em}
+:root[data-skin="telemetrie"]:not([data-contrast="high"]) #scr-menu .logo b{color:var(--accent);font-weight:700}
+:root[data-skin="telemetrie"]:not([data-contrast="high"]) #scr-menu :is(.mbtn,.icon-btn,.plate,.xpbar,.chip,.btn){border-radius:0}
+:root[data-skin="telemetrie"]:not([data-contrast="high"]) #scr-menu .menu-main{gap:1px;background:var(--line);border:1px solid var(--line)}
+:root[data-skin="telemetrie"]:not([data-contrast="high"]) #scr-menu .mbtn{border:0}
+:root[data-skin="telemetrie"]:not([data-contrast="high"]) #scr-menu .mbtn strong{font-weight:600;font-size:1.08rem}
+:root[data-skin="telemetrie"]:not([data-contrast="high"]) #scr-menu .mbtn:hover{box-shadow:inset 0 0 0 2px var(--accent)}
+:root[data-skin="telemetrie"]:not([data-contrast="high"]) #scr-menu .mbtn.big{background:#16181d;color:#fff}
+:root[data-skin="telemetrie"]:not([data-contrast="high"]) #scr-menu .xpbar i{background:var(--accent)}
+:root[data-skin="telemetrie"]:not([data-contrast="high"]) #scr-menu .chip[aria-pressed="true"]{background:#16181d;color:#fff}
 </style>
 </head>
 <body>
@@ -346,6 +442,10 @@ kbd{font-family:var(--f-mono);font-size:.8rem;padding:2px 6px;border-radius:6px;
           <button class="mbtn" data-go="help"><strong data-i18n="help">Cum se joacă</strong><span data-i18n="help_d">Comenzi, moduri, sfaturi</span></button>
         </div>
       </nav>
+      <div class="skin-pick" role="group" aria-labelledby="skinLbl">
+        <span id="skinLbl" class="eyebrow" data-i18n="skin">Design meniu</span>
+        <div class="chips" id="skinChips"></div>
+      </div>
       <button class="btn acc" id="btnInstall" hidden style="max-width:560px"><span data-i18n="install">Instalează aplicația</span></button>
       <p class="menu-foot" data-i18n="foot">Joc gratuit, fără reclame și fără cont. Progresul se salvează în browserul tău. Proiect în dezvoltare.</p>
     </div>
@@ -618,7 +718,7 @@ stats:['Statistici','Stats'],lb:['Clasament local','Local leaderboard'],achs:['R
 s_km:['km parcurși','km ridden'],s_races:['curse','races'],s_wins:['victorii','wins'],s_crash:['căderi','crashes'],s_jumps:['sărituri','jumps'],s_flips:['salturi mortale','flips'],s_time:['timp jucat','time played'],s_medals:['medalii carieră','career medals'],
 data:['Date și progres','Data and progress'],data_d:['Exportă progresul ca text ca să-l muți pe alt dispozitiv. Lipește textul și apasă Importă.','Export your progress as text to move it to another device. Paste the text and press Import.'],
 export:['Exportă','Export'],import:['Importă','Import'],reset:['Resetează progresul','Reset progress'],reset_c:['Apasă din nou pentru confirmare','Press again to confirm'],imported:['Progres importat','Progress imported'],bad_import:['Textul nu este un export valid','The text is not a valid export'],reset_done:['Progres resetat','Progress reset'],
-set_gen:['General','General'],set_lang:['Limbă','Language'],set_theme:['Temă interfață','Interface theme'],th_sys:['Sistem','System'],th_dark:['Întunecată','Dark'],th_light:['Luminoasă','Light'],
+set_gen:['General','General'],set_lang:['Limbă','Language'],set_theme:['Temă interfață','Interface theme'],th_sys:['Sistem','System'],th_dark:['Întunecată','Dark'],th_light:['Luminoasă','Light'],skin:['Design meniu','Menu design'],set_skin:['Design meniu principal','Main menu design'],set_skin_d:['Cinci stiluri pentru meniu; jocul rămâne același. Contrastul ridicat are prioritate.','Five styles for the menu; the game stays the same. High contrast takes priority.'],
 set_contrast:['Contrast ridicat','High contrast'],set_contrast_d:['Margini și text mai puternice, jucătorul evidențiat pe traseu','Stronger edges and text, your rider highlighted'],
 set_text:['Mărime text','Text size'],set_gfx:['Grafică','Graphics'],set_gfx_d:['3D Înaltă: umbre și decor dens. 3D Medie: pentru telefoane. 2D clasic: pentru dispozitive slabe.','3D High: shadows and dense scenery. 3D Medium: for phones. Classic 2D: for low-end devices.'],gfx_h:['3D Înaltă','3D High'],gfx_m:['3D Medie','3D Medium'],gfx_2:['2D clasic','Classic 2D'],set_ctrl:['Comenzi','Controls'],set_phys:['Stil de condus','Riding style'],phys_a:['Arcade','Arcade'],phys_t:['Tehnic','Technical'],set_phys_d:['Arcade: mai multă aderență și iertare. Tehnic: echilibru exigent.','Arcade: more grip and forgiveness. Technical: demanding balance.'],
 set_auto:['Accelerație automată','Auto throttle'],set_auto_d:['Motocicleta accelerează singură; ții doar frâna și echilibrul','The bike accelerates on its own; you only brake and balance'],
@@ -683,7 +783,7 @@ const t=(k,v)=>{let s=(T[k]||[k,k])[LI];if(v)for(const x in v)s=s.split('{'+x+'}
 /* ================= save ================= */
 const SKEY='carpati-enduro-v1';
 const prefersReduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const DEF_SET={lang:'ro',theme:'dark',contrast:false,text:1,phys:'arcade',autoThr:false,simple:false,toggle:false,bs:1,hand:'r',touch:'auto',assist:1,speed:1,adaptive:false,reduce:prefersReduce,noFlash:false,vib:true,shake:true,vEng:.5,vSfx:.7,vMus:.25,cam:'side',vibL:1,liv:'solid',helm:'solid',fx:'dust',gfx:matchMedia('(pointer: coarse)').matches?'med':'high',name:'Pilot',num:7,color:'#22d3ee',suit:'#f5a524',
+const DEF_SET={lang:'ro',theme:'dark',contrast:false,text:1,phys:'arcade',autoThr:false,simple:false,toggle:false,bs:1,hand:'r',touch:'auto',assist:1,speed:1,adaptive:false,reduce:prefersReduce,noFlash:false,vib:true,shake:true,vEng:.5,vSfx:.7,vMus:.25,cam:'side',vibL:1,liv:'solid',helm:'solid',fx:'dust',gfx:matchMedia('(pointer: coarse)').matches?'med':'high',skin:'expeditie',name:'Pilot',num:7,color:'#22d3ee',suit:'#f5a524',
  q:{mode:'race',r:0,diff:1,opp:3,w:'rand',tod:'d'}};
 function defSave(){return{v:1,coins:300,xp:0,earned:0,sel:'enduro',bikes:{enduro:{up:{eng:0,tire:0,susp:0,brk:0}}},career:{},storyLog:[],chapterAwards:{},objectiveAwards:{},chapterEndings:{},ghosts:{},gOrder:[],lb:{},lbMeta:{},lbOrder:[],stats:{m:0,wins:0,crashes:0,jumps:0,flips:0,time:0,races:0,regions:[]},ach:{},daily:{},tut:false,school:{},evt:{},shop:{liv:['solid'],helm:['solid'],fx:['dust']},rew:{day:null,streak:0,rank:1,ach:{}},set:JSON.parse(JSON.stringify(DEF_SET))}}
 let SV=null;
@@ -1773,7 +1873,7 @@ function buildMenu(){coinsTxt();const lv=level(SV.xp);$('#mLvl').textContent=t('
  $('#schoolSub').textContent=t('school_sub',{n:Object.keys(SV.school).length});
  const act=EVENTS.filter(e=>evWindow(e).active);$('#eventsSub').textContent=act.length?'● '+act.map(e=>evName(e.id)).join(', '):t('evd_'+EVENTS[0].id).split('.')[0];
  $('#rwBadge').hidden=!rewardsPending();$('#btnInstall').hidden=!deferredInstall;
- $('#btnLang').textContent=S.lang==='ro'?'EN':'RO';$('#btnTheme').textContent=S.theme==='light'?'☾':'☀'}
+ $('#btnLang').textContent=S.lang==='ro'?'EN':'RO';$('#btnTheme').textContent=S.theme==='light'?'☾':'☀';buildSkinPick()}
 function seg(el,opts,cur,fn){el.innerHTML='';opts.forEach(([v,l])=>{const b=document.createElement('button');b.type='button';b.textContent=l;b.setAttribute('aria-pressed',String(v===cur));b.onclick=()=>{fn(v);$$('button',el).forEach(x=>x.setAttribute('aria-pressed',String(x===b)))};el.appendChild(b)})}
 function buildSelect(){coinsTxt();const q=S.q;
  const mEl=$('#selModes');mEl.innerHTML='';MODES.forEach(m=>{const b=document.createElement('button');b.className='card';b.setAttribute('aria-pressed',String(q.mode===m));b.innerHTML=`<h3>${t('m_'+m)}</h3><p>${t('md_'+m)}</p>`;b.onclick=()=>{q.mode=m;save();buildSelect()};mEl.appendChild(b)});
@@ -1868,6 +1968,7 @@ function buildSettings(){const B=$('#setBox');B.innerHTML='';const h=(k)=>{const
  h('set_gen');
  B.append(segRow('set_lang','','lang',[['ro','Română'],['en','English']],()=>{applyI18n();buildSettings()}),
   segRow('set_theme','','theme',[['system',t('th_sys')],['dark',t('th_dark')],['light',t('th_light')]]),
+  segRow('set_skin','set_skin_d','skin',SKINS.map(k=>[k[0],S.lang==='en'?k[2]:k[1]]),()=>buildMenu()),
   swRow('set_contrast','set_contrast_d','contrast'),
   segRow('set_text','','text',[[1,'100%'],[1.15,'115%'],[1.3,'130%']]),
   segRow('set_gfx','set_gfx_d','gfx',R3.ok?[['high',t('gfx_h')],['med',t('gfx_m')],['2d',t('gfx_2')]]:[['2d',t('gfx_2')]]));
@@ -1891,7 +1992,12 @@ function buildHelp(){const k=(keys,txt)=>`<div class="row"><span>${keys.map(x=>`
  <div class="panel"><h3 class="sec-h">${t('help_tips')}</h3>${[1,2,3,4].map(i=>`<p style="margin:6px 0">${t('tip'+i)}</p>`).join('')}</div>
  <div class="panel"><h3 class="sec-h">${t('help_acc')}</h3>${[1,2,3,4].map(i=>`<p style="margin:6px 0">${t('acc'+i)}</p>`).join('')}</div>`}
 
+const SKINS=[['expeditie','Expediție','Expedition','#f5a524'],['paddock','Paddock','Paddock','#ff6b00'],['garaj','Garaj','Garage','#2dd4bf'],['zori','Zori în Carpați','Carpathian dawn','#ffb35c'],['telemetrie','Telemetrie','Telemetry','#c2410c']];
+const SKIN_FONTS={paddock:'Barlow+Condensed:ital,wght@0,600;0,800;1,800&family=Barlow:wght@400;500;600',garaj:'Chakra+Petch:wght@500;600;700',zori:'Sora:wght@400;500;600;700',telemetrie:'IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500'};
+function skinFont(k){const f=SKIN_FONTS[k];if(!f||document.getElementById('skinFont-'+k))return;const l=document.createElement('link');l.id='skinFont-'+k;l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family='+f+'&display=swap';document.head.appendChild(l)}
+function buildSkinPick(){const box=$('#skinChips');if(!box)return;box.innerHTML='';SKINS.forEach(([k,ro,en,c])=>{const b=document.createElement('button');b.type='button';b.className='chip';b.setAttribute('aria-pressed',String(S.skin===k));const d=document.createElement('span');d.className='swd';d.style.background=c;d.setAttribute('aria-hidden','true');b.append(d,document.createTextNode(S.lang==='en'?en:ro));b.onclick=()=>{S.skin=k;save();applySettings();buildSkinPick();const sr=$('#sr');if(sr)sr.textContent=t('skin')+': '+(S.lang==='en'?en:ro)};box.appendChild(b)})}
 function applySettings(){const r=document.documentElement;
+ if(!SKINS.some(k=>k[0]===S.skin))S.skin='expeditie';r.setAttribute('data-skin',S.skin);skinFont(S.skin);
  if(S.theme==='system')r.removeAttribute('data-theme');else r.setAttribute('data-theme',S.theme);
  if(S.contrast)r.setAttribute('data-contrast','high');else r.removeAttribute('data-contrast');
  r.setAttribute('data-reduce',S.reduce?'1':'0');r.style.setProperty('--ts',S.text);r.style.setProperty('--bs',S.bs);

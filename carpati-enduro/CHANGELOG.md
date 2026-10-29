@@ -1,5 +1,12 @@
 # Carpați Enduro — istoric / changelog
 
+## 2.1.1 — 2026-10-29 · Menu designs
+
+- Adds five player-selectable main-menu designs: Expediție (default, follows light/dark), Paddock, Garaj, Zori în Carpați and Telemetrie (light).
+- Choose from the new "Design meniu" chips on the main menu or in Settings › General; the choice is saved with the other settings.
+- Only the menu changes; races, HUD and the other screens keep the existing theme. High contrast still overrides every design.
+- Each design's font loads only when that design is selected. The service-worker cache moves to v2.1.1 so returning players get the update.
+
 ## 2.1.0 — 2026-10-29 · Advanced trails and online server
 
 - Completes additional code across all 24 directions: moving lifts/seesaws, physical forks, shallow deformation, wheel-physics AI, RPM/torque transmission, progressive wetness and day/night sky blending.
