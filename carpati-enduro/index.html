@@ -1164,8 +1164,10 @@ function update(dt){
 function eliminate(){const act=[{me:1,x:G.bike.pts[0].x}];G.ais.forEach(a=>{if(!a.out&&!a.done)act.push({a,x:a.x})});if(act.length<=1)return;act.sort((p,q)=>p.x-q.x);const last=act[0];
  if(last.me){showMsg(t('you_out'));endRun(true,act.length);return}last.a.out=true;showMsg(t('elim_out',{n:last.a.name}));sr_(t('elim_out',{n:last.a.name}));
  if(act.length===2){finishRace(1)}}
-function camFollow(x,y,vx,vy,dt){const c=G.cam;const la=S.reduce?60:clamp(vx*.28,-120,240);const tx=x+la,ty=y-40+(S.reduce?0:clamp(vy*.06,-40,80));const k=1-Math.exp(-dt*(S.reduce?3:(EX?EX.settings.camera:5)));c.x+=(tx-c.x)*k;c.y+=(ty-c.y)*k;
- let z=Math.min(W/(W<H?500:760),H/460);if(!S.reduce)z*=1-Math.min(Math.hypot(vx,vy)/900,1)*.12;c.z+=(z-c.z)*Math.min(1,dt*2);
+function camFollow(x,y,vx,vy,dt){const c=G.cam;const la=S.reduce?60:clamp(vx*.28,-120,240);let z=Math.min(W/(W<H?500:760),H/460);if(!S.reduce)z*=1-Math.min(Math.hypot(vx,vy)/900,1)*.12;c.z+=(z-c.z)*Math.min(1,dt*2);const zoom=Math.max(.001,c.z);
+ // Keep the rider's anchor inside a safe screen band, including at high speed and on narrow portrait screens.
+ const xMin=x-.26*W/zoom,xMax=x+.11*W/zoom,yMin=y-.18*H/zoom,yMax=y+.28*H/zoom;
+ const tx=clamp(x+la,xMin,xMax),ty=clamp(y-40+(S.reduce?0:clamp(vy*.06,-40,80)),yMin,yMax),k=1-Math.exp(-dt*(S.reduce?3:(EX?EX.settings.camera:5)));c.x=clamp(c.x+(tx-c.x)*k,xMin,xMax);c.y=clamp(c.y+(ty-c.y)*k,yMin,yMax);
  if(c.shake>0){c.sx=(Math.random()-.5)*c.shake;c.sy=(Math.random()-.5)*c.shake;c.shake=Math.max(0,c.shake-dt*30)}else{c.sx=c.sy=0}}
 function partCol(s){return s.k==='mud'?'#5a3e28':s.k==='water'?'#9cd3ff':s.k==='sand'?'#e2c088':s.k==='snow'||s.k==='ice'?'#ffffff':s.k==='ash'?'#6b6266':s.k==='rock'?'#a3a7ae':'#9a7350'}
 function spawnPart(x,y,vx,vy,col,life){if(G.parts.length>(S.reduce?40:180))G.parts.shift();G.parts.push({x,y,vx,vy,col,life,l0:life,s:2+Math.random()*3})}
