@@ -334,9 +334,9 @@ kbd{font-family:var(--f-mono);font-size:.8rem;padding:2px 6px;border-radius:6px;
           <button class="mbtn" data-go="school"><strong data-i18n="school">Școala de pilotaj</strong><span id="schoolSub"></span></button>
           <button class="mbtn" data-go="events"><strong data-i18n="events">Evenimente</strong><span id="eventsSub"></span></button>
           <button class="mbtn" data-go="select"><strong data-i18n="quick">Cursă rapidă</strong><span data-i18n="quick_d">Alegi modul, regiunea și vremea</span></button>
-          <button class="mbtn mode-shortcut" data-mode-launch="tt"><strong data-i18n="m_tt">Contracronometru</strong><span data-i18n="md_tt">Cel mai bun timp, cu ghost-ul recordului tău.</span></button>
-          <button class="mbtn mode-shortcut" data-mode-launch="free"><strong data-i18n="mode_train">Antrenament</strong><span data-i18n="mode_train_d">Exersezi fără cronometru, în ritmul tău.</span></button>
-          <button class="mbtn mode-shortcut" data-mode-launch="stunt"><strong data-i18n="mode_tricks">Trucuri</strong><span data-i18n="mode_tricks_d">Sărituri, wheelie și salturi mortale în 90 de secunde.</span></button>
+          <button class="mbtn mode-shortcut" id="btnQuickTime"><strong data-i18n="m_tt">Contracronometru</strong><span data-i18n="md_tt">Cel mai bun timp, cu ghost-ul recordului tău.</span></button>
+          <button class="mbtn mode-shortcut" id="btnQuickTraining"><strong data-i18n="mode_train">Antrenament</strong><span data-i18n="mode_train_d">Exersezi fără cronometru, în ritmul tău.</span></button>
+          <button class="mbtn mode-shortcut" id="btnQuickTricks"><strong data-i18n="mode_tricks">Trucuri</strong><span data-i18n="mode_tricks_d">Sărituri, wheelie și salturi mortale în 90 de secunde.</span></button>
           <button class="mbtn" id="btnDaily"><strong data-i18n="daily">Provocarea zilei</strong><span id="dailyInfo"></span></button>
           <button class="mbtn" data-go="shop"><strong data-i18n="shop">Magazin</strong><span data-i18n="shop_d">Modele, căști, efecte</span></button>
           <button class="mbtn" data-go="rewards"><strong><span data-i18n="rewards">Recompense</span> <span id="rwBadge" class="badge" hidden>●</span></strong><span data-i18n="rewards_d">Bonus zilnic, rang, realizări</span></button>
@@ -1914,7 +1914,7 @@ $('#btnDaily').onclick=()=>startRace(dailyOpts());
 $('#btnCareer').onclick=()=>{AU.init();const nl=nextLvl();if(nl<0)show('career');else if(nl===0&&!SV.career[CAREER[0].id])startEvent(CAREER[0]);else show('career')};
 function quickOptions(mode){const q=S.q,pick=(v,a)=>v==='rand'?a[Math.floor(Math.random()*a.length)]:v;return{mode,r:regionUnlocked(q.r)?q.r:0,seed:Math.floor(Math.random()*2e9),diff:q.diff,opp:q.opp,w:pick(q.w,['c','r','f','s','l']),tod:pick(q.tod,['d','u','n'])}}
 function launchQuickMode(mode){AU.init();startRace(quickOptions(mode))}
-$$('[data-mode-launch]').forEach(b=>b.addEventListener('click',()=>launchQuickMode(b.dataset.modeLaunch)));
+$('#btnQuickTime').onclick=()=>launchQuickMode('tt');$('#btnQuickTraining').onclick=()=>launchQuickMode('free');$('#btnQuickTricks').onclick=()=>launchQuickMode('stunt');
 $('#btnGo').onclick=()=>startRace(quickOptions(S.q.mode));
 $('#btnCode').onclick=()=>{const o=parseCode($('#codeIn').value);if(!o){toast(t('bad_code'));return}startRace(o)};
 $('#btnLang').onclick=()=>{S.lang=S.lang==='ro'?'en':'ro';save();applyI18n()};
