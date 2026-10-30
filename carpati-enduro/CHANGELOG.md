@@ -1,4 +1,4 @@
-# Carpați Enduro — istoric / changelog
+# EnduRo — istoric / changelog
 
 ## 2.1.0 — 2026-10-29 · Advanced trails and online server
 
@@ -18,7 +18,7 @@
 - Joc pe rând pentru 2–4 jucători, ghost/replay cu seek și camere, analiză și card PNG.
 - Confort: poziții individuale ale comenzilor, sensibilitate, grupare pentru o mână și mod economic.
 - Backup validat, recuperare, patru sloturi și reluare de la checkpoint ca antrenament; recompense idempotente și cronometre legate de cursă.
-- Service worker limitat la cache-urile Carpați Enduro; actualizările așteaptă închiderea paginilor vechi.
+- Service worker limitat la cache-urile EnduRo; actualizările așteaptă închiderea paginilor vechi.
 - Studiu de caz RO/EN, arhivă evenimente și bridge de rezultate pentru integrarea Arcade World într-un PR separat.
 - Livrarea este un folder static (`index.html` + `expedition-core.js` + PWA), fără build.
 - Nu sunt conectate multiplayer live, lobby, clasament global sau cloud. Fotografia folosește randarea 2D. Vezi FEATURE-COVERAGE.md pentru subpunctele rămase și QA.md pentru limitele verificării.
