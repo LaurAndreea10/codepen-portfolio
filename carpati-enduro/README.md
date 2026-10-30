@@ -1,4 +1,4 @@
-# 🏍️ Carpați Enduro — Expedition 2.1
+# 🏍️ EnduRo — Expedition 2.1
 
 Browser motorcycle racing, enduro and trial, with Three.js 3D rendering and a Canvas 2D fallback. Romanian/English, dark/light, touch/gamepad/keyboard, local progress and an installable PWA. No accounts, ads or paid services.
 
