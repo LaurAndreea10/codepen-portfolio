@@ -98,7 +98,7 @@
       outro1: 'Fructul nu e un obicei.', outro2: 'E un anotimp.',
       backPortfolio: 'Înapoi la portofoliu', seeCode: 'Vezi codul pe GitHub', readme: 'Cum e construit',
       disclaimer: 'LIVADA este un brand fictiv, creat de Laura Andreea ca studiu de landing page. Produsele, livezile și cifrele sunt inventate; nu se vinde nimic.',
-      langBtn: 'EN', langLabel: 'Switch to English', logoLabel: 'LIVADA, începutul paginii'
+      langBtn: 'EN', langLabel: 'EN – Switch to English', logoLabel: 'LIVADA, începutul paginii'
     },
     en: {
       skip: 'Skip to content', introSkip: 'Skip', navLabel: 'Sections',
@@ -128,7 +128,7 @@
       outro1: 'Fruit isn’t a habit.', outro2: 'It’s a season.',
       backPortfolio: 'Back to the portfolio', seeCode: 'See the code on GitHub', readme: 'How it’s built',
       disclaimer: 'LIVADA is a fictional brand, made by Laura Andreea as a landing-page study. The products, orchards and figures are invented; nothing is for sale.',
-      langBtn: 'RO', langLabel: 'Comută în română', logoLabel: 'LIVADA, top of page'
+      langBtn: 'RO', langLabel: 'RO – Comută în română', logoLabel: 'LIVADA, top of page'
     }
   };
 

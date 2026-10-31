@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   jest:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     defaults:
       run:
@@ -36,7 +36,7 @@ jobs:
           git diff --exit-code index.pen.html || (echo "Run: node ghost-talk/build-standalone.cjs" && exit 1)
 
   browser:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4

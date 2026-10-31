@@ -97,7 +97,7 @@
         orders3: ['Comandă la timp', 'Livrează 3 comenzi într-o rundă.'],
         fruits1000: ['Un sezon întreg', 'Taie 1000 de fructe în total.']
       },
-      langBtn: 'EN', langLabel: 'Switch to English'
+      langBtn: 'EN', langLabel: 'EN – Switch to English'
     },
     en: {
       skip: 'Skip to menu', back: 'Back to LIVADA', title: 'The Harvest',
@@ -149,7 +149,7 @@
         orders3: ['On-time delivery', 'Deliver 3 orders in one round.'],
         fruits1000: ['A whole season', 'Slice 1000 fruits in total.']
       },
-      langBtn: 'RO', langLabel: 'Comută în română'
+      langBtn: 'RO', langLabel: 'RO – Comută în română'
     }
   };
   const ACH_IDS = Object.keys(I18N.ro.ach);
