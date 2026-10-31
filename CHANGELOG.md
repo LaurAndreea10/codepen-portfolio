@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-31 — Kygo World 3D
+
+- RO: Kygo World are acum vizualizare 3D în toate modurile (Poveste, Cursă, Campionat, Endless, Labirint, Comoară, Grădină, Zen, Duo), pornită implicit, cu butonul 🧊 3D pentru 2D. Kygo arată ca în logo, cu pălării de sezon. Logica, salvările și comenzile nu s-au schimbat; fără WebGL, jocul rămâne 2D.
+- EN: Kygo World now renders every mode in 3D by default, with a 🧊 3D toggle back to 2D; same logic, saves and controls.
+- [Joacă / Play](kygo-world/) · [Istoric / History](kygo-world/CHANGELOG.md).
+
 ## 2026-10-31 — Kygo: Pe Urme v1.2.0: doar joacă, Kygo ca în logo
 
 - RO: fără întrebări; totul se joacă în 3D. Conacul bântuit: prinzi fantome ascunse, decorezi dovleci, mănânci recompense. Arena sporturilor: găsești mingi ascunse, dai goluri împingând mingea cu botul, ronțăi biscuiți. Kygo are corpul din logo (toy poodle roșcat, tunsoare teddy, papion cu buline). Mersul automat și modul un singur buton pot termina singure ambele regiuni.

@@ -1,5 +1,17 @@
 # Kygo World — istoric al versiunilor / Version history
 
+## 2026-10-31 · v2026.10.31 · Kygo World 3D
+- RO: tot jocul are acum vizualizare 3D (Three.js), pornită implicit, cu butonul **🧊 3D** în bara de sus pentru a reveni oricând la 2D. Logica, nivelurile, salvările și comenzile rămân aceleași; 3D-ul desenează aceeași stare:
+  - **Poveste**: insule plutitoare pe trei benzi, monede-trofeu care se rotesc, relicve de cristal, pietre, bușteni, stropi, spini, dovleci, crengi joase sub care aluneci, norul furtunii cu fulger și poarta de aur.
+  - **Cursă / Campionat / Endless**: pistă cu trei benzi care curge, pietre, arcade (aluneci), rampe (sari) și lăbuțe de prins.
+  - **Labirint**: ziduri 3D, ceața ascunde zidurile depărtate, cheia și jucăria la final.
+  - **Comoară**: nuferi pe apă, insule mobile și pod, chei de aur.
+  - **Grădină / Zen / Duo**: insulă de iarbă cu copaci și iaz, flori plantate, mingea, oase și prietenul pasăre.
+- Kygo e același toy poodle roșcat cu tunsoare teddy și papion cu buline ca în logo, cu pălărie de vrăjitoare la Halloween, căciulă de Moș Crăciun și urechi de iepuraș de Paște. Cerul și culorile urmează lumea și ediția.
+- Camera se adaptează pe telefon vertical; pe ecrane mici randarea e limitată la 30 FPS și fără umbre. Contrastul ridicat și mișcarea redusă sunt respectate. Fotografia 📷 salvează imaginea 3D. Dacă WebGL nu e disponibil, jocul rămâne în 2D.
+- EN: the whole game now has a 3D view (Three.js), on by default with a 🧊 3D toggle back to 2D. Same logic, levels, saves and controls; every mode is rendered in 3D, Kygo matches the logo with seasonal hats, and the camera adapts to portrait phones.
+- Verificat automat în Chromium la 1200 și 390 px pentru Poveste, Cursă, Labirint, Comoară, Grădină și Duo, fără erori JS. Telefonul fizic rămâne neconfirmat. / Automated Chromium checks at 1200 and 390 px; real phones remain unverified.
+
 ## 2026-10-31 · Kygo: Pe Urme v1.2.0 · Doar joacă, Kygo ca în logo / Pure play, Kygo like the logo
 - RO: Kygo are acum corpul din logo: toy poodle roșcat cu tunsoare teddy, cap rotund și pufos, urechi mari, coadă pompon, papion alb cu buline și limbuța afară.
 - Am scos toate panourile cu întrebări; totul se joacă direct în lumea 3D:
