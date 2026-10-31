@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-31 — Kygo World 3D: Kygo dinainte, cu papion
+
+- RO: în 3D, Kygo folosește din nou imaginea originală cu papion (panou orientat spre cameră, cu umbră), în locul modelului din sfere.
+- EN: in 3D, Kygo uses the original bow-tie image again (camera-facing billboard with a shadow) instead of the sphere model.
+- [Joacă / Play](kygo-world/) · [Istoric / History](kygo-world/CHANGELOG.md).
+
 ## 2026-10-31 — Kygo World 3D
 
 - RO: Kygo World are acum vizualizare 3D în toate modurile (Poveste, Cursă, Campionat, Endless, Labirint, Comoară, Grădină, Zen, Duo), pornită implicit, cu butonul 🧊 3D pentru 2D. Kygo arată ca în logo, cu pălării de sezon. Logica, salvările și comenzile nu s-au schimbat; fără WebGL, jocul rămâne 2D.

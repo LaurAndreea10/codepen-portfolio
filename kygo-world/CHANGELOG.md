@@ -1,5 +1,9 @@
 # Kygo World — istoric al versiunilor / Version history
 
+## 2026-10-31 · v2026.10.31.2 · Kygo dinainte, cu papion / The original Kygo with the bow tie
+- RO: în vizualizarea 3D, Kygo e din nou cel dinainte: imaginea originală cu papionul cu buline, așezată în lumea 3D ca un panou care se întoarce mereu spre cameră, cu umbră pe sol. Se oglindește când merge spre stânga, sare și alunecă la fel ca în 2D și poartă accesoriile de sezon (🧙 🐰 🎅). În Labirint rămâne vizibil peste ziduri.
+- EN: in the 3D view Kygo is the original again — the familiar image with the polka-dot bow tie, shown as a camera-facing billboard with a ground shadow, mirrored when walking left, with the same jump, slide and seasonal accessories; it stays visible above maze walls.
+
 ## 2026-10-31 · v2026.10.31 · Kygo World 3D
 - RO: tot jocul are acum vizualizare 3D (Three.js), pornită implicit, cu butonul **🧊 3D** în bara de sus pentru a reveni oricând la 2D. Logica, nivelurile, salvările și comenzile rămân aceleași; 3D-ul desenează aceeași stare:
   - **Poveste**: insule plutitoare pe trei benzi, monede-trofeu care se rotesc, relicve de cristal, pietre, bușteni, stropi, spini, dovleci, crengi joase sub care aluneci, norul furtunii cu fulger și poarta de aur.
