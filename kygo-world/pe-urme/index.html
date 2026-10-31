@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kygo: Pe Urme — Lumea lui Kygo 3D</title>
-<meta name="description" content="Kygo: Pe Urme — joc 3D accesibil RO/EN din Kygo World: un toy poodle urmează mirosul și latră ca să găsească jucăriile din Conacul bântuit și din Arena sporturilor.">
+<meta name="description" content="Kygo: Pe Urme — joc 3D accesibil RO/EN din Kygo World: Kygo, toy poodle roșcat, prinde fantome, decorează dovleci, dă goluri și mănâncă recompense în Conacul bântuit și în Arena sporturilor.">
 <meta property="og:title" content="Kygo: Pe Urme — Kygo World 3D">
-<meta property="og:description" content="Joc 3D accesibil: urma de miros, lătratul-sonar, 8 provocări, RO/EN, un singur buton.">
+<meta property="og:description" content="Joc 3D accesibil: fantome de găsit, dovleci de decorat, goluri și recompense; urmă de miros, lătrat-sonar, RO/EN, un singur buton.">
 <meta name="theme-color" content="#070d1c">
 <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/kygo-world/pe-urme/">
 <meta property="og:type" content="website">
@@ -16,7 +16,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="author" content="Laura Andreea">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Kygo: Pe Urme","alternateName":"Kygo: On the Trail","description":"Joc 3D accesibil din Kygo World: un toy poodle urmează mirosul și latră ca sonar ca să găsească jucăriile din Conacul bântuit și din Arena sporturilor, cu 8 provocări.","genre":["Adventure","Puzzle","Sports"],"gamePlatform":["Web browser","Mobile","Desktop"],"inLanguage":["ro","en"],"applicationCategory":"Game","operatingSystem":"Any","isAccessibleForFree":true,"accessibilityFeature":["audioDescription","captions","highContrastDisplay","reducedMotion","largePrint"],"accessibilityControl":["fullKeyboardControl","fullTouchControl","fullSwitchControl"],"url":"https://laurandreea10.github.io/codepen-portfolio/kygo-world/pe-urme/","image":"https://laurandreea10.github.io/codepen-portfolio/assets/og/kygo-pe-urme.jpg","author":{"@type":"Person","name":"Laura Andreea"},"isPartOf":{"@type":"VideoGame","name":"Kygo World","url":"https://laurandreea10.github.io/codepen-portfolio/kygo-world/"},"softwareVersion":"1.1.0"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Kygo: Pe Urme","alternateName":"Kygo: On the Trail","description":"Joc 3D accesibil din Kygo World: Kygo, toy poodle roșcat, urmează mirosul și latră ca sonar: prinde fantome și decorează dovleci în Conacul bântuit, găsește mingi și dă goluri în Arena sporturilor și mănâncă recompense.","genre":["Adventure","Puzzle","Sports"],"gamePlatform":["Web browser","Mobile","Desktop"],"inLanguage":["ro","en"],"applicationCategory":"Game","operatingSystem":"Any","isAccessibleForFree":true,"accessibilityFeature":["audioDescription","captions","highContrastDisplay","reducedMotion","largePrint"],"accessibilityControl":["fullKeyboardControl","fullTouchControl","fullSwitchControl"],"url":"https://laurandreea10.github.io/codepen-portfolio/kygo-world/pe-urme/","image":"https://laurandreea10.github.io/codepen-portfolio/assets/og/kygo-pe-urme.jpg","author":{"@type":"Person","name":"Laura Andreea"},"isPartOf":{"@type":"VideoGame","name":"Kygo World","url":"https://laurandreea10.github.io/codepen-portfolio/kygo-world/"},"softwareVersion":"1.2.0"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
@@ -175,6 +175,10 @@ body.rm .goal .keeper, body.rm .goal .ball{ transition:none }
 .kygo-slider{ position:absolute; bottom:4px; font-size:2.2rem; transition:left .2s }
 body.rm .kygo-slider{ transition:none }
 .lane-btns{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px }
+
+.slots li.task{ width:auto; min-width:64px; padding:0 .55rem; display:flex; gap:.35rem; align-items:center; justify-content:center; font-size:1.05rem; opacity:1; filter:none; border:1.5px solid var(--border) }
+.slots li.task b{ font-family:var(--font-mono); font-size:.85rem; font-weight:500 }
+.slots li.task.found{ border-color:var(--ok); background:color-mix(in srgb, var(--ok) 18%, transparent) }
 </style>
 </head>
 <body>
@@ -200,7 +204,7 @@ body.rm .kygo-slider{ transition:none }
   </div>
   <div class="event" id="eventBadge"></div>
   <div id="captions" aria-hidden="true"></div>
-  <div id="prompt" class="hud-card"><span id="promptTxt"></span><button class="btn amber" id="bAction"><span data-i18n="action"></span> <kbd>E</kbd></button></div>
+  <div id="prompt" class="hud-card"><span id="promptTxt"></span><button class="btn amber" id="bAction"><span data-i18n="act_decorate"></span> <kbd>E</kbd></button></div>
   <div id="statusline" data-i18n="keysHint"></div>
 </div>
 
@@ -269,19 +273,6 @@ body.rm .kygo-slider{ transition:none }
   </div>
 </dialog>
 
-<!-- CHALLENGE -->
-<dialog id="dlgCh" aria-labelledby="chTitle" aria-describedby="chDesc">
-  <div class="panel">
-    <p class="kicker" id="chKicker"></p>
-    <h2 id="chTitle"></h2>
-    <p id="chDesc" class="muted"></p>
-    <div class="timer" id="chTimer"><span></span></div>
-    <div id="chBody"></div>
-    <p id="chFeedback" role="status" aria-live="polite"></p>
-    <div class="chfoot"><span id="chScore"></span><span id="chRound"></span></div>
-  </div>
-</dialog>
-
 <!-- MAP -->
 <dialog id="dlgMap" aria-labelledby="mapTitle">
   <div class="panel">
@@ -321,7 +312,7 @@ const store = {
   get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
   set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 };
-const VERSION = '1.1.0';
+const VERSION = '1.2.0';
 
 /* ================= i18n ================= */
 const I18N = {
@@ -329,104 +320,76 @@ ro:{
   worldName:'Lumea lui Kygo', titleA:'Kygo:', titleB:'Pe Urme', backKW:'← Înapoi în Kygo World',
   reg_manor:'Conacul bântuit', reg_arena:'Arena sporturilor', reg_coast:'Coasta', reg_garden:'Grădina și Livada', reg_kitchen:'Bucătăria', reg_more:'Încă 5 regiuni',
   kick_manor:'Regiunea 1 · Halloween', kick_arena:'Regiunea 2 · Olimpiada lui Kygo',
-  tag_manor:'Glitch-ul a furat culorile conacului și a ascuns jucăriile lui Kygo. Urmează mirosul, latră ca să afli ce e în jur și readu lumina în conac.',
-  tag_arena:'Glitch-ul a stins reflectoarele stadionului și a împrăștiat mingile. Găsește-le pe urma mirosului și câștigă cele patru probe ca să aprinzi din nou Arena.',
-  chooseMode:'Alege cum vrei să joci', mode_adventure:'Aventură', mode_adventure_d:'Provocări cu cronometru și stele.',
-  mode_walk:'Plimbare', mode_walk_d:'Fără timp, fără eșec. Explorezi în ritmul tău.',
+  tag_manor:'Glitch-ul a ascuns fantomele prin curtea conacului și a stins dovlecii. Găsește fantomele pe urma mirosului, decorează dovlecii și mănâncă toate recompensele ca să readuci lumina.',
+  tag_arena:'Glitch-ul a stins reflectoarele și a ascuns mingile. Găsește-le, dă goluri împingând mingea cu botul și ronțăie recompensele ca să aprinzi Arena.',
+  chooseMode:'Alege cum vrei să joci', mode_adventure:'Aventură', mode_adventure_d:'Fantomele fug puțin, iar timpul îți aduce stele.',
+  mode_walk:'Plimbare', mode_walk_d:'Fără timp, fără grabă. Totul stă pe loc și te așteaptă.',
   play:'Începe', settings:'Accesibilitate și setări', help:'Cum se joacă', langBtn:'English', langShort:'EN', langAria:'Schimbă limba în engleză',
   map:'Harta lumii', map_d:'Fiecare regiune își păstrează progresul. Le poți juca în orice ordine.', go:'Mergi aici', here_now:'Ești aici', soon:'În curând',
-  reg_progress:'{n}/4 jucării', reg_done:'Terminată · {s}★',
+  reg_progress:'{p}% gata', reg_done:'Terminată · {s}★',
   credits:'Joc 3D accesibil · se poate juca doar cu sunetul, doar cu tastatura sau cu un singur buton.',
   kickerSet:'Joacă așa cum ți se potrivește',
-  bark:'Latră', follow:'Urmează mirosul', following:'Urmez mirosul…', spaceKey:'Spațiu', action:'Ia jucăria', pause:'Pauză', resume:'Continuă',
+  bark:'Latră', follow:'Urmează mirosul', following:'Urmez mirosul…', spaceKey:'Spațiu', pause:'Pauză', resume:'Continuă',
   restart:'Ia-o de la capăt', close:'Închide', paused:'Joc în pauză',
-  keysHint:'Săgeți/WASD: mergi · B: latră · Spațiu: urmează mirosul · T: stare · H: ajutor',
+  keysHint:'Săgeți/WASD: mergi · B: latră · E: decorează · Spațiu: urmează mirosul · T: stare · H: ajutor',
   event_hw:'🎃 Eveniment Halloween activ', event_night:'🌙 Plimbare de noapte', event_games:'🏅 Olimpiada lui Kygo',
-  event_d_hw:'Găsește toate jucăriile din Conac până pe 3 noiembrie și primești insigna Halloween 2026.',
+  event_d_hw:'Termină Conacul până pe 3 noiembrie și primești insigna Halloween 2026.',
   event_d_night:'Conacul te așteaptă oricând. Evenimentul Halloween revine în octombrie.',
-  event_d_games:'Patru probe sportive, o singură regulă: nimeni nu pierde. Aprinde toate reflectoarele.',
-  toy_ball:'mingea', toy_plush:'fantoma de pluș', toy_pumpkin:'dovleacul care chițăie', toy_bone:'osul',
-  toy_basket:'mingea de baschet', toy_football:'mingea de fotbal', toy_puck:'pucul', toy_duck:'rățușca de cauciuc',
-  slotsLabel:'Jucării găsite', slotFound:'găsită', slotMissing:'lipsește',
-  lm_door:'ușa conacului', lm_well:'fântâna', lm_patch:'grădina cu dovleci', lm_graves:'cimitirul vechi', lm_ghost:'o fantomă prietenoasă',
-  lm_hoop:'coșul de baschet', lm_goal:'poarta de fotbal', lm_table:'masa de air hockey', lm_slide:'toboganul', lm_stands:'tribuna', lm_bouncer:'o minge săltăreață',
+  event_d_games:'Nimeni nu pierde: găsești, joci și ronțăi până se aprind toate reflectoarele.',
+  task_ghosts:'Fantome găsite', task_pumpkins:'Dovleci decorați', task_treats:'Recompense mâncate', task_balls:'Mingi găsite', task_goals:'Goluri', task_biscuits:'Biscuiți mâncați',
+  one_ghosts:'o fantomă', one_pumpkins:'un dovleac nedecorat', one_treats:'o recompensă', one_balls:'o minge ascunsă', one_goals:'mingea de fotbal', one_biscuits:'un biscuite',
+  lm_door:'ușa conacului', lm_well:'fântâna', lm_patch:'grădina cu dovleci', lm_graves:'cimitirul vechi',
+  lm_hoop:'coșul de baschet', lm_goal:'poarta de fotbal', lm_table:'masa de air hockey', lm_slide:'toboganul', lm_stands:'tribuna',
   dirs:['sus','sus-dreapta','dreapta','jos-dreapta','jos','jos-stânga','stânga','sus-stânga'],
   step1:'un pas', steps:'{n} pași', here:'chiar aici',
-  bark_prefix:'Ham! ', bark_none:'Nimic altceva aproape.', nearest:'Cel mai puternic miros: {toy}, {dist}, {dir}.',
-  near_prompt:'Ai găsit {toy}! Apasă E, Enter sau butonul Ia jucăria.',
-  follow_on:'Kygo urmează mirosul.', follow_off:'Te-ai oprit.', all_found:'Toate jucăriile din regiune sunt acasă.',
-  intro_manor:'Ești Kygo, în fața conacului bântuit. Patru jucării sunt ascunse. Bipurile te ghidează: cu cât sunt mai rapide, cu atât ești mai aproape. Apasă B ca să latri și să afli ce e în jur, sau Spațiu ca să urmezi mirosul automat.',
-  intro_arena:'Ești Kygo, în Arena sporturilor. Reflectoarele sunt stinse și patru mingi s-au pierdut. Urmează bipurile, latră cu B sau apasă Spațiu ca să mergi automat pe urmă.',
-  status:'{reg}: ai găsit {n} din 4 jucării.',
-  found_msg_manor:'Bravo! Ai recuperat {toy}. Conacul își recapătă culorile. Mai sunt {left}.',
-  found_msg_arena:'Bravo! Ai recuperat {toy}. Încă un reflector s-a aprins. Mai sunt {left}.',
-  found_last:'Ai recuperat {toy}! Toate jucăriile sunt acasă!',
-  travel:'Călătorești spre {reg}.',
-  cap_bark:'[Kygo latră]', cap_owl:'[Bufniță în depărtare]', cap_ghost:'[Fantomă chicotește]', cap_squeak:'[Jucăria chițăie]',
-  cap_win:'[Muzică de sărbătoare]', cap_found:'[Clinchet de victorie]', cap_strong:'[Miros foarte puternic]',
-  cap_crowd:'[Mulțimea murmură]', cap_whistle:'[Fluier în depărtare]', cap_boing:'[Minge care sare]', cap_swish:'[Fâșș! Coș]', cap_cheer:'[Publicul aplaudă]',
-  challenge:'Provocare', correct:'Corect!', time_up:'Timpul a expirat.', score:'Corecte: {c}/{t}', qOf:'Întrebarea {i} din {n}', tryOf:'Încercarea {i} din {n}',
-  stars_got:'Ai primit {s} din 3 stele.',
-  bs_title:'Numărătoarea BooScary', bs_desc:'Multiplu de 3 → Boo. Multiplu de 5 → Scary. Multiplu de 3 și de 5 → BooScary. Altfel, spui numărul.',
-  bs_say:'Ce spui la {n}?', bs_ex_both:'{n} se împarte și la 3, și la 5 → BooScary.', bs_ex_3:'{n} se împarte la 3 → Boo.',
-  bs_ex_5:'{n} se împarte la 5 → Scary.', bs_ex_none:'{n} nu se împarte nici la 3, nici la 5 → spui numărul.',
-  gt_title:'Ghost Talk: traducătorul de fantome', gt_desc:'Fantoma de pluș vorbește limba fantomelor. Învață cuvintele, apoi tradu ce spune.',
-  gt_learn:'Dicționar fantomatic', gt_listen:'Ascultă', gt_ready:'Sunt gata!', gt_say:'Fantoma spune: {g}. Ce înseamnă?',
-  gt_again:'🔊 Ascultă din nou', gt_ex:'„{g}” înseamnă „{m}”.',
-  pw_title:'Pumpkin Weigh-In: cântarul de dovleci', pw_desc:'Kygo cântărește dovlecii din grădină. Alege categoria potrivită pentru fiecare.',
-  pw_say:'Dovleacul cântărește {w} kilograme. Ce categorie?', pw_ex:'{w} kg → {c}.',
-  cat_tiny:'Pitic · sub 5 kg', cat_small:'Mic · 5–19 kg', cat_large:'Mare · 20–99 kg', cat_giant:'Uriaș · 100 kg sau mai mult',
-  cr_title:'Candy Route: drumul bomboanelor', cr_desc:'Kygo bate la uși pentru bomboane. Privește și ascultă ordinea ușilor, apoi repet-o.',
-  cr_start:'Începe', cr_watch:'Privește și ascultă…', cr_turn:'Rândul tău! Apasă ușile în aceeași ordine.', cr_round:'Runda {r} din {n}',
-  cr_wrong:'Nu chiar. Mai ascultăm o dată.', cr_hint:'Indiciu: {d}.', cr_repeat:'🔁 Repetă secvența', cr_good:'Perfect! Bomboane!',
-  door_moon:'Luna', door_star:'Steaua', door_pumpkin:'Dovleacul', door_bat:'Liliacul',
-  hp_title:'Basket vs AI: aruncarea lui Kygo', hp_desc:'Indicatorul se mișcă stânga-dreapta. Aruncă atunci când e în zona verde. Sunetul urcă spre dreapta, iar în zona verde auzi un clinchet și simți o vibrație.',
-  hp_shoot:'🏀 Aruncă', hp_in:'Coș! Fâșș!', hp_out:'Pe lângă. Mai încearcă!', hp_start:'Indicatorul pornește. Ascultă clinchetul zonei verzi.',
-  pk_title:'PentArena: loviturile de departajare', pk_desc:'Portarul se trădează: se apleacă spre partea în care va plonja. Trage în altă parte!',
-  pk_lean_left:'Portarul se apleacă spre stânga.', pk_lean_right:'Portarul se apleacă spre dreapta.', pk_lean_center:'Portarul stă înfipt la mijloc.',
-  pk_left:'⬅ Stânga', pk_center:'⬆ Mijloc', pk_right:'Dreapta ➡', pk_goal:'GOOOL!', pk_saved:'Apărat! Portarul a ghicit.', pk_fake:'Portarul a schimbat direcția în ultima clipă.',
-  am_title:'Puck & Pool: lovitura de biliard', am_desc:'Rotește crosa până când linia de țintire atinge buzunarul, apoi lovește. Cu cât ești mai aliniat, cu atât sunetul e mai înalt.',
-  am_left:'↺ Rotește stânga', am_right:'Rotește dreapta ↻', am_hit:'🏒 Lovește', am_more_left:'Mai la stânga.', am_more_right:'Mai la dreapta.', am_aligned:'Aliniat!',
-  am_in:'În buzunar!', am_edge:'Pe margine… aproape!', am_miss:'Ratat. Țintește mai atent.', am_pocket:'Buzunarul e {dir}.', am_left_w:'în stânga', am_right_w:'în dreapta', am_ahead_w:'drept înainte',
-  am_sweep:'Crosa se rotește singură. Apasă Lovește când auzi sunetul cel mai înalt.',
-  sl_title:'SlideStorm: toboganul cu colaci', sl_desc:'Kygo coboară pe tobogan. Fiecare colac apare pe o bandă: îl auzi în stânga, la mijloc sau în dreapta. Alege banda lui.',
-  sl_left:'⬅ Stânga', sl_mid:'⬆ Mijloc', sl_right:'Dreapta ➡', sl_got:'Prins!', sl_miss:'Scăpat — era pe {lane}.', sl_cue:'Colac!', sl_lane_left:'stânga', sl_lane_mid:'mijloc', sl_lane_right:'dreapta',
-  win_title_manor:'Conacul strălucește din nou!', win_text_manor:'Kygo și-a recuperat toate jucăriile, iar culorile s-au întors în conac.',
-  win_title_arena:'Reflectoarele s-au aprins!', win_text_arena:'Kygo a câștigat toate probele, iar Arena luminează ca într-o seară de finală.',
-  win_info:'Stele: {s} din 12 · Timp: {t}', win_next_manor:'Următoarea regiune: Arena sporturilor.', win_next_arena:'Urmează: Coasta, Grădina și Livada, Bucătăria… în curând.',
+  bark_prefix:'Ham! ', bark_none:'Nimic altceva aproape.', nearest:'Cel mai puternic miros: {what}, {dist}, {dir}.', revealed:'Am descoperit {n}!',
+  follow_on:'Kygo urmează mirosul.', follow_off:'Te-ai oprit.', all_found:'Totul e gata în regiunea asta.',
+  intro_manor:'Ești Kygo, în curtea conacului bântuit. Șase fantome se ascund, cinci dovleci așteaptă decorați și recompensele sunt peste tot. Bipurile te ghidează: mai rapide înseamnă mai aproape. B latră și scoate fantomele din ascunzătoare, E decorează un dovleac, Spațiu merge singur pe urmă.',
+  intro_arena:'Ești Kygo, în Arena sporturilor. Cinci mingi sunt ascunse, mingea de fotbal așteaptă trei goluri, iar biscuiții sunt împrăștiați pe teren. Latră cu B ca să descoperi mingile, împinge mingea în poartă mergând în ea și apasă Spațiu ca să urmezi mirosul.',
+  status:'{reg}: {list}.', status_item:'{label} {d} din {n}',
+  prompt_decorate:'Dovleac! Apasă E sau butonul Decorează.', act_decorate:'🎃 Decorează', redecorate:'Alt model!',
+  caught_ghost:'Te-am prins, fantomă! {d} din {n}.', decorated:'Dovleac decorat: {style}! {d} din {n}.', eaten:'Nam! {d} din {n}.',
+  found_ball:'Minge găsită! {d} din {n}.', goal:'GOOOL! {d} din {n}.', task_done:'Gata: {label}!',
+  style_0:'zâmbăreț', style_1:'fioros', style_2:'pisicuță', style_3:'steluțe',
+  cap_bark:'[Kygo latră]', cap_owl:'[Bufniță în depărtare]', cap_ghost:'[Fantomă chicotește]', cap_poof:'[Puf! Fantomă prinsă]', cap_crunch:'[Ronț-ronț]',
+  cap_carve:'[Dovleacul se aprinde]', cap_win:'[Muzică de sărbătoare]', cap_strong:'[Miros foarte puternic]',
+  cap_crowd:'[Mulțimea murmură]', cap_whistle:'[Fluier în depărtare]', cap_boing:'[Minge care sare]', cap_cheer:'[Publicul aplaudă]', cap_kick:'[Bum! Mingea pleacă]',
+  win_title_manor:'Conacul strălucește din nou!', win_text_manor:'Toate fantomele sunt prinse, dovlecii luminează curtea, iar Kygo e sătul și fericit.',
+  win_title_arena:'Reflectoarele s-au aprins!', win_text_arena:'Mingi găsite, goluri marcate, burtica plină: Arena luminează ca într-o seară de finală.',
+  win_info:'Stele: {s} din 3 · Timp: {t}', win_info_walk:'Timp: {t} · Plimbare fără grabă',
+  win_next_manor:'Următoarea regiune: Arena sporturilor.', win_next_arena:'Urmează: Coasta, Grădina și Livada, Bucătăria… în curând.',
   next_go:'Mergi în {reg} →', next_map:'🗺 Harta lumii',
-  badge_nose:'🏅 Nasul de Aur', badge_hw:'🎃 Halloween 2026', badge_calm:'🌿 Plimbare liniștită', badge_perfect:'⭐ Perfect', badge_champ:'🏆 Campionul Arenei',
+  badge_nose:'🏅 Nasul de Aur', badge_hw:'🎃 Halloween 2026', badge_calm:'🌿 Plimbare liniștită', badge_fast:'⚡ Labe rapide', badge_champ:'🏆 Campionul Arenei', badge_full:'🍪 Burtica plină',
   explore:'Explorează liber', replay:'Joacă din nou',
   nogl:'Grafica 3D nu poate porni pe acest dispozitiv, dar jocul funcționează complet cu sunet, narațiune și tastatură.',
   g_see:'Vedere', g_hear:'Auz', g_motor:'Control și mișcare', g_game:'Joc',
   set_narration:'Narațiune vocală', setd_narration:'Jocul citește cu voce tare ce se întâmplă. Dezactiveaz-o dacă folosești deja un cititor de ecran.',
   set_captions:'Subtitrări pentru sunete', setd_captions:'Afișează pe ecran sunetele importante.',
-  set_trailAudio:'Urmă sonoră', setd_trailAudio:'Bipuri stereo spre jucărie: mai rapide cu cât ești mai aproape, mai înfundate când e în spatele tău (jos).',
-  set_trailVisual:'Urmă vizuală', setd_trailVisual:'Dâră de particule spre cea mai apropiată jucărie.',
+  set_trailAudio:'Urmă sonoră', setd_trailAudio:'Bipuri stereo spre ținta cea mai apropiată: mai rapide cu cât ești mai aproape, mai înfundate când e în spatele tău (jos).',
+  set_trailVisual:'Urmă vizuală', setd_trailVisual:'Dâră de particule spre ținta cea mai apropiată.',
   set_trailHaptic:'Urmă prin vibrație', setd_trailHaptic:'Telefonul vibrează mai des când te apropii (dacă dispozitivul permite).',
-  set_haptics:'Vibrații', setd_haptics:'Feedback tactil la lătrat, la găsirea jucăriilor și în zonele bune din probe.',
+  set_haptics:'Vibrații', setd_haptics:'Feedback tactil la lătrat, la prins fantome, la goluri și la recompense.',
   set_highContrast:'Contrast ridicat', setd_highContrast:'Culori puternice, contururi clare, urmă galbenă.',
   set_reducedMotion:'Mișcare redusă', setd_reducedMotion:'Fără artificii și valuri animate, cameră stabilă.',
   set_largeText:'Text mare', setd_largeText:'Mărește tot textul cu 25%.',
   set_legible:'Font foarte lizibil', setd_legible:'Atkinson Hyperlegible, creat pentru persoanele cu vedere slabă.',
   set_light:'Interfață luminoasă', setd_light:'Panouri deschise la culoare (scena rămâne noaptea).',
-  set_colorblind:'Mod daltonism', setd_colorblind:'Schimbă culoarea urmei și a farurilor jucăriilor.',
+  set_colorblind:'Mod daltonism', setd_colorblind:'Schimbă culoarea urmei și a farurilor.',
   cb_none:'Oprit', cb_protan:'Protanopie', cb_deutan:'Deuteranopie', cb_tritan:'Tritanopie',
-  set_oneSwitch:'Mod un singur buton', setd_oneSwitch:'Spațiu pornește sau oprește mersul automat și ia jucăria singur. În provocări, opțiunile se selectează pe rând; apeși Spațiu când e cea bună.',
-  set_speed:'Viteza jocului', setd_speed:'Mai lent înseamnă mai mult timp la provocări și mers mai calm.',
+  set_oneSwitch:'Mod un singur buton', setd_oneSwitch:'Spațiu pornește mersul automat; Kygo merge singur din țintă în țintă, prinde fantome, decorează dovleci, dă goluri și mănâncă recompense.',
+  set_speed:'Viteza jocului', setd_speed:'Mai lent înseamnă mers mai calm și fantome mai leneșe.',
   set_music:'Volum ambient', setd_music:'Vânt, bufnițe, mulțime și cutia muzicală.',
-  set_sfx:'Volum efecte', setd_sfx:'Lătrat, bipuri de miros, clinchete.',
-  set_mode:'Mod de joc', setd_mode:'Aventură are cronometru; Plimbare nu are timp și nici eșec.',
+  set_sfx:'Volum efecte', setd_sfx:'Lătrat, bipuri de miros, ronțăit, clinchete.',
+  set_mode:'Mod de joc', setd_mode:'Aventură: fantomele fug puțin și primești stele după timp. Plimbare: nimic nu fuge, fără cronometru.',
   help_items:[
-    '<kbd>Săgeți</kbd> / <kbd>WASD</kbd> sau joystick-ul de pe ecran: Kygo merge. Sus pe ecran = săgeata sus.',
-    '<kbd>B</kbd> sau butonul Latră: sonarul lui Kygo. Afli ce e în jur, la câți pași și în ce direcție.',
-    '<kbd>Spațiu</kbd> sau Urmează mirosul: Kygo merge singur spre cea mai apropiată jucărie.',
+    '<kbd>Săgeți</kbd> / <kbd>WASD</kbd> sau joystick-ul: Kygo merge. Sus pe ecran = săgeata sus.',
+    '<kbd>B</kbd> sau Latră: sonarul lui Kygo scoate din ascunzătoare fantomele sau mingile din apropiere și îți spune ce e în jur.',
+    'Atinge o fantomă descoperită ca s-o prinzi. Mergi peste recompense ca să le mănânci.',
+    '<kbd>E</kbd> / <kbd>Enter</kbd> lângă un dovleac: îl decorezi. Apasă din nou pentru alt model.',
+    'În Arenă, mergi în mingea de fotbal ca s-o împingi spre poartă.',
+    '<kbd>Spațiu</kbd> sau Urmează mirosul: Kygo merge singur spre cea mai apropiată țintă și face singur treaba.',
     'Urma de miros: dâra colorată, bipurile stereo (mai rapide = mai aproape) și vibrațiile spun același lucru.',
-    '<kbd>E</kbd> / <kbd>Enter</kbd>: iei jucăria și pornești provocarea.',
-    '<kbd>G</kbd> sau 🗺: harta lumii, ca să schimbi regiunea.',
-    '<kbd>T</kbd>: starea jocului · <kbd>M</kbd>: sunet pornit/oprit · <kbd>L</kbd>: limba · <kbd>Esc</kbd>: pauză · <kbd>H</kbd>: acest ajutor.',
-    'În provocări folosește <kbd>Tab</kbd> și <kbd>Enter</kbd>, săgețile, mouse-ul sau atingerea. În modul un singur buton, opțiunile se aleg pe rând cu <kbd>Spațiu</kbd>.',
-    'Găsește toate cele 4 jucării dintr-o regiune ca să o readuci la viață.'
+    '<kbd>G</kbd> sau 🗺: harta lumii · <kbd>T</kbd>: stare · <kbd>M</kbd>: sunet · <kbd>L</kbd>: limba · <kbd>Esc</kbd>: pauză · <kbd>H</kbd>: ajutor.'
   ],
   muted:'Sunet oprit', unmuted:'Sunet pornit', langChanged:'Limba: română'
 },
@@ -434,104 +397,76 @@ en:{
   worldName:"Kygo's World", titleA:'Kygo:', titleB:'On the Trail', backKW:'← Back to Kygo World',
   reg_manor:'The Haunted Manor', reg_arena:'The Sports Arena', reg_coast:'The Coast', reg_garden:'Garden & Orchard', reg_kitchen:'The Kitchen', reg_more:'5 more regions',
   kick_manor:'Region 1 · Halloween', kick_arena:"Region 2 · Kygo's Games",
-  tag_manor:"The Glitch stole the manor's colours and hid Kygo's toys. Follow the scent, bark to sense what's around you and bring the light back to the manor.",
-  tag_arena:'The Glitch switched off the stadium floodlights and scattered the balls. Track them down by scent and win the four events to light up the Arena again.',
-  chooseMode:'Choose how you want to play', mode_adventure:'Adventure', mode_adventure_d:'Timed challenges and stars.',
-  mode_walk:'Stroll', mode_walk_d:'No timer, no failing. Explore at your own pace.',
+  tag_manor:"The Glitch hid ghosts around the manor yard and blew out the pumpkins. Find the ghosts by scent, decorate the pumpkins and eat every treat to bring the light back.",
+  tag_arena:'The Glitch switched off the floodlights and hid the balls. Find them, score goals by nudging the ball with your nose and munch the treats to light up the Arena.',
+  chooseMode:'Choose how you want to play', mode_adventure:'Adventure', mode_adventure_d:'Ghosts scurry a little and your time earns stars.',
+  mode_walk:'Stroll', mode_walk_d:'No timer, no rush. Everything stays put and waits for you.',
   play:'Start', settings:'Accessibility & settings', help:'How to play', langBtn:'Română', langShort:'RO', langAria:'Switch language to Romanian',
   map:'World map', map_d:'Each region keeps its own progress. Play them in any order.', go:'Go here', here_now:'You are here', soon:'Coming soon',
-  reg_progress:'{n}/4 toys', reg_done:'Completed · {s}★',
+  reg_progress:'{p}% done', reg_done:'Completed · {s}★',
   credits:'Accessible 3D game · playable with sound only, keyboard only or a single button.',
   kickerSet:'Play the way that suits you',
-  bark:'Bark', follow:'Follow scent', following:'Following…', spaceKey:'Space', action:'Grab toy', pause:'Pause', resume:'Resume',
+  bark:'Bark', follow:'Follow scent', following:'Following…', spaceKey:'Space', pause:'Pause', resume:'Resume',
   restart:'Start over', close:'Close', paused:'Game paused',
-  keysHint:'Arrows/WASD: walk · B: bark · Space: follow scent · T: status · H: help',
+  keysHint:'Arrows/WASD: walk · B: bark · E: decorate · Space: follow scent · T: status · H: help',
   event_hw:'🎃 Halloween event live', event_night:'🌙 Night stroll', event_games:"🏅 Kygo's Games",
-  event_d_hw:'Find every toy in the Manor by November 3 to earn the Halloween 2026 badge.',
+  event_d_hw:'Finish the Manor by November 3 to earn the Halloween 2026 badge.',
   event_d_night:'The manor is always open. The Halloween event returns in October.',
-  event_d_games:'Four sports events, one rule: nobody loses. Light up every floodlight.',
-  toy_ball:'the ball', toy_plush:'the plush ghost', toy_pumpkin:'the squeaky pumpkin', toy_bone:'the bone',
-  toy_basket:'the basketball', toy_football:'the football', toy_puck:'the puck', toy_duck:'the rubber duck',
-  slotsLabel:'Toys found', slotFound:'found', slotMissing:'missing',
-  lm_door:'the manor door', lm_well:'the well', lm_patch:'the pumpkin patch', lm_graves:'the old graveyard', lm_ghost:'a friendly ghost',
-  lm_hoop:'the basketball hoop', lm_goal:'the football goal', lm_table:'the air hockey table', lm_slide:'the water slide', lm_stands:'the stands', lm_bouncer:'a bouncy ball',
+  event_d_games:'Nobody loses: find, play and munch until every floodlight is on.',
+  task_ghosts:'Ghosts found', task_pumpkins:'Pumpkins decorated', task_treats:'Treats eaten', task_balls:'Balls found', task_goals:'Goals', task_biscuits:'Biscuits eaten',
+  one_ghosts:'a ghost', one_pumpkins:'a plain pumpkin', one_treats:'a treat', one_balls:'a hidden ball', one_goals:'the football', one_biscuits:'a biscuit',
+  lm_door:'the manor door', lm_well:'the well', lm_patch:'the pumpkin patch', lm_graves:'the old graveyard',
+  lm_hoop:'the basketball hoop', lm_goal:'the football goal', lm_table:'the air hockey table', lm_slide:'the water slide', lm_stands:'the stands',
   dirs:['up','up-right','right','down-right','down','down-left','left','up-left'],
   step1:'1 step', steps:'{n} steps', here:'right here',
-  bark_prefix:'Woof! ', bark_none:'Nothing else nearby.', nearest:'Strongest scent: {toy}, {dist}, {dir}.',
-  near_prompt:'You found {toy}! Press E, Enter or the Grab toy button.',
-  follow_on:'Kygo is following the scent.', follow_off:'Stopped.', all_found:'Every toy in this region is home.',
-  intro_manor:"You are Kygo, in front of the haunted manor. Four toys are hidden. The beeps guide you: the faster they are, the closer you are. Press B to bark and sense what's around you, or Space to follow the scent automatically.",
-  intro_arena:'You are Kygo, in the Sports Arena. The floodlights are off and four balls are lost. Follow the beeps, bark with B or press Space to walk the trail automatically.',
-  status:'{reg}: you found {n} of 4 toys.',
-  found_msg_manor:"Well done! You got {toy} back. The manor's colours are returning. {left} to go.",
-  found_msg_arena:'Well done! You got {toy} back. Another floodlight is on. {left} to go.',
-  found_last:'You got {toy} back! All the toys are home!',
-  travel:'Travelling to {reg}.',
-  cap_bark:'[Kygo barks]', cap_owl:'[Owl in the distance]', cap_ghost:'[Ghost giggles]', cap_squeak:'[Toy squeaks]',
-  cap_win:'[Celebration music]', cap_found:'[Victory chime]', cap_strong:'[Very strong scent]',
-  cap_crowd:'[Crowd murmurs]', cap_whistle:'[Whistle in the distance]', cap_boing:'[Ball bouncing]', cap_swish:'[Swish! Basket]', cap_cheer:'[Crowd cheers]',
-  challenge:'Challenge', correct:'Correct!', time_up:"Time's up.", score:'Correct: {c}/{t}', qOf:'Question {i} of {n}', tryOf:'Try {i} of {n}',
-  stars_got:'You earned {s} of 3 stars.',
-  bs_title:'The BooScary Count', bs_desc:'Multiple of 3 → Boo. Multiple of 5 → Scary. Multiple of both 3 and 5 → BooScary. Otherwise, say the number.',
-  bs_say:'What do you say for {n}?', bs_ex_both:'{n} divides by both 3 and 5 → BooScary.', bs_ex_3:'{n} divides by 3 → Boo.',
-  bs_ex_5:'{n} divides by 5 → Scary.', bs_ex_none:'{n} divides by neither 3 nor 5 → say the number.',
-  gt_title:'Ghost Talk: the ghost translator', gt_desc:'The plush ghost speaks Ghostish. Learn the words, then translate what it says.',
-  gt_learn:'Ghost dictionary', gt_listen:'Listen', gt_ready:"I'm ready!", gt_say:'The ghost says: {g}. What does it mean?',
-  gt_again:'🔊 Listen again', gt_ex:'"{g}" means "{m}".',
-  pw_title:'Pumpkin Weigh-In', pw_desc:'Kygo is weighing the pumpkins from the patch. Pick the right category for each one.',
-  pw_say:'This pumpkin weighs {w} kilograms. Which category?', pw_ex:'{w} kg → {c}.',
-  cat_tiny:'Tiny · under 5 kg', cat_small:'Small · 5–19 kg', cat_large:'Large · 20–99 kg', cat_giant:'Giant · 100 kg or more',
-  cr_title:'Candy Route', cr_desc:'Kygo knocks on doors for candy. Watch and listen to the order of the doors, then repeat it.',
-  cr_start:'Start', cr_watch:'Watch and listen…', cr_turn:'Your turn! Press the doors in the same order.', cr_round:'Round {r} of {n}',
-  cr_wrong:"Not quite. Let's listen once more.", cr_hint:'Hint: {d}.', cr_repeat:'🔁 Repeat sequence', cr_good:'Perfect! Candy!',
-  door_moon:'Moon', door_star:'Star', door_pumpkin:'Pumpkin', door_bat:'Bat',
-  hp_title:"Basket vs AI: Kygo's shot", hp_desc:'The marker swings left and right. Shoot when it is in the green zone. The pitch rises to the right, and inside the green zone you hear a chime and feel a vibration.',
-  hp_shoot:'🏀 Shoot', hp_in:'Basket! Swish!', hp_out:'Missed. Try again!', hp_start:'The marker is moving. Listen for the green-zone chime.',
-  pk_title:'PentArena: the penalty shoot-out', pk_desc:'The keeper gives himself away: he leans towards the side he will dive to. Shoot somewhere else!',
-  pk_lean_left:'The keeper leans to the left.', pk_lean_right:'The keeper leans to the right.', pk_lean_center:'The keeper stands firm in the middle.',
-  pk_left:'⬅ Left', pk_center:'⬆ Middle', pk_right:'Right ➡', pk_goal:'GOOOAL!', pk_saved:'Saved! The keeper guessed right.', pk_fake:'The keeper changed direction at the last moment.',
-  am_title:'Puck & Pool: the pool shot', am_desc:'Rotate the mallet until the aiming line touches the pocket, then strike. The better aligned, the higher the tone.',
-  am_left:'↺ Rotate left', am_right:'Rotate right ↻', am_hit:'🏒 Strike', am_more_left:'More to the left.', am_more_right:'More to the right.', am_aligned:'Aligned!',
-  am_in:'Pocketed!', am_edge:'On the rim… so close!', am_miss:'Missed. Aim more carefully.', am_pocket:'The pocket is {dir}.', am_left_w:'to the left', am_right_w:'to the right', am_ahead_w:'straight ahead',
-  am_sweep:'The mallet rotates by itself. Press Strike when you hear the highest tone.',
-  sl_title:'SlideStorm: the ring slide', sl_desc:'Kygo slides down the water slide. Each ring appears in a lane: you hear it on the left, in the middle or on the right. Pick its lane.',
-  sl_left:'⬅ Left', sl_mid:'⬆ Middle', sl_right:'Right ➡', sl_got:'Caught!', sl_miss:'Missed — it was {lane}.', sl_cue:'Ring!', sl_lane_left:'left', sl_lane_mid:'in the middle', sl_lane_right:'right',
-  win_title_manor:'The manor shines again!', win_text_manor:'Kygo got all the toys back and the colours have returned to the manor.',
-  win_title_arena:'The floodlights are on!', win_text_arena:'Kygo won every event and the Arena glows like a cup-final night.',
-  win_info:'Stars: {s} of 12 · Time: {t}', win_next_manor:'Next region: the Sports Arena.', win_next_arena:'Coming next: the Coast, Garden & Orchard, the Kitchen…',
+  bark_prefix:'Woof! ', bark_none:'Nothing else nearby.', nearest:'Strongest scent: {what}, {dist}, {dir}.', revealed:'I uncovered {n}!',
+  follow_on:'Kygo is following the scent.', follow_off:'Stopped.', all_found:'Everything is done in this region.',
+  intro_manor:'You are Kygo, in the haunted manor yard. Six ghosts are hiding, five pumpkins are waiting to be decorated and treats are everywhere. The beeps guide you: faster means closer. B barks and flushes out ghosts, E decorates a pumpkin, Space follows the trail by itself.',
+  intro_arena:'You are Kygo, in the Sports Arena. Five balls are hidden, the football is waiting for three goals and biscuits are scattered on the pitch. Bark with B to uncover the balls, walk into the football to push it into the goal and press Space to follow the scent.',
+  status:'{reg}: {list}.', status_item:'{label} {d} of {n}',
+  prompt_decorate:'A pumpkin! Press E or the Decorate button.', act_decorate:'🎃 Decorate', redecorate:'New design!',
+  caught_ghost:'Gotcha, ghost! {d} of {n}.', decorated:'Pumpkin decorated: {style}! {d} of {n}.', eaten:'Yum! {d} of {n}.',
+  found_ball:'Ball found! {d} of {n}.', goal:'GOOOAL! {d} of {n}.', task_done:'Done: {label}!',
+  style_0:'smiley', style_1:'spooky', style_2:'kitty', style_3:'starry',
+  cap_bark:'[Kygo barks]', cap_owl:'[Owl in the distance]', cap_ghost:'[Ghost giggles]', cap_poof:'[Poof! Ghost caught]', cap_crunch:'[Crunch crunch]',
+  cap_carve:'[The pumpkin lights up]', cap_win:'[Celebration music]', cap_strong:'[Very strong scent]',
+  cap_crowd:'[Crowd murmurs]', cap_whistle:'[Whistle in the distance]', cap_boing:'[Ball bouncing]', cap_cheer:'[Crowd cheers]', cap_kick:'[Thud! The ball rolls]',
+  win_title_manor:'The manor shines again!', win_text_manor:'Every ghost is caught, the pumpkins light up the yard and Kygo is full and happy.',
+  win_title_arena:'The floodlights are on!', win_text_arena:'Balls found, goals scored, tummy full: the Arena glows like a cup-final night.',
+  win_info:'Stars: {s} of 3 · Time: {t}', win_info_walk:'Time: {t} · Unhurried stroll',
+  win_next_manor:'Next region: the Sports Arena.', win_next_arena:'Coming next: the Coast, Garden & Orchard, the Kitchen…',
   next_go:'Go to {reg} →', next_map:'🗺 World map',
-  badge_nose:'🏅 The Golden Nose', badge_hw:'🎃 Halloween 2026', badge_calm:'🌿 Calm stroll', badge_perfect:'⭐ Perfect', badge_champ:'🏆 Arena Champion',
+  badge_nose:'🏅 The Golden Nose', badge_hw:'🎃 Halloween 2026', badge_calm:'🌿 Calm stroll', badge_fast:'⚡ Quick paws', badge_champ:'🏆 Arena Champion', badge_full:'🍪 Full tummy',
   explore:'Explore freely', replay:'Play again',
   nogl:"3D graphics can't start on this device, but the game is fully playable with sound, narration and keyboard.",
   g_see:'Vision', g_hear:'Hearing', g_motor:'Control & motor', g_game:'Game',
   set_narration:'Voice narration', setd_narration:'The game reads out what happens. Turn it off if you already use a screen reader.',
   set_captions:'Sound captions', setd_captions:'Shows important sounds on screen.',
-  set_trailAudio:'Audio trail', setd_trailAudio:'Stereo beeps towards the toy: faster when closer, muffled when it is behind you (down).',
-  set_trailVisual:'Visual trail', setd_trailVisual:'A particle trail towards the nearest toy.',
+  set_trailAudio:'Audio trail', setd_trailAudio:'Stereo beeps towards the nearest target: faster when closer, muffled when it is behind you (down).',
+  set_trailVisual:'Visual trail', setd_trailVisual:'A particle trail towards the nearest target.',
   set_trailHaptic:'Vibration trail', setd_trailHaptic:'Your phone vibrates more often as you get closer (if supported).',
-  set_haptics:'Vibration', setd_haptics:'Haptic feedback when barking, finding toys and hitting the sweet spot in events.',
+  set_haptics:'Vibration', setd_haptics:'Haptic feedback when barking, catching ghosts, scoring and eating treats.',
   set_highContrast:'High contrast', setd_highContrast:'Strong colours, clear outlines, yellow trail.',
   set_reducedMotion:'Reduced motion', setd_reducedMotion:'No fireworks or animated waves, steady camera.',
   set_largeText:'Large text', setd_largeText:'Makes all text 25% bigger.',
   set_legible:'Highly legible font', setd_legible:'Atkinson Hyperlegible, designed for low-vision readers.',
   set_light:'Light interface', setd_light:'Light panels (the scene stays at night).',
-  set_colorblind:'Colour-blind mode', setd_colorblind:'Changes the colour of the trail and toy beacons.',
+  set_colorblind:'Colour-blind mode', setd_colorblind:'Changes the colour of the trail and beacons.',
   cb_none:'Off', cb_protan:'Protanopia', cb_deutan:'Deuteranopia', cb_tritan:'Tritanopia',
-  set_oneSwitch:'One-switch mode', setd_oneSwitch:'Space starts or stops auto-walking and grabs the toy for you. In challenges, options are highlighted one by one; press Space on the right one.',
-  set_speed:'Game speed', setd_speed:'Slower means more time in challenges and calmer walking.',
+  set_oneSwitch:'One-switch mode', setd_oneSwitch:'Space starts auto-walking; Kygo goes from target to target by himself, catching ghosts, decorating pumpkins, scoring goals and eating treats.',
+  set_speed:'Game speed', setd_speed:'Slower means calmer walking and lazier ghosts.',
   set_music:'Ambience volume', setd_music:'Wind, owls, the crowd and the music box.',
-  set_sfx:'Effects volume', setd_sfx:'Barks, scent beeps, chimes.',
-  set_mode:'Game mode', setd_mode:'Adventure is timed; Stroll has no timer and no failing.',
+  set_sfx:'Effects volume', setd_sfx:'Barks, scent beeps, crunching, chimes.',
+  set_mode:'Game mode', setd_mode:'Adventure: ghosts scurry a little and your time earns stars. Stroll: nothing runs away, no timer.',
   help_items:[
-    '<kbd>Arrows</kbd> / <kbd>WASD</kbd> or the on-screen joystick: Kygo walks. Up on screen = up arrow.',
-    "<kbd>B</kbd> or the Bark button: Kygo's sonar. Learn what's around you, how many steps away and in which direction.",
-    '<kbd>Space</kbd> or Follow scent: Kygo walks to the nearest toy by himself.',
+    '<kbd>Arrows</kbd> / <kbd>WASD</kbd> or the joystick: Kygo walks. Up on screen = up arrow.',
+    "<kbd>B</kbd> or Bark: Kygo's sonar flushes out nearby ghosts or balls and tells you what's around.",
+    'Touch an uncovered ghost to catch it. Walk over treats to eat them.',
+    '<kbd>E</kbd> / <kbd>Enter</kbd> next to a pumpkin: decorate it. Press again for another design.',
+    'In the Arena, walk into the football to push it towards the goal.',
+    '<kbd>Space</kbd> or Follow scent: Kygo walks to the nearest target and does the job by himself.',
     'The scent trail: the coloured trail, the stereo beeps (faster = closer) and the vibration all say the same thing.',
-    '<kbd>E</kbd> / <kbd>Enter</kbd>: grab the toy and start its challenge.',
-    '<kbd>G</kbd> or 🗺: the world map, to change region.',
-    '<kbd>T</kbd>: game status · <kbd>M</kbd>: sound on/off · <kbd>L</kbd>: language · <kbd>Esc</kbd>: pause · <kbd>H</kbd>: this help.',
-    'In challenges use <kbd>Tab</kbd> and <kbd>Enter</kbd>, the arrow keys, a mouse or touch. In one-switch mode, options are highlighted one by one: press <kbd>Space</kbd>.',
-    'Find all 4 toys in a region to bring it back to life.'
+    '<kbd>G</kbd> or 🗺: world map · <kbd>T</kbd>: status · <kbd>M</kbd>: sound · <kbd>L</kbd>: language · <kbd>Esc</kbd>: pause · <kbd>H</kbd>: help.'
   ],
   muted:'Sound off', unmuted:'Sound on', langChanged:'Language: English'
 }};
@@ -545,7 +480,6 @@ if (!store.get('kygo-pe-urme-settings', null)){ const nl = (navigator.language |
 try { const q = new URLSearchParams(location.search); if (q.get('lang') === 'en' || q.get('lang') === 'ro') S.lang = q.get('lang'); if (q.get('region') === 'arena' || q.get('region') === 'manor') S.region = q.get('region'); } catch(e){}
 const saveSettings = () => store.set('kygo-pe-urme-settings', S);
 const t = (k, vars) => { let s = (I18N[S.lang][k] ?? I18N.ro[k] ?? k); if (vars && typeof s === 'string') for (const v in vars) s = s.split('{' + v + '}').join(vars[v]); return s; };
-
 const TRAIL_COLORS = { none:0x4fe3ff, protan:0x3d8bff, deutan:0x3d8bff, tritan:0xff4fa3, hc:0xffff00 };
 const trailColor = () => S.highContrast ? TRAIL_COLORS.hc : (TRAIL_COLORS[S.colorblind] ?? TRAIL_COLORS.none);
 const now = new Date();
@@ -612,33 +546,20 @@ const SFX = {
   bark(){ [0, .18].forEach(d => { noise({ dur:.1, vol:.32, freq:1300, q:1.6, delay:d }); tone({ f:620, f2:300, type:'sawtooth', dur:.13, vol:.2, lp:2200, delay:d }); }); },
   chime(){ [660, 880, 1320].forEach((f, i) => tone({ f, dur:.5, vol:.18, delay:i * .09 })); },
   fanfare(){ [523, 659, 784, 1047, 784, 1047].forEach((f, i) => tone({ f, type:'triangle', dur:.35, vol:.2, delay:i * .12 })); },
-  soft(){ tone({ f:240, f2:170, type:'triangle', dur:.3, vol:.16 }); },
-  squeak(pan=0){ tone({ f:1250, f2:1900, type:'square', dur:.1, vol:.07, pan, lp:3000 }); tone({ f:1500, f2:1100, type:'square', dur:.1, vol:.06, pan, lp:3000, delay:.12 }); },
   owl(){ tone({ f:400, f2:360, dur:.28, vol:.08, dest:A.music, pan:-.6 }); tone({ f:400, f2:350, dur:.4, vol:.08, delay:.4, dest:A.music, pan:-.6 }); },
-  ghost(pan=0){ tone({ f:620, f2:330, dur:.9, vol:.08, pan }); noise({ dur:.8, vol:.05, freq:700, f2:300, pan }); },
+  ghost(pan=0){ tone({ f:620, f2:330, dur:.9, vol:.1, pan }); noise({ dur:.8, vol:.05, freq:700, f2:300, pan }); },
+  giggle(pan=0){ [0, .12, .24].forEach((d, i) => tone({ f:700 + i * 90, f2:560 + i * 90, dur:.1, vol:.09, pan, delay:d })); },
+  poof(pan=0){ noise({ dur:.35, vol:.25, freq:2500, f2:600, q:.8, pan }); [880, 1175, 1568].forEach((f, i) => tone({ f, dur:.3, vol:.12, delay:.05 + i * .07, pan })); },
+  crunch(pan=0){ [0, .09].forEach(d => noise({ dur:.07, vol:.3, freq:2200 + Math.random() * 800, q:2, delay:d, pan })); },
+  carve(pan=0){ noise({ dur:.25, vol:.2, freq:900, q:3, pan }); [523, 659, 784].forEach((f, i) => tone({ f, type:'triangle', dur:.4, vol:.14, delay:.15 + i * .08, pan })); },
   scent(pan, dist, behind){ tone({ f:520 + Math.max(0, 30 - dist) * 18, type: behind ? 'triangle' : 'sine', dur:.08, vol:.11, pan, lp: behind ? 900 : null }); },
-  door(f){ tone({ f, type:'triangle', dur:.45, vol:.22 }); tone({ f:f * 2, dur:.3, vol:.06 }); },
   sonar(){ tone({ f:900, f2:300, dur:.6, vol:.08, delay:.05 }); },
-  whistle(pan=0, dest){ tone({ f:2600, type:'sine', dur:.35, vol:.07, pan, dest }); tone({ f:2900, type:'sine', dur:.2, vol:.05, pan, delay:.36, dest }); },
+  whistle(pan=0, dest){ tone({ f:2600, dur:.35, vol:.07, pan, dest }); tone({ f:2900, dur:.2, vol:.05, pan, delay:.36, dest }); },
   cheer(){ noise({ dur:1.6, vol:.18, freq:1200, q:.5, f2:900 }); noise({ dur:1.2, vol:.1, freq:2400, q:.8, delay:.15 }); },
   crowd(){ noise({ dur:2.5, vol:.06, freq:500, q:.4, dest:A.music, pan:(Math.random() - .5) }); },
-  boing(pan=0){ tone({ f:180, f2:520, type:'sine', dur:.22, vol:.12, pan }); },
-  swish(){ noise({ dur:.35, vol:.2, freq:3000, f2:900, q:.7 }); },
-  kick(){ noise({ dur:.08, vol:.4, freq:250, q:1 }); tone({ f:120, f2:60, dur:.12, vol:.3 }); },
-  clack(){ noise({ dur:.05, vol:.35, freq:3500, q:3 }); tone({ f:1800, dur:.05, vol:.12, type:'square' }); },
-  splash(pan=0){ noise({ dur:.4, vol:.22, freq:1800, f2:500, q:.6, pan }); },
-  blip(f, vol, pan=0, type='sine'){ tone({ f, dur:.06, vol, pan, type }); }
+  boing(pan=0){ tone({ f:180, f2:520, dur:.22, vol:.12, pan }); },
+  kick(pan=0){ noise({ dur:.08, vol:.35, freq:250, q:1, pan }); tone({ f:120, f2:60, dur:.12, vol:.25, pan }); }
 };
-function ghostVoice(phrase){
-  if (!A.ctx) return; let d = 0;
-  phrase.toLowerCase().split('-').forEach(s => {
-    const f = s.startsWith('hi') ? 560 : s.startsWith('ha') ? 380 : s.startsWith('bu') ? 240 : 310;
-    const dur = .16 + .07 * s.length;
-    tone({ f, f2:f * (s.startsWith('u') ? .7 : .88), dur, vol:.16, delay:d });
-    noise({ dur, vol:.03, freq:f * 2, delay:d });
-    d += dur + .06;
-  });
-}
 function startAmbience(){
   const c = A.ctx;
   const s = c.createBufferSource(); s.buffer = A.noise; s.loop = true;
@@ -650,15 +571,14 @@ function startAmbience(){
   const scaleM = [262, 311, 349, 392, 466, 523, 622], scaleA = [262, 294, 330, 392, 440, 523, 587];
   const step = () => {
     const p = progress(); const sc = REG.id === 'arena' ? scaleA : scaleM;
-    const notes = 1 + Math.round(p * 3);
-    for (let i = 0; i < notes; i++) tone({ f:sc[Math.floor(Math.random() * sc.length)] * (p > .99 ? 1.5 : 1), dur:1.4, vol:.05, delay:i * .45, dest:A.music, pan:(Math.random() - .5) * .8, type: REG.id === 'arena' ? 'triangle' : 'sine' });
+    for (let i = 0; i < 1 + Math.round(p * 3); i++) tone({ f:sc[Math.floor(Math.random() * sc.length)] * (p > .99 ? 1.5 : 1), dur:1.4, vol:.05, delay:i * .45, dest:A.music, pan:(Math.random() - .5) * .8, type: REG.id === 'arena' ? 'triangle' : 'sine' });
     setTimeout(step, 3600 + Math.random() * 2400);
   };
   step();
   const amb = () => {
     if (state === 'play'){
       if (REG.id === 'manor'){ SFX.owl(); caption(t('cap_owl')); }
-      else { if (Math.random() < .5){ SFX.crowd(); caption(t('cap_crowd')); } else { SFX.whistle(.7, A.music); caption(t('cap_whistle')); } }
+      else if (Math.random() < .5){ SFX.crowd(); caption(t('cap_crowd')); } else { SFX.whistle(.7, A.music); caption(t('cap_whistle')); }
     }
     setTimeout(amb, 14000 + Math.random() * 14000);
   };
@@ -667,41 +587,64 @@ function startAmbience(){
 }
 function regionAudio(){ if (!A.ctx) return; const arena = REG.id === 'arena'; A.wind.gain.value = arena ? .06 : .14; A.drone.gain.value = arena ? .015 : .035; }
 
-/* ================= regions ================= */
+/* ================= regions & tasks ================= */
+// seeded random so treat layouts are the same for everyone
+function rng(seed){ return () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
 const REGIONS = {
   manor:{
-    id:'manor', emoji:'🏚', start:{ x:0, z:14 }, fog:0x0b1430, bg:0x070d1c, density:.028,
-    toys:[ { id:'ball', emoji:'🎾', x:-17, z:6, ch:'booscary' }, { id:'plush', emoji:'👻', x:18, z:-6, ch:'ghost' },
-           { id:'pumpkin', emoji:'🎃', x:13, z:18, ch:'weigh' }, { id:'bone', emoji:'🦴', x:-15, z:-22, ch:'candy' } ],
-    landmarks:[ { id:'door', x:0, z:-9 }, { id:'well', x:7, z:4 }, { id:'patch', x:14, z:15 }, { id:'graves', x:-17, z:3 } ],
+    id:'manor', emoji:'🏚', start:{ x:0, z:14 }, fog:0x0b1430, bg:0x070d1c, density:.028, par:240,
+    landmarks:[ { id:'door', x:0, z:-9 }, { id:'well', x:7, z:4 }, { id:'patch', x:13, z:14 }, { id:'graves', x:-17, z:3 } ],
     trees:[[-24,-5],[-22,15],[23,6],[24,-14],[21,-22],[-7,23],[7,25],[-25,-22],[3,-26],[-11,17],[15,-13],[22,-1],[-5,-3],[26,16]],
-    circles:[{ x:7, z:4, r:1.3 }], boxes:[{ x0:-10.4, x1:10.4, z0:-18.6, z1:-9.3 }]
+    circles:[{ x:7, z:4, r:1.3 }], boxes:[{ x0:-10.4, x1:10.4, z0:-18.6, z1:-9.3 }],
+    tasks:[
+      { id:'ghosts', kind:'find', icon:'👻', items:[[-20,1.5],[-13,-21],[22,-17],[8.8,5.8],[19,21],[-23,19]] },
+      { id:'pumpkins', kind:'decorate', icon:'🎃', items:[[10,11.5],[13,11],[16,12],[11.5,15],[15,16]] },
+      { id:'treats', kind:'eat', icon:'🦴', count:18, seed:7 }
+    ]
   },
   arena:{
-    id:'arena', emoji:'🏟', start:{ x:0, z:16 }, fog:0x0c1830, bg:0x081226, density:.02,
-    toys:[ { id:'basket', emoji:'🏀', x:-15, z:-11, ch:'hoop' }, { id:'football', emoji:'⚽', x:15, z:-12, ch:'penalty' },
-           { id:'puck', emoji:'🏒', x:-15, z:12, ch:'aim' }, { id:'duck', emoji:'🦆', x:13, z:15, ch:'slide' } ],
+    id:'arena', emoji:'🏟', start:{ x:0, z:16 }, fog:0x0c1830, bg:0x081226, density:.02, par:270,
     landmarks:[ { id:'hoop', x:-15, z:-18 }, { id:'goal', x:15, z:-19 }, { id:'table', x:-15, z:6 }, { id:'slide', x:19, z:4 }, { id:'stands', x:0, z:-24 } ],
     trees:[[-27,-8],[-26,12],[27,-6],[26,20],[-12,26],[10,27],[-27,24],[0,28]],
     circles:[ { x:19, z:4, r:2.6 }, { x:-15, z:-18.6, r:.5 }, { x:-23, z:-21, r:.7 }, { x:23, z:-21, r:.7 }, { x:-23, z:22, r:.7 }, { x:23, z:22, r:.7 } ],
-    boxes:[ { x0:-22, x1:22, z0:-29, z1:-22.4 }, { x0:-18.3, x1:-11.7, z0:3.8, z1:8.2 }, { x0:11.6, x1:18.4, z0:-20.2, z1:-18.6 } ]
+    boxes:[ { x0:-22, x1:22, z0:-29, z1:-22.4 }, { x0:-18.3, x1:-11.7, z0:3.8, z1:8.2 }, { x0:11.6, x1:18.4, z0:-20.6, z1:-19.6 } ],
+    tasks:[
+      { id:'balls', kind:'find', icon:'🏀', items:[[-18,-14],[-20,10],[7,22],[22,14],[-4,-19]] },
+      { id:'goals', kind:'dribble', icon:'⚽', count:3, spawn:[8,-4], goal:{ x0:12.3, x1:17.7, z:-19.2 } },
+      { id:'biscuits', kind:'eat', icon:'🍪', count:18, seed:11 }
+    ]
   }
 };
 const FUTURE = ['coast', 'garden', 'kitchen', 'more'];
-Object.values(REGIONS).forEach(r => { r.toys.forEach(o => { o.found = false; o.stars = 0; }); r.obst = r.trees.map(([x, z]) => ({ x, z, r:.8 })).concat(r.circles); });
+function blocked(reg, x, z){
+  if (Math.hypot(x, z) > 28) return true;
+  if (reg.boxes.some(B => x > B.x0 - 1 && x < B.x1 + 1 && z > B.z0 - 1 && z < B.z1 + 1)) return true;
+  if (reg.trees.concat(reg.circles.map(c => [c.x, c.z])).some(([tx, tz]) => Math.hypot(x - tx, z - tz) < 2.2)) return true;
+  return reg.tasks.some(tk => tk.items && tk.kind !== 'eat' && tk.items.some(([ix, iz]) => Math.hypot(x - ix, z - iz) < 2));
+}
+Object.values(REGIONS).forEach(reg => {
+  reg.obst = reg.trees.map(([x, z]) => ({ x, z, r:.8 })).concat(reg.circles);
+  reg.tasks.forEach(tk => {
+    if (tk.kind === 'eat'){ const r = rng(tk.seed); tk.items = []; let guard = 0;
+      while (tk.items.length < tk.count && guard++ < 2000){ const x = (r() - .5) * 52, z = (r() - .5) * 52; if (!blocked(reg, x, z) && !tk.items.some(([a, b]) => Math.hypot(a - x, b - z) < 3) && Math.hypot(x - reg.start.x, z - reg.start.z) > 3) tk.items.push([x, z]); } }
+    if (tk.kind === 'dribble'){ tk.items = []; tk.done = 0; tk.ball = { x:tk.spawn[0], z:tk.spawn[1], vx:0, vz:0, cool:0 }; }
+    tk.n = tk.kind === 'dribble' ? tk.count : tk.items.length;
+    tk.state = (tk.items || []).map(([x, z], i) => ({ i, x, z, done:false, revealed:false, style:-1 }));
+  });
+});
 let REG = REGIONS[S.region] || REGIONS.manor;
-const toys = () => REG.toys;
-const progress = () => toys().filter(o => o.found).length / toys().length;
+const doneCount = tk => tk.kind === 'dribble' ? tk.done : tk.state.filter(s => s.done).length;
+const progress = (reg = REG) => reg.tasks.reduce((a, tk) => a + doneCount(tk) / tk.n, 0) / reg.tasks.length;
 const doneMap = () => store.get('kygo-pe-urme-done', {});
 
 let state = 'menu';
 let autoFollow = false, startTime = 0, elapsedBeforePause = 0;
-const dog = { x:REG.start.x, z:REG.start.z, rot:Math.PI, moving:false, stuck:0, detour:0, detourT:0 };
+const dog = { x:REG.start.x, z:REG.start.z, rot:Math.PI, moving:false, stuck:0, detour:0, detourT:0, vx:0, vz:0 };
 const keys = {}; const joy = { x:0, z:0 };
 
 /* ================= three.js ================= */
 let glOK = false, renderer, scene, camera;
-const R = { toyMeshes:{}, fireworks:[] };
+const R = { fireworks:[], bursts:[] };
 let BUILD = null;
 function colMat(gray, color, extra){ const m = new THREE.MeshStandardMaterial(Object.assign({ color:new THREE.Color(gray), roughness:.88, metalness:.04 }, extra || {})); BUILD.restore.push({ m, from:new THREE.Color(gray), to:new THREE.Color(color) }); return m; }
 function sh(m){ m.castShadow = true; m.receiveShadow = true; return m; }
@@ -724,7 +667,6 @@ function initThree(){
   scene.background = new THREE.Color(0x070d1c);
   scene.fog = new THREE.FogExp2(0x0b1430, .028);
   camera = new THREE.PerspectiveCamera(52, innerWidth / innerHeight, .1, 220);
-
   R.hemi = new THREE.HemisphereLight(0x7f8fd0, 0x14121c, .45); scene.add(R.hemi);
   const moon = new THREE.DirectionalLight(0xa9bcff, .65); moon.position.set(-18, 30, -10); moon.castShadow = true;
   moon.shadow.mapSize.set(1024, 1024); Object.assign(moon.shadow.camera, { left:-36, right:36, top:36, bottom:-36, near:1, far:90 }); moon.shadow.bias = -.0008;
@@ -736,15 +678,13 @@ function initThree(){
       p[i*3] = Math.cos(th) * Math.sin(ph) * r; p[i*3+1] = Math.cos(ph) * r * .6 + 10; p[i*3+2] = Math.sin(th) * Math.sin(ph) * r; }
     g.setAttribute('position', new THREE.BufferAttribute(p, 3));
     scene.add(new THREE.Points(g, new THREE.PointsMaterial({ map:R.dot, color:0xdfe8ff, size:1.4, fog:false, transparent:true, opacity:.85, depthWrite:false }))); }
-
-  // build both regions
+  R.faces = [0, 1, 2, 3].map(drawFace);
   Object.values(REGIONS).forEach(reg => {
-    const G = new THREE.Group(); reg.group = G; reg.restore = []; reg.npcs = []; BUILD = reg;
+    const G = new THREE.Group(); reg.group = G; reg.restore = []; BUILD = reg;
     (reg.id === 'manor' ? buildManor : buildArena)(G, reg);
-    reg.toys.forEach(o => G.add(makeToyBeacon(o)));
+    buildTasks(G, reg);
     G.visible = false; scene.add(G);
   });
-
   R.dog = makeDog(); scene.add(R.dog);
   { const n = 46, g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 3), 3));
     R.trail = new THREE.Points(g, new THREE.PointsMaterial({ map:R.dot, color:trailColor(), size:.6, transparent:true, opacity:.95, depthWrite:false, blending:THREE.AdditiveBlending }));
@@ -752,6 +692,26 @@ function initThree(){
   R.sonar = new THREE.Mesh(new THREE.RingGeometry(.92, 1, 72), new THREE.MeshBasicMaterial({ color:trailColor(), transparent:true, opacity:0, side:THREE.DoubleSide, depthWrite:false }));
   R.sonar.rotation.x = -Math.PI / 2; R.sonar.position.y = .12; R.sonar.userData = { t:99, x:0, z:0 }; scene.add(R.sonar);
   return true;
+}
+/* carved pumpkin faces */
+function drawFace(style){
+  return canvasTex(256, 256, (x, w, h) => {
+    x.clearRect(0, 0, w, h);
+    const g = x.createRadialGradient(128, 128, 10, 128, 128, 120); g.addColorStop(0, '#fff6b0'); g.addColorStop(.6, '#ffc23a'); g.addColorStop(1, '#ff7a00');
+    x.fillStyle = g;
+    const tri = (pts) => { x.beginPath(); x.moveTo(pts[0], pts[1]); for (let i = 2; i < pts.length; i += 2) x.lineTo(pts[i], pts[i + 1]); x.closePath(); x.fill(); };
+    if (style === 0){ tri([58,100, 98,100, 78,62]); tri([158,100, 198,100, 178,62]); tri([116,140, 140,140, 128,118]);
+      x.beginPath(); x.moveTo(44, 160); x.quadraticCurveTo(128, 250, 212, 160); x.quadraticCurveTo(128, 205, 44, 160); x.fill(); }
+    else if (style === 1){ tri([50,70, 108,104, 60,112]); tri([206,70, 148,104, 196,112]); tri([118,138, 138,138, 128,124]);
+      x.beginPath(); x.moveTo(40, 160); for (let i = 0; i <= 8; i++) x.lineTo(40 + i * 22, i % 2 ? 210 : 165); x.lineTo(216, 160); x.quadraticCurveTo(128, 190, 40, 160); x.fill(); }
+    else if (style === 2){ x.beginPath(); x.ellipse(84, 100, 22, 28, 0, 0, Math.PI * 2); x.ellipse(172, 100, 22, 28, 0, 0, Math.PI * 2); x.fill();
+      tri([118,138, 138,138, 128,150]);
+      x.strokeStyle = g; x.lineWidth = 7; x.lineCap = 'round';
+      [[60,150,24,140],[60,160,24,168],[196,150,232,140],[196,160,232,168]].forEach(([a,b,c,d]) => { x.beginPath(); x.moveTo(a, b); x.lineTo(c, d); x.stroke(); });
+      x.beginPath(); x.moveTo(100, 170); x.quadraticCurveTo(114, 190, 128, 172); x.quadraticCurveTo(142, 190, 156, 170); x.stroke(); }
+    else { const star = (cx, cy, r) => { x.beginPath(); for (let i = 0; i < 10; i++){ const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * .45 : r; x.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr); } x.closePath(); x.fill(); };
+      star(80, 96, 34); star(176, 96, 34); x.beginPath(); x.arc(128, 165, 42, 0, Math.PI); x.fill(); }
+  });
 }
 function addTrees(G, reg){
   const bark = colMat('#2c2925', '#3e2c1f'), pine = colMat('#262b2a', '#1f4a33');
@@ -792,27 +752,19 @@ function buildManor(G, reg){
   [-5, -2.6, 2.6, 5].forEach(x => [2.5, 5.3].forEach(y => addWindow(x, y, -9.94, .95, 1.3)));
   addTrees(G, reg);
   const graveM = colMat('#4d4f55', '#7d8496');
+  const r = rng(3);
   for (let i = 0; i < 9; i++){
-    const gx = -21 + (i % 3) * 3 + (Math.random() - .5), gz = -1 + Math.floor(i / 3) * 3.2 + (Math.random() - .5);
-    if (Math.hypot(gx - reg.toys[0].x, gz - reg.toys[0].z) < 1.8) continue;
+    const gx = -21 + (i % 3) * 3 + (r() - .5), gz = -1 + Math.floor(i / 3) * 3.2 + (r() - .5);
     const g = new THREE.Group(); g.position.set(gx, 0, gz);
     const s = sh(new THREE.Mesh(new THREE.BoxGeometry(.9, 1, .25), graveM)); s.position.y = .5; g.add(s);
     const tp = sh(new THREE.Mesh(new THREE.CylinderGeometry(.45, .45, .25, 16, 1, false, 0, Math.PI), graveM)); tp.rotation.x = Math.PI / 2; tp.rotation.z = Math.PI / 2; tp.position.y = 1; g.add(tp);
-    g.rotation.z = (Math.random() - .5) * .25; g.rotation.y = (Math.random() - .5) * .4; G.add(g);
+    g.rotation.z = (r() - .5) * .25; g.rotation.y = (r() - .5) * .4; G.add(g);
     reg.obst.push({ x:gx, z:gz, r:.45 });
   }
   const well = sh(new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.2, 1, 20, 1, true), stone)); well.position.set(7, .5, 4); G.add(well);
   const wroof = sh(new THREE.Mesh(new THREE.ConeGeometry(1.6, 1, 4), roofM)); wroof.position.set(7, 2.8, 4); wroof.rotation.y = Math.PI / 4; G.add(wroof);
   [-1, 1].forEach(s => { const p = sh(new THREE.Mesh(new THREE.BoxGeometry(.15, 2.3, .15), wood)); p.position.set(7 + s, 1.2, 4); G.add(p); });
-  const pumpM = colMat('#4c4640', '#e5761c', { roughness:.6 }), stemM = colMat('#2e2e2a', '#3f6b2a');
-  for (let i = 0; i < 9; i++){
-    const px = 10 + (i % 3) * 2.6 + (Math.random() - .5), pz = 12 + Math.floor(i / 3) * 2.4 + (Math.random() - .5);
-    if (Math.hypot(px - reg.toys[2].x, pz - reg.toys[2].z) < 1.6) continue;
-    const sc = .45 + Math.random() * .45;
-    const p = sh(new THREE.Mesh(new THREE.SphereGeometry(1, 16, 12), pumpM)); p.scale.set(sc, sc * .78, sc); p.position.set(px, sc * .7, pz); G.add(p);
-    const st = new THREE.Mesh(new THREE.CylinderGeometry(.05, .08, .3, 6), stemM); st.position.set(px, sc * 1.45, pz); G.add(st);
-  }
-  reg.patchLight = new THREE.PointLight(0xff8a2a, .2, 12); reg.patchLight.position.set(13, 2, 15); G.add(reg.patchLight);
+  reg.patchLight = new THREE.PointLight(0xff8a2a, .2, 12); reg.patchLight.position.set(13, 2, 14); G.add(reg.patchLight);
   const post = colMat('#2a2a2e', '#20242c'); reg.glass = new THREE.MeshStandardMaterial({ color:0x222222, emissive:new THREE.Color(0xffb347), emissiveIntensity:.2 }); reg.lamps = [];
   [[-2.2, 7], [2.2, 7], [-2.2, -3], [2.2, -3]].forEach(([x, z]) => {
     const p = sh(new THREE.Mesh(new THREE.CylinderGeometry(.08, .1, 2.4, 8), post)); p.position.set(x, 1.2, z); G.add(p);
@@ -823,19 +775,15 @@ function buildManor(G, reg){
     for (let i = 0; i < n; i++) reg.ffBase.push([(Math.random() - .5) * 50, .6 + Math.random() * 2.5, (Math.random() - .5) * 50 + 2, Math.random() * 6]);
     g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 3), 3));
     reg.fireflies = new THREE.Points(g, new THREE.PointsMaterial({ map:R.dot, color:0xffd27a, size:.35, transparent:true, opacity:.9, depthWrite:false, blending:THREE.AdditiveBlending })); G.add(reg.fireflies); }
-  [[-16, 4, 4.5, .35], [16, -9, 3.5, -.45], [-2, -4, 6, .25]].forEach(([cx, cz, r, sp], i) => {
-    const g = makeGhost(1, .55); g.userData = { cx, cz, r, sp, ph:i * 2, kind:'ghost' }; G.add(g); reg.npcs.push(g);
-  });
   reg.apply = p => {
     reg.windows.forEach(m => { m.emissiveIntensity = .08 + p * 1.6; });
     reg.lamps.forEach(l => { l.intensity = .35 + p * 1.3; });
-    reg.glass.emissiveIntensity = .2 + p * 1.6; reg.patchLight.intensity = .2 + p * 1.4;
+    reg.glass.emissiveIntensity = .2 + p * 1.6; reg.patchLight.intensity = .2 + p * 1.2;
   };
 }
 function buildArena(G, reg){
   const ground = new THREE.Mesh(new THREE.CircleGeometry(60, 64), colMat('#24282c', '#1b3a24')); ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; G.add(ground);
   const track = new THREE.Mesh(new THREE.RingGeometry(26.5, 29.5, 72), colMat('#34363a', '#a8432c')); track.rotation.x = -Math.PI / 2; track.position.y = .02; track.receiveShadow = true; G.add(track);
-  // pitch with lines
   const pitchTex = canvasTex(512, 384, (x, w, h) => {
     for (let i = 0; i < 10; i++){ x.fillStyle = i % 2 ? '#3f9a4a' : '#47a853'; x.fillRect(i * w / 10, 0, w / 10, h); }
     x.strokeStyle = '#f4f7f0'; x.lineWidth = 5; x.strokeRect(14, 14, w - 28, h - 28);
@@ -845,7 +793,6 @@ function buildArena(G, reg){
   });
   const pitch = new THREE.Mesh(new THREE.PlaneGeometry(30, 22), colMat('#5a5a5a', '#ffffff', { map:pitchTex, roughness:.95 }));
   pitch.rotation.x = -Math.PI / 2; pitch.rotation.z = Math.PI / 2; pitch.position.set(8, .03, -3); pitch.receiveShadow = true; G.add(pitch);
-  // basketball court
   const courtTex = canvasTex(256, 256, (x, w, h) => { x.fillStyle = '#c4773a'; x.fillRect(0, 0, w, h); x.strokeStyle = '#fff6e6'; x.lineWidth = 5; x.strokeRect(8, 8, w - 16, h - 16);
     x.beginPath(); x.arc(w / 2, 8, 70, 0, Math.PI); x.stroke(); x.strokeRect(w / 2 - 30, 8, 60, 80); });
   const court = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), colMat('#555555', '#ffffff', { map:courtTex, roughness:.7 })); court.rotation.x = -Math.PI / 2; court.position.set(-15, .04, -14); court.receiveShadow = true; G.add(court);
@@ -854,42 +801,36 @@ function buildArena(G, reg){
   const board = sh(new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.5, .1), white)); board.position.set(-15, 3.9, -18.4); G.add(board);
   const rim = new THREE.Mesh(new THREE.TorusGeometry(.42, .04, 8, 24), orange); rim.rotation.x = Math.PI / 2; rim.position.set(-15, 3.3, -17.9); G.add(rim);
   const net = new THREE.Mesh(new THREE.CylinderGeometry(.42, .26, .6, 12, 1, true), new THREE.MeshBasicMaterial({ color:0xffffff, wireframe:true, transparent:true, opacity:.6 })); net.position.set(-15, 2.98, -17.9); G.add(net);
-  // football goal
   const gm = colMat('#777777', '#ffffff');
-  [-3, 3].forEach(dx => { const p = sh(new THREE.Mesh(new THREE.CylinderGeometry(.1, .1, 2.4, 8), gm)); p.position.set(15 + dx, 1.2, -18.8); G.add(p); });
-  const bar = sh(new THREE.Mesh(new THREE.CylinderGeometry(.1, .1, 6.2, 8), gm)); bar.rotation.z = Math.PI / 2; bar.position.set(15, 2.4, -18.8); G.add(bar);
-  const gnet = new THREE.Mesh(new THREE.BoxGeometry(6, 2.4, 1.4, 12, 6, 3), new THREE.MeshBasicMaterial({ color:0xffffff, wireframe:true, transparent:true, opacity:.35 })); gnet.position.set(15, 1.2, -19.5); G.add(gnet);
-  // stands
+  [-2.9, 2.9].forEach(dx => { const p = sh(new THREE.Mesh(new THREE.CylinderGeometry(.1, .1, 2.4, 8), gm)); p.position.set(15 + dx, 1.2, -18.8); G.add(p); });
+  const bar = sh(new THREE.Mesh(new THREE.CylinderGeometry(.1, .1, 6, 8), gm)); bar.rotation.z = Math.PI / 2; bar.position.set(15, 2.4, -18.8); G.add(bar);
+  const gnet = new THREE.Mesh(new THREE.BoxGeometry(5.8, 2.4, 1.4, 12, 6, 3), new THREE.MeshBasicMaterial({ color:0xffffff, wireframe:true, transparent:true, opacity:.35 })); gnet.position.set(15, 1.2, -19.5); G.add(gnet);
+  reg.goalNet = gnet;
   reg.seatMats = [colMat('#3a3c44', '#1b8fb8'), colMat('#3a3c44', '#f0a020')];
   const concrete = colMat('#3c3e44', '#5c6070');
   for (let tier = 0; tier < 4; tier++){
-    const st = sh(new THREE.Mesh(new THREE.BoxGeometry(44, 1, 1.6), concrete)); st.position.set(0, .5 + tier, -23.2 - tier * 1.6); st.scale.y = 1 + tier; st.position.y = (1 + tier) / 2; G.add(st);
+    const st = sh(new THREE.Mesh(new THREE.BoxGeometry(44, 1, 1.6), concrete)); st.scale.y = 1 + tier; st.position.set(0, (1 + tier) / 2, -23.2 - tier * 1.6); G.add(st);
     for (let i = -20; i <= 20; i += 1.4){ const seat = new THREE.Mesh(new THREE.BoxGeometry(1, .35, .5), reg.seatMats[(Math.floor((i + 20) / 7) + tier) % 2]); seat.position.set(i, 1.2 + tier, -23 - tier * 1.6); G.add(seat); }
   }
-  // scoreboard
   reg.boardCanvas = document.createElement('canvas'); reg.boardCanvas.width = 512; reg.boardCanvas.height = 160;
   reg.boardTex = new THREE.CanvasTexture(reg.boardCanvas);
   const sbFrame = sh(new THREE.Mesh(new THREE.BoxGeometry(10.6, 3.6, .4), colMat('#222326', '#1a1d26'))); sbFrame.position.set(0, 9, -29.5); G.add(sbFrame);
   const sb = new THREE.Mesh(new THREE.PlaneGeometry(10, 3.1), new THREE.MeshBasicMaterial({ map:reg.boardTex })); sb.position.set(0, 9, -29.28); G.add(sb);
   [-4, 4].forEach(x => { const l = sh(new THREE.Mesh(new THREE.BoxGeometry(.3, 7, .3), metal)); l.position.set(x, 3.6, -29.6); G.add(l); });
-  // air hockey table
   const tableTop = sh(new THREE.Mesh(new THREE.BoxGeometry(6, .3, 4), colMat('#4a4d55', '#e9f3ff', { roughness:.25 }))); tableTop.position.set(-15, 1, 6); G.add(tableTop);
   const railM = colMat('#3a3a40', '#1b8fb8');
-  [[0, 2, 6.2, .3], [0, -2, 6.2, .3]].forEach(([dx, dz, w, d]) => { const r = sh(new THREE.Mesh(new THREE.BoxGeometry(w, .3, d), railM)); r.position.set(-15 + dx, 1.25, 6 + dz); G.add(r); });
-  [[-3, 0], [3, 0]].forEach(([dx]) => { const r = sh(new THREE.Mesh(new THREE.BoxGeometry(.3, .3, 4.3), railM)); r.position.set(-15 + dx, 1.25, 6); G.add(r); });
+  [-2, 2].forEach(dz => { const r = sh(new THREE.Mesh(new THREE.BoxGeometry(6.2, .3, .3), railM)); r.position.set(-15, 1.25, 6 + dz); G.add(r); });
+  [-3, 3].forEach(dx => { const r = sh(new THREE.Mesh(new THREE.BoxGeometry(.3, .3, 4.3), railM)); r.position.set(-15 + dx, 1.25, 6); G.add(r); });
   [[-2.6, -1.6], [2.6, -1.6], [-2.6, 1.6], [2.6, 1.6]].forEach(([dx, dz]) => { const l = sh(new THREE.Mesh(new THREE.BoxGeometry(.25, .9, .25), metal)); l.position.set(-15 + dx, .45, 6 + dz); G.add(l); });
-  [[-1.8, 0, 0xff3b6b], [1.8, 0, 0x2fd6f5]].forEach(([dx, dz, c]) => { const m = new THREE.Mesh(new THREE.CylinderGeometry(.32, .32, .25, 18), new THREE.MeshStandardMaterial({ color:c, roughness:.4 })); m.position.set(-15 + dx, 1.3, 6 + dz); G.add(m); });
-  // pool + slide
+  [[-1.8, 0xff3b6b], [1.8, 0x2fd6f5]].forEach(([dx, c]) => { const m = new THREE.Mesh(new THREE.CylinderGeometry(.32, .32, .25, 18), new THREE.MeshStandardMaterial({ color:c, roughness:.4 })); m.position.set(-15 + dx, 1.3, 6); G.add(m); });
   const water = new THREE.Mesh(new THREE.CircleGeometry(4.2, 40), colMat('#2a3440', '#1fa3d6', { roughness:.08, metalness:.2, transparent:true, opacity:.88 }));
   water.rotation.x = -Math.PI / 2; water.position.set(14, .06, 13); G.add(water); reg.water = water;
   const edge = sh(new THREE.Mesh(new THREE.TorusGeometry(4.3, .25, 8, 40), white)); edge.rotation.x = Math.PI / 2; edge.position.set(14, .12, 13); G.add(edge);
   const tower = sh(new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.5, 8, 14), concrete)); tower.position.set(19, 4, 4); G.add(tower);
-  const pts = [];
-  for (let a = 0; a <= Math.PI * 3; a += .25) pts.push(new THREE.Vector3(19 + Math.cos(a) * 2.4, 8 - a * .62, 4 + Math.sin(a) * 2.4));
+  const pts = []; for (let a = 0; a <= Math.PI * 3; a += .25) pts.push(new THREE.Vector3(19 + Math.cos(a) * 2.4, 8 - a * .62, 4 + Math.sin(a) * 2.4));
   pts.push(new THREE.Vector3(17, 1.2, 8.5), new THREE.Vector3(15.2, .5, 11));
-  const tube = sh(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 120, .45, 10, false), colMat('#4a4a4e', '#ff6b3d', { roughness:.35, side:THREE.DoubleSide }))); G.add(tube);
+  G.add(sh(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 120, .45, 10, false), colMat('#4a4a4e', '#ff6b3d', { roughness:.35, side:THREE.DoubleSide }))));
   addTrees(G, reg);
-  // floodlights
   reg.flood = [];
   [[-23, -21], [23, -21], [-23, 22], [23, 22]].forEach(([x, z]) => {
     const m = sh(new THREE.Mesh(new THREE.CylinderGeometry(.25, .4, 14, 8), metal)); m.position.set(x, 7, z); G.add(m);
@@ -898,106 +839,155 @@ function buildArena(G, reg){
     const sp = new THREE.SpotLight(0xfff1d6, 0, 70, .55, .6, 1.6); sp.position.set(x, 14, z); sp.target.position.set(x * .25, 0, z * .25); G.add(sp); G.add(sp.target);
     reg.flood.push({ sp, headM });
   });
-  // bouncy ball NPCs
-  [[-4, 2, 5, .5, 0xff5d8f], [6, -6, 4, -.6, 0x5de0ff], [2, 9, 3.5, .7, 0xffd23f]].forEach(([cx, cz, r, sp, c], i) => {
-    const b = sh(new THREE.Mesh(new THREE.SphereGeometry(.45, 18, 12), new THREE.MeshStandardMaterial({ color:c, roughness:.35, emissive:c, emissiveIntensity:.15 })));
-    b.userData = { cx, cz, r, sp, ph:i * 2.1, kind:'bouncer' }; G.add(b); reg.npcs.push(b);
-  });
+  // hiding spots for balls: bushes / kit bags
+  const bush = colMat('#2a302c', '#2f6b3a');
+  reg.tasks[0].items.forEach(([x, z]) => { [[0, 0, .9], [.7, .3, .6], [-.6, .4, .65]].forEach(([dx, dz, r]) => { const b = sh(new THREE.Mesh(new THREE.SphereGeometry(r, 12, 10), bush)); b.position.set(x + dx, r * .7, z + dz - .9); G.add(b); }); });
   reg.apply = p => {
     const n = Math.round(p * 4);
     reg.flood.forEach((f, i) => { const on = i < n ? 1 : 0; f.sp.intensity = on * 1.1; f.headM.emissiveIntensity = .05 + on * 2; });
-    drawScoreboard(reg, n);
+    drawScoreboard(reg);
   };
 }
-function drawScoreboard(reg, n){
-  const x = reg.boardCanvas.getContext('2d'), w = 512, h = 160;
+function drawScoreboard(reg){
+  const goals = reg.tasks[1].done, x = reg.boardCanvas.getContext('2d'), w = 512, h = 160;
   x.fillStyle = '#05070c'; x.fillRect(0, 0, w, h);
   x.font = 'bold 30px monospace'; x.textAlign = 'center'; x.fillStyle = '#ffb547'; x.fillText(S.lang === 'ro' ? 'ARENA LUI KYGO' : "KYGO'S ARENA", w / 2, 38);
-  x.font = 'bold 74px monospace'; x.fillStyle = '#4fe3ff'; x.fillText(`KYGO ${n} : 0 GLITCH`, w / 2, 122);
+  x.font = 'bold 74px monospace'; x.fillStyle = '#4fe3ff'; x.fillText(`KYGO ${goals} : 0 GLITCH`, w / 2, 122);
+  const n = Math.round(progress(reg) * 4);
   for (let i = 0; i < 4; i++){ x.fillStyle = i < n ? '#5ee6a0' : '#2a2f3a'; x.beginPath(); x.arc(w / 2 - 54 + i * 36, 146, 8, 0, Math.PI * 2); x.fill(); }
   reg.boardTex.needsUpdate = true;
 }
 function makeGhost(scale, opacity){
   const g = new THREE.Group();
-  const m = new THREE.MeshStandardMaterial({ color:0xeef3ff, emissive:new THREE.Color(0x7fa8ff), emissiveIntensity:.35, transparent:opacity < 1, opacity, roughness:.3, side:THREE.DoubleSide });
+  const m = new THREE.MeshStandardMaterial({ color:0xeef3ff, emissive:new THREE.Color(0x7fa8ff), emissiveIntensity:.45, transparent:true, opacity, roughness:.3, side:THREE.DoubleSide, depthWrite:false });
   const head = new THREE.Mesh(new THREE.SphereGeometry(.6, 20, 14, 0, Math.PI * 2, 0, Math.PI / 2), m); head.position.y = .9; g.add(head);
   const body = new THREE.Mesh(new THREE.CylinderGeometry(.6, .72, .9, 20, 1, true), m); body.position.y = .45; g.add(body);
-  const eyeM = new THREE.MeshBasicMaterial({ color:0x10131c });
+  const eyeM = new THREE.MeshBasicMaterial({ color:0x10131c, transparent:true, opacity });
   [-.2, .2].forEach(x => { const e = new THREE.Mesh(new THREE.SphereGeometry(.08, 8, 6), eyeM); e.position.set(x, 1.05, .55); g.add(e); });
   const mouth = new THREE.Mesh(new THREE.SphereGeometry(.09, 8, 6), eyeM); mouth.scale.set(1, 1.4, .5); mouth.position.set(0, .82, .58); g.add(mouth);
+  g.userData.mats = [m, eyeM];
   g.scale.setScalar(scale); return g;
 }
-/* Kygo — red toy poodle */
+function makeBeacon(color, h = 9, r = .55){
+  const g = new THREE.Group();
+  const beam = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, 20, 1, true), new THREE.MeshBasicMaterial({ color, transparent:true, opacity:.13, depthWrite:false, blending:THREE.AdditiveBlending, side:THREE.DoubleSide }));
+  beam.position.y = h / 2; g.add(beam);
+  const ring = new THREE.Mesh(new THREE.RingGeometry(r + .2, r + .4, 40), new THREE.MeshBasicMaterial({ color, transparent:true, opacity:.55, side:THREE.DoubleSide, depthWrite:false }));
+  ring.rotation.x = -Math.PI / 2; ring.position.y = .05; g.add(ring);
+  g.userData = { beam, ring }; return g;
+}
+function makeTreat(kind){
+  const g = new THREE.Group();
+  if (kind === 'treats'){ const m = new THREE.MeshStandardMaterial({ color:0xf1dfb8, roughness:.6, emissive:0x3a2a10, emissiveIntensity:.4 });
+    const shaft = sh(new THREE.Mesh(new THREE.CylinderGeometry(.06, .06, .5, 8), m)); shaft.rotation.z = Math.PI / 2; g.add(shaft);
+    [[-.28, .07], [-.28, -.07], [.28, .07], [.28, -.07]].forEach(([x, y]) => { const k = sh(new THREE.Mesh(new THREE.SphereGeometry(.1, 8, 6), m)); k.position.set(x, y, 0); g.add(k); }); }
+  else { const m = new THREE.MeshStandardMaterial({ color:0xc8843f, roughness:.75, emissive:0x3a1a00, emissiveIntensity:.35 });
+    const c = sh(new THREE.Mesh(new THREE.CylinderGeometry(.26, .26, .08, 18), m)); c.rotation.x = Math.PI / 2; g.add(c);
+    const chip = new THREE.MeshStandardMaterial({ color:0x3a1e0e }); [[.1, .08], [-.09, .02], [.02, -.11]].forEach(([x, y]) => { const d = new THREE.Mesh(new THREE.SphereGeometry(.04, 6, 4), chip); d.position.set(x, y, .05); g.add(d); }); }
+  return g;
+}
+function makeBall(type){
+  const M = (c, o) => new THREE.MeshStandardMaterial(Object.assign({ color:c, roughness:.6 }, o || {}));
+  const g = new THREE.Group();
+  if (type === 'football'){ g.add(sh(new THREE.Mesh(new THREE.IcosahedronGeometry(.45, 1), M(0xf5f5f5, { flatShading:true }))));
+    const pent = M(0x111111, { flatShading:true }); [[0, .45, 0], [0, -.45, 0], [.43, .1, 0], [-.43, .1, 0], [0, .1, .43], [0, .1, -.43]].forEach(p => { const d = new THREE.Mesh(new THREE.CircleGeometry(.12, 5), pent); d.position.set(...p); d.lookAt(d.position.clone().multiplyScalar(3)); g.add(d); }); }
+  else { const cols = [0xe8762c, 0xd8f046, 0xff5d8f, 0x5de0ff, 0xffd23f]; g.add(sh(new THREE.Mesh(new THREE.SphereGeometry(.4, 22, 14), M(cols[type % cols.length], { roughness:.5 }))));
+    [0, Math.PI / 2].forEach(r => { const s = new THREE.Mesh(new THREE.TorusGeometry(.4, .02, 6, 30), M(0x1a1a1a)); s.rotation.y = r; g.add(s); }); }
+  return g;
+}
+function buildTasks(G, reg){
+  reg.tasks.forEach(tk => {
+    tk.state.forEach(st => {
+      const g = new THREE.Group(); g.position.set(st.x, 0, st.z); G.add(g); st.g = g;
+      if (tk.kind === 'find'){
+        st.obj = reg.id === 'manor' ? makeGhost(.85, .1) : makeBall(st.i); st.obj.position.y = reg.id === 'manor' ? .3 : .4;
+        if (reg.id === 'arena') st.obj.visible = false;
+        g.add(st.obj);
+        st.beacon = makeBeacon(trailColor(), 7, .7); st.beacon.visible = false; g.add(st.beacon);
+      } else if (tk.kind === 'decorate'){
+        const pm = new THREE.MeshStandardMaterial({ color:0xb9661f, roughness:.55, emissive:new THREE.Color(0xff7a00), emissiveIntensity:0 });
+        const sc = .85 + (st.i % 3) * .12;
+        const p = sh(new THREE.Mesh(new THREE.SphereGeometry(1, 22, 16), pm)); p.scale.set(sc, sc * .8, sc); p.position.y = sc * .78; g.add(p);
+        for (let k = 0; k < 6; k++){ const rib = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 12), pm); rib.scale.set(sc * .35, sc * .79, sc * 1.01); rib.rotation.y = k * Math.PI / 6; rib.position.y = sc * .78; g.add(rib); }
+        const stem = new THREE.Mesh(new THREE.CylinderGeometry(.07, .11, .4, 8), new THREE.MeshStandardMaterial({ color:0x3f6b2a })); stem.position.y = sc * 1.6; g.add(stem);
+        const face = new THREE.Mesh(new THREE.PlaneGeometry(sc * 1.35, sc * 1.35), new THREE.MeshBasicMaterial({ transparent:true, depthWrite:false, map:R.faces[0] }));
+        face.position.set(0, sc * .8, sc * 1.02); face.visible = false; g.add(face);
+        const light = new THREE.PointLight(0xff9a2a, 0, 6, 2); light.position.set(0, sc * .8, sc * .3); g.add(light);
+        st.pm = pm; st.face = face; st.light = light; st.sc = sc;
+        st.beacon = makeBeacon(trailColor(), 5, .9); g.add(st.beacon);
+        reg.obst.push({ x:st.x, z:st.z, r:sc * .9 });
+      } else if (tk.kind === 'eat'){
+        st.obj = makeTreat(tk.id); st.obj.position.y = .55; g.add(st.obj);
+        const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map:R.dot, color:0xffd27a, transparent:true, opacity:.55, depthWrite:false, blending:THREE.AdditiveBlending }));
+        glow.scale.set(1.1, 1.1, 1); glow.position.y = .55; g.add(glow);
+      }
+    });
+    if (tk.kind === 'dribble'){
+      tk.mesh = makeBall('football'); tk.mesh.position.set(tk.ball.x, .45, tk.ball.z); G.add(tk.mesh);
+      tk.beacon = makeBeacon(trailColor(), 6, .7); G.add(tk.beacon);
+    }
+  });
+}
+/* Kygo — teddy-cut red toy poodle, like the Kygo World logo */
 function makeDog(){
   const g = new THREE.Group();
-  const curl = canvasTex(128, 128, (x, w, h) => { x.fillStyle = '#808080'; x.fillRect(0, 0, w, h);
-    for (let i = 0; i < 260; i++){ const cx = Math.random() * w, cy = Math.random() * h, r = 3 + Math.random() * 6; const gr = x.createRadialGradient(cx, cy, 0, cx, cy, r); gr.addColorStop(0, '#ffffff'); gr.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = gr; x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.fill(); } });
-  curl.wrapS = curl.wrapT = THREE.RepeatWrapping; curl.repeat.set(2, 2);
-  const fur = new THREE.MeshStandardMaterial({ color:0xb4532a, roughness:1, bumpMap:curl, bumpScale:.06 });
-  const fur2 = new THREE.MeshStandardMaterial({ color:0x9a4220, roughness:1, bumpMap:curl, bumpScale:.06 });
-  const skin = new THREE.MeshStandardMaterial({ color:0xc96a3e, roughness:.8 });
-  const dark = new THREE.MeshStandardMaterial({ color:0x1a100b, roughness:.45 });
-  const collarM = new THREE.MeshStandardMaterial({ color:0x2fd6f5, emissive:0x0b6f83, emissiveIntensity:.6 });
-  const tagM = new THREE.MeshStandardMaterial({ color:0xffb547, emissive:0xb06a00, emissiveIntensity:.8, metalness:.6, roughness:.3 });
-  const body = sh(new THREE.Mesh(new THREE.SphereGeometry(.5, 22, 16), fur)); body.scale.set(.85, .8, 1.25); body.position.y = 1.0; g.add(body);
-  const chest = sh(new THREE.Mesh(new THREE.SphereGeometry(.42, 18, 14), fur)); chest.position.set(0, 1.12, .4); g.add(chest);
-  const hip = sh(new THREE.Mesh(new THREE.SphereGeometry(.38, 18, 14), fur)); hip.position.set(0, 1.05, -.42); g.add(hip);
-  const neck = sh(new THREE.Mesh(new THREE.CylinderGeometry(.18, .24, .45, 12), fur)); neck.position.set(0, 1.45, .55); neck.rotation.x = .5; g.add(neck);
-  const head = new THREE.Group(); head.position.set(0, 1.72, .72); g.add(head);
-  const skull = sh(new THREE.Mesh(new THREE.SphereGeometry(.3, 22, 16), fur)); head.add(skull);
-  const top = sh(new THREE.Mesh(new THREE.SphereGeometry(.24, 18, 14), fur)); top.position.set(0, .24, -.04); head.add(top);
-  const muzzle = sh(new THREE.Mesh(new THREE.SphereGeometry(.13, 16, 12), skin)); muzzle.scale.set(1, .85, 1.9); muzzle.position.set(0, -.08, .33); head.add(muzzle);
-  const nose = new THREE.Mesh(new THREE.SphereGeometry(.06, 10, 8), dark); nose.position.set(0, -.04, .57); head.add(nose);
-  [-.12, .12].forEach(x => { const e = new THREE.Mesh(new THREE.SphereGeometry(.05, 10, 8), dark); e.position.set(x, .05, .25); head.add(e);
-    const hl = new THREE.Mesh(new THREE.SphereGeometry(.016, 6, 4), new THREE.MeshBasicMaterial({ color:0xffffff })); hl.position.set(x + .015, .07, .295); head.add(hl); });
-  R.ears = [-.28, .28].map(x => { const ear = new THREE.Group(); ear.position.set(x, .02, -.02); head.add(ear);
-    [0, -.17, -.32].forEach((y, k) => { const p = sh(new THREE.Mesh(new THREE.SphereGeometry(.13 - k * .01, 12, 10), fur2)); p.position.set(x > 0 ? .03 : -.03, y, 0); ear.add(p); }); return ear; });
-  const collar = new THREE.Mesh(new THREE.TorusGeometry(.22, .045, 8, 24), collarM); collar.position.set(0, 1.5, .62); collar.rotation.x = Math.PI / 2.6; g.add(collar);
-  const tag = new THREE.Mesh(new THREE.CylinderGeometry(.07, .07, .025, 14), tagM); tag.rotation.x = Math.PI / 2; tag.position.set(0, 1.32, .82); g.add(tag);
-  R.legs = [[-.22, .38], [.22, .38], [-.22, -.4], [.22, -.4]].map(([x, z]) => { const p = new THREE.Group(); p.position.set(x, .82, z);
-    const l = sh(new THREE.Mesh(new THREE.CylinderGeometry(.075, .065, .7, 8), skin)); l.position.y = -.38; p.add(l);
-    const pom = sh(new THREE.Mesh(new THREE.SphereGeometry(.13, 12, 10), fur)); pom.scale.y = 1.2; pom.position.set(0, -.66, .02); p.add(pom); g.add(p); return p; });
-  R.tail = new THREE.Group(); R.tail.position.set(0, 1.25, -.68); g.add(R.tail);
-  const tl = sh(new THREE.Mesh(new THREE.CylinderGeometry(.04, .06, .45, 8), skin)); tl.position.y = .22; R.tail.add(tl);
-  const tp = sh(new THREE.Mesh(new THREE.SphereGeometry(.17, 14, 12), fur)); tp.position.y = .5; R.tail.add(tp); R.tail.rotation.x = -.35;
+  const r = rng(42);
+  const curl = canvasTex(128, 128, (x, w, h) => { x.fillStyle = '#7a7a7a'; x.fillRect(0, 0, w, h);
+    for (let i = 0; i < 420; i++){ const cx = Math.random() * w, cy = Math.random() * h, rr = 2 + Math.random() * 5; const gr = x.createRadialGradient(cx, cy, 0, cx, cy, rr); gr.addColorStop(0, '#ffffff'); gr.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = gr; x.beginPath(); x.arc(cx, cy, rr, 0, Math.PI * 2); x.fill(); } });
+  curl.wrapS = curl.wrapT = THREE.RepeatWrapping; curl.repeat.set(3, 3);
+  const furs = [0xdc7a30, 0xe88b3c, 0xd06e28, 0xf09c4e].map(c => new THREE.MeshStandardMaterial({ color:c, roughness:.95, bumpMap:curl, bumpScale:.035, emissive:0x5a2408, emissiveIntensity:.35 }));
+  const fur = furs[0];
+  const dark = new THREE.MeshStandardMaterial({ color:0x150c08, roughness:.35 });
+  const pad = new THREE.MeshStandardMaterial({ color:0x2a1812, roughness:.7 });
+  const tongueM = new THREE.MeshStandardMaterial({ color:0xf06f86, roughness:.5 });
+  const sphere = (rad, seg = 14) => new THREE.SphereGeometry(rad, seg, Math.max(8, seg - 4));
+  // fluffy cluster helper
+  const fluff = (parent, cx, cy, cz, rx, ry, rz, n, rad) => {
+    const core = sh(new THREE.Mesh(sphere(1, 18), fur)); core.scale.set(rx, ry, rz); core.position.set(cx, cy, cz); parent.add(core);
+    for (let i = 0; i < n; i++){
+      const th = r() * Math.PI * 2, ph = Math.acos(2 * r() - 1);
+      const ux = Math.sin(ph) * Math.cos(th), uy = Math.cos(ph), uz = Math.sin(ph) * Math.sin(th);
+      const m = sh(new THREE.Mesh(sphere(rad * (.75 + r() * .5), 10), furs[Math.floor(r() * furs.length)]));
+      m.position.set(cx + ux * rx * .6, cy + uy * ry * .6, cz + uz * rz * .6); parent.add(m);
+    }
+  };
+  // body: round, fluffy
+  fluff(g, 0, 1.0, -.02, .46, .42, .6, 18, .3);
+  fluff(g, 0, 1.12, .38, .34, .36, .3, 8, .24); // chest
+  // legs: thick fluffy columns with dark paw pads
+  R.legs = [[-.24, .36], [.24, .36], [-.24, -.4], [.24, -.4]].map(([x, z]) => { const p = new THREE.Group(); p.position.set(x, .9, z);
+    [-.12, -.32, -.52, -.7].forEach((y, k) => { const s = sh(new THREE.Mesh(sphere(.17 - k * .005, 12), furs[k % furs.length])); s.position.set((r() - .5) * .03, y, (r() - .5) * .03); p.add(s); });
+    const paw = sh(new THREE.Mesh(sphere(.15, 12), fur)); paw.scale.set(1, .7, 1.25); paw.position.set(0, -.82, .05); p.add(paw);
+    const toe = new THREE.Mesh(sphere(.08, 8), pad); toe.scale.set(1.3, .5, .8); toe.position.set(0, -.9, .14); p.add(toe);
+    g.add(p); return p; });
+  // tail: fluffy pom held up
+  R.tail = new THREE.Group(); R.tail.position.set(0, 1.25, -.62); g.add(R.tail);
+  fluff(R.tail, 0, .3, -.05, .19, .24, .19, 6, .15); R.tail.rotation.x = -.4;
+  // head: big, round teddy head
+  const head = new THREE.Group(); head.position.set(0, 1.78, .55); g.add(head);
+  fluff(head, 0, .06, -.02, .42, .4, .4, 18, .24);
+  fluff(head, 0, .36, -.06, .3, .2, .28, 7, .2); // top fluff
+  // muzzle: short and fluffy, slightly lighter
+  const muzM = new THREE.MeshStandardMaterial({ color:0xf0a060, roughness:.95, bumpMap:curl, bumpScale:.03, emissive:0x5a2408, emissiveIntensity:.3 });
+  const muz = sh(new THREE.Mesh(sphere(.2, 16), muzM)); muz.scale.set(1.05, .82, 1); muz.position.set(0, -.1, .34); head.add(muz);
+  [-.09, .09].forEach(x => { const c = sh(new THREE.Mesh(sphere(.12, 12), muzM)); c.position.set(x, -.14, .38); head.add(c); });
+  const nose = new THREE.Mesh(sphere(.07, 12), dark); nose.scale.set(1.25, .9, .9); nose.position.set(0, -.03, .55); head.add(nose);
+  const mouth = new THREE.Mesh(sphere(.08, 10), dark); mouth.scale.set(1.2, .6, .6); mouth.position.set(0, -.23, .47); head.add(mouth);
+  R.tongue = new THREE.Mesh(sphere(.06, 10), tongueM); R.tongue.scale.set(1, .5, 1.3); R.tongue.position.set(0, -.28, .5); head.add(R.tongue);
+  [-.15, .15].forEach(x => { const e = new THREE.Mesh(sphere(.075, 14), dark); e.position.set(x, .1, .36); head.add(e);
+    const hl = new THREE.Mesh(sphere(.022, 6), new THREE.MeshBasicMaterial({ color:0xffffff })); hl.position.set(x + .025, .13, .43); head.add(hl); });
+  // ears: big, long, fluffy, hanging
+  R.ears = [-.4, .4].map(x => { const ear = new THREE.Group(); ear.position.set(x, .12, -.02); head.add(ear);
+    fluff(ear, x > 0 ? .04 : -.04, -.26, 0, .15, .32, .13, 8, .15); return ear; });
+  // bow tie: white with brown polka dots
+  const dots = canvasTex(64, 64, (x, w, h) => { x.fillStyle = '#fbf6ee'; x.fillRect(0, 0, w, h); x.fillStyle = '#5a3020'; for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++){ x.beginPath(); x.arc(8 + i * 16 + (j % 2) * 8, 8 + j * 16, 3.2, 0, Math.PI * 2); x.fill(); } });
+  const bowM = new THREE.MeshStandardMaterial({ map:dots, roughness:.6 });
+  const bow = new THREE.Group(); bow.position.set(0, 1.42, .62); bow.rotation.x = -.35; g.add(bow);
+  [-1, 1].forEach(s => { const w = sh(new THREE.Mesh(new THREE.ConeGeometry(.15, .28, 4), bowM)); w.rotation.z = s * Math.PI / 2; w.scale.set(1, 1, .45); w.position.x = s * .14; bow.add(w); });
+  const knot = sh(new THREE.Mesh(sphere(.06, 10), bowM)); knot.scale.set(1, 1, .7); bow.add(knot);
   R.dogHead = head;
-  const l = new THREE.PointLight(0x9fdcff, .5, 6, 2); l.position.set(0, 3, 0); g.add(l);
-  g.scale.setScalar(.95);
-  return g;
-}
-function makeToy(id){
-  const g = new THREE.Group();
-  const M = (c, o) => new THREE.MeshStandardMaterial(Object.assign({ color:c, roughness:.6 }, o || {}));
-  if (id === 'ball'){ g.add(sh(new THREE.Mesh(new THREE.SphereGeometry(.38, 24, 16), M(0xd8f046, { roughness:.7 }))));
-    const s = new THREE.Mesh(new THREE.TorusGeometry(.38, .03, 6, 30), M(0xffffff)); s.rotation.x = 1; g.add(s); }
-  else if (id === 'plush'){ const gh = makeGhost(.55, 1); gh.position.y = -.45; g.add(gh); }
-  else if (id === 'pumpkin'){ const p = sh(new THREE.Mesh(new THREE.SphereGeometry(.45, 18, 12), M(0xff8a1f, { emissive:0x6b2a00, emissiveIntensity:.5, roughness:.5 }))); p.scale.y = .8; g.add(p);
-    const st = new THREE.Mesh(new THREE.CylinderGeometry(.05, .07, .25, 6), M(0x3f7a2a)); st.position.y = .42; g.add(st); }
-  else if (id === 'bone'){ const m = M(0xf3ead6);
-    const shaft = sh(new THREE.Mesh(new THREE.CylinderGeometry(.09, .09, .8, 10), m)); shaft.rotation.z = Math.PI / 2; g.add(shaft);
-    [[-.42, .1], [-.42, -.1], [.42, .1], [.42, -.1]].forEach(([x, y]) => { const k = sh(new THREE.Mesh(new THREE.SphereGeometry(.14, 10, 8), m)); k.position.set(x, y, 0); g.add(k); }); }
-  else if (id === 'basket'){ g.add(sh(new THREE.Mesh(new THREE.SphereGeometry(.42, 24, 16), M(0xe8762c, { roughness:.75 }))));
-    [0, Math.PI / 2].forEach(r => { const s = new THREE.Mesh(new THREE.TorusGeometry(.42, .018, 6, 32), M(0x1a1a1a)); s.rotation.y = r; g.add(s); });
-    const eq = new THREE.Mesh(new THREE.TorusGeometry(.42, .018, 6, 32), M(0x1a1a1a)); eq.rotation.x = Math.PI / 2; g.add(eq); }
-  else if (id === 'football'){ g.add(sh(new THREE.Mesh(new THREE.IcosahedronGeometry(.4, 1), M(0xf5f5f5, { flatShading:true }))));
-    const pent = M(0x111111, { flatShading:true }); [[0, .4, 0], [0, -.4, 0], [.38, .1, 0], [-.38, .1, 0], [0, .1, .38], [0, .1, -.38]].forEach(p => { const d = new THREE.Mesh(new THREE.CircleGeometry(.11, 5), pent); d.position.set(...p); d.lookAt(d.position.clone().multiplyScalar(3)); g.add(d); }); }
-  else if (id === 'puck'){ g.add(sh(new THREE.Mesh(new THREE.CylinderGeometry(.38, .38, .14, 28), M(0x111318, { roughness:.3 }))));
-    const r = new THREE.Mesh(new THREE.TorusGeometry(.3, .03, 6, 28), M(0x2fd6f5, { emissive:0x0b6f83, emissiveIntensity:1 })); r.rotation.x = Math.PI / 2; r.position.y = .075; g.add(r); g.rotation.x = .5; }
-  else { const y = M(0xffd23f, { roughness:.35 });
-    const b = sh(new THREE.Mesh(new THREE.SphereGeometry(.34, 18, 14), y)); b.scale.set(1, .8, 1.2); g.add(b);
-    const hd = sh(new THREE.Mesh(new THREE.SphereGeometry(.22, 16, 12), y)); hd.position.set(0, .32, .24); g.add(hd);
-    const bk = new THREE.Mesh(new THREE.ConeGeometry(.08, .2, 10), M(0xff7a1a)); bk.rotation.x = Math.PI / 2; bk.position.set(0, .3, .48); g.add(bk);
-    [-.09, .09].forEach(x => { const e = new THREE.Mesh(new THREE.SphereGeometry(.035, 8, 6), M(0x111111)); e.position.set(x, .38, .42); g.add(e); }); }
-  return g;
-}
-function makeToyBeacon(o){
-  const g = new THREE.Group(); g.position.set(o.x, 0, o.z);
-  const toy = makeToy(o.id); toy.position.y = .7; g.add(toy);
-  const beam = new THREE.Mesh(new THREE.CylinderGeometry(.55, .55, 9, 20, 1, true), new THREE.MeshBasicMaterial({ color:trailColor(), transparent:true, opacity:.13, depthWrite:false, blending:THREE.AdditiveBlending, side:THREE.DoubleSide }));
-  beam.position.y = 4.5; g.add(beam);
-  const ring = new THREE.Mesh(new THREE.RingGeometry(.75, .95, 40), new THREE.MeshBasicMaterial({ color:trailColor(), transparent:true, opacity:.55, side:THREE.DoubleSide, depthWrite:false }));
-  ring.rotation.x = -Math.PI / 2; ring.position.y = .05; g.add(ring);
-  R.toyMeshes[o.id] = { g, toy, beam, ring, flash:0 };
+  const l = new THREE.PointLight(0xffd9b0, .55, 6, 2); l.position.set(0, 3, 1); g.add(l);
+  g.scale.setScalar(.92);
   return g;
 }
 function applyRestore(p){
@@ -1010,106 +1000,125 @@ function applyRestore(p){
 function refreshColors(){
   if (!glOK) return; const c = trailColor();
   R.trail.material.color.setHex(c); R.sonar.material.color.setHex(c);
-  Object.values(R.toyMeshes).forEach(m => { m.beam.material.color.setHex(c); m.ring.material.color.setHex(c); });
+  Object.values(REGIONS).forEach(reg => reg.tasks.forEach(tk => { const bs = (tk.state || []).map(s => s.beacon).concat(tk.beacon ? [tk.beacon] : []);
+    bs.forEach(b => { if (!b) return; b.userData.beam.material.color.setHex(c); b.userData.ring.material.color.setHex(c); }); }));
+}
+function syncTaskVisuals(reg){
+  if (!glOK) return;
+  reg.tasks.forEach(tk => tk.state.forEach(st => {
+    if (tk.kind === 'find'){ st.g.visible = !st.done; st.g.scale.set(1, 1, 1); st.beacon.visible = st.revealed && !st.done; if (reg.id === 'arena') st.obj.visible = st.revealed; setGhostOpacity(st, st.revealed ? .7 : .1); }
+    else if (tk.kind === 'eat'){ st.g.visible = !st.done; st.g.scale.set(1, 1, 1); }
+    else if (tk.kind === 'decorate'){ decorateVisual(st); }
+  }));
+  const dr = reg.tasks.find(tk => tk.kind === 'dribble'); if (dr){ dr.ball.x = dr.spawn[0]; dr.ball.z = dr.spawn[1]; dr.ball.vx = dr.ball.vz = 0; }
+}
+function setGhostOpacity(st, o){ if (st.obj.userData.mats) st.obj.userData.mats.forEach(m => { m.opacity = o; }); }
+function decorateVisual(st){
+  const on = st.style >= 0;
+  st.face.visible = on; if (on){ st.face.material.map = R.faces[st.style]; st.face.material.needsUpdate = true; }
+  st.pm.color.setHex(on ? 0xd0600f : 0xb9661f); st.pm.emissiveIntensity = on ? .1 : 0; st.light.intensity = on ? 1.4 : 0;
+  st.beacon.visible = !on;
 }
 function showRegion(){
   if (glOK){
     Object.values(REGIONS).forEach(r => { r.group.visible = r === REG; });
     scene.background.setHex(REG.bg); scene.fog.density = REG.density;
-    REG.toys.forEach(o => { const m = R.toyMeshes[o.id]; m.g.visible = !o.found; m.g.scale.set(1, 1, 1); m.g.position.set(o.x, 0, o.z); });
+    syncTaskVisuals(REG);
     R.restoreP = R.restoreTarget = progress(); applyRestore(R.restoreP);
     camera.position.set(dog.x, 10.5, dog.z + 12.5); camera.lookAt(dog.x, 1, dog.z - 1.5);
   }
   regionAudio();
 }
 
-/* ================= logic ================= */
-const nearestToy = () => { let best = null, bd = 1e9; toys().forEach(o => { if (o.found) return; const d = Math.hypot(o.x - dog.x, o.z - dog.z); if (d < bd){ bd = d; best = o; } }); return best ? { toy:best, d:bd } : null; };
+/* ================= targets & logic ================= */
+const regName = id => t('reg_' + id);
+function targets(){
+  const list = [];
+  REG.tasks.forEach(tk => {
+    if (tk.kind === 'dribble'){ if (tk.done < tk.n) list.push({ tk, x:tk.ball.x, z:tk.ball.z, ball:true }); return; }
+    tk.state.forEach(st => { if (st.done || (tk.kind === 'decorate' && st.style >= 0)) return; list.push({ tk, st, x:st.g ? st.g.position.x : st.x, z:st.g ? st.g.position.z : st.z }); });
+  });
+  return list;
+}
+function nearestTarget(){ let best = null, bd = 1e9; targets().forEach(o => { const d = Math.hypot(o.x - dog.x, o.z - dog.z); if (d < bd){ bd = d; best = o; } }); return best ? Object.assign(best, { d:bd }) : null; }
 function dirWord(x, z){ const a = Math.atan2(x - dog.x, -(z - dog.z)); let i = Math.round(a / (Math.PI / 4)); i = ((i % 8) + 8) % 8; return t('dirs')[i]; }
 function distWord(d){ const n = Math.round(d); return n < 1 ? t('here') : n === 1 ? t('step1') : t('steps', { n }); }
-const toyName = o => t('toy_' + o.id);
-const regName = id => t('reg_' + id);
-function collide(p){
+function collide(p, rad = .55, boxes = REG.boxes){
   const r = Math.hypot(p.x, p.z); if (r > 31){ p.x *= 31 / r; p.z *= 31 / r; }
-  REG.boxes.forEach(B => {
-    if (p.x > B.x0 && p.x < B.x1 && p.z > B.z0 && p.z < B.z1){
+  boxes.forEach(B => {
+    if (p.x > B.x0 - rad + .55 && p.x < B.x1 + rad - .55 && p.z > B.z0 - rad + .55 && p.z < B.z1 + rad - .55){
       const d = [p.x - B.x0, B.x1 - p.x, p.z - B.z0, B.z1 - p.z], m = Math.min(...d);
-      if (m === d[0]) p.x = B.x0; else if (m === d[1]) p.x = B.x1; else if (m === d[2]) p.z = B.z0; else p.z = B.z1;
+      if (m === d[0]) p.x = B.x0 - rad + .55; else if (m === d[1]) p.x = B.x1 + rad - .55; else if (m === d[2]) p.z = B.z0 - rad + .55; else p.z = B.z1 + rad - .55;
     }
   });
-  REG.obst.forEach(o => { const dx = p.x - o.x, dz = p.z - o.z, d = Math.hypot(dx, dz), rr = o.r + .55; if (d < rr && d > 1e-4){ p.x = o.x + dx / d * rr; p.z = o.z + dz / d * rr; } });
+  REG.obst.forEach(o => { const dx = p.x - o.x, dz = p.z - o.z, d = Math.hypot(dx, dz), rr = o.r + rad; if (d < rr && d > 1e-4){ p.x = o.x + dx / d * rr; p.z = o.z + dz / d * rr; } });
 }
-let beepT = 0, nearAnnounced = null, npcCaptionT = 0, barkCool = 0, autoGrabT = 0, strongCaptioned = false;
+let beepT = 0, barkCool = 0, strongCaptioned = false, promptFor = null, autoActT = 0;
+function steerTarget(tg){
+  if (!tg.ball) return { x:tg.x, z:tg.z };
+  const gl = tg.tk.goal, gx = (gl.x0 + gl.x1) / 2, gz = gl.z - 1;
+  let ux = gx - tg.x, uz = gz - tg.z; const l = Math.hypot(ux, uz) || 1; ux /= l; uz /= l;
+  const bx = tg.x - ux * 1.3, bz = tg.z - uz * 1.3;
+  if (Math.hypot(dog.x - bx, dog.z - bz) > .7 && ((dog.x - tg.x) * ux + (dog.z - tg.z) * uz) > -.6) return { x:bx - uz * 1.4 * Math.sign((dog.x - tg.x) * -uz + (dog.z - tg.z) * ux || 1), z:bz + ux * 1.4 * Math.sign((dog.x - tg.x) * -uz + (dog.z - tg.z) * ux || 1) };
+  if (Math.hypot(dog.x - bx, dog.z - bz) > .7) return { x:bx, z:bz };
+  return { x:tg.x + ux, z:tg.z + uz };
+}
 function update(dt){
   const time = performance.now() / 1000;
   barkCool -= dt;
-  if (state === 'play' || state === 'win'){
+  const playing = state === 'play' || state === 'win';
+  if (playing){
     let mx = 0, mz = 0;
     if (keys.arrowleft || keys.a) mx -= 1; if (keys.arrowright || keys.d) mx += 1;
     if (keys.arrowup || keys.w) mz -= 1; if (keys.arrowdown || keys.s) mz += 1;
     mx += joy.x; mz += joy.z;
-    const target = nearestToy();
+    const tg = nearestTarget();
     if ((mx || mz) && autoFollow) setFollow(false, true);
-    if (autoFollow && target){
-      let dx = target.toy.x - dog.x, dz = target.toy.z - dog.z; const l = Math.hypot(dx, dz) || 1; dx /= l; dz /= l;
+    if (autoFollow && tg){
+      const aim = steerTarget(tg);
+      let dx = aim.x - dog.x, dz = aim.z - dog.z; const l = Math.hypot(dx, dz) || 1; dx /= l; dz /= l;
       if (dog.detourT > 0){ dog.detourT -= dt; const a = dog.detour * 1.2, c = Math.cos(a), s = Math.sin(a); const nx = dx * c - dz * s, nz = dx * s + dz * c; dx = nx; dz = nz; }
-      mx = dx; mz = dz;
-    }
+      if (l > .25 || tg.ball){ mx = dx; mz = dz; }
+    } else if (autoFollow && !tg) setFollow(false, true);
     const len = Math.hypot(mx, mz);
-    dog.moving = len > .12;
+    dog.moving = len > .12; dog.vx = dog.vz = 0;
     if (dog.moving){
       const sp = 5.2 * S.speed * Math.min(1, len); mx /= len; mz /= len;
       const ox = dog.x, oz = dog.z; const p = { x:dog.x + mx * sp * dt, z:dog.z + mz * sp * dt }; collide(p); dog.x = p.x; dog.z = p.z;
-      const moved = Math.hypot(dog.x - ox, dog.z - oz);
-      if (autoFollow){ if (moved < sp * dt * .35){ dog.stuck += dt; if (dog.stuck > .35){ dog.detour = Math.random() < .5 ? 1 : -1; dog.detourT = .9; dog.stuck = 0; } } else dog.stuck = 0; }
+      dog.vx = (dog.x - ox) / dt; dog.vz = (dog.z - oz) / dt;
+      if (autoFollow){ if (Math.hypot(dog.x - ox, dog.z - oz) < sp * dt * .35){ dog.stuck += dt; if (dog.stuck > .35){ dog.detour = Math.random() < .5 ? 1 : -1; dog.detourT = .9; dog.stuck = 0; } } else dog.stuck = 0; }
       const want = Math.atan2(mx, mz); let dr = want - dog.rot; while (dr > Math.PI) dr -= Math.PI * 2; while (dr < -Math.PI) dr += Math.PI * 2;
       dog.rot += dr * Math.min(1, dt * 10);
     }
-    if (target){
-      if (target.d < 1.9){
-        if (nearAnnounced !== target.toy.id){ nearAnnounced = target.toy.id; showPrompt(target.toy); SFX.squeak(0); caption(t('cap_squeak')); buzz([40, 30, 40]); autoGrabT = .6; }
-        if ((autoFollow || S.oneSwitch) && state === 'play'){ autoGrabT -= dt; if (autoGrabT <= 0){ setFollow(false, true); startChallenge(target.toy); } }
-      } else if (nearAnnounced){ nearAnnounced = null; hidePrompt(); }
-      if (state === 'play'){
-        beepT -= dt;
-        if (beepT <= 0){
-          beepT = Math.max(.14, Math.min(1.3, target.d / 22));
-          const dx = target.toy.x - dog.x, dz = target.toy.z - dog.z;
-          if (S.trailAudio) SFX.scent(Math.max(-1, Math.min(1, dx / 10)), target.d, dz > 2);
-          if (S.trailHaptic && target.d < 10) buzz(15);
-        }
-        if (target.d < 4 && !strongCaptioned){ strongCaptioned = true; caption(t('cap_strong')); } else if (target.d > 6) strongCaptioned = false;
+    if (state === 'play') interactions(dt, time);
+    if (state === 'play' && tg){
+      beepT -= dt;
+      if (beepT <= 0){
+        beepT = Math.max(.14, Math.min(1.3, tg.d / 22));
+        const dx = tg.x - dog.x, dz = tg.z - dog.z;
+        if (S.trailAudio) SFX.scent(Math.max(-1, Math.min(1, dx / 10)), tg.d, dz > 2);
+        if (S.trailHaptic && tg.d < 10) buzz(15);
       }
+      if (tg.d < 4 && !strongCaptioned){ strongCaptioned = true; caption(t('cap_strong')); } else if (tg.d > 6) strongCaptioned = false;
     }
-    npcCaptionT -= dt;
-    if (glOK) REG.npcs.forEach(g => { const u = g.userData; const a = time * u.sp + u.ph;
-      if (u.kind === 'ghost'){ g.position.set(u.cx + Math.cos(a) * u.r, 1.2 + (S.reducedMotion ? 0 : Math.sin(time * 1.7 + u.ph) * .3), u.cz + Math.sin(a) * u.r); g.rotation.y = -a + (u.sp > 0 ? 0 : Math.PI); }
-      else { g.position.set(u.cx + Math.cos(a) * u.r, .45 + (S.reducedMotion ? .3 : Math.abs(Math.sin(time * 3 + u.ph)) * 2.2), u.cz + Math.sin(a) * u.r); g.rotation.x = time * 2; }
-      const d = Math.hypot(g.position.x - dog.x, g.position.z - dog.z);
-      if (d < 3 && npcCaptionT <= 0 && state === 'play'){ npcCaptionT = 7; const pan = Math.max(-1, Math.min(1, (g.position.x - dog.x) / 4));
-        if (u.kind === 'ghost'){ SFX.ghost(pan); caption(t('cap_ghost')); } else { SFX.boing(pan); caption(t('cap_boing')); } } });
   }
   if (!glOK) return;
   R.dog.position.set(dog.x, 0, dog.z); R.dog.rotation.y = dog.rot;
   const walk = dog.moving ? Math.sin(time * 14 * S.speed) : 0;
-  R.legs.forEach((l, i) => { l.rotation.x = walk * .6 * (i === 0 || i === 3 ? 1 : -1); });
-  R.tail.rotation.z = Math.sin(time * (dog.moving ? 16 : 8)) * .45;
+  R.legs.forEach((l, i) => { l.rotation.x = walk * .55 * (i === 0 || i === 3 ? 1 : -1); });
+  R.tail.rotation.z = Math.sin(time * (dog.moving ? 16 : 8)) * .4;
   R.dogHead.rotation.x = dog.moving ? Math.sin(time * 14) * .05 : Math.sin(time * 1.5) * .05 - .05;
-  R.ears.forEach((e, i) => { e.rotation.z = dog.moving ? Math.sin(time * 14 + i) * .18 : Math.sin(time * 1.2 + i) * .04; });
+  R.dogHead.rotation.z = dog.moving ? 0 : Math.sin(time * .8) * .06;
+  R.ears.forEach((e, i) => { e.rotation.z = dog.moving ? Math.sin(time * 14 + i) * .16 : Math.sin(time * 1.2 + i) * .04; });
+  R.tongue.scale.z = 1.3 + Math.sin(time * 9) * .15;
   const cx = dog.x, cz = dog.z + 12.5, cy = 10.5;
   if (S.reducedMotion) camera.position.set(cx, cy, cz);
   else { const k = 1 - Math.exp(-dt * 4); camera.position.x += (cx - camera.position.x) * k; camera.position.y += (cy - camera.position.y) * k; camera.position.z += (cz - camera.position.z) * k; }
   camera.lookAt(dog.x, 1, dog.z - 1.5);
-  toys().forEach(o => { const m = R.toyMeshes[o.id];
-    if (o.found){ if (m.g.visible){ m.g.position.x += (dog.x - m.g.position.x) * .18; m.g.position.z += (dog.z - m.g.position.z) * .18; m.g.scale.multiplyScalar(.9); if (m.g.scale.x < .05) m.g.visible = false; } return; }
-    m.toy.position.y = .7 + (S.reducedMotion ? 0 : Math.sin(time * 2 + o.x) * .15); m.toy.rotation.y = time * (S.reducedMotion ? .3 : 1.2);
-    m.flash = Math.max(0, m.flash - dt);
-    m.beam.material.opacity = (S.highContrast ? .3 : .13) + m.flash * .5 + (S.reducedMotion ? 0 : Math.sin(time * 3) * .04);
-    const ph = time * .8 % 1, rs = 1 + (S.reducedMotion ? 0 : ph * .6); m.ring.scale.set(rs, rs, rs); m.ring.material.opacity = S.reducedMotion ? .6 : .65 * (1 - ph);
-  });
-  const tg = nearestToy(); R.trail.visible = !!(tg && S.trailVisual && state !== 'win');
+  animateTasks(dt, time);
+  const tg = nearestTarget(); R.trail.visible = !!(tg && S.trailVisual && state !== 'win');
   if (R.trail.visible){
-    const pos = R.trail.geometry.attributes.position.array, n = R.trailN; let dx = tg.toy.x - dog.x, dz = tg.toy.z - dog.z; const d = Math.hypot(dx, dz) || 1; dx /= d; dz /= d;
+    const pos = R.trail.geometry.attributes.position.array, n = R.trailN; let dx = tg.x - dog.x, dz = tg.z - dog.z; const d = Math.hypot(dx, dz) || 1; dx /= d; dz /= d;
     const L = Math.min(d, 15);
     for (let i = 0; i < n; i++){
       const f = S.reducedMotion ? i / n : (i / n + time * .35) % 1; const w = S.reducedMotion ? 0 : Math.sin(f * 12 + time * 3) * .22;
@@ -1127,10 +1136,133 @@ function update(dt){
   if (Math.abs(R.restoreP - R.restoreTarget) > .001){ R.restoreP += (R.restoreTarget - R.restoreP) * Math.min(1, dt * 1.4); applyRestore(R.restoreP); }
   for (let i = R.fireworks.length - 1; i >= 0; i--){
     const fw = R.fireworks[i]; fw.life -= dt; const p = fw.pts.geometry.attributes.position.array;
-    for (let k = 0; k < fw.v.length; k++){ fw.v[k][1] -= 4 * dt; p[k*3] += fw.v[k][0] * dt; p[k*3+1] += fw.v[k][1] * dt; p[k*3+2] += fw.v[k][2] * dt; }
-    fw.pts.geometry.attributes.position.needsUpdate = true; fw.pts.material.opacity = Math.max(0, fw.life / 1.8);
+    for (let k = 0; k < fw.v.length; k++){ fw.v[k][1] -= (fw.g ?? 4) * dt; p[k*3] += fw.v[k][0] * dt; p[k*3+1] += fw.v[k][1] * dt; p[k*3+2] += fw.v[k][2] * dt; }
+    fw.pts.geometry.attributes.position.needsUpdate = true; fw.pts.material.opacity = Math.max(0, fw.life / fw.max);
     if (fw.life <= 0){ scene.remove(fw.pts); fw.pts.geometry.dispose(); fw.pts.material.dispose(); R.fireworks.splice(i, 1); }
   }
+}
+function animateTasks(dt, time){
+  REG.tasks.forEach(tk => {
+    if (tk.kind === 'dribble'){
+      tk.mesh.position.set(tk.ball.x, .45, tk.ball.z);
+      tk.mesh.rotation.x += tk.ball.vz * dt / .45; tk.mesh.rotation.z -= tk.ball.vx * dt / .45;
+      tk.beacon.position.set(tk.ball.x, 0, tk.ball.z); tk.beacon.visible = tk.done < tk.n;
+      pulseBeacon(tk.beacon, time); return;
+    }
+    tk.state.forEach(st => {
+      if (st.done && tk.kind !== 'decorate'){ if (st.g.visible){ st.g.scale.multiplyScalar(.86); st.g.position.y += dt * 3; if (st.g.scale.x < .05) st.g.visible = false; } return; }
+      if (tk.kind === 'find'){
+        const bob = S.reducedMotion ? 0 : Math.sin(time * 1.6 + st.i) * .25;
+        if (REG.id === 'manor'){ st.obj.position.y = .3 + bob + (st.revealed ? .3 : 0); st.obj.rotation.y = Math.atan2(dog.x - st.g.position.x, dog.z - st.g.position.z); if (!st.revealed) setGhostOpacity(st, .08 + (S.reducedMotion ? 0 : Math.abs(Math.sin(time * .9 + st.i)) * .08)); }
+        else if (st.revealed){ st.obj.position.y = .4 + Math.abs(S.reducedMotion ? 0 : Math.sin(time * 4 + st.i)) * .6; }
+        if (st.revealed) pulseBeacon(st.beacon, time);
+      } else if (tk.kind === 'eat'){
+        st.obj.rotation.y = time * 2 + st.i; st.obj.position.y = .55 + (S.reducedMotion ? 0 : Math.sin(time * 3 + st.i) * .1);
+      } else if (tk.kind === 'decorate'){
+        if (st.style < 0) pulseBeacon(st.beacon, time);
+        else st.light.intensity = 1.2 + (S.reducedMotion ? 0 : Math.sin(time * 9 + st.i * 3) * .25 + Math.sin(time * 23 + st.i) * .1);
+      }
+    });
+  });
+}
+function pulseBeacon(b, time){
+  const ph = time * .8 % 1, rs = 1 + (S.reducedMotion ? 0 : ph * .6);
+  b.userData.ring.scale.set(rs, rs, rs); b.userData.ring.material.opacity = S.reducedMotion ? .6 : .65 * (1 - ph);
+  b.userData.beam.material.opacity = (S.highContrast ? .3 : .13) + (S.reducedMotion ? 0 : Math.sin(time * 3) * .04);
+}
+function panTo(x){ return Math.max(-1, Math.min(1, (x - dog.x) / 8)); }
+function interactions(dt, time){
+  let near = null;
+  REG.tasks.forEach(tk => {
+    if (tk.kind === 'dribble'){ dribble(tk, dt); return; }
+    tk.state.forEach(st => {
+      if (st.done) return;
+      const gx = st.g ? st.g.position.x : st.x, gz = st.g ? st.g.position.z : st.z;
+      const d = Math.hypot(gx - dog.x, gz - dog.z);
+      if (tk.kind === 'find'){
+        if (!st.revealed && d < 2.6) reveal(tk, st);
+        if (st.revealed && REG.id === 'manor' && S.mode === 'adventure' && d < 4.5 && d > 1.3 && glOK){
+          const ax = gx - dog.x, az = gz - dog.z, l = Math.hypot(ax, az) || 1, sp = .9 * S.speed * dt;
+          const p = { x:gx + ax / l * sp, z:gz + az / l * sp }; collide(p, .6); if (Math.hypot(p.x - st.x, p.z - st.z) < 5){ st.g.position.x = p.x; st.g.position.z = p.z; }
+        }
+        if (st.revealed && d < 1.4) complete(tk, st);
+      } else if (tk.kind === 'eat'){ if (d < 1.15) complete(tk, st); }
+      else if (tk.kind === 'decorate'){ if (d < 2.4 && (!near || d < near.d)) near = { tk, st, d }; }
+    });
+  });
+  if (near){
+    if (promptFor !== near.st){ promptFor = near.st; showPrompt(); autoActT = .5; }
+    if ((autoFollow || S.oneSwitch) && near.st.style < 0){ autoActT -= dt; if (autoActT <= 0){ decorate(near.tk, near.st); autoActT = 99; } }
+  } else if (promptFor){ promptFor = null; hidePrompt(); }
+}
+function reveal(tk, st){
+  st.revealed = true;
+  if (glOK){ st.beacon.visible = true; if (REG.id === 'arena') st.obj.visible = true; else setGhostOpacity(st, .7); burst(st.g.position.x, 1.2, st.g.position.z, 0xbfd4ff, 24); }
+  const x = st.g ? st.g.position.x : st.x;
+  if (REG.id === 'manor'){ SFX.giggle(panTo(x)); caption(t('cap_ghost')); } else { SFX.boing(panTo(x)); caption(t('cap_boing')); }
+  buzz(25);
+}
+function complete(tk, st){
+  st.done = true;
+  const d = doneCount(tk), n = tk.n, x = st.g ? st.g.position.x : st.x, z = st.g ? st.g.position.z : st.z;
+  if (tk.kind === 'find'){
+    if (REG.id === 'manor'){ SFX.poof(panTo(x)); caption(t('cap_poof')); speak(t('caught_ghost', { d, n })); burst(x, 1.4, z, 0xdfe8ff, 50); }
+    else { SFX.chime(); caption(t('cap_boing')); speak(t('found_ball', { d, n })); burst(x, 1, z, 0xffd23f, 40); }
+    buzz([40, 30, 60]);
+  } else if (tk.kind === 'eat'){
+    SFX.crunch(panTo(x)); caption(t('cap_crunch')); buzz(20); announce(t('eaten', { d, n }));
+    if (S.narration && (d === n || d % 6 === 0)) speak(t('eaten', { d, n }));
+    burst(x, .6, z, 0xffd27a, 14);
+  }
+  afterProgress(tk);
+}
+function decorate(tk, st){
+  const first = st.style < 0;
+  st.style = (st.style + 1) % 4;
+  if (glOK) decorateVisual(st);
+  SFX.carve(panTo(st.x)); caption(t('cap_carve')); buzz([30, 20, 30]);
+  if (glOK) burst(st.x, 1.4, st.z, 0xffa53a, 30);
+  if (first){ st.done = true; speak(t('decorated', { style:t('style_' + st.style), d:doneCount(tk), n:tk.n })); afterProgress(tk); }
+  else speak(`${t('redecorate')} ${t('style_' + st.style)}.`);
+}
+function dribble(tk, dt){
+  const b = tk.ball; b.cool -= dt;
+  const dx = b.x - dog.x, dz = b.z - dog.z, d = Math.hypot(dx, dz);
+  if (d < 1.05 && dog.moving){
+    const nx = dx / (d || 1), nz = dz / (d || 1);
+    const push = Math.max(4, Math.hypot(dog.vx, dog.vz) * 1.5);
+    b.vx = nx * push + dog.vx * .3; b.vz = nz * push + dog.vz * .3;
+    b.x = dog.x + nx * 1.06; b.z = dog.z + nz * 1.06;
+    if (b.cool <= 0){ SFX.kick(panTo(b.x)); caption(t('cap_kick')); buzz(15); b.cool = .5; }
+  }
+  b.x += b.vx * dt; b.z += b.vz * dt;
+  const f = Math.exp(-dt * 1.6); b.vx *= f; b.vz *= f;
+  const g = tk.goal;
+  if (b.z < g.z && b.x > g.x0 && b.x < g.x1){
+    tk.done++; SFX.cheer(); SFX.fanfare(); caption(t('cap_cheer')); buzz([40, 30, 100]);
+    speak(t('goal', { d:tk.done, n:tk.n })); burst(b.x, 1.5, b.z, 0x4fe3ff, 60);
+    b.x = tk.spawn[0]; b.z = tk.spawn[1]; b.vx = b.vz = 0;
+    if (glOK) drawScoreboard(REG);
+    afterProgress(tk); return;
+  }
+  const p = { x:b.x, z:b.z }; const before = { x:p.x, z:p.z };
+  collide(p, .45, REG.boxes.filter(B => !(B.x0 === 11.6 && b.x > g.x0 && b.x < g.x1)));
+  if (p.x !== before.x){ b.vx *= -.6; } if (p.z !== before.z){ b.vz *= -.6; }
+  b.x = p.x; b.z = p.z;
+}
+function afterProgress(tk){
+  const d = doneCount(tk);
+  if (d === tk.n){ setTimeout(() => { SFX.chime(); speak(t('task_done', { label:t('task_' + tk.id) }), false); }, 1200); }
+  renderTasks(); R.restoreTarget = progress(); saveRun();
+  if (progress() >= 1) setTimeout(win, 2400);
+}
+function burst(x, y, z, color, n){
+  if (!glOK || S.reducedMotion) return;
+  const g = new THREE.BufferGeometry(), p = new Float32Array(n * 3), v = [];
+  for (let i = 0; i < n; i++){ p[i*3] = x; p[i*3+1] = y; p[i*3+2] = z; const th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1), s = 1.5 + Math.random() * 2; v.push([Math.sin(ph) * Math.cos(th) * s, Math.abs(Math.cos(ph)) * s + 1, Math.sin(ph) * Math.sin(th) * s]); }
+  g.setAttribute('position', new THREE.BufferAttribute(p, 3));
+  const pts = new THREE.Points(g, new THREE.PointsMaterial({ map:R.dot, color, size:.35, transparent:true, opacity:1, depthWrite:false, blending:THREE.AdditiveBlending }));
+  scene.add(pts); R.fireworks.push({ pts, v, life:.9, max:.9, g:3 });
 }
 function spawnFirework(){
   const n = 70, g = new THREE.BufferGeometry(), p = new Float32Array(n * 3), v = [];
@@ -1140,7 +1272,7 @@ function spawnFirework(){
   g.setAttribute('position', new THREE.BufferAttribute(p, 3));
   const cols = [0xffb547, 0x4fe3ff, 0xb48cff, 0xff6fa8, 0x8dff9b];
   const pts = new THREE.Points(g, new THREE.PointsMaterial({ map:R.dot, color:cols[Math.floor(Math.random() * cols.length)], size:.7, transparent:true, opacity:1, depthWrite:false, blending:THREE.AdditiveBlending, fog:false }));
-  scene.add(pts); R.fireworks.push({ pts, v, life:1.8 });
+  scene.add(pts); R.fireworks.push({ pts, v, life:1.8, max:1.8 });
   tone({ f:180, f2:60, type:'triangle', dur:.4, vol:.12 }); noise({ dur:.5, vol:.08, freq:2000, f2:400 });
 }
 
@@ -1149,364 +1281,81 @@ function bark(){
   if (state !== 'play' || barkCool > 0) return; barkCool = .9;
   SFX.bark(); caption(t('cap_bark')); buzz(30); setTimeout(SFX.sonar, 250);
   if (glOK) R.sonar.userData = { t:0, x:dog.x, z:dog.z };
-  const items = [];
-  toys().forEach(o => { if (o.found) return; const d = Math.hypot(o.x - dog.x, o.z - dog.z); if (d < 14){ items.push({ name:toyName(o), d, x:o.x, z:o.z }); if (glOK) R.toyMeshes[o.id].flash = 1.2;
-    setTimeout(() => SFX.squeak(Math.max(-1, Math.min(1, (o.x - dog.x) / 10))), 450 + d * 40); } });
-  REG.landmarks.forEach(l => { const d = Math.hypot(l.x - dog.x, l.z - dog.z); if (d < 10) items.push({ name:t('lm_' + l.id), d, x:l.x, z:l.z }); });
-  if (glOK) REG.npcs.forEach(g => { const d = Math.hypot(g.position.x - dog.x, g.position.z - dog.z); if (d < 8) items.push({ name:t(g.userData.kind === 'ghost' ? 'lm_ghost' : 'lm_bouncer'), d, x:g.position.x, z:g.position.z }); });
+  let revealedNow = 0; const items = [];
+  REG.tasks.forEach(tk => (tk.state || []).forEach(st => {
+    if (st.done) return; const x = st.g ? st.g.position.x : st.x, z = st.g ? st.g.position.z : st.z; const d = Math.hypot(x - dog.x, z - dog.z);
+    if (tk.kind === 'find' && !st.revealed && d < 13){ setTimeout(() => reveal(tk, st), 300 + d * 40); revealedNow++; }
+    if (d < 12 && !(tk.kind === 'decorate' && st.style >= 0)) items.push({ name:t('one_' + tk.id), d, x, z });
+  }));
+  const dr = REG.tasks.find(tk => tk.kind === 'dribble'); if (dr && dr.done < dr.n){ const d = Math.hypot(dr.ball.x - dog.x, dr.ball.z - dog.z); if (d < 14) items.push({ name:t('one_goals'), d, x:dr.ball.x, z:dr.ball.z }); }
+  REG.landmarks.forEach(l => { const d = Math.hypot(l.x - dog.x, l.z - dog.z); if (d < 9) items.push({ name:t('lm_' + l.id), d, x:l.x, z:l.z }); });
   items.sort((a, b) => a.d - b.d);
-  let msg = t('bark_prefix') + (items.length ? items.slice(0, 4).map(i => `${i.name}: ${distWord(i.d)}, ${dirWord(i.x, i.z)}`).join('; ') + '.' : t('bark_none'));
-  const n = nearestToy(); if (n && n.d >= 14) msg += ' ' + t('nearest', { toy:toyName(n.toy), dist:distWord(n.d), dir:dirWord(n.toy.x, n.toy.z) });
+  let msg = t('bark_prefix');
+  if (revealedNow) msg += t('revealed', { n:revealedNow === 1 ? t('one_' + REG.tasks[0].id) : `${revealedNow} × ${REG.tasks[0].icon}` }) + ' ';
+  msg += items.length ? items.slice(0, 4).map(i => `${i.name}: ${distWord(i.d)}, ${dirWord(i.x, i.z)}`).join('; ') + '.' : t('bark_none');
+  const n = nearestTarget(); if (n && n.d >= 12) msg += ' ' + t('nearest', { what:t('one_' + n.tk.id), dist:distWord(n.d), dir:dirWord(n.x, n.z) });
   speak(msg);
 }
 function setFollow(on, silent){
-  if (on && !nearestToy()){ speak(t('all_found')); on = false; }
+  if (on && !nearestTarget()){ speak(t('all_found')); on = false; }
   autoFollow = on; dog.stuck = 0; dog.detourT = 0;
   $('#bFollow').setAttribute('aria-pressed', String(on));
   $('#followLbl').textContent = on ? t('following') : t('follow');
   if (!silent) speak(on ? t('follow_on') : t('follow_off'));
 }
-function showPrompt(o){ $('#promptTxt').textContent = t('near_prompt', { toy:toyName(o) }); $('#prompt').classList.add('show'); speak(t('near_prompt', { toy:toyName(o) })); }
+function showPrompt(){ $('#promptTxt').textContent = t('prompt_decorate'); $('#prompt').classList.add('show'); if (promptFor && promptFor.style < 0) announce(t('prompt_decorate')); }
 function hidePrompt(){ $('#prompt').classList.remove('show'); }
-function tryInteract(){ const n = nearestToy(); if (n && n.d < 1.9) startChallenge(n.toy); else bark(); }
-function statusText(){ const n = toys().filter(o => o.found).length; let s = t('status', { reg:regName(REG.id), n }); const nt = nearestToy(); if (nt) s += ' ' + t('nearest', { toy:toyName(nt.toy), dist:distWord(nt.d), dir:dirWord(nt.toy.x, nt.toy.z) }); return s; }
-
-/* ================= challenges ================= */
-let CH = null, chTimerI = null, scanI = null, chRaf = 0;
-const shuffle = a => { for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-const pick = a => a[Math.floor(Math.random() * a.length)];
-function clearChTimers(){ clearInterval(chTimerI); chTimerI = null; clearInterval(scanI); scanI = null; cancelAnimationFrame(chRaf); if (CH){ CH.timeouts.forEach(clearTimeout); CH.intervals.forEach(clearInterval); } }
-function later(fn, ms){ const id = setTimeout(fn, ms); CH.timeouts.push(id); return id; }
-function every(fn, ms){ const id = setInterval(fn, ms); CH.intervals.push(id); return id; }
-function startScan(){
-  clearInterval(scanI); scanI = null; if (!S.oneSwitch) return;
-  let i = -1;
-  const stepScan = () => { const btns = $$('#chBody button:not([disabled]):not([hidden])'); if (!btns.length) return; i = (i + 1) % btns.length; btns[i].focus(); };
-  stepScan(); scanI = setInterval(stepScan, 1900 / S.speed);
+function tryInteract(){
+  if (promptFor){ const tk = REG.tasks.find(k => k.state && k.state.includes(promptFor)); if (tk) return decorate(tk, promptFor); }
+  bark();
 }
-function startChallenge(o){
-  if (state !== 'play') return;
-  state = 'challenge'; hidePrompt(); clearKeys();
-  CH = { toy:o, correct:0, total:0, errors:0, timeouts:[], intervals:[], onKey:null };
-  $('#chKicker').textContent = `${t('challenge')} · ${o.emoji} ${toyName(o)}`;
-  $('#chFeedback').textContent = ''; $('#chFeedback').className = ''; $('#chScore').textContent = ''; $('#chRound').textContent = '';
-  $('#chTimer').classList.add('off');
-  CHALLENGES[o.ch]();
-  openDialog('#dlgCh');
+function statusText(){
+  const list = REG.tasks.map(tk => t('status_item', { label:t('task_' + tk.id), d:doneCount(tk), n:tk.n })).join(', ');
+  let s = t('status', { reg:regName(REG.id), list });
+  const nt = nearestTarget(); if (nt) s += ' ' + t('nearest', { what:t('one_' + nt.tk.id), dist:distWord(nt.d), dir:dirWord(nt.x, nt.z) });
+  return s;
 }
-function finishChallenge(stars){
-  clearChTimers(); const o = CH.toy; o.found = true; o.stars = stars; CH = null;
-  $('#dlgCh').close(); state = 'play';
-  const n = toys().filter(x => x.found).length, left = toys().length - n;
-  renderSlots(); R.restoreTarget = n / toys().length;
-  SFX.fanfare(); caption(t('cap_found')); buzz([60, 40, 60, 40, 120]);
-  if (REG.id === 'arena'){ setTimeout(SFX.cheer, 300); caption(t('cap_cheer')); }
-  speak((n === toys().length ? t('found_last', { toy:toyName(o) }) : t('found_msg_' + REG.id, { toy:toyName(o), left })) + ' ' + t('stars_got', { s:stars }));
-  saveRun(); $('#game').focus();
-  if (n === toys().length) setTimeout(win, 2600);
-}
-const starsFrom = ratio => ratio >= .9 ? 3 : ratio >= .6 ? 2 : 1;
-function setHead(title, desc){ $('#chTitle').textContent = title; $('#chDesc').textContent = desc; }
-function feedback(text, good){ const f = $('#chFeedback'); f.textContent = text; f.className = text ? (good ? 'good' : 'bad') : ''; }
-function startTimer(ms, onEnd){
-  const tm = $('#chTimer'); clearInterval(chTimerI);
-  if (S.mode !== 'adventure'){ tm.classList.add('off'); return; }
-  tm.classList.remove('off'); const bar = tm.querySelector('span'); const t0 = performance.now(); bar.style.width = '100%';
-  chTimerI = setInterval(() => { const f = 1 - (performance.now() - t0) / ms; bar.style.width = Math.max(0, f * 100) + '%'; if (f <= 0){ clearInterval(chTimerI); onEnd(); } }, 100);
-}
-function askQuestion({ prompt, options, correct, say, explain, extra, idx, count, onNext }){
-  const body = $('#chBody');
-  body.innerHTML = `<div class="q-prompt">${prompt}</div><div class="opts" role="group"></div>${extra ? '<div class="row" style="justify-content:center;margin-top:10px"></div>' : ''}`;
-  const box = body.querySelector('.opts');
-  $('#chRound').textContent = t('qOf', { i:idx, n:count });
-  $('#chScore').textContent = t('score', { c:CH.correct, t:CH.total });
-  let done = false;
-  const answer = i => {
-    if (done) return; done = true; clearInterval(chTimerI); clearInterval(scanI);
-    const btns = [...box.querySelectorAll('button')]; btns.forEach(b => b.disabled = true);
-    CH.total++;
-    if (i === correct){ CH.correct++; btns[i].classList.add('right'); SFX.chime(); feedback(t('correct'), true); speak(t('correct')); }
-    else { if (i >= 0) btns[i].classList.add('wrong'); btns[correct].classList.add('right'); SFX.soft(); const m = (i < 0 ? t('time_up') + ' ' : '') + explain; feedback(m, false); speak(m); }
-    $('#chScore').textContent = t('score', { c:CH.correct, t:CH.total });
-    later(onNext, (i === correct ? 1100 : 2600) / S.speed);
-  };
-  options.forEach((label, i) => { const b = document.createElement('button'); b.className = 'btn opt'; b.textContent = label; b.addEventListener('click', () => answer(i)); box.appendChild(b); });
-  if (extra){ const b = document.createElement('button'); b.className = 'btn'; b.textContent = extra.label; b.addEventListener('click', extra.fn); body.querySelector('.row').appendChild(b); }
-  feedback('', true); speak(say);
-  setTimeout(() => { const f = box.querySelector('button'); if (f) f.focus(); }, 60);
-  startTimer(11000 / S.speed + (extra ? 2500 : 0), () => answer(-1));
-  startScan();
-}
-const tolerant = () => S.mode === 'walk';
-const CHALLENGES = {
-  /* ---------- Region 1 ---------- */
-  booscary(){
-    setHead(t('bs_title'), t('bs_desc'));
-    const s = 1 + Math.floor(Math.random() * 20); const seq = Array.from({ length:7 }, (_, i) => s + i);
-    if (!seq.some(n => n % 15 === 0)) seq[seq.length - 1] = 15 * (1 + Math.floor(Math.random() * 2));
-    const ans = n => n % 15 === 0 ? 'BooScary' : n % 3 === 0 ? 'Boo' : n % 5 === 0 ? 'Scary' : String(n);
-    const ex = n => n % 15 === 0 ? 'bs_ex_both' : n % 3 === 0 ? 'bs_ex_3' : n % 5 === 0 ? 'bs_ex_5' : 'bs_ex_none';
-    let i = 0;
-    const next = () => {
-      if (i >= seq.length) return finishChallenge(starsFrom(CH.correct / CH.total));
-      const n = seq[i++]; const opts = [String(n), 'Boo', 'Scary', 'BooScary'];
-      askQuestion({ prompt:`<span class="big-num">${n}</span>`, options:opts, correct:opts.indexOf(ans(n)), say:t('bs_say', { n }), explain:t(ex(n), { n }), idx:i, count:seq.length, onNext:next });
-    };
-    next();
-  },
-  ghost(){
-    setHead(t('gt_title'), t('gt_desc'));
-    const DICT = [ { g:'Bu-ha', ro:'Salut!', en:'Hello!' }, { g:'Uu-ii', ro:'Mi-e frică!', en:"I'm scared!" }, { g:'Bu-bu-uu', ro:'Mi-e foame!', en:"I'm hungry!" },
-      { g:'Hi-hi-uu', ro:'Hai să ne jucăm!', en:"Let's play!" }, { g:'Uuu-uuu', ro:'Noapte bună!', en:'Good night!' }, { g:'Ha-bu-hi', ro:'Mulțumesc!', en:'Thank you!' } ];
-    const mean = d => d[S.lang];
-    const body = $('#chBody');
-    body.innerHTML = `<h3 style="font-size:1.05rem">${t('gt_learn')}</h3><ul class="dict"></ul><div class="row" style="justify-content:center"><button class="btn primary" id="gtReady">${t('gt_ready')}</button></div>`;
-    const ul = body.querySelector('.dict');
-    DICT.forEach(d => { const li = document.createElement('li'); li.innerHTML = `<span class="g">${d.g}</span><span>${mean(d)}</span>`;
-      const b = document.createElement('button'); b.className = 'btn'; b.textContent = '🔊 ' + t('gt_listen'); b.setAttribute('aria-label', `${t('gt_listen')}: ${d.g} – ${mean(d)}`);
-      b.addEventListener('click', () => { ghostVoice(d.g); later(() => speak(`${d.g}: ${mean(d)}`), 700); }); li.appendChild(b); ul.appendChild(li); });
-    speak(t('gt_desc'));
-    const qs = shuffle(DICT.slice()).slice(0, 5); let i = 0;
-    const next = () => {
-      if (i >= qs.length) return finishChallenge(starsFrom(CH.correct / CH.total));
-      const q = qs[i++]; const opts = shuffle([q, ...shuffle(DICT.filter(d => d !== q)).slice(0, 2)]);
-      ghostVoice(q.g);
-      askQuestion({ prompt:`<span class="ghost-phrase">„${q.g}”</span>`, options:opts.map(mean), correct:opts.indexOf(q), say:t('gt_say', { g:q.g }),
-        explain:t('gt_ex', { g:q.g, m:mean(q) }), idx:i, count:qs.length, onNext:next, extra:{ label:t('gt_again'), fn:() => ghostVoice(q.g) } });
-    };
-    $('#gtReady').addEventListener('click', next);
-    setTimeout(() => $('#gtReady').focus(), 60);
-    startScan();
-  },
-  weigh(){
-    setHead(t('pw_title'), t('pw_desc'));
-    const CATS = [ { k:'tiny', lo:1, hi:4.9 }, { k:'small', lo:5, hi:19.9 }, { k:'large', lo:20, hi:99 }, { k:'giant', lo:100, hi:820 } ];
-    const catOf = w => w < 5 ? 0 : w < 20 ? 1 : w < 100 ? 2 : 3;
-    const ws = [0, 1, 2, 3].map(c => { const C = CATS[c]; const w = C.lo + Math.random() * (C.hi - C.lo); return c === 3 ? Math.round(w) : Math.round(w * 10) / 10; });
-    ws.push(pick([5, 20, 100])); shuffle(ws);
-    let i = 0;
-    const next = () => {
-      if (i >= ws.length) return finishChallenge(starsFrom(CH.correct / CH.total));
-      const w = ws[i++]; const c = catOf(w); const sz = 60 + Math.min(1, Math.log10(w + 1) / 3) * 90;
-      const wl = String(w).replace('.', S.lang === 'ro' ? ',' : '.');
-      const svg = `<svg class="pumpkin-svg" width="${sz}" height="${sz * .85}" viewBox="0 0 100 85" aria-hidden="true"><ellipse cx="50" cy="50" rx="46" ry="32" fill="#e5761c"/><ellipse cx="50" cy="50" rx="24" ry="32" fill="#f08a2b"/><ellipse cx="50" cy="50" rx="8" ry="31" fill="#d2661a"/><rect x="46" y="8" width="8" height="14" rx="3" fill="#3f6b2a"/></svg>`;
-      SFX.squeak(0);
-      askQuestion({ prompt:`${svg}<span class="big-num">${wl} kg</span>`, options:CATS.map(C => t('cat_' + C.k)), correct:c, say:t('pw_say', { w:wl }),
-        explain:t('pw_ex', { w:wl, c:t('cat_' + CATS[c].k) }), idx:i, count:ws.length, onNext:next });
-    };
-    next();
-  },
-  candy(){
-    setHead(t('cr_title'), t('cr_desc'));
-    const DOORS = [ { id:'moon', sym:'☾', c:'#7aa2ff', f:392 }, { id:'star', sym:'★', c:'#ffd166', f:523 }, { id:'pumpkin', sym:'🎃', c:'#ff8c42', f:659 }, { id:'bat', sym:'🦇', c:'#c77dff', f:784 } ];
-    const rounds = tolerant() ? [3, 4] : [3, 4, 5];
-    const body = $('#chBody');
-    body.innerHTML = `<div class="doors" role="group"></div><div class="row" style="justify-content:center"><button class="btn primary" id="crGo">${t('cr_start')}</button><button class="btn" id="crRep" hidden>${t('cr_repeat')}</button></div>`;
-    const wrap = body.querySelector('.doors');
-    const btns = DOORS.map((d, i) => { const b = document.createElement('button'); b.className = 'btn door'; b.style.setProperty('--c', d.c);
-      b.innerHTML = `<span class="sym" aria-hidden="true">${d.sym}</span><span>${t('door_' + d.id)}</span>`; b.disabled = true; b.addEventListener('click', () => press(i)); wrap.appendChild(b); return b; });
-    let seq = [], r = 0, inputIdx = 0, accepting = false, roundErr = 0;
-    const hint = () => { btns.forEach(b => b.classList.remove('hint')); if (roundErr >= 2 && accepting && inputIdx < seq.length){ btns[seq[inputIdx]].classList.add('hint'); announce(t('cr_hint', { d:t('door_' + DOORS[seq[inputIdx]].id) })); } };
-    const light = (i, ms) => { btns[i].classList.add('lit'); SFX.door(DOORS[i].f); later(() => btns[i].classList.remove('lit'), ms); };
-    const play = () => {
-      accepting = false; clearInterval(scanI); btns.forEach(b => b.disabled = true); $('#crRep').hidden = true;
-      $('#chRound').textContent = t('cr_round', { r:r + 1, n:rounds.length }); feedback(t('cr_watch'), true); announce(t('cr_watch'));
-      const gap = 900 / S.speed;
-      seq.forEach((di, k) => later(() => { light(di, gap * .6); if (S.narration) speak(t('door_' + DOORS[di].id), false); else announce(t('door_' + DOORS[di].id)); }, 500 + k * gap));
-      later(() => { accepting = true; inputIdx = 0; btns.forEach(b => b.disabled = false); $('#crRep').hidden = false; feedback(t('cr_turn'), true); speak(t('cr_turn'));
-        btns[0].focus(); startScan(); hint(); }, 500 + seq.length * gap + 200);
-    };
-    const newRound = () => { roundErr = 0; while (seq.length < rounds[r]) seq.push(Math.floor(Math.random() * 4)); play(); };
-    const press = i => {
-      if (!accepting) return; light(i, 300);
-      if (i === seq[inputIdx]){ inputIdx++; hint();
-        if (inputIdx >= seq.length){ accepting = false; SFX.chime(); feedback(t('cr_good'), true); speak(t('cr_good')); r++;
-          later(() => { if (r >= rounds.length) finishChallenge(CH.errors === 0 ? 3 : CH.errors <= 2 ? 2 : 1); else newRound(); }, 1300 / S.speed); }
-      } else { accepting = false; CH.errors++; roundErr++; btns.forEach(b => b.classList.remove('hint')); SFX.soft(); feedback(t('cr_wrong'), false); speak(t('cr_wrong')); later(play, 1600 / S.speed); }
-    };
-    $('#crGo').addEventListener('click', () => { $('#crGo').remove(); newRound(); });
-    $('#crRep').addEventListener('click', () => { if (accepting) play(); });
-    speak(t('cr_desc'));
-    setTimeout(() => $('#crGo').focus(), 60);
-    startScan();
-  },
-  /* ---------- Region 2 ---------- */
-  hoop(){
-    setHead(t('hp_title'), t('hp_desc'));
-    const shots = 5; let shot = 0, made = 0, pos = 0, phase = Math.random() * 6, zone = .5, busy = false;
-    const width = tolerant() ? .3 : .16, spd = (tolerant() ? .75 : 1.25) * S.speed;
-    const body = $('#chBody');
-    body.innerHTML = `<div class="court" aria-hidden="true">🏀 🐩</div><div class="meter" aria-hidden="true"><div class="zone"></div><div class="mark"></div></div><div class="row" style="justify-content:center"><button class="btn primary opt" id="hpShoot" style="min-width:220px">${t('hp_shoot')}</button></div>`;
-    const zEl = body.querySelector('.zone'), mEl = body.querySelector('.mark'), btn = $('#hpShoot');
-    const newZone = () => { zone = .2 + Math.random() * .6; zEl.style.left = (zone - width / 2) * 100 + '%'; zEl.style.width = width * 100 + '%'; };
-    const inZone = () => Math.abs(pos - zone) <= width / 2;
-    let last = performance.now();
-    const loop = n => { const dt = (n - last) / 1000; last = n; if (!busy) phase += dt * spd * 2.2; pos = (Math.sin(phase) + 1) / 2; mEl.style.left = pos * 100 + '%'; chRaf = requestAnimationFrame(loop); };
-    chRaf = requestAnimationFrame(loop);
-    every(() => { if (busy) return; const z = inZone(); SFX.blip(300 + pos * 700, z ? .14 : .05, pos * 2 - 1, z ? 'triangle' : 'sine'); if (z) buzz(12); }, 110);
-    const update = () => { $('#chRound').textContent = t('tryOf', { i:Math.min(shot + 1, shots), n:shots }); $('#chScore').textContent = t('score', { c:made, t:shot }); };
-    btn.addEventListener('click', () => {
-      if (busy) return; busy = true; const ok = inZone(); shot++;
-      if (ok){ made++; SFX.swish(); later(SFX.cheer, 200); caption(t('cap_swish')); feedback(t('hp_in'), true); speak(t('hp_in')); buzz([30, 30, 80]); }
-      else { SFX.soft(); feedback(t('hp_out'), false); speak(t('hp_out')); }
-      update();
-      later(() => { if (shot >= shots){ CH.total = shots; CH.correct = made; finishChallenge(made >= 4 ? 3 : made >= 2 ? 2 : 1); return; } newZone(); feedback('', true); busy = false; }, 1500 / S.speed);
-    });
-    newZone(); update(); speak(t('hp_desc') + ' ' + t('hp_start'));
-    setTimeout(() => btn.focus(), 60); startScan();
-  },
-  penalty(){
-    setHead(t('pk_title'), t('pk_desc'));
-    const kicks = 5; let k = 0, goals = 0, busy = false;
-    const reliable = tolerant() ? 1 : .75;
-    const body = $('#chBody');
-    body.innerHTML = `<div class="goal" aria-hidden="true"><span class="keeper">🧤</span><span class="ball">⚽</span></div><div class="pitch-line"></div><div class="opts" role="group" style="grid-template-columns:repeat(3,1fr)"></div>`;
-    const keeper = body.querySelector('.keeper'), ball = body.querySelector('.ball'), box = body.querySelector('.opts');
-    const SIDES = ['left', 'center', 'right'], X = { left:'18%', center:'50%', right:'82%' }, PAN = { left:-.8, center:0, right:.8 };
-    let lean = 'center', dive = 'center';
-    const btns = SIDES.map(sd => { const b = document.createElement('button'); b.className = 'btn opt'; b.textContent = t('pk_' + sd); b.addEventListener('click', () => shoot(sd)); box.appendChild(b); return b; });
-    const setup = () => {
-      busy = false; ball.style.left = '50%'; ball.style.bottom = '-46px'; keeper.style.left = '50%'; keeper.style.transform = 'translateX(-50%)';
-      lean = pick(SIDES); dive = Math.random() < reliable ? lean : pick(SIDES.filter(s => s !== lean));
-      later(() => { keeper.style.transform = `translateX(-50%) rotate(${lean === 'left' ? -18 : lean === 'right' ? 18 : 0}deg)`; keeper.style.left = lean === 'left' ? '42%' : lean === 'right' ? '58%' : '50%';
-        SFX.whistle(PAN[lean]); speak(t('pk_lean_' + lean)); feedback(t('pk_lean_' + lean), true); btns.forEach(b => b.disabled = false); btns[0].focus(); startScan();
-        startTimer(9000 / S.speed, () => shoot(pick(SIDES))); }, 500);
-      btns.forEach(b => b.disabled = true);
-      $('#chRound').textContent = t('tryOf', { i:k + 1, n:kicks }); $('#chScore').textContent = t('score', { c:goals, t:k });
-    };
-    const shoot = side => {
-      if (busy) return; busy = true; clearInterval(chTimerI); clearInterval(scanI); btns.forEach(b => b.disabled = true); k++;
-      SFX.kick(); ball.style.left = X[side]; ball.style.bottom = '70px'; keeper.style.left = X[dive]; keeper.style.transform = 'translateX(-50%)';
-      const scored = side !== dive;
-      later(() => {
-        if (scored){ goals++; SFX.cheer(); caption(t('cap_cheer')); const m = t('pk_goal'); feedback(m, true); speak(m); buzz([40, 30, 100]); }
-        else { SFX.soft(); const m = t('pk_saved') + (dive !== lean ? ' ' + t('pk_fake') : ''); feedback(m, false); speak(m); }
-        $('#chScore').textContent = t('score', { c:goals, t:k });
-        later(() => { if (k >= kicks){ CH.total = kicks; CH.correct = goals; finishChallenge(goals >= 5 ? 3 : goals >= 3 ? 2 : 1); } else setup(); }, 1700 / S.speed);
-      }, 550);
-    };
-    CH.onKey = e => { const m = { ArrowLeft:'left', ArrowUp:'center', ArrowRight:'right' }[e.key]; if (m && !busy && !btns[0].disabled){ e.preventDefault(); shoot(m); } };
-    speak(t('pk_desc')); setup();
-  },
-  aim(){
-    setHead(t('am_title'), t('am_desc'));
-    const shots = 4; let s = 0, made = 0, aim = 0, target = 0, busy = false, sweepPh = 0, anim = null;
-    const tol = tolerant() ? 9 : 5;
-    const body = $('#chBody');
-    body.innerHTML = `<div class="aimwrap"><canvas width="340" height="230" aria-hidden="true"></canvas></div><div class="row" style="justify-content:center;margin-top:10px" role="group">
-      <button class="btn opt" id="amL" ${S.oneSwitch ? 'hidden' : ''}>${t('am_left')}</button><button class="btn primary opt" id="amHit">${t('am_hit')}</button><button class="btn opt" id="amR" ${S.oneSwitch ? 'hidden' : ''}>${t('am_right')}</button></div>`;
-    const cv = body.querySelector('canvas'), x = cv.getContext('2d'); const P = { x:170, y:200 };
-    const pocket = () => { const a = target * Math.PI / 180; return { x:P.x + Math.sin(a) * 175, y:P.y - Math.cos(a) * 175 }; };
-    const draw = () => {
-      x.clearRect(0, 0, 340, 230); x.fillStyle = S.highContrast ? '#000' : '#0b5a3e'; x.fillRect(0, 0, 340, 230);
-      x.strokeStyle = '#ffffff22'; x.lineWidth = 1; x.beginPath(); x.arc(P.x, P.y, 175, Math.PI * 1.1, Math.PI * 1.9); x.stroke();
-      const pk = pocket(); x.fillStyle = '#05070c'; x.beginPath(); x.arc(pk.x, pk.y, 16, 0, Math.PI * 2); x.fill(); x.strokeStyle = '#ffb547'; x.lineWidth = 3; x.stroke();
-      const err = Math.abs(aim - target); const a = aim * Math.PI / 180;
-      x.setLineDash([8, 7]); x.strokeStyle = err <= tol ? '#ffb547' : (S.highContrast ? '#ffff00' : '#4fe3ff'); x.lineWidth = 3;
-      x.beginPath(); x.moveTo(P.x, P.y); x.lineTo(P.x + Math.sin(a) * 190, P.y - Math.cos(a) * 190); x.stroke(); x.setLineDash([]);
-      const px = anim ? anim.x : P.x, py = anim ? anim.y : P.y;
-      x.fillStyle = '#111318'; x.beginPath(); x.arc(px, py, 13, 0, Math.PI * 2); x.fill(); x.strokeStyle = '#2fd6f5'; x.lineWidth = 3; x.stroke();
-    };
-    const tick = () => { const err = Math.abs(aim - target); SFX.blip(250 + Math.max(0, 60 - err) * 14, .12, Math.max(-1, Math.min(1, aim / 60)), err <= tol ? 'triangle' : 'sine'); if (err <= tol) buzz(15); };
-    const say = () => { const d = target - aim; announce(Math.abs(d) <= tol ? t('am_aligned') : d < 0 ? t('am_more_left') : t('am_more_right')); };
-    const rotate = d => { if (busy) return; aim = Math.max(-70, Math.min(70, aim + d)); draw(); tick(); say(); };
-    const newShot = () => {
-      busy = false; anim = null; aim = 0; target = (Math.random() < .5 ? -1 : 1) * (15 + Math.random() * 45); draw();
-      const dir = Math.abs(target) < 8 ? t('am_ahead_w') : target < 0 ? t('am_left_w') : t('am_right_w');
-      speak(t('am_pocket', { dir }) + (S.oneSwitch ? ' ' + t('am_sweep') : ''));
-      $('#chRound').textContent = t('tryOf', { i:s + 1, n:shots }); $('#chScore').textContent = t('score', { c:made, t:s });
-      if (S.mode === 'adventure') startTimer(15000 / S.speed, hit);
-    };
-    const hit = () => {
-      if (busy) return; busy = true; clearInterval(chTimerI); s++; SFX.clack();
-      const err = Math.abs(aim - target), a = aim * Math.PI / 180; let d = 0;
-      const step = () => { d += 9; anim = { x:P.x + Math.sin(a) * d, y:P.y - Math.cos(a) * d }; draw(); if (d < 175) chRaf = requestAnimationFrame(step); else result(); };
-      if (S.reducedMotion){ anim = { x:P.x + Math.sin(a) * 175, y:P.y - Math.cos(a) * 175 }; draw(); result(); } else chRaf = requestAnimationFrame(step);
-      function result(){
-        if (err <= tol){ made++; SFX.chime(); later(SFX.cheer, 150); feedback(t('am_in'), true); speak(t('am_in')); buzz([30, 30, 80]); }
-        else if (err <= tol * 2.2){ SFX.soft(); feedback(t('am_edge'), false); speak(t('am_edge')); }
-        else { SFX.soft(); feedback(t('am_miss'), false); speak(t('am_miss')); }
-        $('#chScore').textContent = t('score', { c:made, t:s });
-        later(() => { if (s >= shots){ CH.total = shots; CH.correct = made; finishChallenge(made >= 4 ? 3 : made >= 2 ? 2 : 1); } else { feedback('', true); newShot(); } }, 1600 / S.speed);
-      }
-    };
-    $('#amL').addEventListener('click', () => rotate(-4)); $('#amR').addEventListener('click', () => rotate(4)); $('#amHit').addEventListener('click', hit);
-    CH.onKey = e => { if (e.key === 'ArrowLeft'){ e.preventDefault(); rotate(e.shiftKey ? -1 : -4); } else if (e.key === 'ArrowRight'){ e.preventDefault(); rotate(e.shiftKey ? 1 : 4); } };
-    if (S.oneSwitch) every(() => { if (busy) return; sweepPh += .045 * S.speed; aim = Math.sin(sweepPh) * 68; draw(); tick(); }, 120);
-    newShot(); setTimeout(() => $('#amHit').focus(), 60); startScan();
-  },
-  slide(){
-    setHead(t('sl_title'), t('sl_desc'));
-    const total = 8; let k = 0, got = 0, lane = 1, cur = -1, busy = true;
-    const LANES = ['left', 'mid', 'right'], PAN = [-.85, 0, .85], F = [330, 494, 740];
-    const body = $('#chBody');
-    body.innerHTML = `<div class="lanes" aria-hidden="true"><div class="lane"></div><div class="lane"></div><div class="lane"></div><span class="kygo-slider">🐩</span></div><div class="lane-btns" role="group"></div>`;
-    const laneEls = [...body.querySelectorAll('.lane')], kygo = body.querySelector('.kygo-slider'), bb = body.querySelector('.lane-btns');
-    const placeKygo = () => { kygo.style.left = `calc(${lane * 33.33 + 16.66}% - 1.1rem)`; };
-    const btns = LANES.map((l, i) => { const b = document.createElement('button'); b.className = 'btn opt'; b.textContent = t('sl_' + l); b.addEventListener('click', () => choose(i)); bb.appendChild(b); return b; });
-    let ringEl = null;
-    const spawn = () => {
-      busy = false; cur = Math.floor(Math.random() * 3); laneEls.forEach(e => e.classList.remove('cue')); laneEls[cur].classList.add('cue');
-      ringEl = document.createElement('span'); ringEl.className = 'ringfx'; ringEl.textContent = '🛟'; laneEls[cur].appendChild(ringEl);
-      const win = tolerant() ? 0 : 3200 / S.speed;
-      if (!S.reducedMotion){ ringEl.animate([{ top:'-40px' }, { top:'calc(100% - 50px)' }], { duration: win || 2200, fill:'forwards', easing:'ease-in' }); }
-      else ringEl.style.top = '40%';
-      tone({ f:F[cur], type:'triangle', dur:.35, vol:.2, pan:PAN[cur] }); SFX.splash(PAN[cur]); announce(`${t('sl_cue')} ${t('sl_lane_' + LANES[cur])}`);
-      $('#chRound').textContent = t('tryOf', { i:k + 1, n:total }); $('#chScore').textContent = t('score', { c:got, t:k });
-      btns[1].focus(); startScan();
-      if (win) startTimer(win, () => choose(-1));
-    };
-    const choose = i => {
-      if (busy) return; busy = true; clearInterval(chTimerI); clearInterval(scanI); k++;
-      if (i >= 0){ lane = i; placeKygo(); }
-      laneEls.forEach(e => e.classList.remove('cue'));
-      if (i === cur){ got++; SFX.chime(); feedback(t('sl_got'), true); announce(t('sl_got')); buzz(40); }
-      else { SFX.soft(); const m = (i < 0 ? t('time_up') + ' ' : '') + t('sl_miss', { lane:t('sl_lane_' + LANES[cur]) }); feedback(m, false); speak(m); }
-      if (ringEl) ringEl.remove();
-      $('#chScore').textContent = t('score', { c:got, t:k });
-      later(() => { if (k >= total){ CH.total = total; CH.correct = got; finishChallenge(starsFrom(got / total)); } else { feedback('', true); spawn(); } }, 900 / S.speed);
-    };
-    CH.onKey = e => { const m = { ArrowLeft:0, ArrowUp:1, ArrowDown:1, ArrowRight:2 }[e.key]; if (m !== undefined && !busy){ e.preventDefault(); choose(m); } };
-    placeKygo(); speak(t('sl_desc'));
-    later(spawn, 1800 / S.speed);
-  }
-};
-$('#dlgCh').addEventListener('keydown', e => { if (CH && CH.onKey) CH.onKey(e); });
 
 /* ================= win / run / regions ================= */
 const fmtTime = ms => { const s = Math.round(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
 const elapsed = () => elapsedBeforePause + (startTime ? performance.now() - startTime : 0);
-function saveRun(){ store.set('kygo-pe-urme-run-' + REG.id, { found:toys().map(o => [o.found, o.stars]), elapsed:elapsed() }); }
+function saveRun(){ store.set('kygo-pe-urme-v2-' + REG.id, { tasks:REG.tasks.map(tk => tk.kind === 'dribble' ? tk.done : tk.state.map(s => [s.done ? 1 : 0, s.revealed ? 1 : 0, s.style])), elapsed:elapsed() }); }
 function loadRun(reg){
-  const saved = store.get('kygo-pe-urme-run-' + reg.id, null) || (reg.id === 'manor' ? store.get('kygo-pe-urme-run', null) : null);
-  reg.toys.forEach((o, i) => { const f = saved && saved.found && saved.found[i]; o.found = !!(f && f[0]); o.stars = f ? f[1] : 0; });
+  const saved = store.get('kygo-pe-urme-v2-' + reg.id, null);
+  reg.tasks.forEach((tk, i) => {
+    const sv = saved && saved.tasks && saved.tasks[i];
+    if (tk.kind === 'dribble'){ tk.done = typeof sv === 'number' ? Math.min(tk.n, sv) : 0; return; }
+    tk.state.forEach((st, j) => { const v = sv && sv[j]; st.done = !!(v && v[0]); st.revealed = !!(v && v[1]); st.style = v ? v[2] : -1; if (st.g){ st.g.position.set(st.x, 0, st.z); } });
+  });
   return saved ? saved.elapsed || 0 : 0;
 }
 function nextRegionId(){ return REG.id === 'manor' ? 'arena' : null; }
 function win(){
-  state = 'win'; setFollow(false, true);
-  const stars = toys().reduce((a, o) => a + o.stars, 0);
+  if (state === 'win') return;
+  state = 'win'; setFollow(false, true); hidePrompt();
   const el = elapsed(); elapsedBeforePause = el; startTime = 0;
+  const secs = el / 1000, stars = S.mode === 'walk' ? 0 : secs <= REG.par ? 3 : secs <= REG.par * 1.8 ? 2 : 1;
   $('#wKicker').textContent = `${t('worldName')} · ${regName(REG.id)}`;
   $('#wTitle').textContent = t('win_title_' + REG.id); $('#wText').textContent = t('win_text_' + REG.id);
-  $('#wStars').textContent = '★'.repeat(stars) + '☆'.repeat(12 - stars);
-  $('#wInfo').textContent = t('win_info', { s:stars, t:fmtTime(el) });
+  $('#wStars').textContent = S.mode === 'walk' ? '🐾 🐾 🐾' : '★'.repeat(stars) + '☆'.repeat(3 - stars);
+  const info = S.mode === 'walk' ? t('win_info_walk', { t:fmtTime(el) }) : t('win_info', { s:stars, t:fmtTime(el) });
+  $('#wInfo').textContent = info;
   $('#wNext').textContent = t('win_next_' + REG.id);
-  const badges = [REG.id === 'manor' ? t('badge_nose') : t('badge_champ')];
-  if (REG.id === 'manor' && HALLOWEEN) badges.push(t('badge_hw')); if (S.mode === 'walk') badges.push(t('badge_calm')); if (stars === 12) badges.push(t('badge_perfect'));
+  const badges = [REG.id === 'manor' ? t('badge_nose') : t('badge_champ'), t('badge_full')];
+  if (REG.id === 'manor' && HALLOWEEN) badges.push(t('badge_hw')); if (S.mode === 'walk') badges.push(t('badge_calm')); if (stars === 3) badges.push(t('badge_fast'));
   $('#wBadges').innerHTML = badges.map(b => `<span class="badge">${b}</span>`).join('');
   const nx = nextRegionId(); $('#bNextRegion').textContent = nx ? t('next_go', { reg:regName(nx) }) : t('next_map');
   const done = doneMap(); const prev = done[REG.id]; if (!prev || stars > prev.stars || (stars === prev.stars && el < prev.time)) done[REG.id] = { stars, time:el }; store.set('kygo-pe-urme-done', done);
   caption(t('cap_win')); SFX.fanfare(); setTimeout(SFX.fanfare, 900); if (REG.id === 'arena') setTimeout(SFX.cheer, 400);
   if (glOK && !S.reducedMotion){ let k = 0; const fw = setInterval(() => { spawnFirework(); if (++k > 14) clearInterval(fw); }, 380); }
-  speak(`${t('win_title_' + REG.id)} ${t('win_text_' + REG.id)} ${t('win_info', { s:stars, t:fmtTime(el) })}. ${badges.join(', ').replace(/[^\p{L}\p{N}\s,:.]/gu, '')}`);
-  store.set('kygo-pe-urme-run-' + REG.id, null);
+  speak(`${t('win_title_' + REG.id)} ${t('win_text_' + REG.id)} ${info}. ${badges.join(', ').replace(/[^\p{L}\p{N}\s,:.]/gu, '')}`);
+  store.set('kygo-pe-urme-v2-' + REG.id, null);
   openDialog('#dlgWin');
 }
 function resetRun(){
-  toys().forEach(o => { o.found = false; o.stars = 0; });
+  REG.tasks.forEach(tk => { if (tk.kind === 'dribble') tk.done = 0; else tk.state.forEach(st => { st.done = false; st.revealed = false; st.style = -1; if (st.g) st.g.position.set(st.x, 0, st.z); }); });
   dog.x = REG.start.x; dog.z = REG.start.z; dog.rot = Math.PI; elapsedBeforePause = 0; startTime = performance.now();
-  nearAnnounced = null; hidePrompt(); renderSlots(); store.set('kygo-pe-urme-run-' + REG.id, null); showRegion();
+  promptFor = null; hidePrompt(); renderTasks(); store.set('kygo-pe-urme-v2-' + REG.id, null); showRegion();
 }
 function travel(id, announceIt = true){
   if (!REGIONS[id]) return;
@@ -1514,22 +1363,24 @@ function travel(id, announceIt = true){
   setFollow(false, true);
   REG = REGIONS[id]; S.region = id; saveSettings();
   elapsedBeforePause = loadRun(REG); startTime = state === 'menu' ? 0 : performance.now();
-  dog.x = REG.start.x; dog.z = REG.start.z; dog.rot = Math.PI; nearAnnounced = null; hidePrompt();
+  dog.x = REG.start.x; dog.z = REG.start.z; dog.rot = Math.PI; promptFor = null; hidePrompt();
   showRegion(); applyI18n();
-  if (announceIt) speak(t('travel', { reg:regName(id) }) + ' ' + t('intro_' + id));
+  if (announceIt) speak(t('intro_' + id));
 }
 function renderMap(){
   const done = doneMap();
   const list = $('#regionList'); list.innerHTML = '';
   ['manor', 'arena'].forEach(id => {
-    const reg = REGIONS[id]; const n = id === REG.id ? toys().filter(o => o.found).length : (store.get('kygo-pe-urme-run-' + id, null)?.found || []).filter(f => f[0]).length;
+    const reg = REGIONS[id];
+    if (id !== REG.id) loadRun(reg);
+    const pc = Math.round(progress(reg) * 100);
     const li = document.createElement('li'); if (id === REG.id) li.className = 'current';
-    const meta = done[id] ? t('reg_done', { s:done[id].stars }) + ' · ' + t('reg_progress', { n }) : t('reg_progress', { n });
+    const meta = done[id] ? t('reg_done', { s:done[id].stars }) + ' · ' + t('reg_progress', { p:pc }) : t('reg_progress', { p:pc });
     li.innerHTML = `<span class="ico" aria-hidden="true">${reg.emoji}</span><span><strong>${regName(id)}</strong><span class="meta">${t('kick_' + id)} · ${meta}</span></span>`;
     const b = document.createElement('button'); b.className = 'btn' + (id === REG.id ? '' : ' primary');
     b.textContent = id === REG.id ? t('here_now') : t('go'); b.disabled = id === REG.id;
     b.setAttribute('aria-label', `${b.textContent}: ${regName(id)}`);
-    b.addEventListener('click', () => { $('#dlgMap').close(); const wasMenu = state === 'menu'; travel(id, !wasMenu); if (!wasMenu){ state = 'play'; startTime = performance.now(); $('#game').focus(); } });
+    b.addEventListener('click', () => { $('#dlgMap').close(); const wasMenu = state === 'menu'; if (!wasMenu) state = 'play'; travel(id, !wasMenu); if (!wasMenu){ startTime = performance.now(); $('#game').focus(); } });
     li.appendChild(b); list.appendChild(li);
   });
   FUTURE.forEach(id => { const li = document.createElement('li'); li.className = 'locked';
@@ -1537,9 +1388,10 @@ function renderMap(){
 }
 
 /* ================= UI ================= */
-function renderSlots(){
-  const ul = $('#slots'); ul.setAttribute('aria-label', `${t('slotsLabel')} · ${regName(REG.id)}`);
-  ul.innerHTML = toys().map(o => `<li class="slot ${o.found ? 'found' : ''}" aria-label="${toyName(o)}: ${o.found ? t('slotFound') : t('slotMissing')}"><span aria-hidden="true">${o.emoji}</span></li>`).join('');
+function renderTasks(){
+  const ul = $('#slots'); ul.setAttribute('aria-label', regName(REG.id));
+  ul.innerHTML = REG.tasks.map(tk => { const d = doneCount(tk), full = d >= tk.n;
+    return `<li class="task ${full ? 'found' : ''}" aria-label="${t('task_' + tk.id)}: ${d} / ${tk.n}"><span aria-hidden="true">${tk.icon}</span><b aria-hidden="true">${d}/${tk.n}</b></li>`; }).join('');
 }
 function eventInfo(){ return REG.id === 'arena' ? ['event_games', 'event_d_games'] : HALLOWEEN ? ['event_hw', 'event_d_hw'] : ['event_night', 'event_d_night']; }
 function applyI18n(){
@@ -1554,9 +1406,8 @@ function applyI18n(){
   $('#helpList').innerHTML = t('help_items').map(h => `<li>${h}</li>`).join('');
   $('#followLbl').textContent = autoFollow ? t('following') : t('follow');
   document.title = `${t('titleA')} ${t('titleB')} — ${regName(REG.id)}`;
-  try { const u = new URL('../', location.href); u.searchParams.set('lang', S.lang); $('#backKW').href = '../'; } catch(e){}
-  renderSlots();
-  if (glOK && REG.id === 'arena') drawScoreboard(REG, toys().filter(o => o.found).length);
+  renderTasks();
+  if (glOK && REG.id === 'arena') drawScoreboard(REG);
   if ($('#dlgSet').open) renderSettings();
   if ($('#dlgMap').open) renderMap();
 }
@@ -1593,7 +1444,6 @@ function renderSettings(){
   });
 }
 function commit(){ saveSettings(); applySettings(); }
-
 let returnFocus = null;
 function openDialog(sel){ clearKeys(); const d = $(sel); if (d.open) return; returnFocus = document.activeElement; try { d.showModal(); } catch(e){ d.setAttribute('open', ''); } }
 $$('dialog').forEach(d => {
@@ -1602,12 +1452,10 @@ $$('dialog').forEach(d => {
     if (d.id === 'dlgPause' && state === 'paused'){ state = 'play'; startTime = performance.now(); }
     const anyOpen = $$('dialog').some(x => x.open);
     if (!anyOpen && (state === 'play' || state === 'win')) $('#game').focus();
-    else if (returnFocus && document.contains(returnFocus) && d.id !== 'dlgCh') try { returnFocus.focus(); } catch(e){}
+    else if (returnFocus && document.contains(returnFocus)) try { returnFocus.focus(); } catch(e){}
   });
 });
-$('#dlgCh').addEventListener('cancel', e => e.preventDefault());
 $('#dlgStart').addEventListener('cancel', e => e.preventDefault());
-
 function toggleLang(){ S.lang = S.lang === 'ro' ? 'en' : 'ro'; commit(); speak(t('langChanged')); }
 function toggleMute(){ A.muted = !A.muted; applyVolumes(); if (A.muted) try { speechSynthesis.cancel(); } catch(e){} announce(A.muted ? t('muted') : t('unmuted')); }
 function openPause(){ if (state !== 'play') return; elapsedBeforePause = elapsed(); startTime = 0; state = 'paused'; setFollow(false, true); $('#pStatus').textContent = statusText(); openDialog('#dlgPause'); }
@@ -1617,9 +1465,10 @@ function clearKeys(){ for (const k in keys) keys[k] = false; joy.x = joy.z = 0; 
 
 $('#bPlay').addEventListener('click', () => {
   initAudio(); $('#dlgStart').close(); document.body.classList.add('playing');
-  elapsedBeforePause = loadRun(REG); showRegion(); renderSlots();
+  elapsedBeforePause = loadRun(REG); showRegion(); renderTasks();
   state = 'play'; startTime = performance.now(); $('#game').focus();
-  setTimeout(() => speak(toys().some(o => o.found) ? statusText() : t('intro_' + REG.id)), 300);
+  setTimeout(() => speak(progress() > 0 ? statusText() : t('intro_' + REG.id)), 300);
+  if (S.oneSwitch) setTimeout(() => setFollow(true), 2500);
 });
 $$('.mode').forEach(m => m.addEventListener('click', () => { S.mode = m.dataset.mode; commit(); }));
 $('#bStSet').addEventListener('click', openSettings);
@@ -1677,14 +1526,13 @@ document.addEventListener('visibilitychange', () => { if (document.hidden && sta
 
 /* ================= boot ================= */
 glOK = initThree();
-if (!glOK) document.body.classList.add('nogl');
-Object.values(REGIONS).forEach(r => { if (!r.apply) r.apply = () => {}; if (!r.restore) r.restore = []; if (!r.npcs) r.npcs = []; });
+if (!glOK){ document.body.classList.add('nogl'); Object.values(REGIONS).forEach(r => { r.apply = () => {}; r.restore = []; }); }
 loadRun(REG); showRegion(); applySettings();
 let last = performance.now();
 (function loop(){ requestAnimationFrame(loop); const n = performance.now(); const dt = Math.min(.05, (n - last) / 1000); last = n; update(dt); if (glOK) renderer.render(scene, camera); })();
 openDialog('#dlgStart');
 setTimeout(() => $('#bPlay').focus(), 50);
-window.__kygo = { REGIONS, get REG(){ return REG; }, get TOYS(){ return REG.toys; }, dog, get state(){ return state; }, startChallenge:o => startChallenge(o), setFollow, travel, version:VERSION };
+window.__kygo = { REGIONS, get REG(){ return REG; }, dog, get state(){ return state; }, setFollow, travel, targets, nearestTarget, version:VERSION };
 })();
 </script>
 </body>

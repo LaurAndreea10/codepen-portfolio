@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-31 — Kygo: Pe Urme v1.2.0: doar joacă, Kygo ca în logo
+
+- RO: fără întrebări; totul se joacă în 3D. Conacul bântuit: prinzi fantome ascunse, decorezi dovleci, mănânci recompense. Arena sporturilor: găsești mingi ascunse, dai goluri împingând mingea cu botul, ronțăi biscuiți. Kygo are corpul din logo (toy poodle roșcat, tunsoare teddy, papion cu buline). Mersul automat și modul un singur buton pot termina singure ambele regiuni.
+- EN: no quizzes; pure 3D play: ghosts, pumpkins and treats in the Manor; hidden balls, goals and biscuits in the Arena. Kygo now matches the logo.
+- Portofoliu: textele din card, Finalizat recent RO/EN, Now, catalog și dovezi actualizate la v1.2.0.
+- [Joacă / Play](kygo-world/pe-urme/) · [Istoric / History](kygo-world/CHANGELOG.md).
+
 ## 2026-10-31 — Kygo: Pe Urme v1.1.0 · Finalizat
 
 - RO: joc 3D nou, integrat în Kygo World (`kygo-world/pe-urme/`, butonul „🐩 Pe Urme 3D” din bara de moduri). Kygo, toy poodle roșcat, găsește jucării pe urma mirosului (dâră vizuală, bipuri stereo, vibrații) și cu lătratul-sonar care spune vocal ce e în jur. Două regiuni: **Conacul bântuit** (BooScary, Ghost Talk, Pumpkin Weigh-In, Candy Route) și **Arena sporturilor** (Basket vs AI, PentArena, Puck & Pool, SlideStorm), plus harta lumii cu progres pe regiune. Narațiune, subtitrări, contrast ridicat, daltonism, mișcare redusă, mod un singur buton, mod Plimbare fără eșec, RO/EN.
