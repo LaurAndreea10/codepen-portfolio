@@ -153,7 +153,7 @@ const K3D=(()=>{
     sky=new THREE.Mesh(new THREE.SphereGeometry(140,32,16),new THREE.MeshBasicMaterial({side:THREE.BackSide,fog:false,map:skyTex('classic',0)}));scene.add(sky);
     clouds=new THREE.Group();const cm=new THREE.MeshStandardMaterial({color:0xffffff,roughness:1,emissive:0xffffff,emissiveIntensity:.25});const r=rng(5);
     for(let i=0;i<14;i++){const g=new THREE.Group();for(let k=0;k<5;k++){const s=new THREE.Mesh(new THREE.SphereGeometry(1.4+r()*1.4,14,10),cm);s.position.set(k*1.6-3,r()*.8,r()*1.2);g.add(s)}g.position.set(-40+i*12+r()*6,9+r()*7,-26-r()*22);g.scale.setScalar(.8+r()*.9);clouds.add(g)}scene.add(clouds);
-    dog=makeDog();scene.add(dog);
+    dog=makeSpriteDog();scene.add(dog);
     ready=true;R.mode=null;
     if('ResizeObserver' in window)new ResizeObserver(place).observe(canvas);window.addEventListener('resize',place);
     apply();requestAnimationFrame(loop);
@@ -161,6 +161,8 @@ const K3D=(()=>{
   let skyKey='';
   function skyTex(ed,w){return tex(16,256,(x,W,H)=>{const g=x.createLinearGradient(0,0,0,H);const pal=high()?[['#000','#000','#000']]:{classic:[['#4aa8ff','#9fdcff','#e8f8ff'],['#2f8fd9','#8fd0ff','#d8f4ff'],['#ff9acb','#ffd1e6','#fff4f8'],['#5b4bb8','#a99cf0','#e9e2ff']][w],halloween:['#1a0f2e','#4a2a6a','#ff9a4a'],easter:['#9fdcff','#ffe3f2','#fffbe6'],christmas:['#2a4a7a','#9cc4e8','#f2f8ff']}[ed];const p=Array.isArray(pal[0])?pal[0]:pal;g.addColorStop(0,p[0]);g.addColorStop(.55,p[1]);g.addColorStop(1,p[2]);x.fillStyle=g;x.fillRect(0,0,W,H)})}
   function place(){if(!el)return;const r=canvas.getBoundingClientRect(),pr=canvas.offsetParent?canvas.offsetParent.getBoundingClientRect():{left:0,top:0};const w=Math.max(1,Math.round(r.width)),h=Math.max(1,Math.round(r.height));el.style.left=(r.left-pr.left)+'px';el.style.top=(r.top-pr.top)+'px';el.style.width=w+'px';el.style.height=h+'px';renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+  /* ---------- Kygo: the original sprite (with the bow tie), as a billboard ---------- */
+  function makeSpriteDog(){const g=new THREE.Group(),body=new THREE.Group();g.add(body);const tx=new THREE.Texture(sprite);tx.wrapS=THREE.RepeatWrapping;tx.anisotropy=4;const upd=()=>{tx.needsUpdate=true};if(sprite.complete&&sprite.naturalWidth)upd();else sprite.addEventListener('load',upd);const h=2.3,w=h*.75;const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,alphaTest:.08,depthWrite:true}));sp.scale.set(w,h,1);sp.center.set(.5,0);sp.position.y=.02;body.add(sp);const shadow=new THREE.Mesh(new THREE.CircleGeometry(.62,24),new THREE.MeshBasicMaterial({color:0x182846,transparent:true,opacity:.22,depthWrite:false}));shadow.rotation.x=-Math.PI/2;shadow.scale.set(1.25,.6,1);shadow.position.y=.03;g.add(shadow);const emo=e=>{const t=tex(96,96,(x)=>{x.font='72px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(e,48,54)});const m=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true}));m.scale.set(.55,.55,1);m.position.set(-.72,h*1.02,0);m.visible=false;body.add(m);return m};const st={rotation:{},scale:{}};dogParts={body,legs:[],ears:[],tail:st,tongue:{scale:{}},sprite:sp,tex:tx,shadow,hats:{halloween:emo('🧙'),easter:emo('🐰'),christmas:emo('🎅')}};return g}
   /* ---------- Kygo: teddy-cut red toy poodle ---------- */
   function makeDog(){
     const g=new THREE.Group(),r=rng(42);
@@ -288,12 +290,12 @@ const K3D=(()=>{
     const jumpTo=Math.hypot(dx-dogPos.x,dz-dogPos.z)>6;
     dogPos.x=jumpTo?dx:lerp(dogPos.x,dx,k);dogPos.z=jumpTo?dz:lerp(dogPos.z,dz,k);dogPos.y=dy+lift;
     dog.position.set(dogPos.x,dogPos.y,dogPos.z);
-    let dr=dogPos.rot-dog.rotation.y;while(dr>Math.PI)dr-=Math.PI*2;while(dr<-Math.PI)dr+=Math.PI*2;dog.rotation.y+=dr*(motion()?Math.min(1,dt*10):1);
+    let dr=dogPos.rot-dog.rotation.y;while(dr>Math.PI)dr-=Math.PI*2;while(dr<-Math.PI)dr+=Math.PI*2;dog.rotation.y+=dr*(motion()?Math.min(1,dt*10):1);if(dogParts.sprite){const top=mode==='maze';dogParts.sprite.material.depthTest=!top;dogParts.sprite.renderOrder=top?10:0;}if(dogParts.tex){const left=Math.sin(dogPos.rot)<-.3;dogParts.tex.repeat.x=left?-1:1;dogParts.tex.offset.x=left?1:0;}
     const moving=Math.hypot(dx-dogPos.x,dz-dogPos.z)>.05||(isRace()&&running)||(mode==='story'&&running);
     const wk=moving&&motion()?Math.sin(time*16):0;dogParts.legs.forEach((l,i)=>{l.rotation.x=wk*.55*(i===0||i===3?1:-1)});
     dogParts.tail.rotation.z=motion()?Math.sin(time*(moving?16:8))*.4:0;dogParts.ears.forEach((e,i)=>{e.rotation.z=motion()?Math.sin(time*(moving?14:1.2)+i)*(moving?.16:.04):0});
     dogParts.tongue.scale.z=1.3+(motion()?Math.sin(time*9)*.15:0);
-    dogParts.body.scale.y=player.slide>0?.55:1;
+    dogParts.body.scale.y=player.slide>0?.55:1;dogParts.body.position.y=moving&&motion()&&!player.jump?Math.abs(Math.sin(time*9))*.18:0;if(dogParts.shadow)dogParts.shadow.position.y=.03-dogPos.y+dy;
     // camera
     if(camP){const asp=camera.aspect,far=asp<1?2.1-asp*1.1:1,lead=Math.min(1,asp);if(mode==='story'||isRace()){camT.x=dx+(camT.x-dx)*lead*.7+(lead<1?.6:0)}camP={x:camT.x+(camP.x-camT.x)*far,y:camT.y+(camP.y-camT.y)*far,z:camT.z+(camP.z-camT.z)*far};const ck=motion()?Math.min(1,dt*4):1;camera.position.set(lerp(camera.position.x,camP.x,ck),lerp(camera.position.y,camP.y,ck),lerp(camera.position.z,camP.z,ck));if(!R.camInit||R.mode!==mode){camera.position.set(camP.x,camP.y,camP.z);R.camInit=true}camera.lookAt(camT.x,camT.y,camT.z);sun.position.set(camT.x+8,18,camT.z+10);sun.target.position.set(camT.x,0,camT.z);sky.position.copy(camera.position);clouds.position.x=camera.position.x*.8+(motion()?time*.3%12:0)}
     if(R.mode!==mode){R.mode=mode}
