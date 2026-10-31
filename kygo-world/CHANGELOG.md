@@ -1,5 +1,14 @@
 # Kygo World — istoric al versiunilor / Version history
 
+## 2026-10-31 · Kygo: Pe Urme v1.2.0 · Doar joacă, Kygo ca în logo / Pure play, Kygo like the logo
+- RO: Kygo are acum corpul din logo: toy poodle roșcat cu tunsoare teddy, cap rotund și pufos, urechi mari, coadă pompon, papion alb cu buline și limbuța afară.
+- Am scos toate panourile cu întrebări; totul se joacă direct în lumea 3D:
+  - **Conacul bântuit**: 6 fantome ascunse (lătratul le scoate din ascunzătoare, le prinzi atingându-le; în Aventură fug puțin), 5 dovleci de decorat cu E (zâmbăreț, fioros, pisicuță, steluțe — apeși din nou pentru alt model) și 18 oase-recompensă de mâncat.
+  - **Arena sporturilor**: 5 mingi ascunse prin tufișuri, 3 goluri date împingând mingea cu botul în poartă și 18 biscuiți. Reflectoarele și tabela se aprind pe măsură ce progresezi.
+- Urma de miros duce la cea mai apropiată țintă; Spațiu (sau modul un singur buton) îl lasă pe Kygo să facă singur totul, inclusiv decoratul și golurile. Stelele vin acum din timp în Aventură; Plimbare n-are cronometru.
+- EN: Kygo now has the logo's body: a red teddy-cut toy poodle with a polka-dot bow tie. All quiz panels are gone; everything is played in 3D — catch hidden ghosts, decorate pumpkins and eat treats in the Manor; find hidden balls, nose the football into the goal and munch biscuits in the Arena. Auto-follow and one-switch mode can complete everything.
+- Verificat automat în Chromium: ambele regiuni terminate cap-coadă doar cu mersul automat, fără erori JS. Telefonul fizic, vocile și cititorul de ecran rămân neconfirmate. / Both regions completed headlessly via auto-follow; real devices remain unverified.
+
 ## 2026-10-31 · Kygo: Pe Urme v1.1.0 · Finalizat / Completed
 - RO: joc nou în Kygo World, la [`pe-urme/`](pe-urme/), accesibil din bara de moduri (🐩 Pe Urme 3D). Kygo, toy poodle roșcat, explorează în 3D (Three.js) și găsește jucării pe urma mirosului, care e transmisă în trei feluri deodată: dâră vizuală, bipuri stereo mai rapide pe măsură ce se apropie și vibrații. Lătratul-sonar (B) spune vocal ce e în jur, la câți pași și în ce direcție; Spațiu pornește mersul automat.
   - **Regiunea 1 · Conacul bântuit** (eveniment Halloween): conacul pornește gri și se colorează cu fiecare jucărie. Provocări: numărătoarea BooScary, traducătorul Ghost Talk, cântarul Pumpkin Weigh-In și memoria Candy Route (cu indicii după două greșeli).
