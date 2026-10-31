@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-31 — Kygo: Pe Urme v1.1.0 · Finalizat
+
+- RO: joc 3D nou, integrat în Kygo World (`kygo-world/pe-urme/`, butonul „🐩 Pe Urme 3D” din bara de moduri). Kygo, toy poodle roșcat, găsește jucării pe urma mirosului (dâră vizuală, bipuri stereo, vibrații) și cu lătratul-sonar care spune vocal ce e în jur. Două regiuni: **Conacul bântuit** (BooScary, Ghost Talk, Pumpkin Weigh-In, Candy Route) și **Arena sporturilor** (Basket vs AI, PentArena, Puck & Pool, SlideStorm), plus harta lumii cu progres pe regiune. Narațiune, subtitrări, contrast ridicat, daltonism, mișcare redusă, mod un singur buton, mod Plimbare fără eșec, RO/EN.
+  - Portofoliu: card nou în colecția de jocuri, „Finalizat recent” RO/EN, panoul Now și istoricul din octombrie, catalog (descrierea Kygo World), dovezi, sitemap și imagine Open Graph din joc. Numărul de proiecte rămâne 91: jocul face parte din Kygo World.
+- EN: new accessible 3D game inside Kygo World: scent trail, spoken bark sonar, the Haunted Manor and the Sports Arena with 8 challenges inspired by earlier games, a world map, one-switch and no-fail modes, RO/EN.
+- Teste automate în Chromium: toate cele 8 provocări, ecranele de final și călătoria între regiuni. Telefonul fizic, vocile de sinteză și cititorul de ecran rămân neconfirmate. / Automated Chromium checks; real phone, speech voices and screen reader remain unverified.
+- [Joacă / Play](kygo-world/pe-urme/) · [Kygo World](kygo-world/) · [Istoric / History](kygo-world/CHANGELOG.md).
+
 ## 2026-10-29 — Carpați Enduro v1.0.0 · Finalizat
 
 - RO: proiect nou — joc moto 3D (Three.js 0.170 ca ES module, rezervă 2D) care combină enduro, motocross și trial: carieră de la Nivelul 1 la 24 în opt regiuni, nouă moduri, școală de pilotaj cu 7 lecții ghidate și duel cu antrenorul AI, evenimente sezoniere (Halloween, Ziua României, Crăciun, Mărțișor, Paște, vară) cu modele exclusive, vreme cu bălți și frunze, magazin, recompense, patru camere și vibrații pe mobil. RO/EN, dark/light, contrast ridicat, mișcare redusă, PWA offline.
