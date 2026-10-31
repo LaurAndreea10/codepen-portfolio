@@ -4,7 +4,7 @@
     projectCount: 91,
     repositoryCount: "20+",
     accessibilityScore: 100,
-    updated: "2026-10-29"
+    updated: "2026-10-31"
   });
   window.PORTFOLIO_CONFIG = config;
 
