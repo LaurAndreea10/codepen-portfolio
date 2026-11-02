@@ -8,4 +8,5 @@
 - Added dark/light themes, high contrast, reduced motion, keyboard access, focus indicators, live announcements, responsive layout and static fallback.
 - Added local settings, shareable recipe links and PNG export without external dependencies.
 - Integrated into the project catalogue, Romanian and English recently completed lists, portfolio history and sitemap.
+- Audited all 40 feature points; see `FEATURE-CHECKLIST.md`. Fixed shared recipe URLs to restore both tilt values and removed duplicate control listeners.
 - Manual device, browser support and screen-reader verification are not claimed here.
