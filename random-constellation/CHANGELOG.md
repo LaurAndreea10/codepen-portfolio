@@ -10,4 +10,5 @@
 - Integrated into the project catalogue, Romanian and English recently completed lists, portfolio history and sitemap.
 - Audited all 40 feature points; see `FEATURE-CHECKLIST.md`. Fixed shared recipe URLs to restore both tilt values and removed duplicate control listeners.
 - Fixed mobile static-fallback initialization: language updates no longer replace the observatory section's child scene. Verified translated targets are leaf elements, so stars, planet and controls remain in the DOM.
+- Improved narrow-screen composition: the scene caption moves above the field, the fallback notice spans the bottom, and the redundant “mod static” suffix is removed from the notice.
 - Manual device, browser support and screen-reader verification are not claimed here.
