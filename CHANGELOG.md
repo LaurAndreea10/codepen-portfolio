@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-11-02 — Random Constellation v1.0.0 · Finalizat / Completed
+
+- RO: Observator cosmic interactiv pentru CodePen Challenge CSS Random(). CSS generează poziția, dimensiunea, nuanța, opacitatea, pulsația, înclinarea și adâncimea stelelor. Include preseturi, densitate reglabilă, regenerare, comete, scenă 2D/3D, parallax opțional, mod Zen, panou educativ, partajare și export PNG. RO/EN, dark/light, contrast ridicat, mișcare redusă, navigare cu tastatura și fallback static.
+- EN: Interactive cosmic observatory for the CodePen CSS Random() challenge. CSS generates star position, size, hue, opacity, pulse, tilt and depth. Includes presets, adjustable density, regeneration, comets, 2D/3D scene, optional parallax, Zen mode, learning panel, sharing and PNG export. RO/EN, dark/light, high contrast, reduced motion, keyboard navigation and a static fallback.
+- Added to `projects.json`, the Romanian and English Recently completed lists, the portfolio's Finalizat recent panel and the sitemap. Project history: [random-constellation/CHANGELOG.md](random-constellation/CHANGELOG.md).
+- Manual testing on physical devices, browser support coverage and screen-reader verification are not claimed.
+
+
 ## 2026-10-31 — Kygo World 3D: Kygo dinainte, cu papion
 
 - RO: în 3D, Kygo folosește din nou imaginea originală cu papion (panou orientat spre cameră, cu umbră), în locul modelului din sfere.
