@@ -12,6 +12,15 @@
 <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/random-constellation/">
 <title>Random Constellation — CSS Random()</title>
 <style>
+/* Registered properties are computed once per element, so one random() value is reused everywhere the var() appears. */
+@property --size{syntax:"<length>";inherits:false;initial-value:3px}
+@property --hue{syntax:"<number>";inherits:false;initial-value:220}
+@property --pick{syntax:"<integer>";inherits:true;initial-value:0}
+@property --d1{syntax:"<integer>";inherits:true;initial-value:1}
+@property --d2{syntax:"<integer>";inherits:true;initial-value:1}
+@property --d3{syntax:"<integer>";inherits:true;initial-value:1}
+@property --lucky{syntax:"<integer>";inherits:true;initial-value:220}
+@property --ang{syntax:"<angle>";inherits:false;initial-value:-24deg}
 :root{color-scheme:dark;--bg:#070914;--panel:#10162a;--panel2:#141d35;--ink:#f5f5fb;--muted:#bdc4d8;--line:#35405c;--accent:#afc0ff;--accent-ink:#11172d;--focus:#ffe58f;--good:#8df0c0;--shadow:0 22px 70px #0008}
 :root[data-theme="light"]{color-scheme:light;--bg:#edf1fa;--panel:#fff;--panel2:#f5f7fd;--ink:#172039;--muted:#46516a;--line:#aab5ca;--accent:#354fbb;--accent-ink:#fff;--focus:#944000;--good:#006b49;--shadow:0 18px 60px #26345a22}
 *{box-sizing:border-box}
@@ -104,9 +113,67 @@ footer{padding:16px 0 26px;color:var(--muted);font-size:.8rem}
 @media(max-width:480px){.brand{font-size:.78rem}.header-controls .pill{min-height:40px;padding:.45rem .7rem}.observatory{min-height:64svh}.setting-grid{grid-template-columns:1fr}.actions .btn{flex:1 1 calc(50% - 8px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.sky{transition:none}}
 @supports (left:random(0%,1%)){
- .star{--x:random(3%,97%);--y:random(5%,95%);--size:random(--star-size element-scoped,2px,5px,1px);--hue:random(--star-hue element-scoped,var(--hue-min,195),var(--hue-max,265));--alpha:random(.55,1);--duration:random(2.4s,6s,.1s);--delay:random(-6s,0s,.1s);--depth:random(calc(var(--depth-range,110px)*-1),var(--depth-range,110px));--tilt:random(-18deg,18deg);animation-duration:calc(random(2.4s,6s,.1s)*var(--pulse-speed,1));left:var(--x);top:var(--y)}
- .star.big{--size:random(--star-size element-scoped,4px,8px,1px)}.sky[data-formation="orbit"] .star{--x:calc(50% + random(-38%,38%));--y:calc(50% + random(-24%,24%))}.sky[data-formation="cluster"] .star{--x:calc(50% + random(-23%,23%));--y:calc(50% + random(-18%,18%))}
+ .star{--x:random(3%,97%);--y:random(5%,95%);--size:random(2px,5px,1px);--hue:random(var(--hue-min,195),var(--hue-max,265));--alpha:random(.55,1);--duration:random(2.4s,6s,.1s);--delay:random(-6s,0s,.1s);--depth:random(calc(var(--depth-range,110px)*-1),var(--depth-range,110px));--tilt:random(-18deg,18deg);animation-duration:calc(random(2.4s,6s,.1s)*var(--pulse-speed,1));left:var(--x);top:var(--y)}
+ .star.big{--size:random(4px,8px,1px)}.sky[data-formation="orbit"] .star{--x:calc(50% + random(-38%,38%));--y:calc(50% + random(-24%,24%))}.sky[data-formation="cluster"] .star{--x:calc(50% + random(-23%,23%));--y:calc(50% + random(-18%,18%))}
  .observatory::after{content:"CSS random()";position:absolute;top:14px;right:15px;z-index:8;border:1px solid #ffffff40;border-radius:99px;padding:.3rem .6rem;background:#080b18bb;color:#d8e0ff;font-size:.68rem;font-weight:800;letter-spacing:.08em}
+}
+
+/* ---------- Night Oracle merge: nebulae + meteors in the scene ---------- */
+.sky-fx{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.blob{position:absolute;left:var(--bx,20%);top:var(--by,20%);width:var(--bs,30vmax);aspect-ratio:1;border-radius:50%;filter:blur(34px);opacity:.75;background:radial-gradient(circle,hsl(var(--bh,230) 85% 60% / .26),transparent 65%)}
+.meteor{position:absolute;top:var(--mt,12%);left:var(--ml,80%);width:150px;height:2px;border-radius:2px;opacity:0;transform-origin:left center;background:linear-gradient(90deg,#fff,#c8d4ff99 30%,transparent);filter:drop-shadow(0 0 6px #b7c9ff);animation:meteor var(--md,8s) linear var(--mdelay,0s) infinite}
+@keyframes meteor{0%{transform:rotate(var(--ang)) translateX(0);opacity:0}3%{opacity:1}18%,100%{transform:rotate(var(--ang)) translateX(-70vmax);opacity:0}}
+.motion-paused .meteor,.motion-paused .blob{animation-play-state:paused}
+.zen .meteor{width:190px}
+.zen .oracle-panel{display:none}
+
+/* ---------- Night Oracle merge: the oracle panel ---------- */
+.oracle-panel{margin-top:14px;--gold:#ffd37a;--die:50px;--row:5.2rem}
+:root[data-theme="light"] .oracle-panel{--gold:#8a4b00}
+.high-contrast .oracle-panel{--gold:#fff1b8}
+.oracle-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.oracle-head h2{margin:0}
+.oracle-head .actions{flex:0 1 auto}
+.oracle-head .btn{white-space:nowrap}
+.oracle-head kbd{padding:.05rem .4rem;border-radius:5px;background:#10162c22;font:.72rem ui-monospace,SFMono-Regular,Consolas,monospace}
+.oracle-head code{font:.8rem ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--accent)}
+.oracle{--lucky-color:hsl(var(--lucky) 85% 70%);margin-top:14px;padding:clamp(14px,3vw,22px);border:1px solid var(--line);border-radius:18px;background:radial-gradient(ellipse at 50% 0,hsl(var(--lucky) 60% 40% / .22),transparent 70%),var(--panel2);rotate:var(--otilt,0deg);transition:rotate .45s ease;animation:oracleRise .6s cubic-bezier(.2,.9,.3,1) both}
+:root[data-theme="light"] .oracle{--lucky-color:hsl(var(--lucky) 70% 38%)}
+.oracle:hover,.oracle:focus-within{rotate:0deg}
+@keyframes oracleRise{from{opacity:0;translate:0 14px}}
+.oracle-eyebrow{margin:0;color:var(--muted);font:800 .72rem ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase}
+.oracle-eyebrow .num::after{counter-reset:n calc(var(--pick) + 1);content:counter(n,decimal-leading-zero);color:var(--lucky-color)}
+.fortune-window{height:var(--row);margin:.6rem 0 1rem;overflow:hidden;border-block:1px dashed var(--line);-webkit-mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent)}
+.fortune-strip{margin:0;padding:0;list-style:none;translate:0 calc(var(--pick) * var(--row) * -1);animation:fortuneSpin 1.4s cubic-bezier(.2,.9,.25,1.04) both}
+.fortune-strip li{height:var(--row);display:grid;place-items:center;padding:0 .5rem;text-align:center;color:var(--gold);font:800 clamp(1.05rem,3vw,1.4rem)/1.25 Georgia,"Times New Roman",serif;text-wrap:balance}
+@keyframes fortuneSpin{from{translate:0 calc(var(--row) * -11);filter:blur(3px)}70%{filter:blur(0)}}
+.oracle-row{display:flex;align-items:center;justify-content:space-between;gap:.9rem 1.2rem;flex-wrap:wrap}
+.dice{display:flex;align-items:center;gap:.75rem}
+.die{width:var(--die);height:var(--die);overflow:hidden;border-radius:12px;background:linear-gradient(145deg,#f8fafc,#cbd5e1);box-shadow:0 5px 0 #64748b,0 12px 22px #0006;animation:dieTumble .9s cubic-bezier(.3,1.4,.5,1) both}
+.die:nth-child(1){--v:var(--d1);animation-delay:.15s}.die:nth-child(2){--v:var(--d2);animation-delay:.3s}.die:nth-child(3){--v:var(--d3);animation-delay:.45s}
+.die-strip{translate:0 calc((var(--v) - 1) * var(--die) * -1)}
+.face{display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);width:var(--die);height:var(--die);padding:8px}
+.face i{width:9px;height:9px;border-radius:50%;place-self:center}
+.face i.on{background:#0b1220}
+.linked .face i.on{background:hsl(var(--lucky) 70% 34%)}
+.linked .die{box-shadow:0 5px 0 hsl(var(--lucky) 40% 40%),0 0 22px hsl(var(--lucky) 90% 60% / .45)}
+@keyframes dieTumble{from{rotate:-300deg;scale:.3;opacity:0}}
+.dice-eq{color:var(--muted);font:700 1.3rem ui-monospace,SFMono-Regular,Consolas,monospace}
+.dice-total{min-width:2ch;color:var(--lucky-color);font:800 1.7rem ui-monospace,SFMono-Regular,Consolas,monospace}
+.dice-total::after{counter-reset:total calc(var(--d1) + var(--d2) + var(--d3));content:counter(total)}
+.hue-chip{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .75rem;border:1px solid var(--line);border-radius:999px;font-size:.8rem;font-weight:750}
+.hue-chip .swatch{width:14px;height:14px;border-radius:50%;background:hsl(var(--lucky) 85% 65%);box-shadow:0 0 10px hsl(var(--lucky) 85% 65%)}
+.hue-val::after{counter-reset:h var(--lucky);content:counter(h) "°"}
+.motion-paused .fortune-strip,.motion-paused .die,.motion-paused .oracle{animation:none}
+@media(max-width:480px){.oracle-panel{--die:42px;--row:6.2rem}.face{padding:6px}.face i{width:8px;height:8px}.oracle-head .actions{width:100%}.oracle-head .actions .btn{flex:1 1 100%}}
+@media(prefers-reduced-motion:reduce){.meteor{display:none}}
+
+@supports (left:random(0%,1%)){
+ .blob{--bx:random(-15%,80%);--by:random(-15%,75%);--bs:random(18vmax,42vmax);--bh:random(var(--hue-min,195),var(--hue-max,265))}
+ .meteor{--ang:random(-34deg,-14deg);--mt:random(0%,40%);--ml:random(40%,100%);animation-duration:random(5s,11s);animation-delay:random(0s,6s)}
+ .oracle{--otilt:random(-2deg,2deg);--pick:random(0,11,1);--d1:random(1,6,1);--d2:random(1,6,1);--d3:random(1,6,1);--lucky:random(var(--hue-min,195),var(--hue-max,265),1)}
+ /* Same <dashed-ident> = one shared random base value for all three dice */
+ .linked .oracle{--d1:random(--dice,1,6,1);--d2:random(--dice,1,6,1);--d3:random(--dice,1,6,1)}
 }
 
 </style>
@@ -130,6 +197,7 @@ footer{padding:16px 0 26px;color:var(--muted);font-size:.8rem}
   </section>
   <section class="observatory" id="observatory" aria-label="Observator cosmic interactiv">
     <div class="scene" id="scene">
+      <div class="sky-fx" id="skyFx" aria-hidden="true"></div>
       <div class="sky" id="sky" aria-label="Câmp de stele"></div>
       <div class="planet-wrap" aria-hidden="true"><div class="planet"></div><div class="planet-label"><strong>Nova</strong><span data-i18n="planet">Una dintre multe</span></div></div>
       <div class="scene-caption"><strong data-i18n="captionTitle">La fiecare cer, o constelație nouă</strong><span data-i18n="captionText">Variații generate în CSS, fără valori aleatoare calculate de JavaScript.</span></div>
@@ -161,6 +229,42 @@ footer{padding:16px 0 26px;color:var(--muted);font-size:.8rem}
       </div>
     </div>
   </section>
+  <section class="panel oracle-panel" id="oraclePanel" aria-labelledby="oracleTitle">
+    <div class="oracle-head">
+      <div><p class="eyebrow">Night Oracle · random()</p><h2 id="oracleTitle" data-i18n="oracleTitle">Oracolul constelației</h2><p class="muted" data-i18n="oracleText">CSS alege prezicerea, zarurile și nuanța norocoasă, o singură dată pentru fiecare element.</p></div>
+      <div class="actions">
+        <button class="btn btn-primary" id="oracleRoll" type="button">⚄ <span data-i18n="oracleRoll">Aruncă din nou</span> <kbd aria-hidden="true">R</kbd></button>
+        <button class="btn" id="diceLink" type="button" aria-pressed="false">⛓ <span data-i18n="diceLink">Leagă zarurile</span> <code>--dice</code></button>
+      </div>
+    </div>
+    <div class="oracle" id="oracle" role="group">
+      <p class="oracle-eyebrow"><span data-i18n="fortune">Prezicerea</span> <span class="num"></span>/12</p>
+      <div class="fortune-window"><ul class="fortune-strip" aria-hidden="true">
+        <li data-i18n="f1">Următorul tău bug e un punct și virgulă lipsă.</li>
+        <li data-i18n="f2">Un flexbox se va alinia în favoarea ta.</li>
+        <li data-i18n="f3">Diseară, z-index: 9999 nu e răspunsul.</li>
+        <li data-i18n="f4">Publică. Cascada iartă.</li>
+        <li data-i18n="f5">Un necunoscut îți va da ❤ pe Pen.</li>
+        <li data-i18n="f6">Liniile grid se întâlnesc unde nu te aștepți.</li>
+        <li data-i18n="f7">Marginile tale vor colapsa — elegant.</li>
+        <li data-i18n="f8">Refactorizează ce tot amâni.</li>
+        <li data-i18n="f9">Lucrurile !important vin la cei care așteaptă.</li>
+        <li data-i18n="f10">Bug-ul e în cache. Mereu e în cache.</li>
+        <li data-i18n="f11">Modul întunecat îi stă bine viitorului tău.</li>
+        <li data-i18n="f12">Mai aruncă o dată: soarta se calculează per element.</li>
+      </ul></div>
+      <div class="oracle-row">
+        <div class="dice" aria-hidden="true">
+          <div class="die"><div class="die-strip"></div></div>
+          <div class="die"><div class="die-strip"></div></div>
+          <div class="die"><div class="die-strip"></div></div>
+          <span class="dice-eq">=</span><span class="dice-total"></span>
+        </div>
+        <span class="hue-chip"><i class="swatch" aria-hidden="true"></i><span data-i18n="luckyHue">Nuanța norocoasă</span> <b class="hue-val"></b></span>
+      </div>
+    </div>
+    <p class="visually-hidden" id="oracleLive" aria-live="polite" aria-atomic="true"></p>
+  </section>
   <section class="panel snapshots" aria-labelledby="snapshotsTitle"><div class="snapshot-head"><div><h2 id="snapshotsTitle" data-i18n="snapshotsTitle">Constelații salvate</h2><p class="muted" data-i18n="snapshotsText">Păstrează și compară până la trei ceruri.</p></div><button class="btn" id="snapshotBtn" type="button">＋ <span data-i18n="snapshotSave">Salvează cerul</span></button></div><div class="gallery" id="gallery" aria-live="polite"></div></section>
   <section class="details" aria-label="Detalii și învățare">
     <details class="panel"><summary data-i18n="learnTitle">Cum funcționează CSS random()?</summary><div class="details-body"><p data-i18n="learnText">CSS alege poziții, dimensiuni, nuanțe și viteze în limitele declarate. JavaScript creează numărul de elemente și interfața; nu calculează valorile aleatoare pentru stele.</p><pre class="code-sample"><code>.star {
@@ -168,7 +272,14 @@ footer{padding:16px 0 26px;color:var(--muted);font-size:.8rem}
   top: random(5%, 95%);
   --size: random(2px, 5px, 1px);
   --depth: random(-110px, 95px);
-}</code></pre><p data-i18n="learnKey">Butonul de regenerare creează elemente noi, iar CSS le atribuie alte valori random().</p></div></details>
+}
+.oracle {
+  --pick: random(0, 11, 1);
+  --d1: random(1, 6, 1);
+}
+.linked .oracle {
+  --d1: random(--dice, 1, 6, 1);
+}</code></pre><p data-i18n="learnKey">Butonul de regenerare creează elemente noi, iar CSS le atribuie alte valori random().</p><p data-i18n="learnOracle">Oracolul: prezicerea e o bandă de 12 rânduri mutată cu --pick, iar totalul zarurilor e un counter CSS. Cheia comună --dice face ca toate zarurile să primească aceeași valoare. Fără suport random(), doar oracolul și efectele primesc valori din JavaScript; stelele păstrează fallback-ul static.</p></div></details>
     <details class="panel"><summary data-i18n="accessTitle">Accesibilitate și compatibilitate</summary><div class="details-body"><ul class="help-list"><li data-i18n="a11y1">Toate comenzile au etichete și se folosesc din tastatură.</li><li data-i18n="a11y2">Contrast ridicat și mișcare redusă pot fi activate manual.</li><li data-i18n="a11y3">Setarea de mișcare redusă a sistemului este respectată.</li><li data-i18n="a11y4">Dacă browserul nu recunoaște random(), scena păstrează o distribuție statică utilizabilă.</li><li data-i18n="a11y5">Exportul și partajarea nu trimit date către un server.</li></ul></div></details>
   </section>
 </main>
@@ -179,8 +290,8 @@ footer{padding:16px 0 26px;color:var(--muted);font-size:.8rem}
 (function(){
 "use strict";
 var dict={
-ro:{skip:"Sari la controale",exitZen:"Ieși din modul Zen",light:"Mod luminos",dark:"Mod întunecat",contrast:"Contrast ridicat",eyebrow:"CodePen Challenge · Noiembrie",lede:"Un observator cosmic construit în jurul funcției CSS random(). Explorează un cer nou, ajustează atmosfera și vezi cum CSS generează variațiile.",planet:"Una dintre multe",captionTitle:"La fiecare cer, o constelație nouă",captionText:"Variații generate în CSS, fără valori aleatoare calculate de JavaScript.",controlsTitle:"Comenzi pentru observator",reroll:"Generează alt cer",comet:"Trimite o cometă",save:"Salvează setările",share:"Partajează rețeta",export:"Descarcă PNG",zen:"Mod Zen",settingsTitle:"Personalizează cerul",density:"Densitatea stelelor",palette:"Atmosferă",presetNebula:"Nebuloasă",presetAurora:"Auroră",presetSolar:"Solar",presetMono:"Monocrom",view:"Perspectivă",view3d:"Vedere 3D",view2d:"Vedere 2D",motionLabel:"Mișcare",pause:"Oprește animația",play:"Pornește animația",parallax:"Parallax la mișcarea pointerului",reduced:"Mișcare redusă",learnTitle:"Cum funcționează CSS random()?",learnText:"CSS alege poziții, dimensiuni, nuanțe și viteze în limitele declarate. JavaScript creează numărul de elemente și interfața; nu calculează valorile aleatoare pentru stele.",learnKey:"Butonul de regenerare creează elemente noi, iar CSS le atribuie alte valori random().",accessTitle:"Accesibilitate și compatibilitate",a11y1:"Toate comenzile au etichete și se folosesc din tastatură.",a11y2:"Contrast ridicat și mișcare redusă pot fi activate manual.",a11y3:"Setarea de mișcare redusă a sistemului este respectată.",a11y4:"Dacă browserul nu recunoaște random(), scena păstrează o distribuție statică utilizabilă.",a11y5:"Exportul și partajarea nu trimit date către un server.",footer:"Un experiment de front-end pentru provocarea CodePen din noiembrie.",portfolio:"Înapoi la portofoliu",statusReroll:"Cer nou generat.",statusSaved:"Setările au fost salvate în acest browser.",statusShared:"Rețeta scenei a fost copiată.",statusCopied:"Link copiat.",statusExport:"Imagine PNG descărcată.",statusExportFail:"Exportul imaginii nu a reușit în acest browser.",statusSupport:"Browserul nu recunoaște CSS random(). Este afișată o constelație statică de rezervă.",statusSupported:"CSS random() este recunoscut de browser.",statusStar:"Stea selectată",statusZen:"Mod Zen activ.",statusZenOff:"Mod Zen dezactivat.",fallback:"mod static",starName:"Stea",screen:"Câmp stelar",lang:"Schimbă limba în engleză",ready:"activ",observatory:"Observator cosmic interactiv",formation:"Forma câmpului",scatter:"Distribuit",orbit:"Bandă orbitală",cluster:"Nebuloasă compactă",brightness:"Luminozitate",pulseSpeed:"Ritmul pulsației",depth:"Adâncime 3D",tiltX:"Înclinare verticală",tiltY:"Înclinare orizontală",snapshotsTitle:"Constelații salvate",snapshotsText:"Păstrează și compară până la trei ceruri.",snapshotSave:"Salvează cerul",restore:"Restaurează cerul",emptyGallery:"Salvează o constelație ca să apară aici.",savedSky:"Cer salvat."},
-en:{skip:"Skip to controls",exitZen:"Exit Zen mode",light:"Light mode",dark:"Dark mode",contrast:"High contrast",eyebrow:"CodePen Challenge · November",lede:"A cosmic observatory built around the CSS random() function. Explore a new sky, tune its atmosphere and see CSS generate the variations.",planet:"One of many",captionTitle:"A new constellation with every sky",captionText:"Variations generated in CSS, with no random star values calculated in JavaScript.",controlsTitle:"Observatory controls",reroll:"Generate another sky",comet:"Send a comet",save:"Save settings",share:"Share recipe",export:"Download PNG",zen:"Zen mode",settingsTitle:"Tune the sky",density:"Star density",palette:"Atmosphere",presetNebula:"Nebula",presetAurora:"Aurora",presetSolar:"Solar",presetMono:"Monochrome",view:"Perspective",view3d:"3D view",view2d:"2D view",motionLabel:"Motion",pause:"Pause animation",play:"Play animation",parallax:"Pointer parallax",reduced:"Reduced motion",learnTitle:"How does CSS random() work?",learnText:"CSS chooses positions, sizes, hues and speeds within declared ranges. JavaScript creates the number of elements and the interface; it does not calculate random star values.",learnKey:"The reroll button creates new elements, and CSS assigns them new random() values.",accessTitle:"Accessibility and compatibility",a11y1:"Every control has a label and works with a keyboard.",a11y2:"High contrast and reduced motion can be enabled manually.",a11y3:"The operating system reduced-motion preference is respected.",a11y4:"If the browser does not recognize random(), the scene keeps a usable static distribution.",a11y5:"Export and sharing do not send data to a server.",footer:"A front-end experiment for the November CodePen Challenge.",portfolio:"Back to portfolio",statusReroll:"A new sky was generated.",statusSaved:"Settings saved in this browser.",statusShared:"The scene recipe was copied.",statusCopied:"Link copied.",statusExport:"PNG image downloaded.",statusExportFail:"Image export failed in this browser.",statusSupport:"This browser does not recognize CSS random(). A static constellation fallback is shown.",statusSupported:"CSS random() is recognized by this browser.",statusStar:"Star selected",statusZen:"Zen mode on.",statusZenOff:"Zen mode off.",fallback:"static fallback",starName:"Star",screen:"Star field",lang:"Schimbă limba în română",ready:"ready",observatory:"Interactive cosmic observatory",formation:"Field shape",scatter:"Scattered",orbit:"Orbit band",cluster:"Nebula cluster",brightness:"Brightness",pulseSpeed:"Pulse tempo",depth:"3D depth",tiltX:"Vertical tilt",tiltY:"Horizontal tilt",snapshotsTitle:"Saved constellations",snapshotsText:"Keep and compare up to three skies.",snapshotSave:"Save this sky",restore:"Restore this sky",emptyGallery:"Save a constellation to see it here.",savedSky:"Sky saved."}
+ro:{skip:"Sari la controale",exitZen:"Ieși din modul Zen",light:"Mod luminos",dark:"Mod întunecat",contrast:"Contrast ridicat",eyebrow:"CodePen Challenge · Noiembrie",lede:"Un observator cosmic construit în jurul funcției CSS random(). Explorează un cer nou, ajustează atmosfera și vezi cum CSS generează variațiile.",planet:"Una dintre multe",captionTitle:"La fiecare cer, o constelație nouă",captionText:"Variații generate în CSS, fără valori aleatoare calculate de JavaScript.",controlsTitle:"Comenzi pentru observator",reroll:"Generează alt cer",comet:"Trimite o cometă",save:"Salvează setările",share:"Partajează rețeta",export:"Descarcă PNG",zen:"Mod Zen",settingsTitle:"Personalizează cerul",density:"Densitatea stelelor",palette:"Atmosferă",presetNebula:"Nebuloasă",presetAurora:"Auroră",presetSolar:"Solar",presetMono:"Monocrom",view:"Perspectivă",view3d:"Vedere 3D",view2d:"Vedere 2D",motionLabel:"Mișcare",pause:"Oprește animația",play:"Pornește animația",parallax:"Parallax la mișcarea pointerului",reduced:"Mișcare redusă",learnTitle:"Cum funcționează CSS random()?",learnText:"CSS alege poziții, dimensiuni, nuanțe și viteze în limitele declarate. JavaScript creează numărul de elemente și interfața; nu calculează valorile aleatoare pentru stele.",learnKey:"Butonul de regenerare creează elemente noi, iar CSS le atribuie alte valori random().",accessTitle:"Accesibilitate și compatibilitate",a11y1:"Toate comenzile au etichete și se folosesc din tastatură.",a11y2:"Contrast ridicat și mișcare redusă pot fi activate manual.",a11y3:"Setarea de mișcare redusă a sistemului este respectată.",a11y4:"Dacă browserul nu recunoaște random(), scena păstrează o distribuție statică utilizabilă.",a11y5:"Exportul și partajarea nu trimit date către un server.",footer:"Un experiment de front-end pentru provocarea CodePen din noiembrie.",portfolio:"Înapoi la portofoliu",statusReroll:"Cer nou generat.",statusSaved:"Setările au fost salvate în acest browser.",statusShared:"Rețeta scenei a fost copiată.",statusCopied:"Link copiat.",statusExport:"Imagine PNG descărcată.",statusExportFail:"Exportul imaginii nu a reușit în acest browser.",statusSupport:"Browserul nu recunoaște CSS random(). Este afișată o constelație statică de rezervă.",statusSupported:"CSS random() este recunoscut de browser.",statusStar:"Stea selectată",statusZen:"Mod Zen activ.",statusZenOff:"Mod Zen dezactivat.",fallback:"mod static",starName:"Stea",screen:"Câmp stelar",lang:"Schimbă limba în engleză",ready:"activ",observatory:"Observator cosmic interactiv",formation:"Forma câmpului",scatter:"Distribuit",orbit:"Bandă orbitală",cluster:"Nebuloasă compactă",brightness:"Luminozitate",pulseSpeed:"Ritmul pulsației",depth:"Adâncime 3D",tiltX:"Înclinare verticală",tiltY:"Înclinare orizontală",snapshotsTitle:"Constelații salvate",snapshotsText:"Păstrează și compară până la trei ceruri.",snapshotSave:"Salvează cerul",restore:"Restaurează cerul",emptyGallery:"Salvează o constelație ca să apară aici.",savedSky:"Cer salvat.",oracleTitle:"Oracolul constelației",oracleText:"CSS alege prezicerea, zarurile și nuanța norocoasă, o singură dată pentru fiecare element.",oracleRoll:"Aruncă din nou",diceLink:"Leagă zarurile",fortune:"Prezicerea",luckyHue:"Nuanța norocoasă",learnOracle:"Oracolul: prezicerea e o bandă de 12 rânduri mutată cu --pick, iar totalul zarurilor e un counter CSS. Cheia comună --dice face ca toate zarurile să primească aceeași valoare. Fără suport random(), doar oracolul și efectele primesc valori din JavaScript; stelele păstrează fallback-ul static.",f1:"Următorul tău bug e un punct și virgulă lipsă.",f2:"Un flexbox se va alinia în favoarea ta.",f3:"Diseară, z-index: 9999 nu e răspunsul.",f4:"Publică. Cascada iartă.",f5:"Un necunoscut îți va da ❤ pe Pen.",f6:"Liniile grid se întâlnesc unde nu te aștepți.",f7:"Marginile tale vor colapsa — elegant.",f8:"Refactorizează ce tot amâni.",f9:"Lucrurile !important vin la cei care așteaptă.",f10:"Bug-ul e în cache. Mereu e în cache.",f11:"Modul întunecat îi stă bine viitorului tău.",f12:"Mai aruncă o dată: soarta se calculează per element.",oracleRead:function(f,d,t,h){return "Prezicerea: "+f+" Zaruri: "+d.join(", ")+", total "+t+". Nuanța norocoasă "+h+" grade."},diceLinked:"Zaruri legate: aceeași cheie --dice.",diceFree:"Zaruri independente."},
+en:{skip:"Skip to controls",exitZen:"Exit Zen mode",light:"Light mode",dark:"Dark mode",contrast:"High contrast",eyebrow:"CodePen Challenge · November",lede:"A cosmic observatory built around the CSS random() function. Explore a new sky, tune its atmosphere and see CSS generate the variations.",planet:"One of many",captionTitle:"A new constellation with every sky",captionText:"Variations generated in CSS, with no random star values calculated in JavaScript.",controlsTitle:"Observatory controls",reroll:"Generate another sky",comet:"Send a comet",save:"Save settings",share:"Share recipe",export:"Download PNG",zen:"Zen mode",settingsTitle:"Tune the sky",density:"Star density",palette:"Atmosphere",presetNebula:"Nebula",presetAurora:"Aurora",presetSolar:"Solar",presetMono:"Monochrome",view:"Perspective",view3d:"3D view",view2d:"2D view",motionLabel:"Motion",pause:"Pause animation",play:"Play animation",parallax:"Pointer parallax",reduced:"Reduced motion",learnTitle:"How does CSS random() work?",learnText:"CSS chooses positions, sizes, hues and speeds within declared ranges. JavaScript creates the number of elements and the interface; it does not calculate random star values.",learnKey:"The reroll button creates new elements, and CSS assigns them new random() values.",accessTitle:"Accessibility and compatibility",a11y1:"Every control has a label and works with a keyboard.",a11y2:"High contrast and reduced motion can be enabled manually.",a11y3:"The operating system reduced-motion preference is respected.",a11y4:"If the browser does not recognize random(), the scene keeps a usable static distribution.",a11y5:"Export and sharing do not send data to a server.",footer:"A front-end experiment for the November CodePen Challenge.",portfolio:"Back to portfolio",statusReroll:"A new sky was generated.",statusSaved:"Settings saved in this browser.",statusShared:"The scene recipe was copied.",statusCopied:"Link copied.",statusExport:"PNG image downloaded.",statusExportFail:"Image export failed in this browser.",statusSupport:"This browser does not recognize CSS random(). A static constellation fallback is shown.",statusSupported:"CSS random() is recognized by this browser.",statusStar:"Star selected",statusZen:"Zen mode on.",statusZenOff:"Zen mode off.",fallback:"static fallback",starName:"Star",screen:"Star field",lang:"Schimbă limba în română",ready:"ready",observatory:"Interactive cosmic observatory",formation:"Field shape",scatter:"Scattered",orbit:"Orbit band",cluster:"Nebula cluster",brightness:"Brightness",pulseSpeed:"Pulse tempo",depth:"3D depth",tiltX:"Vertical tilt",tiltY:"Horizontal tilt",snapshotsTitle:"Saved constellations",snapshotsText:"Keep and compare up to three skies.",snapshotSave:"Save this sky",restore:"Restore this sky",emptyGallery:"Save a constellation to see it here.",savedSky:"Sky saved.",oracleTitle:"Constellation Oracle",oracleText:"CSS picks the fortune, the dice and the lucky hue, once per element.",oracleRoll:"Roll again",diceLink:"Link the dice",fortune:"Fortune",luckyHue:"Lucky hue",learnOracle:"The oracle: the fortune is a 12-row strip shifted by --pick, and the dice total is a CSS counter. The shared --dice key gives all three dice the same value. Without random() support, only the oracle and effects get values from JavaScript; the stars keep their static fallback.",f1:"Your next bug is a missing semicolon.",f2:"A flexbox will align in your favour.",f3:"Tonight, z-index: 9999 is not the answer.",f4:"Ship it. The cascade forgives.",f5:"A stranger will heart your Pen.",f6:"Grid lines meet where you least expect.",f7:"Your margins will collapse — gracefully.",f8:"Refactor the thing you keep avoiding.",f9:"!important things come to those who wait.",f10:"The bug is in the cache. It's always the cache.",f11:"Dark mode suits your future.",f12:"Roll again: fate is computed per element.",oracleRead:function(f,d,t,h){return "Fortune: "+f+" Dice: "+d.join(", ")+", total "+t+". Lucky hue "+h+" degrees."},diceLinked:"Dice linked: shared --dice key.",diceFree:"Dice independent."}
 };
 var $=function(id){return document.getElementById(id)};
 var root=document.documentElement,sky=$("sky"),live=$("live"),status=$("status"),supportBadge=$("supportBadge"),notice=$("featureNotice"),density=$("density"),densityOut=$("densityOut"),preset=$("preset"),formation=$("formation"),brightness=$("brightness"),brightnessOut=$("brightnessOut"),pulseSpeed=$("pulseSpeed"),pulseOut=$("pulseOut"),depth=$("depth"),depthOut=$("depthOut"),tiltX=$("tiltX"),tiltXOut=$("tiltXOut"),tiltY=$("tiltY"),tiltYOut=$("tiltYOut"),gallery=$("gallery"),snapshots=[];
@@ -199,7 +310,7 @@ function applyLanguage(next){
  $("themeToggle").querySelector("span").textContent=say(theme==="dark"?"light":"dark");if(gallery&&snapshots.length)renderGallery();
 }
 function applyTheme(){root.dataset.theme=theme;$("themeToggle").setAttribute("aria-pressed",String(theme==="dark"));$("themeToggle").querySelector("span").textContent=say(theme==="dark"?"light":"dark")}
-function applyPalette(){var p=palettes[preset.value]||palettes.nebula;sky.style.setProperty("--hue-min",p.min);sky.style.setProperty("--hue-max",p.max);sky.dataset.palette=preset.value;sky.dataset.formation=formation.value;sky.style.setProperty("--brightness",brightness.value);sky.style.setProperty("--pulse-speed",pulseSpeed.value);sky.style.setProperty("--depth-range",depth.value+"px");brightnessOut.textContent=Number(brightness.value).toFixed(1);pulseOut.textContent=Number(pulseSpeed.value).toFixed(1)+"×";depthOut.textContent=depth.value;tiltXOut.textContent=tiltX.value+"°";tiltYOut.textContent=tiltY.value+"°";setSceneTransform()}function setSceneTransform(dx,dy){sky.style.transform=dim3d?"rotateX("+(Number(tiltX.value)+(dx||0))+"deg) rotateY("+(Number(tiltY.value)+(dy||0))+"deg)":"none"}
+function applyPalette(){var p=palettes[preset.value]||palettes.nebula;root.style.setProperty("--hue-min",p.min);root.style.setProperty("--hue-max",p.max);sky.style.setProperty("--hue-min",p.min);sky.style.setProperty("--hue-max",p.max);sky.dataset.palette=preset.value;sky.dataset.formation=formation.value;sky.style.setProperty("--brightness",brightness.value);sky.style.setProperty("--pulse-speed",pulseSpeed.value);sky.style.setProperty("--depth-range",depth.value+"px");brightnessOut.textContent=Number(brightness.value).toFixed(1);pulseOut.textContent=Number(pulseSpeed.value).toFixed(1)+"×";depthOut.textContent=depth.value;tiltXOut.textContent=tiltX.value+"°";tiltYOut.textContent=tiltY.value+"°";setSceneTransform()}function setSceneTransform(dx,dy){sky.style.transform=dim3d?"rotateX("+(Number(tiltX.value)+(dx||0))+"deg) rotateY("+(Number(tiltY.value)+(dy||0))+"deg)":"none"}
 function starFallbackStyle(el,i,count){var x=(7+(i*37)%87),y=(9+(i*53)%79);if(sky.dataset.formation==="orbit"){x=12+(i*37)%76;y=32+(i*19)%36}else if(sky.dataset.formation==="cluster"){x=28+(i*23)%44;y=30+(i*29)%40}el.style.setProperty("--x",x+"%");el.style.setProperty("--y",y+"%")}
 function makeStar(i,count){
  var b=document.createElement("button");b.type="button";b.className="star"+(i%11===0?" big":"")+(i%7===3?" cross":"");b.dataset.starIndex=String(i);b.tabIndex=i===0?0:-1;b.setAttribute("aria-label",say("starName")+" "+(i+1)+" · "+say("screen"));b.title=say("starName")+" "+(i+1);
@@ -269,13 +380,47 @@ function handleParallax(e){
  var r=$("observatory").getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
  setSceneTransform(-y*5,x*7);
 }
-readPrefs();applyUrlConfig();renderStars(Number(density.value));applySettings();loadSnapshots();renderGallery();
+/* ---------- Night Oracle merge ---------- */
+var skyFx=$("skyFx"),oraclePanel=$("oraclePanel"),oracleLive=$("oracleLive"),diceLinked=false;
+var PIPS={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+// Only used when the browser lacks CSS random(); mirrors the @supports rules.
+function jsRand(min,max,step){if(!step)return min+Math.random()*(max-min);return min+step*Math.floor(Math.random()*(Math.floor((max-min)/step)+1))}
+function setVars(el,vars){Object.keys(vars).forEach(function(k){el.style.setProperty(k,vars[k])})}
+function renderFx(){
+ var frag=document.createDocumentFragment(),p=palettes[preset.value]||palettes.nebula,i,el;
+ for(i=0;i<4;i++){el=document.createElement("span");el.className="blob";if(!supportsRandom)setVars(el,{"--bx":jsRand(-15,80)+"%","--by":jsRand(-15,75)+"%","--bs":jsRand(18,42)+"vmax","--bh":jsRand(p.min,p.max)});frag.appendChild(el)}
+ for(i=0;i<3;i++){el=document.createElement("span");el.className="meteor";if(!supportsRandom)setVars(el,{"--ang":jsRand(-34,-14)+"deg","--mt":jsRand(0,40)+"%","--ml":jsRand(40,100)+"%","--md":jsRand(5,11)+"s","--mdelay":jsRand(0,6)+"s"});frag.appendChild(el)}
+ skyFx.replaceChildren(frag);
+}
+function buildDice(scope){scope.querySelectorAll(".die-strip").forEach(function(strip){if(strip.children.length)return;for(var f=1;f<=6;f++){var face=document.createElement("div");face.className="face";for(var c=0;c<9;c++){var pip=document.createElement("i");if(PIPS[f].indexOf(c)>-1)pip.className="on";face.appendChild(pip)}strip.appendChild(face)}})}
+function readOracle(announceIt){
+ var o=$("oracle"),cs=getComputedStyle(o),num=function(n){return parseInt(cs.getPropertyValue(n),10)||0};
+ var pick=Math.max(0,Math.min(11,num("--pick"))),dice=[num("--d1"),num("--d2"),num("--d3")],total=dice[0]+dice[1]+dice[2];
+ var text=dict[lang].oracleRead(say("f"+(pick+1)),dice,total,num("--lucky"));
+ o.setAttribute("aria-label",text);
+ if(announceIt)oracleLive.textContent=text;
+}
+// random() values are fixed per element, so a new roll means a fresh .oracle element.
+function rollOracle(announceIt){
+ var old=$("oracle"),fresh=old.cloneNode(true);
+ fresh.removeAttribute("style");
+ if(!supportsRandom){var p=palettes[preset.value]||palettes.nebula,shared=jsRand(1,6,1),die=function(){return diceLinked?shared:jsRand(1,6,1)};setVars(fresh,{"--otilt":jsRand(-2,2)+"deg","--pick":jsRand(0,11,1),"--d1":die(),"--d2":die(),"--d3":die(),"--lucky":jsRand(p.min,p.max,1)})}
+ old.replaceWith(fresh);
+ requestAnimationFrame(function(){readOracle(announceIt)});
+}
+function setDiceLinked(value){diceLinked=value;oraclePanel.classList.toggle("linked",diceLinked);$("diceLink").setAttribute("aria-pressed",String(diceLinked));rollOracle(false);var s=say(diceLinked?"diceLinked":"diceFree");status.textContent=s;requestAnimationFrame(function(){readOracle(true)})}
+buildDice(oraclePanel);
+
+readPrefs();applyUrlConfig();renderStars(Number(density.value));renderFx();applySettings();loadSnapshots();renderGallery();rollOracle(false);
 var nativeReduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 if(!supportsRandom){supportBadge.textContent="CSS random() · "+say("fallback");notice.textContent=say("statusSupport")}else{notice.textContent=say("statusSupported");supportBadge.textContent="CSS random() · ready"}
-$("reroll").addEventListener("click",function(){renderStars(Number(density.value));applySettings();announce("statusReroll")});
+$("reroll").addEventListener("click",function(){renderStars(Number(density.value));renderFx();applySettings();rollOracle(false);announce("statusReroll")});
+$("oracleRoll").addEventListener("click",function(){rollOracle(true)});
+$("diceLink").addEventListener("click",function(){setDiceLinked(!diceLinked)});
+document.addEventListener("keydown",function(e){if((e.key!=="r"&&e.key!=="R")||e.metaKey||e.ctrlKey||e.altKey||e.repeat)return;if(e.target.closest("input,select,textarea,[contenteditable]"))return;rollOracle(true)});
 density.addEventListener("input",function(){densityOut.value=density.value;densityOut.textContent=density.value;renderStars(Number(density.value));applySettings()});
-preset.addEventListener("change",function(){applyPalette();renderStars(Number(density.value));applySettings()});formation.addEventListener("change",function(){applyPalette();renderStars(Number(density.value));applySettings()});[brightness,pulseSpeed,depth,tiltX,tiltY].forEach(function(input){input.addEventListener("input",function(){applyPalette();applySettings()})});$("snapshotBtn").addEventListener("click",captureSnapshot);
-$("langToggle").addEventListener("click",function(){applyLanguage(lang==="ro"?"en":"ro");if(!supportsRandom)notice.textContent=say("statusSupport")});
+preset.addEventListener("change",function(){applyPalette();renderStars(Number(density.value));renderFx();applySettings();rollOracle(false)});formation.addEventListener("change",function(){applyPalette();renderStars(Number(density.value));applySettings()});[brightness,pulseSpeed,depth,tiltX,tiltY].forEach(function(input){input.addEventListener("input",function(){applyPalette();applySettings()})});$("snapshotBtn").addEventListener("click",captureSnapshot);
+$("langToggle").addEventListener("click",function(){applyLanguage(lang==="ro"?"en":"ro");if(!supportsRandom)notice.textContent=say("statusSupport");readOracle(false)});
 $("themeToggle").addEventListener("click",function(){theme=theme==="dark"?"light":"dark";applyTheme();savePrefs()});
 $("contrastToggle").addEventListener("click",function(){contrast=!contrast;applySettings();savePrefs()});
 $("viewToggle").addEventListener("click",function(){dim3d=!dim3d;sky.style.transform=dim3d?"":"none";sky.classList.toggle("flat",!dim3d);document.querySelector(".planet-wrap").style.transform=dim3d?"translate(-50%,-50%) translateZ(35px)":"translate(-50%,-50%)";applySettings()});

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-02 — Random Constellation v1.1.0 · Night Oracle merge
+
+- RO: Night Oracle integrat în Random Constellation: oracol cu 12 preziceri, trei zaruri cu total prin counter CSS, nuanță norocoasă și „Leagă zarurile” (cheie comună `--dice`), plus nebuloase și meteori `random()` în scenă. Reparat: mărimea și nuanța stelelor foloseau cuvântul-cheie nestandard `element-scoped`.
+- EN: Night Oracle merged into Random Constellation: a 12-fortune oracle, three dice with a CSS-counter total, a lucky hue and “Link the dice” (shared `--dice` key), plus `random()` nebulae and meteors in the scene. Fixed star size and hue using the non-standard `element-scoped` keyword.
+- Project history: [random-constellation/CHANGELOG.md](random-constellation/CHANGELOG.md). Native `random()` path, physical phones and screen readers remain unverified.
+
 ## 2026-11-02 — Random Constellation v1.0.0 · Finalizat / Completed
 
 - RO: Observator cosmic interactiv pentru CodePen Challenge CSS Random(). CSS generează poziția, dimensiunea, nuanța, opacitatea, pulsația, înclinarea și adâncimea stelelor. Include forme de câmp, preseturi, densitate/luminozitate/ritm/adâncime reglabile, galerie pentru trei ceruri salvate/restaurate, regenerare, comete, scenă 2D/3D cu înclinare reglabilă, parallax opțional, mod Zen, panou educativ, partajare și export PNG. RO/EN, dark/light, contrast ridicat, mișcare redusă, navigare cu tastatura și fallback static.

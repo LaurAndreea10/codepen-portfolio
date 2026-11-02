@@ -1,4 +1,4 @@
-# Random Constellation — 40-point coverage audit
+# Random Constellation — 48-point coverage audit
 
 Checked against `random-constellation/index.html` on 2 November 2026. Each item maps to an implemented control, CSS rule, or accessibility behavior. This is a source-level audit; manual testing with assistive technology and browsers that do not yet support CSS `random()` is not claimed.
 
@@ -57,6 +57,17 @@ Checked against `random-constellation/index.html` on 2 November 2026. Each item 
 39. [x] The layout adapts to narrow screens and keeps primary controls touch-sized.
 40. [x] Browsers without CSS `random()` receive a static constellation fallback.
 
+## Night Oracle merge · 41–48 (v1.1.0)
+
+41. [x] CSS `random(0, 11, 1)` picks one of 12 fortunes, shown by shifting a strip.
+42. [x] CSS `random(1, 6, 1)` rolls three dice; their total is a CSS counter.
+43. [x] “Link the dice” uses the shared `--dice` key so all three dice match.
+44. [x] The lucky hue comes from `random()` within the active atmosphere preset.
+45. [x] Nebulae and meteors in the scene get position, size, angle and timing from `random()`.
+46. [x] Roll again (button or R key) replaces the oracle element so CSS picks new values.
+47. [x] The oracle result is announced in a polite live region and translated RO/EN.
+48. [x] Pause, reduced motion and Zen mode cover the new animations; a JS fallback keeps the oracle working without `random()`.
+
 ## Audit result
 
-**40/40 points covered in source.** The project is recorded as completed in the Romanian and English portfolio entries, catalogue, history and sitemap.
+**48/48 points covered in source.** The project is recorded as completed in the Romanian and English portfolio entries, catalogue, history and sitemap.
