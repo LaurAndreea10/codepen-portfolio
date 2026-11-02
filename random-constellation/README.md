@@ -1,24 +1,31 @@
 # Random Constellation — CSS Random() Observatory
 
-A single-file, browser-only experiment for the November CodePen CSS Random() challenge.
+## RO
 
-## What it includes
+Un experiment single-file, fără dependențe, pentru CodePen Challenge CSS Random() din noiembrie.
 
-- CSS `random()` generates star positions, sizes, hues, opacity, timing, rotation and depth; JavaScript only builds the requested number of star elements and controls the interface.
-- Romanian and English interface with saved language preference.
-- Dark and light themes, high contrast, reduced motion, keyboard operation, visible focus and screen-reader announcements.
-- 2D/3D view, optional pointer parallax, presets, adjustable star density, comet effect and Zen mode.
-- Local preference saving, shareable configuration links and PNG export; no external services or dependencies.
-- Static star placement when CSS `random()` is unsupported.
+- CSS `random()` generează poziția, dimensiunea, nuanța, opacitatea, pulsația, înclinarea și adâncimea stelelor.
+- Interfață română-engleză, temă întunecată/luminoasă și setări păstrate local.
+- Scenă 2D/3D, parallax opțional, preseturi, densitate reglabilă, regenerare, cometă și mod Zen.
+- Contrast ridicat, mișcare redusă, suport tastatură, focus vizibil și anunțuri pentru cititoare de ecran.
+- Partajare prin URL, export PNG și fallback static dacă browserul nu recunoaște CSS `random()`.
+- JavaScript gestionează comenzile și numărul de stele; nu calculează valorile aleatoare ale stelelor.
 
-## Run
+Deschide `index.html`. Pentru scena aleatoare este necesar un browser cu suport CSS `random()`; compoziția de rezervă rămâne disponibilă în browsere mai vechi.
 
-Open `index.html` in a browser. For the intended randomized view, use a browser that supports CSS `random()`. The fallback scene remains available in older browsers.
+## EN
 
-## Accessibility notes
+A dependency-free, single-file experiment for the November CodePen CSS Random() Challenge.
 
-The page follows the operating system's reduced-motion preference and provides manual motion and contrast controls. Star controls use roving keyboard focus: Tab enters the star field once; arrow keys move between stars. The planet and decorative layers are hidden from assistive technology.
+- CSS `random()` generates star position, size, hue, opacity, pulse, tilt and depth.
+- Romanian-English UI, dark/light themes and locally saved settings.
+- 2D/3D scene, optional parallax, presets, adjustable density, reroll, comet and Zen mode.
+- High contrast, reduced motion, keyboard support, visible focus and screen-reader announcements.
+- Shareable URL, PNG export and a static fallback when the browser does not recognize CSS `random()`.
+- JavaScript manages controls and star count; it does not calculate the stars' random values.
 
-## Challenge tags
+Open `index.html`. A browser with CSS `random()` support is needed for the randomized scene; older browsers retain the fallback composition.
+
+## CodePen tags
 
 `cpc-css-random` · `codepenchallenge`
