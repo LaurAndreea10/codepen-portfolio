@@ -2,6 +2,7 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
+  ["random-constellation/", "monthly", "0.6", "2026-11-02"],
   ["carpati-enduro/", "monthly", "0.8", "2026-10-29"],
   ["carpati-enduro/case-study.html", "monthly", "0.5", "2026-11-01"],
   ["dashboard-visibility-sync.html", "monthly", "0.75", "2026-10-30"],
