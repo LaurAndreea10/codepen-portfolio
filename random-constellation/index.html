@@ -46,7 +46,8 @@ main{padding-bottom:2rem}
 .star{position:absolute;left:var(--x,50%);top:var(--y,50%);width:var(--size,3px);aspect-ratio:1;display:block;padding:0;border:0;border-radius:50%;background:hsl(var(--hue,220) 86% 88%);opacity:var(--alpha,.8);filter:brightness(var(--brightness,1));box-shadow:0 0 calc(var(--size,3px)*3) calc(var(--size,3px)*.55) hsl(var(--hue,220) 95% 72% / .58);transform:translate3d(-50%,-50%,var(--depth,0px)) rotate(var(--tilt,0deg));animation:twinkle var(--duration,4s) ease-in-out var(--delay,0s) infinite alternate;z-index:2}
 .sky.flat .star{--depth:0px;transform:translate(-50%,-50%) rotate(var(--tilt,0deg))}
 .star:hover,.star:focus-visible{z-index:7;box-shadow:0 0 0 8px #c4d2ff22,0 0 24px 8px #d7e0ff}
-.star.cross::before,.star.cross::after{content:"";position:absolute;inset:-7px 0;width:1px;margin:auto;background:linear-gradient(transparent,#f2f5ff,transparent)}.star.cross::after{transform:rotate(90deg)}\n.star.big{background:#fff;box-shadow:0 0 6px 2px #fff,0 0 28px 8px #9db1ff}
+.star.cross::before,.star.cross::after{content:"";position:absolute;inset:-7px 0;width:1px;margin:auto;background:linear-gradient(transparent,#f2f5ff,transparent)}.star.cross::after{transform:rotate(90deg)}
+.star.big{background:#fff;box-shadow:0 0 6px 2px #fff,0 0 28px 8px #9db1ff}
 .planet-wrap{position:absolute;left:50%;top:50%;width:clamp(155px,25vw,250px);aspect-ratio:1;transform:translate(-50%,-50%) translateZ(35px);transform-style:preserve-3d;z-index:3}
 .planet{position:absolute;inset:0;border:1px solid #e3eaff88;border-radius:50%;background:radial-gradient(circle at 34% 27%,#f0f2ff 0 1%,#aebcff 5%,#7186da 19%,#394982 43%,#202851 64%,#11162c 83%);background-size:145% 145%;animation:planetDrift 28s ease-in-out infinite alternate;box-shadow:inset -24px -15px 32px #060914aa,0 0 35px #9eafff88,0 0 110px #778cfb42;transform-style:preserve-3d}
 .planet::before{content:"";position:absolute;inset:-14%;border:1px solid #d8e2ff5c;border-radius:50%;transform:rotateX(72deg) rotateZ(-24deg);box-shadow:0 0 18px #a7bbff44}
@@ -93,7 +94,9 @@ footer{padding:16px 0 26px;color:var(--muted);font-size:.8rem}
 .zen #exitZen{display:inline-flex}
 .high-contrast{--muted:#f2f4ff;--line:#e1e7ff;--accent:#fff;--good:#8dffc5}
 .high-contrast .star{opacity:1;box-shadow:0 0 0 1px #fff,0 0 16px 5px #fff}
-@keyframes twinkle{from{opacity:.42;scale:.72}to{opacity:1;scale:1.18}}\n@keyframes orbitDrift{to{rotate:360deg}}\n@keyframes planetDrift{from{background-position:35% 35%}to{background-position:65% 65%}}
+@keyframes twinkle{from{opacity:.42;scale:.72}to{opacity:1;scale:1.18}}
+@keyframes orbitDrift{to{rotate:360deg}}
+@keyframes planetDrift{from{background-position:35% 35%}to{background-position:65% 65%}}
 @keyframes shoot{to{left:130%;top:82%;opacity:0}}
 @media(max-width:760px){.shell{width:min(100% - 18px,1180px)}header{align-items:flex-start}.header-controls{justify-content:flex-end}.hero{grid-template-columns:1fr;align-items:start}.controls{grid-template-columns:1fr}.details{grid-template-columns:1fr}.observatory{min-height:66svh}.feature-notice{max-width:58%;font-size:.68rem}.scene-caption{max-width:145px;font-size:.68rem}}
 @media(max-width:480px){.brand{font-size:.78rem}.header-controls .pill{min-height:40px;padding:.45rem .7rem}.observatory{min-height:64svh}.setting-grid{grid-template-columns:1fr}.actions .btn{flex:1 1 calc(50% - 8px)}}
@@ -156,7 +159,8 @@ footer{padding:16px 0 26px;color:var(--muted);font-size:.8rem}
       </div>
     </div>
   </section>
-  <section class="panel snapshots" aria-labelledby="snapshotsTitle"><div class="snapshot-head"><div><h2 id="snapshotsTitle" data-i18n="snapshotsTitle">Constelații salvate</h2><p class="muted" data-i18n="snapshotsText">Păstrează și compară până la trei ceruri.</p></div><button class="btn" id="snapshotBtn" type="button">＋ <span data-i18n="snapshotSave">Salvează cerul</span></button></div><div class="gallery" id="gallery" aria-live="polite"></div></section>\n  <section class="details" aria-label="Detalii și învățare">
+  <section class="panel snapshots" aria-labelledby="snapshotsTitle"><div class="snapshot-head"><div><h2 id="snapshotsTitle" data-i18n="snapshotsTitle">Constelații salvate</h2><p class="muted" data-i18n="snapshotsText">Păstrează și compară până la trei ceruri.</p></div><button class="btn" id="snapshotBtn" type="button">＋ <span data-i18n="snapshotSave">Salvează cerul</span></button></div><div class="gallery" id="gallery" aria-live="polite"></div></section>
+  <section class="details" aria-label="Detalii și învățare">
     <details class="panel"><summary data-i18n="learnTitle">Cum funcționează CSS random()?</summary><div class="details-body"><p data-i18n="learnText">CSS alege poziții, dimensiuni, nuanțe și viteze în limitele declarate. JavaScript creează numărul de elemente și interfața; nu calculează valorile aleatoare pentru stele.</p><pre class="code-sample"><code>.star {
   left: random(3%, 97%);
   top: random(5%, 95%);
