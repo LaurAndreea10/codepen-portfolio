@@ -6,7 +6,8 @@ Un experiment single-file, fără dependențe, pentru CodePen Challenge CSS Rand
 
 - CSS `random()` generează poziția, dimensiunea, nuanța, opacitatea, pulsația, înclinarea și adâncimea stelelor.
 - Interfață română-engleză, temă întunecată/luminoasă și setări păstrate local.
-- Scenă 2D/3D cu înclinare reglabilă, parallax opțional, forme de câmp, preseturi și reglaje pentru densitate, luminozitate, pulsație și adâncime.\n- Galerie locală pentru salvarea și restaurarea a până la trei constelații, regenerare, cometă și mod Zen.
+- Scenă 2D/3D cu înclinare reglabilă, parallax opțional, forme de câmp, preseturi și reglaje pentru densitate, luminozitate, pulsație și adâncime.
+- Galerie locală pentru salvarea și restaurarea a până la trei constelații, regenerare, cometă și mod Zen.
 - Contrast ridicat, mișcare redusă, suport tastatură, focus vizibil și anunțuri pentru cititoare de ecran.
 - Partajare prin URL, export PNG și fallback static dacă browserul nu recunoaște CSS `random()`.
 - JavaScript gestionează comenzile și numărul de stele; nu calculează valorile aleatoare ale stelelor.
@@ -19,7 +20,8 @@ A dependency-free, single-file experiment for the November CodePen CSS Random() 
 
 - CSS `random()` generates star position, size, hue, opacity, pulse, tilt and depth.
 - Romanian-English UI, dark/light themes and locally saved settings.
-- 2D/3D scene with adjustable tilt, optional parallax, field formations, presets and density, brightness, pulse and depth controls.\n- Local gallery to save and restore up to three constellations, plus reroll, comet and Zen mode.
+- 2D/3D scene with adjustable tilt, optional parallax, field formations, presets and density, brightness, pulse and depth controls.
+- Local gallery to save and restore up to three constellations, plus reroll, comet and Zen mode.
 - High contrast, reduced motion, keyboard support, visible focus and screen-reader announcements.
 - Shareable URL, PNG export and a static fallback when the browser does not recognize CSS `random()`.
 - JavaScript manages controls and star count; it does not calculate the stars' random values.
