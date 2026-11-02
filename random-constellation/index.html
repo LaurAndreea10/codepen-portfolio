@@ -41,14 +41,14 @@ main{padding-bottom:2rem}
 .observatory{position:relative;isolation:isolate;min-height:clamp(390px,58vw,620px);overflow:hidden;border:1px solid #6877a855;border-radius:28px;background:#080b18;box-shadow:var(--shadow);perspective:900px;perspective-origin:50% 48%;touch-action:pan-y}
 .scene{position:absolute;inset:0;overflow:hidden;transform-style:preserve-3d;background:radial-gradient(ellipse at 50% 48%,#28356455,transparent 52%),radial-gradient(ellipse at 50% 120%,#070914,#080b18 70%)}
 .scene::before,.scene::after{content:"";position:absolute;left:50%;top:50%;width:min(66vw,600px);aspect-ratio:1;border:1px solid #bdc9ff24;border-radius:50%;transform:translate(-50%,-50%) rotateX(68deg) rotateZ(-18deg);box-shadow:0 0 65px #7086ff12,inset 0 0 65px #7086ff0c}
-.scene::after{width:min(46vw,430px);transform:translate(-50%,-50%) rotateX(68deg) rotateZ(31deg);border-style:dashed}
+.scene::after{width:min(46vw,430px);transform:translate(-50%,-50%) rotateX(68deg) rotateZ(31deg);border-style:dashed;animation:orbitDrift 70s linear infinite}
 .sky{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .35s ease}
-.star{position:absolute;left:var(--x,50%);top:var(--y,50%);width:var(--size,3px);aspect-ratio:1;display:block;padding:0;border:0;border-radius:50%;background:hsl(var(--hue,220) 86% 88%);opacity:var(--alpha,.8);box-shadow:0 0 calc(var(--size,3px)*3) calc(var(--size,3px)*.55) hsl(var(--hue,220) 95% 72% / .58);transform:translate3d(-50%,-50%,var(--depth,0px)) rotate(var(--tilt,0deg));animation:twinkle var(--duration,4s) ease-in-out var(--delay,0s) infinite alternate;z-index:2}
+.star{position:absolute;left:var(--x,50%);top:var(--y,50%);width:var(--size,3px);aspect-ratio:1;display:block;padding:0;border:0;border-radius:50%;background:hsl(var(--hue,220) 86% 88%);opacity:var(--alpha,.8);filter:brightness(var(--brightness,1));box-shadow:0 0 calc(var(--size,3px)*3) calc(var(--size,3px)*.55) hsl(var(--hue,220) 95% 72% / .58);transform:translate3d(-50%,-50%,var(--depth,0px)) rotate(var(--tilt,0deg));animation:twinkle var(--duration,4s) ease-in-out var(--delay,0s) infinite alternate;z-index:2}
 .sky.flat .star{--depth:0px;transform:translate(-50%,-50%) rotate(var(--tilt,0deg))}
 .star:hover,.star:focus-visible{z-index:7;box-shadow:0 0 0 8px #c4d2ff22,0 0 24px 8px #d7e0ff}
-.star.big{background:#fff;box-shadow:0 0 6px 2px #fff,0 0 28px 8px #9db1ff}
+.star.cross::before,.star.cross::after{content:"";position:absolute;inset:-7px 0;width:1px;margin:auto;background:linear-gradient(transparent,#f2f5ff,transparent)}.star.cross::after{transform:rotate(90deg)}\n.star.big{background:#fff;box-shadow:0 0 6px 2px #fff,0 0 28px 8px #9db1ff}
 .planet-wrap{position:absolute;left:50%;top:50%;width:clamp(155px,25vw,250px);aspect-ratio:1;transform:translate(-50%,-50%) translateZ(35px);transform-style:preserve-3d;z-index:3}
-.planet{position:absolute;inset:0;border:1px solid #e3eaff88;border-radius:50%;background:radial-gradient(circle at 34% 27%,#f0f2ff 0 1%,#aebcff 5%,#7186da 19%,#394982 43%,#202851 64%,#11162c 83%);box-shadow:inset -24px -15px 32px #060914aa,0 0 35px #9eafff88,0 0 110px #778cfb42;transform-style:preserve-3d}
+.planet{position:absolute;inset:0;border:1px solid #e3eaff88;border-radius:50%;background:radial-gradient(circle at 34% 27%,#f0f2ff 0 1%,#aebcff 5%,#7186da 19%,#394982 43%,#202851 64%,#11162c 83%);background-size:145% 145%;animation:planetDrift 28s ease-in-out infinite alternate;box-shadow:inset -24px -15px 32px #060914aa,0 0 35px #9eafff88,0 0 110px #778cfb42;transform-style:preserve-3d}
 .planet::before{content:"";position:absolute;inset:-14%;border:1px solid #d8e2ff5c;border-radius:50%;transform:rotateX(72deg) rotateZ(-24deg);box-shadow:0 0 18px #a7bbff44}
 .planet::after{content:"";position:absolute;inset:-28%;border:1px dashed #c8d5ff36;border-radius:50%;transform:rotateX(72deg) rotateZ(17deg)}
 .planet-label{position:absolute;inset:0;display:grid;place-content:center;text-align:center;text-shadow:0 2px 12px #070914;pointer-events:none}
@@ -77,7 +77,7 @@ output{min-width:2ch;color:var(--accent);font-variant-numeric:tabular-nums}
 .checkrow{display:flex;align-items:center;gap:.55rem;min-height:44px;font-size:.84rem;font-weight:750}
 .checkrow input{width:20px;height:20px;accent-color:#647ff0}
 .status{min-height:1.5em;margin:.75rem 0 0;color:var(--good);font-size:.82rem}
-.details{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.details{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.snapshots{margin-top:14px}.snapshot-head{display:flex;align-items:center;justify-content:space-between;gap:1rem}.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:13px}.snapshot-mini{position:relative;min-height:90px;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:#080b18}.snapshot-mini i{position:absolute;width:3px;height:3px;border-radius:50%;background:#eaf0ff;box-shadow:0 0 8px #a9baff}.gallery-empty{color:var(--muted)}
 details.panel{padding:0}
 details.panel>summary{min-height:52px;padding:15px 18px;cursor:pointer;font-weight:850}
 .details-body{padding:0 18px 18px;color:var(--muted);font-size:.9rem}
@@ -93,14 +93,14 @@ footer{padding:16px 0 26px;color:var(--muted);font-size:.8rem}
 .zen #exitZen{display:inline-flex}
 .high-contrast{--muted:#f2f4ff;--line:#e1e7ff;--accent:#fff;--good:#8dffc5}
 .high-contrast .star{opacity:1;box-shadow:0 0 0 1px #fff,0 0 16px 5px #fff}
-@keyframes twinkle{from{opacity:.42;scale:.72}to{opacity:1;scale:1.18}}
+@keyframes twinkle{from{opacity:.42;scale:.72}to{opacity:1;scale:1.18}}\n@keyframes orbitDrift{to{rotate:360deg}}\n@keyframes planetDrift{from{background-position:35% 35%}to{background-position:65% 65%}}
 @keyframes shoot{to{left:130%;top:82%;opacity:0}}
 @media(max-width:760px){.shell{width:min(100% - 18px,1180px)}header{align-items:flex-start}.header-controls{justify-content:flex-end}.hero{grid-template-columns:1fr;align-items:start}.controls{grid-template-columns:1fr}.details{grid-template-columns:1fr}.observatory{min-height:66svh}.feature-notice{max-width:58%;font-size:.68rem}.scene-caption{max-width:145px;font-size:.68rem}}
 @media(max-width:480px){.brand{font-size:.78rem}.header-controls .pill{min-height:40px;padding:.45rem .7rem}.observatory{min-height:64svh}.setting-grid{grid-template-columns:1fr}.actions .btn{flex:1 1 calc(50% - 8px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.sky{transition:none}}
 @supports (left:random(0%,1%)){
- .star{--x:random(3%,97%);--y:random(5%,95%);--size:random(--star-size element-scoped,2px,5px,1px);--hue:random(--star-hue element-scoped,var(--hue-min,195),var(--hue-max,265));--alpha:random(.55,1);--duration:random(2.4s,6s,.1s);--delay:random(-6s,0s,.1s);--depth:random(-110px,95px);--tilt:random(-18deg,18deg);left:var(--x);top:var(--y)}
- .star.big{--size:random(--star-size element-scoped,4px,8px,1px)}
+ .star{--x:random(3%,97%);--y:random(5%,95%);--size:random(--star-size element-scoped,2px,5px,1px);--hue:random(--star-hue element-scoped,var(--hue-min,195),var(--hue-max,265));--alpha:random(.55,1);--duration:random(2.4s,6s,.1s);--delay:random(-6s,0s,.1s);--depth:random(calc(var(--depth-range,110px)*-1),var(--depth-range,110px));--tilt:random(-18deg,18deg);animation-duration:calc(random(2.4s,6s,.1s)*var(--pulse-speed,1));left:var(--x);top:var(--y)}
+ .star.big{--size:random(--star-size element-scoped,4px,8px,1px)}.sky[data-formation="orbit"] .star{--x:calc(50% + random(-38%,38%));--y:calc(50% + random(-24%,24%))}.sky[data-formation="cluster"] .star{--x:calc(50% + random(-23%,23%));--y:calc(50% + random(-18%,18%))}
  .observatory::after{content:"CSS random()";position:absolute;top:14px;right:15px;z-index:8;border:1px solid #ffffff40;border-radius:99px;padding:.3rem .6rem;background:#080b18bb;color:#d8e0ff;font-size:.68rem;font-weight:800;letter-spacing:.08em}
 }
 @supports not (left:random(0%,1%)){.feature-notice::after{content:" · " attr(data-fallback)}}
@@ -149,7 +149,7 @@ footer{padding:16px 0 26px;color:var(--muted);font-size:.8rem}
       <div class="setting-grid">
         <div class="setting"><label for="density" data-i18n="density">Densitatea stelelor</label><div class="range-row"><input id="density" type="range" min="12" max="48" step="4" value="24"><output id="densityOut" for="density">24</output></div></div>
         <div class="setting"><label for="preset" data-i18n="palette">Atmosferă</label><select id="preset"><option value="nebula" data-i18n="presetNebula">Nebuloasă</option><option value="aurora" data-i18n="presetAurora">Auroră</option><option value="solar" data-i18n="presetSolar">Solar</option><option value="mono" data-i18n="presetMono">Monocrom</option></select></div>
-        <div class="setting"><span class="setting-title" data-i18n="view">Perspectivă</span><button class="btn" id="viewToggle" type="button" aria-pressed="true">◈ <span data-i18n="view3d">Vedere 3D</span></button></div>
+        <div class="setting"><label for="formation" data-i18n="formation">Forma câmpului</label><select id="formation"><option value="scattered" data-i18n="scatter">Distribuit</option><option value="orbit" data-i18n="orbit">Bandă orbitală</option><option value="cluster" data-i18n="cluster">Nebuloasă compactă</option></select></div><div class="setting"><label for="brightness" data-i18n="brightness">Luminozitate</label><div class="range-row"><input id="brightness" type="range" min="0.6" max="1.6" step="0.1" value="1"><output id="brightnessOut" for="brightness">1.0</output></div></div><div class="setting"><label for="pulseSpeed" data-i18n="pulseSpeed">Ritmul pulsației</label><div class="range-row"><input id="pulseSpeed" type="range" min="0.6" max="1.8" step="0.1" value="1"><output id="pulseOut" for="pulseSpeed">1.0×</output></div></div><div class="setting"><label for="depth" data-i18n="depth">Adâncime 3D</label><div class="range-row"><input id="depth" type="range" min="0" max="160" step="20" value="110"><output id="depthOut" for="depth">110</output></div></div><div class="setting"><label for="tiltX" data-i18n="tiltX">Înclinare verticală</label><div class="range-row"><input id="tiltX" type="range" min="-15" max="15" step="1" value="0"><output id="tiltXOut" for="tiltX">0°</output></div></div><div class="setting"><label for="tiltY" data-i18n="tiltY">Înclinare orizontală</label><div class="range-row"><input id="tiltY" type="range" min="-20" max="20" step="1" value="0"><output id="tiltYOut" for="tiltY">0°</output></div></div><div class="setting"><span class="setting-title" data-i18n="view">Perspectivă</span><button class="btn" id="viewToggle" type="button" aria-pressed="true">◈ <span data-i18n="view3d">Vedere 3D</span></button></div>
         <div class="setting"><span class="setting-title" data-i18n="motionLabel">Mișcare</span><button class="btn" id="motionToggle" type="button" aria-pressed="true">Ⅱ <span data-i18n="pause">Oprește animația</span></button></div>
         <label class="checkrow"><input id="parallax" type="checkbox"><span data-i18n="parallax">Parallax la mișcarea pointerului</span></label>
         <label class="checkrow"><input id="reduced" type="checkbox"><span data-i18n="reduced">Mișcare redusă</span></label>
@@ -177,7 +177,7 @@ ro:{skip:"Sari la controale",exitZen:"Ieși din modul Zen",light:"Mod luminos",d
 en:{skip:"Skip to controls",exitZen:"Exit Zen mode",light:"Light mode",dark:"Dark mode",contrast:"High contrast",eyebrow:"CodePen Challenge · November",lede:"A cosmic observatory built around the CSS random() function. Explore a new sky, tune its atmosphere and see CSS generate the variations.",planet:"One of many",captionTitle:"A new constellation with every sky",captionText:"Variations generated in CSS, with no random star values calculated in JavaScript.",controlsTitle:"Observatory controls",reroll:"Generate another sky",comet:"Send a comet",save:"Save settings",share:"Share recipe",export:"Download PNG",zen:"Zen mode",settingsTitle:"Tune the sky",density:"Star density",palette:"Atmosphere",presetNebula:"Nebula",presetAurora:"Aurora",presetSolar:"Solar",presetMono:"Monochrome",view:"Perspective",view3d:"3D view",view2d:"2D view",motionLabel:"Motion",pause:"Pause animation",play:"Play animation",parallax:"Pointer parallax",reduced:"Reduced motion",learnTitle:"How does CSS random() work?",learnText:"CSS chooses positions, sizes, hues and speeds within declared ranges. JavaScript creates the number of elements and the interface; it does not calculate random star values.",learnKey:"The reroll button creates new elements, and CSS assigns them new random() values.",accessTitle:"Accessibility and compatibility",a11y1:"Every control has a label and works with a keyboard.",a11y2:"High contrast and reduced motion can be enabled manually.",a11y3:"The operating system reduced-motion preference is respected.",a11y4:"If the browser does not recognize random(), the scene keeps a usable static distribution.",a11y5:"Export and sharing do not send data to a server.",footer:"A front-end experiment for the November CodePen Challenge.",portfolio:"Back to portfolio",statusReroll:"A new sky was generated.",statusSaved:"Settings saved in this browser.",statusShared:"The scene recipe was copied.",statusCopied:"Link copied.",statusExport:"PNG image downloaded.",statusExportFail:"Image export failed in this browser.",statusSupport:"This browser does not recognize CSS random(). A static constellation fallback is shown.",statusSupported:"CSS random() is recognized by this browser.",statusStar:"Star selected",statusZen:"Zen mode on.",statusZenOff:"Zen mode off.",fallback:"static fallback",starName:"Star",screen:"Star field",lang:"Schimbă limba în română",ready:"ready",observatory:"Interactive cosmic observatory"}
 };
 var $=function(id){return document.getElementById(id)};
-var root=document.documentElement,sky=$("sky"),live=$("live"),status=$("status"),supportBadge=$("supportBadge"),notice=$("featureNotice"),density=$("density"),densityOut=$("densityOut"),preset=$("preset");
+var root=document.documentElement,sky=$("sky"),live=$("live"),status=$("status"),supportBadge=$("supportBadge"),notice=$("featureNotice"),density=$("density"),densityOut=$("densityOut"),preset=$("preset"),formation=$("formation"),brightness=$("brightness"),brightnessOut=$("brightnessOut"),pulseSpeed=$("pulseSpeed"),pulseOut=$("pulseOut"),depth=$("depth"),depthOut=$("depthOut"),tiltX=$("tiltX"),tiltXOut=$("tiltXOut"),tiltY=$("tiltY"),tiltYOut=$("tiltYOut");
 var lang="ro",theme="dark",paused=false,dim3d=true,contrast=false,zen=false,parallax=false,reduced=false;
 var supportsRandom=window.CSS&&CSS.supports("left","random(0%, 1%)");
 var params=new URLSearchParams(location.search);
@@ -193,13 +193,10 @@ function applyLanguage(next){
  $("themeToggle").querySelector("span").textContent=say(theme==="dark"?"light":"dark");
 }
 function applyTheme(){root.dataset.theme=theme;$("themeToggle").setAttribute("aria-pressed",String(theme==="dark"));$("themeToggle").querySelector("span").textContent=say(theme==="dark"?"light":"dark")}
-function applyPalette(){var p=palettes[preset.value]||palettes.nebula;sky.style.setProperty("--hue-min",p.min);sky.style.setProperty("--hue-max",p.max);sky.dataset.palette=preset.value}
-function starFallbackStyle(el,i,count){
- var x=(7+(i*37)%87), y=(9+(i*53)%79);
- el.style.setProperty("--x",x+"%");el.style.setProperty("--y",y+"%");
-}
+function applyPalette(){var p=palettes[preset.value]||palettes.nebula;sky.style.setProperty("--hue-min",p.min);sky.style.setProperty("--hue-max",p.max);sky.dataset.palette=preset.value;sky.dataset.formation=formation.value;sky.style.setProperty("--brightness",brightness.value);sky.style.setProperty("--pulse-speed",pulseSpeed.value);sky.style.setProperty("--depth-range",depth.value+"px");brightnessOut.textContent=Number(brightness.value).toFixed(1);pulseOut.textContent=Number(pulseSpeed.value).toFixed(1)+"×";depthOut.textContent=depth.value;tiltXOut.textContent=tiltX.value+"°";tiltYOut.textContent=tiltY.value+"°";setSceneTransform()}function setSceneTransform(dx,dy){sky.style.transform=dim3d?"rotateX("+(Number(tiltX.value)+(dx||0))+"deg) rotateY("+(Number(tiltY.value)+(dy||0))+"deg)":"none"}
+function starFallbackStyle(el,i,count){var x=(7+(i*37)%87),y=(9+(i*53)%79);if(sky.dataset.formation==="orbit"){x=12+(i*37)%76;y=32+(i*19)%36}else if(sky.dataset.formation==="cluster"){x=28+(i*23)%44;y=30+(i*29)%40}el.style.setProperty("--x",x+"%");el.style.setProperty("--y",y+"%")}
 function makeStar(i,count){
- var b=document.createElement("button");b.type="button";b.className="star"+(i%11===0?" big":"");b.dataset.starIndex=String(i);b.tabIndex=i===0?0:-1;b.setAttribute("aria-label",say("starName")+" "+(i+1)+" · "+say("screen"));b.title=say("starName")+" "+(i+1);
+ var b=document.createElement("button");b.type="button";b.className="star"+(i%11===0?" big":"")+(i%7===3?" cross":"");b.dataset.starIndex=String(i);b.tabIndex=i===0?0:-1;b.setAttribute("aria-label",say("starName")+" "+(i+1)+" · "+say("screen"));b.title=say("starName")+" "+(i+1);
  if(!supportsRandom)starFallbackStyle(b,i,count);
  b.addEventListener("click",function(){
   var c=getComputedStyle(b),rect=b.getBoundingClientRect(),box=$("observatory").getBoundingClientRect();
@@ -212,12 +209,12 @@ function renderStars(count){
  var frag=document.createDocumentFragment();for(var i=0;i<count;i++)frag.appendChild(makeStar(i,count));
  sky.replaceChildren(frag);
 }
-function getPrefs(){return {lang:lang,theme:theme,density:Number(density.value),preset:preset.value,contrast:contrast,paused:paused,dim3d:dim3d,reduced:reduced,parallax:parallax}}
+function getPrefs(){return {lang:lang,theme:theme,density:Number(density.value),preset:preset.value,formation:formation.value,brightness:Number(brightness.value),pulseSpeed:Number(pulseSpeed.value),depth:Number(depth.value),tiltX:Number(tiltX.value),tiltY:Number(tiltY.value),contrast:contrast,paused:paused,dim3d:dim3d,reduced:reduced,parallax:parallax}}
 function savePrefs(){try{localStorage.setItem("random-constellation-prefs",JSON.stringify(getPrefs()));announce("statusSaved")}catch(e){announce("statusExportFail")}}
 function readPrefs(){
  try{var s=JSON.parse(localStorage.getItem("random-constellation-prefs")||"null");if(s){
  if(s.lang==="en"||s.lang==="ro")lang=s.lang;if(s.theme==="light"||s.theme==="dark")theme=s.theme;
- if(Number.isFinite(s.density))density.value=Math.max(12,Math.min(48,s.density));
+ if(Number.isFinite(s.density))density.value=Math.max(12,Math.min(48,s.density));if(Number.isFinite(s.brightness))brightness.value=Math.max(.6,Math.min(1.6,s.brightness));if(Number.isFinite(s.pulseSpeed))pulseSpeed.value=Math.max(.6,Math.min(1.8,s.pulseSpeed));if(Number.isFinite(s.depth))depth.value=Math.max(0,Math.min(160,s.depth));if(Number.isFinite(s.tiltX))tiltX.value=Math.max(-15,Math.min(15,s.tiltX));if(Number.isFinite(s.tiltY))tiltY.value=Math.max(-20,Math.min(20,s.tiltY));if(["scattered","orbit","cluster"].includes(s.formation))formation.value=s.formation;
  if(palettes[s.preset])preset.value=s.preset;contrast=!!s.contrast;paused=!!s.paused;dim3d=s.dim3d!==false;reduced=!!s.reduced;parallax=!!s.parallax;
  }}catch(e){}
 }
@@ -234,14 +231,14 @@ function applySettings(){
  document.querySelector(".planet-wrap").style.animationPlayState=paused||reduced?"paused":"running";
 }
 function shareRecipe(){
- var u=new URL(location.href);u.searchParams.set("lang",lang);u.searchParams.set("theme",theme);u.searchParams.set("density",density.value);u.searchParams.set("preset",preset.value);u.searchParams.set("3d",dim3d?"1":"0");u.searchParams.set("contrast",contrast?"1":"0");u.searchParams.set("reduced",reduced?"1":"0");
+ var u=new URL(location.href);u.searchParams.set("lang",lang);u.searchParams.set("theme",theme);u.searchParams.set("density",density.value);u.searchParams.set("preset",preset.value);u.searchParams.set("3d",dim3d?"1":"0");u.searchParams.set("contrast",contrast?"1":"0");u.searchParams.set("reduced",reduced?"1":"0");u.searchParams.set("formation",formation.value);u.searchParams.set("brightness",brightness.value);u.searchParams.set("pulse",pulseSpeed.value);u.searchParams.set("depth",depth.value);u.searchParams.set("tiltx",tiltX.value);u.searchParams.set("tilty",tiltY.value);
  var text=u.toString();if(navigator.share){navigator.share({title:"Random Constellation",text:"CSS random() observatory",url:text}).then(function(){announce("statusShared")}).catch(function(){});return}
  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){announce("statusCopied")}).catch(function(){window.prompt("Copy link",text)})}else window.prompt("Copy link",text)
 }
 function applyUrlConfig(){
  if(params.has("lang"))lang=params.get("lang")==="en"?"en":"ro";
  if(params.has("theme"))theme=params.get("theme")==="light"?"light":"dark";
- if(params.has("density"))density.value=Math.max(12,Math.min(48,Number(params.get("density"))||24));
+ if(params.has("density"))density.value=Math.max(12,Math.min(48,Number(params.get("density"))||24));if(["scattered","orbit","cluster"].includes(params.get("formation")))formation.value=params.get("formation");if(params.has("brightness"))brightness.value=Math.max(.6,Math.min(1.6,Number(params.get("brightness"))||1));if(params.has("pulse"))pulseSpeed.value=Math.max(.6,Math.min(1.8,Number(params.get("pulse"))||1));if(params.has("depth"))depth.value=Math.max(0,Math.min(160,Number(params.get("depth"))||0));
  if(palettes[params.get("preset")])preset.value=params.get("preset");
  if(params.has("3d"))dim3d=params.get("3d")!=="0";if(params.has("contrast"))contrast=params.get("contrast")==="1";if(params.has("reduced"))reduced=params.get("reduced")==="1";
 }
@@ -260,14 +257,14 @@ function setMotionReduced(value){reduced=value;applySettings();if(reduced){$("pa
 function handleParallax(e){
  if(!parallax||reduced||window.matchMedia("(prefers-reduced-motion: reduce)").matches||!dim3d)return;
  var r=$("observatory").getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
- sky.style.transform="rotateX("+(-y*5)+"deg) rotateY("+(x*7)+"deg)";
+ setSceneTransform(-y*5,x*7);
 }
 readPrefs();applyUrlConfig();renderStars(Number(density.value));applySettings();
 var nativeReduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 if(!supportsRandom){supportBadge.textContent="CSS random() · "+say("fallback");notice.textContent=say("statusSupport");notice.dataset.fallback=say("fallback")}else{notice.textContent=say("statusSupported");supportBadge.textContent="CSS random() · ready"}
 $("reroll").addEventListener("click",function(){renderStars(Number(density.value));applySettings();announce("statusReroll")});
 density.addEventListener("input",function(){densityOut.value=density.value;densityOut.textContent=density.value;renderStars(Number(density.value));applySettings()});
-preset.addEventListener("change",function(){applyPalette();renderStars(Number(density.value));applySettings()});
+preset.addEventListener("change",function(){applyPalette();renderStars(Number(density.value));applySettings()});formation.addEventListener("change",function(){applyPalette();renderStars(Number(density.value));applySettings()});[brightness,pulseSpeed,depth,tiltX,tiltY].forEach(function(input){input.addEventListener("input",function(){applyPalette();applySettings()})});
 $("langToggle").addEventListener("click",function(){applyLanguage(lang==="ro"?"en":"ro");if(!supportsRandom)notice.textContent=say("statusSupport")});
 $("themeToggle").addEventListener("click",function(){theme=theme==="dark"?"light":"dark";applyTheme();savePrefs()});
 $("contrastToggle").addEventListener("click",function(){contrast=!contrast;applySettings();savePrefs()});
@@ -282,7 +279,7 @@ $("exportBtn").addEventListener("click",exportPng);
 $("zenBtn").addEventListener("click",function(){setZen(!zen)});
 $("exitZen").addEventListener("click",function(){setZen(false);$("zenBtn").focus()});
 $("observatory").addEventListener("pointermove",handleParallax);
-$("observatory").addEventListener("pointerleave",function(){sky.style.transform=""});
+$("observatory").addEventListener("pointerleave",function(){setSceneTransform()});
 $("observatory").addEventListener("keydown",function(e){
  if(!["ArrowRight","ArrowDown","ArrowLeft","ArrowUp"].includes(e.key)||!e.target.classList.contains("star"))return;
  var stars=Array.from(document.querySelectorAll(".star")),i=stars.indexOf(e.target),step=(e.key==="ArrowRight"||e.key==="ArrowDown")?1:-1;stars[(i+step+stars.length)%stars.length].focus();e.preventDefault()
