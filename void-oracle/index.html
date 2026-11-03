@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#04050d">
+<meta name="description" content="VOID ORACLE — shooter spațial inspirat de VOID HUNTER, în care CSS random() alege modificatorul fiecărui val, zarurile de bonus și culoarea navei. RO/EN, accesibil, mobil.">
+<meta property="og:title" content="VOID ORACLE — CSS random() Space Shooter">
+<meta property="og:description" content="Before every wave, a CSS random() oracle rolls the modifier, the bonus dice and your ship colour. The game obeys.">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/void-oracle/">
+<title>VOID ORACLE — CSS random() Space Shooter</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap");
+
+/* Registered properties: computed once per element, readable from JS as plain integers. */
+@property --pick  { syntax: "<integer>"; inherits: true; initial-value: 0; }
+@property --d1    { syntax: "<integer>"; inherits: true; initial-value: 1; }
+@property --d2    { syntax: "<integer>"; inherits: true; initial-value: 1; }
+@property --d3    { syntax: "<integer>"; inherits: true; initial-value: 1; }
+@property --lucky { syntax: "<integer>"; inherits: true; initial-value: 190; }
+
+:root {
+  --bg: #04050d;
+  --cyan: #00f5ff;
+  --red: #ff2d55;
+  --gold: #ffd60a;
+  --purple: #bf5af2;
+  --orange: #ff9f0a;
+  --glass: rgba(10, 13, 26, 0.78);
+  --line: rgba(0, 245, 255, 0.24);
+  --muted: #9aa4c7;
+  --lucky-ui: 190;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg); }
+body {
+  color: #fff;
+  font-family: "Share Tech Mono", ui-monospace, Consolas, monospace;
+  touch-action: none;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+.app { position: fixed; inset: 0; --accent: hsl(var(--lucky-ui) 100% 62%); }
+
+/* ---------- Sky: every star, nebula and meteor is placed by CSS random() ---------- */
+.sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% -10%, hsl(var(--lucky-ui) 60% 15%), transparent 55%),
+    var(--bg);
+  transition: background 1s ease;
+}
+.vo-star {
+  position: absolute;
+  left: var(--x, 50%);
+  top: var(--y, 50%);
+  width: var(--s, 2px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+  animation: twinkle var(--dur, 3s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+.vo-star:nth-child(6n) { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+.vo-star:nth-child(9n) { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+.vo-blob {
+  position: absolute;
+  left: var(--x, 20%);
+  top: var(--y, 20%);
+  width: var(--s, 35vmax);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(40px);
+  background: radial-gradient(circle, hsl(calc(var(--lucky-ui) + var(--h, 0)) 90% 55% / 0.22), transparent 65%);
+  transition: background 1s ease;
+}
+.vo-meteor {
+  position: absolute;
+  top: var(--mt, 10%);
+  left: var(--ml, 80%);
+  width: 140px;
+  height: 2px;
+  opacity: 0;
+  transform-origin: left center;
+  background: linear-gradient(90deg, #fff, rgba(0, 245, 255, 0.5) 30%, transparent);
+  animation: meteor var(--md, 8s) linear var(--mdelay, 0s) infinite;
+}
+@keyframes twinkle { from { opacity: 0.15; scale: 0.7; } to { opacity: 1; scale: 1; } }
+@keyframes meteor {
+  0% { transform: rotate(var(--ang, -25deg)) translateX(0); opacity: 0; }
+  3% { opacity: 1; }
+  18%, 100% { transform: rotate(var(--ang, -25deg)) translateX(-70vmax); opacity: 0; }
+}
+
+canvas#game { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* ---------- HUD ---------- */
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: max(10px, env(safe-area-inset-top)) 12px 0;
+  pointer-events: none;
+}
+.hud-group { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; pointer-events: auto; }
+.hud-group.right { justify-content: flex-end; flex-wrap: nowrap; }
+.stat {
+  min-width: 62px;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--glass);
+  line-height: 1.1;
+}
+.stat small { display: block; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.stat b { display: block; font: 700 1rem Orbitron, sans-serif; color: var(--cyan); font-variant-numeric: tabular-nums; }
+.stat.lives b { color: var(--red); letter-spacing: 0.08em; }
+.stat.mult b { color: var(--gold); }
+.stat.mod b { font-size: 0.78rem; color: var(--accent); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.icon-btn {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--glass);
+  font: 700 0.8rem Orbitron, sans-serif;
+  cursor: pointer;
+}
+.icon-btn[aria-pressed="true"] { border-color: var(--cyan); box-shadow: inset 0 0 0 1px var(--cyan); }
+
+.nova-btn {
+  position: absolute;
+  right: 14px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 5;
+  width: 78px;
+  height: 78px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  background: conic-gradient(var(--gold) calc(var(--nova, 0) * 1%), rgba(255, 214, 10, 0.12) 0);
+  box-shadow: 0 0 20px rgba(255, 214, 10, 0.25);
+  cursor: pointer;
+}
+.nova-btn span {
+  position: absolute;
+  inset: 6px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--gold);
+  font: 900 0.72rem Orbitron, sans-serif;
+  letter-spacing: 0.06em;
+}
+.nova-btn.ready { animation: pulse 0.9s ease-in-out infinite alternate; }
+.nova-btn.ready span { background: var(--gold); color: var(--bg); }
+.nova-btn[aria-disabled="true"] { cursor: default; }
+@keyframes pulse { to { box-shadow: 0 0 34px var(--gold); scale: 1.06; } }
+
+#bossHud {
+  position: absolute;
+  top: 78px;
+  left: 50%;
+  z-index: 4;
+  width: min(520px, 78vw);
+  translate: -50% 0;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+#bossHud.show { opacity: 1; }
+.boss-label { margin-bottom: 4px; font: 700 0.7rem Orbitron, sans-serif; letter-spacing: 0.18em; color: var(--red); text-transform: uppercase; }
+.boss-bar-wrap { height: 8px; overflow: hidden; border: 1px solid var(--red); border-radius: 6px; background: rgba(255, 45, 85, 0.1); }
+#bossBar { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange)); transform-origin: left; transition: transform 0.15s; }
+
+.toast {
+  position: absolute;
+  top: 36%;
+  left: 50%;
+  z-index: 6;
+  translate: -50% -50%;
+  width: 90vw;
+  text-align: center;
+  white-space: pre-line;
+  font: 900 clamp(1.4rem, 5vw, 2.6rem)/1.2 Orbitron, sans-serif;
+  color: var(--gold);
+  text-shadow: 0 0 18px currentColor;
+  opacity: 0;
+  pointer-events: none;
+}
+.toast small { display: block; margin-top: 0.4rem; font-size: 0.45em; letter-spacing: 0.2em; color: var(--accent); }
+.toast.show { animation: toast 1.8s ease forwards; }
+@keyframes toast { 0% { opacity: 0; scale: 0.7; } 15% { opacity: 1; scale: 1; } 75% { opacity: 1; } 100% { opacity: 0; scale: 1.04; } }
+
+.flash { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0; background: radial-gradient(circle, rgba(255, 214, 10, 0.55), transparent 70%); }
+.flash.go { animation: flash 0.6s ease-out; }
+.flash.hurt { background: radial-gradient(circle, transparent 40%, rgba(255, 45, 85, 0.45)); }
+@keyframes flash { from { opacity: 1; } to { opacity: 0; } }
+
+/* ---------- Screens ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: max(20px, env(safe-area-inset-top)) 16px 20px;
+  overflow: auto;
+  background: rgba(4, 5, 13, 0.7);
+  backdrop-filter: blur(6px);
+  touch-action: pan-y;
+}
+.screen[hidden] { display: none; }
+.card {
+  width: min(560px, 100%);
+  padding: clamp(18px, 4vw, 30px);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(14, 18, 36, 0.96), rgba(6, 8, 18, 0.97));
+  box-shadow: 0 0 60px rgba(0, 245, 255, 0.12);
+}
+.title {
+  margin: 0;
+  font: 900 clamp(2.1rem, 9vw, 3.5rem)/1 Orbitron, sans-serif;
+  letter-spacing: 0.05em;
+  background: linear-gradient(90deg, var(--cyan), var(--purple), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.subtitle { margin: 0.6rem 0 0.9rem; font-size: 0.78rem; letter-spacing: 0.3em; color: var(--cyan); }
+.lede { margin: 0 0 1rem; color: #c9d1ee; font-size: 0.92rem; line-height: 1.5; }
+.inst { display: grid; gap: 0.4rem; margin: 0 0 1.2rem; padding: 0; list-style: none; font-size: 0.86rem; color: #c9d1ee; }
+.inst li::before { content: "▸ "; color: var(--cyan); }
+kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  margin: 0 1px;
+  padding: 0 0.35em;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: rgba(0, 245, 255, 0.08);
+  font: 0.8rem "Share Tech Mono", monospace;
+  text-align: center;
+  color: var(--cyan);
+}
+.row { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+.btn {
+  min-height: 48px;
+  padding: 0.75rem 1.3rem;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--cyan), #7cf7c6);
+  color: var(--bg);
+  font: 700 0.92rem Orbitron, sans-serif;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+.btn:hover { filter: brightness(1.1); }
+.btn.ghost { border: 1px solid var(--line); background: transparent; color: #fff; }
+.chip { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.65rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.72rem; color: var(--muted); }
+.chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
+.chip.native::before { background: #34d399; box-shadow: 0 0 8px #34d399; }
+.meta { margin: 1rem 0 0; font-size: 0.76rem; color: var(--muted); }
+.meta a { color: var(--cyan); }
+.big-score { margin: 0.6rem 0; font: 900 clamp(2rem, 8vw, 3rem) Orbitron, sans-serif; color: var(--gold); }
+.over-line { margin: 0 0 1rem; color: #c9d1ee; }
+.new-best { color: var(--gold); font-weight: 700; }
+
+/* ---------- Oracle card ---------- */
+.oracle {
+  --row: 4.6rem;
+  --die: 48px;
+  --o-color: hsl(var(--lucky) 100% 65%);
+  width: min(560px, 100%);
+  padding: clamp(18px, 4vw, 28px);
+  border: 1px solid hsl(var(--lucky) 90% 65% / 0.4);
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse at 50% 0, hsl(var(--lucky) 80% 45% / 0.25), transparent 70%),
+    linear-gradient(160deg, rgba(14, 18, 36, 0.97), rgba(6, 8, 18, 0.98));
+  box-shadow: 0 0 70px hsl(var(--lucky) 90% 55% / 0.25);
+  rotate: var(--tilt, 0deg);
+  animation: rise 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+@keyframes rise { from { opacity: 0; translate: 0 20px; } }
+.oracle-eyebrow { margin: 0; font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
+.oracle-eyebrow .o-wave { color: var(--o-color); }
+.oracle-title { margin: 0.3rem 0 0.8rem; font: 900 clamp(1.3rem, 5vw, 1.9rem) Orbitron, sans-serif; }
+.mod-window {
+  height: var(--row);
+  overflow: hidden;
+  border-block: 1px dashed var(--line);
+  -webkit-mask-image: linear-gradient(transparent, #000 15%, #000 85%, transparent);
+  mask-image: linear-gradient(transparent, #000 15%, #000 85%, transparent);
+}
+.mod-strip {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  translate: 0 calc(var(--pick) * var(--row) * -1);
+  animation: spin 1.5s cubic-bezier(0.2, 0.9, 0.25, 1.04) both;
+}
+.mod-strip li {
+  height: var(--row);
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0 0.4rem;
+}
+.mod-icon { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 12px; background: hsl(var(--lucky) 80% 50% / 0.18); color: var(--o-color); font: 900 1.4rem Orbitron, sans-serif; }
+.mod-strip strong { display: block; font: 700 1.05rem Orbitron, sans-serif; color: var(--gold); }
+.mod-strip small { display: block; margin-top: 0.15rem; font-size: 0.82rem; color: #c9d1ee; }
+@keyframes spin { from { translate: 0 calc(var(--row) * -7); filter: blur(3px); } 70% { filter: blur(0); } }
+
+.o-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.8rem 1rem; margin: 1rem 0 0.6rem; }
+.dice { display: flex; align-items: center; gap: 0.6rem; }
+.die {
+  width: var(--die);
+  height: var(--die);
+  overflow: hidden;
+  border-radius: 11px;
+  background: linear-gradient(145deg, #f8fafc, #cbd5e1);
+  box-shadow: 0 5px 0 #64748b, 0 10px 20px rgba(0, 0, 0, 0.45);
+  animation: tumble 0.9s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+.die:nth-child(1) { --v: var(--d1); animation-delay: 0.2s; }
+.die:nth-child(2) { --v: var(--d2); animation-delay: 0.35s; }
+.die:nth-child(3) { --v: var(--d3); animation-delay: 0.5s; }
+.die-strip { translate: 0 calc((var(--v) - 1) * var(--die) * -1); }
+.face { display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); width: var(--die); height: var(--die); padding: 8px; }
+.face i { width: 8px; height: 8px; border-radius: 50%; place-self: center; }
+.face i.on { background: #0b1220; }
+.jackpot .face i.on { background: hsl(var(--lucky) 80% 38%); }
+.jackpot .die { box-shadow: 0 5px 0 #8a6d00, 0 0 26px var(--gold); }
+@keyframes tumble { from { rotate: -300deg; scale: 0.3; opacity: 0; } }
+.dice-eq { font-size: 1.3rem; color: var(--muted); }
+.dice-total { min-width: 2ch; font: 900 1.6rem Orbitron, sans-serif; color: var(--o-color); }
+.dice-total::after { counter-reset: total calc(var(--d1) + var(--d2) + var(--d3)); content: counter(total); }
+.hue-chip { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.4rem 0.7rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.78rem; }
+.hue-chip .swatch { width: 14px; height: 14px; border-radius: 50%; background: var(--o-color); box-shadow: 0 0 10px var(--o-color); }
+.hue-val::after { counter-reset: h var(--lucky); content: counter(h) "°"; }
+.o-result { min-height: 1.4em; margin: 0 0 1rem; color: var(--gold); font-size: 0.92rem; opacity: 0; transition: opacity 0.4s; }
+.o-result.show { opacity: 1; }
+.oracle-note { margin: 0.9rem 0 0; font-size: 0.72rem; color: var(--muted); }
+
+/* ---------- The native random() layer ---------- */
+@supports (left: random(0%, 1%)) {
+  .vo-star {
+    left: random(0%, 100%);
+    top: random(0%, 100%);
+    width: random(1px, 3px);
+    animation-duration: random(1.6s, 5s);
+    animation-delay: random(-5s, 0s);
+  }
+  .vo-blob {
+    left: random(-15%, 80%);
+    top: random(-15%, 75%);
+    width: random(20vmax, 46vmax);
+    background: radial-gradient(circle, hsl(calc(var(--lucky-ui) + random(-45, 45)) 90% 55% / 0.22), transparent 65%);
+  }
+  .vo-meteor {
+    --ang: random(-34deg, -14deg);
+    top: random(0%, 45%);
+    left: random(40%, 100%);
+    animation-duration: random(6s, 12s);
+    animation-delay: random(0s, 7s);
+  }
+  /* The oracle: these values drive the game. */
+  .oracle {
+    --tilt: random(-2deg, 2deg);
+    --pick: random(0, 7, 1);
+    --d1: random(1, 6, 1);
+    --d2: random(1, 6, 1);
+    --d3: random(1, 6, 1);
+    --lucky: random(0, 359, 1);
+  }
+}
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@media (max-width: 560px) {
+  .stat { min-width: 52px; padding: 0.3rem 0.45rem; }
+  .stat b { font-size: 0.86rem; }
+  .stat.mod { display: none; }
+  .icon-btn { min-width: 38px; min-height: 40px; padding: 0 0.4rem; }
+  .hud-group { gap: 0.3rem; }
+  #bossHud { top: 112px; }
+  .oracle { --row: 5.4rem; --die: 42px; }
+  .face { padding: 6px; }
+  .face i { width: 7px; height: 7px; }
+}
+
+.reduced .vo-star, .reduced .vo-meteor, .reduced .nova-btn.ready,
+.reduced .mod-strip, .reduced .die, .reduced .oracle { animation: none !important; }
+.reduced .vo-meteor { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .vo-star, .vo-meteor, .nova-btn.ready, .mod-strip, .die, .oracle { animation: none !important; }
+  .vo-meteor { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="sky" id="sky" aria-hidden="true"></div>
+  <canvas id="game" role="img" data-i18n-aria="canvas" aria-label="Câmpul de luptă VOID ORACLE"></canvas>
+
+  <header class="hud" id="hud" hidden>
+    <div class="hud-group">
+      <div class="stat"><small data-i18n="score">Scor</small><b id="scoreOut">0</b></div>
+      <div class="stat"><small data-i18n="wave">Val</small><b id="waveOut">1</b></div>
+      <div class="stat lives"><small data-i18n="lives">Vieți</small><b id="livesOut" aria-hidden="true">♥♥♥</b><span class="sr-only" id="livesSr">3</span></div>
+      <div class="stat mult"><small data-i18n="combo">Combo</small><b id="multOut">×1</b></div>
+      <div class="stat mod"><small data-i18n="modifier">Oracol</small><b id="modOut">—</b></div>
+    </div>
+    <div class="hud-group right">
+      <button class="icon-btn" id="pauseBtn" type="button" data-i18n-aria="pause" aria-label="Pauză">II</button>
+      <button class="icon-btn" id="audioBtn" type="button" aria-pressed="true" data-i18n-aria="audio" aria-label="Sunet">♪</button>
+      <button class="icon-btn" id="motionBtn" type="button" aria-pressed="false" data-i18n-aria="motion" aria-label="Mișcare redusă">≋</button>
+      <button class="icon-btn" id="langBtn" type="button">EN</button>
+    </div>
+  </header>
+
+  <div id="bossHud" aria-hidden="true">
+    <div class="boss-label" data-i18n="boss_label">BOSS // Devoratorul de stele</div>
+    <div class="boss-bar-wrap"><div id="bossBar"></div></div>
+  </div>
+  <div class="toast" id="toast" aria-hidden="true"></div>
+  <div class="flash" id="flash" aria-hidden="true"></div>
+  <button class="nova-btn" id="novaBtn" type="button" aria-disabled="true" hidden data-i18n-aria="nova_btn" aria-label="Nova: încă se încarcă"><span>NOVA</span></button>
+
+  <!-- Start -->
+  <section class="screen" id="startScreen" aria-labelledby="startTitle">
+    <div class="card">
+      <h1 class="title" id="startTitle">VOID ORACLE</h1>
+      <p class="subtitle" data-i18n="subtitle">// CSS ARUNCĂ ZARURILE //</p>
+      <p class="lede" data-i18n="lede">Un shooter spațial inspirat de VOID HUNTER. Înainte de fiecare val, Oracolul alege cu CSS random() un modificator, trei zaruri pentru bonus și culoarea navei. Jocul ascultă de CSS.</p>
+      <ul class="inst">
+        <li data-i18n-html="inst1"><kbd>←</kbd><kbd>→</kbd> / <kbd>A</kbd><kbd>D</kbd>, mouse sau deget — mișcare</li>
+        <li data-i18n-html="inst2"><kbd>↑</kbd> / <kbd>W</kbd> — turbo · tragi automat</li>
+        <li data-i18n-html="inst3"><kbd>Space</kbd> / <kbd>B</kbd> — Nova, când bara e plină</li>
+        <li data-i18n-html="inst4"><kbd>P</kbd> / <kbd>Esc</kbd> — pauză</li>
+        <li data-i18n-html="inst5">Trei zaruri egale = o viață în plus</li>
+      </ul>
+      <div class="row">
+        <button class="btn" id="startBtn" type="button" data-i18n="start">Pornește misiunea</button>
+        <button class="btn ghost" id="langBtn2" type="button">EN</button>
+        <span class="chip" id="supportChip"></span>
+      </div>
+      <p class="meta"><span data-i18n="best">Record</span>: <b id="bestOut">0</b> · <span data-i18n="inspired">Inspirat de VOID HUNTER · CodePen Challenge: CSS random()</span> · <a href="https://codepen.io/Laura-Andreea-the-typescripter/pen/VYKrLra" target="_blank" rel="noopener" data-i18n="original">Joacă VOID HUNTER original</a> · <a href="../portfolio.html#now" data-i18n="back">Portofoliu</a></p>
+    </div>
+  </section>
+
+  <!-- Oracle -->
+  <section class="screen" id="oracleScreen" aria-labelledby="oracleHead" hidden>
+    <div style="width:min(560px,100%)">
+      <div id="oracleSlot"></div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn" id="launchBtn" type="button">Lansează</button>
+        <span class="meta" style="margin:0" data-i18n-html="launch_hint"><kbd>Enter</kbd> / <kbd>Space</kbd></span>
+      </div>
+    </div>
+  </section>
+
+  <template id="oracleTpl">
+    <article class="oracle" role="group" aria-labelledby="oracleHead">
+      <p class="oracle-eyebrow"><span data-i18n="oracle_eyebrow">Oracolul vidului</span> · <span class="o-wave"></span></p>
+      <h2 class="oracle-title" id="oracleHead" data-i18n="oracle_title">CSS aruncă zarurile</h2>
+      <div class="mod-window">
+        <ul class="mod-strip" aria-hidden="true">
+          <li><b class="mod-icon">☄</b><span><strong data-i18n="mod_meteor">Ploaie de meteoriți</strong><small data-i18n="mod_meteor_d"></small></span></li>
+          <li><b class="mod-icon">×2</b><span><strong data-i18n="mod_double">Puncte duble</strong><small data-i18n="mod_double_d"></small></span></li>
+          <li><b class="mod-icon">⚡</b><span><strong data-i18n="mod_swarm">Roi rapid</strong><small data-i18n="mod_swarm_d"></small></span></li>
+          <li><b class="mod-icon">⛨</b><span><strong data-i18n="mod_shield">Scut cadou</strong><small data-i18n="mod_shield_d"></small></span></li>
+          <li><b class="mod-icon">✦</b><span><strong data-i18n="mod_rapid">Foc rapid</strong><small data-i18n="mod_rapid_d"></small></span></li>
+          <li><b class="mod-icon">◇</b><span><strong data-i18n="mod_fragile">Vid fragil</strong><small data-i18n="mod_fragile_d"></small></span></li>
+          <li><b class="mod-icon">◎</b><span><strong data-i18n="mod_gravity">Fântână gravitațională</strong><small data-i18n="mod_gravity_d"></small></span></li>
+          <li><b class="mod-icon">✺</b><span><strong data-i18n="mod_nova">Nova încărcată</strong><small data-i18n="mod_nova_d"></small></span></li>
+        </ul>
+      </div>
+      <div class="o-row">
+        <div class="dice" aria-hidden="true">
+          <div class="die"><div class="die-strip"></div></div>
+          <div class="die"><div class="die-strip"></div></div>
+          <div class="die"><div class="die-strip"></div></div>
+          <span class="dice-eq">=</span><span class="dice-total"></span>
+        </div>
+        <span class="hue-chip"><i class="swatch" aria-hidden="true"></i><span data-i18n="lucky">Nuanța navei</span> <b class="hue-val"></b></span>
+      </div>
+      <p class="o-result" aria-hidden="true"></p>
+      <p class="oracle-note" data-i18n="oracle_note">random(0, 7, 1) alege modificatorul · random(1, 6, 1) aruncă zarurile · random(0, 359, 1) colorează nava. JavaScript doar citește rezultatul.</p>
+    </article>
+  </template>
+
+  <!-- Pause -->
+  <section class="screen" id="pauseScreen" aria-labelledby="pauseTitle" hidden>
+    <div class="card">
+      <h2 class="title" id="pauseTitle" data-i18n="paused">PAUZĂ</h2>
+      <p class="lede" id="pauseInfo"></p>
+      <div class="row">
+        <button class="btn" id="resumeBtn" type="button" data-i18n="resume">Continuă</button>
+        <button class="btn ghost" id="restartBtn" type="button" data-i18n="restart">De la capăt</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Game over -->
+  <section class="screen" id="overScreen" aria-labelledby="overTitle" hidden>
+    <div class="card">
+      <h2 class="title" id="overTitle" data-i18n="over">MISIUNE ÎNCHEIATĂ</h2>
+      <p class="big-score" id="finalScore">0</p>
+      <p class="over-line" id="overLine"></p>
+      <div class="row">
+        <button class="btn" id="againBtn" type="button" data-i18n="again">Joacă din nou</button>
+      </div>
+    </div>
+  </section>
+</div>
+<p class="sr-only" id="live" aria-live="polite" aria-atomic="true"></p>
+
+<script>
+(() => {
+"use strict";
+
+// ---------------------------------------------------------------------------
+// Text
+// ---------------------------------------------------------------------------
+const T = {
+  ro: {
+    canvas: "Câmpul de luptă VOID ORACLE",
+    score: "Scor", wave: "Val", lives: "Vieți", combo: "Combo", modifier: "Oracol",
+    pause: "Pauză", audio: "Sunet", motion: "Mișcare redusă",
+    nova_btn: "Nova: încă se încarcă", nova_ready_btn: "Nova gata: apasă ca să curăți ecranul",
+    boss_label: "BOSS // Devoratorul de stele",
+    subtitle: "// CSS ARUNCĂ ZARURILE //",
+    lede: "Un shooter spațial inspirat de VOID HUNTER. Înainte de fiecare val, Oracolul alege cu CSS random() un modificator, trei zaruri pentru bonus și culoarea navei. Jocul ascultă de CSS.",
+    inst1: "<kbd>←</kbd><kbd>→</kbd> / <kbd>A</kbd><kbd>D</kbd>, mouse sau deget — mișcare",
+    inst2: "<kbd>↑</kbd> / <kbd>W</kbd> — turbo · tragi automat",
+    inst3: "<kbd>Space</kbd> / <kbd>B</kbd> — Nova, când bara e plină",
+    inst4: "<kbd>P</kbd> / <kbd>Esc</kbd> — pauză",
+    inst5: "Trei zaruri egale = o viață în plus",
+    start: "Pornește misiunea", best: "Record",
+    inspired: "Inspirat de VOID HUNTER · CodePen Challenge: CSS random()", back: "Portofoliu", original: "Joacă VOID HUNTER original",
+    native: "CSS random() nativ", fallback: "CSS random() · fallback JS",
+    oracle_eyebrow: "Oracolul vidului", oracle_title: "CSS aruncă zarurile",
+    oracle_note: "random(0, 7, 1) alege modificatorul · random(1, 6, 1) aruncă zarurile · random(0, 359, 1) colorează nava. JavaScript doar citește rezultatul.",
+    lucky: "Nuanța navei", launch_hint: "<kbd>Enter</kbd> / <kbd>Space</kbd>",
+    launch: (n) => `Lansează valul ${n}`, wave_n: (n) => `Valul ${n}`, boss_wave: (n) => `Valul ${n} · BOSS`,
+    bonus: (t, p) => `Zaruri ${t} → +${p} puncte`, jackpot: "Trei la fel! +1 viață",
+    mod_meteor: "Ploaie de meteoriți", mod_meteor_d: "Pietre care cad, 60 de puncte fiecare",
+    mod_double: "Puncte duble", mod_double_d: "Fiecare inamic valorează ×2",
+    mod_swarm: "Roi rapid", mod_swarm_d: "Inamici mai rapizi, +50% puncte",
+    mod_shield: "Scut cadou", mod_shield_d: "Pornești valul cu scut",
+    mod_rapid: "Foc rapid", mod_rapid_d: "Tragi de două ori mai des, 12 secunde",
+    mod_fragile: "Vid fragil", mod_fragile_d: "Toți inamicii cad dintr-un foc",
+    mod_gravity: "Fântână gravitațională", mod_gravity_d: "Gloanțele inamice sunt mai lente",
+    mod_nova: "Nova încărcată", mod_nova_d: "Bara Nova pornește plină",
+    t_wave: (n) => `VALUL ${n}`, t_boss: "BOSS", t_combo: (m) => `COMBO ×${m}`,
+    t_nova_ready: "NOVA GATA", t_nova: "NOVA!", t_phase: (p) => `FAZA ${p}`, t_boss_down: "BOSS DISTRUS",
+    p_shield: "Scut", p_multi: "Foc triplu", p_rapid: "Foc rapid", p_life: "+1 viață", hit: "Lovit",
+    paused: "PAUZĂ", resume: "Continuă", restart: "De la capăt",
+    pause_info: (w, s) => `Valul ${w} · scor ${s}`,
+    over: "MISIUNE ÎNCHEIATĂ", again: "Joacă din nou",
+    over_line: (w, best) => `Ai ajuns la valul ${w}.` + (best ? " Record nou!" : ""),
+    a_wave: (n, m) => `Valul ${n} a început. Modificator: ${m}.`,
+    a_oracle: (m, d, t, p, j) => `Oracolul a ales: ${m}. Zaruri ${d.join(", ")}, total ${t}, bonus ${p} puncte.` + (j ? " Trei la fel, o viață în plus." : ""),
+    a_over: (s, w) => `Misiune încheiată. Scor ${s}, valul ${w}.`,
+    a_hit: (l) => `Lovit. Mai ai ${l} vieți.`, a_boss: "Boss pe ecran.",
+    lang_aria: "Switch to English",
+  },
+  en: {
+    canvas: "VOID ORACLE battlefield",
+    score: "Score", wave: "Wave", lives: "Lives", combo: "Combo", modifier: "Oracle",
+    pause: "Pause", audio: "Sound", motion: "Reduced motion",
+    nova_btn: "Nova: still charging", nova_ready_btn: "Nova ready: press to clear the screen",
+    boss_label: "BOSS // Star Devourer",
+    subtitle: "// CSS ROLLS THE DICE //",
+    lede: "A space shooter inspired by VOID HUNTER. Before every wave, the Oracle uses CSS random() to pick a modifier, three bonus dice and your ship colour. The game obeys CSS.",
+    inst1: "<kbd>←</kbd><kbd>→</kbd> / <kbd>A</kbd><kbd>D</kbd>, mouse or finger — move",
+    inst2: "<kbd>↑</kbd> / <kbd>W</kbd> — turbo · auto-fire",
+    inst3: "<kbd>Space</kbd> / <kbd>B</kbd> — Nova, when the meter is full",
+    inst4: "<kbd>P</kbd> / <kbd>Esc</kbd> — pause",
+    inst5: "Three matching dice = an extra life",
+    start: "Start mission", best: "Best",
+    inspired: "Inspired by VOID HUNTER · CodePen Challenge: CSS random()", back: "Portfolio", original: "Play the original VOID HUNTER",
+    native: "Native CSS random()", fallback: "CSS random() · JS fallback",
+    oracle_eyebrow: "Void Oracle", oracle_title: "CSS rolls the dice",
+    oracle_note: "random(0, 7, 1) picks the modifier · random(1, 6, 1) rolls the dice · random(0, 359, 1) colours the ship. JavaScript only reads the result.",
+    lucky: "Ship hue", launch_hint: "<kbd>Enter</kbd> / <kbd>Space</kbd>",
+    launch: (n) => `Launch wave ${n}`, wave_n: (n) => `Wave ${n}`, boss_wave: (n) => `Wave ${n} · BOSS`,
+    bonus: (t, p) => `Dice ${t} → +${p} points`, jackpot: "Triple! +1 life",
+    mod_meteor: "Meteor shower", mod_meteor_d: "Falling rocks, 60 points each",
+    mod_double: "Double points", mod_double_d: "Every enemy is worth ×2",
+    mod_swarm: "Fast swarm", mod_swarm_d: "Faster enemies, +50% points",
+    mod_shield: "Gift shield", mod_shield_d: "Start the wave shielded",
+    mod_rapid: "Rapid fire", mod_rapid_d: "Fire twice as fast for 12 seconds",
+    mod_fragile: "Fragile void", mod_fragile_d: "Every enemy falls in one hit",
+    mod_gravity: "Gravity well", mod_gravity_d: "Enemy shots move slower",
+    mod_nova: "Nova charged", mod_nova_d: "Your Nova meter starts full",
+    t_wave: (n) => `WAVE ${n}`, t_boss: "BOSS", t_combo: (m) => `COMBO ×${m}`,
+    t_nova_ready: "NOVA READY", t_nova: "NOVA!", t_phase: (p) => `PHASE ${p}`, t_boss_down: "BOSS DESTROYED",
+    p_shield: "Shield", p_multi: "Triple shot", p_rapid: "Rapid fire", p_life: "+1 life", hit: "Hit",
+    paused: "PAUSED", resume: "Resume", restart: "Restart",
+    pause_info: (w, s) => `Wave ${w} · score ${s}`,
+    over: "MISSION OVER", again: "Play again",
+    over_line: (w, best) => `You reached wave ${w}.` + (best ? " New best!" : ""),
+    a_wave: (n, m) => `Wave ${n} started. Modifier: ${m}.`,
+    a_oracle: (m, d, t, p, j) => `The Oracle picked: ${m}. Dice ${d.join(", ")}, total ${t}, bonus ${p} points.` + (j ? " Triple, extra life." : ""),
+    a_over: (s, w) => `Mission over. Score ${s}, wave ${w}.`,
+    a_hit: (l) => `Hit. ${l} lives left.`, a_boss: "Boss incoming.",
+    lang_aria: "Schimbă limba în română",
+  },
+};
+
+const MODS = ["meteor", "double", "swarm", "shield", "rapid", "fragile", "gravity", "nova"];
+const PIPS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
+const ENEMY = [
+  { w: 36, h: 30, hp: 1, speed: 1.15, pts: 100, color: "#ff2d55" },
+  { w: 46, h: 40, hp: 3, speed: 0.8, pts: 250, color: "#ff9f0a" },
+  { w: 58, h: 50, hp: 6, speed: 0.55, pts: 500, color: "#bf5af2" },
+];
+const POWER = {
+  shield: { color: "#00f5ff", icon: "S" },
+  multi: { color: "#ffd60a", icon: "M" },
+  rapid: { color: "#bf5af2", icon: "R" },
+  life: { color: "#ff2d55", icon: "♥" },
+};
+const STORE = "void-oracle-";
+
+const $ = (id) => document.getElementById(id);
+const app = $("app"), canvas = $("game"), ctx = canvas.getContext("2d");
+const live = $("live"), toastEl = $("toast"), flashEl = $("flash");
+const NATIVE = !!(window.CSS && CSS.supports("left", "random(0%, 1%)"));
+const motionMQ = matchMedia("(prefers-reduced-motion: reduce)");
+
+const load = (k, d) => { try { const v = localStorage.getItem(STORE + k); return v === null ? d : JSON.parse(v); } catch { return d; } };
+const save = (k, v) => { try { localStorage.setItem(STORE + k, JSON.stringify(v)); } catch {} };
+
+let lang = load("lang", (navigator.language || "ro").toLowerCase().startsWith("ro") ? "ro" : "en");
+let audioOn = load("audio", true);
+let reducedPref = load("reduced", false);
+let best = load("best", 0);
+
+const t = (k, ...a) => { const v = T[lang][k] ?? T.en[k] ?? k; return typeof v === "function" ? v(...a) : v; };
+const reduced = () => reducedPref || motionMQ.matches;
+const rand = (a, b) => a + Math.random() * (b - a);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const announce = (msg) => { live.textContent = ""; requestAnimationFrame(() => (live.textContent = msg)); };
+
+function translate(scope = document) {
+  scope.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = t(el.dataset.i18n)));
+  scope.querySelectorAll("[data-i18n-html]").forEach((el) => (el.innerHTML = t(el.dataset.i18nHtml)));
+  scope.querySelectorAll("[data-i18n-aria]").forEach((el) => el.setAttribute("aria-label", t(el.dataset.i18nAria)));
+}
+
+function applyLang(next) {
+  lang = next;
+  save("lang", lang);
+  document.documentElement.lang = lang;
+  translate();
+  ["langBtn", "langBtn2"].forEach((id) => {
+    $(id).textContent = lang === "ro" ? "EN" : "RO";
+    $(id).setAttribute("aria-label", t("lang_aria"));
+  });
+  const chip = $("supportChip");
+  chip.textContent = t(NATIVE ? "native" : "fallback");
+  chip.classList.toggle("native", NATIVE);
+  if (S.phase === "oracle" && S.oracle) {
+    translate($("oracleSlot"));
+    showOracleResult();
+    $("launchBtn").textContent = t("launch", S.wave + 1);
+  }
+  updateNovaBtn(true);
+  hud.mod = null;
+  updateHUD();
+}
+
+// ---------------------------------------------------------------------------
+// Sky (DOM layer behind the canvas, placed by CSS random())
+// ---------------------------------------------------------------------------
+function buildSky() {
+  const sky = $("sky"), frag = document.createDocumentFragment();
+  const add = (cls, n, fallback) => {
+    for (let i = 0; i < n; i++) {
+      const el = document.createElement("span");
+      el.className = cls;
+      if (!NATIVE) Object.entries(fallback()).forEach(([k, v]) => el.style.setProperty(k, v));
+      frag.append(el);
+    }
+  };
+  add("vo-blob", 3, () => ({ "--x": rand(-15, 80) + "%", "--y": rand(-15, 75) + "%", "--s": rand(20, 46) + "vmax", "--h": rand(-45, 45) }));
+  add("vo-star", 110, () => ({ "--x": rand(0, 100) + "%", "--y": rand(0, 100) + "%", "--s": rand(1, 3) + "px", "--dur": rand(1.6, 5) + "s", "--delay": rand(-5, 0) + "s" }));
+  add("vo-meteor", 2, () => ({ "--ang": rand(-34, -14) + "deg", "--mt": rand(0, 45) + "%", "--ml": rand(40, 100) + "%", "--md": rand(6, 12) + "s", "--mdelay": rand(0, 7) + "s" }));
+  sky.append(frag);
+}
+
+// ---------------------------------------------------------------------------
+// Audio (tiny WebAudio synth)
+// ---------------------------------------------------------------------------
+let ac = null;
+function ensureAudio() {
+  if (!audioOn) return null;
+  try {
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    if (ac.state === "suspended") ac.resume();
+  } catch { ac = null; }
+  return ac;
+}
+function tone(freq, dur, type = "square", vol = 0.05, to = null) {
+  const a = ensureAudio(); if (!a) return;
+  const o = a.createOscillator(), g = a.createGain(), now = a.currentTime;
+  o.type = type; o.frequency.setValueAtTime(freq, now);
+  if (to) o.frequency.exponentialRampToValueAtTime(to, now + dur);
+  g.gain.setValueAtTime(vol, now); g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+  o.connect(g).connect(a.destination); o.start(now); o.stop(now + dur + 0.02);
+}
+function noise(dur, vol = 0.08) {
+  const a = ensureAudio(); if (!a) return;
+  const len = Math.floor(a.sampleRate * dur), buf = a.createBuffer(1, len, a.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+  const s = a.createBufferSource(), g = a.createGain(); g.gain.value = vol;
+  s.buffer = buf; s.connect(g).connect(a.destination); s.start();
+}
+const sfx = {
+  shoot: () => tone(880, 0.05, "square", 0.015, 520),
+  hit: () => tone(320, 0.06, "square", 0.03, 180),
+  boom: () => noise(0.25, 0.07),
+  big: () => { noise(0.7, 0.12); tone(90, 0.6, "sawtooth", 0.06, 40); },
+  power: () => { tone(660, 0.08, "triangle", 0.05); setTimeout(() => tone(990, 0.12, "triangle", 0.05), 70); },
+  hurt: () => tone(160, 0.3, "sawtooth", 0.07, 60),
+  roll: () => { for (let i = 0; i < 8; i++) setTimeout(() => tone(420 + i * 60, 0.04, "triangle", 0.025), i * 110); },
+  nova: () => { tone(200, 0.8, "sine", 0.08, 1400); noise(0.6, 0.06); },
+  boss: () => tone(70, 0.9, "sawtooth", 0.07, 140),
+};
+function vibrate(ms) { if (navigator.vibrate && !reduced()) navigator.vibrate(ms); }
+
+// ---------------------------------------------------------------------------
+// Canvas
+// ---------------------------------------------------------------------------
+let W = 0, H = 0, DPR = 1;
+function resize() {
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  W = innerWidth; H = innerHeight;
+  canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  P.y = H - (W < 560 ? 120 : 80);
+  P.x = clamp(P.x || W / 2, 30, W - 30);
+}
+
+// ---------------------------------------------------------------------------
+// State
+// ---------------------------------------------------------------------------
+const S = { phase: "start", wave: 0, score: 0, lives: 3, combo: 0, comboT: 0, mult: 1, nova: 0, mod: null, oracle: null, shake: 0, time: 0, rockT: 0, waveActive: false, clearT: 0 };
+const P = { x: 0, y: 0, w: 44, h: 42, targetX: null, cd: 0, inv: 0, shield: 0, rapid: 0, multi: 0, hue: 190 };
+let bullets = [], ebullets = [], enemies = [], particles = [], powerups = [], rocks = [], floaters = [], boss = null;
+const keys = {};
+
+function resetGame() {
+  Object.assign(S, { wave: 0, score: 0, lives: 3, combo: 0, comboT: 0, mult: 1, nova: 0, mod: null, oracle: null, shake: 0, rockT: 0, waveActive: false, clearT: 0 });
+  Object.assign(P, { targetX: null, cd: 0, inv: 0, shield: 0, rapid: 0, multi: 0, x: W / 2 });
+  bullets = []; ebullets = []; enemies = []; particles = []; powerups = []; rocks = []; floaters = []; boss = null;
+  $("bossHud").classList.remove("show");
+  hud.score = hud.wave = hud.lives = hud.mult = hud.mod = null;
+}
+
+// ---------------------------------------------------------------------------
+// Screens
+// ---------------------------------------------------------------------------
+function show(id) {
+  ["startScreen", "oracleScreen", "pauseScreen", "overScreen"].forEach((s) => ($(s).hidden = s !== id));
+  const playing = id === null;
+  $("hud").hidden = S.phase === "start";
+  $("novaBtn").hidden = S.phase === "start" || S.phase === "over";
+  canvas.setAttribute("aria-hidden", String(!playing));
+}
+function focusFirst(id) { requestAnimationFrame(() => $(id).focus()); }
+
+function startGame() {
+  ensureAudio();
+  resetGame();
+  S.phase = "oracle";
+  openOracle();
+}
+
+// ---------------------------------------------------------------------------
+// The Oracle — CSS random() decides, JS reads
+// ---------------------------------------------------------------------------
+function buildDice(scope) {
+  scope.querySelectorAll(".die-strip").forEach((strip) => {
+    for (let f = 1; f <= 6; f++) {
+      const face = document.createElement("div"); face.className = "face";
+      for (let c = 0; c < 9; c++) { const i = document.createElement("i"); if (PIPS[f].includes(c)) i.className = "on"; face.append(i); }
+      strip.append(face);
+    }
+  });
+}
+
+function openOracle() {
+  S.phase = "oracle";
+  const slot = $("oracleSlot");
+  // A fresh element every time: random() values are fixed per element.
+  slot.replaceChildren($("oracleTpl").content.cloneNode(true));
+  const card = slot.querySelector(".oracle");
+  buildDice(card);
+  translate(card);
+  card.querySelector(".o-wave").textContent = (S.wave + 1) % 5 === 0 ? t("boss_wave", S.wave + 1) : t("wave_n", S.wave + 1);
+  if (!NATIVE) {
+    const r = (a, b) => Math.floor(rand(a, b + 1));
+    [["--tilt", rand(-2, 2) + "deg"], ["--pick", r(0, 7)], ["--d1", r(1, 6)], ["--d2", r(1, 6)], ["--d3", r(1, 6)], ["--lucky", r(0, 359)]]
+      .forEach(([k, v]) => card.style.setProperty(k, v));
+  }
+  $("launchBtn").textContent = t("launch", S.wave + 1);
+  show("oracleScreen");
+  sfx.roll();
+
+  requestAnimationFrame(() => {
+    const cs = getComputedStyle(card);
+    const num = (p) => parseInt(cs.getPropertyValue(p), 10) || 0;
+    const pick = clamp(num("--pick"), 0, 7);
+    const dice = [num("--d1"), num("--d2"), num("--d3")].map((d) => clamp(d, 1, 6));
+    const total = dice[0] + dice[1] + dice[2];
+    const jackpot = dice[0] === dice[1] && dice[1] === dice[2];
+    const bonus = total * 25 * (S.wave + 1);
+    S.oracle = { pick, dice, total, jackpot, bonus, lucky: num("--lucky") };
+    S.mod = MODS[pick];
+    S.score += bonus;
+    if (jackpot) { S.lives = Math.min(5, S.lives + 1); card.classList.add("jackpot"); }
+    P.hue = S.oracle.lucky;
+    app.style.setProperty("--lucky-ui", S.oracle.lucky);
+    updateHUD();
+    setTimeout(() => { if (S.oracle) { showOracleResult(); if (jackpot) sfx.power(); } }, reduced() ? 0 : 1300);
+    announce(t("a_oracle", t("mod_" + S.mod), dice, total, bonus, jackpot));
+  });
+  focusFirst("launchBtn");
+}
+
+function showOracleResult() {
+  const o = S.oracle, el = $("oracleSlot").querySelector(".o-result");
+  if (!o || !el) return;
+  el.textContent = t("bonus", o.total, o.bonus) + (o.jackpot ? " · " + t("jackpot") : "");
+  el.classList.add("show");
+}
+
+function launchWave() {
+  if (S.phase !== "oracle" || !S.oracle) return;
+  S.phase = "play";
+  S.oracle = null;
+  show(null);
+  if (S.mod === "shield") P.shield = 12000;
+  if (S.mod === "rapid") P.rapid = 12000;
+  if (S.mod === "nova") { S.nova = 100; updateNovaBtn(); }
+  spawnWave();
+  canvas.focus?.();
+}
+
+// ---------------------------------------------------------------------------
+// Waves
+// ---------------------------------------------------------------------------
+function spawnWave() {
+  S.wave++;
+  S.waveActive = true;
+  S.rockT = 1200;
+  const modName = t("mod_" + S.mod);
+  if (S.wave % 5 === 0) {
+    const hp = 70 + S.wave * 14;
+    boss = { x: W / 2, y: -140, ty: Math.min(150, H * 0.22), w: 170, h: 100, hp, maxHp: hp, t: 0, phase: 1, shootT: 1200, volleyT: 2600, hit: 0 };
+    $("bossHud").classList.add("show");
+    $("bossBar").style.transform = "scaleX(1)";
+    toast(t("t_boss"), modName);
+    sfx.boss(); vibrate([80, 40, 80]);
+    announce(t("a_boss") + " " + t("a_wave", S.wave, modName));
+  } else {
+    const count = Math.min(6 + S.wave * 2, 30);
+    const perRow = clamp(Math.floor((W - 60) / 64), 4, 8);
+    const w1 = S.wave >= 2 ? Math.min(0.45, 0.08 * S.wave) : 0;
+    const w2 = S.wave >= 4 ? Math.min(0.3, 0.04 * S.wave) : 0;
+    for (let i = 0; i < count; i++) {
+      const row = Math.floor(i / perRow), col = i % perRow;
+      const r = Math.random(), type = r < w2 ? 2 : r < w2 + w1 ? 1 : 0;
+      const def = ENEMY[type];
+      const span = (perRow - 1) * 64;
+      const hp = S.mod === "fragile" ? 1 : def.hp + Math.floor(S.wave / 6);
+      enemies.push({
+        type, w: def.w, h: def.h, hp, maxHp: hp,
+        bx: W / 2 - span / 2 + col * 64, x: 0, y: -50 - row * 60 - Math.random() * 30,
+        ty: 90 + row * 58, ph: Math.random() * Math.PI * 2, amp: rand(24, 46),
+        state: "enter", shootT: rand(1400, 3400), diveT: rand(4000, 11000), vx: 0, vy: 0, hit: 0,
+      });
+      enemies[enemies.length - 1].x = enemies[enemies.length - 1].bx;
+    }
+    toast(t("t_wave", S.wave), modName);
+    announce(t("a_wave", S.wave, modName));
+  }
+  hud.mod = null;
+  updateHUD();
+}
+
+// ---------------------------------------------------------------------------
+// Effects
+// ---------------------------------------------------------------------------
+function toast(main, sub = "") {
+  toastEl.classList.remove("show");
+  toastEl.innerHTML = "";
+  toastEl.append(main);
+  if (sub) { const s = document.createElement("small"); s.textContent = sub; toastEl.append(s); }
+  void toastEl.offsetWidth;
+  toastEl.classList.add("show");
+}
+function flash(kind = "") {
+  if (reduced()) return;
+  flashEl.className = "flash " + kind;
+  void flashEl.offsetWidth;
+  flashEl.classList.add("go");
+}
+function burst(x, y, color, n = 14, speed = 4) {
+  const count = reduced() ? Math.ceil(n / 2) : n;
+  for (let i = 0; i < count; i++) {
+    const a = Math.random() * Math.PI * 2, s = rand(0.5, speed);
+    particles.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: 1, decay: rand(0.015, 0.035), r: rand(1.5, 3.5), color });
+  }
+}
+function floater(x, y, text, color = "#fff") { floaters.push({ x, y, text, color, life: 1 }); }
+function shake(ms) { if (!reduced()) S.shake = Math.max(S.shake, ms); }
+
+// ---------------------------------------------------------------------------
+// Gameplay helpers
+// ---------------------------------------------------------------------------
+const overlap = (ax, ay, aw, ah, bx, by, bw, bh) => Math.abs(ax - bx) < (aw + bw) / 2 && Math.abs(ay - by) < (ah + bh) / 2;
+
+function addScore(base, x, y) {
+  const mod = (S.mod === "double" ? 2 : 1) * (S.mod === "swarm" ? 1.5 : 1);
+  const pts = Math.round(base * S.mult * mod);
+  S.score += pts;
+  floater(x, y, "+" + pts, "#ffd60a");
+}
+
+function registerKill() {
+  S.combo++;
+  S.comboT = 1700;
+  const m = Math.min(5, 1 + Math.floor(S.combo / 6));
+  if (m > S.mult) { S.mult = m; toast(t("t_combo", m)); }
+  const wasReady = S.nova >= 100;
+  S.nova = Math.min(100, S.nova + 5);
+  if (!wasReady && S.nova >= 100) { toast(t("t_nova_ready")); sfx.power(); }
+  updateNovaBtn();
+}
+
+function killEnemy(e) {
+  const def = ENEMY[e.type];
+  burst(e.x, e.y, def.color, 16 + e.type * 6, 4 + e.type);
+  sfx.boom();
+  addScore(def.pts, e.x, e.y);
+  registerKill();
+  dropPower(e.x, e.y, 0.13 + e.type * 0.04);
+}
+
+function dropPower(x, y, chance) {
+  if (Math.random() > chance) return;
+  const type = Math.random() < 0.12 ? "life" : ["shield", "multi", "rapid"][Math.floor(Math.random() * 3)];
+  powerups.push({ x, y, type, vy: 1.4, r: 15, t: 0 });
+}
+
+function hurtPlayer() {
+  if (P.inv > 0) return;
+  if (P.shield > 0) {
+    P.shield = 0; P.inv = 900;
+    burst(P.x, P.y, "#00f5ff", 20, 5); sfx.hit();
+    return;
+  }
+  S.lives--;
+  P.inv = 1600;
+  S.combo = 0; S.mult = 1;
+  burst(P.x, P.y, "#ff2d55", 26, 6);
+  sfx.hurt(); shake(380); flash("hurt"); vibrate(140);
+  announce(t("a_hit", Math.max(0, S.lives)));
+  if (S.lives <= 0) gameOver();
+}
+
+function useNova() {
+  if (S.phase !== "play" || S.nova < 100) return;
+  S.nova = 0;
+  updateNovaBtn();
+  sfx.nova(); flash(); shake(300); vibrate([60, 30, 120]);
+  toast(t("t_nova"));
+  enemies.forEach(killEnemy); enemies = [];
+  rocks.forEach((r) => { burst(r.x, r.y, "#c9a27a", 10); addScore(60, r.x, r.y); }); rocks = [];
+  ebullets = [];
+  if (boss) { boss.hp -= boss.maxHp * 0.15; boss.hit = 200; if (boss.hp <= 0) killBoss(); }
+}
+
+function killBoss() {
+  const b = boss;
+  for (let i = 0; i < 6; i++) setTimeout(() => burst(b.x + rand(-70, 70), b.y + rand(-40, 40), i % 2 ? "#bf5af2" : "#ff2d55", 30, 7), i * 120);
+  sfx.big(); shake(700); flash(); vibrate([100, 50, 200]);
+  addScore(2500 * (S.wave / 5), b.x, b.y);
+  registerKill();
+  dropPower(b.x - 30, b.y, 1); dropPower(b.x + 30, b.y, 1);
+  boss = null;
+  $("bossHud").classList.remove("show");
+  toast(t("t_boss_down"));
+}
+
+function gameOver() {
+  S.phase = "over";
+  const isBest = S.score > best;
+  if (isBest) { best = S.score; save("best", best); }
+  $("finalScore").textContent = S.score.toLocaleString(lang);
+  $("overLine").textContent = t("over_line", S.wave, isBest);
+  $("bestOut").textContent = best.toLocaleString(lang);
+  $("bossHud").classList.remove("show");
+  setTimeout(() => { show("overScreen"); focusFirst("againBtn"); }, 700);
+  announce(t("a_over", S.score, S.wave));
+}
+
+function togglePause(force) {
+  if (S.phase === "play" && force !== false) {
+    S.phase = "paused";
+    $("pauseInfo").textContent = t("pause_info", S.wave, S.score.toLocaleString(lang));
+    show("pauseScreen"); focusFirst("resumeBtn");
+  } else if (S.phase === "paused" && force !== true) {
+    S.phase = "play"; show(null); last = performance.now();
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Update
+// ---------------------------------------------------------------------------
+function update(dt) {
+  const f = dt / 16.67;
+  S.time += dt;
+
+  // Player
+  let dir = 0;
+  if (keys.ArrowLeft || keys.KeyA) dir -= 1;
+  if (keys.ArrowRight || keys.KeyD) dir += 1;
+  const turbo = keys.ArrowUp || keys.KeyW;
+  if (dir) { P.targetX = null; P.x += dir * (turbo ? 10.5 : 6.5) * f; }
+  else if (P.targetX !== null) { const d = P.targetX - P.x; P.x += Math.sign(d) * Math.min(Math.abs(d), (turbo ? 22 : 15) * f); }
+  P.x = clamp(P.x, P.w / 2 + 6, W - P.w / 2 - 6);
+  P.cd -= dt; P.inv -= dt;
+  P.shield = Math.max(0, P.shield - dt); P.rapid = Math.max(0, P.rapid - dt); P.multi = Math.max(0, P.multi - dt);
+
+  if (P.cd <= 0) {
+    P.cd = P.rapid > 0 ? 95 : 185;
+    const color = `hsl(${P.hue} 100% 65%)`;
+    bullets.push({ x: P.x, y: P.y - P.h / 2, vx: 0, vy: -11, color });
+    if (P.multi > 0) {
+      bullets.push({ x: P.x - 10, y: P.y - P.h / 3, vx: -2.4, vy: -10.6, color });
+      bullets.push({ x: P.x + 10, y: P.y - P.h / 3, vx: 2.4, vy: -10.6, color });
+    }
+    sfx.shoot();
+  }
+
+  S.comboT -= dt;
+  if (S.comboT <= 0 && S.combo) { S.combo = 0; S.mult = 1; }
+
+  // Meteor shower
+  if (S.mod === "meteor" && S.waveActive) {
+    S.rockT -= dt;
+    if (S.rockT <= 0) {
+      S.rockT = rand(650, 1200);
+      const r = rand(13, 24);
+      const pts = Array.from({ length: 9 }, (_, i) => r * rand(0.75, 1.1));
+      rocks.push({ x: rand(20, W - 20), y: -30, r, vx: rand(-0.8, 0.8), vy: rand(2.2, 3.6), hp: 2, rot: 0, vr: rand(-0.04, 0.04), pts, hit: 0 });
+    }
+  }
+
+  // Player bullets
+  for (const b of bullets) { b.x += b.vx * f; b.y += b.vy * f; }
+  bullets = bullets.filter((b) => b.y > -20 && b.x > -20 && b.x < W + 20 && !b.dead);
+
+  // Enemies
+  const spd = (S.mod === "swarm" ? 1.4 : 1) * (1 + S.wave * 0.03);
+  const slow = S.mod === "gravity" ? 0.6 : 1;
+  for (const e of enemies) {
+    const def = ENEMY[e.type];
+    e.hit = Math.max(0, e.hit - dt);
+    if (e.state === "enter") {
+      e.y += 2.4 * f * spd;
+      e.x = e.bx + Math.sin(S.time * 0.0016 * def.speed + e.ph) * e.amp;
+      if (e.y >= e.ty) e.state = "sway";
+    } else if (e.state === "sway") {
+      e.x = e.bx + Math.sin(S.time * 0.0016 * def.speed * spd + e.ph) * e.amp;
+      e.y += 0.05 * f * spd;
+      e.diveT -= dt;
+      if ((e.type === 0 && e.diveT <= 0) || e.y > H - 200) {
+        e.state = "dive";
+        const ang = Math.atan2(P.y - e.y, P.x - e.x);
+        e.vx = Math.cos(ang) * 3.2; e.vy = Math.max(2.4, Math.sin(ang) * 3.6);
+      }
+    } else {
+      e.x += e.vx * f * spd; e.y += e.vy * f * spd;
+      if (e.y > H + 60) { e.state = "enter"; e.y = -50; e.diveT = rand(4000, 11000); e.bx = clamp(e.x, 40, W - 40); }
+    }
+    // Shooting
+    if (e.state !== "enter" && (e.type > 0 || S.wave >= 6)) {
+      e.shootT -= dt;
+      if (e.shootT <= 0) {
+        e.shootT = rand(1700, 3300) / (1 + S.wave * 0.05);
+        const ang = Math.atan2(P.y - e.y, P.x - e.x), v = 3.4 * slow;
+        const spread = e.type === 2 ? [-0.22, 0, 0.22] : [0];
+        spread.forEach((s) => ebullets.push({ x: e.x, y: e.y + e.h / 2, vx: Math.cos(ang + s) * v, vy: Math.sin(ang + s) * v, r: 4.5, color: def.color }));
+      }
+    }
+    // Hits
+    for (const b of bullets) {
+      if (!b.dead && overlap(b.x, b.y, 4, 14, e.x, e.y, e.w, e.h)) {
+        b.dead = true; e.hp--; e.hit = 90; sfx.hit();
+        burst(b.x, b.y, def.color, 4, 2);
+        if (e.hp <= 0) { e.dead = true; killEnemy(e); break; }
+      }
+    }
+    if (!e.dead && overlap(P.x, P.y, P.w * 0.6, P.h * 0.6, e.x, e.y, e.w * 0.8, e.h * 0.8)) {
+      e.dead = true; burst(e.x, e.y, def.color, 18); hurtPlayer();
+    }
+  }
+  enemies = enemies.filter((e) => !e.dead);
+
+  // Boss
+  if (boss) {
+    const b = boss;
+    b.t += dt; b.hit = Math.max(0, b.hit - dt);
+    if (b.y < b.ty) b.y += 1.6 * f;
+    b.x = W / 2 + Math.sin(b.t * 0.0006) * (W / 2 - b.w / 2 - 16);
+    const ratio = b.hp / b.maxHp, ph = ratio > 0.66 ? 1 : ratio > 0.33 ? 2 : 3;
+    if (ph !== b.phase) { b.phase = ph; toast(t("t_phase", ph)); sfx.boss(); shake(250); }
+    if (b.y >= b.ty - 2) {
+      b.shootT -= dt;
+      if (b.shootT <= 0) {
+        b.shootT = [950, 740, 560][ph - 1] / slow;
+        const ang = Math.atan2(P.y - b.y, P.x - b.x);
+        [-0.2, 0, 0.2].forEach((s) => ebullets.push({ x: b.x, y: b.y + 30, vx: Math.cos(ang + s) * 4 * slow, vy: Math.sin(ang + s) * 4 * slow, r: 5, color: "#ff2d55" }));
+      }
+      b.volleyT -= dt;
+      if (b.volleyT <= 0) {
+        b.volleyT = [2700, 2200, 1750][ph - 1];
+        const n = [10, 14, 18][ph - 1], off = Math.random() * Math.PI;
+        for (let i = 0; i < n; i++) {
+          const a = off + (i / n) * Math.PI * 2;
+          ebullets.push({ x: b.x, y: b.y, vx: Math.cos(a) * 2.6 * slow, vy: Math.sin(a) * 2.6 * slow, r: 5, color: "#bf5af2" });
+        }
+      }
+    }
+    for (const bl of bullets) {
+      if (!bl.dead && overlap(bl.x, bl.y, 4, 14, b.x, b.y, b.w * 0.85, b.h * 0.75)) {
+        bl.dead = true; b.hp--; b.hit = 70;
+        burst(bl.x, bl.y, "#ff9f0a", 3, 2);
+        if (b.hp % 4 === 0) sfx.hit();
+      }
+    }
+    $("bossBar").style.transform = `scaleX(${Math.max(0, b.hp / b.maxHp)})`;
+    if (overlap(P.x, P.y, P.w * 0.6, P.h * 0.6, b.x, b.y, b.w * 0.8, b.h * 0.7)) hurtPlayer();
+    if (b.hp <= 0) killBoss();
+  }
+
+  // Enemy bullets
+  for (const b of ebullets) {
+    b.x += b.vx * f; b.y += b.vy * f;
+    if (overlap(P.x, P.y, P.w * 0.45, P.h * 0.55, b.x, b.y, b.r * 2, b.r * 2)) { b.dead = true; hurtPlayer(); }
+  }
+  ebullets = ebullets.filter((b) => !b.dead && b.y < H + 20 && b.y > -40 && b.x > -40 && b.x < W + 40);
+
+  // Rocks
+  for (const r of rocks) {
+    r.x += r.vx * f; r.y += r.vy * f; r.rot += r.vr * f; r.hit = Math.max(0, r.hit - dt);
+    for (const b of bullets) {
+      if (!b.dead && Math.hypot(b.x - r.x, b.y - r.y) < r.r + 4) {
+        b.dead = true; r.hp--; r.hit = 80;
+        if (r.hp <= 0) { r.dead = true; burst(r.x, r.y, "#c9a27a", 12, 3); sfx.boom(); addScore(60, r.x, r.y); break; }
+      }
+    }
+    if (!r.dead && Math.hypot(P.x - r.x, P.y - r.y) < r.r + P.w * 0.3) { r.dead = true; burst(r.x, r.y, "#c9a27a", 12); hurtPlayer(); }
+  }
+  rocks = rocks.filter((r) => !r.dead && r.y < H + 40);
+
+  // Power-ups
+  for (const p of powerups) {
+    p.y += p.vy * f; p.t += dt;
+    if (Math.hypot(P.x - p.x, P.y - p.y) < p.r + P.w / 2) {
+      p.dead = true; sfx.power();
+      if (p.type === "shield") P.shield = 9000;
+      if (p.type === "multi") P.multi = 10000;
+      if (p.type === "rapid") P.rapid = 10000;
+      if (p.type === "life") S.lives = Math.min(5, S.lives + 1);
+      floater(p.x, p.y - 10, t("p_" + p.type), POWER[p.type].color);
+      announce(t("p_" + p.type));
+    }
+  }
+  powerups = powerups.filter((p) => !p.dead && p.y < H + 30);
+
+  // Particles & floaters
+  for (const p of particles) { p.x += p.vx * f; p.y += p.vy * f; p.vx *= 0.97; p.vy *= 0.97; p.life -= p.decay * f; }
+  particles = particles.filter((p) => p.life > 0);
+  for (const fl of floaters) { fl.y -= 0.8 * f; fl.life -= 0.02 * f; }
+  floaters = floaters.filter((fl) => fl.life > 0);
+
+  S.shake = Math.max(0, S.shake - dt);
+
+  // Wave cleared → Oracle
+  if (S.waveActive && !enemies.length && !boss && S.phase === "play") {
+    S.waveActive = false;
+    S.clearT = 1100;
+  }
+  if (!S.waveActive && S.clearT > 0 && S.phase === "play") {
+    S.clearT -= dt;
+    if (S.clearT <= 0) { ebullets = []; rocks = []; openOracle(); }
+  }
+
+  updateHUD();
+}
+
+// ---------------------------------------------------------------------------
+// HUD
+// ---------------------------------------------------------------------------
+const hud = {};
+function setOut(key, id, value) { if (hud[key] !== value) { hud[key] = value; $(id).textContent = value; } }
+function updateHUD() {
+  setOut("score", "scoreOut", S.score.toLocaleString(lang));
+  setOut("wave", "waveOut", String(Math.max(1, S.wave)));
+  setOut("lives", "livesOut", "♥".repeat(Math.max(0, S.lives)) || "—");
+  if (hud.livesSr !== S.lives) { hud.livesSr = S.lives; $("livesSr").textContent = String(S.lives); }
+  setOut("mult", "multOut", "×" + S.mult);
+  setOut("mod", "modOut", S.mod ? t("mod_" + S.mod) : "—");
+}
+function updateNovaBtn(forceLabel) {
+  const btn = $("novaBtn"), ready = S.nova >= 100;
+  btn.style.setProperty("--nova", S.nova);
+  if (forceLabel || btn.classList.contains("ready") !== ready) {
+    btn.classList.toggle("ready", ready);
+    btn.setAttribute("aria-disabled", String(!ready));
+    btn.setAttribute("aria-label", t(ready ? "nova_ready_btn" : "nova_btn"));
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Render
+// ---------------------------------------------------------------------------
+function drawShip() {
+  if (P.inv > 0 && Math.floor(P.inv / 90) % 2 === 0) return;
+  const { x, y, w, h } = P, hue = P.hue;
+  ctx.save();
+  ctx.translate(x, y);
+  // Engine flame
+  const fl = 10 + Math.random() * 8 + ((keys.ArrowUp || keys.KeyW) ? 10 : 0);
+  ctx.fillStyle = `hsla(${(hue + 40) % 360} 100% 65% / .85)`;
+  ctx.beginPath(); ctx.moveTo(-7, h * 0.3); ctx.lineTo(0, h * 0.3 + fl); ctx.lineTo(7, h * 0.3); ctx.fill();
+  // Hull
+  ctx.shadowColor = `hsl(${hue} 100% 60%)`; ctx.shadowBlur = 18;
+  const g = ctx.createLinearGradient(0, -h / 2, 0, h / 2);
+  g.addColorStop(0, `hsl(${hue} 100% 85%)`); g.addColorStop(1, `hsl(${hue} 90% 45%)`);
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.moveTo(0, -h / 2); ctx.lineTo(w / 2, h / 2); ctx.lineTo(w * 0.16, h * 0.28);
+  ctx.lineTo(-w * 0.16, h * 0.28); ctx.lineTo(-w / 2, h / 2); ctx.closePath(); ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#04050d";
+  ctx.beginPath(); ctx.ellipse(0, -2, 5, 9, 0, 0, Math.PI * 2); ctx.fill();
+  // Shield
+  if (P.shield > 0) {
+    ctx.strokeStyle = `rgba(0,245,255,${0.5 + Math.sin(S.time * 0.01) * 0.25})`;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(0, 2, w * 0.82, 0, Math.PI * 2); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawEnemy(e) {
+  const def = ENEMY[e.type];
+  ctx.save();
+  ctx.translate(e.x, e.y);
+  ctx.shadowColor = def.color; ctx.shadowBlur = 14;
+  ctx.fillStyle = e.hit > 0 ? "#fff" : def.color;
+  ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.lineWidth = 1.5;
+  const w = e.w / 2, h = e.h / 2;
+  ctx.beginPath();
+  if (e.type === 0) { ctx.moveTo(-w, -h); ctx.lineTo(w, -h); ctx.lineTo(0, h); }
+  else if (e.type === 1) { ctx.moveTo(0, -h); ctx.lineTo(w, 0); ctx.lineTo(0, h); ctx.lineTo(-w, 0); }
+  else { for (let i = 0; i < 6; i++) { const a = Math.PI / 6 + (i * Math.PI) / 3; ctx[i ? "lineTo" : "moveTo"](Math.cos(a) * w, Math.sin(a) * h); } }
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#04050d";
+  ctx.beginPath(); ctx.arc(0, e.type === 0 ? -h * 0.3 : 0, Math.max(3, w * 0.22), 0, Math.PI * 2); ctx.fill();
+  if (e.maxHp > 1 && e.hp < e.maxHp) {
+    ctx.fillStyle = "rgba(255,255,255,.2)"; ctx.fillRect(-w, -h - 8, w * 2, 3);
+    ctx.fillStyle = def.color; ctx.fillRect(-w, -h - 8, (w * 2 * e.hp) / e.maxHp, 3);
+  }
+  ctx.restore();
+}
+
+function drawBoss(b) {
+  ctx.save();
+  ctx.translate(b.x, b.y);
+  const pulse = 0.5 + Math.sin(b.t * 0.006) * 0.5;
+  const core = ["#bf5af2", "#ff9f0a", "#ff2d55"][b.phase - 1];
+  // Rotating ring
+  ctx.save();
+  ctx.rotate(b.t * 0.0012);
+  ctx.strokeStyle = core; ctx.globalAlpha = 0.6; ctx.lineWidth = 2; ctx.setLineDash([10, 8]);
+  ctx.beginPath(); ctx.ellipse(0, 0, b.w * 0.62, b.h * 0.62, 0, 0, Math.PI * 2); ctx.stroke();
+  ctx.restore();
+  // Hull
+  ctx.shadowColor = core; ctx.shadowBlur = 26;
+  ctx.fillStyle = b.hit > 0 ? "#ffffff" : "#1a1030";
+  ctx.strokeStyle = core; ctx.lineWidth = 3;
+  ctx.beginPath();
+  const w = b.w / 2, h = b.h / 2;
+  ctx.moveTo(-w, -h * 0.2); ctx.lineTo(-w * 0.55, -h); ctx.lineTo(w * 0.55, -h); ctx.lineTo(w, -h * 0.2);
+  ctx.lineTo(w * 0.7, h * 0.8); ctx.lineTo(w * 0.2, h); ctx.lineTo(-w * 0.2, h); ctx.lineTo(-w * 0.7, h * 0.8);
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+  // Core
+  const g = ctx.createRadialGradient(0, 0, 2, 0, 0, 30);
+  g.addColorStop(0, "#fff"); g.addColorStop(0.4, core); g.addColorStop(1, "transparent");
+  ctx.fillStyle = g; ctx.globalAlpha = 0.75 + pulse * 0.25;
+  ctx.beginPath(); ctx.arc(0, 0, 26 + pulse * 6, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+
+function render() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.save();
+  if (S.shake > 0) ctx.translate(rand(-4, 4), rand(-4, 4));
+
+  for (const r of rocks) {
+    ctx.save(); ctx.translate(r.x, r.y); ctx.rotate(r.rot);
+    ctx.fillStyle = r.hit > 0 ? "#fff" : "#6b5444"; ctx.strokeStyle = "#c9a27a"; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    r.pts.forEach((d, i) => { const a = (i / r.pts.length) * Math.PI * 2; ctx[i ? "lineTo" : "moveTo"](Math.cos(a) * d, Math.sin(a) * d); });
+    ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore();
+  }
+
+  for (const p of powerups) {
+    const def = POWER[p.type], bob = Math.sin(p.t * 0.006) * 3;
+    ctx.save(); ctx.translate(p.x, p.y + bob);
+    ctx.shadowColor = def.color; ctx.shadowBlur = 16;
+    ctx.strokeStyle = def.color; ctx.lineWidth = 2; ctx.fillStyle = "rgba(4,5,13,.85)";
+    ctx.beginPath(); ctx.arc(0, 0, p.r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    ctx.shadowBlur = 0; ctx.fillStyle = def.color;
+    ctx.font = "700 13px Orbitron, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(def.icon, 0, 1); ctx.restore();
+  }
+
+  enemies.forEach(drawEnemy);
+  if (boss) drawBoss(boss);
+
+  for (const b of bullets) {
+    ctx.fillStyle = b.color; ctx.shadowColor = b.color; ctx.shadowBlur = 10;
+    ctx.fillRect(b.x - 2, b.y - 8, 4, 14);
+  }
+  ctx.shadowBlur = 0;
+  for (const b of ebullets) {
+    ctx.fillStyle = b.color; ctx.shadowColor = b.color; ctx.shadowBlur = 10;
+    ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(b.x, b.y, b.r * 0.4, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.shadowBlur = 0;
+
+  if (S.phase !== "start" && S.lives > 0) drawShip();
+
+  for (const p of particles) {
+    ctx.globalAlpha = Math.max(0, p.life); ctx.fillStyle = p.color;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  ctx.font = "700 13px Orbitron, sans-serif"; ctx.textAlign = "center";
+  for (const fl of floaters) { ctx.globalAlpha = Math.max(0, fl.life); ctx.fillStyle = fl.color; ctx.fillText(fl.text, fl.x, fl.y); }
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+let last = performance.now();
+function loop(now) {
+  requestAnimationFrame(loop);
+  const dt = Math.min(50, now - last);
+  last = now;
+  if (S.phase === "play") update(dt);
+  else if (S.phase === "over" || S.phase === "oracle") {
+    // let explosions finish behind the overlay
+    const f = dt / 16.67;
+    for (const p of particles) { p.x += p.vx * f; p.y += p.vy * f; p.life -= p.decay * f; }
+    particles = particles.filter((p) => p.life > 0);
+  }
+  render();
+}
+
+// ---------------------------------------------------------------------------
+// Input
+// ---------------------------------------------------------------------------
+const GAME_KEYS = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyD", "KeyW", "Space"];
+document.addEventListener("keydown", (e) => {
+  const onButton = e.target.closest && e.target.closest("button, a, input, select, textarea");
+  if (S.phase === "play" && GAME_KEYS.includes(e.code)) e.preventDefault();
+  keys[e.code] = true;
+  if (e.repeat) return;
+  if (e.code === "KeyP" || e.code === "Escape") { togglePause(); return; }
+  if (onButton) return;
+  if ((e.code === "Space" || e.code === "Enter") && S.phase === "oracle") { e.preventDefault(); launchWave(); }
+  else if ((e.code === "Space" || e.code === "KeyB") && S.phase === "play") useNova();
+  else if (e.code === "Enter" && (S.phase === "start" || S.phase === "over")) startGame();
+});
+document.addEventListener("keyup", (e) => { keys[e.code] = false; });
+window.addEventListener("blur", () => { Object.keys(keys).forEach((k) => (keys[k] = false)); togglePause(true); });
+document.addEventListener("visibilitychange", () => { if (document.hidden) togglePause(true); });
+
+canvas.addEventListener("pointerdown", (e) => { if (S.phase === "play") { P.targetX = e.clientX; canvas.setPointerCapture?.(e.pointerId); } });
+canvas.addEventListener("pointermove", (e) => {
+  if (S.phase !== "play") return;
+  if (e.pointerType === "mouse" || e.buttons || e.pressure > 0) P.targetX = e.clientX;
+});
+
+$("startBtn").addEventListener("click", startGame);
+$("againBtn").addEventListener("click", startGame);
+$("launchBtn").addEventListener("click", launchWave);
+$("resumeBtn").addEventListener("click", () => togglePause(false));
+$("restartBtn").addEventListener("click", startGame);
+$("pauseBtn").addEventListener("click", () => togglePause());
+$("novaBtn").addEventListener("click", useNova);
+["langBtn", "langBtn2"].forEach((id) => $(id).addEventListener("click", () => applyLang(lang === "ro" ? "en" : "ro")));
+$("audioBtn").addEventListener("click", () => {
+  audioOn = !audioOn; save("audio", audioOn);
+  $("audioBtn").setAttribute("aria-pressed", String(audioOn));
+  if (audioOn) sfx.power();
+});
+$("motionBtn").addEventListener("click", () => {
+  reducedPref = !reducedPref; save("reduced", reducedPref);
+  $("motionBtn").setAttribute("aria-pressed", String(reducedPref));
+  app.classList.toggle("reduced", reducedPref);
+});
+
+// ---------------------------------------------------------------------------
+// Boot
+// ---------------------------------------------------------------------------
+buildSky();
+resize();
+window.addEventListener("resize", resize);
+$("audioBtn").setAttribute("aria-pressed", String(audioOn));
+$("motionBtn").setAttribute("aria-pressed", String(reducedPref));
+app.classList.toggle("reduced", reducedPref);
+$("bestOut").textContent = best.toLocaleString(lang);
+applyLang(lang);
+show("startScreen");
+focusFirst("startBtn");
+requestAnimationFrame(loop);
+
+// Test hook (used by automated checks; harmless in production)
+window.__voidOracle = { S, P, get enemies() { return enemies; }, get boss() { return boss; } };
+})();
+</script>
+</body>
+</html>
