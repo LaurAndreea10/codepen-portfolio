@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-03 — Random Constellation · two editions
+
+- RO: Versiunea pentru CodePen Challenge revine exact la v1.0.0, cu un singur buton nou, „Versiunea cu Oracol”. Varianta comasată cu Night Oracle (v1.1.0) e acum o ediție separată, la `random-constellation/oracle/`, cu buton înapoi spre versiunea Challenge.
+- EN: The CodePen Challenge version is back to exactly v1.0.0, plus one new “Oracle edition” button. The Night Oracle merge (v1.1.0) now lives as a separate edition at `random-constellation/oracle/`, with a button back to the Challenge version.
+
 ## 2026-11-02 — Random Constellation v1.1.0 · Night Oracle merge
 
 - RO: Night Oracle integrat în Random Constellation: oracol cu 12 preziceri, trei zaruri cu total prin counter CSS, nuanță norocoasă și „Leagă zarurile” (cheie comună `--dice`), plus nebuloase și meteori `random()` în scenă. Reparat: mărimea și nuanța stelelor foloseau cuvântul-cheie nestandard `element-scoped`.
