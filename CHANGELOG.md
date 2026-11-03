@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-03 — VOID HUNTER · random() Edition v1.0.0, VOID ORACLE v1.1.0, Random Constellation v1.1.2
+
+- RO: Ediție nouă VOID HUNTER · random(): jocul original (neschimbat în repo-ul lui) plus un oracol CSS random() înainte de fiecare val. VOID ORACLE primește stilul VOID HUNTER și EASY/NORMAL/HARD. Random Constellation: buton spre VOID HUNTER original și secțiunea „Jocuri spațiale” cu toate trei.
+- EN: New VOID HUNTER · random() Edition: the original game (unchanged in its own repo) plus a CSS random() oracle before every wave. VOID ORACLE gets the VOID HUNTER look and EASY/NORMAL/HARD. Random Constellation: a button to the original VOID HUNTER and a “Space games” section with all three.
+
 ## 2026-11-03 — Random Constellation v1.1.1 · VOID ORACLE button
 
 - RO: Random Constellation (varianta comasată cu Night Oracle) are acum butonul „🚀 Joacă VOID ORACLE”; VOID ORACLE are link înapoi. Pagina VOID HUNTER rămâne neschimbată.

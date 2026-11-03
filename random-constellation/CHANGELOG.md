@@ -1,5 +1,10 @@
 # Random Constellation — Version History
 
+## 2026-11-03 — v1.1.2 · Space games
+
+- RO: Butonul din header duce acum la VOID HUNTER original. Secțiune nouă „Jocuri spațiale” cu trei carduri: VOID HUNTER, VOID HUNTER · random() și VOID ORACLE (ultimele două primesc limba aleasă).
+- EN: The header button now opens the original VOID HUNTER. New “Space games” section with three cards: VOID HUNTER, VOID HUNTER · random() and VOID ORACLE (the last two receive the chosen language).
+
 ## 2026-11-03 — v1.1.1 · VOID ORACLE button
 
 - RO: Butonul „🚀 Joacă VOID ORACLE” din header duce la jocul shooter de tip VOID HUNTER, în limba aleasă.

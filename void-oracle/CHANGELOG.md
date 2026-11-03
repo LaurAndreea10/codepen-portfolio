@@ -1,5 +1,10 @@
 # VOID ORACLE — Version History
 
+## 2026-11-03 — v1.1.0 · VOID HUNTER look
+
+- RO: Stil ca VOID HUNTER: titlu alb cu strălucire cyan, butoane conturate cu majuscule, colțuri drepte, eticheta CSS RANDOM() EDITION și alegere EASY / NORMAL / HARD (vieți, viteză, ritm de tragere, viață boss), salvată local.
+- EN: VOID HUNTER look: white neon title, outlined uppercase buttons, square corners, a CSS RANDOM() EDITION tag and EASY / NORMAL / HARD (lives, speed, fire rate, boss HP), saved locally.
+
 ## 2026-11-02 — v1.0.0 · Finalizat / Completed
 
 - New VOID HUNTER-inspired shooter for the CSS Random() challenge: a CSS `random()` oracle picks each wave's modifier, bonus dice and ship colour; JavaScript reads the computed values.
