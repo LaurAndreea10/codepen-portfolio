@@ -465,7 +465,7 @@ kbd {
         <button class="btn ghost" id="langBtn2" type="button">EN</button>
         <span class="chip" id="supportChip"></span>
       </div>
-      <p class="meta"><span data-i18n="best">Record</span>: <b id="bestOut">0</b> · <span data-i18n="inspired">Inspirat de VOID HUNTER · CodePen Challenge: CSS random()</span> · <a href="https://codepen.io/Laura-Andreea-the-typescripter/pen/VYKrLra" target="_blank" rel="noopener" data-i18n="original">Joacă VOID HUNTER original</a> · <a href="../portfolio.html#now" data-i18n="back">Portofoliu</a></p>
+      <p class="meta"><span data-i18n="best">Record</span>: <b id="bestOut">0</b> · <span data-i18n="inspired">Inspirat de VOID HUNTER · CodePen Challenge: CSS random()</span> · <a href="https://codepen.io/Laura-Andreea-the-typescripter/pen/VYKrLra" target="_blank" rel="noopener" data-i18n="original">Joacă VOID HUNTER original</a> · <a href="../random-constellation/" id="rcLink" data-i18n="rc">Random Constellation</a> · <a href="../portfolio.html#now" data-i18n="back">Portofoliu</a></p>
     </div>
   </section>
 
@@ -558,7 +558,7 @@ const T = {
     inst4: "<kbd>P</kbd> / <kbd>Esc</kbd> — pauză",
     inst5: "Trei zaruri egale = o viață în plus",
     start: "Pornește misiunea", best: "Record",
-    inspired: "Inspirat de VOID HUNTER · CodePen Challenge: CSS random()", back: "Portofoliu", original: "Joacă VOID HUNTER original",
+    inspired: "Inspirat de VOID HUNTER · CodePen Challenge: CSS random()", back: "Portofoliu", original: "Joacă VOID HUNTER original", rc: "Înapoi la Random Constellation",
     native: "CSS random() nativ", fallback: "CSS random() · fallback JS",
     oracle_eyebrow: "Oracolul vidului", oracle_title: "CSS aruncă zarurile",
     oracle_note: "random(0, 7, 1) alege modificatorul · random(1, 6, 1) aruncă zarurile · random(0, 359, 1) colorează nava. JavaScript doar citește rezultatul.",
@@ -600,7 +600,7 @@ const T = {
     inst4: "<kbd>P</kbd> / <kbd>Esc</kbd> — pause",
     inst5: "Three matching dice = an extra life",
     start: "Start mission", best: "Best",
-    inspired: "Inspired by VOID HUNTER · CodePen Challenge: CSS random()", back: "Portfolio", original: "Play the original VOID HUNTER",
+    inspired: "Inspired by VOID HUNTER · CodePen Challenge: CSS random()", back: "Portfolio", original: "Play the original VOID HUNTER", rc: "Back to Random Constellation",
     native: "Native CSS random()", fallback: "CSS random() · JS fallback",
     oracle_eyebrow: "Void Oracle", oracle_title: "CSS rolls the dice",
     oracle_note: "random(0, 7, 1) picks the modifier · random(1, 6, 1) rolls the dice · random(0, 359, 1) colours the ship. JavaScript only reads the result.",
@@ -654,7 +654,8 @@ const motionMQ = matchMedia("(prefers-reduced-motion: reduce)");
 const load = (k, d) => { try { const v = localStorage.getItem(STORE + k); return v === null ? d : JSON.parse(v); } catch { return d; } };
 const save = (k, v) => { try { localStorage.setItem(STORE + k, JSON.stringify(v)); } catch {} };
 
-let lang = load("lang", (navigator.language || "ro").toLowerCase().startsWith("ro") ? "ro" : "en");
+const urlLang = new URLSearchParams(location.search).get("lang");
+let lang = (urlLang === "ro" || urlLang === "en") ? urlLang : load("lang", (navigator.language || "ro").toLowerCase().startsWith("ro") ? "ro" : "en");
 let audioOn = load("audio", true);
 let reducedPref = load("reduced", false);
 let best = load("best", 0);
@@ -683,6 +684,7 @@ function applyLang(next) {
   const chip = $("supportChip");
   chip.textContent = t(NATIVE ? "native" : "fallback");
   chip.classList.toggle("native", NATIVE);
+  $("rcLink").href = "../random-constellation/?lang=" + lang;
   if (S.phase === "oracle" && S.oracle) {
     translate($("oracleSlot"));
     showOracleResult();

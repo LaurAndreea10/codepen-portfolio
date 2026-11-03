@@ -1,5 +1,10 @@
 # Random Constellation — Version History
 
+## 2026-11-03 — v1.1.1 · VOID ORACLE button
+
+- RO: Butonul „🚀 Joacă VOID ORACLE” din header duce la jocul shooter de tip VOID HUNTER, în limba aleasă.
+- EN: A “🚀 Play VOID ORACLE” header button opens the VOID HUNTER-style shooter in the chosen language.
+
 ## 2026-11-02 — v1.1.0 · Night Oracle merge
 
 - RO: Am integrat Night Oracle în observator: panoul „Oracolul constelației” (o prezicere din 12, trei zaruri cu total calculat printr-un counter CSS, nuanță norocoasă din paleta activă, înclinare aleatoare) și butonul „Leagă zarurile”, care demonstrează cheia comună `random(--dice, …)`. Scena primește nebuloase și meteori generați cu `random()`. „Generează alt cer” și schimbarea atmosferei aruncă și oracolul; tasta R aruncă doar oracolul.

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-03 — Random Constellation v1.1.1 · VOID ORACLE button
+
+- RO: Random Constellation (varianta comasată cu Night Oracle) are acum butonul „🚀 Joacă VOID ORACLE”; VOID ORACLE are link înapoi. Pagina VOID HUNTER rămâne neschimbată.
+- EN: Random Constellation (the Night Oracle merge) now has a “🚀 Play VOID ORACLE” button; VOID ORACLE links back. The VOID HUNTER page is unchanged.
+
 ## 2026-11-02 — VOID ORACLE v1.0.0 · Finalizat / Completed
 
 - RO: Joc nou inspirat de VOID HUNTER pentru provocarea CSS random(): un oracol CSS alege modificatorul fiecărui val, zarurile de bonus și culoarea navei; boss cu trei faze, power-up-uri, combo, Nova, cer random(), RO/EN, accesibil, mobil.
