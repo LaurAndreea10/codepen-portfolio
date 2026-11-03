@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-03 — DICE DRIFT 3D v1.0.0 · Finalizat / Completed
+
+- RO: Joc 3D nou (Three.js) pentru provocarea CSS random(): CSS aruncă zarurile, WebGL construiește lumea. Valurile de obstacole, paleta și evenimentele Oracolului vin din valori `random()` citite prin `@property`; zarul 3D, scânteile și praful de stele sunt tot `random()`. 8 mutatori, Oracolul zilei, realizări, clasament local, RO/EN, accesibil.
+- EN: New 3D game (Three.js) for the CSS random() challenge: CSS rolls the dice, WebGL builds the world. Obstacle waves, the palette and Oracle events come from `random()` values read through `@property`; the 3D die, sparks and stardust are `random()` too. 8 mutators, Daily Oracle, achievements, local leaderboard, RO/EN, accessible.
+- Added to `projects.json`, Romanian and English completed lists and the sitemap. History: [dice-drift-3d/CHANGELOG.md](dice-drift-3d/CHANGELOG.md).
+
 ## 2026-11-03 — VOID HUNTER · random() Edition v1.0.0, VOID ORACLE v1.1.0, Random Constellation v1.1.2
 
 - RO: Ediție nouă VOID HUNTER · random(): jocul original (neschimbat în repo-ul lui) plus un oracol CSS random() înainte de fiecare val. VOID ORACLE primește stilul VOID HUNTER și EASY/NORMAL/HARD. Random Constellation: buton spre VOID HUNTER original și secțiunea „Jocuri spațiale” cu toate trei.
