@@ -57,7 +57,7 @@ Checked against `random-constellation/index.html` on 2 November 2026. Each item 
 39. [x] The layout adapts to narrow screens and keeps primary controls touch-sized.
 40. [x] Browsers without CSS `random()` receive a static constellation fallback.
 
-## Night Oracle merge · 41–48 (v1.1.0, Oracle edition at `oracle/index.html`)
+## Night Oracle merge · 41–48 (v1.1.0)
 
 41. [x] CSS `random(0, 11, 1)` picks one of 12 fortunes, shown by shifting a strip.
 42. [x] CSS `random(1, 6, 1)` rolls three dice; their total is a CSS counter.

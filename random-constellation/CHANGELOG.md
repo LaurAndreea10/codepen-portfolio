@@ -1,12 +1,5 @@
 # Random Constellation — Version History
 
-## 2026-11-03 — Two editions
-
-- RO: `index.html` (versiunea pentru CodePen Challenge) revine exact la v1.0.0; singura adăugare e butonul „Versiunea cu Oracol”, care păstrează limba aleasă. Varianta v1.1.0, comasată cu Night Oracle, e mutată în `oracle/index.html`, cu butonul „Versiunea Challenge” înapoi.
-- EN: `index.html` (the CodePen Challenge version) is back to exactly v1.0.0; the only addition is an “Oracle edition” button that keeps the chosen language. The v1.1.0 Night Oracle merge moved to `oracle/index.html`, with a “Challenge version” button back.
-- Note: the `element-scoped` star size/hue fix from v1.1.0 exists only in the Oracle edition; the Challenge version keeps its original v1.0.0 code.
-- Both directions checked in Chromium over a local server at 1280 and 390 px.
-
 ## 2026-11-02 — v1.1.0 · Night Oracle merge
 
 - RO: Am integrat Night Oracle în observator: panoul „Oracolul constelației” (o prezicere din 12, trei zaruri cu total calculat printr-un counter CSS, nuanță norocoasă din paleta activă, înclinare aleatoare) și butonul „Leagă zarurile”, care demonstrează cheia comună `random(--dice, …)`. Scena primește nebuloase și meteori generați cu `random()`. „Generează alt cer” și schimbarea atmosferei aruncă și oracolul; tasta R aruncă doar oracolul.

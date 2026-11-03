@@ -1,10 +1,5 @@
 # Changelog
 
-## 2026-11-03 — Random Constellation · two editions
-
-- RO: Versiunea pentru CodePen Challenge revine exact la v1.0.0, cu un singur buton nou, „Versiunea cu Oracol”. Varianta comasată cu Night Oracle (v1.1.0) e acum o ediție separată, la `random-constellation/oracle/`, cu buton înapoi spre versiunea Challenge.
-- EN: The CodePen Challenge version is back to exactly v1.0.0, plus one new “Oracle edition” button. The Night Oracle merge (v1.1.0) now lives as a separate edition at `random-constellation/oracle/`, with a button back to the Challenge version.
-
 ## 2026-11-02 — VOID ORACLE v1.0.0 · Finalizat / Completed
 
 - RO: Joc nou inspirat de VOID HUNTER pentru provocarea CSS random(): un oracol CSS alege modificatorul fiecărui val, zarurile de bonus și culoarea navei; boss cu trei faze, power-up-uri, combo, Nova, cer random(), RO/EN, accesibil, mobil.
