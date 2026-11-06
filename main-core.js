@@ -90,6 +90,7 @@
 
 
   const shippedRo = [
+    { title: 'GENOBOARD: Evo Rush', body: 'joc arcade de evoluție pentru browser, cu perspectivă de ansamblu 2D sau vedere 3D la alegere, carieră, laborator genetic, magazin cosmetic și 12 variante de competiții de Crăciun, Paște și Halloween. Clasamentele și progresul competițiilor sunt locale acestui browser.', tag: 'Noiembrie 2026', link: { href: 'genoboard-evo-rush/', label: 'Joacă' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/codepen-portfolio/tree/main/genoboard-evo-rush', label: 'Cod GitHub' } },
 {"title": "SlideStorm Arena v2.4.0", "body": "100 de niveluri, 8 sporturi, 11 moduri, constructor de trasee, progres local validat și opțiuni de accesibilitate; grafică pe 10 teme, sunet și muzică, zi–noapte, ceață și vânt (v2.4.0). Testarea practică pe mobil rămâne de confirmat.", "tag": "Oct 2026", "link": {"href": "slidestorm-arena/", "label": "Joacă"}},
     { title: 'Portfolio v2 — case studies & proof-of-work', body: 'portofoliul a fost repoziționat ca proof-of-work: problemă, decizie UX, implementare, rezultat și link live.', tag: 'Iun 2026', link: { href: 'alpis-fusion-crm.html', label: 'Vezi case study' } },
     { title: 'CRM & Dashboard UX polish', body: 'statusuri mai clare, microcopy, empty states, focus states și flow-uri mai ușor de urmărit pentru proiectele CRM.', tag: 'Iun 2026' },
@@ -113,6 +114,7 @@
   ];
 
   const shippedEn = [
+    { title: 'GENOBOARD: Evo Rush', body: 'browser evolution arcade game with a selectable 2D overview or 3D view, career, gene lab, cosmetic shop and 12 Christmas, Easter and Halloween competition variants. Competition records and progress are local to this browser.', tag: 'Nov 2026', link: { href: 'genoboard-evo-rush/?lang=en', label: 'Play' }, secondaryLink: { href: 'https://github.com/LaurAndreea10/codepen-portfolio/tree/main/genoboard-evo-rush', label: 'GitHub source' } },
 {"title": "SlideStorm Arena v2.4.0", "body": "100 levels, eight sports, eleven modes, route builder and validated local progress; graphics across 10 themes, sound and music, day–night, fog and wind (v2.4.0). Real-device mobile validation remains unverified.", "tag": "Oct 2026", "link": {"href": "slidestorm-arena/?lang=en", "label": "Play"}},
     { title: 'Portfolio v2 — case studies & proof-of-work', body: 'the portfolio was repositioned as proof-of-work: problem, UX decision, implementation, outcome and live link.', tag: 'Jun 2026', link: { href: 'alpis-fusion-crm.html', label: 'View case study' } },
     { title: 'CRM & Dashboard UX polish', body: 'clearer statuses, better microcopy, empty states, focus states and easier-to-follow flows for CRM projects.', tag: 'Jun 2026' },
