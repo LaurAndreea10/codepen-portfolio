@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#04050d">
+<meta name="author" content="Laura Andreea">
+<meta name="description" content="ORACLE DRIFT — observator, zbor 3D și shooter spațial într-un singur joc. CSS random() aruncă zarurile care decid cerul, traseul și luptele. RO/EN, accesibil, mobil.">
+<meta property="og:title" content="ORACLE DRIFT — CSS random() Space Odyssey">
+<meta property="og:description" content="Roll the oracle, fly between the stars, fight for every constellation. CSS random() decides the whole run.">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/oracle-drift/">
+<title>ORACLE DRIFT — CSS random() Space Odyssey</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap");
+
+/* Registered properties: computed once per element, readable from JS as integers. */
+@property --fortune { syntax: "<integer>"; inherits: true; initial-value: 0; }
+@property --pick    { syntax: "<integer>"; inherits: true; initial-value: 0; }
+@property --target  { syntax: "<integer>"; inherits: true; initial-value: 0; }
+@property --d1      { syntax: "<integer>"; inherits: true; initial-value: 1; }
+@property --d2      { syntax: "<integer>"; inherits: true; initial-value: 1; }
+@property --d3      { syntax: "<integer>"; inherits: true; initial-value: 1; }
+@property --lucky   { syntax: "<integer>"; inherits: true; initial-value: 190; }
+@property --sx      { syntax: "<integer>"; inherits: false; initial-value: 0; }
+@property --sy      { syntax: "<integer>"; inherits: false; initial-value: 0; }
+@property --sk      { syntax: "<integer>"; inherits: false; initial-value: 0; }
+@property --sf      { syntax: "<integer>"; inherits: false; initial-value: 1; }
+
+:root {
+  --bg: #04050d;
+  --cyan: #00f5ff;
+  --red: #ff2d55;
+  --gold: #ffd60a;
+  --purple: #bf5af2;
+  --glass: rgba(10, 13, 26, 0.82);
+  --line: rgba(0, 245, 255, 0.24);
+  --muted: #9aa4c7;
+  --lucky-ui: 190;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg); }
+body {
+  color: #fff;
+  font-family: "Share Tech Mono", ui-monospace, Consolas, monospace;
+  touch-action: none;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+button { font: inherit; color: inherit; }
+a { color: var(--cyan); }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.app { position: fixed; inset: 0; --accent: hsl(var(--lucky-ui) 100% 64%); }
+
+/* ---------- Sky: stars and nebulae placed by CSS random() ---------- */
+.sky {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  background: radial-gradient(ellipse at 50% -10%, hsl(var(--lucky-ui) 60% 14%), transparent 60%), var(--bg);
+  transition: background 1s ease;
+}
+.od-star {
+  position: absolute; aspect-ratio: 1; border-radius: 50%; background: #fff;
+  left: 50%; top: 50%; width: 2px;
+  box-shadow: 0 0 6px hsl(var(--lucky-ui) 100% 80%);
+  animation: twinkle 3s ease-in-out infinite alternate;
+}
+.od-blob { position: absolute; aspect-ratio: 1; border-radius: 50%; filter: blur(30px); width: 30vmax;
+  background: radial-gradient(circle, hsl(var(--lucky-ui) 90% 55% / 0.2), transparent 65%); }
+@keyframes twinkle { from { opacity: 0.25; } to { opacity: 1; } }
+
+canvas#game { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* ---------- HUD ---------- */
+.hud {
+  position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; gap: 0.5rem;
+  padding: max(0.6rem, env(safe-area-inset-top)) 0.7rem 0.4rem; pointer-events: none; z-index: 5;
+}
+.hud-group { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: flex-start; }
+.stat {
+  background: var(--glass); border: 1px solid var(--line); border-radius: 10px; padding: 0.35rem 0.6rem; min-width: 64px;
+  backdrop-filter: blur(6px);
+}
+.stat small { display: block; font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.stat b { font-family: Orbitron, sans-serif; font-size: 0.95rem; color: var(--accent); }
+.stat.hull b { color: var(--red); letter-spacing: 0.1em; }
+.nova-bar { width: 70px; height: 7px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-top: 4px; overflow: hidden; }
+.nova-bar i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--purple), var(--gold)); transition: width 0.2s; }
+.icon-btn {
+  pointer-events: auto; min-width: 44px; min-height: 44px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--glass); cursor: pointer; padding: 0 0.6rem; font-size: 0.9rem;
+}
+.icon-btn:hover { border-color: var(--accent); }
+.progress {
+  position: absolute; left: 50%; bottom: max(0.8rem, env(safe-area-inset-bottom)); transform: translateX(-50%);
+  width: min(420px, 70vw); z-index: 5; pointer-events: none; text-align: center; font-size: 0.72rem; color: var(--muted);
+}
+.progress .track { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.12); overflow: hidden; margin-top: 4px; }
+.progress .track i { display: block; height: 100%; width: 0; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+.touch-btn {
+  position: absolute; right: 1rem; bottom: max(2.6rem, calc(env(safe-area-inset-bottom) + 2rem)); z-index: 6;
+  width: 74px; height: 74px; border-radius: 50%; border: 2px solid var(--purple); background: rgba(40, 10, 60, 0.6);
+  font-family: Orbitron, sans-serif; font-size: 0.72rem; font-weight: 700; cursor: pointer; pointer-events: auto;
+}
+.touch-btn.ready { border-color: var(--gold); box-shadow: 0 0 18px var(--gold); }
+
+/* ---------- Screens ---------- */
+.screen {
+  position: absolute; inset: 0; z-index: 10; display: grid; place-items: center; padding: 1rem;
+  overflow-y: auto; touch-action: pan-y; -webkit-user-select: text; user-select: text;
+  background: radial-gradient(ellipse at center, rgba(4, 5, 13, 0.35), rgba(4, 5, 13, 0.85));
+}
+.panel {
+  width: min(560px, 100%); background: var(--glass); border: 1px solid var(--line); border-radius: 18px;
+  padding: clamp(1rem, 4vw, 1.8rem); text-align: center; backdrop-filter: blur(10px);
+  box-shadow: 0 0 40px hsl(var(--lucky-ui) 100% 50% / 0.15);
+}
+.panel.wide { width: min(1040px, 100%); text-align: left; }
+h1, h2 { font-family: Orbitron, sans-serif; margin: 0 0 0.6rem; letter-spacing: 0.06em; }
+h1 { font-size: clamp(2rem, 8vw, 3.4rem); font-weight: 900; line-height: 1;
+  background: linear-gradient(90deg, var(--cyan), var(--accent), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+h2 { font-size: clamp(1.1rem, 4vw, 1.5rem); color: var(--accent); }
+.eyebrow { font-size: 0.72rem; color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase; margin: 0 0 0.6rem; }
+.lede { color: #d8def5; line-height: 1.55; margin: 0 0 1rem; }
+.steps { list-style: none; padding: 0; margin: 0 0 1.2rem; display: grid; gap: 0.45rem; text-align: left; font-size: 0.86rem; color: #cdd3ee; }
+.steps li { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.5rem 0.7rem; }
+.steps b { color: var(--accent); font-family: Orbitron, sans-serif; font-size: 0.78rem; margin-right: 0.3rem; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: 48px; padding: 0 1.4rem;
+  border-radius: 12px; border: 1px solid var(--accent); background: hsl(var(--lucky-ui) 100% 50% / 0.16); cursor: pointer;
+  font-family: Orbitron, sans-serif; font-weight: 700; letter-spacing: 0.06em; font-size: 0.9rem; margin: 0.25rem;
+}
+.btn:hover { background: hsl(var(--lucky-ui) 100% 50% / 0.3); }
+.btn.primary { background: var(--accent); color: #04050d; border-color: transparent; box-shadow: 0 0 22px hsl(var(--lucky-ui) 100% 55% / 0.5); }
+.btn.ghost { border-color: var(--line); background: transparent; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.row { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.3rem; }
+.opts { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1rem; margin: 0.8rem 0 0; font-size: 0.82rem; color: var(--muted); }
+.opts label { display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; min-height: 32px; }
+.opts input { accent-color: var(--accent); width: 18px; height: 18px; }
+.meta { font-size: 0.75rem; color: var(--muted); margin: 1rem 0 0; line-height: 1.7; }
+.keys { font-size: 0.74rem; color: var(--muted); margin: 0.6rem 0 0; }
+kbd { border: 1px solid var(--line); border-radius: 4px; padding: 0 0.3rem; font-family: inherit; color: #fff; }
+
+/* ---------- Observatory ---------- */
+.obs-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 1rem; align-items: start; }
+.map-wrap { position: relative; border-radius: 14px; border: 1px solid var(--line); background: rgba(0,0,0,0.35); overflow: hidden; }
+.map-wrap svg { display: block; width: 100%; height: auto; }
+.cons line { stroke: rgba(255,255,255,0.18); stroke-width: 0.35; }
+.cons circle { fill: rgba(255,255,255,0.35); }
+.cons text { fill: var(--muted); font-size: 2.6px; font-family: "Share Tech Mono", monospace; text-anchor: middle; }
+.cons.lit line { stroke: hsl(var(--h) 100% 65%); stroke-width: 0.5; filter: drop-shadow(0 0 1px hsl(var(--h) 100% 60%)); }
+.cons.lit circle { fill: hsl(var(--h) 100% 80%); }
+.cons.lit text { fill: hsl(var(--h) 100% 75%); }
+.cons.target text { fill: var(--gold); }
+.cons.target circle { fill: var(--gold); animation: pulse 1.2s ease-in-out infinite alternate; }
+.cons.target line { stroke: rgba(255, 214, 10, 0.55); stroke-dasharray: 1 0.8; }
+@keyframes pulse { from { opacity: 0.4; } to { opacity: 1; } }
+.map-legend { display: flex; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; padding: 0.5rem 0.7rem; font-size: 0.75rem; color: var(--muted); border-top: 1px solid var(--line); }
+.map-legend b { color: var(--gold); }
+
+.oracle {
+  border: 1px solid hsl(var(--lucky) 100% 60% / 0.6); border-radius: 14px; padding: 1rem; text-align: center;
+  background: linear-gradient(160deg, hsl(var(--lucky) 70% 18% / 0.65), rgba(6, 8, 20, 0.9));
+  box-shadow: 0 0 26px hsl(var(--lucky) 100% 55% / 0.25);
+}
+.oracle h3 { font-family: Orbitron, sans-serif; margin: 0 0 0.3rem; font-size: 0.95rem; color: hsl(var(--lucky) 100% 72%); letter-spacing: 0.1em; }
+.o-fortune { min-height: 2.8em; font-size: 0.92rem; line-height: 1.4; margin: 0.3rem 0 0.8rem; color: #eef; }
+.dice { display: flex; justify-content: center; gap: 0.6rem; margin: 0 0 0.7rem; }
+.die {
+  width: 52px; height: 52px; border-radius: 12px; display: grid; place-items: center; background: #f5f5ff; color: #111;
+  font-family: Orbitron, sans-serif; font-weight: 900; font-size: 1.4rem; box-shadow: inset 0 -4px 0 rgba(0,0,0,0.18), 0 0 14px hsl(var(--lucky) 100% 60% / 0.5);
+  animation: roll 0.9s cubic-bezier(.2,.8,.3,1.2) both;
+}
+.die:nth-child(2) { animation-delay: 0.12s; }
+.die:nth-child(3) { animation-delay: 0.24s; }
+.die.d1::after { counter-reset: d var(--d1); content: counter(d); }
+.die.d2::after { counter-reset: d var(--d2); content: counter(d); }
+.die.d3::after { counter-reset: d var(--d3); content: counter(d); }
+@keyframes roll { from { transform: rotate(-200deg) scale(0.3); opacity: 0; } to { transform: none; opacity: 1; } }
+.o-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; text-align: left; font-size: 0.78rem; margin: 0 0 0.6rem; }
+.o-facts div { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 0.4rem 0.5rem; }
+.o-facts small { display: block; color: var(--muted); font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.o-facts b { color: #fff; }
+.o-facts .full { grid-column: 1 / -1; }
+.hue-val::after { counter-reset: h var(--lucky); content: counter(h) "°"; }
+.swatch { display: inline-block; width: 0.8em; height: 0.8em; border-radius: 50%; background: hsl(var(--lucky) 100% 60%); vertical-align: -0.05em; margin-right: 0.3em; }
+.oracle-note { margin: 0.6rem 0 0; font-size: 0.68rem; color: var(--muted); line-height: 1.5; }
+.oracle.jackpot { border-color: var(--gold); box-shadow: 0 0 34px rgba(255, 214, 10, 0.5); }
+
+.banner {
+  position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%); z-index: 8; pointer-events: none; text-align: center;
+  font-family: Orbitron, sans-serif; font-weight: 900; font-size: clamp(1.3rem, 5vw, 2.4rem); letter-spacing: 0.08em;
+  color: var(--accent); text-shadow: 0 0 20px var(--accent); opacity: 0; transition: opacity 0.4s;
+}
+.banner small { display: block; font-size: 0.42em; color: #fff; letter-spacing: 0.14em; margin-top: 0.4rem; font-family: "Share Tech Mono", monospace; text-shadow: none; }
+.banner.show { opacity: 1; }
+.toast {
+  position: absolute; left: 50%; top: 84px; transform: translateX(-50%); z-index: 9; background: var(--glass); border: 1px solid var(--gold);
+  color: var(--gold); border-radius: 10px; padding: 0.4rem 0.9rem; font-size: 0.85rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+.flash { position: absolute; inset: 0; z-index: 7; pointer-events: none; background: var(--red); opacity: 0; transition: opacity 0.25s; }
+.flash.on { opacity: 0.28; transition: none; }
+.result-list { list-style: none; padding: 0; margin: 0.6rem 0 1rem; display: grid; gap: 0.35rem; font-size: 0.9rem; }
+.result-list b { color: var(--accent); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ---------- The native random() layer ---------- */
+@supports (left: random(0%, 1%)) {
+  .od-star {
+    left: random(0%, 100%); top: random(0%, 100%); width: random(1px, 3px);
+    animation-duration: random(1.6s, 5s); animation-delay: random(-5s, 0s);
+  }
+  .od-blob { left: random(-15%, 80%); top: random(-15%, 75%); width: random(20vmax, 44vmax); }
+  /* The oracle: these values decide the run. */
+  .oracle {
+    --fortune: random(0, 11, 1);
+    --pick: random(0, 7, 1);
+    --target: random(0, 59, 1);
+    --d1: random(1, 6, 1);
+    --d2: random(1, 6, 1);
+    --d3: random(1, 6, 1);
+    --lucky: random(0, 359, 1);
+  }
+  /* The flight: every seed is one object on the route. */
+  .seed {
+    --sx: random(-100, 100, 1);
+    --sy: random(-100, 100, 1);
+    --sk: random(0, 99, 1);
+    --sf: random(1, 6, 1);
+  }
+}
+
+@media (max-width: 820px) { .obs-grid { grid-template-columns: 1fr; } }
+@media (max-width: 560px) {
+  .stat { min-width: 50px; padding: 0.3rem 0.45rem; }
+  .stat b { font-size: 0.82rem; }
+  .stat.opt { display: none; }
+  .icon-btn { min-width: 40px; min-height: 40px; padding: 0 0.4rem; }
+  .die { width: 44px; height: 44px; font-size: 1.15rem; }
+}
+@media (prefers-reduced-motion: reduce) { .od-star, .die, .cons.target circle { animation: none; } }
+.app.reduced .od-star, .app.reduced .die, .app.reduced .cons.target circle { animation: none; }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="sky" id="sky" aria-hidden="true"></div>
+  <canvas id="game" aria-label="Scena jocului" role="img"></canvas>
+  <div id="seedPool" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"></div>
+
+  <div class="hud" id="hud" hidden>
+    <div class="hud-group">
+      <div class="stat"><small data-i18n="score">Scor</small><b id="scoreOut">0</b></div>
+      <div class="stat hull"><small data-i18n="hull">Scut</small><b id="hullOut">♥♥♥</b></div>
+      <div class="stat"><small>Nova</small><div class="nova-bar"><i id="novaFill"></i></div></div>
+      <div class="stat opt"><small id="phaseLabel" data-i18n="flight">Zbor</small><b id="phaseOut">—</b></div>
+    </div>
+    <div class="hud-group">
+      <button class="icon-btn" id="soundBtn" type="button" aria-pressed="true">🔊</button>
+      <button class="icon-btn" id="pauseBtn" type="button" aria-label="Pauză">II</button>
+    </div>
+  </div>
+  <div class="progress" id="progress" hidden><span id="progressLabel"></span><div class="track"><i id="progressFill"></i></div></div>
+  <button class="touch-btn" id="novaBtn" type="button" hidden>NOVA</button>
+  <div class="banner" id="banner" aria-hidden="true"></div>
+  <div class="toast" id="toast" aria-hidden="true"></div>
+  <div class="flash" id="flash"></div>
+
+  <!-- Title -->
+  <section class="screen" id="titleScreen" aria-labelledby="titleH">
+    <div class="panel">
+      <p class="eyebrow" data-i18n="eyebrow">CodePen Challenge · CSS random()</p>
+      <h1 id="titleH">ORACLE DRIFT</h1>
+      <p class="lede" data-i18n="lede">Observatorul, zborul și shooter-ul, într-un singur joc. Zarul aruncat de CSS random() decide cerul, traseul și fiecare luptă.</p>
+      <ol class="steps">
+        <li><b>1</b><span data-i18n="s1">Observatorul: oracolul îți dă o profeție, trei zaruri, o culoare norocoasă și constelația-țintă.</span></li>
+        <li><b>2</b><span data-i18n="s2">Zborul 3D: prinde zarurile, treci prin porți, ocolește asteroizii. Fețele prinse încarcă Nova.</span></li>
+        <li><b>3</b><span data-i18n="s3">Arena: două valuri și un boss, după regula aleasă de oracol.</span></li>
+        <li><b>4</b><span data-i18n="s4">Constelația se aprinde. Aprinde toate cinci și începe un ciclu nou, mai greu.</span></li>
+      </ol>
+      <div class="row">
+        <button class="btn primary" id="startBtn" type="button" data-i18n="start">Deschide observatorul</button>
+        <button class="btn ghost" id="langBtn" type="button">EN</button>
+      </div>
+      <div class="opts">
+        <label><input type="checkbox" id="assistChk"> <span data-i18n="assist">Mod asistat (scut în plus, mai lent)</span></label>
+        <label><input type="checkbox" id="reducedChk"> <span data-i18n="reducedOpt">Mișcare redusă</span></label>
+      </div>
+      <p class="keys" data-i18n-html="keys"><kbd>←↑↓→</kbd>/<kbd>WASD</kbd> mișcare · <kbd>Space</kbd> boost / Nova · <kbd>P</kbd> pauză · pe telefon: trage cu degetul</p>
+      <p class="meta"><span data-i18n="best">Record</span>: <b id="bestOut">0</b> · <span id="supportOut"></span><br>
+        <span data-i18n="made">Combină Random Constellation, DICE DRIFT 3D și VOID ORACLE</span> · Laura Andreea<br>
+        <a href="../random-constellation/" id="rcLink">Random Constellation</a> · <a href="../dice-drift-3d/" id="ddLink">DICE DRIFT 3D</a> · <a href="../void-oracle/" id="voLink">VOID ORACLE</a> · <a href="../portfolio.html#now" data-i18n="back">Portofoliu</a></p>
+    </div>
+  </section>
+
+  <!-- Observatory -->
+  <section class="screen" id="obsScreen" aria-labelledby="obsH" hidden>
+    <div class="panel wide">
+      <p class="eyebrow" id="cycleOut">Ciclul 1</p>
+      <h2 id="obsH" data-i18n="obsTitle">Observatorul</h2>
+      <div class="obs-grid">
+        <div class="map-wrap">
+          <svg id="map" viewBox="0 0 100 64" role="img" aria-labelledby="mapDesc"><desc id="mapDesc">Harta constelațiilor</desc></svg>
+          <div class="map-legend"><span id="litOut"></span><span><span data-i18n="targetIs">Ținta</span>: <b id="targetOut">—</b></span></div>
+        </div>
+        <div>
+          <div id="oracleSlot"></div>
+          <div class="row" style="margin-top:0.6rem">
+            <button class="btn primary" id="flyBtn" type="button" data-i18n="fly">Zboară spre constelație</button>
+            <button class="btn ghost" id="rerollBtn" type="button" data-i18n="reroll">Aruncă din nou (o dată)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <template id="oracleTpl">
+    <div class="oracle">
+      <h3 data-i18n="oracle">ORACOLUL</h3>
+      <p class="o-fortune">…</p>
+      <div class="dice" aria-hidden="true"><span class="die d1"></span><span class="die d2"></span><span class="die d3"></span></div>
+      <div class="o-facts">
+        <div><small data-i18n="total">Total zaruri</small><b class="o-total">—</b></div>
+        <div><small data-i18n="lucky">Nuanță norocoasă</small><b><span class="swatch"></span><span class="hue-val"></span></b></div>
+        <div class="full"><small data-i18n="rule">Regula arenei</small><b class="o-rule">—</b></div>
+        <div class="full"><small data-i18n="flightFx">Zborul</small><b class="o-flight">—</b></div>
+      </div>
+      <p class="oracle-note" data-i18n="oracleNote">random(0, 11, 1) alege profeția · random(1, 6, 1) aruncă zarurile · random(0, 7, 1) alege regula · random(0, 359, 1) colorează lumea · random(0, 59, 1) alege ținta. JavaScript doar citește rezultatul.</p>
+    </div>
+  </template>
+
+  <!-- Pause -->
+  <section class="screen" id="pauseScreen" aria-labelledby="pauseH" hidden>
+    <div class="panel">
+      <h2 id="pauseH" data-i18n="paused">Pauză</h2>
+      <div class="row">
+        <button class="btn primary" id="resumeBtn" type="button" data-i18n="resume">Continuă</button>
+        <button class="btn ghost" id="quitBtn" type="button" data-i18n="quit">Ieși la titlu</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Constellation cleared -->
+  <section class="screen" id="clearScreen" aria-labelledby="clearH" hidden>
+    <div class="panel">
+      <p class="eyebrow" data-i18n="litUp">Constelație aprinsă</p>
+      <h2 id="clearH">—</h2>
+      <ul class="result-list" id="clearList"></ul>
+      <button class="btn primary" id="backObsBtn" type="button" data-i18n="backObs">Înapoi la observator</button>
+    </div>
+  </section>
+
+  <!-- Game over / cycle complete -->
+  <section class="screen" id="endScreen" aria-labelledby="endH" hidden>
+    <div class="panel">
+      <p class="eyebrow" id="endEyebrow">—</p>
+      <h2 id="endH">—</h2>
+      <ul class="result-list" id="endList"></ul>
+      <div class="row">
+        <button class="btn primary" id="endBtn" type="button">—</button>
+        <button class="btn ghost" id="endQuitBtn" type="button" data-i18n="quit">Ieși la titlu</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="sr-only" id="live" aria-live="polite" aria-atomic="true"></p>
+</div>
+
+<script>
+"use strict";
+/* ORACLE DRIFT — Laura Andreea, 2026. Observatory + 3D flight + arena shooter, driven by CSS random(). */
+
+const T = {
+  ro: {
+    eyebrow: "CodePen Challenge · CSS random()",
+    lede: "Observatorul, zborul și shooter-ul, într-un singur joc. Zarul aruncat de CSS random() decide cerul, traseul și fiecare luptă.",
+    s1: "Observatorul: oracolul îți dă o profeție, trei zaruri, o culoare norocoasă și constelația-țintă.",
+    s2: "Zborul 3D: prinde zarurile, treci prin porți, ocolește asteroizii. Fețele prinse încarcă Nova.",
+    s3: "Arena: două valuri și un boss, după regula aleasă de oracol.",
+    s4: "Constelația se aprinde. Aprinde toate cinci și începe un ciclu nou, mai greu.",
+    start: "Deschide observatorul", assist: "Mod asistat (scut în plus, mai lent)", reducedOpt: "Mișcare redusă",
+    keys: "<kbd>←↑↓→</kbd>/<kbd>WASD</kbd> mișcare · <kbd>Space</kbd> boost / Nova · <kbd>P</kbd> pauză · pe telefon: trage cu degetul",
+    best: "Record", made: "Combină Random Constellation, DICE DRIFT 3D și VOID ORACLE", back: "Portofoliu",
+    native: "CSS random() nativ", fallback: "fallback JS (browserul nu are încă random())",
+    score: "Scor", hull: "Scut", flight: "Zbor", arena: "Arena",
+    obsTitle: "Observatorul", cycle: (n) => "Ciclul " + n, lit: (a, b) => "Aprinse: " + a + " / " + b, targetIs: "Ținta",
+    fly: "Zboară spre constelație", reroll: "Aruncă din nou (o dată)", rerollUsed: "Ai aruncat deja",
+    oracle: "ORACOLUL", total: "Total zaruri", lucky: "Nuanță norocoasă", rule: "Regula arenei", flightFx: "Zborul",
+    oracleNote: "random(0, 11, 1) alege profeția · random(1, 6, 1) aruncă zarurile · random(0, 7, 1) alege regula · random(0, 359, 1) colorează lumea · random(0, 59, 1) alege ținta. JavaScript doar citește rezultatul.",
+    flightTxt: (n, j) => n + " obiecte pe traseu, +" + (n * 10) + " puncte la plecare" + (j ? " · TREI LA FEL: +1 scut" : ""),
+    paused: "Pauză", resume: "Continuă", quit: "Ieși la titlu",
+    litUp: "Constelație aprinsă", backObs: "Înapoi la observator",
+    toward: (c) => "Spre " + c, arenaOf: (c) => "Arena · " + c, wave: (a, b) => "Valul " + a + " / " + b, boss: "BOSS",
+    progressFlight: (c) => "Distanța până la " + c, progressArena: "Valuri",
+    r_score: "Scor total", r_dice: "Zaruri prinse în zbor", r_gates: "Porți traversate", r_kills: "Inamici doborâți", r_bonus: "Bonus constelație",
+    overEyebrow: "Scutul a cedat", overH: "Drumul s-a încheiat", again: "Încă o călătorie", r_lit: "Constelații aprinse", r_best: "Record",
+    cycleEyebrow: "Cer complet", cycleH: (n) => "Ciclul " + n + " încheiat!", nextCycle: "Ciclul următor",
+    newBest: "Record nou!",
+    t_shield: "+1 scut", t_triple: "Foc triplu", t_rapid: "Foc rapid", t_nova: "NOVA!", t_combo: (n) => "Combo poartă ×" + n, t_six: "Șase! +1 scut", t_jackpot: "Trei la fel! +1 scut",
+    novaBtn: "NOVA", pause: "Pauză", soundOn: "Sunet pornit", soundOff: "Sunet oprit",
+    a_oracle: (f, d, tot, rule, c) => "Oracol: " + f + " Zaruri " + d.join(", ") + ", total " + tot + ". Regula: " + rule + ". Ținta: " + c + ".",
+    a_flight: (c) => "Zbor spre " + c + ". Prinde zarurile, ocolește asteroizii.",
+    a_arena: (c, r) => "Arena " + c + ". Regula: " + r + ".",
+    a_hit: (h) => "Lovit. Scut rămas: " + h,
+    a_boss: "Boss-ul a apărut.",
+    mods: ["Ploaie de meteoriți", "Puncte duble", "Roi rapid", "Scut cadou", "Foc rapid", "Vid fragil", "Fântână gravitațională", "Nova încărcată"],
+    modsInfo: ["meteoriții cad prin arenă", "toate punctele ×2", "inamicii sunt mai rapizi", "+1 scut la intrare", "tragi de două ori mai des", "toți au mai puțină viață, gloanțele sunt mai rapide", "centrul arenei curbează gloanțele", "Nova pornește plină"],
+    fortunes: [
+      "Zarul de azi cade pe partea ta.", "O cometă îți va tăia drumul. Ocolește-o.", "Șase e numărul tău. Caută-l.",
+      "Vidul ascultă. Trage primul.", "O poartă ratată nu e o poartă pierdută.", "Constelația te așteaptă de o mie de ani.",
+      "Culoarea norocoasă te va găsi în arenă.", "Boss-ul are și el o zi proastă.", "Ce e aleatoriu pentru CSS e destin pentru tine.",
+      "Nu toate stelele sunt prietenoase.", "Nova iubește răbdarea.", "Aruncă din nou: soarta e calculată pe element."
+    ],
+    cons: ["Zarul", "Vânătorul", "Oracolul", "Cometa", "Busola"],
+    mapDesc: "Harta celor cinci constelații: aprinsele strălucesc, ținta pulsează.",
+  },
+  en: {
+    eyebrow: "CodePen Challenge · CSS random()",
+    lede: "The observatory, the flight and the shooter in one game. A die rolled by CSS random() decides the sky, the route and every fight.",
+    s1: "Observatory: the oracle gives you a fortune, three dice, a lucky hue and the target constellation.",
+    s2: "3D flight: catch the dice, fly through gates, dodge asteroids. The faces you catch charge your Nova.",
+    s3: "Arena: two waves and a boss, under the rule the oracle picked.",
+    s4: "The constellation lights up. Light all five and a new, harder cycle begins.",
+    start: "Open the observatory", assist: "Assist mode (extra shield, slower)", reducedOpt: "Reduced motion",
+    keys: "<kbd>←↑↓→</kbd>/<kbd>WASD</kbd> move · <kbd>Space</kbd> boost / Nova · <kbd>P</kbd> pause · on phones: drag with your finger",
+    best: "Best", made: "Combines Random Constellation, DICE DRIFT 3D and VOID ORACLE", back: "Portfolio",
+    native: "native CSS random()", fallback: "JS fallback (this browser has no random() yet)",
+    score: "Score", hull: "Shield", flight: "Flight", arena: "Arena",
+    obsTitle: "The Observatory", cycle: (n) => "Cycle " + n, lit: (a, b) => "Lit: " + a + " / " + b, targetIs: "Target",
+    fly: "Fly to the constellation", reroll: "Roll again (once)", rerollUsed: "Already rolled",
+    oracle: "THE ORACLE", total: "Dice total", lucky: "Lucky hue", rule: "Arena rule", flightFx: "The flight",
+    oracleNote: "random(0, 11, 1) picks the fortune · random(1, 6, 1) rolls the dice · random(0, 7, 1) picks the rule · random(0, 359, 1) colours the world · random(0, 59, 1) picks the target. JavaScript only reads the result.",
+    flightTxt: (n, j) => n + " objects on the route, +" + (n * 10) + " points at launch" + (j ? " · TRIPLE: +1 shield" : ""),
+    paused: "Paused", resume: "Resume", quit: "Quit to title",
+    litUp: "Constellation lit", backObs: "Back to the observatory",
+    toward: (c) => "To " + c, arenaOf: (c) => "Arena · " + c, wave: (a, b) => "Wave " + a + " / " + b, boss: "BOSS",
+    progressFlight: (c) => "Distance to " + c, progressArena: "Waves",
+    r_score: "Total score", r_dice: "Dice caught in flight", r_gates: "Gates passed", r_kills: "Enemies down", r_bonus: "Constellation bonus",
+    overEyebrow: "Shield down", overH: "The journey ends", again: "Another journey", r_lit: "Constellations lit", r_best: "Best",
+    cycleEyebrow: "Sky complete", cycleH: (n) => "Cycle " + n + " complete!", nextCycle: "Next cycle",
+    newBest: "New best!",
+    t_shield: "+1 shield", t_triple: "Triple shot", t_rapid: "Rapid fire", t_nova: "NOVA!", t_combo: (n) => "Gate combo ×" + n, t_six: "A six! +1 shield", t_jackpot: "Triple! +1 shield",
+    novaBtn: "NOVA", pause: "Pause", soundOn: "Sound on", soundOff: "Sound off",
+    a_oracle: (f, d, tot, rule, c) => "Oracle: " + f + " Dice " + d.join(", ") + ", total " + tot + ". Rule: " + rule + ". Target: " + c + ".",
+    a_flight: (c) => "Flying to " + c + ". Catch the dice, dodge the asteroids.",
+    a_arena: (c, r) => "Arena " + c + ". Rule: " + r + ".",
+    a_hit: (h) => "Hit. Shield left: " + h,
+    a_boss: "The boss has appeared.",
+    mods: ["Meteor shower", "Double points", "Fast swarm", "Gift shield", "Rapid fire", "Fragile void", "Gravity well", "Nova charged"],
+    modsInfo: ["meteors fall through the arena", "all points ×2", "enemies move faster", "+1 shield on entry", "you fire twice as often", "everyone has less health, bullets are faster", "the arena centre bends bullets", "Nova starts full"],
+    fortunes: [
+      "Today's die lands on your side.", "A comet will cross your path. Dodge it.", "Six is your number. Look for it.",
+      "The void is listening. Shoot first.", "A missed gate is not a lost gate.", "The constellation has waited a thousand years.",
+      "Your lucky hue will find you in the arena.", "The boss is having a bad day too.", "What is random to CSS is fate to you.",
+      "Not every star is friendly.", "Nova loves patience.", "Roll again: fate is computed per element."
+    ],
+    cons: ["The Die", "The Hunter", "The Oracle", "The Comet", "The Compass"],
+    mapDesc: "Map of the five constellations: lit ones glow, the target pulses.",
+  },
+};
+
+/* Five constellations: map position (viewBox 100×64), star points (0..1), lines, hue. */
+const CONS = [
+  { hue: 45,  at: [20, 18], s: 13, pts: [[0, 0], [1, 0], [1, 1], [0, 1], [0.5, 0.5]], ln: [[0, 1], [1, 2], [2, 3], [3, 0], [0, 4], [4, 2]] },
+  { hue: 190, at: [50, 10], s: 14, pts: [[0.5, 0], [0.15, 0.35], [0.85, 0.35], [0.5, 0.55], [0.25, 1], [0.75, 1]], ln: [[0, 3], [1, 3], [2, 3], [3, 4], [3, 5], [1, 0], [0, 2]] },
+  { hue: 285, at: [77, 20], s: 14, pts: [[0, 0.5], [0.3, 0.2], [0.7, 0.2], [1, 0.5], [0.7, 0.8], [0.3, 0.8], [0.5, 0.5]], ln: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0]] },
+  { hue: 330, at: [28, 42], s: 16, pts: [[1, 0.1], [0.75, 0.35], [0.5, 0.55], [0.2, 0.75], [0, 0.95], [0.55, 0.9], [0.95, 0.5]], ln: [[0, 1], [1, 2], [2, 3], [3, 4], [2, 5], [1, 6]] },
+  { hue: 120, at: [66, 42], s: 15, pts: [[0.5, 0], [1, 0.5], [0.5, 1], [0, 0.5], [0.5, 0.5]], ln: [[0, 4], [1, 4], [2, 4], [3, 4], [0, 1], [1, 2], [2, 3], [3, 0]] },
+];
+
+const STORE = "oracle-drift-";
+const $ = (id) => document.getElementById(id);
+const app = $("app"), canvas = $("game"), ctx = canvas.getContext("2d");
+const NATIVE = !!(window.CSS && CSS.supports("left", "random(0%, 1%)"));
+const motionMQ = matchMedia("(prefers-reduced-motion: reduce)");
+const load = (k, d) => { try { const v = localStorage.getItem(STORE + k); return v === null ? d : JSON.parse(v); } catch { return d; } };
+const save = (k, v) => { try { localStorage.setItem(STORE + k, JSON.stringify(v)); } catch {} };
+const urlLang = new URLSearchParams(location.search).get("lang");
+let lang = (urlLang === "ro" || urlLang === "en") ? urlLang : load("lang", (navigator.language || "ro").toLowerCase().startsWith("ro") ? "ro" : "en");
+let audioOn = load("audio", true), reducedPref = load("reduced", false), assist = load("assist", false), best = load("best", 0);
+const t = (k, ...a) => { const v = T[lang][k] ?? T.en[k] ?? k; return typeof v === "function" ? v(...a) : v; };
+const reduced = () => reducedPref || motionMQ.matches;
+const rand = (a, b) => a + Math.random() * (b - a);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const live = $("live");
+const announce = (m) => { live.textContent = ""; requestAnimationFrame(() => (live.textContent = m)); };
+const consName = (i) => t("cons")[i];
+
+/* ---------- Audio (tiny WebAudio synth) ---------- */
+let actx = null;
+function tone(f, d = 0.1, type = "square", v = 0.05, slide = 0) {
+  if (!audioOn) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === "suspended") actx.resume();
+    const o = actx.createOscillator(), g = actx.createGain(), n = actx.currentTime;
+    o.type = type; o.frequency.setValueAtTime(f, n);
+    if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, f + slide), n + d);
+    g.gain.setValueAtTime(v, n); g.gain.exponentialRampToValueAtTime(0.0001, n + d);
+    o.connect(g).connect(actx.destination); o.start(n); o.stop(n + d + 0.02);
+  } catch {}
+}
+const sfx = {
+  shot: () => tone(880, 0.05, "square", 0.018, -400),
+  hit: () => tone(160, 0.25, "sawtooth", 0.08, -100),
+  boom: () => tone(120, 0.3, "triangle", 0.08, -80),
+  die: () => { tone(660, 0.08, "sine", 0.06); setTimeout(() => tone(990, 0.1, "sine", 0.05), 60); },
+  gate: () => tone(520, 0.15, "triangle", 0.05, 300),
+  roll: () => { for (let i = 0; i < 6; i++) setTimeout(() => tone(300 + i * 60, 0.04, "square", 0.03), i * 70); },
+  power: () => { [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => tone(f, 0.12, "sine", 0.05), i * 80)); },
+  nova: () => tone(90, 0.8, "sawtooth", 0.1, 600),
+};
+
+/* ---------- Sky (CSS random) ---------- */
+function buildSky() {
+  const sky = $("sky"); sky.replaceChildren();
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < 3; i++) { const b = document.createElement("span"); b.className = "od-blob"; frag.appendChild(b); }
+  for (let i = 0; i < 110; i++) { const s = document.createElement("span"); s.className = "od-star"; frag.appendChild(s); }
+  sky.appendChild(frag);
+  if (!NATIVE) {
+    sky.querySelectorAll(".od-star").forEach((s) => {
+      s.style.left = rand(0, 100) + "%"; s.style.top = rand(0, 100) + "%"; s.style.width = rand(1, 3) + "px";
+      s.style.animationDuration = rand(1.6, 5) + "s"; s.style.animationDelay = rand(-5, 0) + "s";
+    });
+    sky.querySelectorAll(".od-blob").forEach((b) => { b.style.left = rand(-15, 80) + "%"; b.style.top = rand(-15, 75) + "%"; b.style.width = rand(20, 44) + "vmax"; });
+  }
+}
+
+/* ---------- State ---------- */
+const S = {
+  phase: "title", paused: false, score: 0, hull: 3, maxHull: 3, nova: 0, cycle: 1, lit: [], target: 0,
+  oracle: null, rerolled: false, stats: null, invuln: 0, triple: 0, rapid: 0, shake: 0,
+};
+let W = 0, H = 0, DPR = 1;
+function resize() {
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  W = window.innerWidth; H = window.innerHeight;
+  canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  if (G.player) { G.player.x = clamp(G.player.x, 20, W - 20); G.player.y = clamp(G.player.y, H * 0.45, H - 30); }
+}
+
+/* ---------- Input ---------- */
+const keys = new Set();
+const pointer = { active: false, x: 0, y: 0, ox: 0, oy: 0, px: 0, py: 0 };
+addEventListener("keydown", (e) => {
+  const k = e.key.toLowerCase();
+  if (["arrowup", "arrowdown", "arrowleft", "arrowright", " "].includes(k) && (S.phase === "flight" || S.phase === "fight")) e.preventDefault();
+  keys.add(k);
+  if ((k === "p" || k === "escape") && (S.phase === "flight" || S.phase === "fight")) togglePause();
+  if (k === " " && S.phase === "fight" && !S.paused) fireNova();
+});
+addEventListener("keyup", (e) => keys.delete(e.key.toLowerCase()));
+addEventListener("blur", () => keys.clear());
+canvas.addEventListener("pointerdown", (e) => {
+  pointer.active = true; pointer.ox = e.clientX; pointer.oy = e.clientY;
+  if (S.phase === "fight") { pointer.px = G.player.x; pointer.py = G.player.y; }
+  else if (S.phase === "flight") { pointer.px = F.px; pointer.py = F.py; }
+  canvas.setPointerCapture?.(e.pointerId);
+});
+canvas.addEventListener("pointermove", (e) => {
+  if (!pointer.active) return;
+  const dx = e.clientX - pointer.ox, dy = e.clientY - pointer.oy;
+  if (S.phase === "fight") { G.player.x = clamp(pointer.px + dx * 1.2, 20, W - 20); G.player.y = clamp(pointer.py + dy * 1.2, H * 0.4, H - 30); }
+  else if (S.phase === "flight") { F.px = clamp(pointer.px + dx / (W * 0.4), -1, 1); F.py = clamp(pointer.py + dy / (H * 0.4), -0.65, 0.65); }
+});
+const endPointer = () => (pointer.active = false);
+canvas.addEventListener("pointerup", endPointer);
+canvas.addEventListener("pointercancel", endPointer);
+const axis = () => ({
+  x: (keys.has("arrowright") || keys.has("d") ? 1 : 0) - (keys.has("arrowleft") || keys.has("a") ? 1 : 0),
+  y: (keys.has("arrowdown") || keys.has("s") ? 1 : 0) - (keys.has("arrowup") || keys.has("w") ? 1 : 0),
+});
+
+/* ---------- Screens ---------- */
+const SCREENS = ["titleScreen", "obsScreen", "pauseScreen", "clearScreen", "endScreen"];
+function show(id) { SCREENS.forEach((s) => ($(s).hidden = s !== id)); }
+function focusFirst(id) { requestAnimationFrame(() => $(id)?.focus({ preventScroll: true })); }
+function setPlayUI(on) { $("hud").hidden = !on; $("progress").hidden = !on; $("novaBtn").hidden = !(on && S.phase === "fight"); }
+let toastTimer = 0;
+function toast(msg) { const el = $("toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove("show"), 1400); }
+let bannerTimer = 0;
+function banner(main, sub = "") {
+  const el = $("banner"); el.innerHTML = ""; el.append(main);
+  if (sub) { const s = document.createElement("small"); s.textContent = sub; el.appendChild(s); }
+  el.classList.add("show"); clearTimeout(bannerTimer); bannerTimer = setTimeout(() => el.classList.remove("show"), 2000);
+}
+function flash() { const f = $("flash"); f.classList.add("on"); requestAnimationFrame(() => requestAnimationFrame(() => f.classList.remove("on"))); }
+
+function translate(root = document) {
+  root.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = t(el.dataset.i18n)));
+  root.querySelectorAll("[data-i18n-html]").forEach((el) => (el.innerHTML = t(el.dataset.i18nHtml)));
+}
+function applyLang() {
+  document.documentElement.lang = lang;
+  translate();
+  $("langBtn").textContent = lang === "ro" ? "EN" : "RO";
+  $("langBtn").setAttribute("aria-label", lang === "ro" ? "Switch to English" : "Schimbă în română");
+  $("supportOut").textContent = NATIVE ? t("native") : t("fallback");
+  $("novaBtn").textContent = t("novaBtn");
+  $("pauseBtn").setAttribute("aria-label", t("pause"));
+  ["rcLink", "ddLink", "voLink"].forEach((id) => { const a = $(id); a.href = a.getAttribute("href").split("?")[0] + "?lang=" + lang; });
+  updateSoundBtn();
+  if (S.phase === "obs") { renderMap(); renderOracleText(); }
+}
+function updateSoundBtn() { $("soundBtn").textContent = audioOn ? "🔊" : "🔈"; $("soundBtn").setAttribute("aria-pressed", String(audioOn)); $("soundBtn").setAttribute("aria-label", audioOn ? t("soundOn") : t("soundOff")); }
+
+function updateHUD() {
+  $("scoreOut").textContent = Math.floor(S.score).toLocaleString(lang);
+  $("hullOut").textContent = S.hull > 6 ? "♥×" + S.hull : ("♥".repeat(Math.max(0, S.hull)) || "—");
+  $("novaFill").style.width = S.nova + "%";
+  $("novaBtn").classList.toggle("ready", S.nova >= 100);
+  $("phaseLabel").textContent = S.phase === "fight" ? t("arena") : t("flight");
+  $("phaseOut").textContent = consName(S.target);
+}
+
+/* ---------- Observatory ---------- */
+function remaining() { return CONS.map((_, i) => i).filter((i) => !S.lit.includes(i)); }
+function renderMap() {
+  const svg = $("map"), NS = "http://www.w3.org/2000/svg";
+  svg.querySelectorAll("g").forEach((g) => g.remove());
+  $("mapDesc").textContent = t("mapDesc");
+  CONS.forEach((c, i) => {
+    const g = document.createElementNS(NS, "g");
+    g.setAttribute("class", "cons" + (S.lit.includes(i) ? " lit" : "") + (i === S.target && S.phase === "obs" ? " target" : ""));
+    g.style.setProperty("--h", c.hue);
+    const P = c.pts.map(([x, y]) => [c.at[0] + x * c.s - c.s / 2, c.at[1] + y * c.s * 0.75]);
+    c.ln.forEach(([a, b]) => { const l = document.createElementNS(NS, "line"); l.setAttribute("x1", P[a][0]); l.setAttribute("y1", P[a][1]); l.setAttribute("x2", P[b][0]); l.setAttribute("y2", P[b][1]); g.appendChild(l); });
+    P.forEach(([x, y]) => { const ci = document.createElementNS(NS, "circle"); ci.setAttribute("cx", x); ci.setAttribute("cy", y); ci.setAttribute("r", 0.9); g.appendChild(ci); });
+    const tx = document.createElementNS(NS, "text"); tx.setAttribute("x", c.at[0]); tx.setAttribute("y", c.at[1] + c.s * 0.75 + 4.2); tx.textContent = consName(i) + (S.lit.includes(i) ? " ✦" : "");
+    g.appendChild(tx); svg.appendChild(g);
+  });
+  $("cycleOut").textContent = t("cycle", S.cycle);
+  $("litOut").textContent = t("lit", S.lit.length, CONS.length);
+  $("targetOut").textContent = consName(S.target);
+}
+
+function rollOracle() {
+  const slot = $("oracleSlot");
+  slot.replaceChildren($("oracleTpl").content.cloneNode(true));
+  const card = slot.querySelector(".oracle");
+  translate(card);
+  if (!NATIVE) {
+    const r = (a, b) => Math.floor(rand(a, b + 1));
+    [["--fortune", r(0, 11)], ["--pick", r(0, 7)], ["--target", r(0, 59)], ["--d1", r(1, 6)], ["--d2", r(1, 6)], ["--d3", r(1, 6)], ["--lucky", r(0, 359)]]
+      .forEach(([k, v]) => card.style.setProperty(k, v));
+  }
+  sfx.roll();
+  const cs = getComputedStyle(card);
+  const num = (p) => parseInt(cs.getPropertyValue(p), 10) || 0;
+  const dice = [num("--d1"), num("--d2"), num("--d3")].map((d) => clamp(d, 1, 6));
+  const rem = remaining();
+  const o = {
+    fortune: clamp(num("--fortune"), 0, 11), pick: clamp(num("--pick"), 0, 7), dice,
+    total: dice[0] + dice[1] + dice[2], jackpot: dice[0] === dice[1] && dice[1] === dice[2],
+    lucky: clamp(num("--lucky"), 0, 359),
+  };
+  S.target = rem[clamp(num("--target"), 0, 59) % rem.length];
+  S.oracle = o;
+  card.classList.toggle("jackpot", o.jackpot);
+  app.style.setProperty("--lucky-ui", o.lucky);
+  renderOracleText();
+  renderMap();
+  announce(t("a_oracle", t("fortunes")[o.fortune], dice, o.total, t("mods")[o.pick], consName(S.target)));
+}
+function renderOracleText() {
+  const card = $("oracleSlot").querySelector(".oracle"), o = S.oracle;
+  if (!card || !o) return;
+  translate(card);
+  card.querySelector(".o-fortune").textContent = "“" + t("fortunes")[o.fortune] + "”";
+  card.querySelector(".o-total").textContent = o.dice.join(" + ") + " = " + o.total;
+  card.querySelector(".o-rule").textContent = t("mods")[o.pick] + " — " + t("modsInfo")[o.pick];
+  card.querySelector(".o-flight").textContent = t("flightTxt", seedCount(o), o.jackpot);
+  $("rerollBtn").disabled = S.rerolled;
+  $("rerollBtn").textContent = S.rerolled ? t("rerollUsed") : t("reroll");
+}
+const seedCount = (o) => 18 + o.total * 2;
+
+function openObservatory() {
+  S.phase = "obs"; S.rerolled = false;
+  setPlayUI(false);
+  show("obsScreen");
+  rollOracle();
+  focusFirst("flyBtn");
+}
+
+/* ---------- Flight (pseudo-3D) ---------- */
+const F = { objs: [], px: 0, py: 0, vx: 0, vy: 0, dist: 0, len: 1, speed: 9, combo: 0, t: 0, streaks: [] };
+function buildSeeds(n) {
+  const pool = $("seedPool"); pool.replaceChildren();
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement("i"); s.className = "seed";
+    if (!NATIVE) { s.style.setProperty("--sx", Math.floor(rand(-100, 101))); s.style.setProperty("--sy", Math.floor(rand(-100, 101))); s.style.setProperty("--sk", Math.floor(rand(0, 100))); s.style.setProperty("--sf", Math.floor(rand(1, 7))); }
+    pool.appendChild(s);
+  }
+  return [...pool.children].map((s) => {
+    const cs = getComputedStyle(s), n2 = (p) => parseInt(cs.getPropertyValue(p), 10) || 0;
+    return { sx: clamp(n2("--sx"), -100, 100), sy: clamp(n2("--sy"), -100, 100), sk: clamp(n2("--sk"), 0, 99), sf: clamp(n2("--sf"), 1, 6) };
+  });
+}
+function startFlight() {
+  const o = S.oracle;
+  S.phase = "flight"; S.paused = false;
+  S.stats = { dice: 0, gates: 0, kills: 0 };
+  S.score += seedCount(o) * 10 * S.cycle;
+  if (o.jackpot) { S.hull = Math.min(S.maxHull + 2, S.hull + 1); }
+  const seeds = buildSeeds(seedCount(o));
+  const lvl = level();
+  F.objs = seeds.map((s, i) => {
+    const kind = s.sk < 38 ? "die" : s.sk < 64 ? "rock" : s.sk < 84 ? "gate" : "dust";
+    return { kind, x: s.sx / 100 * 0.9, y: s.sy / 100 * 0.55, z: 14 + i * 3.2, face: s.sf, rot: s.sk, done: false, r: kind === "gate" ? 0.3 : kind === "rock" ? 0.15 + (s.sk % 7) * 0.012 + lvl * 0.004 : 0.14 };
+  });
+  F.len = F.objs[F.objs.length - 1].z + 4; F.dist = 0;
+  F.px = 0; F.py = 0.2; F.vx = 0; F.vy = 0; F.combo = 0; F.t = 0;
+  F.speed = (assist ? 7.5 : 9) + Math.min(5, lvl * 0.5);
+  F.streaks = Array.from({ length: 140 }, () => ({ x: rand(-4, 4), y: rand(-3, 3), z: rand(0.5, 30) }));
+  show(null); setPlayUI(true); updateHUD();
+  banner(t("toward", consName(S.target)), t("fortunes")[o.fortune]);
+  announce(t("a_flight", consName(S.target)));
+}
+function level() { return S.lit.length + (S.cycle - 1) * 5; }
+function project(x, y, z) {
+  const f = 1 / Math.max(0.05, z), cx = W / 2, cy = H * 0.5;
+  return { x: cx + (x - F.px * 0.35) * f * W * 0.45, y: cy + (y - F.py * 0.35) * f * H * 0.5, s: f };
+}
+function updateFlight(dt) {
+  const a = axis();
+  F.vx += (a.x * 2.6 - F.vx * 3) * dt; F.vy += (a.y * 2.2 - F.vy * 3) * dt;
+  F.px = clamp(F.px + F.vx * dt, -1, 1); F.py = clamp(F.py + F.vy * dt, -0.65, 0.65);
+  const boost = keys.has(" ") || keys.has("shift") ? 1.7 : 1;
+  const sp = F.speed * boost * dt;
+  F.dist += sp; F.t += dt;
+  S.score += sp * 2 * boost;
+  F.streaks.forEach((s) => { s.z -= sp * 1.4; if (s.z < 0.3) { s.z = 30; s.x = rand(-4, 4); s.y = rand(-3, 3); } });
+  for (const o of F.objs) {
+    o.z -= sp; o.rot += dt * 90;
+    if (!o.done && o.z <= 1) {
+      o.done = true;
+      const dx = o.x - F.px, dy = o.y - F.py, d = Math.hypot(dx, dy);
+      if (o.kind === "die" && d < o.r + 0.12) {
+        S.stats.dice++; S.nova = Math.min(100, S.nova + o.face * 3);
+        S.score += o.face * 25 * S.cycle; sfx.die();
+        if (o.face === 6 && S.hull < S.maxHull) { S.hull++; toast(t("t_six")); }
+        o.caught = true;
+      } else if (o.kind === "dust" && d < 0.25) { S.score += 30; o.caught = true; tone(1200, 0.05, "sine", 0.03); }
+      else if (o.kind === "gate") {
+        if (d < o.r) { F.combo++; S.stats.gates++; S.score += 60 * F.combo * S.cycle; sfx.gate(); o.caught = true; if (F.combo > 1) toast(t("t_combo", F.combo)); }
+        else F.combo = 0;
+      } else if (o.kind === "rock" && d < o.r + 0.08) damage();
+    }
+  }
+  F.objs = F.objs.filter((o) => o.z > 0.25);
+  $("progressLabel").textContent = t("progressFlight", consName(S.target));
+  $("progressFill").style.width = clamp(F.dist / F.len * 100, 0, 100) + "%";
+  if (S.hull <= 0) return gameOver();
+  if (!F.objs.length) startFight();
+}
+function drawFlight() {
+  const hue = S.oracle.lucky;
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, `hsl(${hue} 60% 6%)`); g.addColorStop(0.55, `hsl(${(hue + 40) % 360} 70% 12%)`); g.addColorStop(1, "#04050d");
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // synthwave sun
+  const hz = H * 0.5 - F.py * H * 0.18;
+  ctx.save(); ctx.globalAlpha = 0.55;
+  const sun = ctx.createRadialGradient(W / 2, hz, 0, W / 2, hz, Math.min(W, H) * 0.22);
+  sun.addColorStop(0, `hsl(${(hue + 30) % 360} 100% 70%)`); sun.addColorStop(1, "transparent");
+  ctx.fillStyle = sun; ctx.beginPath(); ctx.arc(W / 2, hz, Math.min(W, H) * 0.22, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+  // floor grid
+  ctx.strokeStyle = `hsl(${hue} 100% 60% / 0.35)`; ctx.lineWidth = 1;
+  const off = (F.dist * 1.0) % 1;
+  for (let i = 1; i < 26; i++) { const z = i - off; const p = project(0, 1.1, z); if (p.y < hz) continue; ctx.globalAlpha = clamp(1.2 - z / 20, 0, 1); ctx.beginPath(); ctx.moveTo(0, p.y); ctx.lineTo(W, p.y); ctx.stroke(); }
+  ctx.globalAlpha = 1;
+  for (let i = -10; i <= 10; i++) { const a = project(i * 0.5, 1.1, 0.4), b = project(i * 0.5, 1.1, 30); ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+  // star streaks
+  ctx.strokeStyle = "rgba(255,255,255,0.7)";
+  for (const s of F.streaks) { const p = project(s.x, s.y, s.z), q = project(s.x, s.y, s.z + 0.6); ctx.lineWidth = Math.min(2.5, p.s * 0.6); ctx.globalAlpha = clamp(1 - s.z / 30, 0, 1); ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke(); }
+  ctx.globalAlpha = 1;
+  // objects, far to near
+  const sorted = [...F.objs].sort((a, b) => b.z - a.z);
+  for (const o of sorted) {
+    if (o.z > 40 || (o.done && o.caught)) continue;
+    const p = project(o.x, o.y, o.z), R = o.r * p.s * Math.min(W, H) * 0.5;
+    ctx.globalAlpha = clamp(1.4 - o.z / 34, 0, 1);
+    if (o.kind === "die") drawDie(p.x, p.y, R, o.face, o.rot, hue);
+    else if (o.kind === "rock") drawRock(p.x, p.y, R, o.rot);
+    else if (o.kind === "gate") { ctx.strokeStyle = `hsl(${(hue + 180) % 360} 100% 65%)`; ctx.lineWidth = Math.max(2, R * 0.12); ctx.shadowColor = ctx.strokeStyle; ctx.shadowBlur = reduced() ? 0 : 14; ctx.beginPath(); ctx.ellipse(p.x, p.y, R, R, 0, 0, Math.PI * 2); ctx.stroke(); ctx.shadowBlur = 0; }
+    else { ctx.fillStyle = "#fff8c0"; ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(1.5, R * 0.3), 0, Math.PI * 2); ctx.fill(); }
+  }
+  ctx.globalAlpha = 1;
+  // ship
+  const sp = project(F.px, F.py, 1), sz = Math.min(W, H) * 0.06;
+  drawShip(sp.x, sp.y, sz, hue, F.vx * 0.3, S.invuln > 0);
+}
+function drawDie(x, y, r, face, rot, hue) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate((rot * Math.PI) / 180 * 0.4);
+  ctx.fillStyle = "#f5f5ff"; ctx.shadowColor = `hsl(${hue} 100% 60%)`; ctx.shadowBlur = reduced() ? 0 : 16;
+  const s = r * 1.4; roundRect(-s / 2, -s / 2, s, s, s * 0.2); ctx.fill(); ctx.shadowBlur = 0;
+  ctx.fillStyle = face === 6 ? "#ff2d55" : "#111";
+  const P = { 1: [[0, 0]], 2: [[-1, -1], [1, 1]], 3: [[-1, -1], [0, 0], [1, 1]], 4: [[-1, -1], [1, -1], [-1, 1], [1, 1]], 5: [[-1, -1], [1, -1], [0, 0], [-1, 1], [1, 1]], 6: [[-1, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [1, 1]] }[face];
+  P.forEach(([a, b]) => { ctx.beginPath(); ctx.arc(a * s * 0.27, b * s * 0.27, s * 0.09, 0, Math.PI * 2); ctx.fill(); });
+  ctx.restore();
+}
+function drawRock(x, y, r, rot) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate((rot * Math.PI) / 180 * 0.2);
+  ctx.fillStyle = "#3a3346"; ctx.strokeStyle = "#ff6b6b"; ctx.lineWidth = Math.max(1, r * 0.06);
+  ctx.beginPath();
+  for (let i = 0; i < 9; i++) { const a = (i / 9) * Math.PI * 2, rr = r * (0.8 + ((i * 37) % 5) * 0.06); ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); }
+  ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore();
+}
+function drawShip(x, y, s, hue, tilt = 0, blink = false) {
+  if (blink && Math.floor(performance.now() / 90) % 2) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(tilt);
+  ctx.shadowColor = `hsl(${hue} 100% 60%)`; ctx.shadowBlur = reduced() ? 0 : 18;
+  ctx.fillStyle = `hsl(${hue} 100% 62%)`;
+  ctx.beginPath(); ctx.moveTo(0, -s); ctx.lineTo(s * 0.75, s * 0.7); ctx.lineTo(0, s * 0.35); ctx.lineTo(-s * 0.75, s * 0.7); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.ellipse(0, -s * 0.15, s * 0.14, s * 0.3, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = `hsl(${(hue + 40) % 360} 100% 60% / ${0.6 + Math.random() * 0.4})`;
+  ctx.beginPath(); ctx.moveTo(-s * 0.2, s * 0.5); ctx.lineTo(0, s * (0.9 + Math.random() * 0.4)); ctx.lineTo(s * 0.2, s * 0.5); ctx.fill();
+  ctx.restore();
+}
+function roundRect(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+
+/* ---------- Arena (shooter) ---------- */
+const G = { player: null, shots: [], eshots: [], enemies: [], drops: [], parts: [], rocks: [], wave: 0, waves: 2, boss: null, cool: 0, between: 0, t: 0 };
+const mod = () => S.oracle?.pick ?? -1;
+function startFight() {
+  S.phase = "fight";
+  Object.assign(G, { player: { x: W / 2, y: H * 0.82 }, shots: [], eshots: [], enemies: [], drops: [], parts: [], rocks: [], wave: 0, boss: null, cool: 0, between: 1.4, t: 0 });
+  if (mod() === 3) { S.hull++; toast(t("t_shield")); }
+  if (mod() === 7) S.nova = 100;
+  setPlayUI(true); updateHUD();
+  banner(t("arenaOf", consName(S.target)), t("mods")[mod()] + " — " + t("modsInfo")[mod()]);
+  announce(t("a_arena", consName(S.target), t("mods")[mod()]));
+}
+function spawnWave() {
+  G.wave++;
+  const lvl = level(), n = 6 + lvl * 2 + G.wave * 2;
+  for (let i = 0; i < n; i++) {
+    const r = Math.random(), type = r < 0.5 ? "drone" : r < 0.8 ? "dart" : "turret";
+    G.enemies.push({ type, x: rand(40, W - 40), y: -30 - i * 38, hp: (type === "turret" ? 3 : 1) + Math.floor(lvl / 4), vx: rand(-1, 1), ph: rand(0, 6), fire: rand(1, 3), stopY: rand(H * 0.12, H * 0.38) });
+  }
+  banner(t("wave", G.wave, G.waves));
+}
+function spawnBoss() {
+  const lvl = level();
+  let hp = (70 + lvl * 25) * (assist ? 0.7 : 1);
+  if (mod() === 5) hp *= 0.6;
+  G.boss = { x: W / 2, y: -80, hp, max: hp, t: 0, fire: 1.5, ang: 0 };
+  banner(t("boss"), consName(S.target)); announce(t("a_boss")); sfx.boom();
+}
+const espd = () => (mod() === 5 ? 1.3 : 1) * (assist ? 0.75 : 1) * (1 + level() * 0.04);
+function enemyShot(x, y, a, sp = 190) { G.eshots.push({ x, y, vx: Math.cos(a) * sp * espd(), vy: Math.sin(a) * sp * espd() }); }
+function burst(x, y, hue, n = 14) { if (reduced()) n = Math.ceil(n / 3); for (let i = 0; i < n; i++) { const a = rand(0, 6.28), s = rand(40, 220); G.parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: rand(0.3, 0.8), hue }); } }
+function pts(n) { S.score += n * (mod() === 1 ? 2 : 1) * S.cycle; }
+function fireNova() {
+  if (S.nova < 100 || S.phase !== "fight") return;
+  S.nova = 0; sfx.nova(); toast(t("t_nova")); S.shake = reduced() ? 0 : 0.5;
+  G.eshots = [];
+  G.enemies.forEach((e) => { e.hp -= 5; });
+  if (G.boss && G.boss.y > 0) G.boss.hp -= G.boss.max * 0.15;
+  burst(G.player.x, G.player.y, 50, 50);
+  updateHUD();
+}
+function damage() {
+  if (S.invuln > 0) return;
+  S.hull--; S.invuln = 1.4; sfx.hit(); flash(); S.shake = reduced() ? 0 : 0.35;
+  announce(t("a_hit", S.hull)); updateHUD();
+  if (navigator.vibrate && !reduced()) try { navigator.vibrate(60); } catch {}
+}
+function updateFight(dt) {
+  G.t += dt;
+  const P = G.player, a = axis(), sp = 360;
+  P.x = clamp(P.x + a.x * sp * dt, 20, W - 20); P.y = clamp(P.y + a.y * sp * dt, H * 0.4, H - 30);
+  // auto-fire
+  G.cool -= dt;
+  const rate = (mod() === 4 || S.rapid > 0 ? 0.09 : 0.17);
+  if (G.cool <= 0) {
+    G.cool = rate;
+    const spread = S.triple > 0 ? [-0.18, 0, 0.18] : [0];
+    spread.forEach((s) => G.shots.push({ x: P.x, y: P.y - 18, vx: Math.sin(s) * 620, vy: -Math.cos(s) * 620 }));
+    sfx.shot();
+  }
+  S.triple = Math.max(0, S.triple - dt); S.rapid = Math.max(0, S.rapid - dt);
+  const well = mod() === 6 ? { x: W / 2, y: H * 0.42 } : null;
+  const moveShot = (s) => { if (well) { const dx = well.x - s.x, dy = well.y - s.y, d = Math.max(60, Math.hypot(dx, dy)); s.vx += dx / d * 260 * dt; s.vy += dy / d * 260 * dt; } s.x += s.vx * dt; s.y += s.vy * dt; };
+  G.shots.forEach(moveShot); G.eshots.forEach(moveShot);
+  G.shots = G.shots.filter((s) => s.y > -20 && s.y < H + 20 && s.x > -20 && s.x < W + 20);
+  G.eshots = G.eshots.filter((s) => s.y > -20 && s.y < H + 20 && s.x > -20 && s.x < W + 20);
+  // waves
+  if (!G.enemies.length && !G.boss) {
+    G.between -= dt;
+    if (G.between <= 0) { if (G.wave < G.waves) spawnWave(); else spawnBoss(); G.between = 1.2; }
+  }
+  const fast = mod() === 2 ? 1.5 : 1, hue = CONS[S.target].hue;
+  for (const e of G.enemies) {
+    e.ph += dt;
+    if (e.type === "drone") { e.y += 70 * fast * espd() * dt; e.x += Math.sin(e.ph * 2) * 120 * dt; if (e.y > H + 40) e.gone = true; }
+    else if (e.type === "dart") { if (e.y < H * 0.15) e.y += 90 * fast * dt; else { const dx = P.x - e.x; e.x += clamp(dx, -1, 1) * 80 * dt; e.y += 170 * fast * espd() * dt; } if (e.y > H + 40) e.gone = true; }
+    else { if (e.y < e.stopY) e.y += 80 * fast * dt; e.x += Math.sin(e.ph) * 40 * dt; e.fire -= dt; if (e.fire <= 0 && e.y > 0) { e.fire = rand(1.6, 2.6) / fast; enemyShot(e.x, e.y, Math.atan2(P.y - e.y, P.x - e.x)); } }
+    e.x = clamp(e.x, 20, W - 20);
+    if (Math.hypot(e.x - P.x, e.y - P.y) < 26) { damage(); e.hp = 0; }
+  }
+  // boss
+  const B = G.boss;
+  if (B) {
+    B.t += dt;
+    if (B.y < H * 0.18) B.y += 80 * dt;
+    B.x = W / 2 + Math.sin(B.t * 0.7) * W * 0.3;
+    const phase = B.hp < B.max * 0.33 ? 3 : B.hp < B.max * 0.66 ? 2 : 1;
+    B.fire -= dt * (0.8 + phase * 0.3) * fast;
+    if (B.fire <= 0 && B.y > 0) {
+      B.fire = 1.1;
+      const k = S.target;
+      if (k === 0) { const n = 6 + phase * 2; for (let i = 0; i < n; i++) enemyShot(B.x, B.y, (i / n) * 6.28 + B.t); }
+      else if (k === 1) { const a0 = Math.atan2(P.y - B.y, P.x - B.x); for (let i = -phase; i <= phase; i++) enemyShot(B.x, B.y, a0 + i * 0.16, 240); }
+      else if (k === 2) { B.fire = 0.25; B.ang += 0.5; enemyShot(B.x, B.y, B.ang, 170); if (phase > 1) enemyShot(B.x, B.y, B.ang + Math.PI, 170); }
+      else if (k === 3) { for (let i = 0; i < 3 + phase; i++) enemyShot(B.x + rand(-60, 60), B.y, Math.PI / 2 + rand(-0.5, 0.5), rand(180, 280)); }
+      else { B.ang += 0.4; for (let i = 0; i < 4; i++) enemyShot(B.x, B.y, B.ang + i * Math.PI / 2, 200); if (phase === 3) for (let i = 0; i < 4; i++) enemyShot(B.x, B.y, B.ang + Math.PI / 4 + i * Math.PI / 2, 150); }
+    }
+    if (Math.hypot(B.x - P.x, B.y - P.y) < 60) damage();
+  }
+  // meteors (modifier 0)
+  if (mod() === 0 && Math.random() < dt * 0.9) G.rocks.push({ x: rand(20, W - 20), y: -30, vy: rand(140, 240), r: rand(14, 26), hp: 3, rot: rand(0, 360) });
+  G.rocks.forEach((r) => { r.y += r.vy * dt; r.rot += dt * 60; if (Math.hypot(r.x - P.x, r.y - P.y) < r.r + 12) { damage(); r.hp = 0; } });
+  // player shots vs targets
+  for (const s of G.shots) {
+    for (const e of G.enemies) if (e.hp > 0 && Math.abs(s.x - e.x) < 18 && Math.abs(s.y - e.y) < 18) { e.hp--; s.dead = true; break; }
+    if (!s.dead && B && Math.abs(s.x - B.x) < 56 && Math.abs(s.y - B.y) < 40) { B.hp--; s.dead = true; if (Math.random() < 0.3) burst(s.x, s.y, hue, 2); }
+    if (!s.dead) for (const r of G.rocks) if (r.hp > 0 && Math.hypot(s.x - r.x, s.y - r.y) < r.r) { r.hp--; s.dead = true; if (r.hp <= 0) { pts(40); burst(r.x, r.y, 20, 8); } break; }
+  }
+  G.shots = G.shots.filter((s) => !s.dead);
+  G.rocks = G.rocks.filter((r) => r.hp > 0 && r.y < H + 40);
+  G.enemies = G.enemies.filter((e) => {
+    if (e.gone) return false;
+    if (e.hp > 0) return true;
+    S.stats.kills++; pts(e.type === "turret" ? 150 : 80); burst(e.x, e.y, hue); sfx.boom();
+    S.nova = Math.min(100, S.nova + 2);
+    if (Math.random() < 0.1) G.drops.push({ x: e.x, y: e.y, kind: ["shield", "triple", "rapid"][Math.floor(Math.random() * 3)] });
+    return false;
+  });
+  // enemy shots vs player
+  for (const s of G.eshots) if (Math.hypot(s.x - P.x, s.y - P.y) < 11) { s.dead = true; damage(); }
+  G.eshots = G.eshots.filter((s) => !s.dead);
+  // drops
+  for (const d of G.drops) { d.y += 90 * dt; if (Math.hypot(d.x - P.x, d.y - P.y) < 28) { d.dead = true; sfx.power(); if (d.kind === "shield") { S.hull = Math.min(S.maxHull + 2, S.hull + 1); toast(t("t_shield")); } else if (d.kind === "triple") { S.triple = 8; toast(t("t_triple")); } else { S.rapid = 8; toast(t("t_rapid")); } } }
+  G.drops = G.drops.filter((d) => !d.dead && d.y < H + 20);
+  G.parts.forEach((p) => { p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; });
+  G.parts = G.parts.filter((p) => p.life > 0);
+  $("progressLabel").textContent = G.boss ? t("boss") + " · " + consName(S.target) : t("wave", Math.max(1, G.wave), G.waves);
+  $("progressFill").style.width = (G.boss ? clamp(G.boss.hp / G.boss.max * 100, 0, 100) : ((G.wave - (G.enemies.length ? 1 : 0)) / (G.waves + 1)) * 100) + "%";
+  if (S.hull <= 0) return gameOver();
+  if (B && B.hp <= 0) { burst(B.x, B.y, hue, 80); sfx.power(); G.boss = null; constellationLit(); }
+}
+function drawFight() {
+  const c = CONS[S.target], hue = c.hue;
+  ctx.fillStyle = `hsl(${hue} 50% 5%)`; ctx.fillRect(0, 0, W, H);
+  // ghost of the constellation in the background
+  ctx.save(); ctx.globalAlpha = 0.25; ctx.strokeStyle = `hsl(${hue} 100% 65%)`; ctx.lineWidth = 2;
+  const sc = Math.min(W, H) * 0.55, ox = W / 2 - sc / 2, oy = H * 0.12;
+  c.ln.forEach(([a, b]) => { ctx.beginPath(); ctx.moveTo(ox + c.pts[a][0] * sc, oy + c.pts[a][1] * sc * 0.75); ctx.lineTo(ox + c.pts[b][0] * sc, oy + c.pts[b][1] * sc * 0.75); ctx.stroke(); });
+  ctx.fillStyle = "#fff"; c.pts.forEach(([x, y]) => { ctx.beginPath(); ctx.arc(ox + x * sc, oy + y * sc * 0.75, 4, 0, 6.28); ctx.fill(); });
+  ctx.restore();
+  // scrolling stars
+  ctx.fillStyle = "rgba(255,255,255,0.5)";
+  for (let i = 0; i < 60; i++) { const x = (i * 97.3) % W, y = (i * 53.7 + G.t * (30 + (i % 5) * 20)) % H; ctx.fillRect(x, y, 1.5, 1.5); }
+  if (mod() === 6) { ctx.strokeStyle = "rgba(191,90,242,0.35)"; for (let r = 20; r < 90; r += 22) { ctx.beginPath(); ctx.arc(W / 2, H * 0.42, r + (G.t * 30) % 22, 0, 6.28); ctx.stroke(); } }
+  G.rocks.forEach((r) => drawRock(r.x, r.y, r.r, r.rot));
+  // enemies
+  for (const e of G.enemies) {
+    ctx.save(); ctx.translate(e.x, e.y);
+    ctx.fillStyle = e.type === "turret" ? "#ff9f0a" : e.type === "dart" ? "#ff2d55" : `hsl(${hue} 100% 60%)`;
+    ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = reduced() ? 0 : 10;
+    ctx.beginPath();
+    if (e.type === "drone") { ctx.arc(0, 0, 12, 0, 6.28); ctx.fill(); ctx.fillStyle = "#04050d"; ctx.beginPath(); ctx.arc(0, 0, 5, 0, 6.28); }
+    else if (e.type === "dart") { ctx.moveTo(0, 16); ctx.lineTo(11, -10); ctx.lineTo(-11, -10); ctx.closePath(); }
+    else { ctx.rect(-14, -12, 28, 24); }
+    ctx.fill(); ctx.restore();
+  }
+  // boss
+  const B = G.boss;
+  if (B) {
+    ctx.save(); ctx.translate(B.x, B.y);
+    ctx.shadowColor = `hsl(${hue} 100% 60%)`; ctx.shadowBlur = reduced() ? 0 : 24;
+    ctx.fillStyle = `hsl(${hue} 80% 45%)`; ctx.strokeStyle = "#fff"; ctx.lineWidth = 2;
+    ctx.beginPath(); const n = c.pts.length;
+    for (let i = 0; i < n * 2; i++) { const a = (i / (n * 2)) * 6.28 + B.t * 0.5, r = i % 2 ? 30 : 56; ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r * 0.75); }
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(0, 0, 10 + Math.sin(B.t * 6) * 2, 0, 6.28); ctx.fill();
+    ctx.restore();
+  }
+  // shots
+  ctx.fillStyle = `hsl(${S.oracle.lucky} 100% 75%)`;
+  G.shots.forEach((s) => ctx.fillRect(s.x - 1.5, s.y - 8, 3, 14));
+  ctx.fillStyle = "#ff5577";
+  G.eshots.forEach((s) => { ctx.beginPath(); ctx.arc(s.x, s.y, 5, 0, 6.28); ctx.fill(); });
+  // drops
+  G.drops.forEach((d) => { ctx.fillStyle = d.kind === "shield" ? "#ff2d55" : d.kind === "triple" ? "#00f5ff" : "#ffd60a"; ctx.beginPath(); ctx.arc(d.x, d.y, 11, 0, 6.28); ctx.fill(); ctx.fillStyle = "#04050d"; ctx.font = "bold 12px monospace"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(d.kind === "shield" ? "♥" : d.kind === "triple" ? "3" : "»", d.x, d.y + 1); });
+  // particles
+  G.parts.forEach((p) => { ctx.globalAlpha = clamp(p.life * 1.6, 0, 1); ctx.fillStyle = `hsl(${p.hue} 100% 65%)`; ctx.fillRect(p.x, p.y, 3, 3); });
+  ctx.globalAlpha = 1;
+  drawShip(G.player.x, G.player.y, 20, S.oracle.lucky, 0, S.invuln > 0);
+}
+
+/* ---------- Outcomes ---------- */
+function constellationLit() {
+  const bonus = 1000 * S.cycle * (mod() === 1 ? 2 : 1);
+  pts(1000);
+  S.lit.push(S.target);
+  S.phase = "clear"; setPlayUI(false);
+  saveBest();
+  if (S.lit.length >= CONS.length) return cycleComplete();
+  $("clearH").textContent = consName(S.target) + " ✦";
+  fillList("clearList", [[t("r_bonus"), "+" + bonus.toLocaleString(lang)], [t("r_dice"), S.stats.dice], [t("r_gates"), S.stats.gates], [t("r_kills"), S.stats.kills], [t("r_score"), Math.floor(S.score).toLocaleString(lang)], [t("lit", S.lit.length, CONS.length), ""]]);
+  show("clearScreen"); focusFirst("backObsBtn");
+  announce(t("litUp") + ": " + consName(S.target));
+}
+function cycleComplete() {
+  $("endEyebrow").textContent = t("cycleEyebrow");
+  $("endH").textContent = t("cycleH", S.cycle);
+  fillList("endList", [[t("r_score"), Math.floor(S.score).toLocaleString(lang)], [t("r_best"), Math.floor(best).toLocaleString(lang)]]);
+  $("endBtn").textContent = t("nextCycle");
+  $("endBtn").onclick = () => { S.cycle++; S.lit = []; S.hull = Math.max(S.hull, S.maxHull); openObservatory(); };
+  show("endScreen"); focusFirst("endBtn");
+  announce(t("cycleH", S.cycle));
+}
+function gameOver() {
+  S.phase = "over"; setPlayUI(false);
+  const isBest = saveBest();
+  $("endEyebrow").textContent = t("overEyebrow");
+  $("endH").textContent = isBest ? t("newBest") : t("overH");
+  fillList("endList", [[t("r_score"), Math.floor(S.score).toLocaleString(lang)], [t("r_lit"), S.lit.length + (S.cycle - 1) * CONS.length], [t("r_best"), Math.floor(best).toLocaleString(lang)]]);
+  $("endBtn").textContent = t("again");
+  $("endBtn").onclick = newRun;
+  show("endScreen"); focusFirst("endBtn");
+  announce(t("overH") + ". " + t("r_score") + " " + Math.floor(S.score));
+}
+function saveBest() { if (S.score > best) { best = Math.floor(S.score); save("best", best); $("bestOut").textContent = best.toLocaleString(lang); return true; } return false; }
+function fillList(id, rows) {
+  const ul = $(id); ul.replaceChildren();
+  rows.forEach(([k, v]) => { const li = document.createElement("li"); li.append(k + (v !== "" ? ": " : "")); if (v !== "") { const b = document.createElement("b"); b.textContent = v; li.appendChild(b); } ul.appendChild(li); });
+}
+function newRun() {
+  S.score = 0; S.cycle = 1; S.lit = []; S.nova = 0; S.triple = 0; S.rapid = 0; S.invuln = 0;
+  S.maxHull = assist ? 4 : 3; S.hull = S.maxHull;
+  openObservatory();
+}
+function togglePause(force) {
+  if (S.phase !== "flight" && S.phase !== "fight") return;
+  S.paused = force ?? !S.paused;
+  keys.clear();
+  if (S.paused) { show("pauseScreen"); focusFirst("resumeBtn"); } else { show(null); last = performance.now(); }
+}
+function toTitle() { S.phase = "title"; S.paused = false; setPlayUI(false); show("titleScreen"); $("bestOut").textContent = best.toLocaleString(lang); focusFirst("startBtn"); }
+
+/* ---------- Loop ---------- */
+let last = performance.now(), lastScene = "";
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  if (!S.paused) {
+    S.invuln = Math.max(0, S.invuln - dt); S.shake = Math.max(0, S.shake - dt);
+    if (S.phase === "flight") updateFlight(dt);
+    else if (S.phase === "fight") updateFight(dt);
+    if (S.phase === "flight" || S.phase === "fight") updateHUD();
+  }
+  ctx.save();
+  if (S.shake > 0) ctx.translate(rand(-6, 6) * S.shake, rand(-6, 6) * S.shake);
+  if (S.phase === "flight" || S.phase === "fight") lastScene = S.phase;
+  const scene = (S.phase === "clear" || S.phase === "over") ? lastScene : S.phase;
+  if (scene === "flight") drawFlight();
+  else if (scene === "fight" && G.player) drawFight();
+  else ctx.clearRect(-10, -10, W + 20, H + 20);
+  ctx.restore();
+  requestAnimationFrame(frame);
+}
+
+/* ---------- Wiring ---------- */
+$("startBtn").onclick = () => { tone(440, 0.05); newRun(); };
+$("langBtn").onclick = () => { lang = lang === "ro" ? "en" : "ro"; save("lang", lang); applyLang(); };
+$("assistChk").checked = assist; $("assistChk").onchange = (e) => { assist = e.target.checked; save("assist", assist); };
+$("reducedChk").checked = reducedPref; $("reducedChk").onchange = (e) => { reducedPref = e.target.checked; save("reduced", reducedPref); app.classList.toggle("reduced", reduced()); };
+$("flyBtn").onclick = startFlight;
+$("rerollBtn").onclick = () => { if (S.rerolled) return; S.rerolled = true; rollOracle(); };
+$("soundBtn").onclick = () => { audioOn = !audioOn; save("audio", audioOn); updateSoundBtn(); };
+$("pauseBtn").onclick = () => togglePause();
+$("resumeBtn").onclick = () => togglePause(false);
+$("quitBtn").onclick = () => { saveBest(); toTitle(); };
+$("endQuitBtn").onclick = toTitle;
+$("backObsBtn").onclick = openObservatory;
+$("novaBtn").onclick = fireNova;
+document.addEventListener("visibilitychange", () => { if (document.hidden) togglePause(true); });
+motionMQ.addEventListener?.("change", () => app.classList.toggle("reduced", reduced()));
+addEventListener("resize", resize);
+
+app.classList.toggle("reduced", reduced());
+buildSky(); resize(); applyLang();
+$("bestOut").textContent = best.toLocaleString(lang);
+focusFirst("startBtn");
+requestAnimationFrame(frame);
+
+/* Test hook (no effect on play). */
+window.__od = { S, F, G, startFight, constellationLit, gameOver };
+</script>
+</body>
+</html>
