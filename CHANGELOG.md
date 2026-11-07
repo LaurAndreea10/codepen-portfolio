@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-07 — ORACLE DRIFT v1.0.0 · Finalizat / Completed
+
+- RO: Joc nou care combină Random Constellation, DICE DRIFT 3D și VOID ORACLE: observator cu oracol CSS random(), zbor 3D din valori random(), arenă cu boss în trei faze pentru fiecare din cele cinci constelații, cicluri tot mai grele. Link din Random Constellation.
+- EN: New game combining Random Constellation, DICE DRIFT 3D and VOID ORACLE: a CSS random() oracle observatory, a 3D flight built from random() values, an arena with a three-phase boss for each of five constellations, harder cycles. Linked from Random Constellation.
+- Added to `projects.json`, Romanian and English completed lists and the sitemap. History: [oracle-drift/CHANGELOG.md](oracle-drift/CHANGELOG.md).
+
 ## 2026-11-03 — DICE DRIFT 3D v1.0.0 · Finalizat / Completed
 
 - RO: Joc 3D nou (Three.js) pentru provocarea CSS random(): CSS aruncă zarurile, WebGL construiește lumea. Valurile de obstacole, paleta și evenimentele Oracolului vin din valori `random()` citite prin `@property`; zarul 3D, scânteile și praful de stele sunt tot `random()`. 8 mutatori, Oracolul zilei, realizări, clasament local, RO/EN, accesibil.
