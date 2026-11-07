@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-07 — Marketing Lab v1.0.0 · Finalizat / Completed
+
+- RO: Aplicație nouă cu 15 instrumente funcționale de marketing, date și front-end: UTM builder, calculator A/B, email builder compatibil Outlook, journey map, lead scoring, cohorte, marketing mix, design system, mini-CRM TypeScript (13 teste Vitest), Web Components, PWA offline-first, extensie SEO Chrome (Manifest V3), Performance Lab, audit WCAG AA și „De la Canva la cod”. Istoric de navigare sincronizat cu browserul și panou de vizite. RO/EN, dark/light.
+- EN: New app with 15 working marketing, data and front-end tools: UTM builder, A/B calculator, Outlook-safe email builder, journey map, lead scoring, cohorts, marketing mix, design system, TypeScript mini-CRM (13 Vitest tests), Web Components, offline-first PWA, SEO Chrome extension (Manifest V3), Performance Lab, WCAG AA audit and “From Canva to code”. Browser-synced navigation history and a visits panel. RO/EN, dark/light.
+- Added to `projects.json`, the Romanian Finalizat recent lists and November history, the English completed list and the sitemap. History: [marketing-lab/CHANGELOG.md](marketing-lab/CHANGELOG.md).
+
 ## 2026-11-03 — DICE DRIFT 3D v1.0.0 · Finalizat / Completed
 
 - RO: Joc 3D nou (Three.js) pentru provocarea CSS random(): CSS aruncă zarurile, WebGL construiește lumea. Valurile de obstacole, paleta și evenimentele Oracolului vin din valori `random()` citite prin `@property`; zarul 3D, scânteile și praful de stele sunt tot `random()`. 8 mutatori, Oracolul zilei, realizări, clasament local, RO/EN, accesibil.
