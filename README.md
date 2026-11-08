@@ -15,10 +15,10 @@
 
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-laurandreea10.github.io-4f8cff?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/)
-[![GitHub Pages](https://img.shields.io/badge/Hosted_on-GitHub_Pages-8b5cf6?style=for-the-badge&logo=github&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/)
-[![Projects](https://img.shields.io/badge/Projects-89_live-22c55e?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/#projects)
-[![Language](https://img.shields.io/badge/Lang-RO_%7C_EN-facc15?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-laurandreea10.github.io-4f8cff?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/portfolio.html)
+[![GitHub Pages](https://img.shields.io/badge/Hosted_on-GitHub_Pages-8b5cf6?style=for-the-badge&logo=github&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/portfolio.html)
+[![Projects](https://img.shields.io/badge/Projects-89_live-22c55e?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/portfolio.html#projects)
+[![Language](https://img.shields.io/badge/Lang-RO_%7C_EN-facc15?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/portfolio.html)
 
 </div>
 
@@ -133,7 +133,7 @@ Construiesc proiecte care combină logică, structură și UX gândit din perspe
 
 Lasă un ⭐ pe repo și deschide portofoliul live — fiecare proiect are un preview interactiv direct în pagină.
 
-[![Live Demo](https://img.shields.io/badge/→_Deschide_portofoliul-4f8cff?style=for-the-badge)](https://laurandreea10.github.io/codepen-portfolio/)
+[![Live Demo](https://img.shields.io/badge/→_Deschide_portofoliul-4f8cff?style=for-the-badge)](https://laurandreea10.github.io/codepen-portfolio/portfolio.html)
 
 </details>
 
@@ -247,7 +247,7 @@ I build projects that combine logic, structure and UX shaped by real user perspe
 
 Drop a ⭐ on the repo and open the live portfolio — every project has an interactive preview right in the page.
 
-[![Live Demo](https://img.shields.io/badge/→_Open_portfolio-4f8cff?style=for-the-badge)](https://laurandreea10.github.io/codepen-portfolio/)
+[![Live Demo](https://img.shields.io/badge/→_Open_portfolio-4f8cff?style=for-the-badge)](https://laurandreea10.github.io/codepen-portfolio/portfolio.html)
 
 </details>
 \n## Featured accessible game
