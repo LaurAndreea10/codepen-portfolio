@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Studiu de caz · CHRONOSCROLL × Baseline Voyage · Laura Andreea</title>
+<meta name="description" content="Studiu de caz RO/EN: cum am construit Baseline Voyage, un Pen condus de scroll cu animation-timeline, accesibil și cu fallback. / Case study: building Baseline Voyage.">
+<meta name="author" content="Laura Andreea">
+<meta property="og:title" content="Case study · Baseline Voyage">
+<meta property="og:image" content="og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#070c17; --panel:#0e182c; --line:rgb(94 231 255/.2); --text:#e6edf7; --muted:#9fb0c9; --accent:#5ee7ff; --accent2:#ffb547; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: radial-gradient(120% 60% at 50% 0%, #10203d, var(--bg) 60%) fixed, var(--bg); color: var(--text); font: 400 1.05rem/1.7 Inter, system-ui, sans-serif; }
+  html[lang="en"] [data-lang="ro"], html[lang="ro"] [data-lang="en"] { display: none !important; }
+  a { color: var(--accent); } code { font-family: "JetBrains Mono", monospace; font-size: .88em; color: var(--accent); }
+  :focus-visible { outline: 3px solid var(--accent2); outline-offset: 3px; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .top a { font: 500 .85rem "JetBrains Mono", monospace; text-decoration: none; }
+  button { min-height: 44px; min-width: 44px; padding: 0 .9rem; font: 600 .85rem "JetBrains Mono", monospace; color: var(--text); background: transparent; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; }
+  .eyebrow { font: 500 .78rem "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--accent2); margin: 3rem 0 .5rem; }
+  h1 { font: 700 clamp(2.2rem, 6vw, 3.8rem)/1.05 Fraunces, Georgia, serif; margin: 0 0 1rem; }
+  h2 { font: 600 1.7rem/1.2 Fraunces, Georgia, serif; margin: 3rem 0 .8rem; }
+  .lead { font-size: 1.2rem; color: var(--muted); }
+  img { width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--line); margin: 2rem 0 1rem; }
+  .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: .8rem; margin: 1.5rem 0; padding: 0; list-style: none; }
+  .meta li { padding: .9rem 1rem; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+  .meta b { display: block; font: 500 .72rem "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  .tags { display: flex; flex-wrap: wrap; gap: .4rem; padding: 0; list-style: none; }
+  .tags li { font: 500 .78rem "JetBrains Mono", monospace; padding: .3rem .7rem; border-radius: 999px; border: 1px solid var(--line); color: var(--accent); }
+  ul.list li { margin-bottom: .5rem; }
+  .cta { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 2rem; }
+  .cta a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 1.1rem; border-radius: 999px; border: 1px solid var(--line); text-decoration: none; font-weight: 600; }
+  .cta a:first-child { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a href="https://laurandreea10.github.io/codepen-portfolio/">← <span data-lang="ro">Portofoliu</span><span data-lang="en">Portfolio</span></a>
+    <button type="button" id="lang" aria-label="Schimbă limba / Switch language"><span data-lang="ro">EN</span><span data-lang="en">RO</span></button>
+  </div>
+
+  <p class="eyebrow"><span data-lang="ro">Studiu de caz · CodePen Challenge · noiembrie 2026</span><span data-lang="en">Case study · CodePen Challenge · November 2026</span></p>
+  <h1>CHRONOSCROLL × Baseline Voyage</h1>
+  <p class="lead"><span data-lang="ro">„Timpul. În mâinile tale.” O călătorie condusă de scroll prin istoria lui <code>animation-timeline</code>, de la Chrome 115 la Firefox 159. Construită ca demonstrație completă a animațiilor CSS conduse de scroll, accesibilă și utilizabilă în orice browser.</span><span data-lang="en">“Time. In your hands.” A scroll-driven voyage through the history of <code>animation-timeline</code>, from Chrome 115 to Firefox 159. Built as a complete showcase of CSS scroll-driven animations that stays accessible and usable in any browser.</span></p>
+
+  <img src="og-image.png" alt="Baseline Voyage: the intro screen with the title “When did animation-timeline land?” on a dark starry background" width="1200" height="630">
+
+  <ul class="meta">
+    <li><b><span data-lang="ro">Rol</span><span data-lang="en">Role</span></b><span data-lang="ro">Design și dezvoltare front-end</span><span data-lang="en">Design &amp; front-end development</span></li>
+    <li><b><span data-lang="ro">Context</span><span data-lang="en">Context</span></b>CodePen Challenge · week 2</li>
+    <li><b><span data-lang="ro">Stare</span><span data-lang="en">Status</span></b><span data-lang="ro">Finalizat</span><span data-lang="en">Completed</span></li>
+    <li><b><span data-lang="ro">Creat</span><span data-lang="en">Created</span></b><span data-lang="ro">9 noiembrie 2026</span><span data-lang="en">9 November 2026</span></li>
+    <li><b><span data-lang="ro">Dependențe</span><span data-lang="en">Dependencies</span></b><span data-lang="ro">Zero (fonturi opționale)</span><span data-lang="en">None (optional fonts)</span></li>
+  </ul>
+
+  <h2><span data-lang="ro">Provocarea</span><span data-lang="en">The challenge</span></h2>
+  <p><span data-lang="ro">Template-ul CodePen conținea doar HTML-ul unei cronologii cu trei date. Scopul: să o animez cu <code>animation-timeline</code>, proprietate devenită Baseline la sfârșitul lui octombrie 2026. Mi-am propus mai mult decât o cronologie: un Pen care să explice tehnica, să o lase la îndemâna oricui pentru experimente și să nu excludă pe nimeni, nici pe cei cu browsere vechi, nici pe cei sensibili la mișcare.</span><span data-lang="en">The CodePen template was just the HTML of a three-date timeline. The goal: animate it with <code>animation-timeline</code>, which became Baseline at the end of October 2026. I aimed for more than a timeline: a Pen that explains the technique, lets anyone experiment with it, and leaves no one out, whether they use an older browser or are sensitive to motion.</span></p>
+
+  <h2><span data-lang="ro">Soluția</span><span data-lang="en">The solution</span></h2>
+  <ul class="list">
+    <li><span data-lang="ro"><strong>Cronologie animată</strong>: linie care se desenează, noduri care se aprind, evenimentul curent evidențiat cu un al doilea interval <code>view()</code> și un an uriaș (întreg <code>@property</code>) care trece de la 2023 la 2026.</span><span data-lang="en"><strong>Animated timeline</strong>: a line that draws itself, nodes that light up, the current event highlighted with a second <code>view()</code> range, and a giant year (an <code>@property</code> integer) that counts from 2023 to 2026.</span></li>
+    <li><span data-lang="ro"><strong>Univers 3D</strong>: planete-motor pe orbite legate de scroll, tunel temporal cu <code>translateZ</code>, constelații SVG și trasee luminoase, toate pe o singură <code>view-timeline</code>.</span><span data-lang="en"><strong>3D universe</strong>: engine planets on scroll-linked orbits, a <code>translateZ</code> time tunnel, SVG constellations and light trails, all on one <code>view-timeline</code>.</span></li>
+    <li><span data-lang="ro"><strong>Capitole și portaluri</strong>: Chrome/Edge, Safari și Firefox au culori proprii; între ele, o mască circulară, o pagină întoarsă și un zoom cu rotire.</span><span data-lang="en"><strong>Chapters and portals</strong>: Chrome/Edge, Safari and Firefox each have their own color; between them, a circular mask, a page turn and a zoom-and-rotate.</span></li>
+    <li><span data-lang="ro"><strong>Telecomandă</strong>: <code>timeline-scope</code> lasă insignele din header, harta traseului și indicatorii să citească cronologii declarate în altă parte a paginii.</span><span data-lang="en"><strong>Remote control</strong>: <code>timeline-scope</code> lets the header badges, the route map and the gauges read timelines declared elsewhere on the page.</span></li>
+    <li><span data-lang="ro"><strong>Laborator CSS</strong>: <code>scroll()</code>/<code>view()</code>, axă, <code>animation-range</code>, easing și transformări; scrie un <code>&lt;style&gt;</code> real, afișează codul, îl copiază și îl salvează în URL. Trei provocări îl transformă în exercițiu.</span><span data-lang="en"><strong>CSS lab</strong>: <code>scroll()</code>/<code>view()</code>, axis, <code>animation-range</code>, easing and transforms; it writes a real <code>&lt;style&gt;</code>, shows the code, copies it and stores it in the URL. Three challenges turn it into an exercise.</span></li>
+  </ul>
+
+  <h2><span data-lang="ro">Decizii de accesibilitate</span><span data-lang="en">Accessibility decisions</span></h2>
+  <ul class="list">
+    <li><span data-lang="ro">Conținutul e lizibil în orice stare: stilurile de bază sunt statice, animațiile doar îmbunătățesc.</span><span data-lang="en">Content is readable in every state: base styles are static, animations only enhance.</span></li>
+    <li><span data-lang="ro"><code>prefers-reduced-motion</code> e respectat automat și poate fi suprascris manual. Parallax-ul, zborul cardurilor și 3D-ul se opresc; indicatorii de progres rămân, pentru că informează fără să miște scena.</span><span data-lang="en"><code>prefers-reduced-motion</code> is respected automatically and can be overridden by hand. Parallax, flying cards and 3D stop; progress indicators stay, because they inform without moving the scene.</span></li>
+    <li><span data-lang="ro">Comutatoare separate pentru 3D, particule, contrast ridicat, mărimea textului și intensitatea efectelor. Fără flashuri și fără derulare forțată sau scroll-jacking.</span><span data-lang="en">Separate switches for 3D, particles, high contrast, text size and effect intensity. No flashes and no forced scrolling or scroll-jacking.</span></li>
+    <li><span data-lang="ro">Trei skip links, focus vizibil, galerie navigabilă cu săgeți, Home și End, dialoguri native <code>&lt;dialog&gt;</code>, ținte de minimum 44px. Titlul împărțit pe litere păstrează textul întreg pentru cititoarele de ecran.</span><span data-lang="en">Three skip links, visible focus, a gallery you can drive with arrows, Home and End, native <code>&lt;dialog&gt;</code>s, 44px minimum targets. The letter-split title keeps the full text for screen readers.</span></li>
+    <li><span data-lang="ro">Turul e oferit, nu impus; sunetul pornește doar la cerere; insignele sunt bonus, nu condiție pentru informație.</span><span data-lang="en">The tour is offered, never forced; sound starts only on request; badges are a bonus, never a gate to information.</span></li>
+  </ul>
+
+  <h2><span data-lang="ro">Compatibilitate și performanță</span><span data-lang="en">Compatibility &amp; performance</span></h2>
+  <p><span data-lang="ro">Trei straturi: static, fallback cu IntersectionObserver și nativ în <code>@supports</code>. Regulile native stau în spatele <code>:root:not(.fb, .static)</code>, așa că același CSS poate fi trecut la fallback sau static dintr-un buton, pentru testare. Detectarea e separată pentru fiecare funcție (inclusiv <code>timeline-scope</code>). Animațiile folosesc în principal <code>transform</code>, <code>opacity</code> și proprietăți personalizate înregistrate; blurul dispare pe ecrane tactile și în modul simplificat.</span><span data-lang="en">Three layers: static, IntersectionObserver fallback, and native inside <code>@supports</code>. Native rules sit behind <code>:root:not(.fb, .static)</code>, so the same CSS can be switched to fallback or static with a button for testing. Detection is per feature (including <code>timeline-scope</code>). Animations mostly use <code>transform</code>, <code>opacity</code> and registered custom properties; blur is dropped on touch screens and in lightweight mode.</span></p>
+
+  <h2><span data-lang="ro">Istoric</span><span data-lang="en">History</span></h2>
+  <ul class="list">
+    <li><strong>09.11.2026 · v1</strong> — <span data-lang="ro">cronologie animată, galerie orizontală, laboratorul telecomenzii, fallback.</span><span data-lang="en">animated timeline, horizontal gallery, remote-control lab, fallback.</span></li>
+    <li><strong>09.11.2026 · v2</strong> — <span data-lang="ro">cele 25 de direcții: univers 3D, capitole și portaluri, laborator CSS, învățare, 7 teme, confort, sunet, pașaport.</span><span data-lang="en">the 25 directions: 3D universe, chapters and portals, CSS lab, learning, 7 themes, comfort, sound, passport.</span></li>
+    <li><strong>09.11.2026 · v3</strong> — <span data-lang="ro">unirea cu CHRONOSCROLL: hero cu observator, dark/light × 7 palete, navigație numerotată, galerie cinema, cronologia <code>--sandbox</code> și fallback JS în laborator, print, descărcare HTML.</span><span data-lang="en">merge with CHRONOSCROLL: observatory hero, dark/light × 7 palettes, numbered nav, cinema gallery, <code>--sandbox</code> timeline and JS fallback in the lab, print styles, HTML download.</span></li>
+    <li><strong>09.11.2026 · v4</strong> — <span data-lang="ro">CHRONO PILOT: joc în care bara de scroll e joystickul. Nava e mutată de <code>animation-timeline: --pilot</code>; moduri Poveste, Ziua (același traseu pentru toți) și Infinit, clasament local, viteză redusă, pauză automată.</span><span data-lang="en">CHRONO PILOT: a game where the scrollbar is the joystick. The ship is moved by <code>animation-timeline: --pilot</code>; Story, Daily (same course for everyone) and Endless modes, local leaderboard, slower speed, auto-pause.</span></li>
+  </ul>
+
+  <h2><span data-lang="ro">Tehnologii</span><span data-lang="en">Tech</span></h2>
+  <ul class="tags">
+    <li>HTML</li><li>CSS animation-timeline</li><li>scroll() / view()</li><li>animation-range</li><li>timeline-scope</li><li>@property</li><li>CSS 3D</li><li>@supports</li><li>Vanilla JS</li><li>IntersectionObserver</li><li>Web Audio API</li><li>Canvas 2D</li><li>GitHub Pages</li>
+  </ul>
+
+  <h2><span data-lang="ro">Ce am învățat</span><span data-lang="en">What I learned</span></h2>
+  <p><span data-lang="ro">Cel mai util concept a fost separarea între cine conduce animația (scrollerul sau elementul vizibil) și cine o urmează. Odată ce cronologiile au nume și <code>timeline-scope</code>, orice element poate reacționa la orice derulare, fără JavaScript. Și: o variantă statică bine făcută e baza pe care se construiește tot restul.</span><span data-lang="en">The most useful idea was separating who drives an animation (the scroller or the visible element) from who follows it. Once timelines have names and <code>timeline-scope</code>, any element can react to any scroll without JavaScript. And a well-made static version is the foundation everything else stands on.</span></p>
+
+  <div class="cta">
+    <a href="./"><span data-lang="ro">Deschide proiectul</span><span data-lang="en">Open the project</span></a>
+    <a href="./?mode=edu"><span data-lang="ro">Versiunea educativă</span><span data-lang="en">Educational version</span></a>
+    <a href="https://codepen.io/tag/cpc-animation-timeline">#cpc-animation-timeline</a>
+  </div>
+
+  <footer>
+    <p><span data-lang="ro">Realizat de</span><span data-lang="en">Built by</span> Laura Andreea · <span data-lang="ro">Sursa datelor:</span><span data-lang="en">Data source:</span> <a href="https://github.com/mdn/browser-compat-data">MDN browser-compat-data</a></p>
+  </footer>
+</div>
+<script>
+  (() => {
+    const root = document.documentElement;
+    let lang = "ro";
+    try { lang = JSON.parse(localStorage.getItem("bv-prefs") || "{}").lang || "ro"; } catch {}
+    root.lang = lang;
+    document.getElementById("lang").addEventListener("click", () => {
+      root.lang = root.lang === "ro" ? "en" : "ro";
+      try { const p = JSON.parse(localStorage.getItem("bv-prefs") || "{}"); p.lang = root.lang; localStorage.setItem("bv-prefs", JSON.stringify(p)); } catch {}
+    });
+  })();
+</script>
+</body>
+</html>

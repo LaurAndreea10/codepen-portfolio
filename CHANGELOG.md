@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-09 — CHRONOSCROLL × Baseline Voyage v4.0.0 · Finalizat / Completed
+
+- RO: Intrarea pentru CodePen Challenge, săptămâna 2 (`animation-timeline`): călătorie condusă de scroll din 2023 în 2026, cu observator 3D, cronologie animată, univers 3D, portaluri, galerie cinema, cronologii denumite cu `timeline-scope`, laborator CSS cu provocări, compatibilitate live și jocul CHRONO PILOT, în care bara de scroll e joystickul. RO/EN, dark/light × 7 palete, mișcare redusă, fallback `@supports` și mod static.
+- EN: Entry for CodePen Challenge week 2 (`animation-timeline`): a scroll-driven voyage from 2023 to 2026 with a 3D observatory, animated timeline, 3D universe, portals, cinema gallery, named timelines with `timeline-scope`, a CSS lab with challenges, live compatibility and the CHRONO PILOT game, where the scrollbar is the joystick. RO/EN, dark/light × 7 palettes, reduced motion, `@supports` fallback and static mode.
+- Added to `projects.json`, the Romanian Finalizat recent lists and November history, the English completed list and the sitemap. History: [baseline-voyage/CHANGELOG.md](baseline-voyage/CHANGELOG.md).
+
 ## 2026-11-07 — Marketing Lab v1.0.0 · Finalizat / Completed
 
 - RO: Aplicație nouă cu 15 instrumente funcționale de marketing, date și front-end: UTM builder, calculator A/B, email builder compatibil Outlook, journey map, lead scoring, cohorte, marketing mix, design system, mini-CRM TypeScript (13 teste Vitest), Web Components, PWA offline-first, extensie SEO Chrome (Manifest V3), Performance Lab, audit WCAG AA și „De la Canva la cod”. Istoric de navigare sincronizat cu browserul și panou de vizite. RO/EN, dark/light.

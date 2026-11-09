@@ -1,0 +1,806 @@
+<!-- ============================================================
+     Baseline Voyage · CodePen Challenge: animation-timeline
+     by Laura Andreea · November 2026
+     Every scroll effect is CSS (animation-timeline). JS only handles
+     settings, the lab, sound, the passport and the legacy fallback.
+     ============================================================ -->
+<nav class="skips" aria-label="Skip links">
+  <a class="skip" href="#timeline"><span data-lang="en">Skip to the timeline</span><span data-lang="ro">Sari la cronologie</span></a>
+  <a class="skip" href="#lab"><span data-lang="en">Skip to the CSS lab</span><span data-lang="ro">Sari la laboratorul CSS</span></a>
+  <a class="skip" href="#compat"><span data-lang="en">Skip to compatibility</span><span data-lang="ro">Sari la compatibilitate</span></a>
+</nav>
+
+<!-- Sky: parallax layers, landscape and chapter light, all on scroll(root) -->
+<div class="sky" aria-hidden="true">
+  <div class="sky__light"></div>
+  <div class="sky__layer sky__layer--far"></div>
+  <div class="sky__layer sky__layer--mid"></div>
+  <div class="sky__layer sky__layer--near"></div>
+  <div class="sky__orb"></div>
+  <div class="sky__grid"></div>
+  <svg class="sky__land sky__land--back" viewBox="0 0 1440 220" preserveAspectRatio="none"><path d="M0 220V120l120-40 140 60 160-90 180 80 140-50 200 70 160-60 160 50 180-40v140z"/></svg>
+  <svg class="sky__land sky__land--front" viewBox="0 0 1440 220" preserveAspectRatio="none"><path d="M0 220V160l200-50 160 40 220-70 200 60 180-30 240 50 240-40v160z"/></svg>
+</div>
+
+<div class="progress-bar" aria-hidden="true"></div>
+
+<header class="topbar">
+  <a class="brand" href="#intro"><code>CHRONOSCROLL</code><span class="brand__dot">×</span>Baseline Voyage</a>
+
+  <!-- Intro turns into this compact nav as you scroll -->
+  <nav class="compact-nav" aria-label="Chapters / Capitole">
+    <a href="#timeline"><b>01</b> <span data-lang="en">Journey</span><span data-lang="ro">Călătorie</span></a>
+    <a href="#universe" data-section="full"><b>02</b> <span data-lang="en">Universe</span><span data-lang="ro">Univers</span></a>
+    <a href="#chrome" data-section="full"><b>03</b> Chrome</a>
+    <a href="#safari" data-section="full"><b>04</b> Safari</a>
+    <a href="#firefox" data-section="full"><b>05</b> Firefox</a>
+    <a href="#gallery"><b>06</b> <span data-lang="en">Toolkit</span><span data-lang="ro">Unelte</span></a>
+    <a href="#remote"><b>07</b> <span data-lang="en">Remote</span><span data-lang="ro">Telecomandă</span></a>
+    <a href="#lab"><b>08</b> Lab</a>
+    <a href="#learn" data-section="learn"><b>09</b> <span data-lang="en">Learn</span><span data-lang="ro">Învață</span></a>
+    <a href="#game"><b>10</b> <span data-lang="en">Game</span><span data-lang="ro">Joc</span></a>
+    <a href="#compat"><b>11</b> <span data-lang="en">Support</span><span data-lang="ro">Suport</span></a>
+  </nav>
+
+  <ul class="meter" aria-hidden="true">
+    <li class="badge">Blink</li>
+    <li class="badge">WebKit</li>
+    <li class="badge">Gecko</li>
+    <li class="badge badge--baseline">Baseline ✓</li>
+  </ul>
+
+  <!-- Orbital dial: ring + orbiting dot + percent -->
+  <div class="ring" aria-hidden="true"><span class="ring__orbit"><i></i></span><span class="ring__num"></span></div>
+
+  <div class="topbar__tools">
+    <button class="tool" type="button" data-action="guide" aria-label="Guide / Ghid" title="Ghid · Guide">?</button>
+    <button class="tool" type="button" data-action="scheme" aria-label="Dark / light theme · Temă întunecată / luminoasă" title="Dark / Light">◐</button>
+    <button class="tool" type="button" data-open="passport" aria-label="Passport / Pașaport" title="Pașaport · Passport">🜨<span class="tool__count" data-passport-count>0</span></button>
+    <button class="tool" type="button" data-open="settings" aria-label="Settings / Setări" title="Setări · Settings">⚙</button>
+    <button class="tool lang-toggle" type="button" aria-label="Schimbă limba / Switch language"><span data-lang="en">RO</span><span data-lang="ro">EN</span></button>
+  </div>
+</header>
+
+<!-- Route map: one stop per chapter, filled by named view timelines -->
+<nav class="route" aria-label="Route map / Harta traseului">
+  <ol>
+    <li><a href="#intro" data-stop="intro"><span class="route__dot"></span><span class="route__label"><span data-lang="en">Intro</span><span data-lang="ro">Intro</span></span></a></li>
+    <li><a href="#timeline" data-stop="timeline"><span class="route__dot"></span><span class="route__label"><span data-lang="en">Timeline</span><span data-lang="ro">Cronologie</span></span></a></li>
+    <li data-section="full"><a href="#universe" data-stop="universe"><span class="route__dot"></span><span class="route__label"><span data-lang="en">Universe</span><span data-lang="ro">Univers</span></span></a></li>
+    <li data-section="full"><a href="#chrome" data-stop="chrome"><span class="route__dot"></span><span class="route__label">Chrome &amp; Edge</span></a></li>
+    <li data-section="full"><a href="#safari" data-stop="safari"><span class="route__dot"></span><span class="route__label">Safari</span></a></li>
+    <li data-section="full"><a href="#firefox" data-stop="firefox"><span class="route__dot"></span><span class="route__label">Firefox</span></a></li>
+    <li><a href="#gallery" data-stop="gallery"><span class="route__dot"></span><span class="route__label"><span data-lang="en">Gallery</span><span data-lang="ro">Galerie</span></span></a></li>
+    <li><a href="#remote" data-stop="remote"><span class="route__dot"></span><span class="route__label"><span data-lang="en">Named timelines</span><span data-lang="ro">Cronologii denumite</span></span></a></li>
+    <li><a href="#lab" data-stop="lab"><span class="route__dot"></span><span class="route__label"><span data-lang="en">CSS lab</span><span data-lang="ro">Laborator CSS</span></span></a></li>
+    <li data-section="learn"><a href="#learn" data-stop="learn"><span class="route__dot"></span><span class="route__label"><span data-lang="en">Learn</span><span data-lang="ro">Învățare</span></span></a></li>
+    <li><a href="#game" data-stop="game"><span class="route__dot"></span><span class="route__label">CHRONO PILOT</span></a></li>
+    <li><a href="#compat" data-stop="compat"><span class="route__dot"></span><span class="route__label"><span data-lang="en">Compatibility</span><span data-lang="ro">Compatibilitate</span></span></a></li>
+  </ol>
+</nav>
+
+<main>
+  <!-- ========== INTRO ========== -->
+  <header class="hero chapter" id="intro" data-chapter="intro">
+    <div class="hero__copy">
+      <p class="eyebrow">CodePen Challenge / 02 · Nov 2026</p>
+      <h1 class="hero__title">
+        <span data-lang="en">Time.<br>In your hands.</span>
+        <span data-lang="ro">Timpul.<br>În mâinile tale.</span>
+      </h1>
+      <p class="hero__question">
+        <span data-lang="en">When did <code class="split">animation-timeline</code> land?</span>
+        <span data-lang="ro">Când a sosit <code class="split">animation-timeline</code>?</span>
+      </p>
+      <p class="hero__lead">
+        <span data-lang="en">You scroll. The universe responds. Travel through browser history, driven by CSS.</span>
+        <span data-lang="ro">Tu derulezi. Universul răspunde. Călătorește prin istoria browserelor, condusă de CSS.</span>
+        <span class="cue" aria-hidden="true">↓</span>
+      </p>
+      <ul class="routes" aria-label="Choose a route / Alege un traseu">
+        <li><a class="btn btn--primary" href="#timeline"><span data-lang="en">Begin the journey</span><span data-lang="ro">Începe călătoria</span> ↓</a></li>
+        <li><a class="btn" href="#chrome" data-section="full"><span data-lang="en">History route</span><span data-lang="ro">Traseul istoric</span></a></li>
+        <li><a class="btn" href="#lab"><span data-lang="en">Fast route → lab</span><span data-lang="ro">Traseul rapid → laborator</span></a></li>
+        <li><a class="btn" href="#game"><span data-lang="en">Play</span><span data-lang="ro">Joacă</span> 🚀</a></li>
+        <li><a class="btn btn--resume" href="#timeline" data-resume hidden><span data-lang="en">Resume:</span><span data-lang="ro">Reia:</span> <span data-resume-name></span></a></li>
+      </ul>
+      <p class="support-pill" role="status" hidden></p>
+      <p class="created"><span data-lang="en">Created 9 November 2026 · Laura Andreea</span><span data-lang="ro">Creat pe 9 noiembrie 2026 · Laura Andreea</span></p>
+    </div>
+
+    <!-- The browser observatory: moons are links to the chapters -->
+    <div class="observatory">
+      <span class="art-label" aria-hidden="true">FIG. 01 / THE BROWSER OBSERVATORY</span>
+      <div class="obs-path" aria-hidden="true"></div>
+      <div class="obs-path obs-path--2" aria-hidden="true"></div>
+      <div class="obs-planet" aria-hidden="true"></div>
+      <a href="#chrome" class="moon moon--blink" aria-label="Chrome &amp; Edge · 2023"><span>BLINK</span></a>
+      <a href="#safari" class="moon moon--webkit" aria-label="Safari · 2025"><span>WEBKIT</span></a>
+      <a href="#firefox" class="moon moon--gecko" aria-label="Firefox · 2026"><span>GECKO</span></a>
+      <button class="crystal crystal--star" type="button" data-crystal="1" aria-label="Hidden time crystal / Cristal temporal ascuns"></button>
+      <span class="art-label art-label--end" aria-hidden="true">SCROLL / SPACE / TIME</span>
+    </div>
+  </header>
+
+  <!-- ========== 1 · TIMELINE (starter template, upgraded) ========== -->
+  <section class="journey chapter" id="timeline" data-chapter="timeline" aria-labelledby="timeline-title">
+    <div class="chapter-head">
+      <h2 class="section-title" id="timeline-title"><span data-lang="en">The timeline</span><span data-lang="ro">Cronologia</span></h2>
+      <button class="copy-link" type="button" data-link="timeline" aria-label="Copy link to chapter / Copiază linkul capitolului">🔗</button>
+      <div class="chapter-progress" aria-hidden="true"><i></i></div>
+    </div>
+    <details class="explain">
+      <summary><span data-lang="en">How is this animated?</span><span data-lang="ro">Cum e animat?</span></summary>
+      <p><span data-lang="en">The section declares <code>view-timeline: --journey</code>. The glowing line (<code>scaleY</code>) and the giant year (an <code>@property</code> integer) both read it. Each card uses <code>view()</code> twice: one range to fly in, another (<code>cover 25% cover 75%</code>) to light up while it is the current event.</span><span data-lang="ro">Secțiunea declară <code>view-timeline: --journey</code>. Linia luminoasă (<code>scaleY</code>) și anul uriaș (un număr întreg <code>@property</code>) o citesc amândouă. Fiecare card folosește <code>view()</code> de două ori: un interval pentru intrare, altul (<code>cover 25% cover 75%</code>) ca să se aprindă cât timp e evenimentul curent.</span></p>
+    </details>
+
+    <div class="year-wrap" aria-hidden="true"><span class="year"></span></div>
+
+    <ol class="timeline">
+      <li class="event" style="--accent-ev: var(--blink)">
+        <time datetime="2023-07-18"><span data-lang="en">July 18, 2023</span><span data-lang="ro">18 iulie 2023</span></time>
+        <h2>Chrome 115 &amp; Edge 115</h2>
+        <p>
+          <span data-lang="en">The first browsers to ship <code>scroll()</code> and <code>view()</code> timelines with no flag required.</span>
+          <span data-lang="ro">Primele browsere care au livrat cronologiile <code>scroll()</code> și <code>view()</code> fără niciun flag.</span>
+        </p>
+        <span class="chip">Blink · <span data-lang="en">engine 1 of 3</span><span data-lang="ro">motorul 1 din 3</span></span>
+      </li>
+      <li class="event" style="--accent-ev: var(--webkit)">
+        <time datetime="2025-09-15"><span data-lang="en">September 15, 2025</span><span data-lang="ro">15 septembrie 2025</span></time>
+        <h2>Safari 26</h2>
+        <p>
+          <span data-lang="en">Safari on macOS and iOS 26 added support, bringing scroll-driven animations to every Apple device on the latest software.</span>
+          <span data-lang="ro">Safari pe macOS și iOS 26 a adăugat suportul, aducând animațiile conduse de scroll pe orice dispozitiv Apple actualizat.</span>
+        </p>
+        <span class="chip">WebKit · <span data-lang="en">+790 days later</span><span data-lang="ro">+790 de zile mai târziu</span></span>
+      </li>
+      <li class="event" style="--accent-ev: var(--gecko)">
+        <time datetime="2026-10-27"><span data-lang="en">October 27, 2026</span><span data-lang="ro">27 octombrie 2026</span></time>
+        <h2>Firefox 159</h2>
+        <p>
+          <span data-lang="en">Firefox shipped it, making <code>animation-timeline</code> officially Baseline newly compatible. Now all three major engines support <code>animation-timeline</code>.</span>
+          <span data-lang="ro">Firefox l-a livrat, iar <code>animation-timeline</code> a devenit oficial Baseline. Acum toate cele trei motoare majore suportă <code>animation-timeline</code>.</span>
+        </p>
+        <span class="chip">Gecko · <span data-lang="en">+407 days · 1,197 in total</span><span data-lang="ro">+407 zile · 1.197 în total</span></span>
+      </li>
+      <li class="event event--you" style="--accent-ev: var(--accent2)">
+        <time><span data-lang="en">Today</span><span data-lang="ro">Astăzi</span></time>
+        <h2><span data-lang="en">And your browser?</span><span data-lang="ro">Și browserul tău?</span></h2>
+        <p class="you-status"><span data-lang="en">Checking support…</span><span data-lang="ro">Verific suportul…</span></p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ========== 2 · 3D UNIVERSE ========== -->
+  <section class="universe chapter" id="universe" data-chapter="universe" data-section="full" aria-labelledby="universe-title">
+    <div class="universe__stage">
+      <div class="chapter-head chapter-head--overlay">
+        <h2 class="section-title" id="universe-title"><span data-lang="en">A universe of engines</span><span data-lang="ro">Un univers de motoare</span></h2>
+        <button class="copy-link" type="button" data-link="universe" aria-label="Copy link to chapter / Copiază linkul capitolului">🔗</button>
+      </div>
+      <p class="universe__caption">
+        <span data-lang="en">Each planet is an engine. Its orbit, the time tunnel, the constellations and the light trails all advance with your scroll through <code>view-timeline: --universe</code>.</span>
+        <span data-lang="ro">Fiecare planetă e un motor. Orbita, tunelul temporal, constelațiile și traseele luminoase avansează odată cu derularea ta, prin <code>view-timeline: --universe</code>.</span>
+      </p>
+
+      <div class="space" aria-hidden="true">
+        <div class="tunnel">
+          <div class="tunnel__ring" style="--z:0"><span>2023</span></div>
+          <div class="tunnel__ring" style="--z:1"></div>
+          <div class="tunnel__ring" style="--z:2"></div>
+          <div class="tunnel__ring" style="--z:3"><span>2025</span></div>
+          <div class="tunnel__ring" style="--z:4"></div>
+          <div class="tunnel__ring" style="--z:5"></div>
+          <div class="tunnel__ring" style="--z:6"><span>2026</span></div>
+          <div class="tunnel__ring" style="--z:7"></div>
+        </div>
+
+        <div class="system">
+          <div class="sun"></div>
+          <div class="orbit orbit--1"><div class="planet planet--blink"><b>Blink</b></div></div>
+          <div class="orbit orbit--2"><div class="planet planet--webkit"><b>WebKit</b></div></div>
+          <div class="orbit orbit--3"><div class="planet planet--gecko"><b>Gecko</b></div></div>
+        </div>
+
+        <svg class="constellation" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
+          <path pathLength="1" d="M90 120 L210 80 L300 160 L250 260 L130 230 Z"/>
+          <path pathLength="1" d="M720 90 L820 150 L900 110 L940 220 L840 260"/>
+          <path pathLength="1" d="M620 470 L700 420 L790 480 L880 440"/>
+          <g class="constellation__stars">
+            <circle cx="90" cy="120" r="3"/><circle cx="210" cy="80" r="3"/><circle cx="300" cy="160" r="3"/><circle cx="250" cy="260" r="3"/><circle cx="130" cy="230" r="3"/>
+            <circle cx="720" cy="90" r="3"/><circle cx="820" cy="150" r="3"/><circle cx="900" cy="110" r="3"/><circle cx="940" cy="220" r="3"/><circle cx="840" cy="260" r="3"/>
+            <circle cx="620" cy="470" r="3"/><circle cx="700" cy="420" r="3"/><circle cx="790" cy="480" r="3"/><circle cx="880" cy="440" r="3"/>
+          </g>
+        </svg>
+
+        <div class="trail trail--1"></div>
+        <div class="trail trail--2"></div>
+        <div class="trail trail--3"></div>
+      </div>
+      <button class="crystal crystal--space" type="button" data-crystal="2" aria-label="Hidden time crystal / Cristal temporal ascuns"></button>
+    </div>
+  </section>
+
+  <!-- Portal: circular mask into 2023 -->
+  <div class="portal portal--circle" data-section="full" aria-hidden="true" style="--to: var(--blink)">
+    <div class="portal__stage"><div class="portal__layer"><span>2023</span></div></div>
+  </div>
+
+  <!-- ========== 3 · CHROME & EDGE ========== -->
+  <section class="browser chapter" id="chrome" data-chapter="chrome" data-section="full" style="--accent-ch: var(--blink)" aria-labelledby="chrome-title">
+    <div class="chapter-head">
+      <p class="browser__kicker">Chapter 1 · Blink</p>
+      <h2 class="browser__title" id="chrome-title">Chrome &amp; Edge 115</h2>
+      <button class="copy-link" type="button" data-link="chrome" aria-label="Copy link to chapter / Copiază linkul capitolului">🔗</button>
+      <div class="chapter-progress" aria-hidden="true"><i></i></div>
+    </div>
+    <div class="browser__grid">
+      <div class="browser__text">
+        <p class="reveal"><span data-lang="en">On July 18, 2023, Chromium-based browsers became the first to ship scroll-driven animations without a flag: <code>scroll()</code>, <code>view()</code>, named timelines and <code>animation-range</code>.</span><span data-lang="ro">Pe 18 iulie 2023, browserele bazate pe Chromium au devenit primele care au livrat animațiile conduse de scroll fără flag: <code>scroll()</code>, <code>view()</code>, cronologii denumite și <code>animation-range</code>.</span></p>
+        <dl class="facts">
+          <div><dt><span data-lang="en">Engine</span><span data-lang="ro">Motor</span></dt><dd>Blink</dd></div>
+          <div><dt><span data-lang="en">Project</span><span data-lang="ro">Proiect</span></dt><dd>Chromium</dd></div>
+          <div><dt><span data-lang="en">Also powers</span><span data-lang="ro">Folosit și de</span></dt><dd>Edge, Opera, Brave, Vivaldi…</dd></div>
+          <div><dt><span data-lang="en">Version</span><span data-lang="ro">Versiune</span></dt><dd>115</dd></div>
+        </dl>
+      </div>
+      <figure class="browser__demo">
+        <div class="demo-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <figcaption><span data-lang="en">Bars grow with <code>view()</code>, staggered by <code>animation-range</code>.</span><span data-lang="ro">Barele cresc cu <code>view()</code>, decalate prin <code>animation-range</code>.</span></figcaption>
+      </figure>
+    </div>
+    <p class="source"><span data-lang="en">Source:</span><span data-lang="ro">Sursă:</span> <a href="https://github.com/mdn/browser-compat-data">MDN browser-compat-data</a></p>
+  </section>
+
+  <!-- Portal: page turn into 2025 -->
+  <div class="portal portal--page" data-section="full" aria-hidden="true" style="--to: var(--webkit)">
+    <div class="portal__stage"><div class="portal__layer"><span>2025</span></div><div class="portal__page"></div></div>
+  </div>
+
+  <!-- ========== 4 · SAFARI ========== -->
+  <section class="browser chapter" id="safari" data-chapter="safari" data-section="full" style="--accent-ch: var(--webkit)" aria-labelledby="safari-title">
+    <div class="chapter-head">
+      <p class="browser__kicker">Chapter 2 · WebKit</p>
+      <h2 class="browser__title" id="safari-title">Safari 26</h2>
+      <button class="copy-link" type="button" data-link="safari" aria-label="Copy link to chapter / Copiază linkul capitolului">🔗</button>
+      <div class="chapter-progress" aria-hidden="true"><i></i></div>
+    </div>
+    <div class="browser__grid">
+      <div class="browser__text">
+        <p class="reveal"><span data-lang="en">790 days later, on September 15, 2025, Safari 26 on macOS and iOS brought the same timelines to Apple devices running the latest software.</span><span data-lang="ro">790 de zile mai târziu, pe 15 septembrie 2025, Safari 26 pe macOS și iOS a adus aceleași cronologii pe dispozitivele Apple actualizate.</span></p>
+        <dl class="facts">
+          <div><dt><span data-lang="en">Engine</span><span data-lang="ro">Motor</span></dt><dd>WebKit</dd></div>
+          <div><dt><span data-lang="en">Maker</span><span data-lang="ro">Dezvoltator</span></dt><dd>Apple</dd></div>
+          <div><dt><span data-lang="en">Platforms</span><span data-lang="ro">Platforme</span></dt><dd>macOS, iOS, iPadOS</dd></div>
+          <div><dt><span data-lang="en">Version</span><span data-lang="ro">Versiune</span></dt><dd>26</dd></div>
+        </dl>
+      </div>
+      <figure class="browser__demo">
+        <div class="demo-dial" aria-hidden="true"><i></i></div>
+        <figcaption><span data-lang="en">The dial spins with <code>view()</code> while the chapter crosses the screen.</span><span data-lang="ro">Cadranul se rotește cu <code>view()</code> cât timp capitolul traversează ecranul.</span></figcaption>
+      </figure>
+    </div>
+    <p class="source"><span data-lang="en">Source:</span><span data-lang="ro">Sursă:</span> <a href="https://github.com/mdn/browser-compat-data">MDN browser-compat-data</a></p>
+    <button class="crystal" type="button" data-crystal="3" aria-label="Hidden time crystal / Cristal temporal ascuns"></button>
+  </section>
+
+  <!-- Portal: zoom + rotate into 2026 -->
+  <div class="portal portal--zoom" data-section="full" aria-hidden="true" style="--to: var(--gecko)">
+    <div class="portal__stage"><div class="portal__layer"><span>2026</span></div></div>
+  </div>
+
+  <!-- ========== 5 · FIREFOX ========== -->
+  <section class="browser chapter" id="firefox" data-chapter="firefox" data-section="full" style="--accent-ch: var(--gecko)" aria-labelledby="firefox-title">
+    <div class="chapter-head">
+      <p class="browser__kicker">Chapter 3 · Gecko</p>
+      <h2 class="browser__title" id="firefox-title">Firefox 159</h2>
+      <button class="copy-link" type="button" data-link="firefox" aria-label="Copy link to chapter / Copiază linkul capitolului">🔗</button>
+      <div class="chapter-progress" aria-hidden="true"><i></i></div>
+    </div>
+    <div class="browser__grid">
+      <div class="browser__text">
+        <p class="reveal"><span data-lang="en">On October 27, 2026, 407 days after Safari, Firefox 159 completed the set. With all three engines on board, <code>animation-timeline</code> became Baseline newly available.</span><span data-lang="ro">Pe 27 octombrie 2026, la 407 zile după Safari, Firefox 159 a completat setul. Cu toate cele trei motoare la bord, <code>animation-timeline</code> a devenit Baseline newly available.</span></p>
+        <dl class="facts">
+          <div><dt><span data-lang="en">Engine</span><span data-lang="ro">Motor</span></dt><dd>Gecko</dd></div>
+          <div><dt><span data-lang="en">Maker</span><span data-lang="ro">Dezvoltator</span></dt><dd>Mozilla</dd></div>
+          <div><dt><span data-lang="en">Status</span><span data-lang="ro">Stare</span></dt><dd>Baseline · newly available</dd></div>
+          <div><dt><span data-lang="en">Version</span><span data-lang="ro">Versiune</span></dt><dd>159</dd></div>
+        </dl>
+      </div>
+      <figure class="browser__demo">
+        <div class="demo-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
+        <figcaption><span data-lang="en">Three dots, one per engine, line up as the chapter reaches its center.</span><span data-lang="ro">Trei puncte, câte unul pentru fiecare motor, se aliniază când capitolul ajunge la mijloc.</span></figcaption>
+      </figure>
+    </div>
+    <p class="source"><span data-lang="en">Source:</span><span data-lang="ro">Sursă:</span> <a href="https://github.com/mdn/browser-compat-data">MDN browser-compat-data</a></p>
+  </section>
+
+  <!-- ========== 7 · GALLERY ========== -->
+  <section class="gallery chapter" id="gallery" data-chapter="gallery" aria-labelledby="gallery-title">
+   <div class="gallery__sticky">
+    <div class="chapter-head">
+      <h2 class="section-title" id="gallery-title"><span data-lang="en">Compare &amp; copy</span><span data-lang="ro">Compară și copiază</span></h2>
+      <button class="copy-link" type="button" data-link="gallery" aria-label="Copy link to chapter / Copiază linkul capitolului">🔗</button>
+    </div>
+    <p class="section-lead"><span data-lang="en">A native horizontal scroller with snap. Its own <code>scroll-timeline: --gal inline</code> drives the indicator below, and each card reveals its picture with <code>view(inline)</code>. Use the buttons, the arrow keys or swipe.</span><span data-lang="ro">Un scroller orizontal nativ, cu snap. Propria lui <code>scroll-timeline: --gal inline</code> conduce indicatorul de dedesubt, iar fiecare card își dezvăluie imaginea cu <code>view(inline)</code>. Folosește butoanele, săgețile sau glisarea.</span></p>
+
+    <div class="gallery__controls">
+      <button class="btn btn--icon" type="button" data-gal="prev" aria-label="Previous card / Cardul anterior">←</button>
+      <div class="gallery__meter" aria-hidden="true"><i></i></div>
+      <span class="gallery__count" aria-live="polite">1 / 9</span>
+      <button class="btn btn--icon" type="button" data-gal="next" aria-label="Next card / Cardul următor">→</button>
+      <button class="btn btn--small" type="button" data-cinema aria-pressed="false"><span data-lang="en">Cinema mode</span><span data-lang="ro">Mod cinema</span></button>
+    </div>
+
+    <div class="gallery__viewport" tabindex="0" role="region" aria-label="Cards / Carduri">
+      <ul class="track">
+        <li class="card" style="--accent-c: var(--blink)">
+          <div class="card__art card__art--blink" aria-hidden="true"></div>
+          <h3>Chrome &amp; Edge 115</h3>
+          <dl class="mini-facts"><dt><span data-lang="en">Date</span><span data-lang="ro">Dată</span></dt><dd>2023-07-18</dd><dt><span data-lang="en">Engine</span><span data-lang="ro">Motor</span></dt><dd>Blink</dd><dt><span data-lang="en">Order</span><span data-lang="ro">Ordine</span></dt><dd>1 / 3</dd></dl>
+        </li>
+        <li class="card" style="--accent-c: var(--webkit)">
+          <div class="card__art card__art--webkit" aria-hidden="true"></div>
+          <h3>Safari 26</h3>
+          <dl class="mini-facts"><dt><span data-lang="en">Date</span><span data-lang="ro">Dată</span></dt><dd>2025-09-15</dd><dt><span data-lang="en">Engine</span><span data-lang="ro">Motor</span></dt><dd>WebKit</dd><dt><span data-lang="en">Order</span><span data-lang="ro">Ordine</span></dt><dd>2 / 3</dd></dl>
+        </li>
+        <li class="card" style="--accent-c: var(--gecko)">
+          <div class="card__art card__art--gecko" aria-hidden="true"></div>
+          <h3>Firefox 159</h3>
+          <dl class="mini-facts"><dt><span data-lang="en">Date</span><span data-lang="ro">Dată</span></dt><dd>2026-10-27</dd><dt><span data-lang="en">Engine</span><span data-lang="ro">Motor</span></dt><dd>Gecko</dd><dt><span data-lang="en">Order</span><span data-lang="ro">Ordine</span></dt><dd>3 / 3</dd></dl>
+        </li>
+        <li class="card">
+          <h3><span data-lang="en">Waiting time</span><span data-lang="ro">Timp de așteptare</span></h3>
+          <div class="compare" role="img" aria-label="Chrome → Safari: 790 days; Safari → Firefox: 407 days">
+            <div class="compare__row"><span>Chrome → Safari</span><b style="--w: 1">790</b></div>
+            <div class="compare__row"><span>Safari → Firefox</span><b style="--w: .515">407</b></div>
+          </div>
+          <p class="card__note"><span data-lang="en">1,197 days from the first to the last engine.</span><span data-lang="ro">1.197 de zile de la primul la ultimul motor.</span></p>
+        </li>
+        <li class="card">
+          <h3><span data-lang="en">Your browser, live</span><span data-lang="ro">Browserul tău, live</span></h3>
+          <ul class="live-support" data-live-support></ul>
+        </li>
+        <li class="card card--code">
+          <h3><code>scroll()</code></h3>
+          <p><span data-lang="en">Progress of a scroller.</span><span data-lang="ro">Progresul unui scroller.</span></p>
+<pre><code>.bar {
+  animation: grow linear both;
+  animation-timeline: scroll(root);
+}</code></pre>
+          <button class="btn btn--small copy-code" type="button"><span data-lang="en">Copy</span><span data-lang="ro">Copiază</span></button>
+        </li>
+        <li class="card card--code">
+          <h3><code>view()</code></h3>
+          <p><span data-lang="en">An element crossing the scrollport.</span><span data-lang="ro">Un element care traversează zona vizibilă.</span></p>
+<pre><code>.card {
+  animation: fade-in linear both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
+}</code></pre>
+          <button class="btn btn--small copy-code" type="button"><span data-lang="en">Copy</span><span data-lang="ro">Copiază</span></button>
+        </li>
+        <li class="card card--code">
+          <h3><code>timeline-scope</code></h3>
+          <p><span data-lang="en">Read a timeline from anywhere.</span><span data-lang="ro">Citește o cronologie de oriunde.</span></p>
+<pre><code>body { timeline-scope: --e1; }
+.event { view-timeline: --e1; }
+.badge { animation-timeline: --e1; }</code></pre>
+          <button class="btn btn--small copy-code" type="button"><span data-lang="en">Copy</span><span data-lang="ro">Copiază</span></button>
+        </li>
+        <li class="card card--code">
+          <h3><code>@supports</code></h3>
+          <p><span data-lang="en">Progressive enhancement.</span><span data-lang="ro">Îmbunătățire progresivă.</span></p>
+<pre><code>@supports (animation-timeline: view()) {
+  .card { animation-timeline: view(); }
+}</code></pre>
+          <button class="btn btn--small copy-code" type="button"><span data-lang="en">Copy</span><span data-lang="ro">Copiază</span></button>
+          <button class="crystal crystal--inline" type="button" data-crystal="4" aria-label="Hidden time crystal / Cristal temporal ascuns"></button>
+        </li>
+      </ul>
+    </div>
+   </div>
+  </section>
+
+  <!-- ========== 8 · NAMED TIMELINES ========== -->
+  <section class="remote chapter" id="remote" data-chapter="remote" aria-labelledby="remote-title">
+    <div class="chapter-head">
+      <h2 class="section-title" id="remote-title"><span data-lang="en">Named timelines: remote control</span><span data-lang="ro">Cronologii denumite: telecomandă</span></h2>
+      <button class="copy-link" type="button" data-link="remote" aria-label="Copy link to chapter / Copiază linkul capitolului">🔗</button>
+    </div>
+    <p class="section-lead"><span data-lang="en">The <strong>controller</strong> is the scroller with the dashed outline. The <strong>followers</strong> live outside it. Several objects can follow the same timeline, and each axis gets its own demo.</span><span data-lang="ro"><strong>Controlerul</strong> e scrollerul cu contur punctat. <strong>Urmăritorii</strong> stau în afara lui. Mai multe obiecte pot urma aceeași cronologie, iar fiecare axă are demonstrația ei.</span></p>
+
+    <div class="remote__grid">
+      <!-- Block axis -->
+      <article class="demo-box">
+        <h3><span data-lang="en">Block axis · <code>--mini</code></span><span data-lang="ro">Axa block · <code>--mini</code></span></h3>
+        <div class="demo-box__row">
+          <div class="controller">
+            <span class="tag tag--controller"><span data-lang="en">controller</span><span data-lang="ro">controler</span></span>
+            <ol class="mini__scroller" tabindex="0" aria-label="Vertical scroller / Scroller vertical">
+              <li class="mini__item"><span data-lang="en">1 · Scroll me ↓</span><span data-lang="ro">1 · Derulează-mă ↓</span></li>
+              <li class="mini__item"><span data-lang="en">2 · I declare <code>scroll-timeline: --mini</code></span><span data-lang="ro">2 · Declar <code>scroll-timeline: --mini</code></span></li>
+              <li class="mini__item"><span data-lang="en">3 · My ancestor sets <code>timeline-scope</code></span><span data-lang="ro">3 · Un strămoș setează <code>timeline-scope</code></span></li>
+              <li class="mini__item"><span data-lang="en">4 · Three followers read <code>--mini</code></span><span data-lang="ro">4 · Trei urmăritori citesc <code>--mini</code></span></li>
+              <li class="mini__item"><span data-lang="en">5 · No scroll listeners in native mode</span><span data-lang="ro">5 · Fără listener de scroll în modul nativ</span></li>
+              <li class="mini__item"><span data-lang="en">6 · 100% · done</span><span data-lang="ro">6 · 100% · gata</span></li>
+            </ol>
+          </div>
+          <div class="followers" aria-hidden="true">
+            <span class="tag tag--follower"><span data-lang="en">followers</span><span data-lang="ro">urmăritori</span></span>
+            <div class="gauge"><div class="gauge__dial"><div class="gauge__needle"></div></div><p class="gauge__num"></p></div>
+            <div class="follow-bar"><i></i></div>
+            <div class="follow-planet"></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Inline axis -->
+      <article class="demo-box">
+        <h3><span data-lang="en">Inline axis · <code>--mini-x</code></span><span data-lang="ro">Axa inline · <code>--mini-x</code></span></h3>
+        <div class="controller">
+          <span class="tag tag--controller"><span data-lang="en">controller</span><span data-lang="ro">controler</span></span>
+          <div class="mini-x" tabindex="0" role="region" aria-label="Horizontal scroller / Scroller orizontal">
+            <div class="mini-x__strip">
+              <span>2023</span><span>→</span><span>2024</span><span>→</span><span>2025</span><span>→</span><span>2026</span><span>✓</span>
+            </div>
+          </div>
+        </div>
+        <div class="followers followers--x" aria-hidden="true">
+          <span class="tag tag--follower"><span data-lang="en">followers</span><span data-lang="ro">urmăritori</span></span>
+          <div class="rail"><span class="rocket">🚀</span></div>
+          <div class="spinner"></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========== 9 · CSS LAB ========== -->
+  <section class="lab chapter" id="lab" data-chapter="lab" aria-labelledby="lab-title">
+    <div class="chapter-head">
+      <h2 class="section-title" id="lab-title"><span data-lang="en">CSS lab</span><span data-lang="ro">Laborator CSS</span></h2>
+      <button class="copy-link" type="button" data-link="lab" aria-label="Copy link to chapter / Copiază linkul capitolului">🔗</button>
+    </div>
+    <p class="section-lead"><span data-lang="en">Pick the settings, scroll inside the preview and watch the CSS rewrite itself. The outlined element is the one driving the animation.</span><span data-lang="ro">Alege setările, derulează în previzualizare și urmărește cum se rescrie CSS-ul. Elementul conturat e cel care conduce animația.</span></p>
+
+    <div class="lab__grid">
+      <form class="lab__controls" aria-label="Lab settings / Setări laborator">
+        <fieldset>
+          <legend><span data-lang="en">Timeline</span><span data-lang="ro">Cronologie</span></legend>
+          <label class="seg"><input type="radio" name="tl" value="view" checked> <code>view()</code></label>
+          <label class="seg"><input type="radio" name="tl" value="scroll"> <code>scroll()</code></label>
+          <label class="seg"><input type="radio" name="tl" value="named"> <code>--sandbox</code></label>
+        </fieldset>
+        <fieldset>
+          <legend><span data-lang="en">Axis</span><span data-lang="ro">Axă</span></legend>
+          <label class="seg"><input type="radio" name="axis" value="block" checked> block</label>
+          <label class="seg"><input type="radio" name="axis" value="inline"> inline</label>
+        </fieldset>
+        <fieldset class="lab__range">
+          <legend><code>animation-range</code></legend>
+          <div class="field">
+            <label for="lab-rs"><span data-lang="en">Start</span><span data-lang="ro">Început</span></label>
+            <select id="lab-rs" name="rs"><option>entry</option><option>cover</option><option>contain</option><option>exit</option></select>
+            <input type="range" name="rsp" min="0" max="100" step="5" value="0" aria-label="Start % / Început %"><output data-out="rsp">0%</output>
+          </div>
+          <div class="field">
+            <label for="lab-re"><span data-lang="en">End</span><span data-lang="ro">Sfârșit</span></label>
+            <select id="lab-re" name="re"><option>entry</option><option selected>cover</option><option>contain</option><option>exit</option></select>
+            <input type="range" name="rep" min="0" max="100" step="5" value="50" aria-label="End % / Sfârșit %"><output data-out="rep">50%</output>
+          </div>
+          <p class="hint" data-scroll-hint hidden><span data-lang="en">With a scroll timeline (<code>scroll()</code> or the named <code>--sandbox</code>), the range is plain percentages of the scroll.</span><span data-lang="ro">Cu o cronologie de scroll (<code>scroll()</code> sau <code>--sandbox</code> denumită), intervalul e doar procente din derulare.</span></p>
+        </fieldset>
+        <fieldset>
+          <legend><span data-lang="en">Keyframes &amp; easing</span><span data-lang="ro">Cadre și easing</span></legend>
+          <div class="field"><label for="lab-ease">Easing</label>
+            <select id="lab-ease" name="ease"><option>linear</option><option>ease-in-out</option><option>ease-out</option><option value="cubic-bezier(.3,1.6,.6,1)">overshoot</option><option value="steps(5)">steps(5)</option></select></div>
+          <div class="field"><label for="lab-op"><span data-lang="en">Opacity from</span><span data-lang="ro">Opacitate de la</span></label><input id="lab-op" type="range" name="op" min="0" max="1" step=".05" value="0"><output data-out="op">0</output></div>
+          <div class="field"><label for="lab-dist"><span data-lang="en">Distance</span><span data-lang="ro">Distanță</span></label><input id="lab-dist" type="range" name="dist" min="0" max="200" step="10" value="80"><output data-out="dist">80px</output></div>
+          <div class="field"><label for="lab-rot"><span data-lang="en">Rotation</span><span data-lang="ro">Rotație</span></label><input id="lab-rot" type="range" name="rot" min="-360" max="360" step="15" value="0"><output data-out="rot">0deg</output></div>
+          <div class="field"><label for="lab-scale"><span data-lang="en">Scale from</span><span data-lang="ro">Scară de la</span></label><input id="lab-scale" type="range" name="scale" min="0" max="2" step=".05" value=".6"><output data-out="scale">0.6</output></div>
+        </fieldset>
+        <div class="lab__actions">
+          <button class="btn btn--small" type="button" data-lab="reset"><span data-lang="en">Reset</span><span data-lang="ro">Resetează</span></button>
+          <button class="btn btn--small" type="button" data-lab="share"><span data-lang="en">Copy lab link</span><span data-lang="ro">Copiază linkul laboratorului</span></button>
+        </div>
+      </form>
+
+      <div class="lab__output">
+        <div class="lab-preview" data-axis="block" data-tl="view">
+          <span class="tag tag--controller lab-preview__tag"></span>
+          <div class="lab-preview__scroller" tabindex="0" role="region" aria-label="Lab preview / Previzualizare laborator">
+            <div class="lab-preview__content">
+              <span class="lab-preview__spacer"><span data-lang="en">scroll ↓ →</span><span data-lang="ro">derulează ↓ →</span></span>
+              <div class="lab-subject">CSS</div>
+              <span class="lab-preview__spacer"></span>
+            </div>
+          </div>
+          <div class="lab-readout" aria-hidden="true"><i></i></div>
+        </div>
+        <div class="lab__actions">
+          <button class="btn btn--small" type="button" data-lab="start"><span data-lang="en">↑ To start</span><span data-lang="ro">↑ La început</span></button>
+          <button class="btn btn--small" type="button" data-lab="end"><span data-lang="en">↓ To end</span><span data-lang="ro">↓ La final</span></button>
+        </div>
+        <div class="code-panel">
+          <div class="code-panel__bar"><span>lab.css</span><button class="btn btn--small copy-code" type="button" data-copy="#lab-code"><span data-lang="en">Copy</span><span data-lang="ro">Copiază</span></button></div>
+          <pre><code id="lab-code"></code></pre>
+        </div>
+        <p class="lab__explain" data-lab-explain></p>
+        <p class="lab__nosupport" hidden><span data-lang="en">Fallback mode: a small script animates the preview with the same settings. The generated CSS is what runs natively in modern browsers.</span><span data-lang="ro">Mod fallback: un script mic animă previzualizarea cu aceleași setări. CSS-ul generat e cel care rulează nativ în browserele moderne.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 11 · LEARN ========== -->
+  <section class="learn chapter" id="learn" data-chapter="learn" data-section="learn" aria-labelledby="learn-title">
+    <div class="chapter-head">
+      <h2 class="section-title" id="learn-title"><span data-lang="en">Learn by doing</span><span data-lang="ro">Învață făcând</span></h2>
+      <button class="copy-link" type="button" data-link="learn" aria-label="Copy link to chapter / Copiază linkul capitolului">🔗</button>
+    </div>
+    <p class="section-lead"><span data-lang="en">Solve each challenge with the lab above, then press “Check”. The result is visible right away in the preview.</span><span data-lang="ro">Rezolvă fiecare provocare cu laboratorul de mai sus, apoi apasă „Verifică”. Rezultatul se vede imediat în previzualizare.</span></p>
+
+    <ol class="challenges">
+      <li class="challenge" data-challenge="1">
+        <h3><span data-lang="en">Second half only</span><span data-lang="ro">Doar a doua jumătate</span></h3>
+        <p><span data-lang="en">Use <code>scroll()</code> and make the animation start at 50% of the scroll or later.</span><span data-lang="ro">Folosește <code>scroll()</code> și fă animația să înceapă la 50% din derulare sau mai târziu.</span></p>
+        <button class="btn btn--small" type="button" data-check="1"><span data-lang="en">Check</span><span data-lang="ro">Verifică</span></button>
+        <p class="challenge__result" role="status"></p>
+      </li>
+      <li class="challenge" data-challenge="2">
+        <h3><span data-lang="en">Sideways spin</span><span data-lang="ro">Rotire laterală</span></h3>
+        <p><span data-lang="en">Use <code>view()</code> on the <code>inline</code> axis with a rotation of at least 180°.</span><span data-lang="ro">Folosește <code>view()</code> pe axa <code>inline</code> cu o rotație de cel puțin 180°.</span></p>
+        <button class="btn btn--small" type="button" data-check="2"><span data-lang="en">Check</span><span data-lang="ro">Verifică</span></button>
+        <p class="challenge__result" role="status"></p>
+      </li>
+      <li class="challenge" data-challenge="3">
+        <h3><span data-lang="en">Exit stage</span><span data-lang="ro">Ieșire din scenă</span></h3>
+        <p><span data-lang="en">Animate only while the box leaves: start and end inside <code>exit</code>.</span><span data-lang="ro">Animează doar cât timp cutia iese: început și sfârșit în <code>exit</code>.</span></p>
+        <button class="btn btn--small" type="button" data-check="3"><span data-lang="en">Check</span><span data-lang="ro">Verifică</span></button>
+        <p class="challenge__result" role="status"></p>
+      </li>
+    </ol>
+
+    <h3 class="glossary__title"><span data-lang="en">CSS glossary</span><span data-lang="ro">Glosar CSS</span></h3>
+    <dl class="glossary">
+      <div><dt><code>animation-timeline</code></dt><dd><span data-lang="en">Swaps the clock of an animation: instead of seconds, progress comes from a scroll or view timeline.</span><span data-lang="ro">Schimbă ceasul animației: în loc de secunde, progresul vine dintr-o cronologie de scroll sau de vizibilitate.</span></dd></div>
+      <div><dt><code>scroll()</code></dt><dd><span data-lang="en">An anonymous timeline from a scroller's position (0% top, 100% bottom).</span><span data-lang="ro">O cronologie anonimă din poziția unui scroller (0% sus, 100% jos).</span></dd></div>
+      <div><dt><code>view()</code></dt><dd><span data-lang="en">An anonymous timeline from an element's visibility inside its scroller.</span><span data-lang="ro">O cronologie anonimă din vizibilitatea unui element în scrollerul său.</span></dd></div>
+      <div><dt><code>animation-range</code></dt><dd><span data-lang="en">Which part of the timeline the animation occupies, e.g. <code>entry 0% cover 50%</code>.</span><span data-lang="ro">Ce porțiune a cronologiei ocupă animația, de ex. <code>entry 0% cover 50%</code>.</span></dd></div>
+      <div><dt><code>entry / exit</code></dt><dd><span data-lang="en">The phases while the element enters or leaves the scrollport.</span><span data-lang="ro">Fazele în care elementul intră în zona vizibilă sau iese din ea.</span></dd></div>
+      <div><dt><code>cover / contain</code></dt><dd><span data-lang="en"><code>cover</code>: from first pixel in to last pixel out. <code>contain</code>: while fully inside (or fully covering).</span><span data-lang="ro"><code>cover</code>: de la primul pixel intrat la ultimul ieșit. <code>contain</code>: cât timp e complet înăuntru (sau acoperă complet).</span></dd></div>
+      <div><dt><code>scroll-timeline</code></dt><dd><span data-lang="en">Gives a scroller's timeline a name (<code>--name</code>) and an axis.</span><span data-lang="ro">Dă un nume (<code>--name</code>) și o axă cronologiei unui scroller.</span></dd></div>
+      <div><dt><code>view-timeline</code></dt><dd><span data-lang="en">Names an element's view timeline so others can use it.</span><span data-lang="ro">Denumește cronologia de vizibilitate a unui element, ca s-o folosească și alții.</span></dd></div>
+      <div><dt><code>timeline-scope</code></dt><dd><span data-lang="en">Makes a named timeline visible to a whole subtree, not just descendants of its owner.</span><span data-lang="ro">Face o cronologie denumită vizibilă unui subarbore întreg, nu doar descendenților proprietarului.</span></dd></div>
+      <div><dt><code>@property</code></dt><dd><span data-lang="en">Registers a typed custom property so numbers can be animated (the year, the percentages).</span><span data-lang="ro">Înregistrează o proprietate personalizată cu tip, ca numerele să poată fi animate (anul, procentele).</span></dd></div>
+    </dl>
+
+    <h3 class="glossary__title"><span data-lang="en">Questions &amp; answers</span><span data-lang="ro">Întrebări și răspunsuri</span></h3>
+    <div class="faq">
+      <details><summary><span data-lang="en">How does the fallback work?</span><span data-lang="ro">Cum funcționează fallbackul?</span></summary>
+        <p><span data-lang="en">Each feature is detected separately: <code>scroll()</code>, <code>view()</code>, <code>animation-range</code>, <code>timeline-scope</code> and registered properties. Without core support, <code>requestAnimationFrame</code> syncs the progress values and IntersectionObserver reveals the events. If only <code>timeline-scope</code> is missing, a script updates the badges, gauges and route map. You can simulate it from Settings or the Compatibility chapter.</span><span data-lang="ro">Fiecare funcție e detectată separat: <code>scroll()</code>, <code>view()</code>, <code>animation-range</code>, <code>timeline-scope</code> și proprietățile înregistrate. Fără suportul de bază, <code>requestAnimationFrame</code> sincronizează valorile de progres, iar IntersectionObserver dezvăluie evenimentele. Dacă lipsește doar <code>timeline-scope</code>, un script actualizează insignele, indicatoarele și harta traseului. Îl poți simula din Setări sau din capitolul Compatibilitate.</span></p></details>
+      <details><summary><span data-lang="en">What runs on the main thread?</span><span data-lang="ro">Ce rulează pe firul principal?</span></summary>
+        <p><span data-lang="en">In native mode, CSS drives every scroll effect, with no scroll listeners. <code>transform</code> and <code>opacity</code> can be composited efficiently; animated counters, gradients and <code>clip-path</code> may still need style recalculation or repaint. Using <code>animation-timeline</code> does not guarantee that every effect runs on the compositor.</span><span data-lang="ro">În modul nativ, CSS conduce fiecare efect de scroll, fără listeneri de scroll. <code>transform</code> și <code>opacity</code> pot fi compuse eficient; contoarele, gradienții și <code>clip-path</code> animate pot necesita totuși recalculare de stil sau redesenare. Folosirea <code>animation-timeline</code> nu garantează că fiecare efect rulează în compositor.</span></p></details>
+      <details><summary><span data-lang="en">Exercise · Reduced motion</span><span data-lang="ro">Exercițiu · Mișcare redusă</span></summary>
+        <p><span data-lang="en">Turn on “Reduced motion” in Settings and scroll the page again. Every text stays visible; only the progress indicators keep following the scroll, because they inform without moving the scene.</span><span data-lang="ro">Activează „Mișcare redusă” din Setări și derulează din nou pagina. Tot textul rămâne vizibil; doar indicatorii de progres mai urmăresc derularea, pentru că informează fără să miște scena.</span></p></details>
+    </div>
+  </section>
+
+  <!-- ========== GAME · CHRONO PILOT ========== -->
+  <section class="game chapter" id="game" data-chapter="game" aria-labelledby="game-title">
+    <div class="chapter-head">
+      <h2 class="section-title" id="game-title">CHRONO PILOT</h2>
+      <button class="copy-link" type="button" data-link="game" aria-label="Copy link to chapter / Copiază linkul capitolului">🔗</button>
+    </div>
+    <p class="section-lead"><span data-lang="en">The scrollbar is your joystick. Scroll inside the arena (mouse wheel, touchpad, finger, ↑ ↓ or W S) to fly from 2023 to 2026. Collect engine orbs, dodge the “flag required” barriers and reach Baseline.</span><span data-lang="ro">Bara de scroll e joystickul tău. Derulează în arenă (rotița mouse-ului, touchpad, deget, ↑ ↓ sau W S) ca să zbori din 2023 în 2026. Adună orbitele motoarelor, ocolește barierele „flag required” și ajungi la Baseline.</span></p>
+
+    <div class="pilot">
+      <div class="pilot__main">
+        <div class="pilot__bar">
+          <fieldset class="pilot__modes">
+            <legend class="visually-hidden"><span data-lang="en">Game mode</span><span data-lang="ro">Mod de joc</span></legend>
+            <label class="seg"><input type="radio" name="pilot-mode" value="story" checked> <span data-lang="en">Story</span><span data-lang="ro">Poveste</span></label>
+            <label class="seg"><input type="radio" name="pilot-mode" value="daily"> <span data-lang="en">Daily</span><span data-lang="ro">Ziua</span></label>
+            <label class="seg"><input type="radio" name="pilot-mode" value="endless"> <span data-lang="en">Endless</span><span data-lang="ro">Infinit</span></label>
+          </fieldset>
+          <label class="switch pilot__assist"><input type="checkbox" name="pilot-slow"> <span data-lang="en">Slower speed</span><span data-lang="ro">Viteză redusă</span></label>
+          <button class="btn btn--small" type="button" data-pilot="pause" aria-pressed="false" disabled><span data-lang="en">Pause (P)</span><span data-lang="ro">Pauză (P)</span></button>
+        </div>
+
+        <div class="pilot-arena" tabindex="0" role="group" aria-roledescription="game" aria-labelledby="game-title" aria-describedby="pilot-help">
+          <canvas class="pilot-canvas" aria-hidden="true"></canvas>
+          <div class="pilot-scroller" aria-hidden="true"><div class="pilot-scroller__track"></div></div>
+          <div class="pilot-ship-layer" aria-hidden="true"><div class="pilot-ship"><i></i></div></div>
+          <div class="pilot-hud" aria-hidden="true">
+            <span class="pilot-hud__year" data-hud="year">2023</span>
+            <span class="pilot-hud__score" data-hud="score">0</span>
+            <span class="pilot-hud__lives" data-hud="lives">♥♥♥</span>
+            <span class="pilot-hud__engines"><b data-eng="blink">B</b><b data-eng="webkit">W</b><b data-eng="gecko">G</b></span>
+            <span class="pilot-hud__msg" data-hud="msg"></span>
+          </div>
+          <div class="pilot-overlay" data-screen="start">
+            <div class="pilot-overlay__box">
+              <p class="pilot-overlay__kicker" data-ov="kicker">CHRONO PILOT</p>
+              <h3 data-ov="title"><span data-lang="en">The scrollbar is your joystick</span><span data-lang="ro">Bara de scroll e joystickul tău</span></h3>
+              <p data-ov="text"><span data-lang="en">Scroll up and down inside the arena to steer. The ship's position is a CSS animation driven by <code>animation-timeline: --pilot</code>.</span><span data-lang="ro">Derulează în sus și în jos în arenă ca să manevrezi. Poziția navei e o animație CSS condusă de <code>animation-timeline: --pilot</code>.</span></p>
+              <div class="pilot-overlay__form" data-ov="form" hidden>
+                <label for="pilot-name"><span data-lang="en">Name for the leaderboard</span><span data-lang="ro">Nume pentru clasament</span></label>
+                <input id="pilot-name" type="text" maxlength="12" autocomplete="nickname">
+              </div>
+              <div class="pilot-overlay__actions">
+                <button class="btn btn--primary" type="button" data-pilot="start"><span data-lang="en">Start</span><span data-lang="ro">Start</span> ▶</button>
+                <button class="btn" type="button" data-pilot="share" hidden><span data-lang="en">Copy score</span><span data-lang="ro">Copiază scorul</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="visually-hidden" id="pilot-help"><span data-lang="en">Focus the arena, press Enter to start, use the arrow keys or W and S to steer, P or Escape to pause.</span><span data-lang="ro">Focalizează arena, apasă Enter ca să începi, folosește săgețile sau W și S ca să manevrezi, P sau Escape pentru pauză.</span></p>
+        <p class="visually-hidden" role="status" aria-live="polite" data-pilot-live></p>
+      </div>
+
+      <aside class="pilot__side">
+        <h3><span data-lang="en">How to play</span><span data-lang="ro">Cum se joacă</span></h3>
+        <ul class="pilot__legend">
+          <li><span class="lg lg--orb">B</span><span data-lang="en">Engine orb (B, W, G): +50 × combo</span><span data-lang="ro">Orbită de motor (B, W, G): +50 × combo</span></li>
+          <li><span class="lg lg--big">★</span><span data-lang="en">Release orb (Chrome 115, Safari 26, Firefox 159): +500</span><span data-lang="ro">Orbită de lansare (Chrome 115, Safari 26, Firefox 159): +500</span></li>
+          <li><span class="lg lg--flag">✕</span><span data-lang="en">“flag required” barrier: −1 life, combo resets</span><span data-lang="ro">Barieră „flag required”: −1 viață, combo-ul se resetează</span></li>
+          <li><span class="lg lg--shield">@</span><span data-lang="en"><code>@supports</code> shield: blocks one hit</span><span data-lang="ro">Scut <code>@supports</code>: blochează o lovitură</span></li>
+          <li><span class="lg lg--base">✓</span><span data-lang="en">Reach Oct 2026 with all three release orbs: Baseline bonus ×2</span><span data-lang="ro">Ajungi în oct. 2026 cu toate cele trei orbite de lansare: bonus Baseline ×2</span></li>
+        </ul>
+        <h3><span data-lang="en">Leaderboard</span><span data-lang="ro">Clasament</span> · <span data-board-mode></span></h3>
+        <ol class="pilot__board" data-board></ol>
+        <p class="pilot__note muted"><span data-lang="en">Scores stay on this device. “Daily” uses the same course for everyone today, so you can compare scores with friends.</span><span data-lang="ro">Scorurile rămân pe acest dispozitiv. „Ziua” folosește același traseu pentru toată lumea astăzi, ca să-ți poți compara scorul cu prietenii.</span></p>
+        <details class="explain explain--inline">
+          <summary><span data-lang="en">How is the ship animated?</span><span data-lang="ro">Cum e animată nava?</span></summary>
+          <p><span data-lang="en">The transparent scroller in the arena declares <code>scroll-timeline: --pilot block</code>. The ship layer, a sibling, reads it through <code>timeline-scope</code> and animates a registered <code>--py</code> number from 0 to 1; the ship's <code>translate</code> is computed from it. The game loop only reads the same scroll progress to check collisions. Without native support, the script writes <code>--py</code> itself.</span><span data-lang="ro">Scrollerul transparent din arenă declară <code>scroll-timeline: --pilot block</code>. Stratul navei, un frate al lui, îl citește prin <code>timeline-scope</code> și animă un număr înregistrat <code>--py</code> de la 0 la 1; <code>translate</code>-ul navei se calculează din el. Bucla jocului doar citește același progres de scroll ca să verifice coliziunile. Fără suport nativ, scriptul scrie singur <code>--py</code>.</span></p>
+        </details>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ========== 13 · COMPATIBILITY ========== -->
+  <section class="compat chapter" id="compat" data-chapter="compat" aria-labelledby="compat-title">
+    <div class="chapter-head">
+      <h2 class="section-title" id="compat-title"><span data-lang="en">Compatibility</span><span data-lang="ro">Compatibilitate</span></h2>
+      <button class="copy-link" type="button" data-link="compat" aria-label="Copy link to chapter / Copiază linkul capitolului">🔗</button>
+    </div>
+    <p class="compat__message" data-compat-message role="status"></p>
+    <div class="compat__grid">
+      <table class="compat__table">
+        <caption><span data-lang="en">Detected in this browser</span><span data-lang="ro">Detectat în acest browser</span></caption>
+        <thead><tr><th scope="col"><span data-lang="en">Feature</span><span data-lang="ro">Funcționalitate</span></th><th scope="col"><span data-lang="en">Status</span><span data-lang="ro">Stare</span></th></tr></thead>
+        <tbody data-compat-rows></tbody>
+      </table>
+      <div class="compat__side">
+        <h3><span data-lang="en">Progressive enhancement in 3 layers</span><span data-lang="ro">Îmbunătățire progresivă în 3 straturi</span></h3>
+        <ol class="layers">
+          <li><strong><span data-lang="en">Static</span><span data-lang="ro">Static</span></strong> · <span data-lang="en">All content is readable with no animation at all.</span><span data-lang="ro">Tot conținutul e lizibil fără nicio animație.</span></li>
+          <li><strong>Fallback</strong> · <span data-lang="en">Without <code>animation-timeline</code>, a small script with IntersectionObserver adds the key effects.</span><span data-lang="ro">Fără <code>animation-timeline</code>, un script mic cu IntersectionObserver adaugă efectele principale.</span></li>
+          <li><strong><span data-lang="en">Native</span><span data-lang="ro">Nativ</span></strong> · <span data-lang="en">Inside <code>@supports</code>, CSS takes over with no scroll listeners.</span><span data-lang="ro">În <code>@supports</code>, CSS preia totul, fără listeneri de scroll.</span></li>
+        </ol>
+        <div class="compat__buttons">
+          <button class="btn" type="button" data-toggle="fallback" aria-pressed="false"><span data-lang="en">Simulate fallback</span><span data-lang="ro">Simulează fallbackul</span></button>
+          <button class="btn" type="button" data-toggle="static" aria-pressed="false"><span data-lang="en">Static mode</span><span data-lang="ro">Mod static</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p><span data-lang="en">Source:</span><span data-lang="ro">Sursă:</span> <a href="https://github.com/mdn/browser-compat-data">MDN browser-compat-data</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline">MDN animation-timeline</a></p>
+    <p><span data-lang="en">Built by</span><span data-lang="ro">Realizat de</span> <a href="https://laurandreea10.github.io/codepen-portfolio/">Laura Andreea</a> · #codepenchallenge · cpc-animation-timeline</p>
+    <p class="footer__actions">
+      <button class="btn btn--small" type="button" data-share><span data-lang="en">Copy page link</span><span data-lang="ro">Copiază linkul paginii</span></button>
+      <button class="btn btn--small" type="button" data-download><span data-lang="en">Download complete HTML</span><span data-lang="ro">Descarcă HTML complet</span></button>
+      <button class="btn btn--small" type="button" data-copy-desc><span data-lang="en">Copy CodePen description</span><span data-lang="ro">Copiază descrierea CodePen</span></button>
+    </p>
+    <p class="footer__small"><span data-lang="en">Created 9 November 2026 · v3 (CHRONOSCROLL × Baseline Voyage) · Event dates come from the CodePen template.</span><span data-lang="ro">Creat pe 9 noiembrie 2026 · v3 (CHRONOSCROLL × Baseline Voyage) · Datele evenimentelor provin din șablonul CodePen.</span></p>
+    <p class="copy-fallback" hidden></p>
+    <button class="crystal crystal--footer" type="button" data-crystal="5" aria-label="Hidden time crystal / Cristal temporal ascuns"></button>
+  </footer>
+</main>
+
+<!-- ========== DIALOGS ========== -->
+<dialog class="panel" id="settings" aria-labelledby="settings-title">
+  <form method="dialog" class="panel__inner">
+    <header class="panel__head">
+      <h2 id="settings-title"><span data-lang="en">Settings</span><span data-lang="ro">Setări</span></h2>
+      <button class="tool" value="close" aria-label="Close / Închide">✕</button>
+    </header>
+
+    <fieldset>
+      <legend><span data-lang="en">Presentation</span><span data-lang="ro">Prezentare</span></legend>
+      <div class="choice-grid">
+        <label><input type="radio" name="mode" value="full" checked> <span data-lang="en">Full experience</span><span data-lang="ro">Experiență completă</span></label>
+        <label><input type="radio" name="mode" value="compact"> <span data-lang="en">Compact demo</span><span data-lang="ro">Demo compact</span></label>
+        <label><input type="radio" name="mode" value="edu"> <span data-lang="en">Educational</span><span data-lang="ro">Educativ</span></label>
+        <label><input type="radio" name="mode" value="lite"> <span data-lang="en">Lightweight</span><span data-lang="ro">Simplificat</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span data-lang="en">Light</span><span data-lang="ro">Lumină</span></legend>
+      <div class="choice-grid">
+        <label><input type="radio" name="scheme" value="dark" checked> <span data-lang="en">Dark</span><span data-lang="ro">Întunecat</span></label>
+        <label><input type="radio" name="scheme" value="light"> <span data-lang="en">Light</span><span data-lang="ro">Luminos</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span data-lang="en">Palette</span><span data-lang="ro">Paletă</span></legend>
+      <div class="choice-grid choice-grid--themes">
+        <label><input type="radio" name="theme" value="cosmic" checked> <span data-lang="en">Cosmic</span><span data-lang="ro">Cosmic</span></label>
+        <label><input type="radio" name="theme" value="aurora"> Aurora</label>
+        <label><input type="radio" name="theme" value="observatory"> <span data-lang="en">Observatory</span><span data-lang="ro">Observator</span></label>
+        <label><input type="radio" name="theme" value="retro"> <span data-lang="en">Retro-futurist</span><span data-lang="ro">Retro-futurist</span></label>
+        <label><input type="radio" name="theme" value="paper"> <span data-lang="en">Editorial paper</span><span data-lang="ro">Hârtie editorială</span></label>
+        <label><input type="radio" name="theme" value="neon"> Neon</label>
+        <label><input type="radio" name="theme" value="mono"> <span data-lang="en">Monochrome</span><span data-lang="ro">Monocrom</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span data-lang="en">Comfort</span><span data-lang="ro">Confort</span></legend>
+      <div class="field"><label for="set-fx"><span data-lang="en">Effect intensity</span><span data-lang="ro">Intensitatea efectelor</span></label><input id="set-fx" type="range" name="fx" min="0" max="1.5" step=".1" value="1"><output data-out="fx">100%</output></div>
+      <div class="field"><label for="set-fs"><span data-lang="en">Text size</span><span data-lang="ro">Mărimea textului</span></label><input id="set-fs" type="range" name="fs" min=".9" max="1.4" step=".05" value="1"><output data-out="fs">100%</output></div>
+      <label class="switch"><input type="checkbox" name="calm"> <span data-lang="en">Reduced motion</span><span data-lang="ro">Mișcare redusă</span></label>
+      <label class="switch"><input type="checkbox" name="no3d"> <span data-lang="en">Turn off 3D effects</span><span data-lang="ro">Dezactivează efectele 3D</span></label>
+      <label class="switch"><input type="checkbox" name="noparticles"> <span data-lang="en">Background without particles</span><span data-lang="ro">Fundal fără particule</span></label>
+      <label class="switch"><input type="checkbox" name="contrast"> <span data-lang="en">High contrast</span><span data-lang="ro">Contrast ridicat</span></label>
+      <label class="switch"><input type="checkbox" name="cinema"> <span data-lang="en">Cinema gallery (moves sideways as you scroll down)</span><span data-lang="ro">Galerie cinema (se mișcă lateral când derulezi în jos)</span></label>
+      <label class="switch"><input type="checkbox" name="explain"> <span data-lang="en">Show every explanation</span><span data-lang="ro">Arată toate explicațiile</span></label>
+    </fieldset>
+
+    <fieldset>
+      <legend><span data-lang="en">Sound (optional)</span><span data-lang="ro">Sunet (opțional)</span></legend>
+      <label class="switch"><input type="checkbox" name="sound"> <span data-lang="en">Enable sound</span><span data-lang="ro">Activează sunetul</span></label>
+      <div class="field"><label for="set-sfx"><span data-lang="en">Chapter chimes</span><span data-lang="ro">Sunete de capitol</span></label><input id="set-sfx" type="range" name="sfx" min="0" max="1" step=".05" value=".5"><output data-out="sfx">50%</output></div>
+      <div class="field"><label for="set-amb"><span data-lang="en">Space ambience</span><span data-lang="ro">Ambient spațial</span></label><input id="set-amb" type="range" name="amb" min="0" max="1" step=".05" value=".3"><output data-out="amb">30%</output></div>
+      <label class="switch"><input type="checkbox" name="mute"> Mute</label>
+    </fieldset>
+
+    <fieldset>
+      <legend><span data-lang="en">Compatibility</span><span data-lang="ro">Compatibilitate</span></legend>
+      <label class="switch"><input type="checkbox" name="fallback"> <span data-lang="en">Simulate fallback</span><span data-lang="ro">Simulează fallbackul</span></label>
+      <label class="switch"><input type="checkbox" name="static"> <span data-lang="en">Static mode (no animation)</span><span data-lang="ro">Mod static (fără animații)</span></label>
+    </fieldset>
+
+    <footer class="panel__foot">
+      <button class="btn" type="button" data-action="tutorial"><span data-lang="en">Replay tutorial</span><span data-lang="ro">Reia tutorialul</span></button>
+      <button class="btn btn--danger" type="button" data-action="reset"><span data-lang="en">Reset preferences</span><span data-lang="ro">Resetează preferințele</span></button>
+    </footer>
+  </form>
+</dialog>
+
+<dialog class="panel" id="passport" aria-labelledby="passport-title">
+  <form method="dialog" class="panel__inner">
+    <header class="panel__head">
+      <h2 id="passport-title"><span data-lang="en">Time passport</span><span data-lang="ro">Pașaport temporal</span></h2>
+      <button class="tool" value="close" aria-label="Close / Închide">✕</button>
+    </header>
+    <p class="muted"><span data-lang="en">Stamps and badges are just for fun and stay on this device. Every piece of information on the page is available without them.</span><span data-lang="ro">Ștampilele și insignele sunt doar de distracție și rămân pe acest dispozitiv. Toate informațiile de pe pagină sunt disponibile și fără ele.</span></p>
+    <h3><span data-lang="en">Stops discovered</span><span data-lang="ro">Opriri descoperite</span></h3>
+    <ul class="stamps" data-stamps></ul>
+    <h3><span data-lang="en">Time crystals</span><span data-lang="ro">Cristale temporale</span> <span data-crystal-count>0/5</span></h3>
+    <h3><span data-lang="en">Badges</span><span data-lang="ro">Insigne</span></h3>
+    <ul class="badges-earned" data-badges></ul>
+  </form>
+</dialog>
+
+<dialog class="panel panel--tour" id="tour" aria-labelledby="tour-title">
+  <div class="panel__inner">
+    <p class="tour__step" data-tour-count>1 / 5</p>
+    <div class="tour__visual" data-tour-visual aria-hidden="true"></div>
+    <h2 id="tour-title" data-tour-title></h2>
+    <p data-tour-text></p>
+    <footer class="panel__foot">
+      <button class="btn" type="button" data-tour="skip"><span data-lang="en">Skip</span><span data-lang="ro">Sari peste</span></button>
+      <button class="btn" type="button" data-tour="back"><span data-lang="en">Back</span><span data-lang="ro">Înapoi</span></button>
+      <button class="btn btn--primary" type="button" data-tour="next"><span data-lang="en">Next</span><span data-lang="ro">Înainte</span></button>
+    </footer>
+  </div>
+</dialog>
+
+<div class="toast" role="status" aria-live="polite" hidden></div>
+
+<noscript><p class="noscript">Conținutul se poate citi complet fără JavaScript; setările, laboratorul și fallbackul interactiv au nevoie de JavaScript. / All content is readable without JavaScript; settings, the lab and the interactive fallback need it.</p></noscript>
