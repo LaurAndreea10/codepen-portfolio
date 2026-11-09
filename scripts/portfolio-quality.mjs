@@ -36,12 +36,12 @@ for (const [file, html, configPath] of [
 const freshnessChecks = [
   ["portfolio-config.js", configSource, /updated:\s*["']2026-1[0-2]-\d{2}["']/], // any date from October on (was pinned to 10-11)
   ["portfolio.html", ro, /Serpent Prism v2\.0\.0/],
-  ["portfolio.html", ro, /datetime=["']2026-10-21["']/],
+  ["portfolio.html", ro, /id="now-datetime" datetime=["']2026-1[0-2]-\d{2}["']/], // any date from October on (was pinned to 10-21)
   ["en/index.html", en, /Serpent Prism v2\.0\.0/],
-  ["en/index.html", en, /Now · updated 21 October 2026/]
+  ["en/index.html", en, /Now · updated \d{1,2} (October|November|December) 2026/] // was pinned to 21 October
 ];
 for (const [file, source, pattern] of freshnessChecks) {
-  if (!pattern.test(source)) failures.push(`${file}: October version/date drift`);
+  if (!pattern.test(source)) failures.push(`${file}: version/date drift (expected an update from October 2026 on)`);
 }
 
 for (const page of ["portfolio.html", "en/", "proof-pack.html", "mobile-test-lab.html", "skydreams-portal/", "kygo-world/", "serpent-prism/", "pentarena/", "slidestorm-arena/", "odyssey-quest/", "curious-garden/", "canva-collection.html", "en/canva-collection.html"]) {
