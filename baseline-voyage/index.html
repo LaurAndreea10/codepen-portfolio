@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="ro" data-theme="dark" data-palette="cosmic" data-mode="full"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CHRONOSCROLL × Baseline Voyage — Laura Andreea</title>
+<meta name="description" content="An accessible bilingual 3D scroll voyage, browser timeline and interactive CSS lab. Created 9 November 2026 by Laura Andreea.">
+<meta name="author" content="Laura Andreea">
+<meta name="theme-color" content="#070c17">
+<meta property="og:title" content="Baseline Voyage · animation-timeline">
+<meta property="og:description" content="Scroll through the history of CSS animation-timeline, from Chrome 115 to Firefox 159.">
+<meta property="og:type" content="website">
+
+
+
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/baseline-voyage/"><meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/baseline-voyage/social.png"><meta name="twitter:card" content="summary_large_image"><script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"CHRONOSCROLL × Baseline Voyage","dateCreated":"2026-11-09","inLanguage":["ro","en"],"creator":{"@type":"Person","name":"Laura Andreea"}}</script><style>
+/* ==========================================================
+   Baseline Voyage — CodePen Challenge: animation-timeline
+   by Laura Andreea · November 2026
+   ========================================================== */
+
+/* ---------- Registered properties (animatable custom props) ---------- */
+@property --p     { syntax: "<number>";  inherits: true;  initial-value: 0; }
+@property --pct   { syntax: "<integer>"; inherits: true;  initial-value: 0; }
+@property --year  { syntax: "<integer>"; inherits: false; initial-value: 2023; }
+@property --g     { syntax: "<number>";  inherits: true;  initial-value: 0; }
+@property --gp    { syntax: "<integer>"; inherits: true;  initial-value: 0; }
+
+/* ---------- Tokens ---------- */
+:root {
+  --bg: #070c17;
+  --navy: #0b1220;
+  --panel: rgb(14 24 44 / 0.72);
+  --line: rgb(94 231 255 / 0.18);
+  --cyan: #5ee7ff;
+  --amber: #ffb547;
+  --text: #e6edf7;
+  --muted: #93a6c2;
+  --serif: "Fraunces", Georgia, serif;
+  --sans: "Inter", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius: 18px;
+  --line-x: 1.1rem;
+  color-scheme: dark;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(120% 80% at 50% 0%, #10203d 0%, var(--bg) 60%) fixed, var(--bg);
+  color: var(--text);
+  font: 400 1rem/1.65 var(--sans);
+  overflow-x: clip;
+}
+code { font-family: var(--mono); font-size: 0.9em; color: var(--cyan); }
+a { color: var(--cyan); text-underline-offset: 3px; }
+a:hover { color: var(--amber); }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 6px; }
+
+html[lang="en"] [data-lang="ro"],
+html[lang="ro"] [data-lang="en"] { display: none; }
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+.skip {
+  position: fixed; left: 1rem; top: -4rem; z-index: 100;
+  background: var(--amber); color: #111; padding: .6rem 1rem; border-radius: 10px;
+  font-weight: 600; text-decoration: none;
+}
+.skip:focus { top: 1rem; }
+
+/* ---------- Sky (parallax) ---------- */
+.sky { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.sky__layer { position: absolute; inset: 0 0 -80vh; background-repeat: repeat; }
+.sky__layer--far {
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #fff8 50%, transparent 51%),
+    radial-gradient(1px 1px at 120px 90px, #9ef3ff99 50%, transparent 51%),
+    radial-gradient(1px 1px at 200px 160px, #fff6 50%, transparent 51%);
+  background-size: 240px 220px;
+  opacity: .7;
+}
+.sky__layer--near {
+  background-image:
+    radial-gradient(2px 2px at 60px 80px, #fffc 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 300px 240px, #ffd79acc 50%, transparent 51%),
+    radial-gradient(2px 2px at 420px 40px, #9ef3ffcc 50%, transparent 51%);
+  background-size: 480px 360px;
+}
+.sky__orb {
+  position: absolute; width: 60vmax; aspect-ratio: 1; right: -20vmax; top: 10vh;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgb(94 231 255 / .18), transparent 60%);
+  filter: blur(10px);
+}
+
+/* ---------- Progress bar ---------- */
+.progress-bar {
+  position: fixed; inset: 0 0 auto; height: 3px; z-index: 60;
+  background: linear-gradient(90deg, var(--cyan), var(--amber));
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: fixed; inset: 3px 0 auto; z-index: 50;
+  display: flex; align-items: center; gap: .9rem;
+  padding: .6rem clamp(.8rem, 3vw, 2rem);
+  background: rgb(7 12 23 / .7);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.brand { font: 500 .85rem var(--mono); color: var(--muted); white-space: nowrap; }
+.brand__dot { color: var(--amber); }
+.meter { display: flex; gap: .35rem; margin: 0 0 0 auto; padding: 0; list-style: none; }
+.badge {
+  font: 600 .7rem var(--mono); letter-spacing: .03em;
+  padding: .25rem .55rem; border-radius: 999px;
+  color: var(--muted); border: 1px solid rgb(147 166 194 / .3);
+  transition: background .3s, color .3s, border-color .3s;
+}
+.badge.is-lit {
+  background: rgb(94 231 255 / .14); color: var(--cyan); border-color: var(--cyan);
+  box-shadow: 0 0 14px rgb(94 231 255 / .35);
+}
+.badge--baseline.is-lit {
+  background: rgb(255 181 71 / .16); color: var(--amber); border-color: var(--amber);
+  box-shadow: 0 0 14px rgb(255 181 71 / .4);
+}
+.ring {
+  --size: 38px;
+  width: var(--size); height: var(--size); flex: none; border-radius: 50%;
+  display: grid; place-items: center;
+  background:
+    radial-gradient(closest-side, var(--navy) 76%, transparent 78%),
+    conic-gradient(var(--cyan) calc(var(--p) * 360deg), rgb(255 255 255 / .08) 0);
+  counter-reset: pct var(--pct);
+}
+.ring__num::after { content: counter(pct); font: 600 .62rem var(--mono); color: var(--text); }
+.lang-toggle {
+  flex: none; font: 600 .75rem var(--mono); color: var(--text);
+  background: transparent; border: 1px solid var(--line); border-radius: 999px;
+  padding: .4rem .7rem; cursor: pointer; min-width: 44px; min-height: 36px;
+}
+.lang-toggle:hover { border-color: var(--amber); color: var(--amber); }
+
+/* ---------- Hero ---------- */
+.hero {
+  min-height: 100vh; display: grid; place-content: center; text-align: center;
+  padding: 7rem 1.25rem 4rem; gap: 1rem;
+}
+.eyebrow { margin: 0; font: 500 .78rem var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--amber); }
+.hero__title {
+  margin: 0; font: 600 clamp(2.4rem, 7.5vw, 5.6rem)/1.02 var(--serif);
+  letter-spacing: -.02em; max-width: 14ch; justify-self: center;
+  transform-origin: 50% 0;
+}
+.hero__title code { font-size: .78em; font-weight: 500; }
+.hero__lead { margin: 0; color: var(--muted); font-size: 1.1rem; }
+.cue { display: inline-block; color: var(--cyan); animation: bob 1.6s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(6px); } }
+.support-pill {
+  justify-self: center; margin: .5rem 0 0; font: 500 .78rem var(--mono);
+  padding: .4rem .85rem; border-radius: 999px; border: 1px solid var(--line); color: var(--cyan);
+}
+.support-pill[data-mode="fallback"] { color: var(--amber); border-color: rgb(255 181 71 / .4); }
+
+/* ---------- Journey / timeline ---------- */
+.journey { position: relative; }
+.year-wrap {
+  position: sticky; top: 0; height: 100vh; margin-bottom: -100vh;
+  display: grid; place-items: center; pointer-events: none; z-index: 0;
+}
+.year {
+  font: 800 clamp(6rem, 24vw, 19rem)/1 var(--serif);
+  color: transparent; -webkit-text-stroke: 1.5px rgb(94 231 255 / .22);
+  counter-reset: y var(--year);
+}
+.year::after { content: counter(y); }
+
+.timeline {
+  position: relative; z-index: 1; list-style: none;
+  max-width: 1040px; margin: 0 auto; padding: 18vh 1.25rem 30vh;
+  display: flex; flex-direction: column; gap: 38vh;
+}
+.timeline::before,
+.timeline::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 3px;
+  left: calc(1.25rem + var(--line-x)); translate: -50% 0; border-radius: 3px;
+}
+.timeline::after { background: rgb(255 255 255 / .07); }
+.timeline::before {
+  z-index: 1; transform-origin: top;
+  background: linear-gradient(var(--cyan), var(--amber));
+  box-shadow: 0 0 18px rgb(94 231 255 / .5);
+}
+
+.event {
+  --from-x: -60px;
+  position: relative; margin-left: calc(var(--line-x) + 2.2rem);
+  padding: 1.5rem 1.6rem; max-width: 460px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 20px 50px -20px rgb(0 0 0 / .6);
+}
+.event::before { /* the dot on the line */
+  content: ""; position: absolute; top: 1.9rem; left: calc(-2.2rem - 9px);
+  width: 18px; height: 18px; border-radius: 50%; z-index: 2;
+  background: var(--navy); border: 3px solid var(--cyan);
+  box-shadow: 0 0 0 6px rgb(94 231 255 / .12), 0 0 22px var(--cyan);
+}
+.event time { font: 600 .8rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--amber); }
+.event h2 { margin: .3rem 0 .5rem; font: 600 clamp(1.5rem, 3.2vw, 2.1rem)/1.15 var(--serif); }
+.event p { margin: 0 0 1rem; color: #c8d4e6; }
+.chip {
+  display: inline-block; font: 500 .72rem var(--mono); color: var(--cyan);
+  padding: .3rem .65rem; border-radius: 999px; background: rgb(94 231 255 / .08); border: 1px solid var(--line);
+}
+.chip--amber { color: var(--amber); background: rgb(255 181 71 / .08); border-color: rgb(255 181 71 / .3); }
+.event--you { border-style: dashed; }
+.event--you::before { border-color: var(--amber); box-shadow: 0 0 0 6px rgb(255 181 71 / .12), 0 0 22px var(--amber); }
+.you-status { font-family: var(--mono); font-size: .92rem; }
+
+@media (min-width: 780px) {
+  .timeline::before, .timeline::after { left: 50%; }
+  .event { width: calc(50% - 3rem); margin-left: 0; }
+  .event:nth-child(odd)  { align-self: flex-start; }
+  .event:nth-child(even) { align-self: flex-end; --from-x: 60px; }
+  .event:nth-child(odd)::before  { left: auto; right: calc(-3rem - 9px); }
+  .event:nth-child(even)::before { left: calc(-3rem - 9px); }
+}
+
+/* ---------- Gallery ---------- */
+.section-title {
+  margin: 0 auto 1.5rem; padding: 0 1.25rem; max-width: 1040px;
+  font: 600 clamp(1.8rem, 4.5vw, 3rem)/1.1 var(--serif);
+}
+.gallery { position: relative; padding: 4rem 0; }
+.gallery__viewport { overflow-x: auto; padding: 0 1.25rem 1rem; scroll-snap-type: x proximity; }
+.track { display: flex; gap: 1.25rem; margin: 0; padding: 0; list-style: none; width: max-content; }
+.card {
+  width: min(78vw, 360px); flex: none; scroll-snap-align: start;
+  padding: 1.4rem; border-radius: var(--radius);
+  background: var(--panel); border: 1px solid var(--line);
+  display: flex; flex-direction: column;
+}
+.card h3 { margin: 0 0 .4rem; font: 600 1.25rem var(--sans); }
+.card p { margin: 0 0 1rem; color: #c8d4e6; font-size: .95rem; }
+.card pre {
+  margin: auto 0 0; padding: .9rem 1rem; overflow-x: auto;
+  background: #050912; border-radius: 12px; border: 1px solid rgb(255 255 255 / .06);
+}
+.card pre code { font-size: .78rem; line-height: 1.6; color: #b9f5ff; white-space: pre; }
+.card--amber { border-color: rgb(255 181 71 / .35); }
+.card--amber h3 code { color: var(--amber); }
+
+/* ---------- Lab ---------- */
+.lab { padding: 6rem 0 4rem; }
+.lab__intro { max-width: 1040px; margin: -0.5rem auto 2rem; padding: 0 1.25rem; color: var(--muted); }
+.lab__grid {
+  max-width: 1040px; margin: 0 auto; padding: 0 1.25rem;
+  display: grid; gap: 2rem; align-items: center;
+}
+@media (min-width: 780px) { .lab__grid { grid-template-columns: 1.2fr 1fr; } }
+.mini { border-radius: var(--radius); border: 1px solid var(--line); background: var(--panel); overflow: hidden; }
+.mini__bar { display: flex; align-items: center; gap: .4rem; padding: .6rem .9rem; border-bottom: 1px solid var(--line); }
+.mini__bar i { width: 10px; height: 10px; border-radius: 50%; background: rgb(255 255 255 / .15); }
+.mini__bar span { margin-left: auto; font: 500 .72rem var(--mono); color: var(--muted); }
+.mini__scroller {
+  height: 280px; overflow-y: auto; margin: 0; padding: 1rem; list-style: none;
+  display: flex; flex-direction: column; gap: 4.5rem; overscroll-behavior: contain;
+}
+.mini__item {
+  padding: 1rem 1.1rem; border-radius: 12px; background: rgb(255 255 255 / .04);
+  border: 1px solid rgb(255 255 255 / .06); font-size: .95rem;
+}
+.mini__item:last-child { border-color: var(--amber); color: var(--amber); }
+
+.gauge { text-align: center; }
+.gauge__dial {
+  position: relative; width: min(280px, 80vw); aspect-ratio: 2 / 1; margin: 0 auto;
+  border-radius: 999px 999px 0 0; overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 100%, var(--bg) 54%, transparent 55%),
+    conic-gradient(from -90deg at 50% 100%,
+      var(--cyan) calc(var(--g) * 180deg),
+      rgb(255 255 255 / .08) 0 180deg, transparent 0);
+}
+.gauge__needle {
+  position: absolute; left: 50%; bottom: 0; width: 4px; height: 88%;
+  margin-left: -2px; border-radius: 4px; background: var(--amber);
+  transform-origin: 50% 100%;
+  rotate: calc(var(--g) * 180deg - 90deg);
+  box-shadow: 0 0 12px var(--amber);
+}
+.gauge__num { margin: .6rem 0 0; font: 700 2.4rem var(--serif); counter-reset: gp var(--gp); }
+.gauge__num::after { content: counter(gp) "%"; }
+.gauge__label { margin: 0; font: 500 .8rem var(--mono); color: var(--muted); }
+
+/* ---------- Footer ---------- */
+.footer {
+  margin-top: 4rem; padding: 2.5rem 1.25rem 3rem; text-align: center;
+  border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem;
+}
+.footer p { margin: .3rem 0; }
+
+@media (max-width: 560px) {
+  .brand { display: none; }
+  .meter { margin-left: 0; }
+  .badge { font-size: .62rem; padding: .22rem .42rem; }
+}
+
+/* ==========================================================
+   SCROLL-DRIVEN ANIMATIONS (native)
+   ========================================================== */
+@keyframes grow-x  { to { transform: scaleX(1); } }
+@keyframes grow-y  { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes fill-ring { to { --p: 1; --pct: 100; } }
+@keyframes years {
+  0%, 12%  { --year: 2023; }
+  50%      { --year: 2025; }
+  80%, 100% { --year: 2026; -webkit-text-stroke-color: rgb(255 181 71 / .3); }
+}
+@keyframes lit {
+  to {
+    background: rgb(94 231 255 / .14); color: var(--cyan); border-color: var(--cyan);
+    box-shadow: 0 0 14px rgb(94 231 255 / .35);
+  }
+}
+@keyframes lit-amber {
+  to {
+    background: rgb(255 181 71 / .16); color: var(--amber); border-color: var(--amber);
+    box-shadow: 0 0 14px rgb(255 181 71 / .4);
+  }
+}
+@keyframes gauge { to { --g: 1; --gp: 100; } }
+
+@supports (animation-timeline: scroll()) {
+  /* 1 · Progress bar + ring follow the whole page */
+  .progress-bar { animation: grow-x linear both; animation-timeline: scroll(root); }
+  .ring { animation: fill-ring linear both; animation-timeline: scroll(root); }
+
+  /* 2 · One named view timeline for the whole journey section */
+  .journey { view-timeline: --journey block; }
+  .timeline::before {
+    animation: grow-y linear both;
+    animation-timeline: --journey;
+    animation-range: contain 0% contain 85%;
+  }
+  .year {
+    animation: years linear both;
+    animation-timeline: --journey;
+    animation-range: contain 0% contain 100%;
+  }
+
+  /* 3 · Each event exposes its own view timeline (+ a unique one for the badges) */
+  .event { view-timeline-name: --ev; }
+  .event:nth-child(1) { view-timeline-name: --ev, --e1; }
+  .event:nth-child(2) { view-timeline-name: --ev, --e2; }
+  .event:nth-child(3) { view-timeline-name: --ev, --e3; }
+
+  /* 4 · Lab gauge items fade inside their own scroller */
+  .mini__scroller { scroll-timeline: --mini block; }
+}
+
+/* timeline-scope lets elements anywhere in <body> read --e1..3 and --mini */
+@supports (timeline-scope: --a) and (animation-timeline: view()) {
+  body { timeline-scope: --e1, --e2, --e3; }
+  .badge { animation: lit linear both; animation-range: entry 50% cover 45%; }
+  .badge:nth-child(1) { animation-timeline: --e1; }
+  .badge:nth-child(2) { animation-timeline: --e2; }
+  .badge:nth-child(3) { animation-timeline: --e3; }
+  .badge--baseline { animation-name: lit-amber; animation-timeline: --e3; animation-range: cover 40% cover 55%; }
+
+  .lab__grid { timeline-scope: --mini; }
+  .gauge { animation: gauge linear both; animation-timeline: --mini; }
+}
+
+/* Motion-heavy effects only for people who are fine with motion */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes drift-far  { to { translate: 0 -18vh; } }
+  @keyframes drift-near { to { translate: 0 -55vh; } }
+  @keyframes orb        { to { translate: -25vw 40vh; scale: 1.4; } }
+  @keyframes hero-out   { to { scale: .55; opacity: 0; filter: blur(6px); translate: 0 -8vh; } }
+  @keyframes cue-out    { to { opacity: 0; } }
+  @keyframes arrive {
+    from { opacity: 0; translate: var(--from-x) 40px; scale: .92; filter: blur(8px); }
+    to   { opacity: 1; translate: 0 0; scale: 1; filter: blur(0); }
+  }
+  @keyframes pop {
+    0%   { scale: 0; }
+    70%  { scale: 1.45; }
+    100% { scale: 1; }
+  }
+  @keyframes slide { to { transform: translateX(calc(-100% + 100vw - 2.5rem)); } }
+  @keyframes mini-in {
+    from { opacity: 0; translate: 0 24px; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .sky__layer--far  { animation: drift-far  linear both; animation-timeline: scroll(root); }
+    .sky__layer--near { animation: drift-near linear both; animation-timeline: scroll(root); }
+    .sky__orb         { animation: orb        linear both; animation-timeline: scroll(root); }
+
+    .hero__title {
+      animation: hero-out linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 90%;
+    }
+    .hero__lead, .eyebrow, .support-pill { animation: cue-out linear both; animation-timeline: scroll(root); animation-range: 0 30vh; }
+
+    .event {
+      animation: arrive linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+    .event::before {
+      animation: pop linear both;
+      animation-timeline: --ev;
+      animation-range: entry 70% cover 45%;
+    }
+
+    .mini__item { animation: mini-in linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }
+
+    /* Horizontal gallery: the tall section scrolls, the track slides sideways */
+    .gallery { height: 320vh; padding: 0; view-timeline: --gal block; }
+    .gallery__sticky {
+      position: sticky; top: 0; height: 100vh; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .gallery__viewport { overflow: visible; scroll-snap-type: none; }
+    .track { animation: slide linear both; animation-timeline: --gal; animation-range: contain 5% contain 95%; }
+  }
+}
+
+/* ==========================================================
+   FALLBACK — browsers without scroll-driven animations.
+   script.js sets --scroll, --p, --pct, --year, --g and .is-in
+   ========================================================== */
+@supports not (animation-timeline: scroll()) {
+  .progress-bar { transform: scaleX(var(--scroll, 0)); }
+  .timeline::before { transform: scaleY(var(--jp, 0)); }
+  .sky__layer--far  { transform: translateY(calc(var(--scroll, 0) * -18vh)); }
+  .sky__layer--near { transform: translateY(calc(var(--scroll, 0) * -55vh)); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .event { opacity: 0; transform: translate(var(--from-x), 40px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+    .event.is-in { opacity: 1; transform: none; }
+  }
+}
+
+
+/* CHRONOSCROLL × Baseline Voyage — integrated edition, 9 November 2026 */
+:root{--intensity:1;--font-scale:1;--title-bg:#10203d;--portal:#5ee7ff;--control:#101e34}html{font-size:calc(16px * var(--font-scale));scroll-padding-top:110px}body{background:radial-gradient(120% 80% at 50% 0%,var(--title-bg),var(--bg) 60%) fixed,var(--bg)}html[data-theme=light]{--bg:#f4f2ea;--navy:#e9ece6;--panel:#ffffffeb;--line:#62758b70;--cyan:#00576e;--amber:#805000;--text:#172739;--muted:#425870;--title-bg:#dae5e4;--control:#fff;color-scheme:light}html[data-palette=aurora]{--cyan:#86efac;--amber:#f9a8d4;--title-bg:#193b38;--portal:#86efac}html[data-palette=neon]{--cyan:#d6a4ff;--amber:#ffad5c;--title-bg:#281942;--portal:#bd6dff}html[data-palette=observatory]{--cyan:#b7dafa;--amber:#edcf8f;--title-bg:#182438;--portal:#b7dafa}html[data-palette=retro]{--cyan:#7de2c9;--amber:#ffa980;--title-bg:#253536;--portal:#7de2c9}html[data-palette=paper]{--bg:#f2eedf;--navy:#e4dfcf;--panel:#faf6ebed;--cyan:#275b57;--amber:#914116;--text:#262d29;--muted:#536058;--line:#7b837a88;--title-bg:#e1d9bf;--control:#fbf7ef;color-scheme:light}html[data-palette=mono]{--cyan:#e5e5e5;--amber:#bbb;--portal:#eee;--title-bg:#222}html[data-theme=light][data-palette=mono]{--cyan:#222;--amber:#555;--portal:#666}html[data-theme=light]:not([data-palette=paper]){--cyan:#00576e;--amber:#805000}html.high{--bg:#000;--navy:#000;--panel:#000;--line:#fff;--cyan:#fff700;--amber:#fff;--text:#fff;--muted:#fff;--title-bg:#000;--control:#000;color-scheme:dark}
+button,select,input{font:inherit}button,.button{min-height:44px;padding:.55rem .85rem;border:1px solid var(--line);border-radius:999px;color:var(--text);background:var(--control);cursor:pointer;font-size:.8rem;text-decoration:none}button:hover,.button:hover{border-color:var(--amber)}button:disabled{opacity:.45;cursor:default}button[aria-pressed=true]{border-color:var(--cyan);background:var(--navy)}input,select{color:var(--text);background:var(--control);border:1px solid var(--line);border-radius:7px;padding:.5rem;max-width:100%;min-height:44px}input[type=range]{width:100%;accent-color:var(--cyan);padding:0}.topbar{flex-wrap:wrap;background:var(--panel);backdrop-filter:blur(14px)}.brand{color:var(--text);text-decoration:none}.top-actions{display:flex;gap:6px}.meter{gap:5px}.badge{padding:.2rem .5rem}.topbar .ring{--size:36px}.topbar button{font-size:.7rem;padding:.3rem .6rem}.event p,.card p{color:var(--text)}.hero{min-height:100svh;grid-template-columns:1.1fr 1fr;max-width:1280px;margin:auto;text-align:left;padding:140px 5vw 75px;align-items:center;gap:25px}.hero-copy{min-width:0;position:relative;z-index:2}.hero__title{font-family:var(--sans);font-size:clamp(2.7rem,5.8vw,5.6rem);letter-spacing:-.065em;max-width:13ch;line-height:1.04;overflow-wrap:anywhere;margin:1.3rem 0}.hero__lead{max-width:450px;font-size:1rem}.hero .eyebrow{font-size:.66rem}.support-pill{display:inline-block;font-size:.65rem;max-width:100%;white-space:normal;margin:18px 0}.created{font:11px var(--mono);color:var(--muted);margin-top:24px}.hero-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.primary{background:var(--cyan);color:var(--bg);border-color:var(--cyan)}.observatory{position:relative;aspect-ratio:1;perspective:1000px;display:grid;place-items:center}.planet{position:absolute;border-radius:50%;width:62%;aspect-ratio:1;background:radial-gradient(circle at 30% 25%,#d0f9f7,#4591a5 26%,#153f59 60%,#070d21 90%);box-shadow:inset -20px -15px 30px #0007,0 0 60px #5ee7ff15;transform-style:preserve-3d}.planet:after{content:'';position:absolute;inset:-20%;border:1px solid var(--cyan);opacity:.5;border-radius:50%;transform:rotateX(65deg) rotateZ(-30deg)}.orbital-path{position:absolute;inset:5%;border:1px solid var(--line);border-radius:50%;transform:rotateX(35deg) rotateZ(-25deg);pointer-events:none}.orbital-path:nth-child(2){inset:0;transform:rotateY(55deg) rotateZ(30deg)}.moon{position:absolute;width:17%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;text-decoration:none;font:10px var(--mono);color:#fff;box-shadow:inset -8px -8px 20px #0008,0 0 20px #5ee7ff20;z-index:2}.moon.blink{left:1%;top:25%;background:radial-gradient(at 30% 25%,#ffe8ae,#b97517 60%,#231331)}.moon.webkit{right:0;top:34%;background:radial-gradient(at 30% 25%,#dbfaff,#137dae 60%,#132b40)}.moon.gecko{left:41%;bottom:0;background:radial-gradient(at 30% 25%,#ffc0a6,#bc3e5a 60%,#27104d)}.art-label{position:absolute;top:0;left:0;color:var(--muted);font:10px var(--mono);letter-spacing:.1em}.observatory .art-label:last-child{top:auto;left:auto;bottom:4%;right:0}.nav-map{position:sticky;top:68px;z-index:12;background:var(--panel);border-bottom:1px solid var(--line);display:flex;justify-content:center;gap:12px;padding:8px 14px;overflow:auto}.nav-map a{font:11px var(--mono);white-space:nowrap;padding:7px;text-decoration:none}.nav-map a[aria-current=step]{color:var(--amber);text-decoration:underline}.journey{scroll-margin-top:120px}.section-kicker{color:var(--amber);font:11px var(--mono);text-transform:uppercase;letter-spacing:.1em}.event .chapter-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.event .collect{border-radius:7px;font-size:11px}.event:target{border-color:var(--amber)}.portal{position:relative;height:22vh;max-height:160px;display:grid;place-items:center;margin:1rem auto;perspective:600px;overflow:hidden}.portal:before{content:'';width:250px;height:100px;border:2px solid var(--cyan);border-radius:50%;box-shadow:0 0 25px var(--line),inset 0 0 15px var(--line);transform:rotateX(50deg)}.portal span{position:absolute;font:10px var(--mono);color:var(--amber)}.gallery{height:auto!important;padding:4rem 0!important}.gallery__sticky{position:relative!important;top:auto!important;height:auto!important;overflow:visible!important;display:block!important}.gallery__viewport{max-width:1120px;margin:auto;overflow:auto!important;scroll-snap-type:x mandatory!important;scroll-timeline:--cards inline;scrollbar-width:thin}html:not([data-cinema=true]) .track{animation:none!important;transform:none!important}.gallery{timeline-scope:--cards}.gallery-meter{max-width:1040px;height:3px;background:var(--line);margin:20px auto}.gallery-meter i{display:block;width:100%;height:100%;background:var(--cyan);transform:scaleX(var(--cards,0));transform-origin:left}.section-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px 0}.card pre{background:var(--bg)}.card pre code{color:var(--cyan)}.mini__scroller{scrollbar-width:thin}.mini__item{color:var(--text)}.mini__item:last-child{color:var(--amber)}.lab,.content-section{padding:70px 0;max-width:1120px;margin:auto}.content-section{padding-left:25px;padding-right:25px}.lab__grid{gap:35px}.gauge{align-self:center}.lab-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:25px 0}.field{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted)}.field output{color:var(--amber)}.sandbox{margin-top:35px;border:1px solid var(--line);border-radius:18px;padding:25px;background:var(--panel);timeline-scope:--sandbox}.sandbox-stage{height:280px;overflow-y:auto;scroll-timeline:--sandbox block;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:22px;position:relative}.sandbox-stage[data-axis=inline]{overflow-y:hidden;overflow-x:auto;scroll-timeline:--sandbox inline}.sandbox-stage[data-axis=inline] .sandbox-content{width:1200px;height:100%;display:flex;align-items:center;justify-content:center;padding:0 420px}.sandbox-content{min-height:950px;display:grid;place-items:center;padding:330px 0}.sample{--move:60px;--turn:30deg;--zoom:.7;--fade:.15;width:130px;min-height:130px;background:radial-gradient(circle at 25% 20%,#e4f7ff,#5180ba 45%,#172f60);border-radius:25px;box-shadow:0 15px 35px #0004;display:grid;place-items:center;color:white;font:12px var(--mono);text-align:center;transform:translateY(var(--move)) rotate(var(--turn)) scale(var(--zoom));opacity:var(--fade)}.sandbox-readout{height:5px;background:var(--line);margin-top:20px}.sandbox-readout i{display:block;height:100%;width:100%;background:var(--amber);transform-origin:left;transform:scaleX(var(--sandbox-progress,0))}pre.live-code{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:20px;font-size:12px;overflow:auto;color:var(--cyan);white-space:pre}.live-code code{white-space:pre}.feature-grid,.lesson-grid,.support-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.box{background:var(--panel);border:1px solid var(--line);padding:22px;border-radius:14px;min-width:0}.box h3{margin:.2rem 0;font-size:1rem}.box p{font-size:.86rem;color:var(--muted)}.support-grid .box strong{display:block;color:var(--cyan);font-family:var(--mono)}.section-heading{font:600 clamp(1.8rem,4vw,3rem)/1.12 var(--sans);letter-spacing:-.04em}.lesson-grid{grid-template-columns:repeat(2,1fr)}details{border:1px solid var(--line);border-radius:12px;margin:12px 0;padding:16px;background:var(--panel)}summary{cursor:pointer;font-weight:600}details p{color:var(--muted)}.passport-strip{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.stamp{border:1px dashed var(--line);border-radius:10px;padding:15px;flex:1;min-width:130px;font:12px var(--mono);color:var(--muted)}.stamp.earned{border-style:solid;border-color:var(--amber);color:var(--amber)}.small{font-size:12px;color:var(--muted)}.notice{min-height:1.7em;color:var(--amber);font-size:12px}.resume{display:none}.resume.show{display:inline-block}.roadmap{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;list-style:none;padding:0;counter-reset:features}.roadmap li{counter-increment:features;padding:10px 14px;border-left:2px solid var(--cyan);background:var(--panel);font-size:12px}.roadmap li:before{content:counter(features,decimal-leading-zero) ' / ';color:var(--amber);font:11px var(--mono)}dialog{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:20px;padding:25px;width:min(610px,94vw);max-height:90svh;overflow:auto}dialog::backdrop{background:#000b;backdrop-filter:blur(6px)}dialog .dialog-head{display:flex;justify-content:space-between;align-items:center;gap:15px}dialog h2{font-size:1.4rem}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.check-field{display:flex;gap:10px;align-items:center;font-size:.85rem}.check-field input{width:20px;min-height:20px;accent-color:var(--cyan)}.dialog-footer{margin-top:25px;display:flex;gap:10px;flex-wrap:wrap}.tutorial-visual{border:1px solid var(--line);border-radius:16px;padding:30px;text-align:center;color:var(--cyan);font:40px var(--mono);background:var(--panel)}.footer{background:var(--panel)}.footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;margin:20px 0}.footer .small{font-size:11px}.audio-note{color:var(--muted);font-size:11px}html.large-text{--font-scale:1.15}html.no-particles .sky__layer{display:none}html.flat .observatory{perspective:none}html.flat .planet:after,html.flat .orbital-path{transform:none}html.flat .planet{box-shadow:none}html[data-mode=compact] .timeline{gap:60px;padding-top:60px;padding-bottom:60px}html[data-mode=compact] .hero{min-height:0}html[data-mode=compact] .gallery{padding:30px 0!important}html[data-mode=compact] .portal{display:none}html[data-mode=learning] .learning-note{display:block}.learning-note{display:none;font:12px var(--mono);color:var(--amber);max-width:1000px;margin:20px auto;padding:12px 25px;border-left:2px solid var(--amber)}html[data-mode=simple] .sky,html[data-mode=simple] .observatory,html[data-mode=simple] .portal,html[data-mode=simple] .year-wrap{display:none}html[data-mode=simple] .hero{display:block;min-height:0;padding-bottom:60px}html[data-mode=simple] *{animation:none!important;transition:none!important;filter:none!important;backdrop-filter:none!important}html[data-mode=simple] .event{opacity:1!important;transform:none!important;translate:none!important;scale:1!important}html[data-mode=simple] .timeline{gap:45px;padding-top:40px;padding-bottom:40px}.js-only{display:none}.js .js-only{display:initial}html:not(.js) .event{opacity:1!important;transform:none!important;translate:none!important;scale:1!important}html:not(.js) .hero__title,html:not(.js) .hero__lead{opacity:1!important;animation:none!important}
+@keyframes planet-orbit{to{transform:rotate(calc(-75deg * var(--intensity))) scale(.8)}}@keyframes moon-blink{to{translate:80px 160px}}@keyframes moon-webkit{to{translate:-60px -65px}}@keyframes portal-open{from{opacity:.1;scale:.6}to{opacity:1;scale:1}}@keyframes sample-motion{from{opacity:var(--fade);transform:translateY(var(--move)) rotate(var(--turn)) scale(var(--zoom))}to{opacity:1;transform:translateY(0) rotate(0) scale(1)}}@keyframes sample-motion-x{from{opacity:var(--fade);transform:translateX(var(--move)) rotate(var(--turn)) scale(var(--zoom))}to{opacity:1;transform:translateX(0) rotate(0) scale(1)}}
+@supports(animation-timeline:scroll()){@media(prefers-reduced-motion:no-preference){html:not(.still):not([data-sda=fallback]) .planet{animation:planet-orbit linear both;animation-timeline:scroll(root)}html:not(.still):not([data-sda=fallback]) .moon.blink{animation:moon-blink linear both;animation-timeline:scroll(root)}html:not(.still):not([data-sda=fallback]) .moon.webkit{animation:moon-webkit linear both;animation-timeline:scroll(root)}html:not(.still):not([data-sda=fallback]) .portal:before{animation:portal-open linear both;animation-timeline:view();animation-range:entry 0% cover 45%}}}
+@supports(timeline-scope:--a){html:not([data-scoped=fallback]) .gallery-meter i{animation:grow-x linear both;animation-timeline:--cards}html:not([data-scoped=fallback]) .sandbox-readout i{animation:grow-x linear both;animation-timeline:--sandbox}}
+@supports(animation-timeline:view()){html:not([data-sda=fallback]) .sample{animation:sample-motion var(--ease,linear) both;animation-timeline:var(--sample-timeline,--sandbox);animation-range:var(--sample-range,0% 100%)}html:not([data-sda=fallback]) .sandbox-stage[data-axis=inline] .sample{animation-name:sample-motion-x}}
+/* Simulated fallback uses exactly the same path as a legacy browser. */
+html[data-sda=fallback] .progress-bar,html[data-sda=fallback] .ring,html[data-sda=fallback] .timeline::before,html[data-sda=fallback] .year,html[data-sda=fallback] .sky *,html[data-sda=fallback] .hero *,html[data-sda=fallback] .event,html[data-sda=fallback] .event::before,html[data-sda=fallback] .mini__item{animation:none!important}html[data-sda=fallback] .progress-bar{transform:scaleX(var(--scroll,0))}html[data-sda=fallback] .timeline::before{transform:scaleY(var(--jp,0))}html[data-sda=fallback] .sky__layer--far{transform:translateY(calc(var(--scroll,0) * -18vh * var(--intensity)))}html[data-sda=fallback] .sky__layer--near{transform:translateY(calc(var(--scroll,0) * -55vh * var(--intensity)))}html[data-sda=fallback] .event{opacity:1;transform:none}html.js[data-sda=fallback]:not(.still):not([data-mode=simple]) .event:not(.is-in){opacity:.1;transform:translateY(25px)}html.js[data-sda=fallback] .event{transition:opacity .6s,transform .6s}html[data-scoped=fallback] .badge,html[data-scoped=fallback] .gauge,html[data-scoped=fallback] .gallery-meter i,html[data-scoped=fallback] .sandbox-readout i{animation:none!important}html[data-sda=fallback] .sample{animation:none!important}
+html.still{scroll-behavior:auto}html.still *,html.still *::before,html.still *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}html.still .event,html.still .hero__title,html.still .hero__lead,html.still .eyebrow,html.still .support-pill{opacity:1!important;transform:none!important;translate:none!important;scale:1!important;filter:none!important}html.still .sky__layer{transform:none!important;translate:none!important}html.still .sample{opacity:1!important;transform:none!important}html.still .timeline::before{transform:none!important}html.still .year::after{content:'2023–2026';font-size:.6em}html.still .cue{animation:none!important}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.event,.hero__title,.hero__lead,.eyebrow,.support-pill{opacity:1!important;transform:none!important;translate:none!important;scale:1!important;filter:none!important}.sky__layer{transform:none!important}.sample{opacity:1!important;transform:none!important}.timeline::before{transform:none!important}.year::after{content:'2023–2026';font-size:.6em}}
+@media(max-width:900px){.brand{font-size:10px}.meter{display:none}.topbar{gap:8px;justify-content:space-between}.top-actions{margin-left:auto}.hero{grid-template-columns:1fr 1fr}.feature-grid{grid-template-columns:1fr 1fr}.nav-map{top:65px}}@media(max-width:640px){.hero{grid-template-columns:1fr;padding-top:145px;padding-bottom:40px}.hero__title{font-size:3.2rem;max-width:16ch}.observatory{width:80%;margin:auto}.brand{display:block;font-size:10px}.brand code{display:none}.topbar .ring{display:none}.nav-map{top:67px;justify-content:flex-start}.topbar{min-height:64px}.topbar button{font-size:10px;min-width:40px}.lab-controls{grid-template-columns:1fr 1fr}.feature-grid,.support-grid,.lesson-grid{grid-template-columns:1fr}.settings-grid{grid-template-columns:1fr 1fr}.roadmap{grid-template-columns:1fr}.timeline{gap:90px;padding-bottom:60px}.event{padding:20px;max-width:none}.year-wrap{height:70vh;margin-bottom:-70vh}.year{font-size:24vw}.portal{height:110px}.section-heading{font-size:2rem}html{scroll-padding-top:120px}}@media(max-width:380px){.brand{max-width:70px;white-space:normal}.settings-grid,.lab-controls{grid-template-columns:1fr}.topbar{padding-left:8px;padding-right:8px;gap:3px}.top-actions{gap:3px}.hero__title{font-size:2.7rem}}
+html[data-sample-fallback=true] .sample{animation:none!important}
+html[data-registered=fallback] .ring,html[data-registered=fallback] .year,html[data-registered=fallback] .gauge{animation:none!important}
+html.still .progress-bar,html[data-mode=simple] .progress-bar{transform:scaleX(var(--scroll,0))!important}
+html.still .gallery-meter i,html.still .sandbox-readout i{transform:scaleX(var(--cards,0))}
+html.still .sandbox-readout i{transform:scaleX(var(--sandbox-progress,0))}
+html[data-palette=paper] .event p,html[data-theme=light] .event p{color:var(--text)}
+@media print{.topbar,.nav-map,.sky,.observatory,.portal,dialog,.section-actions{display:none!important}.hero{min-height:0;display:block;padding:20px}.year-wrap{display:none}.event{animation:none!important;opacity:1!important;transform:none!important;translate:none!important;scale:1!important}.timeline{gap:20px;padding:20px}.event,.box,details{break-inside:avoid}body{background:white;color:black}.gallery__viewport{overflow:visible!important}.track{width:auto;flex-wrap:wrap}.card{width:45%}}
+.secret-star{position:absolute;left:12%;bottom:8%;z-index:3;border:0;background:transparent;color:var(--amber);font-size:20px;padding:4px;min-width:44px;min-height:44px}.secret-star:hover{filter:drop-shadow(0 0 8px var(--amber))}
+html[data-cinema=true]:not(.still) .gallery{height:300vh!important;view-timeline:--gal block}html[data-cinema=true]:not(.still) .gallery__sticky{position:sticky!important;top:110px!important;height:calc(100svh - 120px)!important;overflow:hidden!important;display:flex!important;justify-content:center}html[data-cinema=true]:not(.still) .gallery__viewport{overflow:visible!important;width:100%;max-width:none}html[data-cinema=true]:not(.still) .track{animation:slide linear both!important;animation-timeline:--gal!important;animation-range:contain 5% contain 95%!important}html[data-cinema=true]:not(.still) .gallery-meter{display:none}
+html.still .moon,html.flat .moon{translate:none!important}html.flat .planet{animation:none!important;transform:none!important}html.flat .portal:before{transform:none!important}html[data-mode=simple] .sample{opacity:1;transform:none}
+@media(max-width:640px){html[data-cinema=true]:not(.still) .gallery__sticky{top:115px!important;height:calc(100svh - 125px)!important}}
+</style></head><body>
+<a class="skip" href="#journey">
+  <span data-lang="en">Skip to the timeline</span><span data-lang="ro">Sari la cronologie</span>
+</a>
+
+<!-- Parallax sky: driven by scroll(root) at different speeds -->
+<div class="sky" aria-hidden="true">
+  <div class="sky__layer sky__layer--far"></div>
+  <div class="sky__layer sky__layer--near"></div>
+  <div class="sky__orb"></div>
+</div>
+
+<!-- Reading progress bar: animation-timeline: scroll(root) -->
+<div class="progress-bar" aria-hidden="true"></div>
+
+<header class="topbar">
+  <a href="#home" class="brand"><code>CHRONOSCROLL</code> <span class="brand__dot">·</span> <span data-lang="en">voyage</span><span data-lang="ro">călătorie</span></a>
+
+  <!-- Remote-controlled badges: driven by --e1/--e2/--e3 via timeline-scope -->
+  <ul class="meter" aria-hidden="true">
+    <li class="badge">Blink</li>
+    <li class="badge">WebKit</li>
+    <li class="badge">Gecko</li>
+    <li class="badge badge--baseline">Baseline ✓</li>
+  </ul>
+
+  <div class="ring" aria-hidden="true"><span class="ring__num"></span></div>
+
+  <div class="top-actions"><button type="button" id="open-guide" ><span data-lang="ro">Ghid</span><span data-lang="en">Guide</span></button><button type="button" id="open-settings" ><span data-lang="ro">Setări</span><span data-lang="en">Settings</span></button><button type="button" id="quick-theme" ><span data-lang="ro">Temă ◐</span><span data-lang="en">Theme ◐</span></button><button class="lang-toggle" type="button" aria-label="Schimbă limba / Switch language">
+    <span data-lang="en">RO</span><span data-lang="ro">EN</span>
+  </button></div>
+</header>
+<nav class="nav-map" aria-label="Journey / Călătorie"><a href="#journey"><span data-lang="ro">01 / Călătorie</span><span data-lang="en">01 / Journey</span></a><a href="#toolkit"><span data-lang="ro">02 / Unelte</span><span data-lang="en">02 / Toolkit</span></a><a href="#lab"><span data-lang="ro">03 / Telecomandă</span><span data-lang="en">03 / Remote</span></a><a href="#playground"><span data-lang="ro">04 / Laborator</span><span data-lang="en">04 / Playground</span></a><a href="#learn"><span data-lang="ro">05 / Învață</span><span data-lang="en">05 / Learn</span></a><a href="#passport"><span data-lang="ro">06 / Pașaport</span><span data-lang="en">06 / Passport</span></a></nav>
+<main>
+  <header class="hero" id="home"><div class="hero-copy"><p class="eyebrow">CODEPEN CHALLENGE / 02 · NOV 2026</p><h1 class="hero__title"><span data-lang="ro">Timpul.<br>În mâinile tale.</span><span data-lang="en">Time.<br>In your hands.</span></h1><p class="hero__lead"><span data-lang="ro">Tu derulezi. Universul răspunde. Explorează istoria browserelor prin CSS <code>animation-timeline</code>.</span><span data-lang="en">You scroll. The universe responds. Explore browser history through CSS <code>animation-timeline</code>.</span></p><p class="support-pill" role="status" hidden></p><div class="hero-links"><a class="button primary" href="#journey"><span data-lang="ro">Începe călătoria ↓</span><span data-lang="en">Begin the journey ↓</span></a><a class="button" href="#playground"><span data-lang="ro">Deschide laboratorul</span><span data-lang="en">Open the lab</span></a><a class="button resume" id="resume" href="#journey"><span data-lang="ro">Reia explorarea</span><span data-lang="en">Resume exploring</span></a></div><p class="created"><span data-lang="ro">Creat pe 9 noiembrie 2026 · Laura Andreea</span><span data-lang="en">Created 9 November 2026 · Laura Andreea</span></p></div><div class="observatory"><span class="art-label">FIG. 01 / THE BROWSER OBSERVATORY</span><div class="orbital-path" aria-hidden="true"></div><div class="orbital-path" aria-hidden="true"></div><div class="planet" aria-hidden="true"></div><a href="#blink" class="moon blink" aria-label="Chrome & Edge — 2023">BLINK</a><a href="#webkit" class="moon webkit" aria-label="Safari — 2025">WEBKIT</a><a href="#gecko" class="moon gecko" aria-label="Firefox — 2026">GECKO</a><button id="secret-star" class="secret-star" aria-label="Steaua observatorului / Observatory star">✧</button><span class="art-label" aria-hidden="true">SCROLL / SPACE / TIME</span></div></header>
+
+  <section class="journey" id="journey" aria-labelledby="journey-title">
+    <h2 class="visually-hidden" id="journey-title">
+      <span data-lang="en">Browser support timeline</span><span data-lang="ro">Cronologia suportului în browsere</span>
+    </h2>
+
+    <!-- Sticky year counter: @property integer driven by the section's view timeline -->
+    <div class="year-wrap" aria-hidden="true"><span class="year"></span></div>
+
+    <ol class="timeline">
+      <li class="event" id="blink">
+        <time datetime="2023-07-18">
+          <span data-lang="en">July 18, 2023</span><span data-lang="ro">18 iulie 2023</span>
+        </time>
+        <h2>Chrome 115 &amp; Edge 115</h2>
+        <p>
+          <span data-lang="en">The first browsers to ship <code>scroll()</code> and <code>view()</code> timelines with no flag required.</span>
+          <span data-lang="ro">Primele browsere care au livrat cronologiile <code>scroll()</code> și <code>view()</code> fără niciun flag.</span>
+        </p>
+        <span class="chip">Blink · <span data-lang="en">engine 1 of 3</span><span data-lang="ro">motorul 1 din 3</span></span>
+      <div class="chapter-tools"><button type="button" id="stamp-blink" class="collect" data-stamp="blink"><span data-lang="ro">Adaugă ștampila</span><span data-lang="en">Collect stamp</span></button><a class="small" href="#blink"><span data-lang="ro">Link către capitol</span><span data-lang="en">Chapter link</span></a></div></li>
+
+      <li class="event" id="webkit">
+        <time datetime="2025-09-15">
+          <span data-lang="en">September 15, 2025</span><span data-lang="ro">15 septembrie 2025</span>
+        </time>
+        <h2>Safari 26</h2>
+        <p>
+          <span data-lang="en">Safari on macOS and iOS 26 added support, bringing scroll-driven animations to supported updated Apple devices.</span>
+          <span data-lang="ro">Safari pe macOS și iOS 26 a adăugat suportul, aducând animațiile conduse de scroll pe dispozitivele Apple compatibile și actualizate.</span>
+        </p>
+        <span class="chip">WebKit · <span data-lang="en">+790 days later</span><span data-lang="ro">+790 de zile mai târziu</span></span>
+      <div class="chapter-tools"><button type="button" id="stamp-webkit" class="collect" data-stamp="webkit"><span data-lang="ro">Adaugă ștampila</span><span data-lang="en">Collect stamp</span></button><a class="small" href="#webkit"><span data-lang="ro">Link către capitol</span><span data-lang="en">Chapter link</span></a></div></li>
+
+      <li class="event" id="gecko">
+        <time datetime="2026-10-27">
+          <span data-lang="en">October 27, 2026</span><span data-lang="ro">27 octombrie 2026</span>
+        </time>
+        <h2>Firefox 159</h2>
+        <p>
+          <span data-lang="en">Firefox shipped it, making <code>animation-timeline</code> officially Baseline newly compatible. Now all three major engines support <code>animation-timeline</code>.</span>
+          <span data-lang="ro">Firefox l-a livrat, iar <code>animation-timeline</code> a devenit oficial Baseline. Acum toate cele trei motoare majore suportă <code>animation-timeline</code>.</span>
+        </p>
+        <span class="chip chip--amber">Gecko · <span data-lang="en">+407 days · 1,197 in total</span><span data-lang="ro">+407 zile · 1.197 în total</span></span>
+      <div class="chapter-tools"><button type="button" id="stamp-gecko" class="collect" data-stamp="gecko"><span data-lang="ro">Adaugă ștampila</span><span data-lang="en">Collect stamp</span></button><a class="small" href="#gecko"><span data-lang="ro">Link către capitol</span><span data-lang="en">Chapter link</span></a></div></li>
+
+      <li class="event event--you" id="you">
+        <time datetime="2026-11-09"><span data-lang="ro">9 noiembrie 2026 · data creației</span><span data-lang="en">9 November 2026 · creation date</span></time>
+        <h2><span data-lang="en">And your browser?</span><span data-lang="ro">Și browserul tău?</span></h2>
+        <p class="you-status">
+          <span data-lang="en">Checking support…</span><span data-lang="ro">Verific suportul…</span>
+        </p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Horizontal gallery: scrolling down moves the track sideways -->
+  <div class="portal" aria-hidden="true"><span>CHAPTER SHIFT / CSS VIEW()</span></div><section id="toolkit" class="gallery" aria-labelledby="gallery-title">
+    <div class="gallery__sticky">
+      <h2 class="section-title" id="gallery-title">
+        <span data-lang="en">The toolkit behind this Pen</span><span data-lang="ro">Uneltele din spatele acestui Pen</span>
+      </h2>
+      <div class="section-actions"><button type="button" id="cinema-toggle" aria-pressed="false"><span data-lang="ro">Mod cinema</span><span data-lang="en">Cinema mode</span></button><button type="button" id="cards-prev" ><span data-lang="ro">← Înapoi</span><span data-lang="en">← Previous</span></button><button type="button" id="cards-next" ><span data-lang="ro">Înainte →</span><span data-lang="en">Next →</span></button></div><div class="gallery-meter" aria-hidden="true"><i></i></div><div class="gallery__viewport" tabindex="0" aria-label="Code cards / Carduri cu cod">
+        <ul class="track">
+          <li class="card">
+            <h3><code>scroll()</code></h3>
+            <p><span data-lang="en">Ties an animation to a scroller's progress: the bar and ring up top.</span><span data-lang="ro">Leagă animația de progresul unui scroller: bara și inelul de sus.</span></p>
+<pre><code>.progress-bar {
+  animation: grow-x linear both;
+  animation-timeline: scroll(root);
+}</code></pre>
+          </li>
+          <li class="card">
+            <h3><code>view()</code></h3>
+            <p><span data-lang="en">Tracks an element crossing the viewport: each event flies in.</span><span data-lang="ro">Urmărește un element care traversează viewport-ul: fiecare eveniment intră în scenă.</span></p>
+<pre><code>.event {
+  animation: arrive linear both;
+  animation-timeline: view();
+}</code></pre>
+          </li>
+          <li class="card">
+            <h3><code>animation-range</code></h3>
+            <p><span data-lang="en">Picks which slice of the timeline plays: the title shrinks only while exiting.</span><span data-lang="ro">Alege ce porțiune a cronologiei rulează: titlul se micșorează doar când iese.</span></p>
+<pre><code>.hero__title {
+  animation-timeline: view();
+  animation-range: exit 0% exit 90%;
+}</code></pre>
+          </li>
+          <li class="card">
+            <h3><code>view-timeline</code></h3>
+            <p><span data-lang="en">Names a timeline so children can reuse it: the line and the giant year.</span><span data-lang="ro">Denumește o cronologie ca s-o refolosească alții: linia și anul uriaș.</span></p>
+<pre><code>.journey { view-timeline: --journey; }
+.year { animation-timeline: --journey; }</code></pre>
+          </li>
+          <li class="card">
+            <h3><code>timeline-scope</code></h3>
+            <p><span data-lang="en">Lifts a name up the tree: the header badges light up from far away.</span><span data-lang="ro">Ridică un nume în arbore: insignele din header se aprind de la distanță.</span></p>
+<pre><code>body { timeline-scope: --e1, --e2, --e3; }
+.badge:nth-child(1) {
+  animation-timeline: --e1;
+}</code></pre>
+          </li>
+          <li class="card card--amber">
+            <h3><code>@supports</code></h3>
+            <p><span data-lang="en">Older browser? A small IntersectionObserver fallback keeps it all working.</span><span data-lang="ro">Browser mai vechi? Un fallback mic cu IntersectionObserver păstrează totul funcțional.</span></p>
+<pre><code>@supports not (animation-timeline: scroll()) {
+  /* JS sets --scroll instead */
+}</code></pre>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lab: a named scroll timeline driving an element outside its container -->
+  <section id="lab" class="lab" aria-labelledby="lab-title">
+    <h2 class="section-title" id="lab-title">
+      <span data-lang="en">Remote control lab</span><span data-lang="ro">Laboratorul telecomenzii</span>
+    </h2>
+    <p class="lab__intro">
+      <span data-lang="en">Scroll inside the little window. The gauge lives <em>outside</em> it, yet follows every pixel through <code>scroll-timeline-name: --mini</code>.</span>
+      <span data-lang="ro">Derulează în fereastra mică. Indicatorul stă <em>în afara</em> ei, dar urmează fiecare pixel prin <code>scroll-timeline-name: --mini</code>.</span>
+    </p>
+
+    <div class="lab__grid">
+      <div class="mini">
+        <div class="mini__bar" aria-hidden="true"><i></i><i></i><i></i><span>--mini</span></div>
+        <ol class="mini__scroller" tabindex="0" aria-label="Scrollable demo / Demo derulabil">
+          <li class="mini__item"><span data-lang="en">1 · Scroll me</span><span data-lang="ro">1 · Derulează-mă</span></li>
+          <li class="mini__item"><span data-lang="en">2 · This list declares <code>scroll-timeline: --mini</code></span><span data-lang="ro">2 · Lista declară <code>scroll-timeline: --mini</code></span></li>
+          <li class="mini__item"><span data-lang="en">3 · Its parent sets <code>timeline-scope: --mini</code></span><span data-lang="ro">3 · Părintele setează <code>timeline-scope: --mini</code></span></li>
+          <li class="mini__item"><span data-lang="en">4 · The gauge uses <code>animation-timeline: --mini</code></span><span data-lang="ro">4 · Indicatorul folosește <code>animation-timeline: --mini</code></span></li>
+          <li class="mini__item"><span data-lang="en">5 · Each row fades with <code>view()</code> of this scroller</span><span data-lang="ro">5 · Fiecare rând apare cu <code>view()</code> din acest scroller</span></li>
+          <li class="mini__item"><span data-lang="ro">6 · CSS nativ când funcțiile necesare sunt disponibile</span><span data-lang="en">6 · Native CSS when the required features are available</span></li>
+          <li class="mini__item"><span data-lang="ro">7 · Transform și opacity pot beneficia de compoziție eficientă</span><span data-lang="en">7 · Transform and opacity can benefit from efficient compositing</span></li>
+          <li class="mini__item"><span data-lang="en">8 · Almost there…</span><span data-lang="ro">8 · Aproape gata…</span></li>
+          <li class="mini__item"><span data-lang="en">9 · 100% · Baseline reached</span><span data-lang="ro">9 · 100% · Baseline atins</span></li>
+        </ol>
+      </div>
+
+      <div class="gauge" aria-hidden="true">
+        <div class="gauge__dial"><div class="gauge__needle"></div></div>
+        <p class="gauge__num"></p>
+        <p class="gauge__label">animation-timeline: --mini</p>
+      </div>
+    </div>
+  </section>
+<section class="content-section" id="playground"><p class="section-kicker">04 / LIVE CSS LAB</p><h2 class="section-heading"><span data-lang="ro">Construiește propria animație.</span><span data-lang="en">Build your own animation.</span></h2><p><span data-lang="ro">Schimbă setările, apoi derulează în fereastra de test. Codul de mai jos reflectă exact configurația.</span><span data-lang="en">Change the settings, then scroll inside the test window. The code below reflects the exact configuration.</span></p><div class="sandbox"><div class="lab-controls"><label class="field" for="lab-type"><span data-lang="ro">Cronologie</span><span data-lang="en">Timeline</span><select id="lab-type"><option value="scroll">scroll()</option><option value="view">view()</option><option value="named">--sandbox</option></select></label><label class="field" for="lab-axis"><span data-lang="ro">Axă</span><span data-lang="en">Axis</span><select id="lab-axis"><option value="block">Vertical / Verticală</option><option value="inline">Horizontal / Orizontală</option></select></label><label class="field" for="lab-ease"><span data-lang="ro">Interpolare</span><span data-lang="en">Easing</span><select id="lab-ease"><option value="linear">linear</option><option value="ease-in-out">ease-in-out</option><option value="ease-out">ease-out</option></select></label><label class="field" for="lab-start"><span data-lang="ro">Început (%)</span><span data-lang="en">Start (%)</span><input id="lab-start" type="range" min="0" max="80" value="0" step="1"><output id="lab-start-value" for="lab-start">0</output></label><label class="field" for="lab-end"><span data-lang="ro">Sfârșit (%)</span><span data-lang="en">End (%)</span><input id="lab-end" type="range" min="20" max="100" value="100" step="1"><output id="lab-end-value" for="lab-end">100</output></label><label class="field" for="lab-move"><span data-lang="ro">Deplasare (px)</span><span data-lang="en">Distance (px)</span><input id="lab-move" type="range" min="0" max="160" value="60" step="1"><output id="lab-move-value" for="lab-move">60</output></label><label class="field" for="lab-turn"><span data-lang="ro">Rotire (°)</span><span data-lang="en">Rotation (°)</span><input id="lab-turn" type="range" min="-180" max="180" value="30" step="1"><output id="lab-turn-value" for="lab-turn">30</output></label><label class="field" for="lab-scale"><span data-lang="ro">Scară inițială</span><span data-lang="en">Initial scale</span><input id="lab-scale" type="range" min="0.3" max="1.5" value="0.7" step="0.05"><output id="lab-scale-value" for="lab-scale">0.7</output></label><label class="field" for="lab-opacity"><span data-lang="ro">Opacitate inițială</span><span data-lang="en">Initial opacity</span><input id="lab-opacity" type="range" min="0" max="1" value="0.15" step="0.05"><output id="lab-opacity-value" for="lab-opacity">0.15</output></label></div><div class="sandbox-stage" data-axis="block" tabindex="0" aria-label="Animation test scroller / Derulare test animație"><div class="sandbox-content"><div class="sample">CSS<br>animation-timeline</div></div></div><div class="sandbox-readout" aria-hidden="true"><i></i></div><div class="section-actions"><button type="button" id="sample-start" ><span data-lang="ro">La început</span><span data-lang="en">To start</span></button><button type="button" id="sample-end" ><span data-lang="ro">La final</span><span data-lang="en">To end</span></button><button type="button" id="reset-lab" ><span data-lang="ro">Resetează laboratorul</span><span data-lang="en">Reset lab</span></button><button type="button" id="copy-css" ><span data-lang="ro">Copiază CSS</span><span data-lang="en">Copy CSS</span></button><button type="button" id="share-lab" ><span data-lang="ro">Distribuie configurația</span><span data-lang="en">Share configuration</span></button></div><pre class="live-code"><code id="live-css"></code></pre><p class="notice" id="lab-notice" role="status"></p></div><p class="learning-note"><span data-lang="ro">Cronologia controlează progresul; animation-range selectează intervalul; keyframes definesc transformarea.</span><span data-lang="en">The timeline drives progress; animation-range selects a range; keyframes define the transformation.</span></p></section><section id="learn" class="content-section"><p class="section-kicker">05 / LEARN & EXPLORE</p><h2 class="section-heading"><span data-lang="ro">De la efect la înțelegere.</span><span data-lang="en">From effect to understanding.</span></h2><div class="feature-grid"><article class="box"><h3><code>scroll()</code></h3><p><span data-lang="ro">Cronologia întregii pagini</span><span data-lang="en">Full-page timeline</span></p></article><article class="box"><h3><code>view()</code></h3><p><span data-lang="ro">Intrarea elementului în cadru</span><span data-lang="en">Element viewport entry</span></p></article><article class="box"><h3><code>animation-range</code></h3><p><span data-lang="ro">Porțiunea activă a animației</span><span data-lang="en">Active animation range</span></p></article><article class="box"><h3><code>scroll-timeline</code></h3><p><span data-lang="ro">Sursă de scroll cu nume</span><span data-lang="en">A named scroll source</span></p></article><article class="box"><h3><code>timeline-scope</code></h3><p><span data-lang="ro">Partajarea numelui între elemente</span><span data-lang="en">Sharing the name across elements</span></p></article><article class="box"><h3><code>@property</code></h3><p><span data-lang="ro">Variabile tipizate care pot fi animate</span><span data-lang="en">Typed animatable custom properties</span></p></article></div><div class="lesson-grid"><details><summary><span data-lang="ro">Exercițiul 1 · Bara</span><span data-lang="en">Exercise 1 · The bar</span></summary><p><span data-lang="ro">Alege scroll(), scară 1, rotire 0 și deplasare 0. Crește opacitatea de la 0 la 1. Observă cum poziția derulării înlocuiește timpul.</span><span data-lang="en">Choose scroll(), scale 1, rotation 0 and distance 0. Increase opacity from 0 to 1. Notice how scroll position replaces time.</span></p></details><details><summary><span data-lang="ro">Exercițiul 2 · Apariție</span><span data-lang="en">Exercise 2 · Reveal</span></summary><p><span data-lang="ro">Alege view(), deplasare 80 și opacitate 0. Derulează până când obiectul intră în cadru, apoi revino.</span><span data-lang="en">Choose view(), distance 80 and opacity 0. Scroll until the object enters the viewport, then reverse.</span></p></details><details><summary><span data-lang="ro">Exercițiul 3 · Telecomandă</span><span data-lang="en">Exercise 3 · Remote</span></summary><p><span data-lang="ro">În laboratorul telecomenzii, deplasează lista până la final. Cadranul exterior este legat de aceeași cronologie denumită.</span><span data-lang="en">In the remote lab, scroll the list to the end. The external gauge follows the same named timeline.</span></p></details><details><summary><span data-lang="ro">Exercițiul 4 · Accesibilitate</span><span data-lang="en">Exercise 4 · Accessibility</span></summary><p><span data-lang="ro">Activează mișcarea redusă din Setări. Tot textul rămâne vizibil; niciun obiect nu este necesar pentru a citi informația.</span><span data-lang="en">Enable reduced motion in Settings. All text remains visible; no animated object is required to read the information.</span></p></details></div><details><summary><span data-lang="ro">Cum funcționează fallbackul?</span><span data-lang="en">How does the fallback work?</span></summary><p><span data-lang="ro">Detectăm separat scroll(), view(), animation-range, timeline-scope și proprietățile înregistrate. Dacă lipsește suportul de bază, requestAnimationFrame sincronizează progresul și IntersectionObserver dezvăluie evenimentele. Dacă lipsește doar scope, JavaScript actualizează cadranele și insignele. Poți simula fallbackul din Setări.</span><span data-lang="en">We separately detect scroll(), view(), animation-range, timeline-scope and registered properties. If core support is missing, requestAnimationFrame synchronizes progress and IntersectionObserver reveals events. If only scope is missing, JavaScript updates gauges and badges. You can simulate fallback mode in Settings.</span></p></details><details><summary><span data-lang="ro">Ce rulează pe firul principal?</span><span data-lang="en">What runs on the main thread?</span></summary><p><span data-lang="ro">CSS conduce animațiile în modul nativ. Transform și opacity sunt alegeri eficiente; contoarele și gradienții animați pot necesita recalculare sau redesenare. Folosirea animation-timeline nu garantează executarea tuturor efectelor în compositor.</span><span data-lang="en">CSS drives animations in native mode. Transform and opacity are efficient choices; animated counters and gradients may need recalculation or repainting. Using animation-timeline does not guarantee that every effect runs in the compositor.</span></p></details></section><section id="compatibility" class="content-section"><p class="section-kicker">FEATURE DETECTION / LIVE</p><h2 class="section-heading"><span data-lang="ro">Browserul tău, verificat.</span><span data-lang="en">Your browser, checked.</span></h2><div class="support-grid" id="support-grid"></div><p class="small"><span data-lang="ro">Detectarea indică recunoașterea funcțiilor CSS. Nu înlocuiește testarea vizuală pe fiecare browser.</span><span data-lang="en">Detection reports CSS feature recognition. It does not replace visual testing in each browser.</span></p></section><section id="passport" class="content-section"><p class="section-kicker">06 / YOUR TIME PASSPORT</p><h2 class="section-heading"><span data-lang="ro">Trei opriri. Pașaportul tău.</span><span data-lang="en">Three stops. Your passport.</span></h2><p><span data-lang="ro">Colectează ștampila din fiecare capitol. Progresul se salvează doar în acest browser și nu blochează accesul la conținut.</span><span data-lang="en">Collect a stamp in each chapter. Progress is saved only in this browser and never gates content.</span></p><div class="passport-strip"><div class="stamp" data-earned="blink">BLINK / 2023<br><span class="stamp-state"></span></div><div class="stamp" data-earned="webkit">WEBKIT / 2025<br><span class="stamp-state"></span></div><div class="stamp" data-earned="gecko">GECKO / 2026<br><span class="stamp-state"></span></div></div><p id="passport-summary" role="status"></p><div class="section-actions"><button type="button" id="find-star" ><span data-lang="ro">Descoperă steaua ascunsă ✧</span><span data-lang="en">Find the hidden star ✧</span></button><button type="button" id="share-chapter" ><span data-lang="ro">Copiază linkul capitolului</span><span data-lang="en">Copy chapter link</span></button><button type="button" id="clear-passport" ><span data-lang="ro">Resetează pașaportul</span><span data-lang="en">Reset passport</span></button></div><p id="passport-notice" class="notice" role="status"></p></section><section id="case-study" class="content-section"><p class="section-kicker">PRODUCT NOTES / PORTFOLIO</p><h2 class="section-heading"><span data-lang="ro">Un efect. Un proiect complet.</span><span data-lang="en">One effect. A complete project.</span></h2><div class="feature-grid"><article class="box"><h3><span data-lang="ro">Problema</span><span data-lang="en">Problem</span></h3><p><span data-lang="ro">Cum transformăm o cronologie de suport într-o experiență explorabilă, fără a ascunde informația?</span><span data-lang="en">How can a browser-support timeline become explorable without hiding information?</span></p></article><article class="box"><h3><span data-lang="ro">Soluția</span><span data-lang="en">Solution</span></h3><p><span data-lang="ro">O călătorie CSS cu observator 3D, cronologie, laborator și fallback progresiv.</span><span data-lang="en">A CSS voyage with a 3D observatory, timeline, lab and progressive fallback.</span></p></article><article class="box"><h3><span data-lang="ro">Deciziile</span><span data-lang="en">Decisions</span></h3><p><span data-lang="ro">Mișcare opțională, derulare nativă, stocare locală protejată și verificări separate de suport.</span><span data-lang="en">Optional motion, native scrolling, guarded local storage and separate support checks.</span></p></article></div><details><summary><span data-lang="ro">Finalizat · 9 noiembrie 2026</span><span data-lang="en">Completed · 9 November 2026</span></summary><p><span data-lang="ro">CHRONOSCROLL × Baseline Voyage: integrare HTML/CSS/JS, laborator configurabil, RO/EN, teme, accesibilitate, fallback și export CodePen.</span><span data-lang="en">CHRONOSCROLL × Baseline Voyage: HTML/CSS/JS integration, configurable lab, RO/EN, themes, accessibility, fallback and CodePen export.</span></p></details><details><summary><span data-lang="ro">Istoric de implementare</span><span data-lang="en">Implementation history</span></summary><p>09.11.2026 / v1 — <span data-lang="ro">Orbită, cronologie și galerie.</span><span data-lang="en">Orbit, timeline and gallery.</span></p><p>09.11.2026 / v2 — <span data-lang="ro">Integrarea Baseline Voyage, compatibilitate pe funcții, preferințe, laborator, ghid, pașaport și pachet CodePen.</span><span data-lang="en">Baseline Voyage integration, per-feature compatibility, preferences, lab, guide, passport and CodePen package.</span></p></details><div class="section-actions"><a class="button primary" href="downloads/baseline-voyage.html" download><span data-lang="ro">Descarcă HTML complet</span><span data-lang="en">Download complete HTML</span></a><a class="button" href="downloads/Baseline-Voyage-CodePen.zip" download><span data-lang="ro">Descarcă pachet CodePen</span><span data-lang="en">Download CodePen package</span></a><button type="button" id="copy-description" ><span data-lang="ro">Copiază descrierea CodePen</span><span data-lang="en">Copy CodePen description</span></button></div><p id="export-notice" class="notice" role="status"></p><p class="small">#cpc-animation-timeline #codepenchallenge · HTML / CSS / JavaScript · AI-assisted</p></section><section class="content-section"><details><summary><span data-lang="ro">Cele 25 de direcții integrate</span><span data-lang="en">The 25 integrated directions</span></summary><ol class="roadmap"><li><span data-lang="ro">Cronologie cu progres și ani animați</span><span data-lang="en">Timeline with progress and animated years</span></li><li><span data-lang="ro">Observator 3D și planete-browser</span><span data-lang="en">3D observatory and browser planets</span></li><li><span data-lang="ro">Fundal parallax pe straturi</span><span data-lang="en">Layered parallax background</span></li><li><span data-lang="ro">Titlu animat la ieșire</span><span data-lang="en">Title animation on exit</span></li><li><span data-lang="ro">Bară, inel și cadran de progres</span><span data-lang="en">Progress bar, ring and gauge</span></li><li><span data-lang="ro">Portal între capitole</span><span data-lang="en">Portal between chapters</span></li><li><span data-lang="ro">Galerie orizontală cu butoane</span><span data-lang="en">Horizontal gallery with buttons</span></li><li><span data-lang="ro">Cronologii denumite și scope</span><span data-lang="en">Named timelines and scope</span></li><li><span data-lang="ro">Laborator cu parametri</span><span data-lang="en">Parametric lab</span></li><li><span data-lang="ro">Cod generat și copiere</span><span data-lang="en">Generated code and copying</span></li><li><span data-lang="ro">Ghid, exerciții și glosar</span><span data-lang="en">Guide, exercises and glossary</span></li><li><span data-lang="ro">Istoria celor trei motoare</span><span data-lang="en">History of the three engines</span></li><li><span data-lang="ro">Suport pe funcții și fallback simulabil</span><span data-lang="en">Feature support and simulated fallback</span></li><li><span data-lang="ro">Tastatură, focus și contrast</span><span data-lang="en">Keyboard, focus and contrast</span></li><li><span data-lang="ro">Mișcare redusă, 3D și particule opționale</span><span data-lang="en">Reduced motion, optional 3D and particles</span></li><li><span data-lang="ro">Layout mobil și gesturi native</span><span data-lang="en">Mobile layout and native gestures</span></li><li><span data-lang="ro">Șapte palete și dark/light</span><span data-lang="en">Seven palettes and dark/light</span></li><li><span data-lang="ro">Ambient și efecte audio opționale</span><span data-lang="en">Optional ambient and sound effects</span></li><li><span data-lang="ro">Pașaport și stea ascunsă</span><span data-lang="en">Passport and hidden star</span></li><li><span data-lang="ro">Preferințe, resetare și reluare</span><span data-lang="en">Preferences, reset and resume</span></li><li><span data-lang="ro">Linkuri de capitol și configurații</span><span data-lang="en">Chapter and configuration links</span></li><li><span data-lang="ro">HTML complet și pachet CodePen</span><span data-lang="en">Complete HTML and CodePen package</span></li><li><span data-lang="ro">Studiu de caz, Finalizat și Istoric locale</span><span data-lang="en">Local case study, Completed and History</span></li><li><span data-lang="ro">Efecte adaptabile și mod simplificat</span><span data-lang="en">Adjustable effects and simple mode</span></li><li><span data-lang="ro">Complet, compact, educativ și simplificat</span><span data-lang="en">Full, compact, learning and simple modes</span></li></ol></details></section>
+  <footer class="footer">
+<p class="small"><span data-lang="ro">Creat pe 9 noiembrie 2026 · v2.0 · Datele evenimentelor provin din șablonul CodePen.</span><span data-lang="en">Created 9 November 2026 · v2.0 · Event dates are from the CodePen template.</span></p><nav><a href="#home"><span data-lang="ro">Sus ↑</span><span data-lang="en">Top ↑</span></a><a href="#case-study"><span data-lang="ro">Descarcă</span><span data-lang="en">Download</span></a><a href="https://codepen.io/challenges/2026/november/2">CodePen Challenge</a></nav>    <p>
+      <span data-lang="en">Source:</span><span data-lang="ro">Sursă:</span>
+      <a href="https://github.com/mdn/browser-compat-data">MDN browser-compat-data</a>
+    </p>
+    <p>
+      <span data-lang="en">Built by</span><span data-lang="ro">Realizat de</span>
+      <a href="https://laurandreea10.github.io/codepen-portfolio/">Laura Andreea</a>
+      · #codepenchallenge · cpc-animation-timeline
+    </p>
+  </footer>
+</main><dialog id="settings-dialog" aria-labelledby="settings-title"><div class="dialog-head"><h2 id="settings-title"><span data-lang="ro">Personalizează călătoria</span><span data-lang="en">Customize your voyage</span></h2><button type="button" id="close-settings" ><span data-lang="ro">Închide ✕</span><span data-lang="en">Close ✕</span></button></div><div class="settings-grid"><label class="field" for="pref-theme"><span data-lang="ro">Temă</span><span data-lang="en">Theme</span><select id="pref-theme"><option value="dark">Dark</option><option value="light">Light</option></select></label><label class="field" for="pref-palette"><span data-lang="ro">Paletă</span><span data-lang="en">Palette</span><select id="pref-palette"><option value="cosmic">Cosmic</option><option value="aurora">Aurora</option><option value="observatory">Observatory</option><option value="retro">Retro</option><option value="paper">Paper</option><option value="neon">Neon</option><option value="mono">Mono</option></select></label><label class="field" for="pref-mode"><span data-lang="ro">Prezentare</span><span data-lang="en">Presentation</span><select id="pref-mode"><option value="full">Full / Complet</option><option value="compact">Compact</option><option value="learning">Learn / Educativ</option><option value="simple">Simple / Simplificat</option></select></label><label class="field" for="pref-intensity"><span data-lang="ro">Intensitate</span><span data-lang="en">Intensity</span><input id="pref-intensity" type="range" min="0" max="1" value="1" step="0.1"><output id="pref-intensity-value" for="pref-intensity">1</output></label><label class="field" for="pref-text"><span data-lang="ro">Mărime text</span><span data-lang="en">Text size</span><input id="pref-text" type="range" min="1" max="1.3" value="1" step="0.05"><output id="pref-text-value" for="pref-text">1</output></label><label class="field" for="pref-volume"><span data-lang="ro">Volum</span><span data-lang="en">Volume</span><input id="pref-volume" type="range" min="0" max="1" value="0.15" step="0.05"><output id="pref-volume-value" for="pref-volume">0.15</output></label><label class="check-field"><input type="checkbox" id="pref-motion"><span data-lang="ro">Mișcare redusă</span><span data-lang="en">Reduced motion</span></label><label class="check-field"><input type="checkbox" id="pref-contrast"><span data-lang="ro">Contrast ridicat</span><span data-lang="en">High contrast</span></label><label class="check-field"><input type="checkbox" id="pref-flat"><span data-lang="ro">Dezactivează 3D</span><span data-lang="en">Disable 3D</span></label><label class="check-field"><input type="checkbox" id="pref-particles"><span data-lang="ro">Ascunde stelele</span><span data-lang="en">Hide stars</span></label><label class="check-field"><input type="checkbox" id="pref-fallback"><span data-lang="ro">Simulează fallback</span><span data-lang="en">Simulate fallback</span></label></div><p class="audio-note"><span data-lang="ro">Sunetul pornește numai după apăsarea butonului. Preferința de mișcare redusă a sistemului este întotdeauna respectată.</span><span data-lang="en">Sound starts only after pressing the button. System reduced-motion preference is always respected.</span></p><div class="dialog-footer"><button type="button" id="audio-toggle" aria-pressed="false"><span data-lang="ro">Pornește ambientul</span><span data-lang="en">Start ambient</span></button><button type="button" id="reset-prefs" ><span data-lang="ro">Resetează preferințele</span><span data-lang="en">Reset preferences</span></button></div><p id="settings-notice" class="notice" role="status"></p></dialog><dialog id="guide-dialog" aria-labelledby="guide-title"><div class="dialog-head"><h2 id="guide-title"><span data-lang="ro">Ghidul exploratorului</span><span data-lang="en">Explorer guide</span></h2><button type="button" id="close-guide" ><span data-lang="ro">Închide ✕</span><span data-lang="en">Close ✕</span></button></div><p class="small" id="guide-step"></p><div class="tutorial-visual" id="guide-visual" aria-hidden="true"></div><h3 id="guide-heading"></h3><p id="guide-text"></p><div class="dialog-footer"><button type="button" id="guide-prev" ><span data-lang="ro">Înapoi</span><span data-lang="en">Previous</span></button><button type="button" id="guide-next" ><span data-lang="ro">Înainte</span><span data-lang="en">Next</span></button></div></dialog><noscript><p style="padding:30px">Conținutul se poate citi fără JavaScript. Setările și fallbackul interactiv necesită JavaScript. / Content is readable without JavaScript; settings and interactive fallback require JavaScript.</p></noscript>
+
+<script>/* Baseline Voyage × CHRONOSCROLL v2 — 9 November 2026.
+   Native animations are CSS-driven. JS owns preferences, explicit audio,
+   feature-specific legacy fallbacks, learning tools and exports. */
+(() => {
+  'use strict';
+  const root=document.documentElement, $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>Array.from(c.querySelectorAll(s));
+  root.classList.add('js');
+  const store={get(k){try{return localStorage.getItem(k);}catch{return null;}},set(k,v){try{localStorage.setItem(k,v);}catch{}},remove(k){try{localStorage.removeItem(k);}catch{}}};
+  const read=(k,f)=>{try{return JSON.parse(store.get(k))??f;}catch{return f;}};
+  const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+  const number=(v,f,a,b)=>Number.isFinite(Number(v))?clamp(Number(v),a,b):f;
+  const oneOf=(v,vals,f)=>vals.includes(v)?v:f;
+  const supports=s=>{try{return Boolean(window.CSS&&CSS.supports(s));}catch{return false;}};
+  const caps={scroll:supports('animation-timeline: scroll()'),view:supports('animation-timeline: view()'),range:supports('animation-range: entry 0% cover 35%'),scope:supports('timeline-scope: --a'),property:Boolean(window.CSS&&CSS.registerProperty),observer:'IntersectionObserver' in window};
+  const systemMotion=matchMedia('(prefers-reduced-motion: reduce)');
+  const defaults={theme:'dark',palette:'cosmic',mode:'full',intensity:1,text:1,volume:.15,motion:false,contrast:false,flat:false,particles:false,fallback:false,cinema:false};
+  let prefs=validatePrefs(read('bv-prefs',{})),lang=oneOf(store.get('bv-lang'),['ro','en'],'ro');
+  let native=false,scoped=false,lessMotion=false,observer=null,frame=0,ambient=null,audioContext=null,audioGain=null,currentChapter='blink';
+  let stamps=read('bv-passport',[]);stamps=Array.isArray(stamps)?stamps.filter(x=>['blink','webkit','gecko','star'].includes(x)):[];
+  const events=$$('.journey .event'),badges=$$('.badge'),scroller=$('.mini__scroller'),gauge=$('.gauge'),gallery=$('.gallery__viewport'),stage=$('.sandbox-stage'),sample=$('.sample');
+  const tr=(ro,en)=>lang==='ro'?ro:en;
+  function validatePrefs(p){if(!p||typeof p!=='object')p={};return {theme:oneOf(p.theme,['dark','light'],'dark'),palette:oneOf(p.palette,['cosmic','aurora','observatory','retro','paper','neon','mono'],'cosmic'),mode:oneOf(p.mode,['full','compact','learning','simple'],'full'),intensity:number(p.intensity,1,0,1),text:number(p.text,1,1,1.3),volume:number(p.volume,.15,0,1),...Object.fromEntries(['motion','contrast','flat','particles','fallback','cinema'].map(k=>[k,p[k]===true]))};}
+  function announce(selector,message){$(selector).textContent=message;}
+  function renderStatus(){
+    const p=$('.support-pill'),you=$('.you-status');
+    const mode=lessMotion?tr('Mișcare redusă · conținut complet','Reduced motion · complete content'):native?(scoped?tr('CSS nativ · cronologii active','Native CSS · timelines active'):tr('CSS nativ + fallback pentru scope','Native CSS + scope fallback')):tr('Fallback JavaScript · animații adaptate','JavaScript fallback · adapted animations');
+    p.hidden=false;p.dataset.mode=native?'native':'fallback';p.textContent=(native?'✓ ':'↺ ')+mode;
+    you.textContent=lessMotion?tr('Tot conținutul rămâne vizibil. Mișcarea este dezactivată; indicatorii numerici urmăresc derularea.','All content stays visible. Motion is disabled; numeric indicators follow scrolling.'):native?tr('Browserul recunoaște scroll(), view() și animation-range. CSS conduce efectele; funcțiile lipsă primesc fallback separat.','Your browser recognizes scroll(), view() and animation-range. CSS drives effects; missing features get separate fallbacks.'):prefs.fallback?tr('Simulare fallback activă. Dezactiveaz-o în Setări pentru a reveni la capabilitățile browserului.','Fallback simulation is active. Disable it in Settings to return to your browser capabilities.'):tr('Lipsește o funcție necesară. Progresul este sincronizat cu JavaScript; evenimentele folosesc IntersectionObserver când este disponibil.','A required feature is missing. JavaScript synchronizes progress; events use IntersectionObserver when available.');
+    const names={scroll:'scroll()',view:'view()',range:'animation-range',scope:'timeline-scope',property:'@property / registerProperty',observer:'IntersectionObserver'};
+    $('#support-grid').replaceChildren(...Object.entries(caps).map(([k,v])=>{const box=document.createElement('div');box.className='box';const name=document.createElement('code');name.textContent=names[k];const value=document.createElement('strong');value.textContent=v?tr('Disponibil ✓','Available ✓'):tr('Fallback ↺','Fallback ↺');box.append(name,value);return box;}));
+  }
+  function setLang(value){lang=oneOf(value,['ro','en'],'ro');root.lang=lang;store.set('bv-lang',lang);$('.lang-toggle').setAttribute('aria-label',tr('Schimbă în engleză','Switch to Romanian'));renderStatus();renderPassport();renderGuide();renderAudio();}
+  function applyPrefs(save=true){
+    root.dataset.theme=prefs.theme;root.dataset.palette=prefs.palette;root.dataset.mode=prefs.mode;
+    lessMotion=prefs.motion||systemMotion.matches||prefs.mode==='simple'||prefs.intensity===0;
+    root.classList.toggle('still',lessMotion);root.classList.toggle('high',prefs.contrast);root.classList.toggle('flat',prefs.flat);root.classList.toggle('no-particles',prefs.particles);
+    root.style.setProperty('--intensity',prefs.intensity);root.style.setProperty('--font-scale',prefs.text);
+    native=caps.scroll&&caps.view&&caps.range&&!prefs.fallback;scoped=native&&caps.scope;
+    root.dataset.sda=native?'native':'fallback';root.dataset.scoped=scoped?'native':'fallback';root.dataset.cinema=String(prefs.cinema&&native&&!lessMotion);$('#cinema-toggle').setAttribute('aria-pressed',String(prefs.cinema));root.dataset.registered=caps.property?'native':'fallback';
+    Object.keys(defaults).forEach(k=>{const input=$('#pref-'+k);if(!input)return;if(input.type==='checkbox')input.checked=prefs[k];else input.value=prefs[k];const out=$('#pref-'+k+'-value');if(out)out.textContent=prefs[k];});
+    if(audioGain&&audioContext)audioGain.gain.setTargetAtTime(prefs.volume*.06,audioContext.currentTime,.1);
+    if(save)store.set('bv-prefs',JSON.stringify(prefs));
+    configureFallback();renderStatus();syncLab();scheduleUpdate();
+  }
+  function configureFallback(){
+    if(observer)observer.disconnect();observer=null;
+    events.forEach(e=>e.classList.add('is-in'));
+    if(!native&&!lessMotion&&caps.observer){events.forEach(e=>e.classList.remove('is-in'));observer=new IntersectionObserver(entries=>entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('is-in');observer.unobserve(en.target);}}),{threshold:.15});events.forEach(e=>observer.observe(e));}
+    const needsPage=!native||!scoped||!caps.property||lessMotion;
+    removeEventListener('scroll',scheduleUpdate);if(needsPage)addEventListener('scroll',scheduleUpdate,{passive:true});
+  }
+  function scheduleUpdate(){if(!frame)frame=requestAnimationFrame(updateFallback);}
+  function updateFallback(){
+    frame=0;const max=root.scrollHeight-innerHeight,p=max>0?clamp(scrollY/max):0;
+    if(!native||lessMotion||!caps.property){root.style.setProperty('--scroll',p.toFixed(4));$('.ring').style.setProperty('--p',p.toFixed(4));$('.ring').style.setProperty('--pct',Math.round(p*100));}
+    if(!native||!caps.property){const r=$('.journey').getBoundingClientRect(),jp=clamp(-r.top/Math.max(1,r.height-innerHeight));root.style.setProperty('--jp',clamp(jp/.85).toFixed(4));const y=jp<.12?2023:jp<.5?2023+Math.round((jp-.12)/.38*2):jp<.8?2025+Math.round((jp-.5)/.3):2026;$('.year').style.setProperty('--year',y);}
+    if(!scoped||lessMotion){events.slice(0,3).forEach((ev,i)=>badges[i]?.classList.toggle('is-lit',ev.getBoundingClientRect().top<innerHeight*.75));badges[3]?.classList.toggle('is-lit',events[2].getBoundingClientRect().top<innerHeight*.5);}
+    syncGauge();syncCards();syncSample();
+  }
+  function syncGauge(){if(!scoped||!caps.property||lessMotion){const max=scroller.scrollHeight-scroller.clientHeight,g=max>0?clamp(scroller.scrollTop/max):0;gauge.style.setProperty('--g',g.toFixed(4));gauge.style.setProperty('--gp',Math.round(g*100));}}
+  function syncCards(){if(!scoped||lessMotion){const max=gallery.scrollWidth-gallery.clientWidth;root.style.setProperty('--cards',(max>0?clamp(gallery.scrollLeft/max):0).toFixed(4));}}
+  scroller.addEventListener('scroll',syncGauge,{passive:true});gallery.addEventListener('scroll',syncCards,{passive:true});stage.addEventListener('scroll',syncSample,{passive:true});addEventListener('resize',scheduleUpdate);
+  if(systemMotion.addEventListener)systemMotion.addEventListener('change',()=>applyPrefs(false));else if(systemMotion.addListener)systemMotion.addListener(()=>applyPrefs(false));
+  const labDefaults={type:'scroll',axis:'block',ease:'linear',start:0,end:100,move:60,turn:30,scale:.7,opacity:.15};
+  let lab={...labDefaults};
+  function validateLab(x){if(!x||typeof x!=='object')x={};const l={type:oneOf(x.type,['scroll','view','named'],'scroll'),axis:oneOf(x.axis,['block','inline'],'block'),ease:oneOf(x.ease,['linear','ease-in-out','ease-out'],'linear'),start:number(x.start,0,0,80),end:number(x.end,100,20,100),move:number(x.move,60,0,160),turn:number(x.turn,30,-180,180),scale:number(x.scale,.7,.3,1.5),opacity:number(x.opacity,.15,0,1)};l.end=Math.max(l.start+5,l.end);return l;}
+  try{const shared=new URL(location.href).searchParams.get('lab');if(shared&&shared.length<2000)lab=validateLab(JSON.parse(shared));}catch{}
+  function writeLabControls(){Object.entries(lab).forEach(([key,val])=>{const el=$('#lab-'+key);if(el)el.value=val;const out=$('#lab-'+key+'-value');if(out)out.textContent=val;});}
+  function timelineValue(){return lab.type==='named'?'--sandbox':lab.type==='view'?`view(${lab.axis})`:`scroll(${lab.axis} nearest)`;}
+  function syncLab(){
+    if(!sample)return;stage.dataset.axis=lab.axis;sample.style.setProperty('--move',lab.move+'px');sample.style.setProperty('--turn',lab.turn+'deg');sample.style.setProperty('--zoom',lab.scale);sample.style.setProperty('--fade',lab.opacity);sample.style.setProperty('--ease',lab.ease);sample.style.setProperty('--sample-timeline',timelineValue());sample.style.setProperty('--sample-range',`${lab.start}% ${lab.end}%`);
+    const fallback=!native||(lab.type==='named'&&!scoped);root.dataset.sampleFallback=fallback?'true':'false';
+    if(!fallback){sample.style.removeProperty('transform');sample.style.removeProperty('opacity');}
+    $('#live-css').textContent=`.sandbox { timeline-scope: --sandbox; }\n.sandbox-stage {\n  overflow: auto;\n  scroll-timeline: --sandbox ${lab.axis};\n}\n.sample {\n  animation: voyage ${lab.ease} both;\n  animation-timeline: ${timelineValue()};\n  animation-range: ${lab.start}% ${lab.end}%;\n}\n@keyframes voyage {\n  from {\n    opacity: ${lab.opacity};\n    transform: translate${lab.axis==='inline'?'X':'Y'}(${lab.move}px)\n      rotate(${lab.turn}deg) scale(${lab.scale});\n  }\n  to { opacity: 1; transform: none; }\n}`;
+    syncSample();
+  }
+  function syncSample(){
+    const inline=lab.axis==='inline',max=inline?stage.scrollWidth-stage.clientWidth:stage.scrollHeight-stage.clientHeight;
+    let p=max>0?clamp((inline?stage.scrollLeft:stage.scrollTop)/max):0;
+    if(!scoped||lessMotion)stage.parentElement.style.setProperty('--sandbox-progress',p.toFixed(4));
+    if(native&&(lab.type!=='named'||scoped)||lessMotion)return;
+    if(lab.type==='view'){const raw=(inline?stage.clientWidth-(sample.offsetLeft-stage.scrollLeft):stage.clientHeight-(sample.offsetTop-stage.scrollTop));p=clamp(raw/((inline?stage.clientWidth:stage.clientHeight)+(inline?sample.offsetWidth:sample.offsetHeight)));}
+    p=clamp((p-lab.start/100)/Math.max(.01,(lab.end-lab.start)/100));if(lab.ease==='ease-in-out')p=p*p*(3-2*p);else if(lab.ease==='ease-out')p=1-Math.pow(1-p,3);
+    sample.style.opacity=lab.opacity+(1-lab.opacity)*p;sample.style.transform=`translate${inline?'X':'Y'}(${lab.move*(1-p)}px) rotate(${lab.turn*(1-p)}deg) scale(${lab.scale+(1-lab.scale)*p})`;
+  }
+  Object.keys(labDefaults).forEach(key=>$('#lab-'+key).addEventListener('input',()=>{lab=validateLab(Object.fromEntries(Object.keys(labDefaults).map(k=>[k,$('#lab-'+k).value])));writeLabControls();syncLab();}));
+  const behavior=()=>lessMotion?'instant':'smooth';
+  $('#sample-start').onclick=()=>stage.scrollTo({top:0,left:0,behavior:behavior()});
+  $('#sample-end').onclick=()=>stage.scrollTo({top:stage.scrollHeight,left:stage.scrollWidth,behavior:behavior()});
+  $('#reset-lab').onclick=()=>{lab={...labDefaults};writeLabControls();syncLab();stage.scrollTo({top:0,left:0,behavior:'instant'});};
+  function moveCards(dir){if(root.dataset.cinema==='true'){window.scrollBy({top:dir*innerHeight*.42,behavior:behavior()});}else gallery.scrollBy({left:dir*(Math.min(innerWidth*.78,360)+20),behavior:behavior()});}
+  $('#cards-prev').onclick=()=>moveCards(-1);$('#cards-next').onclick=()=>moveCards(1);$('#cinema-toggle').onclick=()=>{prefs.cinema=!prefs.cinema;applyPrefs();};
+  async function copy(text,target){try{if(!navigator.clipboard)throw Error();await navigator.clipboard.writeText(text);announce(target,tr('Copiat ✓','Copied ✓'));}catch{announce(target,tr('Copierea automată nu este disponibilă. Selectează textul de mai jos.','Automatic copying is unavailable. Select the text below.'));const area=document.createElement('textarea');area.value=text;area.readOnly=true;area.style.width='100%';area.rows=5;$(target).append(area);area.focus();area.select();}}
+  $('#copy-css').onclick=()=>copy($('#live-css').textContent,'#lab-notice');
+  $('#share-lab').onclick=()=>{const url=new URL(location.href);url.search='';url.searchParams.set('lab',JSON.stringify(lab));url.hash='playground';copy(url.href,'#lab-notice');};
+  $('.lang-toggle').onclick=()=>setLang(lang==='ro'?'en':'ro');
+  const settings=$('#settings-dialog'),guide=$('#guide-dialog');
+  function showDialog(dialog){if(dialog.showModal)dialog.showModal();else{dialog.setAttribute('open','');dialog.setAttribute('role','dialog');}const focus=dialog.querySelector('button');focus?.focus();}
+  function closeDialog(dialog){if(dialog.close)dialog.close();else dialog.removeAttribute('open');}
+  $('#open-settings').onclick=()=>showDialog(settings);$('#close-settings').onclick=()=>closeDialog(settings);
+  $('#quick-theme').onclick=()=>{prefs.theme=prefs.theme==='dark'?'light':'dark';applyPrefs();};
+  Object.keys(defaults).forEach(key=>{const el=$('#pref-'+key);if(el)el.addEventListener('input',()=>{prefs[key]=el.type==='checkbox'?el.checked:el.value;prefs=validatePrefs(prefs);applyPrefs();});});
+  $('#reset-prefs').onclick=()=>{prefs={...defaults};stopAudio();applyPrefs();announce('#settings-notice',tr('Preferințe resetate. Pașaportul este păstrat.','Preferences reset. Your passport is preserved.'));};
+  [settings,guide].forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeDialog(d);}}));
+  let guideStep=0;
+  const guideSteps=[['↕','Tu controlezi timpul','You control time','Derulează normal. Bara și inelul urmăresc progresul; evenimentele apar la intrarea în cadru.','Scroll normally. The bar and ring follow progress; events reveal as they enter the viewport.'],['◎','Explorează cele trei motoare','Explore three engines','Alege o planetă sau parcurge cronologia. Fiecare capitol are un link direct și o ștampilă opțională.','Choose a planet or read the timeline. Each chapter has a direct link and an optional stamp.'],['--mini','Controlează de la distanță','Remote control','Derulează lista mică din laborator. Cadranul exterior urmărește cronologia ei, nu pagina.','Scroll the small list in the lab. The external gauge follows its timeline, not the page.'],['{ CSS }','Experimentează în laborator','Experiment in the lab','Schimbă axa, cronologia și keyframes. Copiază CSS-ul sau distribuie configurația prin link.','Change the axis, timeline and keyframes. Copy the CSS or share the configuration through a link.'],['◐','Alege confortul tău','Choose your comfort','Din Setări poți reduce mișcarea, opri 3D, schimba tema sau testa fallbackul. Sunetul este oprit inițial.','Settings let you reduce motion, disable 3D, change themes or test fallback mode. Sound starts off.']];
+  function renderGuide(){const s=guideSteps[guideStep];$('#guide-step').textContent=`${guideStep+1} / ${guideSteps.length}`;$('#guide-visual').textContent=s[0];$('#guide-heading').textContent=lang==='ro'?s[1]:s[2];$('#guide-text').textContent=lang==='ro'?s[3]:s[4];$('#guide-prev').disabled=guideStep===0;$('#guide-next').textContent=guideStep===guideSteps.length-1?tr('Începe explorarea','Start exploring'):tr('Înainte','Next');}
+  $('#open-guide').onclick=()=>{guideStep=0;renderGuide();showDialog(guide);};$('#close-guide').onclick=()=>{store.set('bv-guide','done');closeDialog(guide);};$('#guide-prev').onclick=()=>{guideStep=Math.max(0,guideStep-1);renderGuide();};$('#guide-next').onclick=()=>{if(guideStep===guideSteps.length-1){store.set('bv-guide','done');closeDialog(guide);}else{guideStep++;renderGuide();}};
+  function renderPassport(){['blink','webkit','gecko'].forEach(id=>{const earned=stamps.includes(id);const stamp=$(`[data-earned=${id}]`);stamp.classList.toggle('earned',earned);$('.stamp-state',stamp).textContent=earned?tr('Colectată ✓','Collected ✓'):tr('De explorat','To explore');const button=$(`[data-stamp=${id}]`);button.disabled=earned;button.textContent=earned?tr('Ștampilă colectată ✓','Stamp collected ✓'):tr('Adaugă ștampila','Collect stamp');});const n=stamps.filter(x=>x!=='star').length;$('#passport-summary').textContent=`${n} / 3 · `+(n===3?tr('Explorator temporal ✓','Time explorer ✓'):tr('Călătoria continuă','The journey continues'))+(stamps.includes('star')?tr(' · Stea secretă ✧',' · Secret star ✧'):'');}
+  function stamp(id){if(!stamps.includes(id)){stamps.push(id);store.set('bv-passport',JSON.stringify(stamps));renderPassport();chime();}}
+  $$('[data-stamp]').forEach(b=>b.onclick=()=>stamp(b.dataset.stamp));
+  $('#find-star').onclick=()=>{announce('#passport-notice',tr('Indiciu: o stea mică te așteaptă lângă planetele de la început.','Hint: a small star waits near the planets at the beginning.'));location.hash='home';};$('#secret-star').onclick=()=>{stamp('star');$('#secret-star').textContent='★';$('#secret-star').setAttribute('aria-label',tr('Stea descoperită','Star discovered'));};
+  $('#clear-passport').onclick=()=>{stamps=[];store.remove('bv-passport');renderPassport();};
+  $('#share-chapter').onclick=()=>{const url=new URL(location.href);url.search='';url.hash=currentChapter;copy(url.href,'#passport-notice');};
+  if(caps.observer){const chapterObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){currentChapter=entry.target.id;store.set('bv-chapter',currentChapter);$$('.nav-map a').forEach(a=>a.removeAttribute('aria-current'));$('.nav-map a[href="#journey"]').setAttribute('aria-current','step');}}),{rootMargin:'-20% 0px -35% 0px',threshold:0});events.forEach(e=>chapterObserver.observe(e));}
+  if(caps.observer){const sectionObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){$$('.nav-map a').forEach(a=>a.removeAttribute('aria-current'));const a=$('.nav-map a[href="#'+entry.target.id+'"]');if(a)a.setAttribute('aria-current','step');}}),{rootMargin:'-15% 0px -45% 0px',threshold:0});['journey','toolkit','lab','playground','learn','passport'].forEach(id=>sectionObserver.observe($('#'+id)));}
+  const resume=oneOf(store.get('bv-chapter'),['blink','webkit','gecko','you'],null);if(resume){$('#resume').href='#'+resume;$('#resume').classList.add('show');}
+  function renderAudio(){const b=$('#audio-toggle');b.textContent=ambient?tr('Oprește ambientul','Stop ambient'):tr('Pornește ambientul','Start ambient');b.setAttribute('aria-pressed',String(Boolean(ambient)));}
+  function stopAudio(){if(ambient){ambient.forEach(o=>{try{o.stop();}catch{}});ambient=null;}if(audioContext){audioContext.close().catch(()=>{});audioContext=null;audioGain=null;}renderAudio();}
+  async function startAudio(){try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)throw Error();audioContext=new Audio();await audioContext.resume();audioGain=audioContext.createGain();audioGain.gain.value=prefs.volume*.06;audioGain.connect(audioContext.destination);ambient=[110,164.81].map(f=>{const o=audioContext.createOscillator();o.type='sine';o.frequency.value=f;o.connect(audioGain);o.start();return o;});renderAudio();}catch{stopAudio();announce('#settings-notice',tr('Audio indisponibil în acest browser.','Audio is unavailable in this browser.'));}}
+  function chime(){if(!audioContext||!ambient)return;const o=audioContext.createOscillator(),g=audioContext.createGain(),now=audioContext.currentTime;o.frequency.setValueAtTime(440,now);o.frequency.exponentialRampToValueAtTime(660,now+.15);g.gain.setValueAtTime(prefs.volume*.06,now);g.gain.exponentialRampToValueAtTime(.0001,now+.3);o.connect(g);g.connect(audioContext.destination);o.start();o.stop(now+.3);}
+  $('#audio-toggle').onclick=()=>ambient?stopAudio():startAudio();document.addEventListener('visibilitychange',()=>{if(audioContext){if(document.hidden)audioContext.suspend().catch(()=>{});else audioContext.resume().catch(()=>{});}});
+  $('#copy-description').onclick=()=>copy(tr('CHRONOSCROLL × Baseline Voyage — creat pe 9 noiembrie 2026. O călătorie 3D prin istoria animation-timeline, cu scroll(), view(), cronologii denumite, laborator CSS, RO/EN, dark/light și fallback accesibil. Realizat cu asistență AI. #cpc-animation-timeline #codepenchallenge','CHRONOSCROLL × Baseline Voyage — created 9 November 2026. A 3D journey through animation-timeline history with scroll(), view(), named timelines, a CSS lab, RO/EN, dark/light and accessible fallback. Created with AI assistance. #cpc-animation-timeline #codepenchallenge'),'#export-notice');
+  $('a[download][href$=".html"]').addEventListener('click',e=>{e.preventDefault();const clone=document.documentElement.cloneNode(true);clone.querySelectorAll('dialog[open]').forEach(d=>d.removeAttribute('open'));clone.classList.remove('js');const content='<!doctype html>\n'+clone.outerHTML;const blob=new Blob([content],{type:'text/html;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='baseline-voyage.html';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+  // The source package is hosted with the project; single-file and CodePen copies share that link.
+  $('a[download][href$=".zip"]').href='https://laurandreea10.github.io/codepen-portfolio/baseline-voyage/downloads/Baseline-Voyage-CodePen.zip';
+  writeLabControls();root.lang=lang;applyPrefs(false);setLang(lang);renderGuide();
+  // First visit has a visible guide action; never trap visitors in an automatic modal.
+})();
+</script></body></html>
