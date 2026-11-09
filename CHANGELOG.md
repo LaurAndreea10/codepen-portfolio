@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-09 — CHRONOSCROLL × Baseline Voyage 2.0.0
+
+- Added the animation-timeline CodePen Challenge project with its 3D observatory, configurable CSS lab, feature-specific fallbacks, RO/EN and accessibility settings.
+- Added catalogue, November challenge season, Finalizat and Istoric entries while preserving existing content.
+- Validation and remaining browser/device checks are recorded in baseline-voyage/CHANGELOG.md.
+
+
 ## 2026-11-07 — Marketing Lab v1.0.0 · Finalizat / Completed
 
 - RO: Aplicație nouă cu 15 instrumente funcționale de marketing, date și front-end: UTM builder, calculator A/B, email builder compatibil Outlook, journey map, lead scoring, cohorte, marketing mix, design system, mini-CRM TypeScript (13 teste Vitest), Web Components, PWA offline-first, extensie SEO Chrome (Manifest V3), Performance Lab, audit WCAG AA și „De la Canva la cod”. Istoric de navigare sincronizat cu browserul și panou de vizite. RO/EN, dark/light.
@@ -355,4 +362,5 @@ Catalogue entry 4 updated to the GitHub Pages game; project page, RO completed/h
 
 ## 2026-10-05 — Tic Tac Toe Ultimate 3.2
 Added to Completed recently, October history and EN recent releases: puzzle calendar, custom championship, ranking, visual hint paths and result dialog keyboard navigation. Validation limits documented.
+
 
