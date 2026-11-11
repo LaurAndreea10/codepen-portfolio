@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-11 — Kygo: Arhipelagul v2.0.0 · Finalizat / Completed
+
+- RO: Șase insule noi (enduro, turn de blocuri, zbor printre ziduri, baschet, circuit, snowboard), deci 12 insule cu câte 5 niveluri și 180 de stele. Boși la nivelul 5 pe insulele clasice, mod fără sfârșit, hartă 3D, arbore de abilități, provizii, accesorii, evenimente de sezon, prestigiu, provocarea săptămânii, coduri de provocare, 16 realizări, gamepad, joc cu un singur buton, mod fără eșec, export/import de progres, PWA offline, studiu de caz și imagine de previzualizare. Kygo World are un portal spre joc.
+- EN: Six new islands (12 total, 5 levels each, 180 stars), level-5 bosses on the classic islands, endless mode, 3D hub map, skill tree, supplies, accessories, seasonal events, prestige, weekly challenge, challenge codes, 16 achievements, gamepad, one-switch play, no-fail mode, progress export/import, offline PWA, a case study and a preview image. Kygo World now links to the game.
+- Updated `projects.json`, the Romanian Finalizat lists and November history, the English completed list and the sitemap (case study added). History: [kygo-arhipelagul/CHANGELOG.md](kygo-arhipelagul/CHANGELOG.md).
+
 ## 2026-11-11 — Kygo: Arhipelagul v1.0.0 · Finalizat / Completed
 
 - RO: Joc nou care unește șase mecanici din jocurile mele pe o singură hartă, cu Kygo ca erou: surf, shooter cu boss, șarpe-prismă, air hockey, tăiat de fructe și labirint cu fantome. Grafică 3D cu Three.js (ca în Kygo World) și fallback 2D, lătrat cu efect diferit pe fiecare insulă, 54 de stele, magazin, Oracolul, provocarea zilei, 12 realizări. RO/EN, accesibil.
