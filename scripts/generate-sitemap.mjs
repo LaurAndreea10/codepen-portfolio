@@ -2,6 +2,7 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
+  ["kygo-arhipelagul/", "monthly", "0.8", "2026-11-11"],
   ["baseline-voyage/", "monthly", "0.7", "2026-11-09"],
   ["baseline-voyage/case-study.html", "monthly", "0.5", "2026-11-09"],
   ["marketing-lab/", "monthly", "0.8", "2026-11-07"],
