@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-11 — Kygo: Arhipelagul v1.0.0 · Finalizat / Completed
+
+- RO: Joc nou care unește șase mecanici din jocurile mele pe o singură hartă, cu Kygo ca erou: surf, shooter cu boss, șarpe-prismă, air hockey, tăiat de fructe și labirint cu fantome. Grafică 3D cu Three.js (ca în Kygo World) și fallback 2D, lătrat cu efect diferit pe fiecare insulă, 54 de stele, magazin, Oracolul, provocarea zilei, 12 realizări. RO/EN, accesibil.
+- EN: New game uniting six mechanics from my games on one map, starring Kygo: surfing, a boss shooter, a prism snake, air hockey, fruit slicing and a ghost maze. 3D graphics with Three.js (as in Kygo World) with a 2D fallback, a bark with a different effect per island, 54 stars, a shop, the Oracle gauntlet, a daily challenge, 12 achievements. RO/EN, accessible.
+- Added to `projects.json`, the Romanian Finalizat recent lists and November history, the English completed list and the sitemap. History: [kygo-arhipelagul/CHANGELOG.md](kygo-arhipelagul/CHANGELOG.md).
+
 ## 2026-11-09 — CHRONOSCROLL × Baseline Voyage v4.0.0 · Finalizat / Completed
 
 - RO: Intrarea pentru CodePen Challenge, săptămâna 2 (`animation-timeline`): călătorie condusă de scroll din 2023 în 2026, cu observator 3D, cronologie animată, univers 3D, portaluri, galerie cinema, cronologii denumite cu `timeline-scope`, laborator CSS cu provocări, compatibilitate live și jocul CHRONO PILOT, în care bara de scroll e joystickul. RO/EN, dark/light × 7 palete, mișcare redusă, fallback `@supports` și mod static.
