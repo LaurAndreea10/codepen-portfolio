@@ -2,6 +2,9 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
+  ["kygo-universe/", "monthly", "0.8", "2026-11-12"],
+  ["kygo-universe/case-study.html", "monthly", "0.5", "2026-11-12"],
+  ["kygo-universe/roadmap.html", "monthly", "0.4", "2026-11-12"],
   ["kygo-arhipelagul/", "monthly", "0.8", "2026-11-11"],
   ["kygo-arhipelagul/case-study.html", "monthly", "0.5", "2026-11-11"],
   ["baseline-voyage/", "monthly", "0.7", "2026-11-09"],
@@ -61,7 +64,7 @@ const pages = [
   ["slidestorm-arena/case-study.html", "monthly", "0.7", "2026-10-02"],
   ["odyssey-quest/", "monthly", "0.7", "2026-10-02"],
   ["odyssey-quest/case-study.html", "monthly", "0.7", "2026-10-01"],
-  ["portfolio.html", "weekly", "1.0", "2026-11-08"],
+  ["portfolio.html", "weekly", "1.0", "2026-11-12"],
   ["en/", "weekly", "0.9", "2026-11-07"],
   ["alpis-fusion-crm.html", "monthly", "0.9", "2026-08-30"],
   ["projects/clientflow.html", "monthly", "0.9", "2026-08-30"],
@@ -116,8 +119,8 @@ const pages = [
   ["clipboard-crm-summary.html", "monthly", "0.75", "2026-09-21"],
   ["dashboard-activity-filter.html", "monthly", "0.75", "2026-09-23"],
   ["skydreams-portal/", "monthly", "0.8", "2026-09-27"],
-  ["kygo-world/", "monthly", "0.8", "2026-10-31"],
-  ["kygo-world/pe-urme/", "monthly", "0.8", "2026-10-31"],
+  ["kygo-world/", "monthly", "0.8", "2026-11-12"],
+  ["kygo-world/pe-urme/", "monthly", "0.8", "2026-11-12"],
   ["crm-accessible-form.html", "monthly", "0.75", "2026-09-25"],
   ["crm-json-backup.html", "monthly", "0.75", "2026-09-28"],
   ["crm-optimistic-undo.html", "monthly", "0.75", "2026-09-30"],

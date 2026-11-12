@@ -18,6 +18,7 @@
 
 `node --test kygo-universe/tests/core.test.cjs` — 12 tests pass.
 All game inline scripts and shared scripts pass Node syntax checks.
+Repository checks pass: `scripts/portfolio-quality.mjs`, `scripts/seo-audit.mjs` and deterministic `scripts/generate-sitemap.mjs` output. Portfolio HTML stays within its 150,000-byte budget.
 Browser: three game bridges load; profile saves; RO/EN and contrast work; separate profile starts with empty progress; achievement reward/purchase/decor toggle work; pause key remaps; a real World clear is recorded with score/time/assistance.
 
 ### Remaining
