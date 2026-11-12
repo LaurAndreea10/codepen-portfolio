@@ -1,5 +1,10 @@
 # Kygo World — istoric al versiunilor / Version history
 
+## 2026-11-12 · v2026.11.12.2 · Parcul lui Kygo / Kygo’s Park
+- Patru moduri noi: **Sapă după os**, **Aleargă**, **Prinde discul**, **Sari peste obstacole**. Cinci niveluri pentru fiecare, mod asistat, RO/EN și controale tactile/tastatură.
+- Four distinct play modes, five stages each, assistance, separate personal records and shared-passport wins.
+- [Joacă / Play](joaca/) · [Istoric detaliat / Detailed changelog](joaca/CHANGELOG.md). Salvarea parcului este inclusă în backupul și profilurile comune; backupurile anterioare rămân compatibile.
+
 ## 2026-11-12 · v2026.11.12.1 · Universul Kygo / Shared local universe
 - Pașaport local, campanie între trei jocuri, realizări, provocări, profiluri separate și backup comun. / Local passport, cross-game campaign, achievements, challenges, separate profiles and shared backup.
 - Preferințe RO/EN, cameră și calitate 3D, volume separate și taste configurabile. / Shared preferences, 3D camera/quality, separate audio channels and remappable keys.

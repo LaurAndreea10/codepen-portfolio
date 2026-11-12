@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ro" data-kygo-game="world">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#102e32"><meta name="robots" content="index,follow">
+<meta name="application-version" content="2026.11.12.2">
+<title>Parcul lui Kygo — Sapă, aleargă, prinde și sari</title>
+<meta name="description" content="Patru moduri de joacă pentru Kygo: sapă după os, aleargă pe trei benzi, prinde discul și sari peste obstacole. Cinci niveluri, RO/EN, mod asistat și pașaport comun.">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/kygo-world/joaca/">
+<meta property="og:title" content="Parcul lui Kygo — patru moduri noi de joacă"><meta property="og:description" content="Sapă după os, aleargă, prinde discul și sari peste obstacole. RO/EN, accesibilitate și progres local.">
+<meta property="og:type" content="website"><meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/kygo-world/joaca/"><meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/kygo-world/sky-islands.jpg"><meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Parcul lui Kygo / Kygo's Park","inLanguage":["ro","en"],"url":"https://laurandreea10.github.io/codepen-portfolio/kygo-world/joaca/","gamePlatform":"Web browser","applicationCategory":"GameApplication","isAccessibleForFree":true,"author":{"@type":"Person","name":"Laura Andreea Plugaru"}}</script>
+<link rel="stylesheet" href="style.css?v=20261112-park2">
+<script src="game.js?v=20261112-park2" defer></script><script src="app.js?v=20261112-park2" defer></script>
+<script src="../../kygo-universe/core.js?v=20261112-park2" defer></script><script src="../../kygo-universe/universe.js?v=20261112-park2" defer></script>
+</head>
+<body>
+<a class="skip" href="#game-title" data-t="skip">Sari la joc</a>
+<header class="shell"><a href="../" class="brand">🐾 Kygo World</a><a href="../../kygo-universe/" data-t="universe">Universul Kygo</a><div class="preferences"><label><span class="sr" data-t="language">Limbă</span><select id="language"><option value="ro">Română</option><option value="en">English</option></select></label><button id="theme" type="button" data-t="theme">☀ Temă</button></div></header>
+<main class="shell">
+<div class="heading"><div><p class="eyebrow" data-t="eyebrow">KYGO WORLD · TIMP DE JOACĂ</p><h1 id="game-title" data-t="title" tabindex="-1">Parcul lui Kygo</h1><p class="lede" data-t="lede">Un nas curios. Lăbuțe rapide. Patru aventuri în aer liber.</p></div><img src="../kygo-sprite.webp" alt="" width="110" height="141" class="portrait"></div>
+<nav class="mode-tabs" aria-label="Moduri de joacă / Play modes">
+<button type="button" data-mode="dig" aria-pressed="true" data-t="dig">🦴 Sapă după os</button><button type="button" data-mode="run" aria-pressed="false" data-t="run">🐾 Aleargă</button><button type="button" data-mode="disc" aria-pressed="false" data-t="disc">🥏 Prinde discul</button><button type="button" data-mode="jump" aria-pressed="false" data-t="jump">🪵 Sari peste obstacole</button>
+</nav>
+<div class="layout">
+<section class="arena" aria-labelledby="mode-title">
+<div class="arena-heading"><h2 id="mode-title">Sapă după os</h2><div class="badges"><span id="level-badge"></span><span id="assist-badge"></span></div></div>
+<div class="hud" aria-label="Starea jocului / Game state"><span id="objective"></span><span id="score"></span><span id="hearts"></span><span id="time"></span></div>
+<div class="stage"><canvas id="park" width="960" height="600" tabindex="0" aria-label="Parcul lui Kygo; folosește comenzile de sub joc"></canvas><div class="scene-label" id="scene-label" aria-hidden="true"></div><div id="cover" class="cover"><div class="cover-card"><p class="eyebrow" id="cover-kicker"></p><h2 id="cover-title"></h2><p id="cover-text"></p><div class="cover-actions"><button id="start" class="primary" type="button"></button><button id="next" type="button" hidden></button></div></div></div></div>
+<p id="status" class="status" role="status" aria-live="polite" aria-atomic="true"></p>
+<div class="controls" aria-label="Comenzi / Controls"><button id="left" type="button" aria-label="Stânga / Left">←</button><button id="up" type="button" aria-label="Sus / Up">↑</button><button id="action" class="primary" type="button"></button><button id="down" type="button" aria-label="Jos / Down">↓</button><button id="right" type="button" aria-label="Dreapta / Right">→</button><button id="pause" type="button" data-t="pause">Pauză</button></div>
+<div id="dig-panel" class="dig-panel"><p id="scent" class="scent"></p><div id="dig-grid" class="dig-grid" role="group" aria-label="Pătratele de săpat / Digging patches"></div></div>
+<p class="keyboard" data-t="keys">Săgeți / WASD: deplasare · Spațiu / Enter: acțiune · P: pauză</p>
+</section>
+<aside class="sidebar">
+<section class="card"><p class="eyebrow" data-t="mission">MISIUNEA TA</p><h2 id="mission-title"></h2><p id="instructions"></p><ol id="steps"></ol><div class="settings"><label><span data-t="level">Nivel</span><select id="level"></select></label><label class="check"><input id="assisted" type="checkbox"><span data-t="assisted">Mod asistat</span></label></div><p class="small" id="assist-help"></p><p class="small" data-t="changeNote">Schimbarea modului, nivelului sau asistenței pregătește o rundă nouă.</p></section>
+<section class="card"><h2 data-t="records">Progresul tău</h2><div id="progress-list"></div><p id="best"></p><p class="small" data-t="passport">Victoriile se adaugă automat la pașaportul Universului Kygo. Rejucarea nu dublează recompensa.</p><a href="../../kygo-universe/?tab=passport" data-t="openPassport">Deschide pașaportul →</a></section>
+<details class="card"><summary data-t="help">Comenzi și accesibilitate</summary><p data-t="helpText">Poți folosi numai tastatura sau butoanele de pe ecran. În modul Sapă, butoanele grilei aleg pătratul și sapă. Mod asistat: fără pierderea vieților la alergare, aliniere automată la disc și sărituri automate. Tastele pot fi schimbate din Universul Kygo.</p><button id="contrast" type="button" aria-pressed="false" data-t="contrast">Contrast ridicat</button><button id="motion" type="button" aria-pressed="false" data-t="motion">Mișcare redusă</button></details>
+</aside></div>
+</main><footer class="shell"><p data-t="footer">Progres local · fără cont · fără plăți · RO / EN</p><a href="CHANGELOG.md" data-t="history">Istoric versiuni</a></footer>
+<noscript><p>Activează JavaScript pentru cele patru jocuri. / Enable JavaScript to play the four games.</p></noscript>
+</body></html>

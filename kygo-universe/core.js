@@ -3,7 +3,7 @@
   'use strict';
   const VERSION = 1, KEY = 'kygo-universe-v1';
   const IDS = ['world', 'archipelago', 'trail'];
-  const SAVE_KEYS = ['kygo-world-v2', 'kygo-world-3d', 'kygo-arhipelagul-v1', 'kygo-pe-urme-settings', 'kygo-pe-urme-done', 'kygo-pe-urme-v2-manor', 'kygo-pe-urme-v2-arena'];
+  const SAVE_KEYS = ['kygo-world-v2', 'kygo-world-3d', 'kygo-arhipelagul-v1', 'kygo-pe-urme-settings', 'kygo-pe-urme-done', 'kygo-pe-urme-v2-manor', 'kygo-pe-urme-v2-arena', 'kygo-play-v1'];
   const plain = x => !!x && typeof x === 'object' && !Array.isArray(x) && Object.getPrototypeOf(x) === Object.prototype;
   const integer = (v, max = 1e8) => Number.isInteger(v) && v >= 0 && v <= max;
   const fresh = () => ({version:VERSION, name:'Kygo', avatar:'🐩', coins:0, xp:0, visits:[], wins:{world:[],archipelago:[],trail:[]}, records:[], claims:[], inventory:['classic'], equipped:'classic', decor:[], prefs:{lang:'ro',theme:'dark',contrast:false,motion:false,text:100,buttons:100,music:50,sfx:80,haptics:false,quality:'auto',camera:'follow'}, journal:[]});
@@ -53,6 +53,9 @@
     if(key==='kygo-world-3d'){if(x!==0&&x!==1)throw Error('Invalid 3D preference');return;}
     if(x===null&&key.startsWith('kygo-pe-urme-v2-'))return;
     if(!plain(x))throw Error('Invalid game save');
+    if(key==='kygo-play-v1'){
+      if(x.version!==1||typeof x.assisted!=='boolean'||!Array.isArray(x.completed)||x.completed.length>20||new Set(x.completed).size!==x.completed.length||!x.completed.every(id=>typeof id==='string'&&/^(dig|run|disc|jump):[1-5]$/.test(id))||!plain(x.best)||Object.keys(x.best).length>40||!Object.entries(x.best).every(([id,r])=>/^(dig|run|disc|jump):[1-5]:(standard|assisted)$/.test(id)&&plain(r)&&integer(r.score,1000000)&&integer(r.time,86400000)))throw Error('Invalid park save');
+    }
     if(key==='kygo-world-v2'&&(!integer(x.level,100)||x.level<1||!integer(x.coins)||!Array.isArray(x.completed)||x.completed.some(v=>!integer(v,100)||v<1)||!plain(x.settings)||!plain(x.stars)||!Object.values(x.stars).every(v=>integer(v,3))))throw Error('Invalid World save');
     if(key==='kygo-arhipelagul-v1'&&(!integer(x.bones)||!plain(x.stars)||!Object.values(x.stars).every(v=>integer(v,3))||!plain(x.set)||!plain(x.st)||!plain(x.up)))throw Error('Invalid Archipelago save');
     if(key==='kygo-world-v2'){
@@ -70,7 +73,7 @@
     if(key.startsWith('kygo-pe-urme-v2-')&&(!Array.isArray(x.tasks)||!x.tasks.every(t=>integer(t,10000)||Array.isArray(t)&&t.every(v=>Array.isArray(v)&&v.length===3&&[0,1].includes(v[0])&&[0,1].includes(v[1])&&Number.isInteger(v[2])&&v[2]>=-1&&v[2]<=100))||!Number.isFinite(x.elapsed)||x.elapsed<0))throw Error('Invalid Trail run');
   }
   function backup(storage,state) { const saves={}; for(const k of SAVE_KEYS)saves[k]=storage.getItem(k);return {format:'kygo-universe-backup',version:VERSION,created:new Date().toISOString(),passport:validate(state),saves}; }
-  function parseBackup(text) { if(typeof text!=='string'||text.length>8000000)throw Error('Backup too large');const x=JSON.parse(text);if(!plain(x)||x.format!=='kygo-universe-backup'||x.version!==VERSION||!plain(x.saves)||!safeTree(x))throw Error('Invalid backup');validate(x.passport);if(Object.keys(x.saves).length!==SAVE_KEYS.length)throw Error('Incomplete backup');for(const k of SAVE_KEYS){if(!Object.hasOwn(x.saves,k))throw Error('Missing save');validateSave(k,x.saves[k]);}return x; }
+  function parseBackup(text) { if(typeof text!=='string'||text.length>8000000)throw Error('Backup too large');const x=JSON.parse(text);if(!plain(x)||x.format!=='kygo-universe-backup'||x.version!==VERSION||!plain(x.saves)||!safeTree(x))throw Error('Invalid backup');validate(x.passport);if(Object.keys(x.saves).some(k=>!SAVE_KEYS.includes(k))||!SAVE_KEYS.every(k=>Object.hasOwn(x.saves,k)||k==='kygo-play-v1'))throw Error('Incomplete backup');if(!Object.hasOwn(x.saves,'kygo-play-v1'))x.saves['kygo-play-v1']=null;for(const k of SAVE_KEYS){if(!Object.hasOwn(x.saves,k))throw Error('Missing save');validateSave(k,x.saves[k]);}return x; }
   function restore(storage, data) { const x=parseBackup(JSON.stringify(data)), before={};for(const k of [KEY,...SAVE_KEYS])before[k]=storage.getItem(k);try{for(const k of SAVE_KEYS)x.saves[k]===null?storage.removeItem(k):storage.setItem(k,x.saves[k]);save(storage,x.passport);}catch(e){for(const k of [KEY,...SAVE_KEYS])try{before[k]===null?storage.removeItem(k):storage.setItem(k,before[k]);}catch{}throw e;} }
   const SLOT_KEY='kygo-universe-profiles-v1';
   function profiles(storage) {try{const x=JSON.parse(storage.getItem(SLOT_KEY)||'null');if(!plain(x)||!['one','two','three'].includes(x.active)||!plain(x.slots))throw Error();for(const [id,s] of Object.entries(x.slots)){if(!['one','two','three'].includes(id))throw Error();parseBackup(JSON.stringify(s));}return x;}catch{return {active:'one',slots:{}};} }

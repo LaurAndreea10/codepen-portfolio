@@ -1,5 +1,11 @@
 # Universul Kygo / Kygo Universe
 
+## 2026.11.12.2 — Kygo’s Park
+
+- Four new World activities: Dig for bones, Run, Catch the disc and Jump over hurdles, each with five stages and distinct rules.
+- Park wins count in the World passport. Park progress is included in the eight-key backup schema and profile slots; seven-key legacy backups are migrated safely.
+- New mode links in World and on the Universe map. [Play](../kygo-world/joaca/) · [Park release notes](../kygo-world/joaca/CHANGELOG.md).
+
 ## 2026.11.12.1 — Shared local universe
 
 - New bilingual hub with linked island map, shared navigation and explicit engine bridges.

@@ -1,0 +1,37 @@
+name: Kygo Park rules and backups
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'kygo-world/joaca/**'
+      - 'kygo-universe/core.js'
+      - 'kygo-universe/tests/**'
+      - '.github/workflows/kygo-park.yml'
+  pull_request:
+    paths:
+      - 'kygo-world/joaca/**'
+      - 'kygo-universe/core.js'
+      - 'kygo-universe/tests/**'
+      - '.github/workflows/kygo-park.yml'
+permissions:
+  contents: read
+concurrency:
+  group: kygo-park-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  rules-and-backups:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate game rules and shared backup compatibility
+        run: node --test kygo-world/joaca/tests/game.test.cjs kygo-universe/tests/core.test.cjs
+      - name: Check browser script syntax
+        run: |
+          node --check kygo-world/joaca/app.js
+          node --check kygo-world/joaca/game.js
+          node --check kygo-universe/core.js
+          node --check kygo-universe/universe.js
+          node --check kygo-universe/portfolio-park.js
