@@ -131,9 +131,10 @@ try {
         await page.clock.setFixedTime(new Date(2026, 8, 27, 12));
         await page.reload({ waitUntil: "networkidle" });
         await page.waitForTimeout(1200);
-        if (!(await page.locator('#edition option[value="halloween"]').evaluate((option) => option.disabled))) {
+        // Editions are replayable year-round (kygo-universe CHANGELOG); outside the window Halloween must stay selectable.
+        if (await page.locator('#edition option[value="halloween"]').evaluate((option) => option.disabled)) {
           const observedDate = await page.evaluate(() => new Date().toISOString());
-          failures.push(`Kygo World: Halloween remains available outside its scheduled window (${observedDate})`);
+          failures.push(`Kygo World: Halloween cannot be replayed outside its scheduled window (${observedDate})`);
         }
         for (const gameMode of ["dash", "championship", "endless", "maze", "treasure", "garden", "duo", "zen"]) {
           await page.locator(`[data-mode="${gameMode}"]`).click();
@@ -145,10 +146,14 @@ try {
         }
         await page.locator("#language").selectOption("en");
         if ((await page.locator("html").getAttribute("lang")) !== "en") failures.push("Kygo World: English language toggle failed");
+        // Toggles start from shared preferences (reduced motion follows the OS setting), so assert each click flips the state.
+        const contrastBefore = await page.locator("#contrast").getAttribute("aria-pressed");
         await page.locator("#contrast").click();
+        const motionBefore = await page.locator("#motion").getAttribute("aria-pressed");
         await page.locator("#motion").click();
-        if ((await page.locator("#contrast").getAttribute("aria-pressed")) !== "true") failures.push("Kygo World: high contrast toggle failed");
-        if ((await page.locator("#motion").getAttribute("aria-pressed")) !== "true") failures.push("Kygo World: reduced-motion toggle failed");
+        await page.waitForTimeout(100);
+        if ((await page.locator("#contrast").getAttribute("aria-pressed")) === contrastBefore) failures.push("Kygo World: high contrast toggle failed");
+        if ((await page.locator("#motion").getAttribute("aria-pressed")) === motionBefore) failures.push("Kygo World: reduced-motion toggle failed");
         const editions = await page.evaluate(() => JSON.parse(localStorage.getItem("kygo-world-v2") || "{}").editionLevels);
         if (!editions || !["halloween", "easter", "christmas"].every((edition) => edition in editions)) {
           failures.push("Kygo World: edition-specific progress keys are missing");
