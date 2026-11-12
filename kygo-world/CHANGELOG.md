@@ -1,5 +1,11 @@
 # Kygo World — istoric al versiunilor / Version history
 
+## 2026-11-12 · Parcul lui Kygo v2026.11.12.3 · Opt extinderi / Eight extensions
+- Plimbare liberă, patru decoruri, competiție cu toate cele patru probe și medalii, animații dedicate și accesorii desenate pe Kygo.
+- Comenzi mai mari, grupare pentru mâna stângă/dreaptă, ritm reglabil și reluarea rundei salvate, inclusiv etapa competiției.
+- Trei portaluri din parc către World, Arhipelagul și Pe Urme. / Free walk, four scenes, a four-stage championship with medals, visible accessories, adjusted controls and resumable rounds; three park portals link the adventures.
+- [Joacă / Play](joaca/) · [Istoric și verificări / Release notes](joaca/CHANGELOG.md).
+
 ## 2026-11-12 · Design realist / Realistic design
 - RO: Kygo World, Pe Urme 3D și Kygo Arhipelagul au un aspect nou în tema implicită: fundal foto cu Insulele din Nori, panouri din sticlă mată, accent auriu cald, butoane principale aurii și titluri Fraunces cu text Nunito. Tema luminoasă, contrastul ridicat, fontul lizibil și mișcarea redusă rămân neschimbate. Logica, nivelurile și salvările nu sunt atinse.
 - EN: Kygo World, On the Trail 3D and Kygo Archipelago get a new default look: photo backdrop of the Sky Islands, frosted-glass panels, warm gold accent and buttons, Fraunces headings with Nunito text. Light theme, high contrast, legible font and reduced motion are unchanged; game logic, levels and saves are untouched.

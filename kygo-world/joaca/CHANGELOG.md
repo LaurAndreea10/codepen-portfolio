@@ -1,5 +1,24 @@
 # Parcul lui Kygo / Kygo’s Park
 
+## 2026.11.12.3 — Toate cele opt extinderi / All eight park extensions
+
+1. **Animații / Animations:** alternating running paws and tail, digging paws and soil, bone pickup arc, a caught disc attached to Kygo’s mouth, gravity-based jumping poses. Reduced motion uses simpler poses without particles.
+2. **Plimbare liberă / Free walk:** bounded walkable park, four activity stations, arrow/WASD movement, touchable signs and optional automatic walking to a selected destination.
+3. **Decoruri / Scenery:** meadow, forest, beach and snowy park, with distinct vegetation, terrain, scenery and seeded courses. The original levels and progress are preserved.
+4. **Competiție combinată / Championship:** Dig → Run → Disc → Hurdles, next-stage transitions, retry after a loss, aggregate score/time, gold/silver/bronze medals and saved championship records. Rules stay fixed during a championship.
+5. **Accesorii vizibile / Visible accessories:** scarf, bow tie and crown in four colours, drawn on Kygo in every activity and free walk.
+6. **Comenzi ajustabile / Adjustable controls:** 100–160% buttons, centre/left-hand/right-hand clusters and 50–125% pace. Pace below 100% counts as assisted in records and passport results.
+7. **Continuarea rundei / Resume:** validated checkpoints preserve digging patches and found bones, processed track events, disc flight, jump state, walk position and championship stage/results. Saves occur after actions, on pause/page hide and every two seconds during play. Recovered rounds open paused.
+8. **Portaluri / Portals:** three in-scene portal locations to World, Archipelago and On the Trail. Approach a portal and confirm the destination in an accessible dialog; park state is saved before leaving.
+
+### Compatibility and validation
+
+Park save schema v2 keeps the original `kygo-play-v1` storage key and migrates v1 progress without losing completed stages or personal records. The same pure validator is used by the game and shared backup importer; checkpoints and customisations are included in all profile slots. Old seven/eight-key backups remain supported.
+
+39 Node tests cover native rules, themes, pace, full championship completion, checkpoint rejection/resume, free-walk destinations, legacy migrations, backups and profile isolation. Browser checks cover an in-scene portal, snow/crown customisation, restored walk position, a real Dig championship clear, next-stage transition, and championship reload on stage two. Physical-phone and real screen-reader checks are still not claimed.
+
+The park continues to use a perspective Canvas renderer. The portals in this release belong to the park; this does not claim that all three other engines have new native 3D portal scenes.
+
 ## 2026.11.12.2 — Patru moduri / Four play modes
 
 - **Sapă după os / Dig for bones:** 4×4 patches, two digs per patch, three hidden bones and a distance-based scent clue; no time limit. Assisted mode adds an exact distance clue.
@@ -21,4 +40,4 @@ Browser checks: a full Dig victory, level unlock, a caught disc, mode switching,
 
 ### Storage
 
-Only completed stages and personal records are saved in `kygo-play-v1`. An unfinished round restarts when the page reloads. All game data remains in this browser unless the player exports a backup.
+Completed stages, personal records, customisation, championship results and the active round are stored locally in `kygo-play-v1`. The active round is restored paused after reload. All data remains in this browser unless the player exports a backup.

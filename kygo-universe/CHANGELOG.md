@@ -1,5 +1,12 @@
 # Universul Kygo / Kygo Universe
 
+## 2026.11.12.3 — Park exploration, championship and resumable saves
+
+- All eight park extensions: activity animations, free walking, four scenes, four-stage championship/medals, visible accessories, one-hand controls/pace, active-round checkpoints and in-scene park portals.
+- Shared backup validation reuses the pure park engine validator for both v1 and v2 saves. Local profile slots include checkpoints and championship state.
+- Existing realistic-art changes in World, Archipelago and On the Trail are retained.
+- [Play](../kygo-world/joaca/) · [Full details and verification](../kygo-world/joaca/CHANGELOG.md).
+
 ## 2026.11.12.2 — Kygo’s Park
 
 - Four new World activities: Dig for bones, Run, Catch the disc and Jump over hurdles, each with five stages and distinct rules.

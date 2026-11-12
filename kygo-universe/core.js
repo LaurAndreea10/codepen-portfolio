@@ -1,6 +1,7 @@
 /* Shared local-only progress. No credentials, network requests or paid currency. */
 (function (root) {
   'use strict';
+  const Park=typeof module!=='undefined'&&module.exports?require('../kygo-world/joaca/game.js'):root.KygoPark;
   const VERSION = 1, KEY = 'kygo-universe-v1';
   const IDS = ['world', 'archipelago', 'trail'];
   const SAVE_KEYS = ['kygo-world-v2', 'kygo-world-3d', 'kygo-arhipelagul-v1', 'kygo-pe-urme-settings', 'kygo-pe-urme-done', 'kygo-pe-urme-v2-manor', 'kygo-pe-urme-v2-arena', 'kygo-play-v1'];
@@ -53,9 +54,7 @@
     if(key==='kygo-world-3d'){if(x!==0&&x!==1)throw Error('Invalid 3D preference');return;}
     if(x===null&&key.startsWith('kygo-pe-urme-v2-'))return;
     if(!plain(x))throw Error('Invalid game save');
-    if(key==='kygo-play-v1'){
-      if(x.version!==1||typeof x.assisted!=='boolean'||!Array.isArray(x.completed)||x.completed.length>20||new Set(x.completed).size!==x.completed.length||!x.completed.every(id=>typeof id==='string'&&/^(dig|run|disc|jump):[1-5]$/.test(id))||!plain(x.best)||Object.keys(x.best).length>40||!Object.entries(x.best).every(([id,r])=>/^(dig|run|disc|jump):[1-5]:(standard|assisted)$/.test(id)&&plain(r)&&integer(r.score,1000000)&&integer(r.time,86400000)))throw Error('Invalid park save');
-    }
+    if(key==='kygo-play-v1'){if(!Park)throw Error('Park validator unavailable');Park.validateSave(x);}
     if(key==='kygo-world-v2'&&(!integer(x.level,100)||x.level<1||!integer(x.coins)||!Array.isArray(x.completed)||x.completed.some(v=>!integer(v,100)||v<1)||!plain(x.settings)||!plain(x.stars)||!Object.values(x.stars).every(v=>integer(v,3))))throw Error('Invalid World save');
     if(key==='kygo-arhipelagul-v1'&&(!integer(x.bones)||!plain(x.stars)||!Object.values(x.stars).every(v=>integer(v,3))||!plain(x.set)||!plain(x.st)||!plain(x.up)))throw Error('Invalid Archipelago save');
     if(key==='kygo-world-v2'){
