@@ -1,5 +1,11 @@
 # Kygo World — istoric al versiunilor / Version history
 
+## 2026-11-12 · v2026.11.12.1 · Universul Kygo / Shared local universe
+- Pașaport local, campanie între trei jocuri, realizări, provocări, profiluri separate și backup comun. / Local passport, cross-game campaign, achievements, challenges, separate profiles and shared backup.
+- Preferințe RO/EN, cameră și calitate 3D, volume separate și taste configurabile. / Shared preferences, 3D camera/quality, separate audio channels and remappable keys.
+- Linkul Arhipelagul nu mai este rescris de schimbarea limbii; edițiile sezoniere pot fi rejucate oricând. / Language changes no longer overwrite the Archipelago link; seasonal editions can be replayed anytime.
+- [Istoric complet / Full release notes](../kygo-universe/CHANGELOG.md) · [Starea tuturor celor 126 de puncte / 126-item status](../kygo-universe/roadmap.html). Programul complet nu este încă finalizat. / The complete programme is not finished.
+
 ## 2026-10-31 · v2026.10.31.2 · Kygo dinainte, cu papion / The original Kygo with the bow tie
 - RO: în vizualizarea 3D, Kygo e din nou cel dinainte: imaginea originală cu papionul cu buline, așezată în lumea 3D ca un panou care se întoarce mereu spre cameră, cu umbră pe sol. Se oglindește când merge spre stânga, sare și alunecă la fel ca în 2D și poartă accesoriile de sezon (🧙 🐰 🎅). În Labirint rămâne vizibil peste ziduri.
 - EN: in the 3D view Kygo is the original again — the familiar image with the polka-dot bow tie, shown as a camera-facing billboard with a ground shadow, mirrored when walking left, with the same jump, slide and seasonal accessories; it stays visible above maze walls.

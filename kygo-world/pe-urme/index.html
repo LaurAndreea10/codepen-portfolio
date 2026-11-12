@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="ro" data-kygo-game="trail">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -180,8 +180,8 @@ body.rm .kygo-slider{ transition:none }
 .slots li.task b{ font-family:var(--font-mono); font-size:.85rem; font-weight:500 }
 .slots li.task.found{ border-color:var(--ok); background:color-mix(in srgb, var(--ok) 18%, transparent) }
 </style>
-</head>
-<body>
+<script src="../../kygo-universe/core.js?v=20261112-3" defer></script><script src="../../kygo-universe/universe.js?v=20261112-3" defer></script></head>
+<body><a href="../../kygo-universe/" style="position:relative;display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;color:inherit;background:#182b49;color:#fff;border:1px solid #ffe3a1;border-radius:12px;margin:8px;text-decoration:none;z-index:10">🐾 Universul Kygo / Kygo Universe</a>
 <div id="game" tabindex="0" role="application" aria-roledescription="joc" aria-label="Kygo: Pe Urme"></div>
 <p id="nogl" data-i18n="nogl"></p>
 <div id="sr" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
@@ -1111,7 +1111,7 @@ function update(dt){
   R.dogHead.rotation.z = dog.moving ? 0 : Math.sin(time * .8) * .06;
   R.ears.forEach((e, i) => { e.rotation.z = dog.moving ? Math.sin(time * 14 + i) * .16 : Math.sin(time * 1.2 + i) * .04; });
   R.tongue.scale.z = 1.3 + Math.sin(time * 9) * .15;
-  const cx = dog.x, cz = dog.z + 12.5, cy = 10.5;
+  const cameraMode=window.KygoUniverse?.prefs.camera||'follow';const cx=dog.x+(cameraMode==='side'?10:0),cz=dog.z+(cameraMode==='overview'?18:cameraMode==='close'?9:12.5),cy=cameraMode==='overview'?19:cameraMode==='close'?7.5:10.5;
   if (S.reducedMotion) camera.position.set(cx, cy, cz);
   else { const k = 1 - Math.exp(-dt * 4); camera.position.x += (cx - camera.position.x) * k; camera.position.y += (cy - camera.position.y) * k; camera.position.z += (cz - camera.position.z) * k; }
   camera.lookAt(dog.x, 1, dog.z - 1.5);
@@ -1345,7 +1345,7 @@ function win(){
   if (REG.id === 'manor' && HALLOWEEN) badges.push(t('badge_hw')); if (S.mode === 'walk') badges.push(t('badge_calm')); if (stars === 3) badges.push(t('badge_fast'));
   $('#wBadges').innerHTML = badges.map(b => `<span class="badge">${b}</span>`).join('');
   const nx = nextRegionId(); $('#bNextRegion').textContent = nx ? t('next_go', { reg:regName(nx) }) : t('next_map');
-  const done = doneMap(); const prev = done[REG.id]; if (!prev || stars > prev.stars || (stars === prev.stars && el < prev.time)) done[REG.id] = { stars, time:el }; store.set('kygo-pe-urme-done', done);
+  window.dispatchEvent(new CustomEvent('kygo:result',{detail:{id:REG.id,score:stars*100,time:Math.max(0,Math.round(el)),assisted:S.mode==='walk'||S.oneSwitch}}));const done = doneMap(); const prev = done[REG.id]; if (!prev || stars > prev.stars || (stars === prev.stars && el < prev.time)) done[REG.id] = { stars, time:el }; store.set('kygo-pe-urme-done', done);
   caption(t('cap_win')); SFX.fanfare(); setTimeout(SFX.fanfare, 900); if (REG.id === 'arena') setTimeout(SFX.cheer, 400);
   if (glOK && !S.reducedMotion){ let k = 0; const fw = setInterval(() => { spawnFirework(); if (++k > 14) clearInterval(fw); }, 380); }
   speak(`${t('win_title_' + REG.id)} ${t('win_text_' + REG.id)} ${info}. ${badges.join(', ').replace(/[^\p{L}\p{N}\s,:.]/gu, '')}`);
@@ -1529,10 +1529,19 @@ glOK = initThree();
 if (!glOK){ document.body.classList.add('nogl'); Object.values(REGIONS).forEach(r => { r.apply = () => {}; r.restore = []; }); }
 loadRun(REG); showRegion(); applySettings();
 let last = performance.now();
-(function loop(){ requestAnimationFrame(loop); const n = performance.now(); const dt = Math.min(.05, (n - last) / 1000); last = n; update(dt); if (glOK) renderer.render(scene, camera); })();
+(function loop(){ requestAnimationFrame(loop); const n = performance.now(); const dt = Math.min(.05, (n - last) / 1000); last = n; update(dt); if(glOK){const p=window.KygoUniverse?.prefs,cap=p?.quality==='low'?1:p?.quality==='medium'?1.5:2;if(renderer.getPixelRatio()!==Math.min(devicePixelRatio||1,cap))renderer.setPixelRatio(Math.min(devicePixelRatio||1,cap));renderer.shadowMap.enabled=p?.quality!=='low';renderer.render(scene,camera);} })();
 openDialog('#dlgStart');
 setTimeout(() => $('#bPlay').focus(), 50);
 window.__kygo = { REGIONS, get REG(){ return REG; }, dog, get state(){ return state; }, setFollow, travel, targets, nearestTarget, version:VERSION };
+let universeApplied='';
+window.KygoBridge={
+ preferences(){return {lang:S.lang,theme:S.light?'light':'dark',contrast:!!S.highContrast,motion:!!S.reducedMotion,music:Math.round(S.music*100),sfx:Math.round(S.sfx*100),haptics:!!S.haptics};},
+ pause(){if(state==='play')openPause();saveRun();},
+ progress(){return Object.entries(doneMap()).map(([id,r])=>({id,score:Math.max(0,Math.round(r.stars*100)),time:Math.max(0,Math.round(r.time)),assisted:r.stars===0}));},
+ apply(p){const key=JSON.stringify(p);if(key===universeApplied)return;universeApplied=key;S.lang=p.lang;S.light=p.theme==='light';S.highContrast=p.contrast;S.reducedMotion=p.motion;S.largeText=p.text>110;S.music=p.music/100;S.sfx=p.sfx/100;S.haptics=p.haptics;saveSettings();applySettings();},
+ photo(){if(!glOK)return null;renderer.render(scene,camera);return renderer.domElement;}
+};
+
 })();
 </script>
 </body>

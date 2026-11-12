@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="ro" data-kygo-game="archipelago">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -120,8 +120,8 @@ canvas#gl{display:block;border-radius:0 0 14px 14px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
-</head>
-<body>
+<script src="../kygo-universe/core.js?v=20261112-3" defer></script><script src="../kygo-universe/universe.js?v=20261112-3" defer></script></head>
+<body><a href="../kygo-universe/" style="position:relative;display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;color:inherit;background:#182b49;color:#fff;border:1px solid #ffe3a1;border-radius:12px;margin:8px;text-decoration:none;z-index:10">🐾 Universul Kygo / Kygo Universe</a>
 <div id="app">
   <main id="view"></main>
   <nav id="nav" aria-label="Meniu"></nav>
@@ -322,9 +322,9 @@ const vib=ms=>{try{S.set.vib&&navigator.vibrate&&navigator.vibrate(ms)}catch(e){
 /* ---------- audio ---------- */
 let AC=null;
 function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return null}}if(AC.state==='suspended')AC.resume().catch(()=>{});return AC}
-function tone(f,d,type,v,slide,delay){const a=AC;if(!a)return;try{const o=a.createOscillator(),g=a.createGain(),t0=a.currentTime+(delay||0);
+function tone(f,d,type,v,slide,delay,music=false){const a=AC;if(!a)return;try{const o=a.createOscillator(),g=a.createGain(),t0=a.currentTime+(delay||0);
  o.type=type||'sine';o.frequency.setValueAtTime(f,t0);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(40,f+slide),t0+d);
- g.gain.setValueAtTime(v||.1,t0);g.gain.exponentialRampToValueAtTime(.001,t0+d);o.connect(g);g.connect(a.destination);o.start(t0);o.stop(t0+d+.03)}catch(e){}}
+ g.gain.setValueAtTime((v||.1)*(music?(window.KygoUniverse?.prefs.music??100):(window.KygoUniverse?.prefs.sfx??100))/100,t0);g.gain.exponentialRampToValueAtTime(.001,t0+d);o.connect(g);g.connect(a.destination);o.start(t0);o.stop(t0+d+.03)}catch(e){}}
 const fxOn=()=>S.set.sound&&AC;
 const sfx={
  pick(){fxOn()&&tone(820,.09,'triangle',.09,400)},gold(){if(fxOn()){tone(880,.1,'triangle',.11);tone(1320,.18,'triangle',.11,0,.09)}},
@@ -336,7 +336,7 @@ const sfx={
 const TUNE={surf:[[262,330,392,494],[0,2,1,3,2,1,0,3]],void:[[220,262,330,415],[0,1,2,3,3,2,1,0]],prism:[[294,370,440,554],[0,2,3,2,1,3,0,1]],arena:[[247,311,370,466],[0,0,2,1,3,3,2,1]],
  livada:[[262,311,392,466],[0,1,2,1,3,2,1,0]],conac:[[196,233,294,349],[0,3,1,2,0,2,1,3]],enduro:[[196,247,294,392],[0,0,1,2,3,2,1,2]],forge:[[330,392,494,587],[0,1,2,3,0,1,2,3]],
  drift:[[277,349,415,523],[3,1,2,0,3,2,1,0]],hoops:[[233,294,349,440],[0,2,0,3,1,3,1,2]],velo:[[185,233,277,370],[0,1,0,2,0,3,2,1]],snow:[[349,440,523,659],[0,1,3,2,3,1,0,2]]};
-let mi=0;setInterval(()=>{if(!R||R.paused||R.over||!S.set.music||!AC)return;const tu=TUNE[R.id];tone(tu[0][tu[1][mi%8]]/(mi%16<8?1:1.5)*(mi%4===0?.5:1),.22,mi%8===0?'sine':'triangle',.03);mi++},250);
+let mi=0;setInterval(()=>{if(!R||R.paused||R.over||!S.set.music||!AC)return;const tu=TUNE[R.id];tone(tu[0][tu[1][mi%8]]/(mi%16<8?1:1.5)*(mi%4===0?.5:1),.22,mi%8===0?'sine':'triangle',.03,0,0,true);mi++},250);
 
 /* ---------- screens ---------- */
 let screen='map',arg=null,arm='',note='';
@@ -574,7 +574,7 @@ function end(w){
  else if(run.mode==='weekly'){label=t('weekly')+' '+weekId();total=run.total;bones=total/8;S.weekly.best=Math.max(S.weekly.best,total);head=`<p class="eyebrow">${t('round',run.i+1,run.queue.length)} · ${t(run.mod.k)}</p>`}
  else if(run.mode==='daily'){label=t('daily')+' '+today();S.daily.best=Math.max(S.daily.best,sc);bones=sc/8;if(w)S.st.wins++;head=`<p class="eyebrow">${tl(isle.n)} · ${t(run.mod.k)}</p>`}
  else{const mi=MODS.findIndex(m=>m.k===run.mod.k)+1;label=tl(isle.n)+' '+q.level;code=codeOf(q.id,q.level,mi,run.seed);bones=sc/20;head=`<p class="eyebrow">${t('code')} · ${mi?t(run.mod.k):t('mNone')}</p>`}
- bones=Math.round(bones*bm);S.bones+=bones;const got=checkAch();save();w?sfx.win():sfx.lose();
+ if(w)window.dispatchEvent(new CustomEvent('kygo:result',{detail:{id:run.mode+':'+R.id+':'+q.level,score:Math.max(0,Math.round(total)),time:Math.max(0,Math.round(R.t*1000)),assisted:!!S.set.nofail}}));bones=Math.round(bones*bm);S.bones+=bones;const got=checkAch();save();w?sfx.win():sfx.lose();
  const txt=t('resTxt',label,total,run.mode==='level'?starStr(stars):(w?'✓':'✗'))+(code?' · '+t('codeIs',code):'');
  say((w?t('won'):t('lost'))+' '+t('score')+' '+total);
  const ov=$('#ov');ov.hidden=false;ov.innerHTML=`<div class="card"><h2>${w?t('won'):t('lost')}</h2>${head}<div class="big">${total}</div><p style="color:var(--amber)" class="mono">${t('bonesWon',bones)}</p>
@@ -1036,7 +1036,7 @@ T.frame=function(dt){const c=G3[R.id].sync(dt),rg=t3.ring;
  const sh=shake>0&&S.set.motion?shake*14:0;T.r.domElement.style.transform=sh?`translate(${(Math.random()-.5)*sh}px,${(Math.random()-.5)*sh}px)`:'';
  pool('fx',fx,p=>{const m=mesh(GEO.box,MB(p.c),p.r/T.U*1.7);m.castShadow=false;return m},(m,p)=>{put(m,p.x,p.y,.3+Math.sin(clamp(p.l,0,1)*3)*.7);m.rotation.x=m.rotation.y=p.l*9});
  T.kick=(T.kick||0)*.9;const fv=45-T.kick*4;if(Math.abs(T.cam.fov-fv)>.02){T.cam.fov=fv;T.cam.updateProjectionMatrix()}
- T.r.render(T.scene,T.cam)};
+ const originalPosition=T.cam.position.clone(),originalQuaternion=T.cam.quaternion.clone();const up=window.KygoUniverse?.prefs;if(up){const cap=up.quality==='low'?1:up.quality==='medium'?1.5:2;const ratio=Math.min(devicePixelRatio||1,cap);if(T.r.getPixelRatio()!==ratio)T.r.setPixelRatio(ratio);T.r.shadowMap.enabled=up.quality!=='low';if(T.tg&&!T.wall&&R.id!=='tower'){const target=T.tg.clone();if(up.camera==='overview')T.cam.position.y+=5;else if(up.camera==='side')T.cam.position.x+=5;else if(up.camera==='close')T.cam.position.lerp(target,.1);T.cam.lookAt(target);T.cam.updateMatrixWorld(true);}}T.r.render(T.scene,T.cam);T.cam.position.copy(originalPosition);T.cam.quaternion.copy(originalQuaternion);T.cam.updateMatrixWorld(true)};
 
 /* ----- shared 3D models ----- */
 function makeHead(){const c=COATS[S.coat]||COATS[0],fur=M(c.c,{roughness:.95}),fd=M(c.d,{roughness:.95}),mz=M(c.m,{roughness:.9}),dk=M('#14100e',{roughness:.3}),h=new THREE.Group();
@@ -1284,6 +1284,15 @@ try{if(location.hostname.endsWith('github.io')&&'serviceWorker'in navigator){con
 try{const q=new URLSearchParams(location.search).get('lang');if(q==='ro'||q==='en')S.lang=q}catch(e){}
 
 render();
+
+let universeApplied='';
+window.KygoBridge={
+ preferences(){return {lang:S.lang,theme:S.set.theme==='light'?'light':'dark',contrast:!!S.set.contrast,motion:!S.set.motion,music:S.set.music?(window.KygoUniverse?.prefs.music||50):0,sfx:S.set.sound?(window.KygoUniverse?.prefs.sfx||80):0,haptics:!!S.set.vib};},
+ pause(){if(R&&!R.over){In.keys={};In.pressed={};setPause(true);}},
+ progress(){return Object.entries(S.stars).filter(([,n])=>Number(n)>0).map(([id])=>{const level=id.slice(-1),isle=id.slice(0,-1);return {id:'level:'+isle+':'+level,score:0,time:0,assisted:true};});},
+ apply(p){const key=JSON.stringify(p);if(key===universeApplied)return;universeApplied=key;S.lang=p.lang;S.set.theme=p.theme;S.set.contrast=p.contrast?1:0;S.set.motion=p.motion?0:1;S.set.sound=p.sfx>0?1:0;S.set.music=p.music>0?1:0;S.set.vib=p.haptics?1:0;document.documentElement.style.fontSize=p.text+'%';save();if(screen!=='play')render();else{document.documentElement.lang=S.lang;document.documentElement.classList.toggle('hc',p.contrast);}},
+ photo(){if(T.on&&T.r){T.r.render(T.scene,T.cam);return T.r.domElement;}return cv;}
+};
 </script>
 </body>
 </html>
