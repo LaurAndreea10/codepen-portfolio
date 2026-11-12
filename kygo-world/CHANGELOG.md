@@ -1,5 +1,10 @@
 # Kygo World — istoric al versiunilor / Version history
 
+## 2026-11-12 · Design realist / Realistic design
+- RO: Kygo World, Pe Urme 3D și Kygo Arhipelagul au un aspect nou în tema implicită: fundal foto cu Insulele din Nori, panouri din sticlă mată, accent auriu cald, butoane principale aurii și titluri Fraunces cu text Nunito. Tema luminoasă, contrastul ridicat, fontul lizibil și mișcarea redusă rămân neschimbate. Logica, nivelurile și salvările nu sunt atinse.
+- EN: Kygo World, On the Trail 3D and Kygo Archipelago get a new default look: photo backdrop of the Sky Islands, frosted-glass panels, warm gold accent and buttons, Fraunces headings with Nunito text. Light theme, high contrast, legible font and reduced motion are unchanged; game logic, levels and saves are untouched.
+- Verificat în Chromium la 1280 și 390 px, fără erori JS și fără scroll orizontal. Telefonul fizic rămâne neconfirmat. / Checked in Chromium at 1280 and 390 px with no JS errors or horizontal scroll; real phones remain unverified.
+
 ## 2026-11-12 · v2026.11.12.2 · Parcul lui Kygo / Kygo’s Park
 - Patru moduri noi: **Sapă după os**, **Aleargă**, **Prinde discul**, **Sari peste obstacole**. Cinci niveluri pentru fiecare, mod asistat, RO/EN și controale tactile/tastatură.
 - Four distinct play modes, five stages each, assistance, separate personal records and shared-passport wins.
