@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-15 — Journey Builder v1.0.0 · Finalizat / Completed
+
+- RO: Aplicație nouă: editor vizual de automatizări de marketing cu simulare. Opt tipuri de pași, legături cu mouse-ul sau din panou, simulare animată a până la 5.000 de contacte cu seed, model de oboseală la mesaje, rezultate pe fiecare pas, trei provocări, trei șabloane, anulare/refacere, export JSON și link de partajare. Vanilla JS într-un singur fișier, RO/EN, dark/light, tastatură.
+- EN: New app: a visual marketing automation editor with simulation. Eight step types, connections by mouse or from the panel, seeded animated simulation of up to 5,000 contacts, message-fatigue model, per-step results, three challenges, three templates, undo/redo, JSON export and share links. Single-file vanilla JS, RO/EN, dark/light, keyboard.
+- Added to `projects.json`, the Romanian Finalizat recent lists and November history, the English completed list and the sitemap. History: [journey-builder/CHANGELOG.md](journey-builder/CHANGELOG.md).
+
 ## 2026-11-11 — Kygo: Arhipelagul v2.0.0 · Finalizat / Completed
 
 - RO: Șase insule noi (enduro, turn de blocuri, zbor printre ziduri, baschet, circuit, snowboard), deci 12 insule cu câte 5 niveluri și 180 de stele. Boși la nivelul 5 pe insulele clasice, mod fără sfârșit, hartă 3D, arbore de abilități, provizii, accesorii, evenimente de sezon, prestigiu, provocarea săptămânii, coduri de provocare, 16 realizări, gamepad, joc cu un singur buton, mod fără eșec, export/import de progres, PWA offline, studiu de caz și imagine de previzualizare. Kygo World are un portal spre joc.
