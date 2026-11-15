@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-15 — Portofoliul în date v1.0.0 · Finalizat / Completed
+
+- RO: Pagină nouă: poveste cu scrollytelling din datele reale ale repository-ului (istoric Git și `projects.json`), cu grafice SVG animate la derulare, test cu întrebări și script de recalculare.
+- EN: New page: a scrollytelling story from the repository’s real data (Git history and `projects.json`), with scroll-animated SVG charts, a quiz and a rebuild script.
+- Added to `projects.json`, the Romanian Finalizat recent lists and November history, the English completed list and the sitemap. History: [portfolio-in-data/CHANGELOG.md](portfolio-in-data/CHANGELOG.md).
+
 ## 2026-11-15 — Email Studio v1.0.0 · Finalizat / Completed
 
 - RO: Aplicație nouă: builder de emailuri din blocuri, cu previzualizare mobil și dark, verificări cu scor și export HTML pe tabele, cu stiluri inline și butoane VML pentru Outlook. Etichete de personalizare, editare directă, trei șabloane. Vanilla JS într-un singur fișier, RO/EN, dark/light. Exportul nu a fost testat în clienți de email reali.
