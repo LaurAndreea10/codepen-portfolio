@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-15 — Local-First CRM v1.0.0 · Finalizat / Completed
+
+- RO: Aplicație nouă: pipeline de vânzări local-first. Kanban cu drag & drop pentru mouse și tactil, paletă de comenzi (Ctrl K), anulare/refacere, scurtături de tastatură, IndexedDB cu sincronizare între taburi, fișă cu note și istoric, tabel sortabil, export JSON/CSV. Vanilla JS într-un singur fișier, RO/EN, dark/light.
+- EN: New app: a local-first sales pipeline. Kanban with mouse and touch drag & drop, command palette (Ctrl K), undo/redo, keyboard shortcuts, IndexedDB with cross-tab sync, deal sheet with notes and history, sortable table, JSON/CSV export. Single-file vanilla JS, RO/EN, dark/light.
+- Added to `projects.json`, the Romanian Finalizat recent lists and November history, the English completed list and the sitemap. History: [local-first-crm/CHANGELOG.md](local-first-crm/CHANGELOG.md).
+
 ## 2026-11-15 — Journey Builder v1.0.0 · Finalizat / Completed
 
 - RO: Aplicație nouă: editor vizual de automatizări de marketing cu simulare. Opt tipuri de pași, legături cu mouse-ul sau din panou, simulare animată a până la 5.000 de contacte cu seed, model de oboseală la mesaje, rezultate pe fiecare pas, trei provocări, trei șabloane, anulare/refacere, export JSON și link de partajare. Vanilla JS într-un singur fișier, RO/EN, dark/light, tastatură.
