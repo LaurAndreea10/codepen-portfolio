@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Journey Builder — editor vizual de automatizări de marketing | Laura Andreea</title>
+<meta name="description" content="Construiește vizual un flux de marketing automation (trigger, email, SMS, așteptare, condiții) și simulează mii de contacte care curg prin el. Vanilla JS, fără backend.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/journey-builder/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Journey Builder — editor vizual de automatizări de marketing">
+<meta property="og:description" content="Desenează fluxul, apasă Simulează și vezi contactele curgând prin el, cu rate de conversie pe fiecare ramură.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/journey-builder/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/journey-builder/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a1220">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1220'/%3E%3Cpath d='M7 10h6v12h12' fill='none' stroke='%2322d3ee' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='7' cy='10' r='3' fill='%23f5b041'/%3E%3Ccircle cx='25' cy='22' r='3' fill='%2322d3ee'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Journey Builder","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["ro","en"],"author":{"@type":"Person","name":"Laura Andreea"},"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"description":"Editor vizual de automatizări de marketing cu simulare de contacte."}
+</script>
+<style>
+:root{
+  --bg:#0a1220;--bg2:#0f1a2e;--panel:#111f36;--panel2:#16263f;--line:#243756;--text:#e8eef8;--muted:#93a4bf;
+  --cyan:#22d3ee;--amber:#f5b041;--green:#34d399;--red:#f87171;--violet:#a78bfa;--pink:#f472b6;--blue:#60a5fa;
+  --shadow:0 10px 30px rgba(0,0,0,.35);--r:12px;
+  --serif:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+}
+[data-theme=light]{
+  --bg:#f4f6fb;--bg2:#ffffff;--panel:#ffffff;--panel2:#eef2f9;--line:#d5deec;--text:#0f1a2e;--muted:#54657f;
+  --cyan:#0e7490;--amber:#b45309;--green:#047857;--red:#b91c1c;--violet:#6d28d9;--pink:#be185d;--blue:#1d4ed8;
+  --shadow:0 10px 30px rgba(15,26,46,.12);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 var(--sans);display:flex;flex-direction:column;min-height:100vh}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:8px;top:-60px;background:var(--amber);color:#111;padding:8px 12px;border-radius:8px;z-index:99;font-weight:600}
+.skip:focus{top:8px}
+
+header{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--bg2);flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:10px;margin-right:auto;min-width:0}
+.brand h1{font:700 20px/1 var(--serif);margin:0;letter-spacing:-.01em;white-space:nowrap}
+.brand h1 em{font-style:normal;color:var(--cyan)}
+.brand span{font:400 11px var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tools{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:7px 11px;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{border-color:var(--cyan)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.primary{background:var(--cyan);border-color:var(--cyan);color:#04202a;font-weight:600}
+[data-theme=light] .btn.primary{color:#fff}
+.btn.ghost{background:transparent}
+.btn.icon{padding:7px 9px;min-width:36px;justify-content:center;font-family:var(--mono)}
+.btn.danger:hover{border-color:var(--red);color:var(--red)}
+select.btn{appearance:auto;padding-right:6px}
+
+main{flex:1;display:grid;grid-template-columns:176px minmax(0,1fr) 330px;min-height:0}
+.palette{border-right:1px solid var(--line);background:var(--bg2);padding:12px 10px;overflow:auto}
+.palette h2,.panel h2{font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.pitem{display:flex;align-items:center;gap:9px;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--c);border-radius:9px;padding:8px 9px;margin-bottom:7px;cursor:grab;touch-action:none;min-height:40px}
+.pitem:hover{border-color:var(--c)}
+.pitem svg,.node svg{width:18px;height:18px;flex:none;stroke:var(--c);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pitem b{font-weight:500}
+.hint{font-size:12px;color:var(--muted);margin:10px 2px 0}
+.ghost-drag{position:fixed;z-index:50;pointer-events:none;opacity:.85;width:150px;margin:0}
+
+.stage{position:relative;min-width:0;min-height:0;display:flex;flex-direction:column}
+#viewport{position:relative;flex:1;overflow:hidden;touch-action:none;cursor:grab;min-height:300px;
+  background-color:var(--bg);background-image:radial-gradient(var(--line) 1.2px,transparent 1.2px);background-size:var(--gs,24px) var(--gs,24px);background-position:var(--gx,0) var(--gy,0)}
+#viewport.panning{cursor:grabbing}
+#world{position:absolute;left:0;top:0;transform-origin:0 0}
+#edges{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible}
+#fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.edge .line{fill:none;stroke:var(--muted);stroke-width:2}
+.edge .hit{fill:none;stroke:transparent;stroke-width:16;cursor:pointer;pointer-events:stroke}
+.edge:hover .line,.edge.sel .line{stroke:var(--amber);stroke-width:3}
+.edge text{font:600 11px var(--mono);fill:var(--text);paint-order:stroke;stroke:var(--bg);stroke-width:4px;text-anchor:middle;pointer-events:none}
+#temp{fill:none;stroke:var(--cyan);stroke-width:2;stroke-dasharray:6 5}
+
+.node{position:absolute;width:190px;height:72px;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:var(--r);box-shadow:var(--shadow);padding:9px 12px 8px;cursor:grab;user-select:none;touch-action:none}
+.node.sel{border-color:var(--amber);box-shadow:0 0 0 2px var(--amber),var(--shadow)}
+.node.target{box-shadow:0 0 0 2px var(--cyan),var(--shadow)}
+.node .hd{display:flex;align-items:center;gap:7px}
+.node .hd b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.node .sub{font:400 11px var(--mono);color:var(--muted);margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.node .cnt{position:absolute;top:-12px;right:8px;background:var(--c);color:#04121c;font:600 11px var(--mono);border-radius:20px;padding:1px 8px;display:none}
+[data-theme=light] .node .cnt{color:#fff}
+.node .cnt.on{display:block}
+.port{position:absolute;width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--muted);transform:translate(-50%,-50%)}
+.port.in{left:0;top:50%}
+.port.out{left:100%;cursor:crosshair;border-color:var(--c)}
+.port.out::after{content:'';position:absolute;inset:-9px}
+.port.out:hover{background:var(--c)}
+.port.out i{position:absolute;left:14px;top:-3px;font:600 10px var(--mono);font-style:normal;color:var(--muted);white-space:nowrap}
+.t-trigger{--c:var(--amber)}.t-email{--c:var(--cyan)}.t-sms{--c:var(--blue)}.t-wait{--c:var(--muted)}
+.t-cond{--c:var(--violet)}.t-split{--c:var(--pink)}.t-goal{--c:var(--green)}.t-exit{--c:var(--red)}
+
+.zoom{position:absolute;left:12px;bottom:12px;display:flex;gap:4px;z-index:5}
+.simbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 12px;border-top:1px solid var(--line);background:var(--bg2)}
+.simbar label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.simbar input,.simbar select{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:5px 7px;min-height:34px;width:84px}
+.simbar .day{font:600 12px var(--mono);color:var(--amber);margin-left:auto}
+progress{width:120px;height:8px;accent-color:var(--cyan)}
+
+.panel{border-left:1px solid var(--line);background:var(--bg2);display:flex;flex-direction:column;min-height:0}
+.tabs{display:flex;border-bottom:1px solid var(--line)}
+.tabs button{flex:1;background:none;border:0;border-bottom:2px solid transparent;padding:11px 6px;cursor:pointer;color:var(--muted);font-weight:500;min-height:42px}
+.tabs button[aria-selected=true]{color:var(--text);border-bottom-color:var(--cyan)}
+.tabpane{padding:14px;overflow:auto;flex:1}
+.tabpane[hidden]{display:none}
+.field{margin-bottom:11px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+.field input,.field select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;min-height:36px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.empty{color:var(--muted);font-size:13px}
+.warn{border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:8px;padding:7px 10px;margin-bottom:7px;font-size:12.5px;background:var(--panel)}
+.warn.err{border-left-color:var(--red)}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 10px}
+.kpi small{display:block;font:400 10.5px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.kpi b{font:700 20px/1.25 var(--serif)}
+.kpi.hero{grid-column:1/-1;border-color:var(--cyan)}
+.kpi.hero b{font-size:30px;color:var(--cyan)}
+.stack{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:6px 0 6px;background:var(--panel2)}
+.stack i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted);margin-bottom:14px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}
+.fun{margin-bottom:6px;font-size:12px}
+.fun div{display:flex;justify-content:space-between;gap:8px}
+.fun span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fun em{font:600 11px var(--mono);font-style:normal;color:var(--muted)}
+.bar{height:6px;border-radius:3px;background:var(--panel2);margin-top:3px}
+.bar i{display:block;height:100%;border-radius:3px;background:var(--c,var(--cyan))}
+.insight{border-left:3px solid var(--cyan);background:var(--panel);padding:9px 11px;border-radius:8px;margin:12px 0;font-size:13px}
+.ch{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px;margin-bottom:10px}
+.ch h3{font:700 16px var(--serif);margin:0 0 4px}
+.ch p{margin:0 0 8px;font-size:12.5px;color:var(--muted)}
+.ch ul{margin:0 0 9px;padding-left:18px;font:400 12px var(--mono)}
+.ch li.ok{color:var(--green)}.ch li.ko{color:var(--red)}
+.ch .best{font:600 11px var(--mono);color:var(--amber)}
+footer{padding:7px 14px;border-top:1px solid var(--line);font:400 11px var(--mono);color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--bg2)}
+footer a{color:var(--cyan)}
+dialog{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:14px;max-width:560px;width:calc(100% - 28px);padding:20px;box-shadow:var(--shadow)}
+dialog::backdrop{background:rgba(3,8,18,.7)}
+dialog h2{font:700 20px var(--serif);margin:0 0 10px}
+dialog kbd{font:600 11px var(--mono);background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+dialog li{margin-bottom:5px}
+dialog textarea{width:100%;height:150px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;font:12px var(--mono);padding:8px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--panel2);border:1px solid var(--cyan);border-radius:10px;padding:9px 14px;z-index:60;box-shadow:var(--shadow);max-width:90vw}
+.toast[hidden]{display:none}
+
+@media (max-width:1000px){
+  body{min-height:0}
+  main{display:flex;flex-direction:column}
+  .palette{border-right:0;border-bottom:1px solid var(--line);display:flex;gap:7px;overflow-x:auto;padding:8px 10px;align-items:center}
+  .palette h2,.palette .hint{display:none}
+  #pal{display:flex;gap:7px}
+  .pitem{width:auto;flex:none;margin:0}
+  #viewport{flex:none;height:58vh}
+  .panel{border-left:0;border-top:1px solid var(--line)}
+  .tabpane{max-height:none}
+  .brand span{display:none}
+  html,body{height:auto}
+  main{flex:none}
+  .tabpane{overflow:visible}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#viewport" data-i18n="skip">Sari la editor</a>
+<header>
+  <div class="brand"><h1>Journey <em>Builder</em></h1><span data-i18n="tagline">automatizări de marketing, desenate și simulate</span></div>
+  <div class="tools" role="toolbar" aria-label="Instrumente" data-i18n-aria="toolbar">
+    <select class="btn" id="tpl" aria-label="Șabloane" data-i18n-aria="templates"></select>
+    <button class="btn icon" id="undo" aria-label="Anulează" data-i18n-aria="undo" title="Ctrl+Z">↶</button>
+    <button class="btn icon" id="redo" aria-label="Refă" data-i18n-aria="redo" title="Ctrl+Shift+Z">↷</button>
+    <button class="btn" id="share" data-i18n="share">Link</button>
+    <button class="btn" id="io" data-i18n="io">JSON</button>
+    <button class="btn danger" id="clear" data-i18n="clear">Golește</button>
+    <button class="btn icon" id="help" aria-label="Ajutor" data-i18n-aria="help">?</button>
+    <button class="btn icon" id="theme" aria-label="Temă" data-i18n-aria="theme">◐</button>
+    <button class="btn icon" id="lang" aria-label="Switch to English">EN</button>
+  </div>
+</header>
+
+<main>
+  <aside class="palette" aria-label="Pași disponibili" data-i18n-aria="paletteAria">
+    <h2 data-i18n="palette">Pași</h2>
+    <div id="pal"></div>
+    <p class="hint" data-i18n="palHint">Trage un pas pe pânză sau apasă pe el. Leagă pașii trăgând de la punctul din dreapta.</p>
+  </aside>
+
+  <section class="stage" aria-label="Editor" data-i18n-aria="editor">
+    <div id="viewport" tabindex="0" aria-describedby="vpHelp">
+      <div id="world"><svg id="edges" aria-hidden="true"><g id="edgeG"></g><path id="temp" d=""/></svg><div id="nodes"></div></div>
+      <canvas id="fx" aria-hidden="true"></canvas>
+      <div class="zoom">
+        <button class="btn icon" id="zin" aria-label="Mărește" data-i18n-aria="zin">+</button>
+        <button class="btn icon" id="zout" aria-label="Micșorează" data-i18n-aria="zout">−</button>
+        <button class="btn icon" id="fit" aria-label="Încadrează tot" data-i18n-aria="fit">⤢</button>
+      </div>
+    </div>
+    <p class="sr" id="vpHelp" data-i18n="vpHelp">Pânza fluxului. Folosește Tab pentru a ajunge la pași, săgețile pentru a-i muta și panoul Editare pentru a-i lega.</p>
+    <div class="simbar">
+      <button class="btn primary" id="run" data-i18n="run">▶ Simulează</button>
+      <button class="btn" id="instant" data-i18n="instant">Rezultat instant</button>
+      <button class="btn" id="stop" hidden data-i18n="stop">■ Oprește</button>
+      <label><span data-i18n="contacts">Contacte</span><input id="n" type="number" min="50" max="5000" step="50" value="1000"></label>
+      <label><span data-i18n="speed">Viteză</span><select id="spd"><option value="1">1×</option><option value="2" selected>2×</option><option value="4">4×</option><option value="8">8×</option></select></label>
+      <label><span data-i18n="seed">Seed</span><input id="seed" type="number" min="1" max="99999" value="2026"></label>
+      <progress id="prog" max="1" value="0" hidden></progress>
+      <span class="day" id="day"></span>
+    </div>
+  </section>
+
+  <aside class="panel" aria-label="Panou" data-i18n-aria="panel">
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tab-edit" aria-controls="p-edit" aria-selected="true" data-i18n="tabEdit">Editare</button>
+      <button role="tab" id="tab-res" aria-controls="p-res" aria-selected="false" tabindex="-1" data-i18n="tabRes">Rezultate</button>
+      <button role="tab" id="tab-ch" aria-controls="p-ch" aria-selected="false" tabindex="-1" data-i18n="tabCh">Provocări</button>
+    </div>
+    <div class="tabpane" id="p-edit" role="tabpanel" aria-labelledby="tab-edit"></div>
+    <div class="tabpane" id="p-res" role="tabpanel" aria-labelledby="tab-res" hidden></div>
+    <div class="tabpane" id="p-ch" role="tabpanel" aria-labelledby="tab-ch" hidden></div>
+  </aside>
+</main>
+
+<footer><span>© 2026 <strong>Laura Andreea</strong> · Iași · <span data-i18n="foot">Vanilla JS, fără backend. Datele sunt simulate.</span></span><a href="../portfolio.html" data-i18n="back">← Portofoliu</a></footer>
+
+<div class="sr" aria-live="polite" id="live"></div>
+<div class="toast" id="toast" role="status" hidden></div>
+<dialog id="dlgHelp" aria-labelledby="dhT"><h2 id="dhT" data-i18n="helpT">Cum funcționează</h2><div id="helpBody"></div><div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn primary" data-close data-i18n="close">Închide</button></div></dialog>
+<dialog id="dlgIO" aria-labelledby="dioT"><h2 id="dioT" data-i18n="ioT">Export / import JSON</h2><label class="sr" for="ioTxt">JSON</label><textarea id="ioTxt" spellcheck="false"></textarea><div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn" id="ioCopy" data-i18n="copy">Copiază</button><button class="btn" id="ioLoad" data-i18n="load">Încarcă din text</button><button class="btn primary" data-close data-i18n="close">Închide</button></div></dialog>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const store = { get(k, d){ try{ const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); }catch(e){ return d; } }, set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+
+/* ---------- i18n ---------- */
+const I18N = {
+ro: {
+  skip:'Sari la editor', tagline:'automatizări de marketing, desenate și simulate', toolbar:'Instrumente', templates:'Șabloane', undo:'Anulează', redo:'Refă',
+  share:'Link', io:'JSON', clear:'Golește', help:'Ajutor', theme:'Schimbă tema', paletteAria:'Pași disponibili', palette:'Pași',
+  palHint:'Trage un pas pe pânză sau apasă pe el. Leagă pașii trăgând de la punctul din dreapta.', editor:'Editor', zin:'Mărește', zout:'Micșorează', fit:'Încadrează tot',
+  vpHelp:'Pânza fluxului. Folosește Tab pentru a ajunge la pași, săgețile pentru a-i muta și panoul Editare pentru a-i lega.',
+  run:'▶ Simulează', instant:'Rezultat instant', stop:'■ Oprește', contacts:'Contacte', speed:'Viteză', seed:'Seed', panel:'Panou',
+  tabEdit:'Editare', tabRes:'Rezultate', tabCh:'Provocări', foot:'Vanilla JS, fără backend. Datele sunt simulate.', back:'← Portofoliu',
+  helpT:'Cum funcționează', close:'Închide', ioT:'Export / import JSON', copy:'Copiază', load:'Încarcă din text',
+  tplPick:'Șabloane…', tplWelcome:'Serie de bun venit', tplCart:'Coș abandonat', tplWin:'Reactivare clienți',
+  trigger:'Trigger', email:'Email', sms:'SMS', wait:'Așteptare', cond:'Condiție', split:'Test A/B', goal:'Obiectiv', exit:'Ieșire',
+  yes:'da', no:'nu', label:'Nume', open:'Rată de deschidere (%)', click:'Click din deschideri (%)', clickSms:'Rată de click (%)', unsub:'Dezabonare (%)',
+  days:'Zile de așteptare', kind:'Verifică', kOpened:'A deschis ultimul mesaj?', kClicked:'A dat click în ultimul mesaj?', kPurchased:'A cumpărat?', kRandom:'Împărțire procentuală',
+  pct:'Procent pe ramura „da” (%)', pctA:'Procent pe varianta A (%)', base:'Șansă de cumpărare de bază (%)', value:'Valoare per conversie (€)',
+  source:'Sursă', sSignup:'Înscriere newsletter', sCart:'Coș abandonat', sPurchase:'Prima comandă', sInactive:'Inactiv 90 de zile',
+  conn:'Legături', connTo:'Ieșirea „{p}” duce la', connOut:'Următorul pas', none:'— nelegat —', dup:'Duplică', del:'Șterge',
+  selNone:'Selectează un pas ca să-l editezi. Poți lega pașii și de aici, fără mouse.', edgeSel:'Legătură selectată', edgeDel:'Șterge legătura',
+  dOpen:'deschidere', dClick:'click', dDays:'{n} zile', dDay:'1 zi', dValue:'{n} € / conversie',
+  wNoTrigger:'Fluxul nu are niciun Trigger. Adaugă unul ca să poată intra contacte.', wNoGoal:'Nu există niciun Obiectiv, deci conversia va fi 0%.',
+  wPort:'„{n}”: ieșirea „{p}” nu e legată. Contactele ajunse aici se pierd.', wUnreach:'„{n}” nu poate fi atins din niciun Trigger.',
+  wCycle:'Legătura ar crea o buclă infinită, așa că nu a fost adăugată.', resNone:'Apasă „Simulează” ca să vezi contactele curgând prin flux, sau „Rezultat instant” pentru cifre imediate.',
+  kConv:'Rată de conversie', kConverted:'Conversii', kRev:'Venit estimat', kCost:'Cost trimiteri', kRoi:'Venit / contact', kUnsub:'Dezabonări', kDays:'Zile până la conversie', kMsgs:'Mesaje / contact',
+  outcomes:'Unde au ajuns contactele', oConv:'Convertiți', oExit:'Ieșiți', oUnsub:'Dezabonați', oLost:'Pierduți (ieșire nelegată)', funnel:'Trafic pe fiecare pas',
+  insUnsub:'{p}% dintre contacte se dezabonează. Trimite mesajele următoare doar celor care au deschis, nu tuturor.', insLost:'{p}% dintre contacte se pierd pe ieșiri nelegate. Leagă-le la un pas sau la o Ieșire.', insGood:'Fluxul convertește {p}%. Încearcă un test A/B ca să vezi dacă poți mai mult.',
+  dayN:'Ziua {n}', simDone:'Simulare terminată: {p}% conversie din {n} contacte.', simStart:'Simularea a pornit cu {n} contacte.',
+  copied:'Link copiat în clipboard.', copiedJ:'JSON copiat.', loaded:'Flux încărcat.', badJson:'JSON-ul nu este un flux valid.', cleared:'Pânză golită.',
+  added:'Pas adăugat: {n}', removed:'Șters: {n}', linked:'Legat: {a} → {b}', confirmClear:'Ștergi tot fluxul?',
+  chIntro:'Provocările rulează oficial cu 5.000 de contacte, seed fix și rate standard pentru toți pașii, așa că doar structura fluxului contează.',
+  chCheck:'Verifică fluxul meu', chBest:'Cel mai bun rezultat: {p}% conversie', chPass:'Provocare reușită!', chFail:'Încă nu. Vezi criteriile marcate cu roșu.',
+  cConv:'conversie ≥ {v}%', cUnsub:'dezabonări ≤ {v}%', cMsgs:'mesaje / contact ≤ {v}', cDays:'zile până la conversie ≤ {v}',
+  ch1:'Bun venit eficient', ch1d:'Transformă abonații noi în clienți fără să-i sufoci cu mesaje.',
+  ch2:'Sprint rapid', ch2d:'Recuperează coșurile abandonate repede, înainte să se răcească interesul.',
+  ch3:'Maestrul retenției', ch3d:'Conversie mare cu dezabonări minime. Fiecare mesaj trebuie să-și merite locul.',
+  help:`<ul><li><b>Construiește:</b> trage pași din stânga pe pânză și leagă-i trăgând de la punctul colorat din dreapta unui pas până la alt pas.</li><li><b>Simulează:</b> fiecare contact trece prin flux după probabilitățile setate. Punctele galbene sunt contacte care au dat click.</li><li><b>Oboseală:</b> fiecare mesaj în plus scade rata de deschidere cu 8% și crește dezabonarea cu 60%, ca în viața reală.</li><li><b>„A cumpărat?”:</b> șansa de bază se dublează dacă ultimul mesaj a fost deschis și se înmulțește cu 4 dacă a primit click. Contează o singură dată per mesaj și crește dacă lași 1–2 zile de așteptare înainte de verificare.</li><li><b>Tastatură:</b> <kbd>Tab</kbd> ajunge la pași, <kbd>săgeți</kbd> mută pasul, <kbd>Delete</kbd> șterge, <kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Shift+Z</kbd> anulează și reface, <kbd>+</kbd> <kbd>−</kbd> <kbd>0</kbd> pentru zoom.</li><li><b>Salvare:</b> fluxul se păstrează automat în browser. „Link” creează o adresă pe care o poți trimite cuiva.</li></ul>`
+},
+en: {
+  skip:'Skip to editor', tagline:'marketing automations, drawn and simulated', toolbar:'Tools', templates:'Templates', undo:'Undo', redo:'Redo',
+  share:'Link', io:'JSON', clear:'Clear', help:'Help', theme:'Toggle theme', paletteAria:'Available steps', palette:'Steps',
+  palHint:'Drag a step onto the canvas or click it. Connect steps by dragging from the dot on the right.', editor:'Editor', zin:'Zoom in', zout:'Zoom out', fit:'Fit to screen',
+  vpHelp:'Flow canvas. Use Tab to reach steps, arrow keys to move them and the Edit panel to connect them.',
+  run:'▶ Simulate', instant:'Instant result', stop:'■ Stop', contacts:'Contacts', speed:'Speed', seed:'Seed', panel:'Panel',
+  tabEdit:'Edit', tabRes:'Results', tabCh:'Challenges', foot:'Vanilla JS, no backend. All data is simulated.', back:'← Portfolio',
+  helpT:'How it works', close:'Close', ioT:'Export / import JSON', copy:'Copy', load:'Load from text',
+  tplPick:'Templates…', tplWelcome:'Welcome series', tplCart:'Abandoned cart', tplWin:'Win-back',
+  trigger:'Trigger', email:'Email', sms:'SMS', wait:'Wait', cond:'Condition', split:'A/B test', goal:'Goal', exit:'Exit',
+  yes:'yes', no:'no', label:'Name', open:'Open rate (%)', click:'Click-to-open (%)', clickSms:'Click rate (%)', unsub:'Unsubscribe (%)',
+  days:'Days to wait', kind:'Check', kOpened:'Opened the last message?', kClicked:'Clicked the last message?', kPurchased:'Purchased?', kRandom:'Percentage split',
+  pct:'Share on the “yes” branch (%)', pctA:'Share on variant A (%)', base:'Base purchase chance (%)', value:'Value per conversion (€)',
+  source:'Source', sSignup:'Newsletter signup', sCart:'Abandoned cart', sPurchase:'First order', sInactive:'Inactive for 90 days',
+  conn:'Connections', connTo:'Output “{p}” goes to', connOut:'Next step', none:'— not connected —', dup:'Duplicate', del:'Delete',
+  selNone:'Select a step to edit it. You can also connect steps from here, without a mouse.', edgeSel:'Connection selected', edgeDel:'Delete connection',
+  dOpen:'open', dClick:'click', dDays:'{n} days', dDay:'1 day', dValue:'€{n} / conversion',
+  wNoTrigger:'The flow has no Trigger. Add one so contacts can enter.', wNoGoal:'There is no Goal, so conversion will be 0%.',
+  wPort:'“{n}”: output “{p}” is not connected. Contacts reaching it are lost.', wUnreach:'“{n}” cannot be reached from any Trigger.',
+  wCycle:'That connection would create an infinite loop, so it was not added.', resNone:'Press “Simulate” to watch contacts flow through the journey, or “Instant result” for immediate numbers.',
+  kConv:'Conversion rate', kConverted:'Conversions', kRev:'Estimated revenue', kCost:'Sending cost', kRoi:'Revenue / contact', kUnsub:'Unsubscribes', kDays:'Days to convert', kMsgs:'Messages / contact',
+  outcomes:'Where contacts ended up', oConv:'Converted', oExit:'Exited', oUnsub:'Unsubscribed', oLost:'Lost (unconnected output)', funnel:'Traffic per step',
+  insUnsub:'{p}% of contacts unsubscribe. Send follow-ups only to people who opened, not to everyone.', insLost:'{p}% of contacts are lost on unconnected outputs. Connect them to a step or an Exit.', insGood:'The journey converts {p}%. Try an A/B test to see if you can do better.',
+  dayN:'Day {n}', simDone:'Simulation finished: {p}% conversion from {n} contacts.', simStart:'Simulation started with {n} contacts.',
+  copied:'Link copied to clipboard.', copiedJ:'JSON copied.', loaded:'Flow loaded.', badJson:'That JSON is not a valid flow.', cleared:'Canvas cleared.',
+  added:'Step added: {n}', removed:'Deleted: {n}', linked:'Connected: {a} → {b}', confirmClear:'Delete the whole flow?',
+  chIntro:'Challenges run officially with 5,000 contacts, a fixed seed and standard rates on every step, so only the structure of your flow matters.',
+  chCheck:'Check my flow', chBest:'Best result: {p}% conversion', chPass:'Challenge passed!', chFail:'Not yet. See the criteria marked in red.',
+  cConv:'conversion ≥ {v}%', cUnsub:'unsubscribes ≤ {v}%', cMsgs:'messages / contact ≤ {v}', cDays:'days to convert ≤ {v}',
+  ch1:'Efficient welcome', ch1d:'Turn new subscribers into customers without flooding them with messages.',
+  ch2:'Fast sprint', ch2d:'Recover abandoned carts quickly, before interest cools down.',
+  ch3:'Retention master', ch3d:'High conversion with minimal unsubscribes. Every message has to earn its place.',
+  help:`<ul><li><b>Build:</b> drag steps from the left onto the canvas and connect them by dragging from the coloured dot on the right of a step to another step.</li><li><b>Simulate:</b> each contact moves through the flow following the probabilities you set. Yellow dots are contacts who clicked.</li><li><b>Fatigue:</b> every extra message lowers the open rate by 8% and raises unsubscribes by 60%, as in real life.</li><li><b>“Purchased?”:</b> the base chance doubles if the last message was opened and is multiplied by 4 if it was clicked. It counts once per message and grows if you wait 1–2 days before checking.</li><li><b>Keyboard:</b> <kbd>Tab</kbd> reaches steps, <kbd>arrows</kbd> move a step, <kbd>Delete</kbd> removes it, <kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Shift+Z</kbd> undo and redo, <kbd>+</kbd> <kbd>−</kbd> <kbd>0</kbd> zoom.</li><li><b>Saving:</b> the flow is stored automatically in your browser. “Link” creates an address you can send to someone.</li></ul>`
+}};
+let lang = store.get('jb.lang', (navigator.language || 'ro').startsWith('ro') ? 'ro' : 'en');
+{ const q = new URLSearchParams(location.search).get('lang'); if (q === 'ro' || q === 'en') lang = q; }
+const t = (k, v) => { let s = (I18N[lang][k] ?? I18N.ro[k] ?? k); if (v) for (const x in v) s = s.replace('{' + x + '}', v[x]); return s; };
+const fmt = (n, d = 0) => Number(n).toLocaleString(lang === 'ro' ? 'ro-RO' : 'en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+/* ---------- model ---------- */
+const W = 190, H = 72;
+const ICON = {
+  trigger:'<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>', email:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+  sms:'<path d="M21 12a8 8 0 0 1-8 8H4l2.5-3A8 8 0 1 1 21 12z"/>', wait:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  cond:'<path d="M12 3 21 12 12 21 3 12z"/>', split:'<path d="M4 12h5l4-6h7M9 12l4 6h7"/>', goal:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>',
+  exit:'<path d="M10 4H5v16h5M14 8l4 4-4 4M18 12H9"/>'
+};
+const TYPES = {
+  trigger:{ outs:['out'], def:{ source:'signup' } },
+  email:{ outs:['out'], def:{ open:35, click:20, unsub:0.8 } },
+  sms:{ outs:['out'], def:{ click:12, unsub:1.5 } },
+  wait:{ outs:['out'], def:{ days:2 } },
+  cond:{ outs:['yes','no'], def:{ kind:'opened', pct:50, base:4 } },
+  split:{ outs:['a','b'], def:{ pct:50 } },
+  goal:{ outs:[], def:{ value:150 } },
+  exit:{ outs:[], def:{} }
+};
+const COST = { email:0.002, sms:0.06 };
+const portName = p => p === 'out' ? '→' : p === 'a' ? 'A' : p === 'b' ? 'B' : t(p);
+let flow = { nodes:[], edges:[] }, sel = null, uid = 1;
+const undoS = [], redoS = [];
+const node = id => flow.nodes.find(n => n.id === id);
+const outEdge = (id, p) => flow.edges.find(e => e.from === id && e.port === p);
+const newId = () => 'n' + (uid++);
+
+function templates(k){
+  const N = (type, x, y, label, p) => ({ id:newId(), type, x, y, label: label || t(type), p:{ ...TYPES[type].def, ...p } });
+  const ro = lang === 'ro', f = { nodes:[], edges:[] }, L = (a, port, b) => f.edges.push({ id:newId(), from:a.id, port, to:b.id });
+  if (k === 'welcome'){
+    const a = N('trigger',40,160, ro?'Abonat nou':'New subscriber'), b = N('email',290,160, ro?'Bun venit':'Welcome'), c = N('wait',540,160,null,{days:2}),
+      d = N('cond',790,160, ro?'A deschis?':'Opened?'), e = N('email',1040,60, ro?'Ofertă -10%':'10% offer',{open:42,click:24}), g = N('sms',1040,270, ro?'Reminder SMS':'SMS reminder'),
+      h = N('wait',1290,160,null,{days:3}), i = N('cond',1540,160, ro?'A cumpărat?':'Purchased?',{kind:'purchased'}), j = N('goal',1790,60, ro?'Prima comandă':'First order'), x = N('exit',1790,270);
+    f.nodes.push(a,b,c,d,e,g,h,i,j,x); L(a,'out',b); L(b,'out',c); L(c,'out',d); L(d,'yes',e); L(d,'no',g); L(e,'out',h); L(g,'out',h); L(h,'out',i); L(i,'yes',j); L(i,'no',x);
+  } else if (k === 'cart'){
+    const a = N('trigger',40,180, ro?'Coș abandonat':'Abandoned cart',{source:'cart'}), b = N('wait',290,180,null,{days:1}), c = N('email',540,180, ro?'Ai uitat ceva?':'Forgot something?',{open:45,click:25}),
+      d = N('cond',790,180, ro?'A cumpărat?':'Purchased?',{kind:'purchased',base:6}), g = N('goal',1040,70, ro?'Comandă recuperată':'Recovered order',{value:220}),
+      s = N('split',1040,290, ro?'Test stimulent':'Incentive test'), e1 = N('email',1290,200, ro?'A: transport gratuit':'A: free shipping',{open:40,click:26}), e2 = N('sms',1290,380, ro?'B: cod -15%':'B: 15% code',{click:16}),
+      w = N('wait',1540,290,null,{days:2}), d2 = N('cond',1790,290, ro?'A cumpărat?':'Purchased?',{kind:'purchased',base:6}), g2 = N('goal',2040,200, ro?'Comandă recuperată':'Recovered order',{value:220}), x = N('exit',2040,380);
+    f.nodes.push(a,b,c,d,g,s,e1,e2,w,d2,g2,x); L(a,'out',b); L(b,'out',c); L(c,'out',d); L(d,'yes',g); L(d,'no',s); L(s,'a',e1); L(s,'b',e2); L(e1,'out',w); L(e2,'out',w); L(w,'out',d2); L(d2,'yes',g2); L(d2,'no',x);
+  } else {
+    const a = N('trigger',40,160, ro?'Inactiv 90 de zile':'Inactive 90 days',{source:'inactive'}), b = N('email',290,160, ro?'Ne e dor de tine':'We miss you',{open:28,click:15}), c = N('wait',540,160,null,{days:4}),
+      d = N('cond',790,160, ro?'A dat click?':'Clicked?',{kind:'clicked'}), g = N('cond',1040,60, ro?'A cumpărat?':'Purchased?',{kind:'purchased',base:5}), o = N('goal',1290,20, ro?'Client reactivat':'Reactivated',{value:120}),
+      e = N('email',1040,270, ro?'Ultima șansă':'Last chance',{open:25,click:14}), w2 = N('wait',1290,270,null,{days:3}), g2 = N('cond',1540,270, ro?'A cumpărat?':'Purchased?',{kind:'purchased',base:5}), x = N('exit',1790,160);
+    f.nodes.push(a,b,c,d,g,o,e,w2,g2,x); L(a,'out',b); L(b,'out',c); L(c,'out',d); L(d,'yes',g); L(d,'no',e); L(g,'yes',o); L(g,'no',x); L(e,'out',w2); L(w2,'out',g2); L(g2,'yes',o); L(g2,'no',x);
+  }
+  return f;
+}
+
+/* ---------- view ---------- */
+const vp = $('#viewport'), world = $('#world'), nodesEl = $('#nodes'), edgeG = $('#edgeG'), temp = $('#temp'), fx = $('#fx'), ctx = fx.getContext('2d');
+const view = { x:40, y:40, z:1 };
+function applyView(){
+  world.style.transform = `translate(${view.x}px,${view.y}px) scale(${view.z})`;
+  vp.style.setProperty('--gs', 24 * view.z + 'px'); vp.style.setProperty('--gx', view.x + 'px'); vp.style.setProperty('--gy', view.y + 'px');
+  if (!sim || !sim.raf) drawFx();
+}
+const toWorld = (cx, cy) => { const r = vp.getBoundingClientRect(); return { x:(cx - r.left - view.x) / view.z, y:(cy - r.top - view.y) / view.z }; };
+function zoomAt(f, cx, cy){
+  const r = vp.getBoundingClientRect(); cx = cx ?? r.left + r.width / 2; cy = cy ?? r.top + r.height / 2;
+  const z = Math.min(2, Math.max(.15, view.z * f)), w = toWorld(cx, cy);
+  view.z = z; view.x = cx - r.left - w.x * z; view.y = cy - r.top - w.y * z; applyView();
+}
+function fit(){
+  if (!flow.nodes.length){ view.x = 40; view.y = 40; view.z = 1; return applyView(); }
+  const r = vp.getBoundingClientRect(), xs = flow.nodes.map(n => n.x), ys = flow.nodes.map(n => n.y);
+  const x0 = Math.min(...xs) - 40, y0 = Math.min(...ys) - 40, x1 = Math.max(...xs) + W + 60, y1 = Math.max(...ys) + H + 40;
+  view.z = Math.min(1.2, Math.max(.15, Math.min(r.width / (x1 - x0), r.height / (y1 - y0))));
+  if (view.z < .45) view.z = .45;
+  view.x = Math.max(16 - x0 * view.z, (r.width - (x1 - x0) * view.z) / 2 - x0 * view.z); view.y = (r.height - (y1 - y0) * view.z) / 2 - y0 * view.z; applyView();
+}
+function geom(e){
+  const a = node(e.from), b = node(e.to); if (!a || !b) return null;
+  const outs = TYPES[a.type].outs, fr = outs.length === 1 ? .5 : outs.indexOf(e.port) === 0 ? .3 : .7;
+  const sx = a.x + W, sy = a.y + H * fr, tx = b.x, ty = b.y + H / 2, dx = Math.max(50, Math.abs(tx - sx) / 2);
+  return { sx, sy, c1x:sx + dx, c1y:sy, c2x:tx - dx, c2y:ty, tx, ty };
+}
+const bez = (g, u) => { const v = 1 - u, a = v*v*v, b = 3*v*v*u, c = 3*v*u*u, d = u*u*u; return [a*g.sx + b*g.c1x + c*g.c2x + d*g.tx, a*g.sy + b*g.c1y + c*g.c2y + d*g.ty]; };
+const pathD = g => `M${g.sx},${g.sy} C${g.c1x},${g.c1y} ${g.c2x},${g.c2y} ${g.tx},${g.ty}`;
+function summary(n){
+  const p = n.p;
+  switch (n.type){
+    case 'trigger': return t({ signup:'sSignup', cart:'sCart', purchase:'sPurchase', inactive:'sInactive' }[p.source] || 'sSignup');
+    case 'email': return `${t('dOpen')} ${p.open}% · ${t('dClick')} ${p.click}%`;
+    case 'sms': return `${t('dClick')} ${p.click}%`;
+    case 'wait': return p.days == 1 ? t('dDay') : t('dDays', { n:p.days });
+    case 'cond': return p.kind === 'random' ? `${p.pct}% / ${100 - p.pct}%` : t({ opened:'kOpened', clicked:'kClicked', purchased:'kPurchased' }[p.kind]);
+    case 'split': return `A ${p.pct}% · B ${100 - p.pct}%`;
+    case 'goal': return t('dValue', { n:fmt(p.value) });
+    default: return '';
+  }
+}
+function render(){
+  nodesEl.innerHTML = flow.nodes.map(n => {
+    const outs = TYPES[n.type].outs;
+    const ports = outs.map((p, i) => `<span class="port out" data-port="${p}" style="top:${outs.length === 1 ? 50 : i ? 70 : 30}%">${p === 'out' ? '' : `<i>${portName(p)}</i>`}</span>`).join('');
+    return `<div class="node t-${n.type}${sel && sel.kind === 'node' && sel.id === n.id ? ' sel' : ''}" data-id="${n.id}" tabindex="0" role="button" aria-label="${esc(t(n.type) + ': ' + n.label + '. ' + summary(n))}" style="left:${n.x}px;top:${n.y}px">
+      <div class="hd"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON[n.type]}</svg><b>${esc(n.label)}</b></div><div class="sub">${esc(summary(n))}</div>
+      <span class="cnt" data-cnt="${n.id}"></span>${n.type === 'trigger' ? '' : '<span class="port in"></span>'}${ports}</div>`;
+  }).join('');
+  renderEdges(); updateCounts();
+}
+function renderEdges(){
+  edgeG.innerHTML = flow.edges.map(e => { const g = geom(e); if (!g) return ''; const [mx, my] = bez(g, .5), d = pathD(g);
+    return `<g class="edge${sel && sel.kind === 'edge' && sel.id === e.id ? ' sel' : ''}" data-eid="${e.id}"><path class="line" d="${d}"/><path class="hit" d="${d}"/><text x="${mx}" y="${my - 6}" data-ecnt="${e.id}"></text></g>`; }).join('');
+}
+function updateCounts(){
+  const S = sim && sim.S;
+  $$('[data-cnt]').forEach(el => { const v = S ? S.nodeIn[el.dataset.cnt] || 0 : 0; el.textContent = fmt(v); el.classList.toggle('on', !!S && v > 0); });
+  $$('[data-ecnt]').forEach(el => { const v = S ? S.edgeN[el.dataset.ecnt] || 0 : 0; el.textContent = S && v ? fmt(v) : ''; });
+}
+
+/* ---------- history & persistence ---------- */
+const snap = () => JSON.stringify(flow);
+let last = snap();
+function commit(msg){
+  stopSim(true); undoS.push(last); if (undoS.length > 100) undoS.shift(); redoS.length = 0; last = snap(); store.set('jb.flow', flow);
+  render(); renderInspector(); renderResults(); syncBtns(); if (msg) say(msg);
+}
+function restore(s){ flow = JSON.parse(s); last = s; sel = null; store.set('jb.flow', flow); stopSim(true); render(); renderInspector(); renderResults(); syncBtns(); }
+const undo = () => { if (undoS.length){ redoS.push(last); restore(undoS.pop()); } };
+const redo = () => { if (redoS.length){ undoS.push(last); restore(redoS.pop()); } };
+const syncBtns = () => { $('#undo').disabled = !undoS.length; $('#redo').disabled = !redoS.length; };
+function validFlow(f){
+  return f && Array.isArray(f.nodes) && Array.isArray(f.edges) && f.nodes.every(n => TYPES[n.type] && typeof n.id === 'string' && isFinite(n.x) && isFinite(n.y)) &&
+    f.edges.every(e => f.nodes.some(n => n.id === e.from) && f.nodes.some(n => n.id === e.to));
+}
+function loadFlow(f, record){
+  f.nodes.forEach(n => { n.label = String(n.label || t(n.type)).slice(0, 40); n.p = { ...TYPES[n.type].def, ...(n.p || {}) }; });
+  f.nodes.concat(f.edges).forEach(o => { const m = /^n(\d+)$/.exec(o.id); if (m) uid = Math.max(uid, +m[1] + 1); });
+  flow = { nodes:f.nodes, edges:f.edges }; sel = null;
+  if (record) commit(t('loaded')); else { last = snap(); render(); renderInspector(); renderResults(); syncBtns(); }
+  fit();
+}
+const enc = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const dec = s => decodeURIComponent(escape(atob(s.replace(/-/g, '+').replace(/_/g, '/'))));
+
+/* ---------- editing ---------- */
+let stagger = 0;
+function addNode(type, x, y){
+  if (x == null){ const r = vp.getBoundingClientRect(), c = toWorld(r.left + r.width / 2, r.top + r.height / 2); x = c.x - W / 2 + (stagger % 5) * 24; y = c.y - H / 2 + (stagger++ % 5) * 24; }
+  const n = { id:newId(), type, x:Math.round(x), y:Math.round(y), label:t(type), p:{ ...TYPES[type].def } };
+  flow.nodes.push(n); sel = { kind:'node', id:n.id }; commit(t('added', { n:n.label })); showTab('edit'); return n;
+}
+function delNode(id){ const n = node(id); if (!n) return; flow.nodes = flow.nodes.filter(x => x.id !== id); flow.edges = flow.edges.filter(e => e.from !== id && e.to !== id); sel = null; commit(t('removed', { n:n.label })); vp.focus(); }
+function reaches(from, target){ const seen = new Set(), st = [from]; while (st.length){ const c = st.pop(); if (c === target) return true; if (seen.has(c)) continue; seen.add(c); flow.edges.forEach(e => e.from === c && st.push(e.to)); } return false; }
+function connect(from, port, to){
+  flow.edges = flow.edges.filter(e => !(e.from === from && e.port === port));
+  if (to){
+    if (to === from || node(to).type === 'trigger' || reaches(to, from)){ commit(); return toast(t('wCycle')); }
+    flow.edges.push({ id:newId(), from, port, to }); return commit(t('linked', { a:node(from).label, b:node(to).label }));
+  }
+  commit();
+}
+function select(s){ sel = s; $$('.node').forEach(el => el.classList.toggle('sel', !!s && s.kind === 'node' && el.dataset.id === s.id)); $$('.edge').forEach(el => el.classList.toggle('sel', !!s && s.kind === 'edge' && el.dataset.eid === s.id)); renderInspector(); }
+
+const FIELDS = {
+  trigger:[['source','source','select',[['signup','sSignup'],['cart','sCart'],['purchase','sPurchase'],['inactive','sInactive']]]],
+  email:[['open','open','num',5,60,1],['click','click','num',1,40,1],['unsub','unsub','num',0.1,5,0.1]],
+  sms:[['click','clickSms','num',1,30,1],['unsub','unsub','num',0.1,5,0.1]],
+  wait:[['days','days','num',1,30,1]],
+  cond:[['kind','kind','select',[['opened','kOpened'],['clicked','kClicked'],['purchased','kPurchased'],['random','kRandom']]],['pct','pct','num',5,95,1,p => p.kind === 'random'],['base','base','num',1,10,0.5,p => p.kind === 'purchased']],
+  split:[['pct','pctA','num',10,90,5]], goal:[['value','value','num',1,10000,1]], exit:[]
+};
+function renderInspector(){
+  const el = $('#p-edit');
+  if (sel && sel.kind === 'edge'){ const e = flow.edges.find(x => x.id === sel.id); if (e){ el.innerHTML = `<h2>${t('edgeSel')}</h2><p>${esc(node(e.from).label)} → ${esc(node(e.to).label)}</p><button class="btn danger" id="eDel">${t('edgeDel')}</button>`; $('#eDel').onclick = () => { flow.edges = flow.edges.filter(x => x.id !== e.id); sel = null; commit(); }; return; } }
+  const n = sel && sel.kind === 'node' && node(sel.id);
+  if (!n){ el.innerHTML = `<h2>${t('tabEdit')}</h2><p class="empty">${t('selNone')}</p>`; return; }
+  let h = `<h2 class="t-${n.type}" style="color:var(--c)">${t(n.type)}</h2><div class="field"><label for="f-label">${t('label')}</label><input id="f-label" maxlength="40" value="${esc(n.label)}"></div>`;
+  FIELDS[n.type].forEach(([k, lab, kind, a, b, step, show]) => {
+    if (show && !show(n.p)) return;
+    h += `<div class="field"><label for="f-${k}">${t(lab)}</label>` + (kind === 'select'
+      ? `<select id="f-${k}" data-k="${k}">${a.map(([v, l]) => `<option value="${v}"${n.p[k] === v ? ' selected' : ''}>${t(l)}</option>`).join('')}</select>`
+      : `<input id="f-${k}" data-k="${k}" type="number" min="${a}" max="${b}" step="${step}" value="${n.p[k]}">`) + `</div>`;
+  });
+  const outs = TYPES[n.type].outs;
+  if (outs.length){
+    h += `<h2 style="margin-top:16px">${t('conn')}</h2>`;
+    outs.forEach(p => { const cur = outEdge(n.id, p);
+      h += `<div class="field"><label for="c-${p}">${p === 'out' ? t('connOut') : t('connTo', { p:portName(p) })}</label><select id="c-${p}" data-port="${p}"><option value="">${t('none')}</option>` +
+        flow.nodes.filter(m => m.id !== n.id && m.type !== 'trigger' && !reaches(m.id, n.id)).map(m => `<option value="${m.id}"${cur && cur.to === m.id ? ' selected' : ''}>${esc(m.label)} (${t(m.type)})</option>`).join('') + `</select></div>`; });
+  }
+  h += `<div class="row" style="margin-top:14px"><button class="btn" id="nDup">${t('dup')}</button><button class="btn danger" id="nDel">${t('del')}</button></div>`;
+  el.innerHTML = h;
+  $('#f-label').onchange = e => { n.label = e.target.value.trim().slice(0, 40) || t(n.type); commit(); };
+  el.querySelectorAll('[data-k]').forEach(i => i.onchange = () => {
+    if (i.type === 'number'){ const v = Math.min(+i.max, Math.max(+i.min, parseFloat(i.value))); n.p[i.dataset.k] = isFinite(v) ? v : TYPES[n.type].def[i.dataset.k]; } else n.p[i.dataset.k] = i.value;
+    commit();
+  });
+  el.querySelectorAll('[data-port]').forEach(s => s.onchange = () => connect(n.id, s.dataset.port, s.value || null));
+  $('#nDel').onclick = () => delNode(n.id);
+  $('#nDup').onclick = () => { const c = { ...n, id:newId(), x:n.x + 30, y:n.y + 100, p:{ ...n.p } }; flow.nodes.push(c); sel = { kind:'node', id:c.id }; commit(t('added', { n:c.label })); };
+}
+
+/* pointer interactions */
+let drag = null;
+vp.addEventListener('pointerdown', e => {
+  if (e.button > 0 || e.target.closest('.zoom')) return;
+  const port = e.target.closest('.port.out'), nd = e.target.closest('.node'), ed = e.target.closest('.edge');
+  if (port){ drag = { mode:'link', from:nd.dataset.id, port:port.dataset.port }; }
+  else if (nd){ const n = node(nd.dataset.id), w = toWorld(e.clientX, e.clientY); select({ kind:'node', id:n.id }); drag = { mode:'node', n, el:$(`.node[data-id="${n.id}"]`), dx:w.x - n.x, dy:w.y - n.y, moved:false }; }
+  else if (ed){ select({ kind:'edge', id:ed.dataset.eid }); showTab('edit'); return; }
+  else { drag = { mode:'pan', sx:e.clientX, sy:e.clientY, vx:view.x, vy:view.y, moved:false }; vp.classList.add('panning'); }
+  try{ vp.setPointerCapture(e.pointerId); }catch(_){}
+});
+vp.addEventListener('pointermove', e => {
+  if (!drag) return;
+  const w = toWorld(e.clientX, e.clientY);
+  if (drag.mode === 'node'){ drag.moved = true; drag.n.x = Math.round(w.x - drag.dx); drag.n.y = Math.round(w.y - drag.dy); drag.el.style.left = drag.n.x + 'px'; drag.el.style.top = drag.n.y + 'px'; renderEdges(); updateCounts(); }
+  else if (drag.mode === 'pan'){ if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 3) drag.moved = true; view.x = drag.vx + e.clientX - drag.sx; view.y = drag.vy + e.clientY - drag.sy; applyView(); }
+  else { const a = node(drag.from), outs = TYPES[a.type].outs, fr = outs.length === 1 ? .5 : outs.indexOf(drag.port) === 0 ? .3 : .7, sx = a.x + W, sy = a.y + H * fr, dx = Math.max(50, Math.abs(w.x - sx) / 2);
+    temp.setAttribute('d', `M${sx},${sy} C${sx + dx},${sy} ${w.x - dx},${w.y} ${w.x},${w.y}`);
+    const over = document.elementsFromPoint(e.clientX, e.clientY).find(x => x.classList && x.classList.contains('node')); $$('.node.target').forEach(x => x.classList.remove('target')); if (over && over.dataset.id !== drag.from) over.classList.add('target'); }
+});
+const endDrag = e => {
+  if (!drag) return; const d = drag; drag = null; vp.classList.remove('panning'); temp.setAttribute('d', '');
+  if (d.mode === 'node'){ if (d.moved) commit(); else showTab('edit'); }
+  else if (d.mode === 'pan'){ if (!d.moved) select(null); }
+  else { const over = document.elementsFromPoint(e.clientX, e.clientY).find(x => x.classList && x.classList.contains('node')); $$('.node.target').forEach(x => x.classList.remove('target')); if (over && over.dataset.id !== d.from) connect(d.from, d.port, over.dataset.id); }
+};
+vp.addEventListener('pointerup', endDrag); vp.addEventListener('pointercancel', endDrag);
+vp.addEventListener('wheel', e => { e.preventDefault(); zoomAt(e.deltaY < 0 ? 1.1 : 1 / 1.1, e.clientX, e.clientY); }, { passive:false });
+nodesEl.addEventListener('focusin', e => { const nd = e.target.closest('.node'); if (nd && !drag && !(sel && sel.kind === 'node' && sel.id === nd.dataset.id)) select({ kind:'node', id:nd.dataset.id }); });
+document.addEventListener('keydown', e => {
+  const tag = (e.target.tagName || '').toLowerCase(), typing = tag === 'input' || tag === 'select' || tag === 'textarea';
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z'){ e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y'){ e.preventDefault(); redo(); return; }
+  if (typing || document.querySelector('dialog[open]')) return;
+  const nd = e.target.closest && e.target.closest('.node'), n = nd && node(nd.dataset.id);
+  if (n){
+    const step = e.shiftKey ? 4 : 20, mv = { ArrowLeft:[-step,0], ArrowRight:[step,0], ArrowUp:[0,-step], ArrowDown:[0,step] }[e.key];
+    if (mv){ e.preventDefault(); n.x += mv[0]; n.y += mv[1]; commit(); $(`.node[data-id="${n.id}"]`).focus(); return; }
+    if (e.key === 'Delete' || e.key === 'Backspace'){ e.preventDefault(); return delNode(n.id); }
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); showTab('edit'); const f = $('#f-label'); f && f.focus(); return; }
+  }
+  if ((e.key === 'Delete' || e.key === 'Backspace') && sel && sel.kind === 'edge'){ flow.edges = flow.edges.filter(x => x.id !== sel.id); sel = null; commit(); }
+  if (e.key === '+' || e.key === '=') zoomAt(1.2); if (e.key === '-') zoomAt(1 / 1.2); if (e.key === '0') fit(); if (e.key === '?') openHelp();
+});
+
+/* palette */
+function renderPalette(){
+  $('#pal').innerHTML = Object.keys(TYPES).map(k => `<button class="pitem t-${k}" data-type="${k}"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg><b>${t(k)}</b></button>`).join('');
+  $$('.pitem').forEach(b => {
+    let st = null, ghost = null, dragged = false;
+    b.addEventListener('pointerdown', e => { st = { x:e.clientX, y:e.clientY }; dragged = false; });
+    b.addEventListener('pointermove', e => {
+      if (!st) return;
+      if (!ghost && Math.abs(e.clientX - st.x) + Math.abs(e.clientY - st.y) > 8){ ghost = b.cloneNode(true); ghost.classList.add('ghost-drag'); document.body.appendChild(ghost); dragged = true; try{ b.setPointerCapture(e.pointerId); }catch(_){} }
+      if (ghost){ ghost.style.left = e.clientX - 75 + 'px'; ghost.style.top = e.clientY - 20 + 'px'; }
+    });
+    const up = e => { if (ghost){ ghost.remove(); ghost = null; const r = vp.getBoundingClientRect(); if (e.clientX > r.left && e.clientX < r.right && e.clientY > r.top && e.clientY < r.bottom){ const w = toWorld(e.clientX, e.clientY); addNode(b.dataset.type, w.x - W / 2, w.y - H / 2); } } st = null; };
+    b.addEventListener('pointerup', up); b.addEventListener('pointercancel', up);
+    b.addEventListener('click', () => { if (dragged){ dragged = false; return; } addNode(b.dataset.type); });
+  });
+}
+
+/* ---------- simulation ---------- */
+function rng32(a){ return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let x = Math.imul(a ^ a >>> 15, 1 | a); x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x; return ((x ^ x >>> 14) >>> 0) / 4294967296; }; }
+const mkS = (N, seed, std) => ({ N, seed, std, nodeIn:{}, edgeN:{}, endAt:{}, ends:{ converted:0, exit:0, unsub:0, lost:0 }, emails:0, sms:0, revenue:0, convDays:0, done:0, maxDay:0 });
+const mkC = (S, i) => ({ id:i, r:rng32((S.seed * 100003 + i * 7919) >>> 0), day:0, opened:false, clicked:false, msgs:0, fresh:false, since:0 });
+function finish(S, c, why, n){ S.ends[why]++; S.done++; S.endAt[n.id] = (S.endAt[n.id] || 0) + 1; if (why === 'converted'){ S.revenue += n.p.value; S.convDays += c.day; } S.maxDay = Math.max(S.maxDay, c.day); c.done = true; }
+function stepNode(S, c, n){
+  S.nodeIn[n.id] = (S.nodeIn[n.id] || 0) + 1;
+  const p = S.std ? { ...n.p, ...TYPES[n.type].def, kind:n.p.kind, pct:n.p.pct, days:n.p.days, value:S.std && n.type === 'goal' ? 150 : n.p.value } : n.p;
+  switch (n.type){
+    case 'email': case 'sms': {
+      const fat = c.msgs; c.msgs++; c.fresh = true; c.since = 0; n.type === 'email' ? S.emails++ : S.sms++;
+      if (n.type === 'email'){ c.opened = c.r() < p.open / 100 * Math.pow(.92, fat); c.clicked = c.opened && c.r() < p.click / 100; }
+      else { c.clicked = c.r() < p.click / 100 * Math.pow(.92, fat); c.opened = c.clicked; }
+      if (c.r() < p.unsub / 100 * (1 + .6 * fat)) return { end:'unsub' };
+      return { port:'out' };
+    }
+    case 'wait': c.day += p.days; c.since += p.days; return { port:'out', days:p.days };
+    case 'cond': {
+      let ok;
+      if (p.kind === 'opened') ok = c.opened; else if (p.kind === 'clicked') ok = c.clicked;
+      else if (p.kind === 'purchased'){ ok = c.fresh && c.r() < Math.min(.9, p.base / 100 * (c.clicked ? 4 : c.opened ? 2 : 1) * Math.min(1, .4 + .3 * c.since)); c.fresh = false; }
+      else ok = c.r() < p.pct / 100;
+      return { port: ok ? 'yes' : 'no' };
+    }
+    case 'split': return { port: c.r() < p.pct / 100 ? 'a' : 'b' };
+    case 'goal': return { end:'converted' };
+    case 'exit': return { end:'exit' };
+    default: return { port:'out' };
+  }
+}
+function runInstant(N, seed, std){
+  const S = mkS(N, seed, std), tr = flow.nodes.filter(n => n.type === 'trigger');
+  for (let i = 0; i < N && tr.length; i++){
+    const c = mkC(S, i); let n = tr[i % tr.length];
+    for (let k = 0; k < 400; k++){
+      const r = stepNode(S, c, n); if (r.end){ finish(S, c, r.end, n); break; }
+      const e = outEdge(n.id, r.port); if (!e){ finish(S, c, 'lost', n); break; }
+      S.edgeN[e.id] = (S.edgeN[e.id] || 0) + 1; n = node(e.to);
+    }
+  }
+  return S;
+}
+function metrics(S){
+  const cost = S.emails * COST.email + S.sms * COST.sms, N = S.N || 1;
+  return { conv:S.ends.converted / N * 100, unsub:S.ends.unsub / N * 100, lost:S.ends.lost / N * 100, rev:S.revenue, cost, rpc: S.revenue / N,
+    days: S.ends.converted ? S.convDays / S.ends.converted : 0, msgs:(S.emails + S.sms) / N };
+}
+let sim = null, resultS = null;
+function warnings(){
+  const w = [], tr = flow.nodes.filter(n => n.type === 'trigger');
+  if (!tr.length) w.push({ err:true, m:t('wNoTrigger') });
+  if (!flow.nodes.some(n => n.type === 'goal')) w.push({ m:t('wNoGoal') });
+  const seen = new Set(), st = tr.map(n => n.id); while (st.length){ const c = st.pop(); if (seen.has(c)) continue; seen.add(c); flow.edges.forEach(e => e.from === c && st.push(e.to)); }
+  flow.nodes.forEach(n => { if (!seen.has(n.id) && tr.length) w.push({ m:t('wUnreach', { n:n.label }) }); else TYPES[n.type].outs.forEach(p => { if (!outEdge(n.id, p)) w.push({ m:t('wPort', { n:n.label, p:portName(p) }) }); }); });
+  return w;
+}
+function sizeFx(){ const r = vp.getBoundingClientRect(), d = window.devicePixelRatio || 1; fx.width = r.width * d; fx.height = r.height * d; drawFx(); }
+function drawFx(){
+  const d = window.devicePixelRatio || 1; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, fx.width, fx.height);
+  if (!sim || !sim.cs) return;
+  ctx.setTransform(d * view.z, 0, 0, d * view.z, d * view.x, d * view.y);
+  const cs = getComputedStyle(document.documentElement), cy = cs.getPropertyValue('--cyan').trim(), am = cs.getPropertyValue('--amber').trim();
+  for (const pass of [0, 1]){ ctx.fillStyle = pass ? am : cy; ctx.beginPath();
+    for (const c of sim.cs){ if (c.ph !== 1 || !!c.clicked !== !!pass) continue; const [x, y] = bez(c.g, Math.min(1, (sim.vt - c.t0) / c.dur)); ctx.moveTo(x + 3.2, y + c.j); ctx.arc(x, y + c.j, 3.2, 0, 6.283); }
+    ctx.fill(); }
+}
+function startSim(){
+  const w = warnings(); if (w.some(x => x.err)){ showTab('res'); renderResults(); return toast(w.find(x => x.err).m); }
+  stopSim(true);
+  const N = Math.min(5000, Math.max(50, +$('#n').value || 1000)), seed = +$('#seed').value || 1; $('#n').value = N;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return instant();
+  const S = mkS(N, seed, false), tr = flow.nodes.filter(n => n.type === 'trigger'), span = Math.min(7000, N * 7);
+  sim = { S, vt:0, lastT:0, raf:0, cs:Array.from({ length:N }, (_, i) => Object.assign(mkC(S, i), { ph:0, at:i / N * span, n:tr[i % tr.length], j:(i * 37 % 11) - 5 })) };
+  resultS = null; renderResults(); $('#stop').hidden = false; $('#prog').hidden = false; say(t('simStart', { n:fmt(N) }));
+  const arrive = (c, n) => { const r = stepNode(S, c, n); if (r.end) return finish(S, c, r.end, n); c.ph = 2; c.n = n; c.port = r.port; c.until = sim.vt + (r.days ? Math.min(2400, r.days * 320) : 140); };
+  const tick = ts => {
+    if (!sim) return; const dt = Math.min(60, ts - (sim.lastT || ts)); sim.lastT = ts; sim.vt += dt * (+$('#spd').value || 1);
+    for (const c of sim.cs){
+      if (c.done) continue;
+      if (c.ph === 0){ if (sim.vt >= c.at) arrive(c, c.n); }
+      else if (c.ph === 1){ if (sim.vt - c.t0 >= c.dur) arrive(c, c.to); }
+      if (c.ph === 2 && !c.done && sim.vt >= c.until){ const e = outEdge(c.n.id, c.port); if (!e) finish(S, c, 'lost', c.n); else { S.edgeN[e.id] = (S.edgeN[e.id] || 0) + 1; c.ph = 1; c.g = geom(e); c.to = node(e.to); c.t0 = sim.vt; c.dur = 620 + (c.id % 7) * 30; } }
+    }
+    drawFx(); updateCounts(); $('#prog').value = S.done / N; $('#day').textContent = t('dayN', { n:S.maxDay });
+    if (S.done >= N){ sim.raf = 0; sim.cs = null; drawFx(); return done(S); }
+    sim.raf = requestAnimationFrame(tick);
+  };
+  sim.raf = requestAnimationFrame(tick);
+}
+function instant(){
+  const w = warnings(); if (w.some(x => x.err)){ showTab('res'); renderResults(); return toast(w.find(x => x.err).m); }
+  stopSim(true); const N = Math.min(5000, Math.max(50, +$('#n').value || 1000)); const S = runInstant(N, +$('#seed').value || 1, false); sim = { S, cs:null, raf:0 }; done(S);
+}
+function done(S){ resultS = S; $('#stop').hidden = true; $('#prog').hidden = true; $('#day').textContent = t('dayN', { n:S.maxDay }); updateCounts(); renderResults(); showTab('res'); say(t('simDone', { p:fmt(metrics(S).conv, 1), n:fmt(S.N) })); }
+function stopSim(clear){ if (sim && sim.raf) cancelAnimationFrame(sim.raf); if (clear){ sim = null; resultS = null; $('#day').textContent = ''; } else if (sim){ sim.raf = 0; sim.cs = null; } $('#stop').hidden = true; $('#prog').hidden = true; drawFx(); updateCounts(); }
+
+function renderResults(){
+  const el = $('#p-res'), w = warnings();
+  let h = w.map(x => `<div class="warn${x.err ? ' err' : ''}">${esc(x.m)}</div>`).join('');
+  const S = resultS;
+  if (!S){ el.innerHTML = h + `<p class="empty">${t('resNone')}</p>`; return; }
+  const m = metrics(S), N = S.N, pc = v => v / N * 100;
+  h += `<div class="kpis"><div class="kpi hero"><small>${t('kConv')}</small><b>${fmt(m.conv, 1)}%</b></div>
+    <div class="kpi"><small>${t('kConverted')}</small><b>${fmt(S.ends.converted)}</b></div><div class="kpi"><small>${t('kRev')}</small><b>${fmt(m.rev)} €</b></div>
+    <div class="kpi"><small>${t('kCost')}</small><b>${fmt(m.cost, 2)} €</b></div><div class="kpi"><small>${t('kRoi')}</small><b>${fmt(m.rpc, 2)} €</b></div>
+    <div class="kpi"><small>${t('kUnsub')}</small><b>${fmt(m.unsub, 1)}%</b></div><div class="kpi"><small>${t('kDays')}</small><b>${fmt(m.days, 1)}</b></div>
+    <div class="kpi"><small>${t('kMsgs')}</small><b>${fmt(m.msgs, 2)}</b></div><div class="kpi"><small>${t('contacts')}</small><b>${fmt(N)}</b></div></div>`;
+  const oc = [['converted','oConv','--green'],['exit','oExit','--muted'],['unsub','oUnsub','--red'],['lost','oLost','--amber']];
+  h += `<h2>${t('outcomes')}</h2><div class="stack" role="img" aria-label="${oc.map(([k, l]) => t(l) + ' ' + fmt(pc(S.ends[k]), 1) + '%').join(', ')}">${oc.map(([k, , c]) => `<i style="width:${pc(S.ends[k])}%;background:var(${c})"></i>`).join('')}</div>
+    <div class="legend">${oc.map(([k, l, c]) => `<span><i style="background:var(${c})"></i>${t(l)} ${fmt(pc(S.ends[k]), 1)}%</span>`).join('')}</div>`;
+  h += `<div class="insight">${m.lost > 5 ? t('insLost', { p:fmt(m.lost, 1) }) : m.unsub > 3 ? t('insUnsub', { p:fmt(m.unsub, 1) }) : t('insGood', { p:fmt(m.conv, 1) })}</div>`;
+  h += `<h2>${t('funnel')}</h2>` + flow.nodes.slice().sort((a, b) => a.x - b.x || a.y - b.y).map(n => { const v = S.nodeIn[n.id] || 0; return `<div class="fun t-${n.type}"><div><span>${esc(n.label)}</span><em>${fmt(v)} · ${fmt(pc(v), 1)}%</em></div><div class="bar"><i style="width:${Math.min(100, pc(v))}%"></i></div></div>`; }).join('');
+  el.innerHTML = h;
+}
+
+/* ---------- challenges ---------- */
+const CH = [
+  { id:'c1', n:'ch1', d:'ch1d', conv:10, unsub:3, msgs:2.2 },
+  { id:'c2', n:'ch2', d:'ch2d', conv:11, unsub:4, days:2.5 },
+  { id:'c3', n:'ch3', d:'ch3d', conv:12.5, unsub:2.5, msgs:3 }
+];
+let chRes = {};
+function renderCh(){
+  const best = store.get('jb.best', {});
+  $('#p-ch').innerHTML = `<p class="empty" style="margin-top:0">${t('chIntro')}</p>` + CH.map(c => {
+    const r = chRes[c.id], li = (k, key, ok) => `<li class="${r ? (ok ? 'ok' : 'ko') : ''}">${t(key, { v:fmt(c[k], c[k] % 1 ? 1 : 0) })}${r ? ' — ' + fmt(r.m[k], 1) : ''}</li>`;
+    return `<div class="ch"><h3>${t(c.n)}</h3><p>${t(c.d)}</p><ul>${li('conv', 'cConv', r && r.m.conv >= c.conv)}${li('unsub', 'cUnsub', r && r.m.unsub <= c.unsub)}${c.msgs ? li('msgs', 'cMsgs', r && r.m.msgs <= c.msgs) : ''}${c.days ? li('days', 'cDays', r && r.m.days <= c.days && r.m.conv > 0) : ''}</ul>
+      <div class="row" style="align-items:center"><button class="btn" data-ch="${c.id}">${t('chCheck')}</button>${best[c.id] ? `<span class="best">★ ${t('chBest', { p:fmt(best[c.id], 1) })}</span>` : ''}</div>${r ? `<p style="margin:8px 0 0;color:var(${r.pass ? '--green' : '--red'})" role="status">${t(r.pass ? 'chPass' : 'chFail')}</p>` : ''}</div>`; }).join('');
+  $$('[data-ch]').forEach(b => b.onclick = () => {
+    const c = CH.find(x => x.id === b.dataset.ch), m = metrics(runInstant(5000, 2026, true));
+    const pass = m.conv >= c.conv && m.unsub <= c.unsub && (!c.msgs || m.msgs <= c.msgs) && (!c.days || (m.days <= c.days && m.conv > 0));
+    chRes[c.id] = { m, pass }; if (pass){ const best = store.get('jb.best', {}); if (!(best[c.id] >= m.conv)){ best[c.id] = +m.conv.toFixed(1); store.set('jb.best', best); } }
+    renderCh(); say(t(pass ? 'chPass' : 'chFail')); const nb = $(`[data-ch="${c.id}"]`); nb && nb.focus();
+  });
+}
+
+/* ---------- chrome ---------- */
+const tabs = ['edit', 'res', 'ch'];
+function showTab(k){ tabs.forEach(x => { const on = x === k; $('#tab-' + x).setAttribute('aria-selected', on); $('#tab-' + x).tabIndex = on ? 0 : -1; $('#p-' + x).hidden = !on; }); }
+tabs.forEach((k, i) => { const b = $('#tab-' + k); b.onclick = () => showTab(k); b.onkeydown = e => { const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (d){ const n = tabs[(i + d + 3) % 3]; showTab(n); $('#tab-' + n).focus(); } }; });
+let toastT; function toast(m){ const el = $('#toast'); el.textContent = m; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => el.hidden = true, 3200); }
+function say(m){ $('#live').textContent = ''; setTimeout(() => $('#live').textContent = m, 30); }
+function openHelp(){ $('#helpBody').innerHTML = t('help'); $('#dlgHelp').showModal(); }
+function applyLang(){
+  document.documentElement.lang = lang;
+  $$('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
+  $$('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
+  $('#lang').textContent = lang === 'ro' ? 'EN' : 'RO'; $('#lang').setAttribute('aria-label', lang === 'ro' ? 'Switch to English' : 'Schimbă în română');
+  $('#tpl').innerHTML = `<option value="">${t('tplPick')}</option><option value="welcome">${t('tplWelcome')}</option><option value="cart">${t('tplCart')}</option><option value="win">${t('tplWin')}</option>`;
+  document.title = lang === 'ro' ? 'Journey Builder — editor vizual de automatizări de marketing | Laura Andreea' : 'Journey Builder — visual marketing automation editor | Laura Andreea';
+  renderPalette(); render(); renderInspector(); renderResults(); renderCh();
+}
+$('#lang').onclick = () => { lang = lang === 'ro' ? 'en' : 'ro'; store.set('jb.lang', lang); applyLang(); };
+$('#theme').onclick = () => { const th = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = th; store.set('jb.theme', th); drawFx(); };
+$('#undo').onclick = undo; $('#redo').onclick = redo; $('#help').onclick = openHelp;
+$('#zin').onclick = () => zoomAt(1.2); $('#zout').onclick = () => zoomAt(1 / 1.2); $('#fit').onclick = fit;
+$('#run').onclick = startSim; $('#instant').onclick = instant; $('#stop').onclick = () => stopSim(true);
+$('#tpl').onchange = e => { if (e.target.value){ loadFlow(templates(e.target.value), true); e.target.value = ''; } };
+$('#clear').onclick = () => { if (flow.nodes.length && confirm(t('confirmClear'))){ flow = { nodes:[], edges:[] }; sel = null; commit(t('cleared')); } };
+$('#share').onclick = async () => { const url = location.href.split('#')[0] + '#f=' + enc(snap()); try{ await navigator.clipboard.writeText(url); toast(t('copied')); }catch(e){ $('#ioTxt').value = url; $('#dlgIO').showModal(); } };
+$('#io').onclick = () => { $('#ioTxt').value = JSON.stringify(flow, null, 1); $('#dlgIO').showModal(); };
+$('#ioCopy').onclick = async () => { try{ await navigator.clipboard.writeText($('#ioTxt').value); toast(t('copiedJ')); }catch(e){ $('#ioTxt').select(); } };
+$('#ioLoad').onclick = () => { try{ const f = JSON.parse($('#ioTxt').value); if (!validFlow(f)) throw 0; loadFlow(f, true); $('#dlgIO').close(); }catch(e){ toast(t('badJson')); } };
+$$('[data-close]').forEach(b => b.onclick = () => b.closest('dialog').close());
+window.addEventListener('resize', sizeFx);
+
+/* ---------- init ---------- */
+document.documentElement.dataset.theme = store.get('jb.theme', 'dark');
+let init = null;
+try{ const m = /#f=([\w-]+)/.exec(location.hash); if (m){ const f = JSON.parse(dec(m[1])); if (validFlow(f)) init = f; } }catch(e){}
+if (!init){ const s = store.get('jb.flow', null); if (validFlow(s) && s.nodes.length) init = s; }
+applyLang(); sizeFx();
+loadFlow(init || templates('welcome'), false);
+window.JB = { runInstant, metrics, templates, loadFlow, get flow(){ return flow; } };
+})();
+</script>
+</body>
+</html>
