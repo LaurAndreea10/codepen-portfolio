@@ -3,6 +3,8 @@ import AxeBuilder from "@axe-core/playwright";
 import { mkdir } from "node:fs/promises";
 
 const targets = [
+  { name: "Kygo Arhipelagul", url: "https://laurandreea10.github.io/codepen-portfolio/kygo-arhipelagul/" },
+  { name: "Baseline Voyage", url: "https://laurandreea10.github.io/codepen-portfolio/baseline-voyage/" },
   { name: "SkyDreams Portal", url: "https://laurandreea10.github.io/codepen-portfolio/skydreams-portal/" },
   { name: "Revenue Landscape", url: "https://laurandreea10.github.io/Revenue-Landscape/", controls: ["#lang", "#theme", "#contrast"] },
   { name: "Kygo World", url: "https://laurandreea10.github.io/codepen-portfolio/kygo-world/" },
@@ -14,22 +16,25 @@ const targets = [
   { name: "Canva Collection RO", url: "https://laurandreea10.github.io/codepen-portfolio/canva-collection.html", controls: ["#theme", "#contrast"] },
   { name: "Canva Collection EN", url: "https://laurandreea10.github.io/codepen-portfolio/en/canva-collection.html", controls: ["#theme", "#contrast"] }
 ];
+const selectedTargets = targets.filter(target => !process.env.AUDIT_TARGET || target.url.includes(process.env.AUDIT_TARGET));
+if (!selectedTargets.length) throw new Error("AUDIT_TARGET matched no pages");
 const widths = [360, 390, 412];
 const failures = [];
 const warnings = [];
 await mkdir("audit-artifacts/recent-projects", { recursive: true });
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}) });
 
 try {
-  for (const target of targets) {
+  for (const target of selectedTargets) {
     for (const width of widths) {
+      const failuresBefore = failures.length;
       const context = await browser.newContext({
         viewport: { width, height: 844 },
         deviceScaleFactor: 2,
         isMobile: true,
         hasTouch: true,
         reducedMotion: "reduce",
-        colorScheme: "dark"
+        colorScheme: process.env.AUDIT_SCHEME === "light" ? "light" : "dark"
       });
       const page = await context.newPage();
       const response = await page.goto(target.url, { waitUntil: "networkidle", timeout: 60000 });
@@ -40,9 +45,61 @@ try {
         continue;
       }
 
+      if (width !== 390 && ['Kygo Arhipelagul', 'Baseline Voyage'].includes(target.name)) {
+        const passportClose = page.locator('#kygo-universe [data-close]');
+        if (await passportClose.isVisible()) await passportClose.click();
+        const scheme = process.env.AUDIT_SCHEME === 'light' ? 'light' : 'dark';
+        if (target.name === 'Kygo Arhipelagul') {
+          await page.locator('[data-act="go"][data-s="set"]').click();
+          await page.locator(`[data-act="theme"][data-v="${scheme}"]`).click();
+          await page.locator('[data-act="go"][data-s="map"]').click();
+        } else {
+          const skip = page.locator('[data-tour="skip"]');
+          if (await skip.isVisible()) await skip.click();
+          await page.locator('[data-open="settings"]').click();
+          await page.locator(`input[name="scheme"][value="${scheme}"]`).check();
+          await page.locator('#settings button[value="close"]').click();
+        }
+      }
       if (width === 390) {
+        // The shared Kygo passport can open a shadow-DOM dialog on first visit.
+        const passportClose = page.locator('#kygo-universe [data-close]');
+        if (await passportClose.isVisible()) await passportClose.click();
+        // Exercise actual app controls, rather than only emulating the OS theme.
+        if (target.name === "Kygo Arhipelagul") {
+          await page.locator('[data-act="go"][data-s="set"]').click();
+          await page.locator(`[data-act="theme"][data-v="${process.env.AUDIT_SCHEME === 'light' ? 'light' : 'dark'}"]`).click();
+          for (const lang of ['en', 'ro']) {
+            await page.locator(`[data-act="lang"][data-v="${lang}"]`).click();
+            if (await page.locator('html').getAttribute('lang') !== lang) failures.push(`${target.name}: ${lang} switch failed`);
+          }
+          await page.locator('[data-act="tog"][data-k="contrast"][data-v="1"]').click();
+          if (!await page.locator('html').evaluate(el => el.classList.contains('hc'))) failures.push(`${target.name}: high contrast failed`);
+          const hc = await new AxeBuilder({ page }).analyze();
+          for (const issue of hc.violations.filter(i => ['critical', 'serious'].includes(i.impact))) failures.push(`${target.name} high contrast: axe ${issue.id}`);
+          await page.locator('[data-act="tog"][data-k="contrast"][data-v="0"]').click();
+          await page.locator('[data-act="go"][data-s="map"]').click();
+        }
+        if (target.name === "Baseline Voyage") {
+          const skip = page.locator('[data-tour="skip"]');
+          if (await skip.isVisible()) await skip.click();
+          for (let i = 0; i < 2; i++) {
+            const previous = await page.locator('html').getAttribute('lang');
+            await page.locator('.lang-toggle').click();
+            if (await page.locator('html').getAttribute('lang') === previous) failures.push(`${target.name}: language switch failed`);
+          }
+          await page.locator('[data-open="settings"]').click();
+          await page.locator(`input[name="scheme"][value="${process.env.AUDIT_SCHEME === 'light' ? 'light' : 'dark'}"]`).check();
+          await page.locator('input[name="contrast"]').check();
+          if (!await page.locator('html').evaluate(el => el.classList.contains('contrast'))) failures.push(`${target.name}: high contrast failed`);
+          if (!await page.locator('input[name="calm"]').isChecked()) failures.push(`${target.name}: reduced motion not inherited`);
+          const hc = await new AxeBuilder({ page }).analyze();
+          for (const issue of hc.violations.filter(i => ['critical', 'serious'].includes(i.impact))) failures.push(`${target.name} high contrast: axe ${issue.id}`);
+          await page.locator('input[name="contrast"]').uncheck();
+          await page.locator('#settings button[value="close"]').click();
+        }
         await page.screenshot({
-          path: `audit-artifacts/recent-projects/${target.name.toLowerCase().replaceAll(" ", "-")}-390.png`,
+          path: `audit-artifacts/recent-projects/${target.name.toLowerCase().replaceAll(" ", "-")}-390${process.env.AUDIT_SCHEME === "light" ? "-light" : ""}.png`,
           fullPage: true
         });
       }
@@ -71,7 +128,10 @@ try {
           try { return inspect(sheet.cssRules); } catch { return false; }
         });
       });
-      if (!hasReducedMotionCss) failures.push(`${target.name}: missing prefers-reduced-motion stylesheet rule`);
+      const reducedMotionApplied = target.name === 'Baseline Voyage' && await page.locator('html').evaluate(el =>
+        el.classList.contains('calm') && getComputedStyle(el).scrollBehavior !== 'smooth' &&
+        [...document.querySelectorAll('.cue')].every(cue => getComputedStyle(cue).animationName === 'none'));
+      if (!hasReducedMotionCss && !reducedMotionApplied) failures.push(`${target.name}: reduced-motion styling/behavior missing`);
 
       for (const selector of target.controls || []) {
         const control = page.locator(selector).first();
@@ -172,7 +232,8 @@ try {
         if ((await page.locator("html").getAttribute("lang")) !== "en") failures.push("SkyDreams Portal: English language toggle failed");
       }
 
-      console.log(`PASS ${target.name} @ ${width}px — axe serious/critical 0, no horizontal overflow`);
+      for (const failure of failures.slice(failuresBefore)) console.error(failure);
+      console.log(`${failures.length === failuresBefore ? 'PASS' : 'FAIL'} ${target.name} @ ${width}px`);
       await context.close();
     }
   }
@@ -185,4 +246,5 @@ if (failures.length) {
   console.error(`Mobile accessibility gate failed (${failures.length}):\n- ${failures.join("\n- ")}`);
   process.exit(1);
 }
-console.log(`Mobile accessibility gate passed for ${targets.length} pages × ${widths.length} viewports.`);
+console.log(`Mobile accessibility gate passed for ${selectedTargets.length} pages × ${widths.length} viewports.`);
+

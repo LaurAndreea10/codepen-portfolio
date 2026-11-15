@@ -1,0 +1,19 @@
+name: Publication identity
+on:
+  pull_request:
+    paths: ['projects.json', 'publication-manifest.json', 'en/index.html', 'scripts/sync-publications.mjs', '.github/workflows/publication-sync.yml']
+  push:
+    branches: [main]
+    paths: ['projects.json', 'publication-manifest.json', 'en/index.html', 'scripts/sync-publications.mjs', '.github/workflows/publication-sync.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/sync-publications.mjs --check

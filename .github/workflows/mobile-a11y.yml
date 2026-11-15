@@ -10,6 +10,9 @@ on:
     paths:
       - "skydreams-portal/**"
       - "kygo-world/**"
+      - "kygo-arhipelagul/**"
+      - "baseline-voyage/**"
+      - "kygo-universe/**"
       - "en/index.html"
       - "data/portfolio-evidence.json"
       - "scripts/mobile-a11y.mjs"
@@ -18,6 +21,9 @@ on:
     paths:
       - "skydreams-portal/**"
       - "kygo-world/**"
+      - "kygo-arhipelagul/**"
+      - "baseline-voyage/**"
+      - "kygo-universe/**"
       - "en/index.html"
       - "data/portfolio-evidence.json"
       - "scripts/mobile-a11y.mjs"
@@ -45,6 +51,10 @@ jobs:
         run: sleep 90
       - name: Audit 360, 390 and 412 px
         run: node scripts/mobile-a11y.mjs
+      - name: Audit recent releases in light mode
+        run: |
+          AUDIT_TARGET=kygo-arhipelagul AUDIT_SCHEME=light node scripts/mobile-a11y.mjs
+          AUDIT_TARGET=baseline-voyage AUDIT_SCHEME=light node scripts/mobile-a11y.mjs
       - name: Publish real mobile captures
         if: always()
         uses: actions/upload-artifact@v4
@@ -52,3 +62,4 @@ jobs:
           name: recent-projects-mobile-390
           path: audit-artifacts/recent-projects/*.png
           if-no-files-found: warn
+
