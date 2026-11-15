@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local-First CRM — pipeline kanban instant, fără server | Laura Andreea</title>
+<meta name="description" content="CRM local-first: pipeline kanban cu drag and drop, command palette (Ctrl+K), anulare/refacere, scurtături de tastatură și date salvate în IndexedDB, sincronizate între taburi. Vanilla JS, fără backend.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/local-first-crm/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Local-First CRM — pipeline kanban instant, fără server">
+<meta property="og:description" content="Drag and drop, command palette, undo/redo și IndexedDB. Fiecare acțiune se vede instant, pentru că datele sunt la tine în browser.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/local-first-crm/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/local-first-crm/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a1220">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1220'/%3E%3Crect x='6' y='7' width='5' height='18' rx='2' fill='%2322d3ee'/%3E%3Crect x='13.5' y='7' width='5' height='12' rx='2' fill='%23f5b041'/%3E%3Crect x='21' y='7' width='5' height='8' rx='2' fill='%2334d399'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Local-First CRM","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["ro","en"],"author":{"@type":"Person","name":"Laura Andreea"},"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"description":"CRM local-first cu pipeline kanban, command palette, undo/redo și IndexedDB."}
+</script>
+<style>
+:root{
+  --bg:#0a1220;--bg2:#0f1a2e;--panel:#111f36;--panel2:#16263f;--line:#243756;--text:#e8eef8;--muted:#93a4bf;
+  --cyan:#22d3ee;--amber:#f5b041;--green:#34d399;--red:#f87171;--violet:#a78bfa;--pink:#f472b6;--blue:#60a5fa;
+  --shadow:0 10px 30px rgba(0,0,0,.35);--r:12px;
+  --serif:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+}
+[data-theme=light]{
+  --bg:#f4f6fb;--bg2:#ffffff;--panel:#ffffff;--panel2:#eef2f9;--line:#d5deec;--text:#0f1a2e;--muted:#54657f;
+  --cyan:#0e7490;--amber:#b45309;--green:#047857;--red:#b91c1c;--violet:#6d28d9;--pink:#be185d;--blue:#1d4ed8;
+  --shadow:0 10px 30px rgba(15,26,46,.12);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 var(--sans);display:flex;flex-direction:column}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:8px;top:-60px;background:var(--amber);color:#111;padding:8px 12px;border-radius:8px;z-index:99;font-weight:600}
+.skip:focus{top:8px}
+kbd{font:600 11px var(--mono);background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+
+header{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--bg2);flex-wrap:wrap}
+.brand{margin-right:6px}
+.brand h1{font:700 20px/1 var(--serif);margin:0;white-space:nowrap}
+.brand h1 em{font-style:normal;color:var(--cyan)}
+.search{flex:1;min-width:150px;max-width:360px;position:relative}
+.search input{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:7px 34px 7px 11px;min-height:36px}
+.search kbd{position:absolute;right:8px;top:8px}
+.sp{flex:1}
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:7px 11px;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{border-color:var(--cyan)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.primary{background:var(--cyan);border-color:var(--cyan);color:#04202a;font-weight:600}
+[data-theme=light] .btn.primary{color:#fff}
+.btn.icon{padding:7px 9px;min-width:36px;justify-content:center;font-family:var(--mono)}
+.btn.danger:hover{border-color:var(--red);color:var(--red)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{background:var(--panel2);border:0;padding:7px 12px;cursor:pointer;min-height:36px}
+.seg button[aria-pressed=true]{background:var(--cyan);color:#04202a;font-weight:600}
+[data-theme=light] .seg button[aria-pressed=true]{color:#fff}
+
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 12px;min-width:0}
+.stat small{display:block;font:400 10.5px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.stat small.wrap{white-space:normal;overflow:visible}
+.stat b{font:700 20px/1.3 var(--serif);white-space:nowrap}
+.stat .bar{height:6px;border-radius:3px;background:var(--panel2);margin-top:5px;overflow:hidden}
+.stat .bar i{display:block;height:100%;background:var(--green);border-radius:3px;transition:width .3s}
+.stat input{width:92px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font:600 11px var(--mono)}
+.filters{display:flex;gap:6px;align-items:center;padding:9px 14px;flex-wrap:wrap}
+.chip{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:4px 11px;cursor:pointer;font-size:12.5px;min-height:30px;display:inline-flex;align-items:center;gap:6px}
+.chip[aria-pressed=true]{border-color:var(--cyan);color:var(--cyan)}
+.av{width:20px;height:20px;border-radius:50%;display:inline-grid;place-items:center;font:600 10px var(--mono);color:#04121c;background:var(--c);flex:none}
+.save{margin-left:auto;font:400 11px var(--mono);color:var(--muted)}
+.save b{color:var(--green);font-weight:600}
+
+main{flex:1;min-height:0;display:flex;flex-direction:column}
+#board{flex:1;display:grid;grid-template-columns:repeat(6,minmax(230px,1fr));gap:10px;padding:4px 14px 14px;overflow:auto;min-height:0}
+.col{background:var(--bg2);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:var(--r);display:flex;flex-direction:column;min-height:200px;min-width:0}
+.col.over{box-shadow:0 0 0 2px var(--cyan)}
+.col h2{display:flex;align-items:center;gap:8px;font:600 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;margin:0;padding:10px 12px 6px}
+.col h2 span{color:var(--muted);font-weight:400}
+.col h2 em{margin-left:auto;font-style:normal;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0}
+.cards{flex:1;padding:4px 8px 8px;overflow-y:auto;display:flex;flex-direction:column;gap:7px;min-height:60px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 10px;cursor:grab;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.card:hover{border-color:var(--muted)}
+.card.sel{border-color:var(--amber)}
+.card.dragging{opacity:.3}
+.card b{display:block;font-weight:600;line-height:1.3}
+.card .co{color:var(--muted);font-size:12.5px}
+.card .ft{display:flex;align-items:center;gap:6px;margin-top:7px;font:600 12px var(--mono)}
+.card .ft .due{margin-left:auto;font-weight:400;color:var(--muted)}
+.card .ft .due.late{color:var(--red)}
+.pr{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
+.pr.high{background:var(--red)}.pr.med{background:var(--amber)}
+.tag{font:400 10.5px var(--mono);border:1px solid var(--line);border-radius:5px;padding:0 5px;color:var(--muted)}
+.tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.ph{border:2px dashed var(--cyan);border-radius:10px;flex:none}
+.ghost{position:fixed;z-index:80;pointer-events:none;box-shadow:var(--shadow);transform:rotate(2deg);opacity:.95;margin:0}
+.add{margin:0 8px 8px;background:none;border:1px dashed var(--line);border-radius:9px;padding:6px;color:var(--muted);cursor:pointer;min-height:34px}
+.add:hover{border-color:var(--cyan);color:var(--cyan)}
+.s-lead{--c:var(--muted)}.s-qual{--c:var(--blue)}.s-prop{--c:var(--violet)}.s-nego{--c:var(--amber)}.s-won{--c:var(--green)}.s-lost{--c:var(--red)}
+
+#tableWrap{flex:1;overflow:auto;padding:4px 14px 14px}
+table{width:100%;border-collapse:collapse;background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--panel)}
+th button{background:none;border:0;cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;padding:0}
+tbody tr{cursor:pointer}
+tbody tr:hover,tbody tr:focus-visible{background:var(--panel)}
+td.num,th.num{text-align:right;font-family:var(--mono)}
+.pill{display:inline-block;border:1px solid var(--c);color:var(--c);border-radius:20px;padding:0 9px;font-size:12px}
+.empty{color:var(--muted);padding:30px;text-align:center}
+
+dialog{background:var(--panel);color:var(--text);border:1px solid var(--line);box-shadow:var(--shadow);padding:0}
+dialog::backdrop{background:rgba(3,8,18,.6)}
+#drawer{margin:0 0 0 auto;height:100%;max-height:100%;width:min(440px,100%);max-width:100%;border-width:0 0 0 1px;overflow:auto}
+#drawer .in{padding:18px}
+#drawer h2,#help h2{font:700 20px var(--serif);margin:0 0 12px}
+.field{margin-bottom:10px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:3px}
+.field input,.field select,.field textarea{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;min-height:36px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.log{list-style:none;margin:10px 0 0;padding:0;border-left:2px solid var(--line)}
+.log li{padding:0 0 10px 12px;position:relative;font-size:13px}
+.log li::before{content:'';position:absolute;left:-5px;top:6px;width:8px;height:8px;border-radius:50%;background:var(--cyan)}
+.log time{display:block;font:400 10.5px var(--mono);color:var(--muted)}
+#pal{margin-top:12vh;width:min(580px,calc(100% - 24px));border-radius:14px}
+#pal input{width:100%;background:none;border:0;border-bottom:1px solid var(--line);padding:14px 16px;font-size:16px;outline:none}
+#palList{list-style:none;margin:0;padding:6px;max-height:50vh;overflow:auto}
+#palList li{padding:8px 10px;border-radius:8px;cursor:pointer;display:flex;gap:10px;align-items:center}
+#palList li[aria-selected=true]{background:var(--panel2);box-shadow:inset 2px 0 0 var(--cyan)}
+#palList li small{margin-left:auto;color:var(--muted);font:400 11px var(--mono)}
+#palList .k{font:600 10px var(--mono);color:var(--muted);width:44px;text-transform:uppercase}
+#help{border-radius:14px;width:min(520px,calc(100% - 24px));padding:20px}
+#help table{border:0;background:none}
+#help td{border:0;padding:4px 8px 4px 0;white-space:normal}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--panel2);border:1px solid var(--cyan);border-radius:10px;padding:8px 10px 8px 14px;z-index:90;box-shadow:var(--shadow);display:flex;gap:12px;align-items:center;max-width:92vw}
+.toast button{background:none;border:0;color:var(--cyan);font-weight:600;cursor:pointer;min-height:30px}
+footer{padding:7px 14px;border-top:1px solid var(--line);font:400 11px var(--mono);color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--bg2)}
+footer a{color:var(--cyan)}
+
+@media (max-width:900px){
+  html,body{height:auto}
+  .stats{grid-template-columns:1fr 1fr}
+  .stats .stat:last-child{grid-column:1/-1}
+  #board{grid-template-columns:repeat(6,82vw);scroll-snap-type:x mandatory;height:68vh;flex:none}
+  .col{scroll-snap-align:center}
+  .search{order:5;max-width:none;flex-basis:100%}
+  .hide-m{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.ghost{transform:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#content" data-i18n="skip">Sari la pipeline</a>
+<header>
+  <div class="brand"><h1>Local-First <em>CRM</em></h1></div>
+  <div class="search"><label class="sr" for="q" data-i18n="search">Caută</label><input id="q" type="search" autocomplete="off" placeholder="Caută oportunități…" data-i18n-ph="searchPh"><kbd aria-hidden="true">/</kbd></div>
+  <span class="sp"></span>
+  <div class="seg" role="group" aria-label="Vizualizare" data-i18n-aria="view"><button id="vBoard" aria-pressed="true" data-i18n="board">Kanban</button><button id="vTable" aria-pressed="false" data-i18n="table">Tabel</button></div>
+  <button class="btn primary" id="new"><span data-i18n="new">+ Nou</span></button>
+  <button class="btn" id="cmd" aria-label="Paletă de comenzi" data-i18n-aria="palette"><kbd>Ctrl K</kbd></button>
+  <button class="btn icon" id="undo" aria-label="Anulează" data-i18n-aria="undo">↶</button>
+  <button class="btn icon" id="redo" aria-label="Refă" data-i18n-aria="redo">↷</button>
+  <button class="btn icon" id="helpB" aria-label="Scurtături" data-i18n-aria="shortcuts">?</button>
+  <button class="btn icon" id="theme" aria-label="Schimbă tema" data-i18n-aria="theme">◐</button>
+  <button class="btn icon" id="lang">EN</button>
+</header>
+<section class="stats" id="stats" aria-label="Indicatori" data-i18n-aria="kpis"></section>
+<div class="filters"><div id="owners" class="row" role="group" aria-label="Filtru responsabil" data-i18n-aria="ownerFilter"></div><span class="save" id="save" role="status"></span></div>
+<main id="content" tabindex="-1">
+  <div id="board" aria-label="Pipeline"></div>
+  <div id="tableWrap" hidden></div>
+</main>
+<footer><span>© 2026 <strong>Laura Andreea</strong> · Iași · <span data-i18n="foot">Date demonstrative, salvate doar în browserul tău (IndexedDB).</span></span><a href="../portfolio.html" data-i18n="back">← Portofoliu</a></footer>
+
+<dialog id="drawer" aria-labelledby="dT"><div class="in" id="drawerIn"></div></dialog>
+<dialog id="pal" aria-label="Paletă de comenzi"><input id="palQ" role="combobox" aria-expanded="true" aria-controls="palList" aria-autocomplete="list" autocomplete="off"><ul id="palList" role="listbox"></ul></dialog>
+<dialog id="help" aria-labelledby="hT"><h2 id="hT" data-i18n="shortcuts">Scurtături</h2><div id="helpBody"></div><div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn primary" id="helpClose" data-i18n="close">Închide</button></div></dialog>
+<div class="toast" id="toast" role="status" hidden><span id="toastM"></span><button id="toastU" data-i18n="undoB">Anulează</button></div>
+<div class="sr" aria-live="polite" id="live"></div>
+<input type="file" id="file" accept="application/json" hidden>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const ls = { get(k, d){ try{ const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); }catch(e){ return d; } }, set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+
+/* ---------- i18n ---------- */
+const I18N = { ro: {
+  skip:'Sari la pipeline', search:'Caută', searchPh:'Caută oportunități…', view:'Vizualizare', board:'Kanban', table:'Tabel', new:'+ Nou', palette:'Paletă de comenzi',
+  undo:'Anulează', redo:'Refă', shortcuts:'Scurtături', theme:'Schimbă tema', kpis:'Indicatori', ownerFilter:'Filtru responsabil', close:'Închide', undoB:'Anulează',
+  foot:'Date demonstrative, salvate doar în browserul tău (IndexedDB).', back:'← Portofoliu',
+  lead:'Lead', qual:'Calificat', prop:'Propunere', nego:'Negociere', won:'Câștigat', lost:'Pierdut',
+  kOpen:'Pipeline deschis', kFore:'Prognoză ponderată', kWin:'Rată de câștig', kCount:'Oportunități deschise', kMonth:'Câștigat luna aceasta', target:'țintă',
+  all:'Toți', addHere:'+ Adaugă', none:'Nicio oportunitate nu se potrivește filtrului.',
+  fTitle:'Titlu', fCompany:'Companie', fContact:'Persoană de contact', fEmail:'Email', fValue:'Valoare (€)', fStage:'Etapă', fOwner:'Responsabil', fPrio:'Prioritate', fDue:'Termen', fTags:'Etichete (separate prin virgulă)',
+  high:'Mare', med:'Medie', low:'Mică', note:'Notă nouă', addNote:'Adaugă nota', activity:'Activitate', del:'Șterge', newDeal:'Oportunitate nouă',
+  lCreated:'Creată', lStage:'Mutată: {a} → {b}', lNote:'Notă', saved:'Salvat local în <b>{ms} ms</b>', mem:'IndexedDB indisponibil — datele rămân doar în memorie', synced:'Actualizat din alt tab',
+  tMoved:'„{n}” mutată în {s}', tCreated:'„{n}” creată', tDeleted:'„{n}” ștearsă', tEdited:'„{n}” actualizată', tNote:'Notă adăugată', tUndo:'Anulat', tRedo:'Refăcut', tReset:'Datele demo au fost refăcute', tImport:'{n} oportunități importate', tBad:'Fișierul nu este un export valid.',
+  cNew:'Oportunitate nouă', cBoard:'Vezi Kanban', cTable:'Vezi Tabel', cTheme:'Schimbă tema', cLang:'Switch to English', cUndo:'Anulează ultima acțiune', cRedo:'Refă', cExport:'Exportă JSON', cCsv:'Exportă CSV', cImport:'Importă JSON', cReset:'Reface datele demo', cHelp:'Arată scurtăturile', cClear:'Șterge filtrele', cOwner:'Filtrează: {n}', cMove:'Mută „{n}” în {s}',
+  kCmd:'comandă', kDeal:'deal', palPh:'Scrie o comandă sau caută o oportunitate…', palNone:'Niciun rezultat',
+  today:'azi', dAgo:'acum {n} z', dIn:'în {n} z',
+  help:[['Ctrl K','Paletă de comenzi'],['N','Oportunitate nouă'],['/','Caută'],['1 / 2','Kanban / Tabel'],['↑ ↓ ← →','Navighează între carduri'],['Shift + ← →','Mută cardul în altă etapă'],['Shift + ↑ ↓','Reordonează în coloană'],['Enter','Deschide cardul'],['Delete','Șterge (se poate anula)'],['Ctrl Z / Ctrl Shift Z','Anulează / Refă'],['Esc','Închide']],
+  helpDnd:'Cu mouse-ul tragi cardurile între coloane. Pe ecran tactil, ține apăsat pe card o clipă, apoi trage.'
+}, en: {
+  skip:'Skip to pipeline', search:'Search', searchPh:'Search deals…', view:'View', board:'Kanban', table:'Table', new:'+ New', palette:'Command palette',
+  undo:'Undo', redo:'Redo', shortcuts:'Shortcuts', theme:'Toggle theme', kpis:'Indicators', ownerFilter:'Owner filter', close:'Close', undoB:'Undo',
+  foot:'Demo data, stored only in your browser (IndexedDB).', back:'← Portfolio',
+  lead:'Lead', qual:'Qualified', prop:'Proposal', nego:'Negotiation', won:'Won', lost:'Lost',
+  kOpen:'Open pipeline', kFore:'Weighted forecast', kWin:'Win rate', kCount:'Open deals', kMonth:'Won this month', target:'target',
+  all:'Everyone', addHere:'+ Add', none:'No deals match the filter.',
+  fTitle:'Title', fCompany:'Company', fContact:'Contact person', fEmail:'Email', fValue:'Value (€)', fStage:'Stage', fOwner:'Owner', fPrio:'Priority', fDue:'Due date', fTags:'Tags (comma separated)',
+  high:'High', med:'Medium', low:'Low', note:'New note', addNote:'Add note', activity:'Activity', del:'Delete', newDeal:'New deal',
+  lCreated:'Created', lStage:'Moved: {a} → {b}', lNote:'Note', saved:'Saved locally in <b>{ms} ms</b>', mem:'IndexedDB unavailable — data stays in memory only', synced:'Updated from another tab',
+  tMoved:'“{n}” moved to {s}', tCreated:'“{n}” created', tDeleted:'“{n}” deleted', tEdited:'“{n}” updated', tNote:'Note added', tUndo:'Undone', tRedo:'Redone', tReset:'Demo data restored', tImport:'{n} deals imported', tBad:'That file is not a valid export.',
+  cNew:'New deal', cBoard:'Show Kanban', cTable:'Show Table', cTheme:'Toggle theme', cLang:'Schimbă în română', cUndo:'Undo last action', cRedo:'Redo', cExport:'Export JSON', cCsv:'Export CSV', cImport:'Import JSON', cReset:'Restore demo data', cHelp:'Show shortcuts', cClear:'Clear filters', cOwner:'Filter: {n}', cMove:'Move “{n}” to {s}',
+  kCmd:'command', kDeal:'deal', palPh:'Type a command or search for a deal…', palNone:'No results',
+  today:'today', dAgo:'{n}d ago', dIn:'in {n}d',
+  help:[['Ctrl K','Command palette'],['N','New deal'],['/','Search'],['1 / 2','Kanban / Table'],['↑ ↓ ← →','Move between cards'],['Shift + ← →','Move card to another stage'],['Shift + ↑ ↓','Reorder within the column'],['Enter','Open card'],['Delete','Delete (can be undone)'],['Ctrl Z / Ctrl Shift Z','Undo / Redo'],['Esc','Close']],
+  helpDnd:'With a mouse, drag cards between columns. On a touch screen, press and hold a card briefly, then drag.'
+}};
+let lang = ls.get('lf.lang', (navigator.language || 'ro').startsWith('ro') ? 'ro' : 'en');
+{ const p = new URLSearchParams(location.search).get('lang'); if (p === 'ro' || p === 'en') lang = p; }
+const t = (k, v) => { let s = I18N[lang][k] ?? I18N.ro[k] ?? k; if (v) for (const x in v) s = s.replace('{' + x + '}', v[x]); return s; };
+const loc = () => lang === 'ro' ? 'ro-RO' : 'en-GB';
+const money = n => Number(n || 0).toLocaleString(loc(), { maximumFractionDigits:0 }) + ' €';
+
+/* ---------- model ---------- */
+const STAGES = ['lead','qual','prop','nego','won','lost'], PROB = { lead:.1, qual:.25, prop:.5, nego:.75, won:1, lost:0 };
+const OWNERS = [{ id:'ana', n:'Ana P.', c:'var(--cyan)' }, { id:'mihai', n:'Mihai D.', c:'var(--amber)' }, { id:'ioana', n:'Ioana R.', c:'var(--pink)' }, { id:'radu', n:'Radu T.', c:'var(--green)' }];
+const owner = id => OWNERS.find(o => o.id === id) || OWNERS[0];
+const DAY = 864e5, uid = () => 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+let deals = [], meta = { target:60000 }, view = ls.get('lf.view', 'board'), q = '', fOwner = '', selId = null, sort = { k:'value', d:-1 };
+const undoS = [], redoS = [];
+const byId = id => deals.find(d => d.id === id);
+function seed(){
+  const ro = lang === 'ro', now = Date.now(), R = [
+    ['Abonament anual platformă','Annual platform plan','Atelier Brad','Elena Voicu',18400,'nego',0,'high',3,'SaaS'],
+    ['Redesign magazin online','Online store redesign','Cafeneaua Lumen','Tudor Ene',9200,'prop',1,'med',6,'E-commerce'],
+    ['Pachet automatizări email','Email automation package','Studio Vector','Maria Stan',6400,'qual',2,'med',9,'Email'],
+    ['Implementare CRM echipă vânzări','Sales team CRM rollout','Ferma Verde','Andrei Luca',24500,'prop',0,'high',-2,'CRM'],
+    ['Audit de accesibilitate','Accessibility audit','Librăria Nord','Ioana Marin',3800,'lead',3,'low',14,'Audit'],
+    ['Dashboard raportare lunară','Monthly reporting dashboard','Transport Carpat','Vlad Popa',11800,'nego',1,'high',1,'Dashboard'],
+    ['Campanie lansare produs','Product launch campaign','Ceramica Sud','Diana Radu',7600,'lead',2,'med',20,'Marketing'],
+    ['Migrare site pe platformă nouă','Site migration to new platform','Hotel Dealul Mare','Paul Ionescu',15300,'qual',3,'med',11,'Web'],
+    ['Mentenanță trimestrială','Quarterly maintenance','Clinica Albastră','Sorina Dinu',4200,'won',0,'low',-6,'Suport'],
+    ['Integrare plăți online','Online payments integration','Bicicleta Urbană','Cristi Neagu',8900,'won',1,'med',-3,'E-commerce'],
+    ['Training echipă marketing','Marketing team training','Școala de Vară Codru','Alina Barbu',2900,'lost',2,'low',-12,'Training'],
+    ['Aplicație programări','Booking app','Salon Iris','Bianca Toma',13600,'prop',3,'high',5,'App'],
+    ['Newsletter săptămânal','Weekly newsletter','Piața Locală','Dan Mihai',1800,'lead',0,'low',18,'Email'],
+    ['Optimizare viteză site','Site speed optimisation','Mobila Lemn','Oana Sava',5100,'qual',1,'med',8,'Performance'],
+    ['Portal clienți','Customer portal','Asigurări Zenit','George Pavel',31200,'lead',2,'high',25,'Portal'],
+    ['Landing page eveniment','Event landing page','Festivalul Teilor','Irina Coman',2400,'won',3,'low',-9,'Web'],
+    ['Strategie conținut 2027','2027 content strategy','Editura Fir','Mara Olaru',6800,'nego',2,'med',4,'Content'],
+    ['Extindere licențe','Licence expansion','Atelier Brad','Elena Voicu',9700,'qual',0,'med',13,'SaaS'],
+    ['Chatbot suport clienți','Customer support chatbot','Farmacia Tei','Lucian Dobre',12400,'lost',1,'med',-15,'Suport'],
+    ['Sistem de fidelizare','Loyalty programme','Brutăria Spic','Carmen Ilie',7300,'prop',3,'med',7,'CRM'],
+    ['Raport SEO și plan','SEO report and plan','Pensiunea Izvor','Marius Zota',2600,'lead',1,'low',16,'SEO'],
+    ['Catalog digital produse','Digital product catalogue','Ceramica Sud','Diana Radu',5600,'won',2,'med',-1,'Web']
+  ];
+  return R.map((r, i) => { const created = now - (30 - i) * DAY, closed = r[5] === 'won' || r[5] === 'lost';
+    return { id:'s' + i, title:ro ? r[0] : r[1], company:r[2], contact:r[3], email:r[3].toLowerCase().replace(/[^a-z ]/g, '').replace(' ', '.') + '@exemplu.ro', value:r[4], stage:r[5], owner:OWNERS[r[6]].id, prio:r[7],
+      due:new Date(now + r[8] * DAY).toISOString().slice(0, 10), tags:[r[9]], ord:i, created, closedAt:closed ? now + r[8] * DAY : null, log:[{ t:created, k:'created' }] }; });
+}
+
+/* ---------- storage: IndexedDB with memory fallback ---------- */
+let db = null, bc = null, saveT = 0;
+const openDB = () => new Promise(res => { try{ const r = indexedDB.open('lf-crm', 1); r.onupgradeneeded = () => { r.result.createObjectStore('deals', { keyPath:'id' }); r.result.createObjectStore('meta'); };
+  r.onsuccess = () => res(r.result); r.onerror = () => res(null); r.onblocked = () => res(null); }catch(e){ res(null); } });
+const loadDB = () => new Promise(res => { if (!db) return res(null); const tx = db.transaction(['deals','meta']), a = tx.objectStore('deals').getAll(), m = tx.objectStore('meta').get('meta');
+  tx.oncomplete = () => res({ deals:a.result || [], meta:m.result }); tx.onerror = () => res(null); });
+function persist(){
+  clearTimeout(saveT);
+  saveT = setTimeout(() => {
+    if (!db){ $('#save').textContent = t('mem'); return; }
+    const t0 = performance.now(), tx = db.transaction(['deals','meta'], 'readwrite'), s = tx.objectStore('deals');
+    s.clear(); deals.forEach(d => s.put(d)); tx.objectStore('meta').put(meta, 'meta');
+    tx.oncomplete = () => { $('#save').innerHTML = t('saved', { ms:(performance.now() - t0).toFixed(1) }); bc && bc.postMessage('changed'); };
+  }, 60);
+}
+
+/* ---------- history ---------- */
+let last = '[]';
+const snap = () => JSON.stringify(deals);
+function commit(msg, quiet){ undoS.push(last); if (undoS.length > 200) undoS.shift(); redoS.length = 0; last = snap(); persist(); render(); if (msg && !quiet) toast(msg, true); if (msg) say(msg); }
+function undo(){ if (!undoS.length) return; redoS.push(last); last = undoS.pop(); deals = JSON.parse(last); persist(); render(); refreshDrawer(); toast(t('tUndo')); }
+function redo(){ if (!redoS.length) return; undoS.push(last); last = redoS.pop(); deals = JSON.parse(last); persist(); render(); refreshDrawer(); toast(t('tRedo')); }
+
+/* ---------- mutations ---------- */
+function colDeals(stage, except){ return deals.filter(d => d.stage === stage && d.id !== except).sort((a, b) => a.ord - b.ord); }
+function moveDeal(id, stage, beforeId){
+  const d = byId(id); if (!d) return; const from = d.stage, list = colDeals(stage, id), i = beforeId ? list.findIndex(x => x.id === beforeId) : -1;
+  if (i < 0) list.push(d); else list.splice(i, 0, d);
+  if (from !== stage){ d.stage = stage; d.closedAt = stage === 'won' || stage === 'lost' ? Date.now() : null; d.log.push({ t:Date.now(), k:'stage', a:from, b:stage }); }
+  list.forEach((x, n) => x.ord = n); selId = id;
+  commit(from !== stage ? t('tMoved', { n:d.title, s:t(stage) }) : null);
+}
+function createDeal(stage){
+  const d = { id:uid(), title:t('newDeal'), company:'', contact:'', email:'', value:0, stage:stage || 'lead', owner:fOwner || OWNERS[0].id, prio:'med', due:new Date(Date.now() + 7 * DAY).toISOString().slice(0, 10), tags:[], ord:-1, created:Date.now(), closedAt:null, log:[{ t:Date.now(), k:'created' }] };
+  deals.push(d); colDeals(d.stage).forEach((x, n) => x.ord = n); selId = d.id; commit(t('tCreated', { n:d.title }), true); openDrawer(d.id, true);
+}
+function deleteDeal(id){ const d = byId(id); if (!d) return; deals = deals.filter(x => x.id !== id); if (selId === id) selId = null; if ($('#drawer').open) $('#drawer').close(); commit(t('tDeleted', { n:d.title })); }
+
+/* ---------- rendering ---------- */
+const visible = () => { const s = q.trim().toLowerCase(); return deals.filter(d => (!fOwner || d.owner === fOwner) && (!s || (d.title + ' ' + d.company + ' ' + d.contact + ' ' + d.tags.join(' ')).toLowerCase().includes(s))); };
+function dueTxt(d){ const n = Math.round((new Date(d.due) - new Date(new Date().toISOString().slice(0, 10))) / DAY); return { txt:n === 0 ? t('today') : n < 0 ? t('dAgo', { n:-n }) : t('dIn', { n }), late:n < 0 && d.stage !== 'won' && d.stage !== 'lost' }; }
+function cardHTML(d){ const o = owner(d.owner), du = dueTxt(d);
+  return `<div class="card${d.id === selId ? ' sel' : ''}" data-id="${d.id}" tabindex="0" role="button" aria-label="${esc(`${d.title}, ${d.company}, ${money(d.value)}, ${t(d.stage)}`)}">
+    <b>${esc(d.title)}</b><span class="co">${esc(d.company)}</span>${d.tags.length ? `<div class="tags">${d.tags.map(x => `<span class="tag">${esc(x)}</span>`).join('')}</div>` : ''}
+    <div class="ft"><span class="pr ${d.prio}" title="${t(d.prio)}"></span>${money(d.value)}<span class="due${du.late ? ' late' : ''}">${du.txt}</span><span class="av" style="--c:${o.c}" title="${esc(o.n)}">${o.n[0]}</span></div></div>`; }
+function renderStats(){
+  const open = deals.filter(d => d.stage !== 'won' && d.stage !== 'lost'), won = deals.filter(d => d.stage === 'won'), lost = deals.filter(d => d.stage === 'lost'), sum = a => a.reduce((s, d) => s + (+d.value || 0), 0);
+  const m = new Date(), month = won.filter(d => { const c = new Date(d.closedAt || 0); return c.getMonth() === m.getMonth() && c.getFullYear() === m.getFullYear(); }), mv = sum(month), pct = Math.min(100, mv / (meta.target || 1) * 100);
+  $('#stats').innerHTML = `<div class="stat"><small>${t('kOpen')}</small><b>${money(sum(open))}</b></div>
+    <div class="stat"><small>${t('kFore')}</small><b>${money(open.reduce((s, d) => s + d.value * PROB[d.stage], 0))}</b></div>
+    <div class="stat"><small>${t('kWin')}</small><b>${won.length + lost.length ? Math.round(won.length / (won.length + lost.length) * 100) : 0}%</b></div>
+    <div class="stat"><small>${t('kCount')}</small><b>${open.length}</b></div>
+    <div class="stat"><small class="wrap">${t('kMonth')} · <label for="target">${t('target')}</label> <input id="target" type="number" min="1000" step="1000" value="${meta.target}"></small><b>${money(mv)}</b><div class="bar" role="progressbar" aria-valuenow="${Math.round(pct)}" aria-valuemin="0" aria-valuemax="100" aria-label="${t('kMonth')}"><i style="width:${pct}%"></i></div></div>`;
+  $('#target').onchange = e => { meta.target = Math.max(1000, +e.target.value || 60000); persist(); renderStats(); };
+}
+function render(){
+  renderStats();
+  $('#owners').innerHTML = `<button class="chip" data-o="" aria-pressed="${!fOwner}">${t('all')}</button>` + OWNERS.map(o => `<button class="chip" data-o="${o.id}" aria-pressed="${fOwner === o.id}"><span class="av" style="--c:${o.c}">${o.n[0]}</span>${esc(o.n)}</button>`).join('');
+  $$('#owners .chip').forEach(b => b.onclick = () => { fOwner = b.dataset.o; render(); });
+  $('#vBoard').setAttribute('aria-pressed', view === 'board'); $('#vTable').setAttribute('aria-pressed', view === 'table');
+  $('#board').hidden = view !== 'board'; $('#tableWrap').hidden = view !== 'table';
+  $('#undo').disabled = !undoS.length; $('#redo').disabled = !redoS.length;
+  const vis = visible(), refocus = document.activeElement && document.activeElement.closest && document.activeElement.closest('#board .card');
+  if (view === 'board'){
+    $('#board').innerHTML = STAGES.map(s => { const l = vis.filter(d => d.stage === s).sort((a, b) => a.ord - b.ord);
+      return `<section class="col s-${s}" data-stage="${s}" aria-label="${t(s)}"><h2>${t(s)} <span>${l.length}</span><em>${money(l.reduce((x, d) => x + d.value, 0))}</em></h2><div class="cards">${l.map(cardHTML).join('')}</div><button class="add" data-add="${s}">${t('addHere')}</button></section>`; }).join('');
+    if (refocus && selId){ const c = $(`.card[data-id="${selId}"]`); c && c.focus({ preventScroll:false }); }
+  } else {
+    const cols = [['title','fTitle'],['company','fCompany'],['value','fValue','num'],['stage','fStage'],['owner','fOwner'],['prio','fPrio'],['due','fDue']], pr = { high:0, med:1, low:2 };
+    const key = d => sort.k === 'stage' ? STAGES.indexOf(d.stage) : sort.k === 'prio' ? pr[d.prio] : sort.k === 'owner' ? owner(d.owner).n : d[sort.k];
+    const rows = vis.slice().sort((a, b) => { const x = key(a), y = key(b); return (x > y ? 1 : x < y ? -1 : 0) * sort.d; });
+    $('#tableWrap').innerHTML = rows.length ? `<table><thead><tr>${cols.map(([k, l, c]) => `<th class="${c || ''}" aria-sort="${sort.k === k ? (sort.d > 0 ? 'ascending' : 'descending') : 'none'}"><button data-sort="${k}">${t(l).replace(/ \(.*/, '')}${sort.k === k ? (sort.d > 0 ? ' ↑' : ' ↓') : ''}</button></th>`).join('')}</tr></thead><tbody>` +
+      rows.map(d => { const o = owner(d.owner), du = dueTxt(d); return `<tr data-id="${d.id}" tabindex="0"><td><b>${esc(d.title)}</b></td><td>${esc(d.company)}</td><td class="num">${money(d.value)}</td><td><span class="pill s-${d.stage}">${t(d.stage)}</span></td><td><span class="av" style="--c:${o.c}">${o.n[0]}</span> ${esc(o.n)}</td><td><span class="pr ${d.prio}" style="display:inline-block"></span> ${t(d.prio)}</td><td style="${du.late ? 'color:var(--red)' : ''}">${d.due} · ${du.txt}</td></tr>`; }).join('') + `</tbody></table>` : `<p class="empty">${t('none')}</p>`;
+  }
+}
+
+/* ---------- drawer ---------- */
+function openDrawer(id, focusTitle){ selId = id; const d = byId(id); if (!d) return; fillDrawer(d); const dl = $('#drawer'); if (!dl.open) dl.showModal(); if (focusTitle){ const i = $('#f-title'); i.focus(); i.select(); } $$('.card').forEach(c => c.classList.toggle('sel', c.dataset.id === id)); }
+function refreshDrawer(){ const dl = $('#drawer'); if (!dl.open) return; const d = byId(selId); d ? fillDrawer(d) : dl.close(); }
+function fillDrawer(d){
+  const F = (k, type, extra = '') => `<div class="field"><label for="f-${k}">${t('f' + k[0].toUpperCase() + k.slice(1))}</label><input id="f-${k}" data-k="${k}" type="${type}" value="${esc(k === 'tags' ? d.tags.join(', ') : d[k])}" ${extra}></div>`;
+  const S = (k, lab, opts) => `<div class="field"><label for="f-${k}">${t(lab)}</label><select id="f-${k}" data-k="${k}">${opts.map(([v, l]) => `<option value="${v}"${d[k] === v ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select></div>`;
+  const fmtT = ts => new Date(ts).toLocaleString(loc(), { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+  $('#drawerIn').innerHTML = `<div class="row" style="justify-content:space-between"><h2 id="dT">${esc(d.title)}</h2><button class="btn icon" id="dClose" aria-label="${t('close')}">✕</button></div>
+    ${F('title', 'text', 'maxlength="80"')}<div class="g2">${F('company', 'text', 'maxlength="60"')}${F('contact', 'text', 'maxlength="60"')}</div>${F('email', 'email')}
+    <div class="g2">${F('value', 'number', 'min="0" step="100"')}${S('stage', 'fStage', STAGES.map(s => [s, t(s)]))}</div>
+    <div class="g2">${S('owner', 'fOwner', OWNERS.map(o => [o.id, o.n]))}${S('prio', 'fPrio', [['high', t('high')], ['med', t('med')], ['low', t('low')]])}</div>
+    <div class="g2">${F('due', 'date')}${F('tags', 'text')}</div>
+    <div class="field"><label for="noteT">${t('note')}</label><textarea id="noteT" rows="2"></textarea></div>
+    <div class="row" style="justify-content:space-between"><button class="btn" id="noteB">${t('addNote')}</button><button class="btn danger" id="dDel">${t('del')}</button></div>
+    <h2 style="font-size:16px;margin-top:18px">${t('activity')}</h2><ul class="log">${d.log.slice().reverse().map(l => `<li><time>${fmtT(l.t)}</time>${l.k === 'created' ? t('lCreated') : l.k === 'stage' ? t('lStage', { a:t(l.a), b:t(l.b) }) : `<b>${t('lNote')}:</b> ${esc(l.text)}`}</li>`).join('')}</ul>`;
+  $('#dClose').onclick = () => $('#drawer').close(); $('#dDel').onclick = () => deleteDeal(d.id);
+  $('#noteB').onclick = () => { const v = $('#noteT').value.trim(); if (!v) return; d.log.push({ t:Date.now(), k:'note', text:v.slice(0, 500) }); commit(t('tNote'), true); fillDrawer(d); $('#noteT').focus(); };
+  $$('#drawerIn [data-k]').forEach(i => i.onchange = () => {
+    const k = i.dataset.k, id = i.id;
+    if (k === 'stage'){ moveDeal(d.id, i.value); }
+    else { d[k] = k === 'value' ? Math.max(0, +i.value || 0) : k === 'tags' ? i.value.split(',').map(x => x.trim().slice(0, 20)).filter(Boolean).slice(0, 4) : k === 'title' ? (i.value.trim() || t('newDeal')) : i.value.trim(); commit(t('tEdited', { n:d.title }), true); }
+    fillDrawer(byId(d.id)); const el = document.getElementById(id); el && el.focus();
+  });
+}
+$('#drawer').addEventListener('click', e => { if (e.target === $('#drawer')) $('#drawer').close(); });
+$('#drawer').addEventListener('close', () => { const c = selId && $(view === 'board' ? `.card[data-id="${selId}"]` : `tr[data-id="${selId}"]`); c && c.focus(); });
+
+/* ---------- drag and drop (pointer events, mouse + touch) ---------- */
+const board = $('#board'); let pd = null, justDragged = false;
+board.addEventListener('pointerdown', e => {
+  const card = e.target.closest('.card'); if (!card || e.button > 0) return;
+  pd = { id:card.dataset.id, card, x:e.clientX, y:e.clientY, touch:e.pointerType !== 'mouse', on:false };
+  if (pd.touch) pd.timer = setTimeout(() => pd && startDrag(pd.x, pd.y), 280);
+});
+function startDrag(x, y){
+  const r = pd.card.getBoundingClientRect(); pd.on = true; pd.ox = x - r.left; pd.oy = y - r.top;
+  pd.ghost = pd.card.cloneNode(true); pd.ghost.classList.add('ghost'); pd.ghost.style.width = r.width + 'px'; document.body.appendChild(pd.ghost);
+  pd.ph = document.createElement('div'); pd.ph.className = 'ph'; pd.ph.style.height = r.height + 'px'; pd.card.after(pd.ph); pd.card.classList.add('dragging'); pd.card.style.display = 'none';
+  if (pd.touch && navigator.vibrate) navigator.vibrate(12); moveDrag(x, y);
+}
+function moveDrag(x, y){
+  pd.ghost.style.left = x - pd.ox + 'px'; pd.ghost.style.top = y - pd.oy + 'px';
+  const col = (document.elementFromPoint(x, y) || board).closest('.col'); $$('.col.over').forEach(c => c.classList.remove('over'));
+  if (col){ col.classList.add('over'); const cards = [...col.querySelectorAll('.card:not(.dragging)')], before = cards.find(c => { const r = c.getBoundingClientRect(); return y < r.top + r.height / 2; });
+    const wrap = col.querySelector('.cards'); before ? wrap.insertBefore(pd.ph, before) : wrap.appendChild(pd.ph); }
+  const br = board.getBoundingClientRect(); if (x > br.right - 50) board.scrollLeft += 14; else if (x < br.left + 50) board.scrollLeft -= 14;
+}
+window.addEventListener('pointermove', e => {
+  if (!pd) return;
+  if (!pd.on){ const dist = Math.abs(e.clientX - pd.x) + Math.abs(e.clientY - pd.y); if (!pd.touch && dist > 6) startDrag(e.clientX, e.clientY); else if (pd.touch && dist > 12){ clearTimeout(pd.timer); pd = null; } return; }
+  moveDrag(e.clientX, e.clientY);
+});
+function endDrag(drop){
+  if (!pd) return; clearTimeout(pd.timer); const p = pd; pd = null; if (!p.on) return;
+  const col = p.ph.closest('.col'), next = p.ph.nextElementSibling; p.ghost.remove(); $$('.col.over').forEach(c => c.classList.remove('over'));
+  justDragged = true; setTimeout(() => justDragged = false, 50);
+  if (drop && col) moveDeal(p.id, col.dataset.stage, next && next.classList.contains('card') ? next.dataset.id : null); else render();
+}
+window.addEventListener('pointerup', () => endDrag(true)); window.addEventListener('pointercancel', () => endDrag(false));
+document.addEventListener('touchmove', e => { if (pd && pd.on) e.preventDefault(); }, { passive:false });
+board.addEventListener('contextmenu', e => { if (e.target.closest('.card') && pd) e.preventDefault(); });
+board.addEventListener('click', e => {
+  if (justDragged) return; const add = e.target.closest('[data-add]'); if (add) return createDeal(add.dataset.add);
+  const c = e.target.closest('.card'); if (c) openDrawer(c.dataset.id);
+});
+board.addEventListener('focusin', e => { const c = e.target.closest('.card'); if (c){ selId = c.dataset.id; $$('.card').forEach(x => x.classList.toggle('sel', x === c)); } });
+$('#tableWrap').addEventListener('click', e => { const s = e.target.closest('[data-sort]'); if (s){ sort = { k:s.dataset.sort, d:sort.k === s.dataset.sort ? -sort.d : 1 }; render(); const b = $(`[data-sort="${sort.k}"]`); b && b.focus(); return; } const r = e.target.closest('tr[data-id]'); if (r) openDrawer(r.dataset.id); });
+$('#tableWrap').addEventListener('keydown', e => { const r = e.target.closest('tr[data-id]'); if (r && e.key === 'Enter') openDrawer(r.dataset.id); });
+
+/* ---------- keyboard ---------- */
+document.addEventListener('keydown', e => {
+  const mod = e.ctrlKey || e.metaKey, k = e.key.toLowerCase();
+  if (mod && k === 'k'){ e.preventDefault(); return openPal(); }
+  const tag = (e.target.tagName || '').toLowerCase(), typing = tag === 'input' || tag === 'select' || tag === 'textarea';
+  if (mod && k === 'z' && !typing){ e.preventDefault(); return e.shiftKey ? redo() : undo(); }
+  if (mod && k === 'y' && !typing){ e.preventDefault(); return redo(); }
+  if (typing || mod || e.altKey || document.querySelector('dialog[open]')) return;
+  const card = e.target.closest && e.target.closest('#board .card');
+  if (card){
+    const d = byId(card.dataset.id), col = card.closest('.col'), cards = [...col.querySelectorAll('.card')], i = cards.indexOf(card), si = STAGES.indexOf(d.stage);
+    const focusId = id => { const c = $(`.card[data-id="${id}"]`); c && c.focus(); };
+    if (e.shiftKey && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')){ e.preventDefault(); const ns = STAGES[si + (e.key === 'ArrowRight' ? 1 : -1)]; if (ns){ moveDeal(d.id, ns); focusId(d.id); } return; }
+    if (e.shiftKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')){ e.preventDefault(); const up = e.key === 'ArrowUp', tgt = up ? cards[i - 1] : cards[i + 2]; if (up ? i > 0 : i < cards.length - 1){ moveDeal(d.id, d.stage, tgt ? tgt.dataset.id : null); focusId(d.id); } return; }
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp'){ e.preventDefault(); const n = cards[i + (e.key === 'ArrowDown' ? 1 : -1)]; n && n.focus(); return; }
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft'){ e.preventDefault(); const dir = e.key === 'ArrowRight' ? 1 : -1; for (let c = col; (c = dir > 0 ? c.nextElementSibling : c.previousElementSibling);){ const cs = c.querySelectorAll('.card'); if (cs.length){ cs[Math.min(i, cs.length - 1)].focus(); break; } } return; }
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); return openDrawer(d.id); }
+    if (e.key === 'Delete' || e.key === 'Backspace'){ e.preventDefault(); const n = cards[i + 1] || cards[i - 1]; deleteDeal(d.id); if (n) focusId(n.dataset.id); return; }
+  }
+  if (k === 'n'){ e.preventDefault(); createDeal(); }
+  else if (e.key === '/'){ e.preventDefault(); $('#q').focus(); }
+  else if (e.key === '1'){ setView('board'); } else if (e.key === '2'){ setView('table'); }
+  else if (e.key === '?'){ openHelp(); }
+});
+
+/* ---------- command palette ---------- */
+let palItems = [], palI = 0;
+function fuzzy(text, query){ text = text.toLowerCase(); let ti = 0, score = 0, streak = 0; for (const ch of query){ const f = text.indexOf(ch, ti); if (f < 0) return -1; streak = f === ti ? streak + 1 : 0; score += 1 + streak * 2 - (f - ti) * .05; if (f === 0) score += 3; ti = f + 1; } return score; }
+function commands(){
+  const c = [['cNew', () => createDeal(), 'N'], ['cBoard', () => setView('board'), '1'], ['cTable', () => setView('table'), '2'], ['cUndo', undo, 'Ctrl Z'], ['cRedo', redo, 'Ctrl ⇧ Z'], ['cTheme', toggleTheme], ['cLang', toggleLang],
+    ['cExport', exportJSON], ['cCsv', exportCSV], ['cImport', () => $('#file').click()], ['cReset', resetDemo], ['cHelp', openHelp, '?'], ['cClear', () => { q = ''; $('#q').value = ''; fOwner = ''; render(); }]].map(([k, run, hint]) => ({ kind:'cmd', label:t(k), run, hint }));
+  OWNERS.forEach(o => c.push({ kind:'cmd', label:t('cOwner', { n:o.n }), run:() => { fOwner = o.id; render(); } }));
+  const d = byId(selId); if (d) STAGES.filter(s => s !== d.stage).forEach(s => c.push({ kind:'cmd', label:t('cMove', { n:d.title, s:t(s) }), run:() => moveDeal(d.id, s) }));
+  return c;
+}
+function openPal(){ const p = $('#pal'); if (p.open) return p.close(); $$('dialog[open]').forEach(d => d.close()); $('#palQ').value = ''; $('#palQ').placeholder = t('palPh'); p.showModal(); fillPal(); }
+function fillPal(){
+  const s = $('#palQ').value.trim().toLowerCase(), all = commands().concat(deals.map(d => ({ kind:'deal', label:d.title, sub:d.company + ' · ' + money(d.value), run:() => openDrawer(d.id) })));
+  palItems = s ? all.map(x => ({ x, sc:Math.max(fuzzy(x.label, s), x.sub ? fuzzy(x.sub, s) - 1 : -1) })).filter(r => r.sc >= 0).sort((a, b) => b.sc - a.sc).slice(0, 12).map(r => r.x) : all.filter(x => x.kind === 'cmd').slice(0, 13);
+  palI = 0; drawPal();
+}
+function drawPal(){
+  $('#palList').innerHTML = palItems.length ? palItems.map((x, i) => `<li role="option" id="po${i}" aria-selected="${i === palI}" data-i="${i}"><span class="k">${t(x.kind === 'cmd' ? 'kCmd' : 'kDeal')}</span><span>${esc(x.label)}</span><small>${esc(x.sub || x.hint || '')}</small></li>`).join('') : `<li class="empty" style="padding:14px">${t('palNone')}</li>`;
+  $('#palQ').setAttribute('aria-activedescendant', palItems.length ? 'po' + palI : ''); const el = $('#po' + palI); el && el.scrollIntoView({ block:'nearest' });
+}
+function runPal(i){ const x = palItems[i]; if (!x) return; $('#pal').close(); x.run(); }
+$('#palQ').addEventListener('input', fillPal);
+$('#palQ').addEventListener('keydown', e => { if (e.key === 'ArrowDown'){ e.preventDefault(); palI = (palI + 1) % (palItems.length || 1); drawPal(); } else if (e.key === 'ArrowUp'){ e.preventDefault(); palI = (palI - 1 + palItems.length) % (palItems.length || 1); drawPal(); } else if (e.key === 'Enter'){ e.preventDefault(); runPal(palI); } });
+$('#palList').addEventListener('click', e => { const li = e.target.closest('[data-i]'); if (li) runPal(+li.dataset.i); });
+$('#pal').addEventListener('click', e => { if (e.target === $('#pal')) $('#pal').close(); });
+
+/* ---------- misc actions ---------- */
+function setView(v){ view = v; ls.set('lf.view', v); render(); }
+function toggleTheme(){ const th = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = th; ls.set('lf.theme', th); }
+function toggleLang(){ lang = lang === 'ro' ? 'en' : 'ro'; ls.set('lf.lang', lang); applyLang(); }
+function download(name, text, type){ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 500); }
+function exportJSON(){ download('local-first-crm.json', JSON.stringify({ app:'local-first-crm', v:1, meta, deals }, null, 1), 'application/json'); }
+function exportCSV(){ const c = v => /^[=+\-@]/.test(String(v)) ? "'" + v : v, row = a => a.map(v => '"' + String(c(v ?? '')).replace(/"/g, '""') + '"').join(',');
+  download('local-first-crm.csv', '﻿' + [row(['title','company','contact','email','value','stage','owner','priority','due','tags'])].concat(deals.map(d => row([d.title, d.company, d.contact, d.email, d.value, d.stage, owner(d.owner).n, d.prio, d.due, d.tags.join(' ')]))).join('\n'), 'text/csv'); }
+const validDeal = d => d && typeof d.id === 'string' && typeof d.title === 'string' && STAGES.includes(d.stage) && isFinite(d.value);
+function clean(d, i){ return { id:d.id, title:String(d.title).slice(0, 80), company:String(d.company || '').slice(0, 60), contact:String(d.contact || '').slice(0, 60), email:String(d.email || '').slice(0, 80), value:Math.max(0, +d.value || 0), stage:d.stage, owner:owner(d.owner).id, prio:['high','med','low'].includes(d.prio) ? d.prio : 'med',
+  due:/^\d{4}-\d\d-\d\d$/.test(d.due) ? d.due : new Date().toISOString().slice(0, 10), tags:Array.isArray(d.tags) ? d.tags.map(x => String(x).slice(0, 20)).slice(0, 4) : [], ord:isFinite(d.ord) ? d.ord : i, created:+d.created || Date.now(), closedAt:d.closedAt || null,
+  log:Array.isArray(d.log) ? d.log.filter(l => l && ['created','stage','note'].includes(l.k)).map(l => ({ t:+l.t || Date.now(), k:l.k, a:STAGES.includes(l.a) ? l.a : 'lead', b:STAGES.includes(l.b) ? l.b : 'lead', text:String(l.text || '').slice(0, 500) })) : [] }; }
+$('#file').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return; try{ const j = JSON.parse(await f.text()); if (!j || !Array.isArray(j.deals) || !j.deals.every(validDeal)) throw 0; deals = j.deals.map(clean); if (j.meta && isFinite(j.meta.target)) meta.target = +j.meta.target; selId = null; commit(t('tImport', { n:deals.length })); }catch(_){ toast(t('tBad')); } };
+function resetDemo(){ deals = seed(); selId = null; commit(t('tReset')); }
+let toastT; function toast(m, withUndo){ $('#toastM').textContent = m; $('#toastU').hidden = !withUndo; $('#toast').hidden = false; clearTimeout(toastT); toastT = setTimeout(() => $('#toast').hidden = true, 4000); }
+function say(m){ $('#live').textContent = ''; setTimeout(() => $('#live').textContent = m, 30); }
+function openHelp(){ $('#helpBody').innerHTML = `<table>${t('help').map(([k, d]) => `<tr><td><kbd>${k}</kbd></td><td>${d}</td></tr>`).join('')}</table><p style="color:var(--muted);font-size:13px">${t('helpDnd')}</p>`; $('#help').showModal(); }
+function applyLang(){
+  document.documentElement.lang = lang;
+  $$('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n)); $$('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria))); $$('[data-i18n-ph]').forEach(el => el.placeholder = t(el.dataset.i18nPh));
+  $('#lang').textContent = lang === 'ro' ? 'EN' : 'RO'; $('#lang').setAttribute('aria-label', lang === 'ro' ? 'Switch to English' : 'Schimbă în română');
+  document.title = lang === 'ro' ? 'Local-First CRM — pipeline kanban instant, fără server | Laura Andreea' : 'Local-First CRM — instant kanban pipeline, no server | Laura Andreea';
+  render(); refreshDrawer();
+}
+$('#toastU').onclick = () => { $('#toast').hidden = true; undo(); };
+$('#q').addEventListener('input', e => { q = e.target.value; render(); });
+$('#q').addEventListener('keydown', e => { if (e.key === 'Escape'){ e.target.value = ''; q = ''; render(); e.target.blur(); } });
+$('#vBoard').onclick = () => setView('board'); $('#vTable').onclick = () => setView('table');
+$('#new').onclick = () => createDeal(); $('#cmd').onclick = openPal; $('#undo').onclick = undo; $('#redo').onclick = redo;
+$('#helpB').onclick = openHelp; $('#helpClose').onclick = () => $('#help').close(); $('#theme').onclick = toggleTheme; $('#lang').onclick = toggleLang;
+
+/* ---------- init ---------- */
+document.documentElement.dataset.theme = ls.get('lf.theme', 'dark');
+(async () => {
+  db = await openDB(); const got = await loadDB();
+  if (got && got.deals.length){ deals = got.deals.map(clean); if (got.meta && isFinite(got.meta.target)) meta = { target:+got.meta.target }; } else { deals = seed(); persist(); }
+  last = snap(); applyLang(); if (!db) $('#save').textContent = t('mem');
+  try{ bc = new BroadcastChannel('lf-crm'); bc.onmessage = async () => { const g = await loadDB(); if (!g || pd) return; deals = g.deals.map(clean); if (g.meta) meta = { target:+g.meta.target || 60000 }; last = snap(); undoS.length = redoS.length = 0; render(); refreshDrawer(); $('#save').textContent = t('synced'); }; }catch(e){}
+  window.LF = { get deals(){ return deals; }, moveDeal, undo, redo };
+})();
+})();
+</script>
+</body>
+</html>
