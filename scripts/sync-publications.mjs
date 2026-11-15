@@ -56,6 +56,7 @@ if (arcade) {
   const p = publications.find(p => p.slug === 'kygo-arhipelagul');
   const title = `${p.title.ro} / ${p.title.en} · v${p.version}`;
   const card = `<!-- publication:kygo-arhipelagul -->
+              <!-- prettier-ignore -->
               <section class="sky-arcade-card" data-mini-game-id="kygo-arhipelagul" aria-labelledby="archipelagoArcadeTitle">
                 <strong id="archipelagoArcadeTitle">${escape(title)}</strong>
                 <p>12 insule, 180 de stele, mod fără eșec, RO/EN, contrast ridicat și mișcare redusă. / 12 islands, 180 stars, no-fail mode, RO/EN, high contrast and reduced motion.</p>
@@ -72,7 +73,7 @@ if (arcade) {
     if (!match) throw new Error('Arcade insertion point missing');
     html = html.slice(0, match.index) + card + '\n              ' + html.slice(match.index);
   }
-  const registry = `/* publication:kygo-arhipelagul */\n        archipelago: ${JSON.stringify({ url: p.url, title })},\n        /* /publication:kygo-arhipelagul */`;
+  const registry = `/* publication:kygo-arhipelagul */\n        /* prettier-ignore */\n        archipelago: ${JSON.stringify({ url: p.url, title })},\n        /* /publication:kygo-arhipelagul */`;
   if (html.includes('/* publication:kygo-arhipelagul */')) html = html.replace(/\/\* publication:kygo-arhipelagul \*\/[\s\S]*?\/\* \/publication:kygo-arhipelagul \*\//, registry);
   else html = html.replace('const ARCADE_EXPERIENCES = {', `const ARCADE_EXPERIENCES = {\n        ${registry}`);
   if (!html.includes(registry)) throw new Error('Arcade registry missing');
