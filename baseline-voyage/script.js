@@ -631,6 +631,7 @@
     const earned = BADGES.filter((b) => b[3]());
     $("[data-badges]").innerHTML = BADGES.map(([, en, ro, test]) => `<li class="${test() ? "is-on" : ""}">${test() ? "★" : "☆"} ${esc(t(en, ro))}</li>`).join("");
     $("[data-passport-count]").textContent = earned.length;
+    $('[data-open="passport"]').setAttribute('aria-label', `🜨 ${earned.length} ${t("Passport", "Pașaport")}`);
   }
   $$(".crystal").forEach((c) => {
     if (passport.crystals[c.dataset.crystal]) c.classList.add("is-found");
