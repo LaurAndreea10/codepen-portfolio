@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-15 — Email Studio v1.0.0 · Finalizat / Completed
+
+- RO: Aplicație nouă: builder de emailuri din blocuri, cu previzualizare mobil și dark, verificări cu scor și export HTML pe tabele, cu stiluri inline și butoane VML pentru Outlook. Etichete de personalizare, editare directă, trei șabloane. Vanilla JS într-un singur fișier, RO/EN, dark/light. Exportul nu a fost testat în clienți de email reali.
+- EN: New app: a block-based email builder with mobile and dark previews, scored checks and table-based HTML export with inline styles and VML buttons for Outlook. Merge tags, inline editing, three templates. Single-file vanilla JS, RO/EN, dark/light. The export has not been tested in real email clients.
+- Added to `projects.json`, the Romanian Finalizat recent lists and November history, the English completed list and the sitemap. History: [email-studio/CHANGELOG.md](email-studio/CHANGELOG.md).
+
 ## 2026-11-15 — Local-First CRM v1.0.0 · Finalizat / Completed
 
 - RO: Aplicație nouă: pipeline de vânzări local-first. Kanban cu drag & drop pentru mouse și tactil, paletă de comenzi (Ctrl K), anulare/refacere, scurtături de tastatură, IndexedDB cu sincronizare între taburi, fișă cu note și istoric, tabel sortabil, export JSON/CSV. Vanilla JS într-un singur fișier, RO/EN, dark/light.
