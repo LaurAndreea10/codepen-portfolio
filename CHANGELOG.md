@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-15 — SQL Playground v1.0.0 · Finalizat / Completed
+
+- RO: Aplicație nouă: SQLite în browser prin WebAssembly peste o bază CRM fictivă, cu grafice automate și opt provocări verificate pe loc. sql.js 1.16.0 (MIT) este inclus în `sql-playground/vendor/`.
+- EN: New app: SQLite in the browser through WebAssembly over a fictional CRM database, with automatic charts and eight challenges checked on the spot. sql.js 1.16.0 (MIT) is vendored in `sql-playground/vendor/`.
+- Added to `projects.json`, the Romanian Finalizat recent lists and November history, the English completed list and the sitemap. History: [sql-playground/CHANGELOG.md](sql-playground/CHANGELOG.md).
+
 ## 2026-11-15 — Portofoliul în date v1.0.0 · Finalizat / Completed
 
 - RO: Pagină nouă: poveste cu scrollytelling din datele reale ale repository-ului (istoric Git și `projects.json`), cu grafice SVG animate la derulare, test cu întrebări și script de recalculare.
