@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-16 — Etapele 2–8 · Finalizat în portofoliu
+
+- RO: Adăugată seria de proiecte din PR #128 la „Finalizat recent” și în istoricul lunii noiembrie, cu legături către implementarea consolidată.
+- EN: Added the project series from PR #128 to “Recently completed” and the November history, with a link to the consolidated implementation.
+
 ## 2026-11-16 — Journey Builder · studiu de caz / case study
 
 - RO: Pagină nouă, `journey-builder/case-study.html`: decizii de arhitectură cu costul lor, modelul de simulare explicat interactiv, calibrarea provocărilor cu cifre măsurate cu motorul aplicației, șase probleme găsite la testare și lista a ceea ce a rămas neverificat. Legată din aplicație, din pagina în engleză și din sitemap.
