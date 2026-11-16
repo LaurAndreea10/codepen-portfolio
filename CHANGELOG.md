@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-16 — Journey Builder · studiu de caz / case study
+
+- RO: Pagină nouă, `journey-builder/case-study.html`: decizii de arhitectură cu costul lor, modelul de simulare explicat interactiv, calibrarea provocărilor cu cifre măsurate cu motorul aplicației, șase probleme găsite la testare și lista a ceea ce a rămas neverificat. Legată din aplicație, din listele Finalizat și din sitemap.
+- EN: New page, `journey-builder/case-study.html`: architecture decisions with their cost, the simulation model explained interactively, challenge calibration with figures measured by the app’s own engine, six problems found in testing and the list of what remains unverified. Linked from the app, the completed lists and the sitemap.
+
 ## 2026-11-16 — Tei UI v1.0.0 · Finalizat / Completed
 
 - RO: Proiect nou: design system cu 11 componente Web Components într-un singur fișier (`tei-ui/tei-ui.js`), cu pagină de documentație, editor de temă și playground.
