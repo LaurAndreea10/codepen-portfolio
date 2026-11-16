@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-16 — Experiment Lab v1.0.0 · Finalizat / Completed
+
+- RO: Aplicație nouă: patru experimente interactive despre A/B testing și atribuire (privitul pe furiș, putere, modele de atribuire, joc), cu simulări în browser.
+- EN: New app: four interactive experiments on A/B testing and attribution (peeking, power, attribution models, a game), with in-browser simulations.
+- Added to `projects.json`, the Romanian Finalizat recent lists and November history, the English completed list and the sitemap. History: [experiment-lab/CHANGELOG.md](experiment-lab/CHANGELOG.md).
+
 ## 2026-11-15 — SQL Playground v1.0.0 · Finalizat / Completed
 
 - RO: Aplicație nouă: SQLite în browser prin WebAssembly peste o bază CRM fictivă, cu grafice automate și opt provocări verificate pe loc. sql.js 1.16.0 (MIT) este inclus în `sql-playground/vendor/`.
