@@ -1,10 +1,51 @@
 # Changelog
 
+## 2026-11-16 — Journey Builder · studiu de caz / case study
+
+- RO: Pagină nouă, `journey-builder/case-study.html`: decizii de arhitectură cu costul lor, modelul de simulare explicat interactiv, calibrarea provocărilor cu cifre măsurate cu motorul aplicației, șase probleme găsite la testare și lista a ceea ce a rămas neverificat. Legată din aplicație, din pagina în engleză și din sitemap.
+- EN: New page, `journey-builder/case-study.html`: architecture decisions with their cost, the simulation model explained interactively, challenge calibration with figures measured by the app’s own engine, six problems found in testing and the list of what remains unverified. Linked from the app, the English page and the sitemap.
+
+## 2026-11-16 — Tei UI v1.0.0 · Finalizat / Completed
+
+- RO: Proiect nou: design system cu 11 componente Web Components într-un singur fișier (`tei-ui/tei-ui.js`), cu pagină de documentație, editor de temă și playground.
+- EN: New project: a design system with 11 Web Components in a single file (`tei-ui/tei-ui.js`), with a documentation page, theme editor and playground.
+- Added to `projects.json`, the English completed list and the sitemap. Not listed in `portfolio.html`, which is at its 150 KB HTML budget. History: [tei-ui/CHANGELOG.md](tei-ui/CHANGELOG.md).
+
+## 2026-11-16 — Experiment Lab v1.0.0 · Finalizat / Completed
+
+- RO: Aplicație nouă: patru experimente interactive despre A/B testing și atribuire (privitul pe furiș, putere, modele de atribuire, joc), cu simulări în browser.
+- EN: New app: four interactive experiments on A/B testing and attribution (peeking, power, attribution models, a game), with in-browser simulations.
+- Added to `projects.json`, the English completed list and the sitemap. Not listed in `portfolio.html`, which is at its 150 KB HTML budget. History: [experiment-lab/CHANGELOG.md](experiment-lab/CHANGELOG.md).
+
+## 2026-11-15 — SQL Playground v1.0.0 · Finalizat / Completed
+
+- RO: Aplicație nouă: SQLite în browser prin WebAssembly peste o bază CRM fictivă, cu grafice automate și opt provocări verificate pe loc. sql.js 1.16.0 (MIT) este inclus în `sql-playground/vendor/`.
+- EN: New app: SQLite in the browser through WebAssembly over a fictional CRM database, with automatic charts and eight challenges checked on the spot. sql.js 1.16.0 (MIT) is vendored in `sql-playground/vendor/`.
+- Added to `projects.json`, the English completed list and the sitemap. Not listed in `portfolio.html`, which is at its 150 KB HTML budget. History: [sql-playground/CHANGELOG.md](sql-playground/CHANGELOG.md).
+
+## 2026-11-15 — Portofoliul în date v1.0.0 · Finalizat / Completed
+
+- RO: Pagină nouă: poveste cu scrollytelling din datele reale ale repository-ului (istoric Git și `projects.json`), cu grafice SVG animate la derulare, test cu întrebări și script de recalculare.
+- EN: New page: a scrollytelling story from the repository’s real data (Git history and `projects.json`), with scroll-animated SVG charts, a quiz and a rebuild script.
+- Added to `projects.json`, the English completed list and the sitemap. Not listed in `portfolio.html`, which is at its 150 KB HTML budget. History: [portfolio-in-data/CHANGELOG.md](portfolio-in-data/CHANGELOG.md).
+
+## 2026-11-15 — Email Studio v1.0.0 · Finalizat / Completed
+
+- RO: Aplicație nouă: builder de emailuri din blocuri, cu previzualizare mobil și dark, verificări cu scor și export HTML pe tabele, cu stiluri inline și butoane VML pentru Outlook. Etichete de personalizare, editare directă, trei șabloane. Vanilla JS într-un singur fișier, RO/EN, dark/light. Exportul nu a fost testat în clienți de email reali.
+- EN: New app: a block-based email builder with mobile and dark previews, scored checks and table-based HTML export with inline styles and VML buttons for Outlook. Merge tags, inline editing, three templates. Single-file vanilla JS, RO/EN, dark/light. The export has not been tested in real email clients.
+- Added to `projects.json`, the English completed list and the sitemap. Not listed in `portfolio.html`, which is at its 150 KB HTML budget. History: [email-studio/CHANGELOG.md](email-studio/CHANGELOG.md).
+
+## 2026-11-15 — Local-First CRM v1.0.0 · Finalizat / Completed
+
+- RO: Aplicație nouă: pipeline de vânzări local-first. Kanban cu drag & drop pentru mouse și tactil, paletă de comenzi (Ctrl K), anulare/refacere, scurtături de tastatură, IndexedDB cu sincronizare între taburi, fișă cu note și istoric, tabel sortabil, export JSON/CSV. Vanilla JS într-un singur fișier, RO/EN, dark/light.
+- EN: New app: a local-first sales pipeline. Kanban with mouse and touch drag & drop, command palette (Ctrl K), undo/redo, keyboard shortcuts, IndexedDB with cross-tab sync, deal sheet with notes and history, sortable table, JSON/CSV export. Single-file vanilla JS, RO/EN, dark/light.
+- Added to `projects.json`, the English completed list and the sitemap. Not listed in `portfolio.html`, which is at its 150 KB HTML budget. History: [local-first-crm/CHANGELOG.md](local-first-crm/CHANGELOG.md).
+
 ## 2026-11-15 — Journey Builder v1.0.0 · Finalizat / Completed
 
 - RO: Aplicație nouă: editor vizual de automatizări de marketing cu simulare. Opt tipuri de pași, legături cu mouse-ul sau din panou, simulare animată a până la 5.000 de contacte cu seed, model de oboseală la mesaje, rezultate pe fiecare pas, trei provocări, trei șabloane, anulare/refacere, export JSON și link de partajare. Vanilla JS într-un singur fișier, RO/EN, dark/light, tastatură.
 - EN: New app: a visual marketing automation editor with simulation. Eight step types, connections by mouse or from the panel, seeded animated simulation of up to 5,000 contacts, message-fatigue model, per-step results, three challenges, three templates, undo/redo, JSON export and share links. Single-file vanilla JS, RO/EN, dark/light, keyboard.
-- Added to `projects.json`, the Romanian Finalizat recent lists and November history, the English completed list and the sitemap. History: [journey-builder/CHANGELOG.md](journey-builder/CHANGELOG.md).
+- Added to `projects.json`, the English completed list and the sitemap. Not listed in `portfolio.html`, which is at its 150 KB HTML budget. History: [journey-builder/CHANGELOG.md](journey-builder/CHANGELOG.md).
 
 ## 2026-11-11 — Kygo: Arhipelagul v2.0.0 · Finalizat / Completed
 

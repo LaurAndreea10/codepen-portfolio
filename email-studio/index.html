@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email Studio — builder de emailuri cu export HTML compatibil Outlook | Laura Andreea</title>
+<meta name="description" content="Compui un email din blocuri, îl previzualizezi pe mobil și în dark mode, îl verifici înainte de trimitere și exporți HTML pe tabele, cu stiluri inline și butoane VML pentru Outlook. Vanilla JS, fără backend.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/email-studio/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Email Studio — builder de emailuri cu export HTML">
+<meta property="og:description" content="Blocuri drag and drop, previzualizare mobil și dark, verificări înainte de trimitere, export HTML compatibil Outlook.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/email-studio/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/email-studio/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a1220">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1220'/%3E%3Crect x='6' y='9' width='20' height='14' rx='2.5' fill='none' stroke='%2322d3ee' stroke-width='2.2'/%3E%3Cpath d='m7 11 9 6 9-6' fill='none' stroke='%23f5b041' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Email Studio","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["ro","en"],"author":{"@type":"Person","name":"Laura Andreea"},"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"description":"Builder de emailuri din blocuri, cu verificări și export HTML compatibil Outlook."}
+</script>
+<style>
+:root{
+  --bg:#0a1220;--bg2:#0f1a2e;--panel:#111f36;--panel2:#16263f;--line:#243756;--text:#e8eef8;--muted:#93a4bf;
+  --cyan:#22d3ee;--amber:#f5b041;--green:#34d399;--red:#f87171;
+  --shadow:0 10px 30px rgba(0,0,0,.35);--r:12px;
+  --serif:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+}
+[data-theme=light]{
+  --bg:#f4f6fb;--bg2:#ffffff;--panel:#ffffff;--panel2:#eef2f9;--line:#d5deec;--text:#0f1a2e;--muted:#54657f;
+  --cyan:#0e7490;--amber:#b45309;--green:#047857;--red:#b91c1c;--shadow:0 10px 30px rgba(15,26,46,.12);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 var(--sans);display:flex;flex-direction:column}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:8px;top:-60px;background:var(--amber);color:#111;padding:8px 12px;border-radius:8px;z-index:99;font-weight:600}
+.skip:focus{top:8px}
+header.top{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--bg2);flex-wrap:wrap}
+.brand{margin-right:auto}
+.brand h1{font:700 20px/1 var(--serif);margin:0;white-space:nowrap}
+.brand h1 em{font-style:normal;color:var(--cyan)}
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:7px 11px;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{border-color:var(--cyan)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.primary{background:var(--cyan);border-color:var(--cyan);color:#04202a;font-weight:600}
+[data-theme=light] .btn.primary{color:#fff}
+.btn.icon{padding:7px 9px;min-width:36px;justify-content:center;font-family:var(--mono)}
+.btn.danger:hover{border-color:var(--red);color:var(--red)}
+.btn.sm{min-height:30px;padding:3px 8px;font-size:12px}
+select.btn{appearance:auto}
+
+main{flex:1;display:grid;grid-template-columns:170px minmax(0,1fr) 330px;min-height:0}
+.left{border-right:1px solid var(--line);background:var(--bg2);padding:12px 10px;overflow:auto}
+h2.cap{font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.pitem{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:7px 9px;margin-bottom:6px;cursor:grab;min-height:38px}
+.pitem:hover{border-color:var(--cyan)}
+.pitem i{font:600 12px var(--mono);font-style:normal;color:var(--cyan);width:20px;text-align:center}
+.hint{font-size:12px;color:var(--muted);margin:10px 2px}
+.ghost{position:fixed;z-index:80;pointer-events:none;opacity:.9;width:150px;margin:0}
+
+.mid{display:flex;flex-direction:column;min-width:0;min-height:0}
+.modes{display:flex;gap:8px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{background:var(--panel2);border:0;padding:7px 12px;cursor:pointer;min-height:36px}
+.seg button[aria-pressed=true]{background:var(--cyan);color:#04202a;font-weight:600}
+[data-theme=light] .seg button[aria-pressed=true]{color:#fff}
+.modes label{font-size:12px;color:var(--muted);display:flex;gap:6px;align-items:center;margin-left:auto}
+.inbox{margin:12px auto 0;width:min(624px,calc(100% - 24px));background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;gap:10px;align-items:center;font-size:13px}
+.inbox .dot{width:30px;height:30px;border-radius:50%;background:var(--cyan);color:#04202a;display:grid;place-items:center;font-weight:700;flex:none}
+.inbox div{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inbox b{font-weight:600}.inbox span{color:var(--muted)}
+#stage{flex:1;overflow:auto;padding:12px;min-height:0}
+.emailBg{margin:0 auto;width:min(624px,100%);padding:24px 12px;border-radius:10px}
+.email{margin:0 auto;max-width:600px;box-shadow:0 2px 14px rgba(0,0,0,.18)}
+.blk{position:relative;cursor:pointer;outline:1px dashed transparent;outline-offset:-1px}
+.blk:hover{outline-color:rgba(34,211,238,.6)}
+.blk.sel{outline:2px solid #22d3ee}
+.blk .bar{position:absolute;top:-1px;right:-1px;display:none;gap:2px;background:#0a1220;border-radius:0 0 0 8px;padding:3px;z-index:3}
+.blk.sel .bar{display:flex}
+.bar button{background:none;border:0;color:#e8eef8;cursor:pointer;min-width:28px;min-height:28px;border-radius:5px;font:600 13px var(--mono)}
+.bar button:hover{background:#243756}
+.bar .grip{cursor:grab;touch-action:none}
+.blk.dragging{opacity:.3}
+.drop{height:4px;background:#22d3ee;border-radius:2px;margin:0}
+[data-edit]{cursor:text}
+[data-edit]:focus{outline:2px dashed #f5b041;outline-offset:2px}
+.emptyC{padding:50px 20px;text-align:center;color:#5b6b85;font:14px Arial,sans-serif}
+.frame{display:block;margin:0 auto;border:0;background:#fff;height:680px;max-width:100%}
+.frame.phone{width:375px;border:10px solid #1b2538;border-radius:34px;box-sizing:content-box}
+.frame.wide{width:100%;max-width:720px;background:transparent}
+.codeBar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.codeBar span{font:400 12px var(--mono);color:var(--muted);margin-left:auto}
+pre{margin:0;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px;font:12px/1.5 var(--mono);white-space:pre-wrap;word-break:break-all;max-height:none}
+
+.right{border-left:1px solid var(--line);background:var(--bg2);display:flex;flex-direction:column;min-height:0}
+.tabs{display:flex;border-bottom:1px solid var(--line)}
+.tabs button{flex:1;background:none;border:0;border-bottom:2px solid transparent;padding:11px 6px;cursor:pointer;color:var(--muted);font-weight:500;min-height:42px}
+.tabs button[aria-selected=true]{color:var(--text);border-bottom-color:var(--cyan)}
+.tabs b{font:600 11px var(--mono);border-radius:20px;padding:1px 7px;margin-left:4px;background:var(--panel2)}
+.pane{padding:14px;overflow:auto;flex:1}
+.field{margin-bottom:10px}
+.field label,.field .lab{display:block;font-size:12px;color:var(--muted);margin-bottom:3px}
+.field input[type=text],.field input[type=url],.field input[type=number],.field select,.field textarea{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;min-height:36px}
+.field textarea{min-height:92px;resize:vertical}
+.field input[type=color]{width:46px;height:36px;padding:2px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;vertical-align:middle}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.group{border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px}
+.group h3{font:600 11px var(--mono);color:var(--muted);margin:0 0 8px;display:flex;justify-content:space-between;align-items:center}
+.empty{color:var(--muted);font-size:13px}
+.score{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.score b{font:700 38px/1 var(--serif)}
+.score.g b{color:var(--green)}.score.m b{color:var(--amber)}.score.b b{color:var(--red)}
+.chk{display:flex;gap:9px;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:8px;padding:8px 10px;margin-bottom:6px;font-size:13px;cursor:default}
+.chk.warn{border-left-color:var(--amber)}.chk.err{border-left-color:var(--red)}
+button.chk{cursor:pointer}button.chk:hover{border-color:var(--cyan)}
+.chk i{font-style:normal;font-family:var(--mono);font-weight:600}
+footer{padding:7px 14px;border-top:1px solid var(--line);font:400 11px var(--mono);color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--bg2)}
+footer a{color:var(--cyan)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--panel2);border:1px solid var(--cyan);border-radius:10px;padding:9px 14px;z-index:90;box-shadow:var(--shadow);max-width:92vw}
+dialog{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:14px;max-width:560px;width:calc(100% - 28px);padding:20px;box-shadow:var(--shadow)}
+dialog::backdrop{background:rgba(3,8,18,.7)}
+dialog h2{font:700 20px var(--serif);margin:0 0 10px}
+dialog li{margin-bottom:5px}
+kbd{font:600 11px var(--mono);background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+@media (max-width:1000px){
+  html,body{height:auto}
+  main{display:flex;flex-direction:column}
+  .left{border-right:0;border-bottom:1px solid var(--line);padding:8px 10px}
+  .left h2,.left .hint{display:none}
+  #pal{display:flex;gap:6px;overflow-x:auto}
+  .pitem{width:auto;flex:none;margin:0}
+  #tplWrap{margin-top:8px}
+  #stage{overflow:visible}
+  .right{border-left:0;border-top:1px solid var(--line)}
+  .pane{overflow:visible}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#stage" data-i18n="skip">Sari la email</a>
+<header class="top">
+  <div class="brand"><h1>Email <em>Studio</em></h1></div>
+  <button class="btn icon" id="undo" aria-label="Anulează" data-i18n-aria="undo">↶</button>
+  <button class="btn icon" id="redo" aria-label="Refă" data-i18n-aria="redo">↷</button>
+  <button class="btn" id="copy" data-i18n="copyHtml">Copiază HTML</button>
+  <button class="btn primary" id="dl" data-i18n="download">Descarcă .html</button>
+  <button class="btn" id="json" data-i18n="project">Proiect</button>
+  <button class="btn icon" id="helpB" aria-label="Ajutor" data-i18n-aria="help">?</button>
+  <button class="btn icon" id="theme" aria-label="Schimbă tema" data-i18n-aria="theme">◐</button>
+  <button class="btn icon" id="lang">EN</button>
+</header>
+<main>
+  <aside class="left" aria-label="Blocuri" data-i18n-aria="blocks">
+    <h2 class="cap" data-i18n="blocks">Blocuri</h2>
+    <div id="pal"></div>
+    <p class="hint" data-i18n="palHint">Apasă pe un bloc ca să-l adaugi sau trage-l în email.</p>
+    <div id="tplWrap"><label class="sr" for="tpl" data-i18n="templates">Șabloane</label><select class="btn" id="tpl" style="width:100%"></select></div>
+  </aside>
+  <section class="mid" aria-label="Email" data-i18n-aria="emailArea">
+    <div class="modes">
+      <div class="seg" role="group" aria-label="Mod" data-i18n-aria="mode"><button data-mode="edit" aria-pressed="true" data-i18n="mEdit">Editare</button><button data-mode="mobile" aria-pressed="false" data-i18n="mMobile">Mobil</button><button data-mode="dark" aria-pressed="false">Dark</button><button data-mode="code" aria-pressed="false" data-i18n="mCode">Cod</button></div>
+      <label><span data-i18n="sample">Date de test</span><select class="btn" id="sample"></select></label>
+    </div>
+    <div class="inbox" id="inbox" aria-label="Cum apare în inbox" data-i18n-aria="inboxAria"></div>
+    <div id="stage" tabindex="-1"></div>
+  </section>
+  <aside class="right" aria-label="Setări" data-i18n-aria="settings">
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tab-blk" aria-controls="p-blk" aria-selected="true" data-i18n="tBlock">Bloc</button>
+      <button role="tab" id="tab-glb" aria-controls="p-glb" aria-selected="false" tabindex="-1" data-i18n="tEmail">Email</button>
+      <button role="tab" id="tab-chk" aria-controls="p-chk" aria-selected="false" tabindex="-1"><span data-i18n="tChecks">Verificări</span><b id="scoreB">0</b></button>
+    </div>
+    <div class="pane" id="p-blk" role="tabpanel" aria-labelledby="tab-blk"></div>
+    <div class="pane" id="p-glb" role="tabpanel" aria-labelledby="tab-glb" hidden></div>
+    <div class="pane" id="p-chk" role="tabpanel" aria-labelledby="tab-chk" hidden></div>
+  </aside>
+</main>
+<footer><span>© 2026 <strong>Laura Andreea</strong> · Iași · <span data-i18n="foot">Vanilla JS, fără backend. Nimic nu se trimite nicăieri.</span></span><a href="../portfolio.html" data-i18n="back">← Portofoliu</a></footer>
+<div class="toast" id="toast" role="status" hidden></div>
+<div class="sr" aria-live="polite" id="live"></div>
+<dialog id="help" aria-labelledby="hT"><h2 id="hT" data-i18n="helpT">Cum funcționează</h2><div id="helpBody"></div><div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn primary" data-close data-i18n="close">Închide</button></div></dialog>
+<dialog id="proj" aria-labelledby="pT"><h2 id="pT" data-i18n="project">Proiect</h2><p class="empty" data-i18n="projHint">Salvează proiectul ca JSON ca să-l continui mai târziu sau pe alt calculator.</p><div class="row" style="margin-top:12px"><button class="btn" id="pExp" data-i18n="pExport">Exportă JSON</button><button class="btn" id="pImp" data-i18n="pImport">Importă JSON</button><button class="btn danger" id="pNew" data-i18n="pBlank">Email gol</button><button class="btn primary" data-close data-i18n="close" style="margin-left:auto">Închide</button></div></dialog>
+<input type="file" id="file" accept="application/json" hidden>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const ls = { get(k, d){ try{ const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); }catch(e){ return d; } }, set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+
+/* ---------- i18n ---------- */
+const I18N = { ro: {
+  skip:'Sari la email', undo:'Anulează', redo:'Refă', copyHtml:'Copiază HTML', download:'Descarcă .html', project:'Proiect', help:'Ajutor', theme:'Schimbă tema',
+  blocks:'Blocuri', palHint:'Apasă pe un bloc ca să-l adaugi sau trage-l în email.', templates:'Șabloane', emailArea:'Email', mode:'Mod', mEdit:'Editare', mMobile:'Mobil', mCode:'Cod',
+  sample:'Date de test', sNone:'Fără (arată etichetele)', inboxAria:'Cum apare în inbox', settings:'Setări', tBlock:'Bloc', tEmail:'Email', tChecks:'Verificări',
+  foot:'Vanilla JS, fără backend. Nimic nu se trimite nicăieri.', back:'← Portofoliu', helpT:'Cum funcționează', close:'Închide',
+  projHint:'Salvează proiectul ca JSON ca să-l continui mai târziu sau pe alt calculator.', pExport:'Exportă JSON', pImport:'Importă JSON', pBlank:'Email gol',
+  tplPick:'Șabloane…', tplNews:'Newsletter', tplPromo:'Ofertă', tplWelcome:'Bun venit',
+  header:'Antet', hero:'Hero', text:'Text', image:'Imagine', button:'Buton', cols:'Coloane', divider:'Linie', spacer:'Spațiu', social:'Social', footer:'Subsol',
+  fBrand:'Nume brand', fAlign:'Aliniere', left:'Stânga', center:'Centru', right:'Dreapta', fBg:'Fundal', fColor:'Culoare text', auto:'Auto', fTitle:'Titlu', fText:'Text', fBody:'Conținut',
+  bodyHint:'Rând gol = paragraf nou. **îngroșat** și [text](https://adresa.ro) pentru linkuri.', fBtn:'Text buton', fUrl:'Link', fImg:'URL imagine (https://…)', fAlt:'Text alternativ', fH:'Înălțime (px)', fSize:'Mărime text (px)',
+  fRadius:'Colțuri rotunjite (px)', fPrice:'Preț (opțional)', fLink:'Text link', col:'Coloana {n}', addCol:'+ Coloană', rmCol:'Elimină', fLinks:'Linkuri (câte unul pe rând: Nume | https://…)', fUnsubL:'Text dezabonare', fUnsubU:'Link dezabonare',
+  gSubject:'Subiect', gPre:'Preheader (textul de după subiect)', gFrom:'Expeditor', gBrand:'Culoarea brandului', gBg:'Fundal exterior', gCard:'Fundal email', gText:'Culoare text', gFont:'Font', tags:'Etichete disponibile: {t}',
+  selNone:'Selectează un bloc din email ca să-l editezi.', up:'Mută mai sus', down:'Mută mai jos', dup:'Duplică', del:'Șterge', grip:'Trage pentru a muta', blockOf:'Bloc {t}',
+  emptyC:'Emailul este gol. Adaugă un bloc din stânga sau alege un șablon.', imgPh:'Imagine', size:'{kb} KB', copied:'HTML copiat în clipboard.', copyFail:'Nu am putut copia. Folosește modul Cod și selectează textul.',
+  added:'Bloc adăugat: {t}', removed:'Bloc șters: {t}', moved:'Bloc mutat', loaded:'Proiect încărcat.', bad:'Fișierul nu este un proiect valid.', confirmNew:'Ștergi tot emailul?',
+  score:'Scor de trimitere', scoreG:'Gata de trimis.', scoreM:'Aproape. Rezolvă avertismentele.', scoreB:'Mai are probleme de rezolvat.',
+  cSubE:'Subiectul lipsește.', cSubL:'Subiectul are {n} caractere. Între 20 și 60 se citește întreg pe mobil.', cSubOk:'Subiect de lungime bună ({n} caractere).', cSpam:'Subiectul conține semnale de spam: {w}.',
+  cPreE:'Preheaderul lipsește, iar inboxul va afișa primele cuvinte din email.', cPreL:'Preheaderul are {n} caractere. Ideal între 30 și 110.', cPreOk:'Preheader prezent.',
+  cAlt:'O imagine nu are text alternativ.', cAltOk:'Toate imaginile au text alternativ.', cImgPh:'O imagine nu are URL, așa că va apărea ca un dreptunghi colorat.', cLink:'Un link sau buton nu are adresă.', cLinkOk:'Toate linkurile au adresă.',
+  cUnsub:'Lipsește linkul de dezabonare din subsol. Regulile anti-spam îl cer în emailurile de marketing.', cUnsubOk:'Link de dezabonare prezent.', cCta:'Emailul nu are niciun buton de acțiune.', cCtaOk:'Are buton de acțiune.',
+  cCon:'Contrast slab la buton: {r}:1 (minimum recomandat 4,5:1).', cConT:'Contrast slab între text și fundal: {r}:1.', cConOk:'Contrast bun la text și butoane.', cSize:'HTML-ul are {kb} KB. Gmail taie emailurile peste 102 KB.', cSizeOk:'Dimensiune HTML: {kb} KB (sub limita Gmail de 102 KB).', cTag:'Etichetă necunoscută: {t}.',
+  help:`<ul><li><b>Compune:</b> apasă pe un bloc din stânga sau trage-l în email. Selectează un bloc ca să-l editezi în panoul Bloc. Titlurile se pot edita și direct în email.</li><li><b>Mută:</b> trage de mânerul ⠿ sau folosește săgețile din bara blocului. Din tastatură: <kbd>Alt</kbd> + <kbd>↑</kbd>/<kbd>↓</kbd>, <kbd>Delete</kbd>, <kbd>Ctrl D</kbd> pentru duplicare.</li><li><b>Previzualizează:</b> Mobil arată emailul la 375 px, Dark arată varianta pentru dark mode, Cod arată HTML-ul final.</li><li><b>Personalizare:</b> scrie <code>{{first_name}}</code>, <code>{{company}}</code> sau <code>{{city}}</code> și alege „Date de test” ca să vezi rezultatul. În export, etichetele rămân neschimbate.</li><li><b>Export:</b> HTML pe tabele, cu stiluri inline, butoane VML pentru Outlook, stivuire pe mobil și stiluri pentru dark mode.</li><li><b>Imagini:</b> emailurile nu pot conține imagini încărcate local. Pune adresa unei imagini deja publicate, altfel apare un dreptunghi colorat.</li></ul>`
+}, en: {
+  skip:'Skip to email', undo:'Undo', redo:'Redo', copyHtml:'Copy HTML', download:'Download .html', project:'Project', help:'Help', theme:'Toggle theme',
+  blocks:'Blocks', palHint:'Click a block to add it, or drag it into the email.', templates:'Templates', emailArea:'Email', mode:'Mode', mEdit:'Edit', mMobile:'Mobile', mCode:'Code',
+  sample:'Test data', sNone:'None (show tags)', inboxAria:'How it looks in the inbox', settings:'Settings', tBlock:'Block', tEmail:'Email', tChecks:'Checks',
+  foot:'Vanilla JS, no backend. Nothing is sent anywhere.', back:'← Portfolio', helpT:'How it works', close:'Close',
+  projHint:'Save the project as JSON to continue later or on another computer.', pExport:'Export JSON', pImport:'Import JSON', pBlank:'Blank email',
+  tplPick:'Templates…', tplNews:'Newsletter', tplPromo:'Offer', tplWelcome:'Welcome',
+  header:'Header', hero:'Hero', text:'Text', image:'Image', button:'Button', cols:'Columns', divider:'Divider', spacer:'Spacer', social:'Social', footer:'Footer',
+  fBrand:'Brand name', fAlign:'Alignment', left:'Left', center:'Centre', right:'Right', fBg:'Background', fColor:'Text colour', auto:'Auto', fTitle:'Title', fText:'Text', fBody:'Content',
+  bodyHint:'Blank line = new paragraph. **bold** and [text](https://address.com) for links.', fBtn:'Button label', fUrl:'Link', fImg:'Image URL (https://…)', fAlt:'Alt text', fH:'Height (px)', fSize:'Text size (px)',
+  fRadius:'Rounded corners (px)', fPrice:'Price (optional)', fLink:'Link label', col:'Column {n}', addCol:'+ Column', rmCol:'Remove', fLinks:'Links (one per line: Name | https://…)', fUnsubL:'Unsubscribe label', fUnsubU:'Unsubscribe link',
+  gSubject:'Subject', gPre:'Preheader (the text after the subject)', gFrom:'Sender', gBrand:'Brand colour', gBg:'Outer background', gCard:'Email background', gText:'Text colour', gFont:'Font', tags:'Available tags: {t}',
+  selNone:'Select a block in the email to edit it.', up:'Move up', down:'Move down', dup:'Duplicate', del:'Delete', grip:'Drag to move', blockOf:'{t} block',
+  emptyC:'The email is empty. Add a block from the left or pick a template.', imgPh:'Image', size:'{kb} KB', copied:'HTML copied to clipboard.', copyFail:'Could not copy. Use Code mode and select the text.',
+  added:'Block added: {t}', removed:'Block deleted: {t}', moved:'Block moved', loaded:'Project loaded.', bad:'That file is not a valid project.', confirmNew:'Delete the whole email?',
+  score:'Send score', scoreG:'Ready to send.', scoreM:'Almost. Fix the warnings.', scoreB:'Still has problems to fix.',
+  cSubE:'The subject is missing.', cSubL:'The subject has {n} characters. Between 20 and 60 reads fully on mobile.', cSubOk:'Good subject length ({n} characters).', cSpam:'The subject contains spam signals: {w}.',
+  cPreE:'The preheader is missing, so the inbox will show the first words of the email.', cPreL:'The preheader has {n} characters. Ideally 30 to 110.', cPreOk:'Preheader present.',
+  cAlt:'An image has no alt text.', cAltOk:'All images have alt text.', cImgPh:'An image has no URL, so it will show as a coloured rectangle.', cLink:'A link or button has no address.', cLinkOk:'All links have an address.',
+  cUnsub:'The footer has no unsubscribe link. Anti-spam rules require one in marketing emails.', cUnsubOk:'Unsubscribe link present.', cCta:'The email has no call-to-action button.', cCtaOk:'Has a call-to-action button.',
+  cCon:'Low button contrast: {r}:1 (4.5:1 recommended).', cConT:'Low contrast between text and background: {r}:1.', cConOk:'Good contrast on text and buttons.', cSize:'The HTML is {kb} KB. Gmail clips emails over 102 KB.', cSizeOk:'HTML size: {kb} KB (under Gmail’s 102 KB limit).', cTag:'Unknown tag: {t}.',
+  help:`<ul><li><b>Compose:</b> click a block on the left or drag it into the email. Select a block to edit it in the Block panel. Headings can also be edited right in the email.</li><li><b>Move:</b> drag the ⠿ handle or use the arrows in the block bar. Keyboard: <kbd>Alt</kbd> + <kbd>↑</kbd>/<kbd>↓</kbd>, <kbd>Delete</kbd>, <kbd>Ctrl D</kbd> to duplicate.</li><li><b>Preview:</b> Mobile shows the email at 375 px, Dark shows the dark-mode version, Code shows the final HTML.</li><li><b>Personalisation:</b> write <code>{{first_name}}</code>, <code>{{company}}</code> or <code>{{city}}</code> and pick “Test data” to see the result. Tags stay untouched in the export.</li><li><b>Export:</b> table-based HTML with inline styles, VML buttons for Outlook, mobile stacking and dark-mode styles.</li><li><b>Images:</b> emails cannot contain locally uploaded images. Use the address of an image that is already published, otherwise a coloured rectangle is shown.</li></ul>`
+}};
+let lang = ls.get('es.lang', (navigator.language || 'ro').startsWith('ro') ? 'ro' : 'en');
+{ const p = new URLSearchParams(location.search).get('lang'); if (p === 'ro' || p === 'en') lang = p; }
+const t = (k, v) => { let s = I18N[lang][k] ?? I18N.ro[k] ?? k; if (v) for (const x in v) s = s.replace('{' + x + '}', v[x]); return s; };
+
+/* ---------- model ---------- */
+const TAGS = ['first_name', 'company', 'city'];
+const SAMPLES = [{ first_name:'Ioana', company:'Atelier Brad', city:'Iași' }, { first_name:'Andrei', company:'Studio Vector', city:'Cluj' }, { first_name:'Maria', company:'Ferma Verde', city:'Brașov' }];
+const FONTS = { arial:'Arial,Helvetica,sans-serif', georgia:'Georgia,Times,serif', verdana:'Verdana,Geneva,sans-serif', trebuchet:"'Trebuchet MS',Tahoma,sans-serif" };
+const ICONS = { header:'H', hero:'★', text:'¶', image:'▣', button:'▭', cols:'▥', divider:'—', spacer:'↕', social:'@', footer:'⌄' };
+const hex = (v, d) => /^#[0-9a-f]{6}$/i.test(v || '') ? v : d;
+const lum = h => { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4)); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; };
+const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+const pick = bg => ratio(bg, '#ffffff') >= ratio(bg, '#111827') ? '#ffffff' : '#111827';
+const safeUrl = u => { u = String(u || '').trim(); if (!u || u === '#') return '#'; if (/^(https?:\/\/|mailto:|tel:)/i.test(u) || /^\{\{\w+\}\}$/.test(u)) return u; if (/^[\w-]+(\.[\w-]+)+([\/?#].*)?$/.test(u)) return 'https://' + u; return '#'; };
+const DEF = {
+  header:() => ({ brand:'Brand', align:'left', bg:'', color:'' }),
+  hero:() => ({ title:lang === 'ro' ? 'Un titlu care spune esențialul' : 'A headline that says what matters', text:lang === 'ro' ? 'O propoziție care explică de ce merită citit mai departe.' : 'One sentence explaining why it is worth reading on.', btn:lang === 'ro' ? 'Vezi oferta' : 'See the offer', url:'', img:'', alt:'', bg:'', color:'' }),
+  text:() => ({ title:'', body:lang === 'ro' ? 'Salut {{first_name}},\n\nScrie aici mesajul tău. Poți folosi **text îngroșat** și [linkuri](https://exemplu.ro).' : 'Hi {{first_name}},\n\nWrite your message here. You can use **bold text** and [links](https://example.com).', align:'left', size:16 }),
+  image:() => ({ img:'', alt:'', url:'', h:220 }),
+  button:() => ({ btn:lang === 'ro' ? 'Află mai mult' : 'Learn more', url:'', align:'center', bg:'', color:'', radius:6 }),
+  cols:() => ({ items:[0, 1].map(i => ({ title:(lang === 'ro' ? 'Produs ' : 'Product ') + (i + 1), text:lang === 'ro' ? 'Descriere scurtă.' : 'Short description.', price:'', img:'', alt:'', link:lang === 'ro' ? 'Vezi' : 'View', url:'' })) }),
+  divider:() => ({ color:'#d5deec' }), spacer:() => ({ h:24 }),
+  social:() => ({ links:'Facebook | https://facebook.com\nInstagram | https://instagram.com\nLinkedIn | https://linkedin.com' }),
+  footer:() => ({ text:lang === 'ro' ? 'Brand SRL · Str. Exemplu 1, Iași\nPrimești acest email pentru că te-ai abonat la noutățile noastre.' : 'Brand Ltd · 1 Example St, Iași\nYou receive this email because you subscribed to our updates.', unsubL:lang === 'ro' ? 'Dezabonare' : 'Unsubscribe', unsubU:'{{unsubscribe}}' })
+};
+let n = 1; const nid = () => 'b' + (n++);
+const mk = (type, p) => ({ id:nid(), type, p:{ ...DEF[type](), ...(p || {}) } });
+const G0 = () => ({ subject:lang === 'ro' ? 'Noutățile lunii, {{first_name}}' : 'This month’s news, {{first_name}}', pre:lang === 'ro' ? 'Trei lucruri noi pe care merită să le vezi săptămâna aceasta.' : 'Three new things worth seeing this week.', from:'Brand', brand:'#0e7490', bg:'#eef2f7', card:'#ffffff', text:'#1f2937', font:'arial' });
+function template(k){
+  const ro = lang === 'ro', g = G0();
+  if (k === 'promo'){ g.brand = '#b45309'; g.subject = ro ? '-20% până duminică, {{first_name}}' : '20% off until Sunday, {{first_name}}'; g.pre = ro ? 'Codul tău este înăuntru. Valabil la toată colecția de toamnă.' : 'Your code is inside. Valid on the whole autumn collection.';
+    return { g, blocks:[mk('header', { align:'center' }), mk('hero', { title:ro ? '-20% la colecția de toamnă' : '20% off the autumn collection', text:ro ? 'Folosește codul TOAMNA20 până duminică la miezul nopții.' : 'Use code AUTUMN20 until Sunday at midnight.', btn:ro ? 'Cumpără acum' : 'Shop now', url:'https://exemplu.ro/oferta' }),
+      mk('cols', { items:[['Pulover lână', 'Wool jumper', '189 lei'], ['Geantă piele', 'Leather bag', '349 lei'], ['Fular', 'Scarf', '79 lei']].map(x => ({ title:ro ? x[0] : x[1], text:'', price:x[2], img:'', alt:ro ? x[0] : x[1], link:ro ? 'Vezi' : 'View', url:'https://exemplu.ro/produse' })) }),
+      mk('button', { btn:ro ? 'Vezi toată colecția' : 'See the whole collection', url:'https://exemplu.ro/colectie' }), mk('divider'), mk('social'), mk('footer')] }; }
+  if (k === 'welcome'){ g.brand = '#6d28d9'; g.subject = ro ? 'Bine ai venit, {{first_name}}!' : 'Welcome, {{first_name}}!'; g.pre = ro ? 'Iată cum începi în trei pași simpli.' : 'Here is how to get started in three simple steps.';
+    return { g, blocks:[mk('header'), mk('hero', { title:ro ? 'Ne bucurăm că ești aici' : 'Glad you are here', text:ro ? 'Contul tău e gata. Durează două minute să-l configurezi.' : 'Your account is ready. Setting it up takes two minutes.', btn:ro ? 'Începe' : 'Get started', url:'https://exemplu.ro/start' }),
+      mk('text', { title:ro ? 'Primii pași' : 'First steps', body:ro ? '**1.** Completează-ți profilul.\n\n**2.** Adaugă primul proiect.\n\n**3.** Invită un coleg din {{company}}.' : '**1.** Complete your profile.\n\n**2.** Add your first project.\n\n**3.** Invite a colleague from {{company}}.' }),
+      mk('button', { btn:ro ? 'Deschide contul' : 'Open your account', url:'https://exemplu.ro/cont' }), mk('spacer'), mk('footer')] }; }
+  return { g, blocks:[mk('header'), mk('hero', { title:ro ? 'Ce am pregătit luna aceasta' : 'What we prepared this month', text:ro ? 'Trei noutăți, un ghid nou și o invitație.' : 'Three updates, a new guide and an invitation.', btn:ro ? 'Citește pe site' : 'Read on the site', url:'https://exemplu.ro/noutati' }),
+    mk('text', { title:ro ? 'Salut, {{first_name}}' : 'Hi {{first_name}}', body:ro ? 'Luna aceasta am lansat un ghid despre automatizări și am adăugat rapoarte noi.\n\nMai jos găsești cele mai citite două articole.' : 'This month we launched a guide on automations and added new reports.\n\nBelow are the two most-read articles.' }),
+    mk('cols', { items:[{ title:ro ? 'Ghid: primul flux automat' : 'Guide: your first automated flow', text:ro ? 'De la abonare la prima comandă.' : 'From signup to first order.', price:'', img:'', alt:ro ? 'Ilustrație ghid' : 'Guide illustration', link:ro ? 'Citește' : 'Read', url:'https://exemplu.ro/ghid' }, { title:ro ? 'Rapoarte noi' : 'New reports', text:ro ? 'Vezi conversia pe fiecare pas.' : 'See conversion at every step.', price:'', img:'', alt:ro ? 'Captură raport' : 'Report screenshot', link:ro ? 'Citește' : 'Read', url:'https://exemplu.ro/rapoarte' }] }),
+    mk('divider'), mk('social'), mk('footer')] };
+}
+let doc = { g:G0(), blocks:[] }, sel = null, mode = 'edit', sample = -1;
+const undoS = [], redoS = []; let last = '';
+const snap = () => JSON.stringify(doc), byId = id => doc.blocks.find(b => b.id === id);
+
+/* ---------- HTML generation (one source for editor, previews and export) ---------- */
+const fill = s => sample < 0 ? String(s ?? '') : String(s ?? '').replace(/\{\{(\w+)\}\}/g, (m, k) => SAMPLES[sample][k] ?? m);
+function rich(s, c){ return esc(c.fill(s)).split(/\n{2,}/).map(p => `<p style="margin:0 0 12px">${p.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, a, u) => `<a href="${esc(c.url(u.replace(/&amp;/g, '&')))}" style="color:${c.g.brand}">${a}</a>`).replace(/\n/g, '<br>')}</p>`).join(''); }
+function btnHTML(label, url, bg, color, radius, c){
+  const l = esc(c.fill(label)), u = esc(c.url(url)), w = Math.max(120, Math.min(360, c.fill(label).length * 10 + 56));
+  return `<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${u}" style="height:46px;v-text-anchor:middle;width:${w}px" arcsize="${Math.round(radius / 46 * 100)}%" stroke="f" fillcolor="${bg}"><w:anchorlock/><center style="color:${color};font-family:Arial,sans-serif;font-size:16px;font-weight:bold">${l}</center></v:roundrect><![endif]--><!--[if !mso]><!--><a href="${u}" style="display:inline-block;background:${bg};color:${color};font-family:${c.font};font-size:16px;font-weight:bold;line-height:46px;padding:0 28px;border-radius:${radius}px;text-decoration:none">${l}</a><!--<![endif]-->`;
+}
+const phBox = (label, h, c) => `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="${h}" align="center" style="height:${h}px;background:#dfe6f0;color:#5b6b85;font:13px ${c.font}">${esc(label)}</td></tr></table>`;
+function cell(b, c){
+  const p = b.p, g = c.g, F = c.font, E = k => c.edit ? ` data-edit="${k}"` : '';
+  switch (b.type){
+    case 'header': { const bg = hex(p.bg, ''), col = hex(p.color, bg ? pick(bg) : g.text);
+      return `<td class="px${bg ? '' : ' tx'}" align="${p.align}" style="padding:22px 32px;${bg ? `background:${bg};` : ''}font:bold 20px ${F};color:${col}"><span${E('brand')}>${esc(c.fill(p.brand))}</span></td>`; }
+    case 'hero': { const bg = hex(p.bg, g.brand), col = hex(p.color, pick(bg));
+      return `<td class="px" align="center" style="padding:40px 32px;background:${bg};color:${col};font-family:${F}">${p.img ? `<img src="${esc(c.url(p.img))}" alt="${esc(p.alt)}" width="536" style="display:block;width:100%;max-width:536px;height:auto;border:0;margin:0 auto 20px">` : ''}<h1 class="h1"${E('title')} style="margin:0 0 12px;font-size:32px;line-height:1.2;color:${col}">${esc(c.fill(p.title))}</h1><p${E('text')} style="margin:0 0 24px;font-size:16px;line-height:1.6;color:${col}">${esc(c.fill(p.text))}</p>${p.btn ? btnHTML(p.btn, p.url, col, bg, 6, c) : ''}</td>`; }
+    case 'text': return `<td class="px tx" align="${p.align}" style="padding:24px 32px 12px;font:${+p.size || 16}px/1.65 ${F};color:${g.text}">${p.title ? `<h2${E('title')} style="margin:0 0 10px;font-size:22px;line-height:1.3">${esc(c.fill(p.title))}</h2>` : ''}${rich(p.body, c)}</td>`;
+    case 'image': { const inner = p.img ? `<img src="${esc(c.url(p.img))}" alt="${esc(p.alt)}" width="600" style="display:block;width:100%;height:auto;border:0">` : phBox(p.alt || t('imgPh'), +p.h || 220, c);
+      return `<td style="padding:0">${p.url && p.img ? `<a href="${esc(c.url(p.url))}">${inner}</a>` : inner}</td>`; }
+    case 'button': { const bg = hex(p.bg, g.brand); return `<td class="px" align="${p.align}" style="padding:12px 32px 24px">${btnHTML(p.btn, p.url, bg, hex(p.color, pick(bg)), +p.radius || 0, c)}</td>`; }
+    case 'cols': { const w = Math.floor(100 / p.items.length);
+      return `<td class="px" style="padding:14px 22px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>${p.items.map(it => `<td class="col tx" width="${w}%" valign="top" style="padding:10px;font:14px/1.6 ${F};color:${g.text}">${it.img ? `<img src="${esc(c.url(it.img))}" alt="${esc(it.alt)}" width="${Math.round(536 / p.items.length) - 20}" style="display:block;width:100%;height:auto;border:0">` : phBox(it.alt || t('imgPh'), 120, c)}<b style="display:block;font-size:16px;margin:10px 0 4px">${esc(c.fill(it.title))}</b>${it.text ? esc(c.fill(it.text)) : ''}${it.price ? `<div style="font-weight:bold;color:${g.brand};margin-top:6px">${esc(it.price)}</div>` : ''}${it.link ? `<div style="margin-top:8px"><a href="${esc(c.url(it.url))}" style="color:${g.brand};font-weight:bold;text-decoration:none">${esc(it.link)} &rarr;</a></div>` : ''}</td>`).join('')}</tr></table></td>`; }
+    case 'divider': return `<td class="px" style="padding:10px 32px"><div style="border-top:1px solid ${hex(p.color, '#d5deec')};font-size:0;line-height:0">&nbsp;</div></td>`;
+    case 'spacer': return `<td height="${+p.h || 24}" style="height:${+p.h || 24}px;font-size:0;line-height:0">&nbsp;</td>`;
+    case 'social': return `<td class="px mu" align="center" style="padding:16px 32px;font:13px ${F};color:#6b7280">${socialLinks(p).map(([nm, u]) => `<a href="${esc(c.url(u))}" style="color:${g.brand};text-decoration:none;font-weight:bold">${esc(nm)}</a>`).join(' &nbsp;&middot;&nbsp; ')}</td>`;
+    case 'footer': return `<td class="px mu" align="center" style="padding:20px 32px 28px;font:12px/1.6 ${F};color:#6b7280"><span${E('text')}>${esc(c.fill(p.text)).replace(/\n/g, '<br>')}</span>${p.unsubL ? `<br><a href="${esc(c.url(p.unsubU))}" style="color:#6b7280;text-decoration:underline">${esc(p.unsubL)}</a>` : ''}</td>`;
+  }
+  return '<td></td>';
+}
+const socialLinks = p => String(p.links || '').split('\n').map(l => l.split('|').map(x => x.trim())).filter(x => x[0]).slice(0, 6).map(x => [x[0], x[1] || '']);
+const DARK = '.bg{background:#0b101a!important}.card{background:#151c2b!important}.tx,.tx h2{color:#e9eef7!important}.mu,.mu a{color:#9fb0c8!important}';
+function ctx(o){ const g = { ...doc.g, brand:hex(doc.g.brand, '#0e7490'), bg:hex(doc.g.bg, '#eef2f7'), card:hex(doc.g.card, '#ffffff'), text:hex(doc.g.text, '#1f2937') };
+  return { g, font:FONTS[doc.g.font] || FONTS.arial, edit:!!o.edit && sample < 0, fill:o.raw ? (s => String(s ?? '')) : fill, url:o.noLinks ? (() => '#') : (u => /^\{\{\w+\}\}$/.test(String(u).trim()) ? String(u).trim() : safeUrl(u)) }; }
+function buildHTML(o = {}){
+  const c = ctx(o), g = c.g;
+  return `<!DOCTYPE html>
+<html lang="${lang}" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<title>${esc(c.fill(doc.g.subject))}</title>
+<!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->
+<style>
+body{margin:0;padding:0;-webkit-text-size-adjust:100%}
+table{border-collapse:collapse}
+img{border:0;max-width:100%}
+@media (max-width:620px){.wrap{width:100%!important}.col{display:block!important;width:100%!important;box-sizing:border-box}.px{padding-left:20px!important;padding-right:20px!important}.h1{font-size:26px!important}}
+${o.dark ? DARK : `@media (prefers-color-scheme:dark){${DARK}}`}
+</style>
+</head>
+<body class="bg" style="margin:0;padding:0;background:${g.bg}">
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:${g.bg}">${esc(c.fill(doc.g.pre))}${'&#847;&zwnj;&nbsp;'.repeat(30)}</div>
+<table role="presentation" class="bg" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${g.bg}"><tr><td align="center" style="padding:24px 12px">
+<!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+<table role="presentation" class="wrap card" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background:${g.card}">
+${doc.blocks.map(b => `<tr>${cell(b, c)}</tr>`).join('\n')}
+</table>
+<!--[if mso]></td></tr></table><![endif]-->
+</td></tr></table>
+</body>
+</html>`;
+}
+const kb = s => new Blob([s]).size / 1024;
+
+/* ---------- checks ---------- */
+function checks(){
+  const g = doc.g, out = [], add = (lvl, msg, id) => out.push({ lvl, msg, id }), c = ctx({}), sl = g.subject.trim().length, pl = g.pre.trim().length;
+  if (!sl) add('err', t('cSubE')); else if (sl < 20 || sl > 60) add('warn', t('cSubL', { n:sl })); else add('ok', t('cSubOk', { n:sl }));
+  const spam = [], letters = g.subject.replace(/[^a-zA-ZăâîșțĂÂÎȘȚ]/g, ''); if (letters.length > 8 && letters.replace(/[^A-ZĂÂÎȘȚ]/g, '').length / letters.length > .6) spam.push('MAJUSCULE'); if (/[!?]{2,}/.test(g.subject)) spam.push('!!'); (g.subject.match(/\b(gratis|gratuit|free|urgent|câștig[aă]|100%|bani|winner)\b/gi) || []).forEach(w => spam.push(w));
+  if (spam.length) add('warn', t('cSpam', { w:spam.join(', ') }));
+  if (!pl) add('warn', t('cPreE')); else if (pl < 30 || pl > 110) add('warn', t('cPreL', { n:pl })); else add('ok', t('cPreOk'));
+  let alt = 0, lnk = 0, cta = 0, con = 0, imgs = 0;
+  const noUrl = u => c.url(u) === '#';
+  doc.blocks.forEach(b => { const p = b.p;
+    if (b.type === 'image' || b.type === 'hero'){ if (p.img){ imgs++; if (!p.alt.trim()){ alt++; add('err', t('cAlt'), b.id); } } else if (b.type === 'image') add('warn', t('cImgPh'), b.id); }
+    if (b.type === 'cols') p.items.forEach(it => { if (it.img){ imgs++; if (!it.alt.trim()){ alt++; add('err', t('cAlt'), b.id); } } if (it.link && noUrl(it.url)){ lnk++; add('err', t('cLink'), b.id); } });
+    if (b.type === 'button' || (b.type === 'hero' && p.btn)){ cta++; if (noUrl(p.url)){ lnk++; add('err', t('cLink'), b.id); }
+      const bg = b.type === 'hero' ? hex(p.color, pick(hex(p.bg, c.g.brand))) : hex(p.bg, c.g.brand), fg = b.type === 'hero' ? hex(p.bg, c.g.brand) : hex(p.color, pick(bg)), r = ratio(bg, fg); if (r < 4.5){ con++; add(r < 3 ? 'err' : 'warn', t('cCon', { r:r.toFixed(1) }), b.id); } }
+    if (b.type === 'hero'){ const bg = hex(p.bg, c.g.brand), r = ratio(bg, hex(p.color, pick(bg))); if (r < 4.5){ con++; add(r < 3 ? 'err' : 'warn', t('cConT', { r:r.toFixed(1) }), b.id); } }
+    if (b.type === 'social' && socialLinks(p).some(x => noUrl(x[1]))){ lnk++; add('err', t('cLink'), b.id); }
+    JSON.stringify(p).replace(/\{\{(\w+)\}\}/g, (m, k) => { if (!TAGS.includes(k) && k !== 'unsubscribe') add('warn', t('cTag', { t:m }), b.id); return m; });
+  });
+  const tr = ratio(c.g.card, c.g.text); if (tr < 4.5){ con++; add(tr < 3 ? 'err' : 'warn', t('cConT', { r:tr.toFixed(1) })); }
+  if (imgs && !alt) add('ok', t('cAltOk')); if (!lnk) add('ok', t('cLinkOk')); if (!con) add('ok', t('cConOk'));
+  const ft = doc.blocks.find(b => b.type === 'footer' && b.p.unsubL && !noUrl(b.p.unsubU)); ft ? add('ok', t('cUnsubOk')) : add('err', t('cUnsub'));
+  cta ? add('ok', t('cCtaOk')) : add('warn', t('cCta'));
+  const size = kb(buildHTML({ raw:true })); size > 102 ? add('err', t('cSize', { kb:size.toFixed(1) })) : add('ok', t('cSizeOk', { kb:size.toFixed(1) }));
+  const score = Math.max(0, 100 - out.filter(x => x.lvl === 'err').length * 12 - out.filter(x => x.lvl === 'warn').length * 5);
+  return { out:out.sort((a, b) => ({ err:0, warn:1, ok:2 }[a.lvl] - { err:0, warn:1, ok:2 }[b.lvl])), score };
+}
+
+/* ---------- history ---------- */
+function commit(msg){ undoS.push(last); if (undoS.length > 100) undoS.shift(); redoS.length = 0; last = snap(); ls.set('es.doc', doc); render(); if (msg) say(msg); }
+function restore(s){ doc = JSON.parse(s); last = s; if (!byId(sel)) sel = null; ls.set('es.doc', doc); render(); }
+const undo = () => { if (undoS.length){ redoS.push(last); restore(undoS.pop()); } }, redo = () => { if (redoS.length){ undoS.push(last); restore(redoS.pop()); } };
+
+/* ---------- editing ---------- */
+function addBlock(type, at){ const b = mk(type); at = at == null ? (sel ? doc.blocks.findIndex(x => x.id === sel) + 1 : doc.blocks.length) : at; doc.blocks.splice(at, 0, b); sel = b.id; commit(t('added', { t:t(type) })); showTab('blk'); focusBlock(b.id); }
+function removeBlock(id){ const i = doc.blocks.findIndex(b => b.id === id); if (i < 0) return; const b = doc.blocks[i]; doc.blocks.splice(i, 1); const nx = doc.blocks[i] || doc.blocks[i - 1]; sel = nx ? nx.id : null; commit(t('removed', { t:t(b.type) })); sel ? focusBlock(sel) : $('#stage').focus(); }
+function moveBlock(id, to){ const i = doc.blocks.findIndex(b => b.id === id); if (i < 0) return; to = Math.max(0, Math.min(doc.blocks.length - 1, to)); if (to === i) return; const [b] = doc.blocks.splice(i, 1); doc.blocks.splice(to, 0, b); commit(t('moved')); focusBlock(id); }
+function dupBlock(id){ const i = doc.blocks.findIndex(b => b.id === id); if (i < 0) return; const c = JSON.parse(JSON.stringify(doc.blocks[i])); c.id = nid(); doc.blocks.splice(i + 1, 0, c); sel = c.id; commit(t('added', { t:t(c.type) })); focusBlock(c.id); }
+const focusBlock = id => { const el = $(`.blk[data-id="${id}"]`); el && el.focus({ preventScroll:false }); };
+function select(id){ sel = id; $$('.blk').forEach(el => el.classList.toggle('sel', el.dataset.id === id)); renderInspector(); }
+
+/* ---------- rendering ---------- */
+function renderStage(){
+  const st = $('#stage'), c = ctx({ edit:true, noLinks:true });
+  if (mode === 'edit'){
+    st.innerHTML = `<div class="emailBg" style="background:${c.g.bg}"><div class="email" id="email" style="background:${c.g.card}">${doc.blocks.length ? doc.blocks.map(b => `<div class="blk${b.id === sel ? ' sel' : ''}" data-id="${b.id}" tabindex="0" role="group" aria-label="${esc(t('blockOf', { t:t(b.type) }))}"><div class="bar"><button class="grip" data-act="grip" aria-label="${t('grip')}" title="${t('grip')}">⠿</button><button data-act="up" aria-label="${t('up')}" title="${t('up')}">↑</button><button data-act="down" aria-label="${t('down')}" title="${t('down')}">↓</button><button data-act="dup" aria-label="${t('dup')}" title="${t('dup')}">⧉</button><button data-act="del" aria-label="${t('del')}" title="${t('del')}">✕</button></div><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>${cell(b, c)}</tr></table></div>`).join('') : `<div class="emptyC">${t('emptyC')}</div>`}</div></div>`;
+    $$('#email [data-edit]').forEach(el => { try{ el.contentEditable = 'plaintext-only'; }catch(e){ el.contentEditable = 'true'; } el.spellcheck = false; });
+    $$('#email a').forEach(a => a.addEventListener('click', e => e.preventDefault()));
+  } else if (mode === 'code'){
+    const h = buildHTML({ raw:true }); st.innerHTML = `<div class="codeBar"><button class="btn" id="cCopy">${t('copyHtml')}</button><button class="btn" id="cDl">${t('download')}</button><span>${t('size', { kb:kb(h).toFixed(1) })}</span></div><pre id="code" tabindex="0" aria-label="HTML"></pre>`;
+    $('#code').textContent = h; $('#cCopy').onclick = copyHTML; $('#cDl').onclick = downloadHTML;
+  } else {
+    st.innerHTML = `<iframe class="frame ${mode === 'mobile' ? 'phone' : 'wide'}" sandbox="" title="${mode === 'mobile' ? t('mMobile') : 'Dark'}"></iframe>`; st.firstChild.srcdoc = buildHTML({ noLinks:true, dark:mode === 'dark' });
+  }
+}
+function render(){
+  $$('[data-mode]').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === mode));
+  $('#undo').disabled = !undoS.length; $('#redo').disabled = !redoS.length;
+  $('#inbox').innerHTML = `<span class="dot" aria-hidden="true">${esc((doc.g.from || 'B')[0].toUpperCase())}</span><div><b>${esc(doc.g.from)}</b> &nbsp; <b>${esc(fill(doc.g.subject))}</b> <span>— ${esc(fill(doc.g.pre))}</span></div>`;
+  renderStage(); renderInspector(); renderGlobal(); renderChecks();
+}
+const fld = (id, label, inner, hint) => `<div class="field"><label for="${id}">${label}</label>${inner}${hint ? `<small class="empty" style="font-size:11.5px">${hint}</small>` : ''}</div>`;
+const inp = (id, k, v, type = 'text', extra = '') => `<input id="${id}" data-k="${k}" type="${type}" value="${esc(v)}" ${extra}>`;
+const area = (id, k, v) => `<textarea id="${id}" data-k="${k}">${esc(v)}</textarea>`;
+const selc = (id, k, v, opts) => `<select id="${id}" data-k="${k}">${opts.map(([a, l]) => `<option value="${a}"${String(v) === String(a) ? ' selected' : ''}>${l}</option>`).join('')}</select>`;
+const colr = (id, k, v, fb, lab) => `<div class="field"><label for="${id}">${lab}</label><div class="row"><input id="${id}" data-k="${k}" type="color" value="${hex(v, fb)}">${v ? `<button class="btn sm" data-auto="${k}">${t('auto')}</button>` : `<span class="empty" style="font-size:12px">${t('auto')}</span>`}</div></div>`;
+const ALIGN = () => [['left', t('left')], ['center', t('center')], ['right', t('right')]];
+function renderInspector(){
+  const el = $('#p-blk'), b = byId(sel); if (!b){ el.innerHTML = `<h2 class="cap">${t('tBlock')}</h2><p class="empty">${t('selNone')}</p>`; return; }
+  const p = b.p, g = ctx({}).g, U = (k, lab) => fld('f-' + k, lab, inp('f-' + k, k, p[k], 'text', 'inputmode="url" autocomplete="off"')); let h = `<h2 class="cap">${t(b.type)}</h2>`;
+  if (b.type === 'header') h += fld('f-brand', t('fBrand'), inp('f-brand', 'brand', p.brand)) + fld('f-align', t('fAlign'), selc('f-align', 'align', p.align, ALIGN())) + colr('f-bg', 'bg', p.bg, g.card, t('fBg')) + colr('f-color', 'color', p.color, g.text, t('fColor'));
+  if (b.type === 'hero') h += fld('f-title', t('fTitle'), inp('f-title', 'title', p.title)) + fld('f-text', t('fText'), area('f-text', 'text', p.text)) + fld('f-btn', t('fBtn'), inp('f-btn', 'btn', p.btn)) + U('url', t('fUrl')) + U('img', t('fImg')) + fld('f-alt', t('fAlt'), inp('f-alt', 'alt', p.alt)) + colr('f-bg', 'bg', p.bg, g.brand, t('fBg')) + colr('f-color', 'color', p.color, pick(hex(p.bg, g.brand)), t('fColor'));
+  if (b.type === 'text') h += fld('f-title', t('fTitle'), inp('f-title', 'title', p.title)) + fld('f-body', t('fBody'), area('f-body', 'body', p.body), t('bodyHint')) + fld('f-align', t('fAlign'), selc('f-align', 'align', p.align, ALIGN())) + fld('f-size', t('fSize'), inp('f-size', 'size', p.size, 'number', 'min="13" max="22"'));
+  if (b.type === 'image') h += U('img', t('fImg')) + fld('f-alt', t('fAlt'), inp('f-alt', 'alt', p.alt)) + U('url', t('fUrl')) + fld('f-h', t('fH'), inp('f-h', 'h', p.h, 'number', 'min="60" max="480" step="10"'));
+  if (b.type === 'button') h += fld('f-btn', t('fBtn'), inp('f-btn', 'btn', p.btn)) + U('url', t('fUrl')) + fld('f-align', t('fAlign'), selc('f-align', 'align', p.align, ALIGN())) + colr('f-bg', 'bg', p.bg, g.brand, t('fBg')) + colr('f-color', 'color', p.color, pick(hex(p.bg, g.brand)), t('fColor')) + fld('f-radius', t('fRadius'), inp('f-radius', 'radius', p.radius, 'number', 'min="0" max="23"'));
+  if (b.type === 'cols') h += p.items.map((it, i) => `<div class="group"><h3>${t('col', { n:i + 1 })}${p.items.length > 1 ? `<button class="btn sm danger" data-rm="${i}">${t('rmCol')}</button>` : ''}</h3>` + ['title:fTitle', 'text:fText', 'price:fPrice', 'img:fImg', 'alt:fAlt', 'link:fLink', 'url:fUrl'].map(x => { const [k, l] = x.split(':'); return fld(`f-${i}-${k}`, t(l), inp(`f-${i}-${k}`, `items.${i}.${k}`, it[k])); }).join('') + `</div>`).join('') + (p.items.length < 3 ? `<button class="btn" id="addCol">${t('addCol')}</button>` : '');
+  if (b.type === 'divider') h += colr('f-color', 'color', p.color, '#d5deec', t('fColor'));
+  if (b.type === 'spacer') h += fld('f-h', t('fH'), inp('f-h', 'h', p.h, 'number', 'min="8" max="120" step="4"'));
+  if (b.type === 'social') h += fld('f-links', t('fLinks'), area('f-links', 'links', p.links));
+  if (b.type === 'footer') h += fld('f-text', t('fText'), area('f-text', 'text', p.text)) + fld('f-unsubL', t('fUnsubL'), inp('f-unsubL', 'unsubL', p.unsubL)) + U('unsubU', t('fUnsubU'));
+  h += `<p class="empty" style="font-size:12px">${t('tags', { t:TAGS.map(x => '<code>{{' + x + '}}</code>').join(' ') })}</p><div class="row" style="margin-top:10px"><button class="btn" data-b="up">↑</button><button class="btn" data-b="down">↓</button><button class="btn" data-b="dup">${t('dup')}</button><button class="btn danger" data-b="del">${t('del')}</button></div>`;
+  el.innerHTML = h;
+  el.querySelectorAll('[data-k]').forEach(i => i.onchange = () => { const path = i.dataset.k.split('.'), id = i.id; let o = p; while (path.length > 1) o = o[path.shift()];
+    o[path[0]] = i.type === 'number' ? Math.min(+i.max, Math.max(+i.min, +i.value || +i.min)) : i.value.slice(0, i.tagName === 'TEXTAREA' ? 3000 : 300); commit(); const e2 = document.getElementById(id); e2 && e2.focus(); });
+  el.querySelectorAll('[data-auto]').forEach(x => x.onclick = () => { p[x.dataset.auto] = ''; commit(); });
+  el.querySelectorAll('[data-rm]').forEach(x => x.onclick = () => { p.items.splice(+x.dataset.rm, 1); commit(); });
+  const ac = $('#addCol'); if (ac) ac.onclick = () => { p.items.push({ ...DEF.cols().items[0], title:(lang === 'ro' ? 'Produs ' : 'Product ') + (p.items.length + 1) }); commit(); };
+  el.querySelectorAll('[data-b]').forEach(x => x.onclick = () => act(x.dataset.b, b.id));
+}
+function renderGlobal(){
+  const g = doc.g, el = $('#p-glb'), keep = document.activeElement && el.contains(document.activeElement) ? document.activeElement.id : null;
+  el.innerHTML = `<h2 class="cap">${t('tEmail')}</h2>` + fld('g-subject', t('gSubject'), inp('g-subject', 'subject', g.subject, 'text', 'maxlength="150"')) + fld('g-pre', t('gPre'), area('g-pre', 'pre', g.pre)) + fld('g-from', t('gFrom'), inp('g-from', 'from', g.from, 'text', 'maxlength="40"')) +
+    ['brand:gBrand', 'bg:gBg', 'card:gCard', 'text:gText'].map(x => { const [k, l] = x.split(':'); return `<div class="field"><label for="g-${k}">${t(l)}</label><input id="g-${k}" data-k="${k}" type="color" value="${hex(g[k], '#000000')}"></div>`; }).join('') +
+    fld('g-font', t('gFont'), selc('g-font', 'font', g.font, [['arial', 'Arial'], ['georgia', 'Georgia'], ['verdana', 'Verdana'], ['trebuchet', 'Trebuchet MS']]));
+  el.querySelectorAll('[data-k]').forEach(i => i.onchange = () => { g[i.dataset.k] = i.value.slice(0, 300); commit(); });
+  if (keep){ const e2 = document.getElementById(keep); e2 && e2.focus(); }
+}
+function renderChecks(){
+  const { out, score } = checks(), cls = score >= 85 ? 'g' : score >= 60 ? 'm' : 'b';
+  $('#scoreB').textContent = score; $('#scoreB').style.color = `var(--${cls === 'g' ? 'green' : cls === 'm' ? 'amber' : 'red'})`;
+  $('#p-chk').innerHTML = `<div class="score ${cls}"><b>${score}</b><div><div class="cap" style="font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">${t('score')}</div>${t(cls === 'g' ? 'scoreG' : cls === 'm' ? 'scoreM' : 'scoreB')}</div></div>` +
+    out.map(x => { const ic = x.lvl === 'ok' ? '✓' : x.lvl === 'warn' ? '!' : '✕', tag = x.id ? 'button' : 'div'; return `<${tag} class="chk ${x.lvl === 'ok' ? '' : x.lvl}"${x.id ? ` data-go="${x.id}"` : ''}><i aria-hidden="true">${ic}</i><span>${esc(x.msg)}</span></${tag}>`; }).join('');
+  $$('[data-go]').forEach(b => b.onclick = () => { if (mode !== 'edit'){ mode = 'edit'; render(); } select(b.dataset.go); showTab('blk'); const el = $(`.blk[data-id="${b.dataset.go}"]`); el && el.scrollIntoView({ block:'center' }); });
+}
+
+/* ---------- stage interactions ---------- */
+const stage = $('#stage');
+function act(a, id){ const i = doc.blocks.findIndex(b => b.id === id); if (a === 'up') moveBlock(id, i - 1); else if (a === 'down') moveBlock(id, i + 1); else if (a === 'dup') dupBlock(id); else if (a === 'del') removeBlock(id); }
+stage.addEventListener('click', e => { const blk = e.target.closest('.blk'); if (!blk) return; const a = e.target.closest('[data-act]'); if (a){ if (a.dataset.act !== 'grip') act(a.dataset.act, blk.dataset.id); return; } if (sel !== blk.dataset.id) select(blk.dataset.id); showTab('blk'); });
+stage.addEventListener('focusin', e => { const blk = e.target.closest('.blk'); if (blk && sel !== blk.dataset.id && !drag) select(blk.dataset.id); });
+stage.addEventListener('focusout', e => { const el = e.target; if (!el.dataset || !el.dataset.edit) return; const b = byId(el.closest('.blk').dataset.id), v = el.innerText.replace(/ /g, ' ').trim(); if (b && v !== b.p[el.dataset.edit]){ b.p[el.dataset.edit] = v.slice(0, 300); commit(); } });
+stage.addEventListener('keydown', e => {
+  if (e.target.dataset && e.target.dataset.edit){ if (e.key === 'Enter' && !(e.target.dataset.edit === 'text' && e.target.closest('.blk') && byId(e.target.closest('.blk').dataset.id).type === 'footer')){ e.preventDefault(); e.target.blur(); } if (e.key === 'Escape') e.target.blur(); return; }
+  const blk = e.target.closest('.blk'); if (!blk || e.target !== blk) return; const id = blk.dataset.id, i = doc.blocks.findIndex(b => b.id === id);
+  if (e.altKey && e.key === 'ArrowUp'){ e.preventDefault(); moveBlock(id, i - 1); } else if (e.altKey && e.key === 'ArrowDown'){ e.preventDefault(); moveBlock(id, i + 1); }
+  else if (e.key === 'ArrowDown'){ e.preventDefault(); doc.blocks[i + 1] && focusBlock(doc.blocks[i + 1].id); } else if (e.key === 'ArrowUp'){ e.preventDefault(); doc.blocks[i - 1] && focusBlock(doc.blocks[i - 1].id); }
+  else if (e.key === 'Delete' || e.key === 'Backspace'){ e.preventDefault(); removeBlock(id); }
+  else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'd'){ e.preventDefault(); dupBlock(id); }
+  else if (e.key === 'Enter'){ e.preventDefault(); showTab('blk'); const f = $('#p-blk input, #p-blk textarea'); f && f.focus(); }
+});
+/* drag: reorder via grip, or new block from palette */
+let drag = null;
+function dragStart(e, d){ drag = d; drag.ghost = d.el.cloneNode(true); drag.ghost.classList.add('ghost'); if (d.id){ drag.ghost.style.width = '300px'; drag.ghost.style.maxHeight = '80px'; drag.ghost.style.overflow = 'hidden'; d.el.classList.add('dragging'); } document.body.appendChild(drag.ghost); drag.line = document.createElement('div'); drag.line.className = 'drop'; dragMove(e); }
+function dragMove(e){
+  drag.ghost.style.left = e.clientX + 8 + 'px'; drag.ghost.style.top = e.clientY + 8 + 'px';
+  const em = $('#email'); if (!em) return; const r = em.getBoundingClientRect(), blks = [...em.querySelectorAll('.blk:not(.dragging)')];
+  if (e.clientX < r.left - 60 || e.clientX > r.right + 60){ drag.line.remove(); drag.at = null; return; }
+  const before = blks.find(b => { const q = b.getBoundingClientRect(); return e.clientY < q.top + q.height / 2; }); before ? em.insertBefore(drag.line, before) : em.appendChild(drag.line);
+  drag.at = before ? before.dataset.id : '';
+  const sr = stage.getBoundingClientRect(); if (e.clientY > sr.bottom - 40) stage.scrollTop += 12; else if (e.clientY < sr.top + 40) stage.scrollTop -= 12;
+}
+function dragEnd(){
+  if (!drag) return; const d = drag; drag = null; d.ghost.remove(); d.line.remove(); if (d.id) d.el.classList.remove('dragging'); if (d.at == null) return;
+  const rest = doc.blocks.filter(b => b.id !== d.id), at = d.at ? rest.findIndex(b => b.id === d.at) : rest.length;
+  if (d.id){ const b = byId(d.id); rest.splice(at, 0, b); if (rest.map(x => x.id).join() !== doc.blocks.map(x => x.id).join()){ doc.blocks = rest; commit(t('moved')); } } else addBlock(d.type, at);
+}
+stage.addEventListener('pointerdown', e => { const g = e.target.closest('[data-act="grip"]'); if (!g || mode !== 'edit') return; e.preventDefault(); const el = g.closest('.blk'); dragStart(e, { id:el.dataset.id, el }); });
+window.addEventListener('pointermove', e => { if (drag) dragMove(e); else if (pend && Math.abs(e.clientX - pend.x) + Math.abs(e.clientY - pend.y) > 8){ const p = pend; pend = null; if (mode !== 'edit'){ mode = 'edit'; render(); } dragStart(e, { type:p.type, el:p.el }); dragged = true; } });
+window.addEventListener('pointerup', () => { pend = null; dragEnd(); setTimeout(() => dragged = false, 0); }); window.addEventListener('pointercancel', () => { pend = null; if (drag){ drag.at = null; dragEnd(); } });
+let pend = null, dragged = false;
+function renderPalette(){
+  $('#pal').innerHTML = Object.keys(DEF).map(k => `<button class="pitem" data-type="${k}"><i aria-hidden="true">${ICONS[k]}</i>${t(k)}</button>`).join('');
+  $$('.pitem').forEach(b => { b.addEventListener('pointerdown', e => { dragged = false; if (e.pointerType === 'mouse' && e.button === 0) pend = { x:e.clientX, y:e.clientY, type:b.dataset.type, el:b }; });
+    b.addEventListener('click', () => { if (dragged){ dragged = false; return; } if (mode !== 'edit'){ mode = 'edit'; } addBlock(b.dataset.type); }); });
+}
+
+/* ---------- actions ---------- */
+async function copyHTML(){ try{ await navigator.clipboard.writeText(buildHTML({ raw:true })); toast(t('copied')); }catch(e){ toast(t('copyFail')); } }
+function download(name, text, type){ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 500); }
+const downloadHTML = () => download('email.html', buildHTML({ raw:true }), 'text/html');
+const S = (v, n) => String(v ?? '').slice(0, n);
+function cleanDoc(j){
+  if (!j || typeof j.g !== 'object' || !Array.isArray(j.blocks) || j.blocks.length > 60 || !j.blocks.every(b => b && DEF[b.type] && b.p && typeof b.p === 'object')) return null;
+  const g0 = G0(), g = {}; for (const k in g0) g[k] = S(j.g[k] ?? g0[k], 300); if (!FONTS[g.font]) g.font = 'arial';
+  const blocks = j.blocks.map(b => { const d = DEF[b.type](), p = {}; for (const k in d){ if (k === 'items') p.items = (Array.isArray(b.p.items) ? b.p.items : d.items).slice(0, 3).map(it => { const o = {}; for (const kk in d.items[0]) o[kk] = S(it && it[kk], 300); return o; }); else if (typeof d[k] === 'number') p[k] = isFinite(+b.p[k]) ? +b.p[k] : d[k]; else p[k] = S(b.p[k] ?? d[k], 3000); } if (p.items && !p.items.length) p.items = d.items; if (p.align && !['left', 'center', 'right'].includes(p.align)) p.align = 'left'; return { id:nid(), type:b.type, p }; });
+  return { g, blocks };
+}
+function loadDoc(d, record){ doc = d; sel = null; if (record) commit(t('loaded')); else { last = snap(); render(); } }
+let toastT; function toast(m){ const el = $('#toast'); el.textContent = m; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => el.hidden = true, 3200); }
+function say(m){ $('#live').textContent = ''; setTimeout(() => $('#live').textContent = m, 30); }
+const tabs = ['blk', 'glb', 'chk'];
+function showTab(k){ tabs.forEach(x => { const on = x === k; $('#tab-' + x).setAttribute('aria-selected', on); $('#tab-' + x).tabIndex = on ? 0 : -1; $('#p-' + x).hidden = !on; }); }
+tabs.forEach((k, i) => { const b = $('#tab-' + k); b.onclick = () => showTab(k); b.onkeydown = e => { const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (d){ const x = tabs[(i + d + 3) % 3]; showTab(x); $('#tab-' + x).focus(); } }; });
+function applyLang(){
+  document.documentElement.lang = lang;
+  $$('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n)); $$('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
+  $('#lang').textContent = lang === 'ro' ? 'EN' : 'RO'; $('#lang').setAttribute('aria-label', lang === 'ro' ? 'Switch to English' : 'Schimbă în română');
+  $('#tpl').innerHTML = `<option value="">${t('tplPick')}</option><option value="news">${t('tplNews')}</option><option value="promo">${t('tplPromo')}</option><option value="welcome">${t('tplWelcome')}</option>`;
+  $('#sample').innerHTML = `<option value="-1">${t('sNone')}</option>` + SAMPLES.map((s, i) => `<option value="${i}"${i === sample ? ' selected' : ''}>${s.first_name} · ${s.company}</option>`).join('');
+  document.title = lang === 'ro' ? 'Email Studio — builder de emailuri cu export HTML compatibil Outlook | Laura Andreea' : 'Email Studio — email builder with Outlook-safe HTML export | Laura Andreea';
+  renderPalette(); render();
+}
+document.addEventListener('keydown', e => { const tag = (e.target.tagName || '').toLowerCase(), typing = tag === 'input' || tag === 'select' || tag === 'textarea' || e.target.isContentEditable;
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !typing){ e.preventDefault(); e.shiftKey ? redo() : undo(); } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y' && !typing){ e.preventDefault(); redo(); } else if (e.key === '?' && !typing && !$('dialog[open]')) openHelp(); });
+function openHelp(){ $('#helpBody').innerHTML = t('help'); $('#help').showModal(); }
+$$('[data-mode]').forEach(b => b.onclick = () => { mode = b.dataset.mode; render(); });
+$('#sample').onchange = e => { sample = +e.target.value; render(); };
+$('#undo').onclick = undo; $('#redo').onclick = redo; $('#copy').onclick = copyHTML; $('#dl').onclick = downloadHTML; $('#helpB').onclick = openHelp;
+$('#json').onclick = () => $('#proj').showModal(); $$('[data-close]').forEach(b => b.onclick = () => b.closest('dialog').close());
+$('#pExp').onclick = () => download('email-studio.json', JSON.stringify({ app:'email-studio', v:1, ...doc }, null, 1), 'application/json');
+$('#pImp').onclick = () => $('#file').click();
+$('#pNew').onclick = () => { if (!doc.blocks.length || confirm(t('confirmNew'))){ doc = { g:doc.g, blocks:[] }; sel = null; commit(); $('#proj').close(); } };
+$('#file').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return; try{ const d = cleanDoc(JSON.parse(await f.text())); if (!d) throw 0; loadDoc(d, true); $('#proj').close(); toast(t('loaded')); }catch(_){ toast(t('bad')); } };
+$('#tpl').onchange = e => { if (e.target.value){ loadDoc(template(e.target.value), true); e.target.value = ''; } };
+$('#theme').onclick = () => { const th = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = th; ls.set('es.theme', th); };
+$('#lang').onclick = () => { lang = lang === 'ro' ? 'en' : 'ro'; ls.set('es.lang', lang); applyLang(); };
+
+/* ---------- init ---------- */
+document.documentElement.dataset.theme = ls.get('es.theme', 'dark');
+doc = cleanDoc(ls.get('es.doc', null)) || template('news'); if (!doc.blocks.length && !ls.get('es.doc', null)) doc = template('news');
+last = snap(); applyLang();
+window.ES = { buildHTML, checks, template, loadDoc, get doc(){ return doc; } };
+})();
+</script>
+</body>
+</html>

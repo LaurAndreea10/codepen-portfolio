@@ -20,6 +20,7 @@ Editor vizual de automatizări de marketing, cu simulare. Desenezi fluxul din pa
 journey-builder/
 ├── index.html       ← aplicația completă, un singur fișier, fără dependențe
 ├── index.pen.html   ← aceeași versiune, pentru CodePen
+├── case-study.html  ← studiu de caz: decizii, model, calibrare, probleme găsite
 └── og.png           ← imaginea pentru Open Graph
 ```
 

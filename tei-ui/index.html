@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tei UI — design system cu Web Components, fără dependențe | Laura Andreea</title>
+<meta name="description" content="Tei UI: un design system mic, scris de la zero cu Web Components. 11 componente accesibile, tokenuri de design, editor de temă cu export și un playground live. Un singur fișier JavaScript, fără dependențe.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/tei-ui/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tei UI — design system cu Web Components">
+<meta property="og:description" content="11 componente accesibile, tokenuri, editor de temă și playground live. Un singur fișier, fără dependențe.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/tei-ui/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/tei-ui/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a1220">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1220'/%3E%3Cpath d='M16 26V14M16 14c-6 0-8-4-8-8 5 0 8 3 8 8zm0 0c0-4 3-7 8-7 0 5-3 7-8 7z' fill='none' stroke='%2322d3ee' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"Tei UI","programmingLanguage":"JavaScript","inLanguage":["ro","en"],"author":{"@type":"Person","name":"Laura Andreea"},"description":"Design system mic cu Web Components, fără dependențe."}
+</script>
+<script src="tei-ui.js"></script>
+<style>
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--tei-bg);color:var(--tei-text);font:15px/1.6 var(--tei-font)}
+a{color:var(--tei-accent)}
+:focus-visible{outline:2px solid var(--tei-focus);outline-offset:2px}
+.skip{position:absolute;left:8px;top:-60px;background:var(--tei-focus);color:#111;padding:8px 12px;border-radius:8px;z-index:99;font-weight:600}
+.skip:focus{top:8px}
+header.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:9px 18px;background:color-mix(in srgb,var(--tei-bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--tei-line)}
+header.top h1{font:700 20px/1 var(--tei-serif);margin:0}
+header.top h1 em{font-style:normal;color:var(--tei-accent)}
+header.top .v{margin-right:auto}
+.shell{display:grid;grid-template-columns:210px minmax(0,1fr);max-width:1180px;margin:0 auto}
+nav.side{position:sticky;top:57px;align-self:start;height:calc(100vh - 57px);overflow:auto;padding:20px 12px 20px 18px;border-right:1px solid var(--tei-line)}
+nav.side b{display:block;font:600 11px var(--tei-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--tei-muted);margin:14px 0 6px}
+nav.side a{display:block;padding:4px 8px;border-radius:6px;text-decoration:none;color:var(--tei-text);font-size:14px}
+nav.side a:hover{background:var(--tei-surface-2)}
+main{padding:10px 28px 80px;min-width:0}
+section{padding:34px 0;border-bottom:1px solid var(--tei-line)}
+.eyebrow{font:600 12px var(--tei-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--tei-accent)}
+h2{font:700 clamp(26px,4vw,38px)/1.15 var(--tei-serif);margin:.2em 0 .3em}
+h3{font:700 22px/1.2 var(--tei-serif);margin:0 0 6px}
+h3 code{font:600 15px var(--tei-mono);color:var(--tei-accent);margin-left:8px}
+.lede{color:var(--tei-muted);max-width:66ch;margin:0 0 16px}
+.demo{background:var(--tei-surface);border:1px solid var(--tei-line);border-radius:14px 14px 0 0;padding:22px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.demo.col{display:block}
+.codew{position:relative}
+pre{margin:0 0 14px;background:var(--tei-bg);border:1px solid var(--tei-line);border-top:0;border-radius:0 0 14px 14px;padding:14px 16px;font:13px/1.55 var(--tei-mono);overflow:auto;white-space:pre}
+pre.solo{border-top:1px solid var(--tei-line);border-radius:14px}
+.copy{position:absolute;right:8px;top:8px}
+table.api{border-collapse:collapse;width:100%;font-size:13.5px;margin:6px 0 10px}
+table.api th,table.api td{text-align:left;padding:6px 10px 6px 0;border-bottom:1px solid var(--tei-line);vertical-align:top}
+table.api th{font:600 11px var(--tei-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--tei-muted)}
+table.api code{font:12.5px var(--tei-mono);color:var(--tei-accent)}
+.a11y{border-left:3px solid var(--tei-success);background:var(--tei-surface);padding:9px 14px;border-radius:8px;font-size:14px}
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.sw div{border:1px solid var(--tei-line);border-radius:12px;overflow:hidden;background:var(--tei-surface)}
+.sw i{display:block;height:54px}
+.sw span{display:block;padding:7px 10px;font:12px var(--tei-mono)}
+.sw small{display:block;color:var(--tei-muted)}
+.editor{display:grid;grid-template-columns:260px minmax(0,1fr);gap:18px}
+.card{background:var(--tei-surface);border:1px solid var(--tei-line);border-radius:14px;padding:16px}
+.f{margin-bottom:14px}
+.f label{display:flex;justify-content:space-between;font-size:13px;color:var(--tei-muted);margin-bottom:4px}
+.f label b{font:600 12px var(--tei-mono);color:var(--tei-text)}
+.f input[type=range]{width:100%;accent-color:var(--tei-accent);min-height:28px}
+.f input[type=color]{width:100%;height:38px;background:var(--tei-surface-2);border:1px solid var(--tei-line);border-radius:8px;padding:3px}
+#play{width:100%;min-height:150px;background:var(--tei-bg);color:var(--tei-text);border:1px solid var(--tei-line);border-radius:12px;padding:12px;font:13px/1.55 var(--tei-mono);resize:vertical}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;width:100%}
+footer{padding:16px 18px;border-top:1px solid var(--tei-line);font:400 12px var(--tei-mono);color:var(--tei-muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media (max-width:860px){.shell{display:block}nav.side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--tei-line);display:flex;gap:4px;overflow-x:auto;padding:8px 12px}nav.side b{display:none}nav.side a{white-space:nowrap}main{padding:0 16px 60px}.editor{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Sari la conținut</a>
+<header class="top"><h1>Tei <em>UI</em></h1><tei-badge class="v" tone="info">v1.0.0</tei-badge>
+  <tei-button size="sm" id="theme" aria-label="Schimbă tema">◐</tei-button><tei-button size="sm" id="lang">EN</tei-button></header>
+<div class="shell">
+  <nav class="side" id="nav" aria-label="Secțiuni"></nav>
+  <main id="main">
+    <section id="intro"><span class="eyebrow" data-i18n="iE">Design system</span><h2 data-i18n="iH">Componente mici, standarde web, zero dependențe</h2><p class="lede" data-i18n="iL"></p>
+      <div class="codew"><pre class="solo" id="install"></pre></div><div class="demo" style="border-radius:14px" id="heroDemo"></div></section>
+    <section id="tokens"><span class="eyebrow" data-i18n="tE">Fundație</span><h2 data-i18n="tH">Tokenuri</h2><p class="lede" data-i18n="tL"></p><div class="sw" id="sw"></div></section>
+    <section id="theme-editor"><span class="eyebrow" data-i18n="eE">Personalizare</span><h2 data-i18n="eH">Editor de temă</h2><p class="lede" data-i18n="eL"></p>
+      <div class="editor"><div class="card">
+        <div class="f"><label for="eAccent" data-i18n="eAccent">Culoare de accent</label><input id="eAccent" type="color"></div>
+        <div class="f"><label for="eRadius"><span data-i18n="eRadius">Rotunjire</span><b id="eRadiusV"></b></label><input id="eRadius" type="range" min="0" max="20" value="10"></div>
+        <div class="f"><label for="eControl"><span data-i18n="eControl">Înălțimea controalelor</span><b id="eControlV"></b></label><input id="eControl" type="range" min="32" max="48" value="38"></div>
+        <tei-button id="eReset" size="sm" data-i18n="eReset">Resetează</tei-button>
+        <p id="eContrast" style="font-size:13px;margin:12px 0 0" role="status"></p>
+      </div><div><tei-tabs id="eTabs" label="Export"><tei-tab label="CSS"><div class="codew"><pre class="solo" id="eCss"></pre></div></tei-tab><tei-tab label="JSON"><div class="codew"><pre class="solo" id="eJson"></pre></div></tei-tab></tei-tabs></div></div></section>
+    <div id="comps"></div>
+    <section id="playground"><span class="eyebrow" data-i18n="pE">Încearcă</span><h2 data-i18n="pH">Playground</h2><p class="lede" data-i18n="pL"></p>
+      <label class="sr" for="play" style="position:absolute;left:-999em">HTML</label><textarea id="play" spellcheck="false"></textarea><div class="demo" id="playOut" style="border-radius:14px;margin-top:10px"></div></section>
+  </main>
+</div>
+<footer><span>© 2026 <strong>Laura Andreea</strong> · Iași · Tei UI 1.0.0</span><a href="../portfolio.html" data-i18n="back">← Portofoliu</a></footer>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const ls = { get(k, d){ try{ const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); }catch(e){ return d; } }, set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+let lang = ls.get('tei.lang', (navigator.language || 'ro').startsWith('ro') ? 'ro' : 'en');
+{ const p = new URLSearchParams(location.search).get('lang'); if (p === 'ro' || p === 'en') lang = p; }
+const L = (ro, en) => lang === 'ro' ? ro : en;
+const T = { ro: {
+  skip:'Sari la conținut', back:'← Portofoliu', iE:'Design system', iH:'Componente mici, standarde web, zero dependențe',
+  iL:'Tei UI este un design system scris de la zero cu Web Components: 11 componente, un set de tokenuri și un singur fișier JavaScript. Funcționează în orice pagină HTML, cu sau fără framework.',
+  tE:'Fundație', tH:'Tokenuri', tL:'Toate componentele citesc aceleași proprietăți CSS. Schimbi un token pe :root și se schimbă peste tot. Sub fiecare culoare vezi contrastul față de fundal.',
+  eE:'Personalizare', eH:'Editor de temă', eL:'Mută controalele și toată pagina se actualizează pe loc, pentru că este construită cu aceleași componente. Copiază apoi rezultatul ca CSS sau ca JSON.',
+  eAccent:'Culoare de accent', eRadius:'Rotunjire', eControl:'Înălțimea controalelor', eReset:'Resetează', cOk:'Contrast text pe accent: {r}:1, suficient pentru text normal.', cBad:'Contrast text pe accent: {r}:1, sub pragul de 4,5:1. Alege o nuanță mai închisă sau mai deschisă.',
+  pE:'Încearcă', pH:'Playground', pL:'Scrie HTML cu componentele Tei UI și vezi rezultatul imediat. Ce scrii rămâne doar în browserul tău.',
+  nStart:'Început', nComp:'Componente', nIntro:'Introducere', nTokens:'Tokenuri', nEditor:'Editor de temă', nPlay:'Playground', copy:'Copiază', copied:'Copiat', attr:'Atribut', type:'Tip', desc:'Descriere', evt:'Eveniment', a11y:'Accesibilitate', contrast:'contrast {r}:1',
+  toastMsg:'Modificările au fost salvate.', dlgOpen:'Deschide dialogul'
+}, en: {
+  skip:'Skip to content', back:'← Portfolio', iE:'Design system', iH:'Small components, web standards, zero dependencies',
+  iL:'Tei UI is a design system written from scratch with Web Components: 11 components, one set of tokens and a single JavaScript file. It works in any HTML page, with or without a framework.',
+  tE:'Foundation', tH:'Tokens', tL:'Every component reads the same CSS custom properties. Change a token on :root and it changes everywhere. Under each colour you can see its contrast against the background.',
+  eE:'Customisation', eH:'Theme editor', eL:'Move the controls and the whole page updates on the spot, because it is built with the same components. Then copy the result as CSS or JSON.',
+  eAccent:'Accent colour', eRadius:'Corner radius', eControl:'Control height', eReset:'Reset', cOk:'Text-on-accent contrast: {r}:1, enough for normal text.', cBad:'Text-on-accent contrast: {r}:1, below the 4.5:1 threshold. Pick a darker or lighter shade.',
+  pE:'Try it', pH:'Playground', pL:'Write HTML with Tei UI components and see the result immediately. What you type stays in your browser.',
+  nStart:'Start', nComp:'Components', nIntro:'Introduction', nTokens:'Tokens', nEditor:'Theme editor', nPlay:'Playground', copy:'Copy', copied:'Copied', attr:'Attribute', type:'Type', desc:'Description', evt:'Event', a11y:'Accessibility', contrast:'contrast {r}:1',
+  toastMsg:'Your changes were saved.', dlgOpen:'Open dialog'
+}};
+const t = (k, v) => { let s = T[lang][k] ?? k; if (v) for (const x in v) s = s.replace('{' + x + '}', v[x]); return s; };
+
+/* ---------- component docs: one source for the live demo and the code sample ---------- */
+const COMPS = () => [
+  { id:'button', tag:'tei-button', intro:L('Buton cu patru variante, două mărimi și stare de încărcare.', 'A button with four variants, two sizes and a loading state.'),
+    html:`<tei-button variant="primary">${L('Salvează', 'Save')}</tei-button>\n<tei-button>${L('Anulează', 'Cancel')}</tei-button>\n<tei-button variant="ghost">${L('Mai mult', 'More')}</tei-button>\n<tei-button variant="danger">${L('Șterge', 'Delete')}</tei-button>\n<tei-button variant="primary" loading>${L('Se salvează', 'Saving')}</tei-button>\n<tei-button size="sm" disabled>${L('Dezactivat', 'Disabled')}</tei-button>`,
+    attrs:[['variant', 'primary | ghost | danger', L('Stilul vizual. Implicit: secundar.', 'Visual style. Default: secondary.')], ['size', 'sm', L('Variantă compactă.', 'Compact variant.')], ['loading', 'boolean', L('Arată un indicator și blochează clickul.', 'Shows a spinner and blocks clicks.')], ['disabled', 'boolean', L('Dezactivează butonul.', 'Disables the button.')], ['type', 'submit', L('Trimite formularul părinte.', 'Submits the parent form.')]],
+    a11y:L('Folosește un <button> nativ în interior, deci primește focus și răspunde la Enter și Spațiu. În starea de încărcare are aria-busy.', 'Uses a native <button> inside, so it takes focus and responds to Enter and Space. While loading it carries aria-busy.') },
+  { id:'badge', tag:'tei-badge', intro:L('Etichetă mică pentru stări.', 'A small label for statuses.'),
+    html:`<tei-badge>${L('Ciornă', 'Draft')}</tei-badge>\n<tei-badge tone="info" dot>${L('În lucru', 'In progress')}</tei-badge>\n<tei-badge tone="success" dot>${L('Câștigat', 'Won')}</tei-badge>\n<tei-badge tone="warning" dot>${L('În așteptare', 'Pending')}</tei-badge>\n<tei-badge tone="danger" dot>${L('Pierdut', 'Lost')}</tei-badge>`,
+    attrs:[['tone', 'info | success | warning | danger', L('Culoarea semantică.', 'Semantic colour.')], ['dot', 'boolean', L('Adaugă un punct colorat.', 'Adds a coloured dot.')]],
+    a11y:L('Starea este spusă și prin text, nu doar prin culoare.', 'The status is conveyed by text as well, not by colour alone.') },
+  { id:'switch', tag:'tei-switch', intro:L('Comutator pornit/oprit care participă la formulare.', 'An on/off switch that takes part in forms.'),
+    html:`<tei-switch checked>${L('Notificări pe email', 'Email notifications')}</tei-switch>\n<tei-switch>${L('Mod compact', 'Compact mode')}</tei-switch>\n<tei-switch disabled>${L('Indisponibil', 'Unavailable')}</tei-switch>`,
+    attrs:[['checked', 'boolean', L('Starea curentă.', 'Current state.')], ['disabled', 'boolean', L('Blochează interacțiunea.', 'Blocks interaction.')], ['name / value', 'string', L('Valoarea trimisă în formular.', 'The value submitted with a form.')]], events:[['change', 'detail.checked']],
+    a11y:L('Are role="switch" și aria-checked, primește focus și se comută cu Spațiu sau Enter.', 'Has role="switch" and aria-checked, takes focus and toggles with Space or Enter.') },
+  { id:'input', tag:'tei-input', intro:L('Câmp de text cu etichetă, indiciu și eroare, legat de formular.', 'A text field with label, hint and error, wired into forms.'), col:true,
+    html:`<tei-input label="${L('Email', 'Email')}" type="email" placeholder="nume@exemplu.ro" hint="${L('Îl folosim doar pentru confirmare.', 'Used only for confirmation.')}" required></tei-input>\n<br>\n<tei-input label="${L('Valoare', 'Value')}" type="number" value="-5" error="${L('Valoarea trebuie să fie pozitivă.', 'The value must be positive.')}"></tei-input>`,
+    attrs:[['label', 'string', L('Eticheta vizibilă.', 'The visible label.')], ['type', 'text | email | url | tel | number | password | search', L('Tipul câmpului.', 'Field type.')], ['hint', 'string', L('Text ajutător sub câmp.', 'Helper text under the field.')], ['error', 'string', L('Mesaj de eroare; marchează câmpul ca invalid.', 'Error message; marks the field invalid.')], ['required / disabled', 'boolean', L('Stări standard.', 'Standard states.')]], events:[['change', 'detail.value']],
+    a11y:L('Eticheta este legată de câmp, indiciul și eroarea sunt legate prin aria-describedby, iar eroarea este anunțată cu role="alert".', 'The label is tied to the field, hint and error are linked through aria-describedby, and the error is announced with role="alert".') },
+  { id:'tabs', tag:'tei-tabs', intro:L('Taburi construite din copii <tei-tab>.', 'Tabs built from <tei-tab> children.'), col:true,
+    html:`<tei-tabs label="${L('Detalii client', 'Customer details')}">\n  <tei-tab label="${L('Rezumat', 'Summary')}">${L('Client din 2024, trei oportunități deschise.', 'Customer since 2024, three open deals.')}</tei-tab>\n  <tei-tab label="${L('Activitate', 'Activity')}">${L('Ultimul apel: acum două zile.', 'Last call: two days ago.')}</tei-tab>\n  <tei-tab label="${L('Note', 'Notes')}">${L('Preferă emailul dimineața.', 'Prefers email in the morning.')}</tei-tab>\n</tei-tabs>`,
+    attrs:[['label', 'string', L('Numele accesibil al listei de taburi.', 'Accessible name of the tab list.')], ['selected', 'number', L('Indexul tabului activ.', 'Index of the active tab.')]], events:[['tei-change', 'detail.index']],
+    a11y:L('Săgețile stânga/dreapta, Home și End mută între taburi; doar tabul activ este în ordinea de Tab. Panourile au role="tabpanel".', 'Left/right arrows, Home and End move between tabs; only the active tab is in the Tab order. Panels have role="tabpanel".') },
+  { id:'dialog', tag:'tei-dialog', intro:L('Dialog modal peste elementul nativ <dialog>.', 'A modal dialog on top of the native <dialog> element.'),
+    html:`<tei-button id="dlgBtn" variant="primary">${L('Deschide dialogul', 'Open dialog')}</tei-button>\n<tei-dialog id="dlg" heading="${L('Ștergi oportunitatea?', 'Delete this deal?')}" close-label="${L('Închide', 'Close')}">\n  ${L('Acțiunea nu poate fi anulată.', 'This cannot be undone.')}\n  <tei-button slot="footer" data-close>${L('Renunță', 'Cancel')}</tei-button>\n  <tei-button slot="footer" variant="danger" data-close>${L('Șterge', 'Delete')}</tei-button>\n</tei-dialog>`,
+    attrs:[['heading', 'string', L('Titlul dialogului.', 'Dialog title.')], ['open', 'boolean', L('Deschide sau închide. Există și metodele show() și close().', 'Opens or closes. There are also show() and close() methods.')], ['close-label', 'string', L('Eticheta butonului de închidere.', 'Label of the close button.')]], events:[['close', '—']],
+    a11y:L('Focusul rămâne în dialog cât este deschis, Esc îl închide, iar la închidere focusul se întoarce la elementul care l-a deschis.', 'Focus stays inside while it is open, Esc closes it, and on close focus returns to the element that opened it.') },
+  { id:'toast', tag:'tei-toast', intro:L('Notificare scurtă, afișată din JavaScript.', 'A short notification, shown from JavaScript.'),
+    html:`<tei-button id="toastBtn">${L('Arată o notificare', 'Show a notification')}</tei-button>`, code:`TeiToast.show('${L('Modificările au fost salvate.', 'Your changes were saved.')}', { tone: 'success', duration: 4000 });`,
+    attrs:[['tone', 'info | success | warning | danger', L('Culoarea marginii.', 'Border colour.')], ['duration', 'ms', L('După cât timp dispare; 0 o păstrează.', 'How long until it disappears; 0 keeps it.')]],
+    a11y:L('Notificările apar într-o zonă aria-live="polite", deci sunt citite fără să întrerupă.', 'Notifications appear in an aria-live="polite" region, so they are read without interrupting.') },
+  { id:'progress', tag:'tei-progress', intro:L('Bară de progres cu etichetă și procent.', 'A progress bar with label and percentage.'), col:true,
+    html:`<tei-progress label="${L('Țintă lunară', 'Monthly target')}" value="42000" max="60000"></tei-progress>\n<br>\n<tei-progress label="${L('Profil completat', 'Profile completed')}" value="100" tone="success"></tei-progress>`,
+    attrs:[['value / max', 'number', L('Valoarea curentă și maximul (implicit 100).', 'Current value and maximum (default 100).')], ['label', 'string', L('Eticheta vizibilă.', 'Visible label.')], ['tone', 'success | danger', L('Culoarea barei.', 'Bar colour.')]],
+    a11y:L('Are role="progressbar" cu aria-valuenow, aria-valuemin și aria-valuemax, iar eticheta îi dă numele.', 'Has role="progressbar" with aria-valuenow, aria-valuemin and aria-valuemax, and the label names it.') },
+  { id:'avatar', tag:'tei-avatar', intro:L('Inițiale colorate determinist din nume, sau o imagine.', 'Initials coloured deterministically from the name, or an image.'),
+    html:`<tei-avatar name="Ana Popa"></tei-avatar>\n<tei-avatar name="Mihai Dinu"></tei-avatar>\n<tei-avatar name="Ioana Radu" style="--size:48px"></tei-avatar>\n<tei-avatar name="Radu Toma" style="--size:28px"></tei-avatar>`,
+    attrs:[['name', 'string', L('Din el se calculează inițialele și culoarea.', 'Initials and colour are derived from it.')], ['src', 'url', L('Imagine opțională; dacă nu se încarcă, rămân inițialele.', 'Optional image; if it fails to load, the initials stay.')], ['--size', 'CSS', L('Diametrul (implicit 36px).', 'Diameter (default 36px).')]],
+    a11y:L('Are role="img" și numele complet ca aria-label.', 'Has role="img" and the full name as aria-label.') },
+  { id:'stat', tag:'tei-stat', intro:L('Indicator cu valoare, variație și grafic miniatural.', 'A KPI with value, change and a sparkline.'),
+    html:`<div class="kpis">\n<tei-stat label="${L('Venit lunar', 'Monthly revenue')}" value="48.200 €" delta="12.4" trend="22,25,24,31,29,36,41,48"></tei-stat>\n<tei-stat label="${L('Rată de conversie', 'Conversion rate')}" value="3,8%" delta="-0.6" trend="4.6,4.4,4.5,4.1,4.2,3.9,3.8"></tei-stat>\n<tei-stat label="${L('Clienți activi', 'Active customers')}" value="1.284"></tei-stat>\n</div>`,
+    attrs:[['label / value', 'string', L('Eticheta și valoarea afișată.', 'Label and displayed value.')], ['delta', 'number', L('Variația în procente; semnul alege culoarea și săgeata.', 'Change in percent; the sign picks colour and arrow.')], ['trend', 'csv', L('Valori pentru graficul miniatural.', 'Values for the sparkline.')]],
+    a11y:L('Variația are săgeată și semn, nu doar culoare. Graficul este decorativ și ascuns de cititoarele de ecran.', 'The change has an arrow and a sign, not just colour. The sparkline is decorative and hidden from screen readers.') },
+  { id:'table', tag:'tei-table', intro:L('Îmbunătățește un <table> obișnuit: sortare și filtrare. Fără JavaScript rămâne un tabel normal.', 'Enhances a plain <table>: sorting and filtering. Without JavaScript it stays a normal table.'), col:true,
+    html:`<tei-table filter="${L('Filtrează', 'Filter')}">\n  <table>\n    <thead><tr><th>${L('Client', 'Customer')}</th><th>${L('Etapă', 'Stage')}</th><th>${L('Valoare', 'Value')}</th></tr></thead>\n    <tbody>\n      <tr><td>Atelier Brad</td><td>${L('Negociere', 'Negotiation')}</td><td data-value="18400">18.400 €</td></tr>\n      <tr><td>Studio Vector</td><td>${L('Calificat', 'Qualified')}</td><td data-value="6400">6.400 €</td></tr>\n      <tr><td>Ferma Verde</td><td>${L('Propunere', 'Proposal')}</td><td data-value="24500">24.500 €</td></tr>\n      <tr><td>Librăria Nord</td><td>Lead</td><td data-value="3800">3.800 €</td></tr>\n    </tbody>\n  </table>\n</tei-table>`,
+    attrs:[['filter', 'string', L('Adaugă un câmp de filtrare cu această etichetă.', 'Adds a filter field with this label.')], ['data-value', L('pe <td>', 'on <td>'), L('Valoarea folosită la sortare, când textul este formatat.', 'The value used for sorting when the text is formatted.')], ['data-nosort', L('pe <th>', 'on <th>'), L('Exclude coloana de la sortare.', 'Excludes the column from sorting.')]], events:[['tei-sort', 'detail.column, detail.direction']],
+    a11y:L('Anteturile devin butoane și anunță direcția prin aria-sort. Numărul de rânduri filtrate este anunțat.', 'Headers become buttons and announce direction through aria-sort. The filtered row count is announced.') }
+];
+
+/* ---------- tokens ---------- */
+const COLORS = ['bg', 'surface', 'surface-2', 'line', 'text', 'muted', 'accent', 'success', 'warning', 'danger', 'info'];
+const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue('--tei-' + n).trim();
+const toRgb = c => { const d = document.createElement('i'); d.style.color = c; document.body.appendChild(d); const m = getComputedStyle(d).color.match(/[\d.]+/g).map(Number); d.remove(); return m; };
+const lum = c => { const v = toRgb(c).slice(0, 3).map(x => x / 255).map(x => x <= .03928 ? x / 12.92 : Math.pow((x + .055) / 1.055, 2.4)); return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]; };
+const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+const fr = r => lang === 'ro' ? r.toFixed(1).replace('.', ',') : r.toFixed(1);
+const hex = c => '#' + toRgb(c).slice(0, 3).map(x => Math.round(x).toString(16).padStart(2, '0')).join('');
+function renderTokens(){ const bg = cssVar('bg'); $('#sw').innerHTML = COLORS.map(n => { const v = cssVar(n); return `<div><i style="background:var(--tei-${n})"></i><span>--tei-${n}<small>${hex(v)}${n === 'bg' ? '' : ' · ' + t('contrast', { r:fr(ratio(v, bg)) })}</small></span></div>`; }).join(''); }
+
+/* ---------- theme editor ---------- */
+const DEF = { radius:10, control:38 }; let custom = ls.get('tei.custom', {});
+function applyCustom(){ const r = document.documentElement.style; custom.accent ? r.setProperty('--tei-accent', custom.accent) : r.removeProperty('--tei-accent'); custom.accent ? r.setProperty('--tei-accent-ink', ratio(custom.accent, '#ffffff') >= ratio(custom.accent, '#04202a') ? '#ffffff' : '#04202a') : r.removeProperty('--tei-accent-ink');
+  custom.radius != null ? r.setProperty('--tei-radius', custom.radius + 'px') : r.removeProperty('--tei-radius'); custom.control != null ? r.setProperty('--tei-control', custom.control + 'px') : r.removeProperty('--tei-control'); }
+function renderEditor(){
+  applyCustom(); const acc = hex(cssVar('accent')), ink = hex(cssVar('accent-ink')), rad = custom.radius ?? DEF.radius, ctl = custom.control ?? DEF.control, rr = ratio(acc, ink);
+  $('#eAccent').value = acc; $('#eRadius').value = rad; $('#eControl').value = ctl; $('#eRadiusV').textContent = rad + 'px'; $('#eControlV').textContent = ctl + 'px';
+  $('#eContrast').textContent = t(rr >= 4.5 ? 'cOk' : 'cBad', { r:fr(rr) }); $('#eContrast').style.color = `var(--tei-${rr >= 4.5 ? 'success' : 'danger'})`;
+  const vals = { accent:acc, 'accent-ink':ink, radius:rad + 'px', control:ctl + 'px' };
+  code($('#eCss'), `:root {\n${Object.entries(vals).map(([k, v]) => `  --tei-${k}: ${v};`).join('\n')}\n}`);
+  code($('#eJson'), JSON.stringify({ tei:{ color:{ accent:{ $type:'color', $value:acc }, 'accent-ink':{ $type:'color', $value:ink } }, radius:{ $type:'dimension', $value:rad + 'px' }, control:{ $type:'dimension', $value:ctl + 'px' } } }, null, 2));
+  renderTokens();
+}
+function code(pre, text){ pre.textContent = text; let b = pre.parentNode.querySelector('.copy'); if (!b){ b = document.createElement('tei-button'); b.className = 'copy'; b.setAttribute('size', 'sm'); pre.parentNode.appendChild(b); }
+  b.textContent = t('copy'); b.onclick = async () => { try{ await navigator.clipboard.writeText(text); b.textContent = t('copied'); setTimeout(() => b.textContent = t('copy'), 1500); }catch(e){ const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); } }; }
+
+/* ---------- render ---------- */
+function render(){
+  document.documentElement.lang = lang; $$('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
+  $('#lang').textContent = lang === 'ro' ? 'EN' : 'RO'; $('#lang').setAttribute('aria-label', lang === 'ro' ? 'Switch to English' : 'Schimbă în română'); $('#theme').setAttribute('aria-label', L('Schimbă tema', 'Toggle theme'));
+  document.title = L('Tei UI — design system cu Web Components, fără dependențe | Laura Andreea', 'Tei UI — a Web Components design system with no dependencies | Laura Andreea');
+  const comps = COMPS();
+  $('#nav').setAttribute('aria-label', L('Secțiuni', 'Sections'));
+  $('#nav').innerHTML = `<b>${t('nStart')}</b><a href="#intro">${t('nIntro')}</a><a href="#tokens">${t('nTokens')}</a><a href="#theme-editor">${t('nEditor')}</a><b>${t('nComp')}</b>${comps.map(c => `<a href="#c-${c.id}">${c.tag.replace('tei-', '')}</a>`).join('')}<b>${t('pH')}</b><a href="#playground">${t('nPlay')}</a>`;
+  code($('#install'), '<script src="tei-ui.js"><\/script>\n\n<tei-button variant="primary">' + L('Salvează', 'Save') + '</tei-button>');
+  $('#heroDemo').innerHTML = `<tei-avatar name="Laura Andreea"></tei-avatar><tei-button variant="primary">${L('Salvează', 'Save')}</tei-button><tei-switch checked>${L('Notificări', 'Notifications')}</tei-switch><tei-badge tone="success" dot>${L('Activ', 'Active')}</tei-badge><tei-progress style="flex:1;min-width:160px" label="${L('Progres', 'Progress')}" value="68"></tei-progress>`;
+  $('#comps').innerHTML = comps.map(c => `<section id="c-${c.id}"><h3>${c.tag.replace('tei-', '').replace(/^./, m => m.toUpperCase())}<code>&lt;${c.tag}&gt;</code></h3><p class="lede">${esc(c.intro)}</p><div class="demo${c.col ? ' col' : ''}">${c.html}</div><div class="codew"><pre data-code="${c.id}"></pre></div>
+    <table class="api"><thead><tr><th scope="col">${t('attr')}</th><th scope="col">${t('type')}</th><th scope="col">${t('desc')}</th></tr></thead><tbody>${c.attrs.map(a => `<tr><td><code>${esc(a[0])}</code></td><td>${esc(a[1])}</td><td>${esc(a[2])}</td></tr>`).join('')}${(c.events || []).map(e => `<tr><td><code>${esc(e[0])}</code></td><td>${t('evt')}</td><td><code>${esc(e[1])}</code></td></tr>`).join('')}</tbody></table>
+    <p class="a11y"><b>${t('a11y')}:</b> ${esc(c.a11y)}</p></section>`).join('');
+  comps.forEach(c => code($(`[data-code="${c.id}"]`), c.code ? c.html + '\n\n<script>\n  ' + c.code + '\n<\/script>' : c.html));
+  $('#dlgBtn').onclick = () => $('#dlg').show(); $$('#dlg [data-close]').forEach(b => b.onclick = () => $('#dlg').close());
+  $('#toastBtn').onclick = () => TeiToast.show(t('toastMsg'), { tone:'success', closeLabel:L('Închide', 'Close') });
+  if (!$('#play').value) $('#play').value = ls.get('tei.play', '') || `<tei-stat label="${L('Oportunități deschise', 'Open deals')}" value="27" delta="8" trend="12,15,14,19,22,27"></tei-stat>\n<tei-button variant="primary">${L('Adaugă', 'Add')}</tei-button>\n<tei-badge tone="warning" dot>${L('3 întârziate', '3 overdue')}</tei-badge>`;
+  $('#playOut').innerHTML = $('#play').value; renderEditor();
+}
+$('#play').addEventListener('input', e => { $('#playOut').innerHTML = e.target.value; ls.set('tei.play', e.target.value.slice(0, 5000)); });
+$('#eAccent').addEventListener('input', e => { custom.accent = e.target.value; ls.set('tei.custom', custom); renderEditor(); });
+$('#eRadius').addEventListener('input', e => { custom.radius = +e.target.value; ls.set('tei.custom', custom); renderEditor(); });
+$('#eControl').addEventListener('input', e => { custom.control = +e.target.value; ls.set('tei.custom', custom); renderEditor(); });
+$('#eReset').onclick = () => { custom = {}; ls.set('tei.custom', custom); renderEditor(); };
+$('#theme').onclick = () => { const th = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = th; ls.set('tei.theme', th); renderEditor(); };
+$('#lang').onclick = () => { lang = lang === 'ro' ? 'en' : 'ro'; ls.set('tei.lang', lang); $('#play').value = ''; ls.set('tei.play', ''); render(); };
+document.documentElement.dataset.theme = ls.get('tei.theme', 'dark');
+render();
+})();
+</script>
+</body>
+</html>

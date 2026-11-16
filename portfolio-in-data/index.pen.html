@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portofoliul în date — o poveste derulată despre cum crește un portofoliu | Laura Andreea</title>
+<meta name="description" content="O poveste cu scrollytelling construită din datele reale ale acestui portofoliu: commituri pe zile, luni și zile ale săptămânii, proiecte pe categorii și etichete. Grafice SVG animate la derulare, vanilla JS.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/portfolio-in-data/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Portofoliul în date — o poveste derulată">
+<meta property="og:description" content="Commituri, proiecte și etichete: datele reale ale unui portofoliu, spuse prin grafice care se transformă la derulare.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/portfolio-in-data/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/portfolio-in-data/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a1220">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1220'/%3E%3Cpath d='M6 24l6-8 5 4 9-12' fill='none' stroke='%2322d3ee' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='26' cy='8' r='2.6' fill='%23f5b041'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Portofoliul în date","inLanguage":["ro","en"],"author":{"@type":"Person","name":"Laura Andreea"},"description":"Poveste cu scrollytelling din datele reale ale unui portofoliu de front-end."}
+</script>
+<style>
+:root{
+  --bg:#0a1220;--bg2:#0f1a2e;--panel:#111f36;--panel2:#16263f;--line:#243756;--text:#e8eef8;--muted:#93a4bf;
+  --cyan:#22d3ee;--amber:#f5b041;--green:#34d399;--red:#f87171;--dim:#2b3f61;
+  --serif:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+}
+[data-theme=light]{--bg:#f4f6fb;--bg2:#ffffff;--panel:#ffffff;--panel2:#eef2f9;--line:#d5deec;--text:#0f1a2e;--muted:#54657f;--cyan:#0e7490;--amber:#b45309;--green:#047857;--red:#b91c1c;--dim:#cbd6e6}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.65 var(--sans)}
+button{font:inherit;color:inherit}
+a{color:var(--cyan)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.skip{position:absolute;left:8px;top:-60px;background:var(--amber);color:#111;padding:8px 12px;border-radius:8px;z-index:99;font-weight:600}
+.skip:focus{top:8px}
+.prog{position:fixed;left:0;top:0;height:3px;width:100%;background:var(--cyan);transform-origin:0 50%;transform:scaleX(0);z-index:50}
+@supports (animation-timeline:scroll()){.prog{animation:grow linear both;animation-timeline:scroll(root)}@keyframes grow{to{transform:scaleX(1)}}}
+header.top{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:8px;padding:9px 16px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top b{font:700 17px var(--serif);margin-right:auto}
+header.top b em{font-style:normal;color:var(--cyan)}
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:6px 11px;cursor:pointer;min-height:36px;min-width:36px;font-family:var(--mono);font-size:13px}
+.btn:hover{border-color:var(--cyan)}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+.hero{min-height:82vh;display:flex;flex-direction:column;justify-content:center;padding:40px 0}
+.eyebrow{font:600 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+h1{font:700 clamp(38px,7vw,76px)/1.05 var(--serif);margin:.25em 0 .3em;letter-spacing:-.02em;text-wrap:balance}
+h1 em{font-style:normal;color:var(--cyan)}
+.lede{font-size:clamp(17px,2.2vw,21px);color:var(--muted);max-width:56ch}
+.nums{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px}
+.num{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 20px;min-width:150px}
+.num b{display:block;font:700 clamp(30px,5vw,46px)/1.1 var(--serif);color:var(--amber);font-variant-numeric:tabular-nums}
+.num span{font:400 12px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.down{margin-top:34px;font:400 13px var(--mono);color:var(--muted)}
+h2{font:700 clamp(26px,4vw,38px)/1.15 var(--serif);margin:0 0 .4em;text-wrap:balance}
+
+.quiz{padding:30px 0 70px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:14px}
+.q p{margin:0 0 10px;font-weight:600}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opt{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:8px 14px;cursor:pointer;min-height:40px}
+.opt:hover:not([disabled]){border-color:var(--cyan)}
+.opt.ok{border-color:var(--green);color:var(--green);font-weight:600}
+.opt.ko{border-color:var(--red);color:var(--red)}
+.q small{display:block;margin-top:10px;color:var(--muted);font-size:14px}
+.result{margin-top:16px;font:600 15px var(--mono);color:var(--amber)}
+
+.scrolly{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:44px}
+.fig{position:sticky;top:64px;height:calc(100vh - 84px);display:flex;flex-direction:column;justify-content:center;order:2;margin:0}
+.steps{order:1}
+.step{min-height:88vh;display:flex;align-items:center}
+.step>div{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--line);border-radius:14px;padding:20px 22px;opacity:.4;transition:opacity .3s,border-color .3s}
+.step.on>div{opacity:1;border-left-color:var(--cyan)}
+.step h3{font:700 22px/1.2 var(--serif);margin:0 0 8px}
+.step p{margin:0;color:var(--text)}
+.step .k{font:600 11px var(--mono);letter-spacing:.12em;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:6px}
+.anno{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px;min-height:62px}
+.anno b{font:700 clamp(34px,5vw,54px)/1 var(--serif);color:var(--amber);font-variant-numeric:tabular-nums}
+.anno span{color:var(--muted);font-size:15px;max-width:34ch;line-height:1.35}
+#chart{width:100%;height:auto;max-height:62vh;display:block;transition:opacity .25s}
+#chart.out{opacity:0}
+.ax{font:400 11px var(--mono);fill:var(--muted)}
+.grid{stroke:var(--line);stroke-width:1}
+.b{fill:var(--cyan);transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0);transition:transform .5s cubic-bezier(.2,.8,.2,1),fill .35s}
+.hb{fill:var(--cyan);transform-box:fill-box;transform-origin:0 50%;transform:scaleX(0);transition:transform .6s cubic-bezier(.2,.8,.2,1),fill .35s}
+.in .b,.in .hb{transform:none}
+.b.dim{fill:var(--dim)}
+.hb.hl{fill:var(--amber)}
+.lab{font:500 13px var(--sans);fill:var(--text)}
+.val{font:600 12px var(--mono);fill:var(--muted)}
+.line{fill:none;stroke:var(--cyan);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.4s ease-out}
+.area{fill:var(--cyan);opacity:0;transition:opacity .8s .6s}
+.in .line{stroke-dashoffset:0}.in .area{opacity:.14}
+details{margin-top:10px;font-size:14px}
+summary{cursor:pointer;color:var(--muted);font:400 12px var(--mono);min-height:28px}
+table{border-collapse:collapse;width:100%;margin-top:6px;font-size:13px}
+th,td{text-align:left;padding:4px 10px 4px 0;border-bottom:1px solid var(--line)}
+td:last-child,th:last-child{text-align:right;font-family:var(--mono)}
+.tw{max-height:150px;overflow:auto}
+.tip{position:fixed;z-index:60;pointer-events:none;background:var(--panel2);border:1px solid var(--cyan);border-radius:8px;padding:4px 9px;font:600 12px var(--mono);white-space:nowrap}
+.method{padding:70px 0 60px;max-width:70ch}
+.method li{margin-bottom:8px}
+code{font:13px var(--mono);background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+footer{padding:16px 20px;border-top:1px solid var(--line);font:400 12px var(--mono);color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media (max-width:860px){
+  .scrolly{display:block}
+  .fig{top:55px;height:auto;z-index:5;background:var(--bg);padding:10px 0 8px;border-bottom:1px solid var(--line);justify-content:flex-start}
+  #chart{max-height:34vh}
+  .anno{min-height:44px;margin-bottom:2px}.anno b{font-size:30px}.anno span{font-size:13px}
+  .fig details{display:none}
+  .step{min-height:70vh;align-items:flex-end;padding-bottom:6vh}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}.b,.hb{transform:none}.line{stroke-dashoffset:0}.area{opacity:.14}}
+</style>
+</head>
+<body>
+<a class="skip" href="#story" data-i18n="skip">Sari la poveste</a>
+<div class="prog" id="prog" aria-hidden="true"></div>
+<header class="top"><b>Portofoliul <em data-i18n="inData">în date</em></b><button class="btn" id="theme" aria-label="Schimbă tema" data-i18n-aria="theme">◐</button><button class="btn" id="lang">EN</button></header>
+
+<main>
+<section class="wrap hero">
+  <span class="eyebrow" data-i18n="eyebrow">Poveste din date reale</span>
+  <h1 data-i18n-html="h1">Cum arată un portofoliu, <em>commit cu commit</em></h1>
+  <p class="lede" data-i18n="lede">Toate cifrele de mai jos vin din istoricul Git al acestui repository și din lista lui de proiecte. Derulează și graficul se schimbă odată cu povestea.</p>
+  <div class="nums" id="nums"></div>
+  <p class="down" data-i18n="down">↓ mai întâi, trei întrebări</p>
+</section>
+
+<section class="wrap quiz" aria-labelledby="qT">
+  <span class="eyebrow" data-i18n="qEyebrow">Ghicește înainte să derulezi</span>
+  <h2 id="qT" data-i18n="qTitle">Ce crezi că arată datele?</h2>
+  <div id="quiz"></div>
+  <p class="result" id="qRes" role="status"></p>
+</section>
+
+<section class="wrap scrolly" id="story" aria-label="Povestea" data-i18n-aria="storyAria">
+  <figure class="fig">
+    <div class="anno" aria-live="polite"><b id="big"></b><span id="cap"></span></div>
+    <svg id="chart" viewBox="0 0 640 400" role="img" aria-labelledby="cap"></svg>
+    <details><summary data-i18n="asTable">Vezi datele ca tabel</summary><div class="tw" id="tbl"></div></details>
+  </figure>
+  <div class="steps" id="steps"></div>
+</section>
+
+<section class="wrap method" aria-labelledby="mT">
+  <span class="eyebrow" data-i18n="mEyebrow">Metodă</span>
+  <h2 id="mT" data-i18n="mTitle">De unde vin cifrele</h2>
+  <div id="method"></div>
+</section>
+</main>
+<footer><span>© 2026 <strong>Laura Andreea</strong> · Iași</span><a href="../portfolio.html" data-i18n="back">← Portofoliu</a></footer>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+(() => {
+'use strict';
+const DATA = /*DATA:START*/{"generated":"2026-11-16","commits":{"total":1508,"first":"2026-03-31","last":"2026-11-16","days":[["2026-03-31",2],["2026-04-01",1],["2026-04-02",9],["2026-04-03",0],["2026-04-04",19],["2026-04-05",4],["2026-04-06",1],["2026-04-07",1],["2026-04-08",1],["2026-04-09",1],["2026-04-10",0],["2026-04-11",1],["2026-04-12",10],["2026-04-13",2],["2026-04-14",0],["2026-04-15",7],["2026-04-16",0],["2026-04-17",0],["2026-04-18",32],["2026-04-19",44],["2026-04-20",29],["2026-04-21",2],["2026-04-22",10],["2026-04-23",2],["2026-04-24",6],["2026-04-25",34],["2026-04-26",0],["2026-04-27",0],["2026-04-28",6],["2026-04-29",9],["2026-04-30",0],["2026-05-01",16],["2026-05-02",4],["2026-05-03",13],["2026-05-04",0],["2026-05-05",0],["2026-05-06",0],["2026-05-07",3],["2026-05-08",3],["2026-05-09",21],["2026-05-10",17],["2026-05-11",13],["2026-05-12",4],["2026-05-13",6],["2026-05-14",6],["2026-05-15",11],["2026-05-16",2],["2026-05-17",31],["2026-05-18",16],["2026-05-19",29],["2026-05-20",29],["2026-05-21",13],["2026-05-22",19],["2026-05-23",48],["2026-05-24",10],["2026-05-25",4],["2026-05-26",4],["2026-05-27",6],["2026-05-28",2],["2026-05-29",9],["2026-05-30",0],["2026-05-31",13],["2026-06-01",0],["2026-06-02",2],["2026-06-03",0],["2026-06-04",2],["2026-06-05",0],["2026-06-06",0],["2026-06-07",2],["2026-06-08",0],["2026-06-09",0],["2026-06-10",0],["2026-06-11",0],["2026-06-12",5],["2026-06-13",0],["2026-06-14",0],["2026-06-15",2],["2026-06-16",2],["2026-06-17",0],["2026-06-18",0],["2026-06-19",0],["2026-06-20",2],["2026-06-21",2],["2026-06-22",0],["2026-06-23",0],["2026-06-24",0],["2026-06-25",0],["2026-06-26",0],["2026-06-27",0],["2026-06-28",0],["2026-06-29",0],["2026-06-30",0],["2026-07-01",0],["2026-07-02",0],["2026-07-03",0],["2026-07-04",0],["2026-07-05",4],["2026-07-06",0],["2026-07-07",0],["2026-07-08",0],["2026-07-09",0],["2026-07-10",0],["2026-07-11",0],["2026-07-12",0],["2026-07-13",0],["2026-07-14",0],["2026-07-15",1],["2026-07-16",0],["2026-07-17",0],["2026-07-18",0],["2026-07-19",0],["2026-07-20",0],["2026-07-21",0],["2026-07-22",0],["2026-07-23",7],["2026-07-24",0],["2026-07-25",0],["2026-07-26",5],["2026-07-27",1],["2026-07-28",4],["2026-07-29",0],["2026-07-30",0],["2026-07-31",0],["2026-08-01",0],["2026-08-02",1],["2026-08-03",0],["2026-08-04",0],["2026-08-05",1],["2026-08-06",0],["2026-08-07",0],["2026-08-08",0],["2026-08-09",0],["2026-08-10",0],["2026-08-11",0],["2026-08-12",0],["2026-08-13",0],["2026-08-14",0],["2026-08-15",10],["2026-08-16",6],["2026-08-17",0],["2026-08-18",6],["2026-08-19",0],["2026-08-20",0],["2026-08-21",0],["2026-08-22",0],["2026-08-23",0],["2026-08-24",2],["2026-08-25",0],["2026-08-26",0],["2026-08-27",0],["2026-08-28",0],["2026-08-29",38],["2026-08-30",29],["2026-08-31",0],["2026-09-01",0],["2026-09-02",0],["2026-09-03",0],["2026-09-04",34],["2026-09-05",10],["2026-09-06",5],["2026-09-07",0],["2026-09-08",1],["2026-09-09",16],["2026-09-10",24],["2026-09-11",5],["2026-09-12",3],["2026-09-13",9],["2026-09-14",7],["2026-09-15",9],["2026-09-16",15],["2026-09-17",0],["2026-09-18",4],["2026-09-19",8],["2026-09-20",2],["2026-09-21",5],["2026-09-22",0],["2026-09-23",51],["2026-09-24",27],["2026-09-25",11],["2026-09-26",43],["2026-09-27",45],["2026-09-28",4],["2026-09-29",44],["2026-09-30",27],["2026-10-01",4],["2026-10-02",23],["2026-10-03",11],["2026-10-04",18],["2026-10-05",15],["2026-10-06",4],["2026-10-07",2],["2026-10-08",1],["2026-10-09",6],["2026-10-10",4],["2026-10-11",3],["2026-10-12",10],["2026-10-13",8],["2026-10-14",34],["2026-10-15",11],["2026-10-16",7],["2026-10-17",1],["2026-10-18",36],["2026-10-19",0],["2026-10-20",0],["2026-10-21",1],["2026-10-22",1],["2026-10-23",5],["2026-10-24",0],["2026-10-25",5],["2026-10-26",13],["2026-10-27",4],["2026-10-28",5],["2026-10-29",23],["2026-10-30",13],["2026-10-31",9],["2026-11-01",1],["2026-11-02",34],["2026-11-03",8],["2026-11-04",3],["2026-11-05",0],["2026-11-06",14],["2026-11-07",5],["2026-11-08",3],["2026-11-09",5],["2026-11-10",2],["2026-11-11",4],["2026-11-12",9],["2026-11-13",2],["2026-11-14",0],["2026-11-15",9],["2026-11-16",4]],"months":[["2026-03",2],["2026-04",231],["2026-05",352],["2026-06",19],["2026-07",22],["2026-08",93],["2026-09",409],["2026-10",277],["2026-11",103]],"weekday":[167,142,229,145,193,305,327],"activeDays":138,"topDay":["2026-09-23",51],"streak":26},"projects":{"total":88,"cats":[["utility",32],["game",28],["challenge",12],["ui",10],["tools",6]],"tags":[["RO/EN",47],["Game",34],["Accessibility",34],["CRM",18],["Mobile-first",15],["LocalStorage",14],["UI",11],["Canvas",8],["Arcade",8],["PWA",7]],"accessible":34,"bilingual":47},"files":{"total":1285,"ext":[["svg",409,545494],["html",279,13234173],["js",133,3476307],["md",111,467500],["png",46,6960175],["css",34,574414],["json",30,554981],["cjs",30,144314]]}}/*DATA:END*/;
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const ls = { get(k, d){ try{ const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); }catch(e){ return d; } }, set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+const C = DATA.commits, P = DATA.projects, F = DATA.files, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let lang = ls.get('pd.lang', (navigator.language || 'ro').startsWith('ro') ? 'ro' : 'en');
+{ const p = new URLSearchParams(location.search).get('lang'); if (p === 'ro' || p === 'en') lang = p; }
+const loc = () => lang === 'ro' ? 'ro-RO' : 'en-GB';
+const N = (n, d = 0) => Number(n).toLocaleString(loc(), { minimumFractionDigits:d, maximumFractionDigits:d });
+const Q = n => N(n) + (lang === 'ro' && n >= 20 && (n % 100 === 0 || n % 100 >= 20) ? ' de' : '');
+const monthName = (ym, style = 'long') => new Date(ym + '-15').toLocaleDateString(loc(), { month:style });
+const dateTxt = d => new Date(d + 'T12:00').toLocaleDateString(loc(), { day:'numeric', month:'long', year:'numeric' });
+const wd = i => new Date(2024, 0, 1 + i).toLocaleDateString(loc(), { weekday:'long' });   // 1 Jan 2024 is a Monday
+const mSum = list => C.months.filter(m => list.includes(m[0])).reduce((s, m) => s + m[1], 0);
+const pct = (a, b) => Math.round(a / b * 100);
+const topMonth = C.months.reduce((a, b) => b[1] > a[1] ? b : a), topWd = C.weekday.indexOf(Math.max(...C.weekday));
+const weekend = C.weekday[5] + C.weekday[6], spanDays = C.days.length;
+const CAT = { ro:{ utility:'Utilitare', game:'Jocuri', challenge:'CodePen Challenge', ui:'UI', tools:'Instrumente' }, en:{ utility:'Utilities', game:'Games', challenge:'CodePen Challenge', ui:'UI', tools:'Tools' } };
+
+const T = { ro: {
+  skip:'Sari la poveste', inData:'în date', theme:'Schimbă tema', eyebrow:'Poveste din date reale', h1:'Cum arată un portofoliu, <em>commit cu commit</em>',
+  lede:'Toate cifrele de mai jos vin din istoricul Git al acestui repository și din lista lui de proiecte. Derulează și graficul se schimbă odată cu povestea.',
+  down:'↓ mai întâi, trei întrebări', nCommits:'commituri', nProjects:'proiecte', nDays:'zile', qEyebrow:'Ghicește înainte să derulezi', qTitle:'Ce crezi că arată datele?',
+  q1:'În ce lună au fost cele mai multe commituri?', q2:'În ce zi a săptămânii se lucrează cel mai mult?', q3:'Cât la sută dintre proiecte au eticheta „Accessibility”?',
+  a1:'{m}: {n} commituri.', a2:'{d}: {n} commituri. Weekendul adună {p}% din total.', a3:'{n} din {t} proiecte, adică {p}%.', qRes:'Ai nimerit {n} din 3. Derulează ca să vezi tot.', qBest:' Cel mai bun scor: {n}/3.',
+  storyAria:'Povestea', asTable:'Vezi datele ca tabel', back:'← Portofoliu', mEyebrow:'Metodă', mTitle:'De unde vin cifrele',
+  thMonth:'Lună', thCommits:'Commituri', thTotal:'Total cumulat', thDay:'Zi', thCat:'Categorie', thProj:'Proiecte', thTag:'Etichetă', thExt:'Tip fișier', thFiles:'Fișiere', perDay:'{n} commituri',
+  steps:[
+    ['Începutul', 'Fiecare bară e o zi', 'Primul commit apare pe {first}. De atunci și până pe {last} s-au adunat {total} commituri în {span} zile. Cea mai plină zi: {topDay}, cu {topN}.', '{B}', 'commituri, de la primul până la ultimul'],
+    ['Primăvara', 'Aprilie și mai: construcția de bază', 'În primele două luni complete apar {n} commituri, adică {p}% din tot ce există azi.', '{B}', 'commituri în aprilie și mai'],
+    ['Vara', 'Iunie și iulie: aproape liniște', 'Două luni întregi adună doar {n} commituri. Graficul nu ascunde pauzele, și tocmai de aceea e cinstit.', '{B}', 'commituri în iunie și iulie'],
+    ['Toamna', '{m}: luna cea mai activă', 'După pauză, ritmul revine peste nivelul din primăvară: {n} commituri într-o singură lună, cel mai mult din tot istoricul.', '{B}', 'commituri în {mLow}'],
+    ['Cumulat', 'Aceleași date, adunate', 'Linia nu coboară niciodată, dar panta spune povestea: abruptă primăvara, plată vara, din nou abruptă toamna. Au fost {a} zile cu cel puțin un commit din {span}, iar cea mai lungă serie neîntreruptă are {s} zile.', '{B}', 'zile active din {span}'],
+    ['Săptămâna', 'Un portofoliu de weekend', '{wd} este ziua cu cele mai multe commituri ({n}). Sâmbăta și duminica adună împreună {p}% din total, semn că proiectul crește în timpul liber.', '{B}', 'din commituri sunt în weekend'],
+    ['Proiecte', 'Ce s-a construit', 'Commiturile s-au transformat în {t} proiecte. Cele mai multe sunt {c1} ({n1}) și {c2} ({n2}).', '{B}', 'proiecte în listă'],
+    ['Etichete', 'Ce se repetă în toate', 'Etichetele arată obiceiurile: {b} proiecte sunt bilingve RO/EN, iar {a} au eticheta Accessibility, adică {p}% din total.', '{B}', 'proiecte cu eticheta Accessibility'],
+    ['Fișiere', 'Din ce e făcut repository-ul', 'Azi sunt {f} fișiere. După număr conduc cele {e1} ({n1}), urmate de {e2} ({n2}). Cele mai grele sunt fișierele {he}, cu {mb} MB în total.', '{B}', 'fișiere în repository']
+  ],
+  method:['Commiturile sunt numărate cu <code>git log --format=%ad --date=short</code>, după data autorului. Sunt incluse toate, indiferent de autor, inclusiv cele automate.', 'Proiectele, categoriile și etichetele vin din <code>projects.json</code>, lista din care se generează portofoliul.', 'Fișierele sunt numărate cu <code>git ls-tree -r HEAD</code>.', 'Datele sunt o fotografie din {d}. Scriptul <a href="build.py"><code>build.py</code></a> le recalculează și le rescrie în pagină.', 'Nu am inclus ora din zi a commiturilor. Nimic nu este estimat sau rotunjit, în afară de procente.']
+}, en: {
+  skip:'Skip to story', inData:'in data', theme:'Toggle theme', eyebrow:'A story from real data', h1:'What a portfolio looks like, <em>commit by commit</em>',
+  lede:'Every figure below comes from this repository’s Git history and its project list. Scroll, and the chart changes with the story.',
+  down:'↓ first, three questions', nCommits:'commits', nProjects:'projects', nDays:'days', qEyebrow:'Guess before you scroll', qTitle:'What do you think the data shows?',
+  q1:'Which month had the most commits?', q2:'Which day of the week gets the most work?', q3:'What share of projects carry the “Accessibility” tag?',
+  a1:'{m}: {n} commits.', a2:'{d}: {n} commits. Weekends account for {p}% of the total.', a3:'{n} of {t} projects, or {p}%.', qRes:'You got {n} of 3. Scroll to see everything.', qBest:' Best score: {n}/3.',
+  storyAria:'The story', asTable:'View the data as a table', back:'← Portfolio', mEyebrow:'Method', mTitle:'Where the numbers come from',
+  thMonth:'Month', thCommits:'Commits', thTotal:'Running total', thDay:'Day', thCat:'Category', thProj:'Projects', thTag:'Tag', thExt:'File type', thFiles:'Files', perDay:'{n} commits',
+  steps:[
+    ['The start', 'Each bar is one day', 'The first commit lands on {first}. Between then and {last}, {total} commits piled up over {span} days. The busiest day: {topDay}, with {topN}.', '{B}', 'commits, first to last'],
+    ['Spring', 'April and May: the groundwork', 'The first two full months hold {n} commits, {p}% of everything that exists today.', '{B}', 'commits in April and May'],
+    ['Summer', 'June and July: almost silence', 'Two whole months add up to just {n} commits. The chart does not hide the breaks, which is exactly what makes it honest.', '{B}', 'commits in June and July'],
+    ['Autumn', '{m}: the busiest month', 'After the break, the pace returns above the spring level: {n} commits in a single month, the most in the whole history.', '{B}', 'commits in {mLow}'],
+    ['Cumulative', 'The same data, added up', 'The line never goes down, but its slope tells the story: steep in spring, flat in summer, steep again in autumn. {a} of {span} days had at least one commit, and the longest unbroken run is {s} days.', '{B}', 'active days out of {span}'],
+    ['The week', 'A weekend portfolio', '{wd} is the day with the most commits ({n}). Saturday and Sunday together hold {p}% of the total, a sign the project grows in spare time.', '{B}', 'of commits happen at the weekend'],
+    ['Projects', 'What got built', 'The commits turned into {t} projects. Most are {c1} ({n1}) and {c2} ({n2}).', '{B}', 'projects in the list'],
+    ['Tags', 'What repeats everywhere', 'Tags show the habits: {b} projects are bilingual RO/EN, and {a} carry the Accessibility tag, {p}% of the total.', '{B}', 'projects tagged Accessibility'],
+    ['Files', 'What the repository is made of', 'Today there are {f} files. By count, {e1} files lead ({n1}), followed by {e2} ({n2}). The heaviest are the {he} files, {mb} MB in total.', '{B}', 'files in the repository']
+  ],
+  method:['Commits are counted with <code>git log --format=%ad --date=short</code>, by author date. All of them are included, whoever the author, automated ones too.', 'Projects, categories and tags come from <code>projects.json</code>, the list the portfolio is generated from.', 'Files are counted with <code>git ls-tree -r HEAD</code>.', 'The data is a snapshot from {d}. The <a href="build.py"><code>build.py</code></a> script recomputes it and writes it back into the page.', 'Time of day is deliberately left out. Nothing is estimated or rounded, apart from percentages.']
+}};
+const t = (k, v) => { let s = T[lang][k] ?? k; if (v) for (const x in v) s = s.split('{' + x + '}').join(v[x]); return s; };
+const fillS = (s, v) => { for (const x in v) s = s.split('{' + x + '}').join(v[x]); return s; };
+
+/* step definitions: scene + highlight + values for the texts */
+const cats = () => P.cats.map(([k, n]) => [CAT[lang][k] || k, n]);
+const SCENES = [
+  { scene:'daily', hl:null, v:() => ({ B:N(C.total), first:dateTxt(C.first), last:dateTxt(C.last), total:Q(C.total), span:Q(spanDays), topDay:dateTxt(C.topDay[0]), topN:Q(C.topDay[1]) }) },
+  { scene:'daily', hl:['2026-04', '2026-05'], v:() => { const n = mSum(['2026-04', '2026-05']); return { B:N(n), n:Q(n), p:pct(n, C.total) }; } },
+  { scene:'daily', hl:['2026-06', '2026-07'], v:() => { const n = mSum(['2026-06', '2026-07']); return { B:N(n), n:Q(n) }; } },
+  { scene:'daily', hl:[topMonth[0]], v:() => { const m = monthName(topMonth[0]); return { B:N(topMonth[1]), m:m[0].toUpperCase() + m.slice(1), mLow:m, n:Q(topMonth[1]) }; } },
+  { scene:'cum', v:() => ({ B:N(C.activeDays), a:Q(C.activeDays), span:N(spanDays), s:Q(C.streak) }) },
+  { scene:'weekday', v:() => { const d = wd(topWd); return { B:pct(weekend, C.total) + '%', wd:d[0].toUpperCase() + d.slice(1), n:N(C.weekday[topWd]), p:pct(weekend, C.total) }; } },
+  { scene:'cats', v:() => { const c = cats(); return { B:N(P.total), t:Q(P.total), c1:c[0][0], n1:c[0][1], c2:c[1][0], n2:c[1][1] }; } },
+  { scene:'tags', v:() => ({ B:N(P.accessible), a:N(P.accessible), b:Q(P.bilingual), p:pct(P.accessible, P.total) }) },
+  { scene:'files', v:() => { const h = F.ext.slice().sort((a, b) => b[2] - a[2])[0]; return { B:N(F.total), f:Q(F.total), e1:'.' + F.ext[0][0], n1:N(F.ext[0][1]), e2:'.' + F.ext[1][0], n2:N(F.ext[1][1]), he:'.' + h[0], mb:N(h[2] / 1048576, 1) }; } }
+];
+
+/* ---------- charts ---------- */
+const svg = $('#chart'), W = 640, H = 400;
+let curScene = null, curStep = -1;
+const nice = max => { const p = Math.pow(10, Math.floor(Math.log10(max))), f = max / p; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p; };
+function axisY(max, l, r, top, bot){ const step = nice(max) / 4; let s = ''; for (let v = 0; v <= max; v += step){ const y = bot - v / max * (bot - top); s += `<line class="grid" x1="${l}" x2="${W - r}" y1="${y}" y2="${y}"/><text class="ax" x="${l - 6}" y="${y + 4}" text-anchor="end">${N(v)}</text>`; } return s; }
+function monthTicks(l, r, bot){ const n = C.days.length, bw = (W - l - r) / n; let s = ''; C.days.forEach(([d], i) => { if (d.slice(8) === '01' || (i === 0 && +d.slice(8) < 20)) s += `<text class="ax" x="${l + i * bw}" y="${bot + 16}">${monthName(d.slice(0, 7), 'short')}</text>`; }); return s; }
+function sceneDaily(){
+  const l = 44, r = 10, top = 14, bot = 360, n = C.days.length, bw = (W - l - r) / n, max = Math.max(...C.days.map(d => d[1]));
+  return axisY(max, l, r, top, bot) + monthTicks(l, r, bot) + C.days.map(([d, c], i) => c ? `<rect class="b" data-m="${d.slice(0, 7)}" data-tip="${esc(dateTxt(d) + ' · ' + t('perDay', { n:Q(c) }))}" x="${(l + i * bw).toFixed(2)}" y="${(bot - c / max * (bot - top)).toFixed(2)}" width="${Math.max(1, bw - .6).toFixed(2)}" height="${(c / max * (bot - top)).toFixed(2)}" style="transition-delay:${reduce ? 0 : i * 3}ms"/>` : '').join('');
+}
+function sceneCum(){
+  const l = 50, r = 10, top = 14, bot = 360, n = C.days.length, max = C.total; let acc = 0;
+  const pts = C.days.map(([, c], i) => { acc += c; return [l + i / (n - 1) * (W - l - r), bot - acc / max * (bot - top)]; }), d = 'M' + pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join('L');
+  return axisY(max, l, r, top, bot) + monthTicks(l, r, bot) + `<path class="area" d="${d}L${W - r},${bot}L${l},${bot}Z"/><path class="line" pathLength="1" d="${d}"/>`;
+}
+function sceneBars(rows, hlIdx){
+  const top = 10, rh = Math.min(46, (H - 20) / rows.length), l = 170, r = 70, max = Math.max(...rows.map(x => x[1]));
+  return rows.map(([lab, v], i) => { const y = top + i * rh, w = v / max * (W - l - r);
+    return `<text class="lab" x="${l - 10}" y="${y + rh / 2 + 4}" text-anchor="end">${esc(lab)}</text><rect class="hb${hlIdx.includes(i) ? ' hl' : ''}" data-tip="${esc(lab + ' · ' + N(v))}" x="${l}" y="${y + 6}" width="${w.toFixed(1)}" height="${rh - 12}" rx="4" style="transition-delay:${reduce ? 0 : i * 60}ms"/><text class="val" x="${l + w + 8}" y="${y + rh / 2 + 4}">${N(v)}</text>`; }).join('');
+}
+const tableHTML = (head, rows) => `<table><thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+function buildScene(name){
+  if (name === 'daily') return { svg:sceneDaily(), table:tableHTML([t('thMonth'), t('thCommits')], C.months.map(([m, c]) => [monthName(m) + ' ' + m.slice(0, 4), N(c)])) };
+  if (name === 'cum'){ let a = 0; return { svg:sceneCum(), table:tableHTML([t('thMonth'), t('thTotal')], C.months.map(([m, c]) => [monthName(m) + ' ' + m.slice(0, 4), N(a += c)])) }; }
+  if (name === 'weekday'){ const rows = C.weekday.map((c, i) => [wd(i), c]); return { svg:sceneBars(rows, [5, 6]), table:tableHTML([t('thDay'), t('thCommits')], rows.map(r => [r[0], N(r[1])])) }; }
+  if (name === 'cats'){ const rows = cats(); return { svg:sceneBars(rows, [0]), table:tableHTML([t('thCat'), t('thProj')], rows.map(r => [r[0], N(r[1])])) }; }
+  if (name === 'tags'){ const rows = P.tags.slice(0, 8); return { svg:sceneBars(rows, rows.map((r, i) => r[0] === 'Accessibility' ? i : -1).filter(i => i >= 0)), table:tableHTML([t('thTag'), t('thProj')], rows.map(r => [r[0], N(r[1])])) }; }
+  const rows = F.ext.map(e => ['.' + e[0], e[1]]); return { svg:sceneBars(rows, [0]), table:tableHTML([t('thExt'), t('thFiles')], rows.map(r => [r[0], N(r[1])])) };
+}
+function show(i, force){
+  if (i === curStep && !force) return; curStep = i; const s = SCENES[i], txt = T[lang].steps[i], v = s.v();
+  $('#big').textContent = v.B; $('#cap').textContent = fillS(txt[4], v);
+  const applyHl = () => $$('#chart .b').forEach(b => b.classList.toggle('dim', !!s.hl && !s.hl.includes(b.dataset.m)));
+  if (s.scene === curScene && !force) return applyHl();
+  const swap = () => { const built = buildScene(s.scene); svg.classList.remove('in'); svg.innerHTML = built.svg; $('#tbl').innerHTML = built.table; curScene = s.scene; applyHl(); svg.classList.remove('out'); requestAnimationFrame(() => requestAnimationFrame(() => svg.classList.add('in'))); };
+  if (reduce || curScene == null || force){ swap(); svg.classList.add('in'); } else { svg.classList.add('out'); setTimeout(swap, 220); }
+}
+
+/* ---------- content ---------- */
+function count(el, to){ if (reduce) return el.textContent = N(to); const t0 = performance.now(), tick = now => { const k = Math.min(1, (now - t0) / 1100), e = 1 - Math.pow(1 - k, 3); el.textContent = N(Math.round(to * e)); if (k < 1) requestAnimationFrame(tick); }; requestAnimationFrame(tick); }
+let io = null, answered = {};
+function renderQuiz(){
+  const months = C.months.filter(m => m[1] > 0).sort((a, b) => b[1] - a[1]).slice(0, 4).sort(), ap = pct(P.accessible, P.total), buckets = [10, 25, 40, 55, 70], right = buckets.reduce((a, b) => Math.abs(b - ap) < Math.abs(a - ap) ? b : a);
+  const QS = [
+    { q:t('q1'), o:months.map(m => [monthName(m[0]), m[0] === topMonth[0]]), a:t('a1', { m:monthName(topMonth[0]), n:Q(topMonth[1]) }) },
+    { q:t('q2'), o:[0, 2, 4, 5, 6].map(i => [wd(i), i === topWd]), a:t('a2', { d:wd(topWd), n:Q(C.weekday[topWd]), p:pct(weekend, C.total) }) },
+    { q:t('q3'), o:buckets.map(b => ['~' + b + '%', b === right]), a:t('a3', { n:P.accessible, t:Q(P.total), p:ap }) }
+  ];
+  $('#quiz').innerHTML = QS.map((x, i) => `<div class="q" role="group" aria-label="${esc(x.q)}"><p>${i + 1}. ${esc(x.q)}</p><div class="opts">${x.o.map((o, j) => `<button class="opt" data-q="${i}" data-ok="${o[1] ? 1 : 0}" data-j="${j}">${esc(o[0])}</button>`).join('')}</div><small id="qa${i}" role="status"></small></div>`).join('');
+  const mark = (i, j) => { $$(`.opt[data-q="${i}"]`).forEach(b => { b.disabled = true; if (b.dataset.ok === '1') b.classList.add('ok'); else if (+b.dataset.j === j) b.classList.add('ko'); }); $('#qa' + i).textContent = QS[i].a; };
+  Object.keys(answered).forEach(i => mark(+i, answered[i].j));
+  $$('.opt').forEach(b => b.onclick = () => { const i = +b.dataset.q; answered[i] = { j:+b.dataset.j, ok:b.dataset.ok === '1' }; mark(i, +b.dataset.j); result(); });
+  result();
+}
+function result(){ const ks = Object.keys(answered); if (ks.length < 3) return $('#qRes').textContent = ''; const n = ks.filter(k => answered[k].ok).length, best = Math.max(n, ls.get('pd.best', 0)); ls.set('pd.best', best); $('#qRes').textContent = t('qRes', { n }) + t('qBest', { n:best }); }
+function render(){
+  document.documentElement.lang = lang;
+  $$('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n)); $$('[data-i18n-html]').forEach(el => el.innerHTML = t(el.dataset.i18nHtml)); $$('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
+  $('#lang').textContent = lang === 'ro' ? 'EN' : 'RO'; $('#lang').setAttribute('aria-label', lang === 'ro' ? 'Switch to English' : 'Schimbă în română');
+  document.title = lang === 'ro' ? 'Portofoliul în date — o poveste derulată despre cum crește un portofoliu | Laura Andreea' : 'The portfolio in data — a scroll story about how a portfolio grows | Laura Andreea';
+  $('#nums').innerHTML = [[C.total, 'nCommits'], [P.total, 'nProjects'], [spanDays, 'nDays']].map(([n, k]) => `<div class="num"><b data-n="${n}">${N(n)}</b><span>${t(k)}</span></div>`).join('');
+  $('#steps').innerHTML = SCENES.map((s, i) => { const x = T[lang].steps[i], v = s.v(); return `<article class="step" data-i="${i}"><div><span class="k">${String(i + 1).padStart(2, '0')} · ${esc(x[0])}</span><h3>${esc(fillS(x[1], v))}</h3><p>${esc(fillS(x[2], v))}</p></div></article>`; }).join('');
+  $('#method').innerHTML = '<ul>' + T[lang].method.map(m => `<li>${fillS(m, { d:dateTxt(DATA.generated) })}</li>`).join('') + '</ul>';
+  renderQuiz();
+  if (io) io.disconnect();
+  io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ $$('.step').forEach(s => s.classList.toggle('on', s === e.target)); show(+e.target.dataset.i); } }), { rootMargin:'-45% 0px -45% 0px' });
+  $$('.step').forEach(s => io.observe(s));
+  show(Math.max(0, curStep), true); const on = $(`.step[data-i="${Math.max(0, curStep)}"]`); on && on.classList.add('on');
+}
+/* tooltip */
+const tip = $('#tip');
+svg.addEventListener('pointermove', e => { const el = e.target.closest('[data-tip]'); if (!el) return tip.hidden = true; tip.textContent = el.dataset.tip; tip.hidden = false; tip.style.left = Math.min(innerWidth - tip.offsetWidth - 8, e.clientX + 12) + 'px'; tip.style.top = e.clientY - 34 + 'px'; });
+svg.addEventListener('pointerleave', () => tip.hidden = true);
+if (!CSS.supports('animation-timeline: scroll()')) addEventListener('scroll', () => { $('#prog').style.transform = `scaleX(${scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight)})`; }, { passive:true });
+$('#theme').onclick = () => { const th = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = th; ls.set('pd.theme', th); };
+$('#lang').onclick = () => { lang = lang === 'ro' ? 'en' : 'ro'; ls.set('pd.lang', lang); render(); };
+document.documentElement.dataset.theme = ls.get('pd.theme', 'dark');
+render(); $$('#nums b').forEach(b => count(b, +b.dataset.n));
+})();
+</script>
+</body>
+</html>

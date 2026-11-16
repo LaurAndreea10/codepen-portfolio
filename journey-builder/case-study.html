@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Journey Builder — studiu de caz: decizii, model de simulare și ce s-a stricat pe drum | Laura Andreea</title>
+<meta name="description" content="Cum a fost construit Journey Builder: arhitectura editorului cu noduri, modelul de simulare explicat interactiv, calibrarea provocărilor cu cifre măsurate, problemele găsite la testare și ce a rămas neverificat.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/journey-builder/case-study.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Journey Builder — studiu de caz">
+<meta property="og:description" content="Decizii de arhitectură, modelul de simulare, calibrarea provocărilor și problemele găsite la testare.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/journey-builder/case-study.html">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/journey-builder/og.png">
+<meta name="theme-color" content="#0a1220">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Journey Builder — studiu de caz","inLanguage":["ro","en"],"author":{"@type":"Person","name":"Laura Andreea"},"datePublished":"2026-11-16"}
+</script>
+<style>
+:root{--bg:#0a1220;--bg2:#0f1a2e;--panel:#111f36;--panel2:#16263f;--line:#243756;--text:#e8eef8;--muted:#93a4bf;--cyan:#22d3ee;--amber:#f5b041;--green:#34d399;--red:#f87171;
+  --serif:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+[data-theme=light]{--bg:#f4f6fb;--bg2:#fff;--panel:#fff;--panel2:#eef2f9;--line:#d5deec;--text:#0f1a2e;--muted:#54657f;--cyan:#0e7490;--amber:#b45309;--green:#047857;--red:#b91c1c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.7 var(--sans)}
+a{color:var(--cyan)}button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.skip{position:absolute;left:8px;top:-60px;background:var(--amber);color:#111;padding:8px 12px;border-radius:8px;z-index:99;font-weight:600}.skip:focus{top:8px}
+header.top{position:sticky;top:0;z-index:20;display:flex;gap:8px;align-items:center;padding:9px 16px;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top a.home{font:700 17px var(--serif);color:var(--text);text-decoration:none;margin-right:auto}header.top a.home em{font-style:normal;color:var(--cyan)}
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:6px 12px;cursor:pointer;min-height:36px;min-width:36px;font:13px var(--mono);text-decoration:none;color:var(--text);display:inline-flex;align-items:center}
+.btn:hover{border-color:var(--cyan)}.btn.primary{background:var(--cyan);border-color:var(--cyan);color:#04202a;font:600 14px var(--sans)}[data-theme=light] .btn.primary{color:#fff}
+.btn[aria-pressed=true]{border-color:var(--cyan);color:var(--cyan)}
+main{max-width:860px;margin:0 auto;padding:0 20px 80px}
+.eyebrow{font:600 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+h1{font:700 clamp(34px,6vw,60px)/1.06 var(--serif);margin:.3em 0 .35em;letter-spacing:-.02em;text-wrap:balance}
+h2{font:700 clamp(25px,4vw,34px)/1.15 var(--serif);margin:0 0 .45em;text-wrap:balance}
+h3{font:700 19px/1.25 var(--serif);margin:0 0 6px}
+.lede{font-size:clamp(17px,2.2vw,20px);color:var(--muted)}
+section{padding:46px 0;border-bottom:1px solid var(--line)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:26px 0 22px}
+.fact{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.fact b{display:block;font:700 28px/1.15 var(--serif);color:var(--amber)}.fact span{font:400 11px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.cards{display:grid;gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.card p{margin:0 0 6px;font-size:15.5px}.card .cost{color:var(--muted);font-size:14.5px}
+.card .k{font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:16px}
+.f{margin-bottom:14px}.f label{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-bottom:3px}.f label b{font:600 13px var(--mono);color:var(--text)}
+input[type=range]{width:100%;accent-color:var(--cyan);min-height:28px}select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;min-height:38px}
+.out{display:grid;gap:8px}.o{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:9px 12px}.o small{display:block;font:400 11px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.o b{font:700 24px/1.2 var(--serif)}
+.o .bar{height:6px;border-radius:3px;background:var(--bg);margin-top:5px;overflow:hidden}.o .bar i{display:block;height:100%;background:var(--cyan);transition:width .2s}
+code{font:14px var(--mono);background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;font:13px/1.6 var(--mono);overflow:auto}
+svg{display:block;width:100%;height:auto}.ax{font:400 11px var(--mono);fill:var(--muted)}.gl{stroke:var(--line)}
+.pt{fill:var(--muted);transition:fill .2s}.pt.pass{fill:var(--green)}.pt.tpl{stroke:var(--amber);stroke-width:2}
+.pl{font:500 11.5px var(--sans);fill:var(--text)}
+.zone{fill:var(--green);opacity:.12}
+table{border-collapse:collapse;width:100%;font-size:14.5px;margin-top:14px}th,td{text-align:left;padding:7px 10px 7px 0;border-bottom:1px solid var(--line)}th{font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}td.n{font-family:var(--mono);text-align:right}th.n{text-align:right}
+tr.pass td:first-child::before{content:'✓ ';color:var(--green);font-weight:700}
+.bugs{list-style:none;padding:0;margin:0;display:grid;gap:10px}.bugs li{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:10px;padding:12px 16px;font-size:15.5px}.bugs b{display:block}.bugs span{color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.two ul{margin:0;padding-left:20px;font-size:15.5px}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+footer{padding:16px 20px;border-top:1px solid var(--line);font:400 12px var(--mono);color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media (max-width:700px){.lab,.two{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Sari la conținut</a>
+<header class="top"><a class="home" href="./">Journey <em>Builder</em></a><button class="btn" id="theme" aria-label="Schimbă tema">◐</button><button class="btn" id="lang">EN</button></header>
+<main id="main">
+  <section style="padding-top:60px">
+    <span class="eyebrow" data-i18n="e0"></span><h1 data-i18n="h1"></h1><p class="lede" data-i18n="l0"></p>
+    <div class="facts" id="facts"></div>
+    <div class="cta"><a class="btn primary" href="./" data-i18n="open"></a><a class="btn" href="../portfolio.html" data-i18n="back"></a></div>
+  </section>
+  <section><span class="eyebrow" data-i18n="e1"></span><h2 data-i18n="h2a"></h2><div id="problem"></div></section>
+  <section><span class="eyebrow" data-i18n="e2"></span><h2 data-i18n="h2b"></h2><div class="cards" id="decisions"></div></section>
+  <section><span class="eyebrow" data-i18n="e3"></span><h2 data-i18n="h2c"></h2><p data-i18n="l3"></p>
+    <div class="lab"><div class="card">
+      <div class="f"><label for="mN"><span data-i18n="mN"></span><b id="mNV"></b></label><input id="mN" type="range" min="1" max="6" value="1"></div>
+      <div class="f"><label for="mD"><span data-i18n="mD"></span><b id="mDV"></b></label><input id="mD" type="range" min="0" max="3" value="2"></div>
+      <div class="f"><label for="mE" data-i18n="mE"></label><select id="mE"></select></div>
+    </div><div class="out" id="mOut" aria-live="polite"></div></div>
+    <pre id="formula"></pre></section>
+  <section><span class="eyebrow" data-i18n="e4"></span><h2 data-i18n="h2d"></h2><p data-i18n="l4"></p>
+    <div class="cta" id="chBtns" role="group" aria-label="Provocare"></div>
+    <figure style="margin:14px 0 0"><svg id="plot" viewBox="0 0 760 380" role="img" aria-labelledby="plotCap"></svg><figcaption id="plotCap" style="font-size:14px;color:var(--muted)"></figcaption></figure>
+    <div style="overflow:auto"><table id="tbl"></table></div></section>
+  <section><span class="eyebrow" data-i18n="e5"></span><h2 data-i18n="h2e"></h2><ul class="bugs" id="bugs"></ul></section>
+  <section><span class="eyebrow" data-i18n="e6"></span><h2 data-i18n="h2f"></h2><div class="two" id="verify"></div></section>
+  <section style="border:0"><span class="eyebrow" data-i18n="e7"></span><h2 data-i18n="h2g"></h2><div id="next"></div>
+    <div class="cta" style="margin-top:18px"><a class="btn primary" href="./" data-i18n="open"></a></div></section>
+</main>
+<footer><span>© 2026 <strong>Laura Andreea</strong> · Iași</span><span data-i18n="measured"></span></footer>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const ls = { get(k, d){ try{ const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); }catch(e){ return d; } }, set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+let lang = ls.get('jb.lang', (navigator.language || 'ro').startsWith('ro') ? 'ro' : 'en');
+{ const p = new URLSearchParams(location.search).get('lang'); if (p === 'ro' || p === 'en') lang = p; }
+const N = (n, d = 0) => Number(n).toLocaleString(lang === 'ro' ? 'ro-RO' : 'en-GB', { minimumFractionDigits:d, maximumFractionDigits:d });
+/* Measured on 2026-11-16 with the app's own engine: 5,000 contacts, seed 2026, standard rates. [conversion %, unsubscribe %, days to convert, messages per contact] */
+const FLOWS = [
+  { k:'tplW', v:[5.54, 2.66, 5, 1.99], tpl:true }, { k:'tplC', v:[8.08, 2.84, 2.47, 1.97], tpl:true }, { k:'tplR', v:[7.14, 2, 6.48, 1.93], tpl:true },
+  { k:'f1', v:[5.8, .8, 2, 1] }, { k:'f0', v:[2.14, .8, 0, 1] }, { k:'f2', v:[11.62, 1.74, 3, 1.93] }, { k:'f3a', v:[11.46, 3.36, 1.95, 2.85] }, { k:'f3b', v:[16.36, 3.26, 3.87, 2.8] }, { k:'f4', v:[20.78, 5.06, 4.75, 3.6] }, { k:'f3t', v:[13, 2.28, 3.32, 2.2] }
+];
+const CH = [{ conv:10, unsub:3, msgs:2.2 }, { conv:11, unsub:4, days:2.5 }, { conv:12.5, unsub:2.5, msgs:3 }];
+const pass = (f, c) => f.v[0] >= c.conv && f.v[1] <= c.unsub && (!c.msgs || f.v[3] <= c.msgs) && (!c.days || f.v[2] <= c.days);
+const T = { ro: {
+  skip:'Sari la conținut', e0:'Studiu de caz', h1:'Cum se construiește un editor de fluxuri care chiar simulează ceva', l0:'Journey Builder este un editor vizual de automatizări de marketing: desenezi fluxul din pași, apoi vezi mii de contacte curgând prin el. Pagina aceasta explică deciziile din spate, modelul de simulare și problemele apărute la testare.',
+  open:'Deschide aplicația', back:'← Portofoliu', measured:'Cifre măsurate pe 16 noiembrie 2026 cu motorul aplicației.',
+  facts:[['1', 'fișier HTML'], ['67 KB', 'necomprimat'], ['757', 'linii'], ['0', 'dependențe JS'], ['8', 'tipuri de pași'], ['3', 'provocări']],
+  e1:'Punctul de plecare', h2a:'Ce trebuia să fie', problem:['Instrumentele de marketing automation arată fluxul ca pe o diagramă, dar răspunsul la întrebarea „și cât convertește?” vine abia după săptămâni de trimiteri reale. Scopul a fost un editor în care răspunsul vine în câteva secunde, pe date simulate, astfel încât structura fluxului să poată fi comparată înainte de a fi construită.', 'Constrângerile au fost cele obișnuite ale portofoliului: un singur fișier, fără server, fără biblioteci, utilizabil din tastatură și pe telefon, în română și engleză.'],
+  e2:'Arhitectură', h2b:'Patru decizii și costul fiecăreia', dec:'Decizie', why:'De ce', cost:'Cost',
+  decisions:[
+    ['Noduri HTML, legături SVG, particule pe canvas', 'Fiecare strat face ce știe mai bine: nodurile sunt elemente focusabile cu text real, legăturile sunt curbe Bézier ușor de selectat, iar miile de puncte animate se desenează ieftin pe un singur canvas.', 'Trei sisteme de coordonate care trebuie ținute sincronizate la pan și zoom.'],
+    ['Noduri cu dimensiune fixă (190 × 72 px)', 'Poziția porturilor se calculează din date, fără măsurarea DOM-ului, deci legăturile se pot redesena la fiecare mișcare a mouse-ului fără reflow.', 'Etichetele lungi sunt tăiate cu puncte de suspensie în loc să mărească nodul.'],
+    ['Un generator pseudo-aleator pentru fiecare contact', 'Fiecare contact își pornește propriul generator din seed și din numărul lui. Ordinea în care contactele ajung la un pas nu mai contează, așa că simularea animată și cea instantanee dau exact același rezultat. Verificat: 10,2% conversie în ambele moduri, pe același flux și același seed.', 'Câte un generator per contact, adică puțină memorie în plus.'],
+    ['Anulare prin instantanee, nu prin comenzi inverse', 'Fluxul întreg încape în câțiva kilobyți de JSON, deci fiecare modificare salvează o copie. Anularea nu poate rămâne într-o stare inconsecventă.', 'Nu ar scala la mii de noduri. Pentru un flux de marketing, limita de 100 de pași este suficientă.']
+  ],
+  e3:'Modelul', h2c:'Ce înseamnă „simulat”', l3:'Modelul are trei reguli, alese ca să producă aceleași compromisuri ca în realitate: mai multe mesaje aduc mai multe vânzări, dar și mai multe dezabonări. Mută controalele ca să vezi cum se schimbă șansele pentru un singur contact.',
+  mN:'Al câtelea mesaj primit', mD:'Zile de așteptare înainte de verificare', mE:'Ce a făcut cu ultimul mesaj', eNone:'Nu l-a deschis', eOpen:'L-a deschis', eClick:'A dat click',
+  oOpen:'Șansa să deschidă emailul', oUnsub:'Șansa să se dezaboneze', oBuy:'Șansa să cumpere la verificare',
+  formula:'deschidere  = 35% × 0,92^(mesaje anterioare)\ndezabonare  = 0,8% × (1 + 0,6 × mesaje anterioare)\ncumpărare   = 4% × (1 | 2 dacă a deschis | 4 dacă a dat click) × min(1; 0,4 + 0,3 × zile)\n              și contează o singură dată pentru fiecare mesaj',
+  e4:'Calibrare', h2d:'Provocările sunt măsurate, nu ghicite', l4:'Pragurile fiecărei provocări au fost alese după rularea unor fluxuri candidate prin motorul aplicației, cu 5.000 de contacte și același seed. Regula: șabloanele incluse nu trebuie să treacă, dar un flux mai bine gândit, da. Alege o provocare ca să vezi zona câștigătoare.',
+  ch:['Bun venit eficient', 'Sprint rapid', 'Maestrul retenției'], axisX:'Dezabonări (%) →', axisY:'Conversie (%)',
+  cap:'Fiecare punct este un flux. Zona verde arată pragurile de conversie și de dezabonare; unele provocări cer în plus o limită de mesaje sau de zile, deci un punct din zonă poate rămâne gri. Punctele cu contur galben sunt șabloanele aplicației.',
+  thFlow:'Flux', thConv:'Conversie', thUnsub:'Dezabonări', thDays:'Zile', thMsgs:'Mesaje',
+  flows:{ tplW:'Șablon: serie de bun venit', tplC:'Șablon: coș abandonat', tplR:'Șablon: reactivare', f1:'1 email, verificare după 2 zile', f0:'1 email, verificare imediată', f2:'2 emailuri, câte 2 zile', f3a:'3 emailuri, câte 1 zi', f3b:'3 emailuri, câte 2 zile', f4:'4 emailuri, câte 2 zile', f3t:'3 emailuri, al treilea doar celor care au deschis' },
+  e5:'Testare', h2e:'Ce s-a stricat pe drum',
+  bugs:[
+    ['Verificări de cumpărare înlănțuite la nesfârșit', 'Prima versiune a modelului dădea o șansă nouă de cumpărare la fiecare pas „A cumpărat?”, chiar fără un mesaj nou. Zece verificări la rând însemnau conversie gratuită. Acum șansa contează o singură dată pentru fiecare mesaj și crește cu zilele de așteptare.'],
+    ['Butonul „Oprește” era vizibil tot timpul', 'Atributul hidden era anulat de display:inline-flex din clasa butonului. O singură regulă, [hidden]{display:none!important}, a rezolvat toate cazurile de acest fel.'],
+    ['Șablonul de reactivare pierdea contacte', 'Emailul „Ultima șansă” nu avea ieșirea legată, deci toți cei care ajungeau acolo dispăreau din simulare. Chiar avertismentul aplicației pentru ieșiri nelegate a scos problema la iveală.'],
+    ['Pe telefon, paleta acoperea editorul', 'Stilul pentru rând orizontal era pus pe containerul greșit, iar încadrarea automată micșora fluxul până devenea ilizibil. Acum paleta este o bandă care derulează, iar zoomul nu coboară sub 45%.'],
+    ['Concluzia automată arăta spre pasul greșit', 'Mesajul „cei mai mulți se opresc la…” indica nodul Ieșire, unde ajung prin definiție toți cei care nu cumpără. A fost înlocuit cu observații utile: ieșiri nelegate și rată mare de dezabonare.'],
+    ['Un ROI de zeci de mii la sută', 'Costul unui email este atât de mic încât ROI-ul calculat arăta absurd și nu ajuta la comparație. Indicatorul a devenit „venit per contact”.']
+  ],
+  e6:'Verificare', h2f:'Ce este testat și ce nu', vYes:'Testat automat în Chromium', vNo:'Neverificat',
+  yes:['Adăugare, mutare și legare de pași, cu mouse-ul și din panou', 'Anulare și refacere', 'Simulare animată și instantanee, cu rezultate identice', 'Cele trei provocări și cele trei șabloane', 'Link de partajare și import JSON', 'Lățimi de 1440, 1200 și 390 px'],
+  no:['Telefon fizic și ecran tactil real', 'Safari și Firefox', 'Cititoare de ecran', 'Fluxuri cu sute de noduri'],
+  e7:'Mai departe', h2g:'Ce ar merita adăugat', next:['Selecție multiplă și mutarea mai multor pași deodată, o hartă miniaturală pentru fluxurile mari și export ca imagine. Pe partea de model, zilele săptămânii și orele de trimitere ar face simularea mai aproape de un instrument real.', 'Rămân idei, nu promisiuni: nimic din lista aceasta nu este încă început.']
+}, en: {
+  skip:'Skip to content', e0:'Case study', h1:'Building a flow editor that actually simulates something', l0:'Journey Builder is a visual marketing automation editor: you draw the flow from steps, then watch thousands of contacts move through it. This page explains the decisions behind it, the simulation model and the problems that surfaced in testing.',
+  open:'Open the app', back:'← Portfolio', measured:'Figures measured on 16 November 2026 with the app’s own engine.',
+  facts:[['1', 'HTML file'], ['67 KB', 'uncompressed'], ['757', 'lines'], ['0', 'JS dependencies'], ['8', 'step types'], ['3', 'challenges']],
+  e1:'Starting point', h2a:'What it had to be', problem:['Marketing automation tools show the flow as a diagram, but the answer to “and how well does it convert?” only arrives after weeks of real sends. The goal was an editor where the answer comes in seconds, on simulated data, so that flow structures can be compared before they are built.', 'The constraints were the portfolio’s usual ones: a single file, no server, no libraries, usable from the keyboard and on a phone, in Romanian and English.'],
+  e2:'Architecture', h2b:'Four decisions and what each one costs', dec:'Decision', why:'Why', cost:'Cost',
+  decisions:[
+    ['HTML nodes, SVG edges, canvas particles', 'Each layer does what it is best at: nodes are focusable elements with real text, edges are Bézier curves that are easy to select, and thousands of animated dots are drawn cheaply on a single canvas.', 'Three coordinate systems to keep in sync during pan and zoom.'],
+    ['Fixed-size nodes (190 × 72 px)', 'Port positions are computed from data, without measuring the DOM, so edges can be redrawn on every mouse move with no reflow.', 'Long labels are truncated with an ellipsis instead of growing the node.'],
+    ['One pseudo-random generator per contact', 'Each contact seeds its own generator from the seed and its number. The order in which contacts reach a step no longer matters, so the animated and the instant simulation give exactly the same result. Verified: 10.2% conversion in both modes, on the same flow and seed.', 'One generator per contact, a little extra memory.'],
+    ['Undo through snapshots, not inverse commands', 'The whole flow fits in a few kilobytes of JSON, so every change stores a copy. Undo cannot end up in an inconsistent state.', 'It would not scale to thousands of nodes. For a marketing flow, the 100-step limit is enough.']
+  ],
+  e3:'The model', h2c:'What “simulated” means', l3:'The model has three rules, chosen to produce the same trade-offs as reality: more messages bring more sales, but also more unsubscribes. Move the controls to see how the odds change for a single contact.',
+  mN:'Which message this is', mD:'Days to wait before the check', mE:'What they did with the last message', eNone:'Did not open it', eOpen:'Opened it', eClick:'Clicked',
+  oOpen:'Chance of opening the email', oUnsub:'Chance of unsubscribing', oBuy:'Chance of buying at the check',
+  formula:'open        = 35% × 0.92^(previous messages)\nunsubscribe = 0.8% × (1 + 0.6 × previous messages)\npurchase    = 4% × (1 | 2 if opened | 4 if clicked) × min(1, 0.4 + 0.3 × days)\n              and counts once per message',
+  e4:'Calibration', h2d:'The challenges are measured, not guessed', l4:'Each challenge’s thresholds were picked after running candidate flows through the app’s engine, with 5,000 contacts and the same seed. The rule: the built-in templates must not pass, but a better-designed flow must. Pick a challenge to see the winning zone.',
+  ch:['Efficient welcome', 'Fast sprint', 'Retention master'], axisX:'Unsubscribes (%) →', axisY:'Conversion (%)',
+  cap:'Each dot is a flow. The green zone shows the conversion and unsubscribe thresholds; some challenges also cap messages or days, so a dot inside the zone can stay grey. Dots with a yellow outline are the app’s templates.',
+  thFlow:'Flow', thConv:'Conversion', thUnsub:'Unsubscribes', thDays:'Days', thMsgs:'Messages',
+  flows:{ tplW:'Template: welcome series', tplC:'Template: abandoned cart', tplR:'Template: win-back', f1:'1 email, check after 2 days', f0:'1 email, immediate check', f2:'2 emails, 2 days each', f3a:'3 emails, 1 day each', f3b:'3 emails, 2 days each', f4:'4 emails, 2 days each', f3t:'3 emails, the third only to openers' },
+  e5:'Testing', h2e:'What broke along the way',
+  bugs:[
+    ['Purchase checks chained forever', 'The first version of the model gave a fresh chance to buy at every “Purchased?” step, even with no new message. Ten checks in a row meant free conversion. Now the chance counts once per message and grows with the days waited.'],
+    ['The “Stop” button was always visible', 'The hidden attribute was overridden by display:inline-flex from the button class. One rule, [hidden]{display:none!important}, fixed every case of this kind.'],
+    ['The win-back template was losing contacts', 'The “Last chance” email had no outgoing connection, so everyone who reached it vanished from the simulation. The app’s own warning for unconnected outputs is what exposed it.'],
+    ['On a phone, the palette covered the editor', 'The horizontal-row style sat on the wrong container, and auto-fit shrank the flow until it was unreadable. Now the palette is a scrolling strip and zoom never drops below 45%.'],
+    ['The automatic insight pointed at the wrong step', 'The “most contacts stop at…” message pointed at the Exit node, where everyone who does not buy ends up by definition. It was replaced with useful observations: unconnected outputs and a high unsubscribe rate.'],
+    ['An ROI of tens of thousands of percent', 'The cost of an email is so small that the computed ROI looked absurd and did not help comparison. The metric became “revenue per contact”.']
+  ],
+  e6:'Verification', h2f:'What is tested and what is not', vYes:'Tested automatically in Chromium', vNo:'Not verified',
+  yes:['Adding, moving and connecting steps, by mouse and from the panel', 'Undo and redo', 'Animated and instant simulation, with identical results', 'The three challenges and the three templates', 'Share link and JSON import', 'Widths of 1440, 1200 and 390 px'],
+  no:['Physical phones and real touch screens', 'Safari and Firefox', 'Screen readers', 'Flows with hundreds of nodes'],
+  e7:'Next', h2g:'What would be worth adding', next:['Multi-select and moving several steps at once, a minimap for large flows and export as an image. On the model side, weekdays and send times would bring the simulation closer to a real tool.', 'These remain ideas, not promises: nothing on this list has been started.']
+}};
+const t = k => T[lang][k];
+let chI = ls.get('jbcs.ch', 0);
+function model(){
+  const n = +$('#mN').value - 1, d = +$('#mD').value, e = +$('#mE').value, open = 35 * Math.pow(.92, n), unsub = .8 * (1 + .6 * n), buy = 4 * [1, 2, 4][e] * Math.min(1, .4 + .3 * d);
+  $('#mNV').textContent = n + 1; $('#mDV').textContent = d;
+  $('#mOut').innerHTML = [[t('oOpen'), open, 40], [t('oUnsub'), unsub, 4], [t('oBuy'), buy, 16]].map(([l, v, mx]) => `<div class="o"><small>${l}</small><b>${N(v, 1)}%</b><div class="bar"><i style="width:${Math.min(100, v / mx * 100)}%"></i></div></div>`).join('');
+}
+function plot(){
+  const c = CH[chI], W = 760, H = 380, l = 50, r = 20, top = 16, bot = 330, mx = 6, my = 22, X = v => l + v / mx * (W - l - r), Y = v => bot - v / my * (bot - top), F = T[lang].flows;
+  $$('#chBtns button').forEach((b, i) => b.setAttribute('aria-pressed', i === chI));
+  const lblSide = { f3b:'r', f4:'l', f3a:'r', f2:'l', f3t:'l', f1:'r', f0:'r', tplW:'r', tplC:'r', tplR:'l' };
+  $('#plot').innerHTML = [0, 5, 10, 15, 20].map(v => `<line class="gl" x1="${l}" x2="${W - r}" y1="${Y(v)}" y2="${Y(v)}"/><text class="ax" x="${l - 8}" y="${Y(v) + 4}" text-anchor="end">${v}</text>`).join('') + [0, 1, 2, 3, 4, 5, 6].map(v => `<text class="ax" x="${X(v)}" y="${bot + 18}" text-anchor="middle">${v}</text>`).join('') +
+    `<rect class="zone" x="${X(0)}" y="${Y(my)}" width="${X(c.unsub) - X(0)}" height="${Y(c.conv) - Y(my)}"/><text class="ax" x="${W - r}" y="${bot + 36}" text-anchor="end">${t('axisX')}</text><text class="ax" x="${l}" y="${top - 2}">${t('axisY')}</text>` +
+    FLOWS.map(f => { const ok = pass(f, c), x = X(f.v[1]), y = Y(f.v[0]), left = lblSide[f.k] === 'l'; return `<circle class="pt${ok ? ' pass' : ''}${f.tpl ? ' tpl' : ''}" cx="${x}" cy="${y}" r="7"><title>${F[f.k]}: ${N(f.v[0], 2)}% / ${N(f.v[1], 2)}%</title></circle><text class="pl" x="${x + (left ? -11 : 11)}" y="${y + 4}" text-anchor="${left ? 'end' : 'start'}">${F[f.k].replace(/^(Șablon|Template): /, '◆ ')}</text>`; }).join('');
+  $('#plotCap').textContent = t('cap');
+  $('#tbl').innerHTML = `<thead><tr><th scope="col">${t('thFlow')}</th><th scope="col" class="n">${t('thConv')}</th><th scope="col" class="n">${t('thUnsub')}</th><th scope="col" class="n">${t('thDays')}</th><th scope="col" class="n">${t('thMsgs')}</th></tr></thead><tbody>` + FLOWS.map(f => `<tr class="${pass(f, c) ? 'pass' : ''}"><td>${F[f.k]}</td><td class="n">${N(f.v[0], 2)}%</td><td class="n">${N(f.v[1], 2)}%</td><td class="n">${N(f.v[2], 2)}</td><td class="n">${N(f.v[3], 2)}</td></tr>`).join('') + '</tbody>';
+}
+function render(){
+  document.documentElement.lang = lang; $$('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
+  $('#lang').textContent = lang === 'ro' ? 'EN' : 'RO'; $('#lang').setAttribute('aria-label', lang === 'ro' ? 'Switch to English' : 'Schimbă în română'); $('#theme').setAttribute('aria-label', lang === 'ro' ? 'Schimbă tema' : 'Toggle theme');
+  document.title = lang === 'ro' ? 'Journey Builder — studiu de caz: decizii, model de simulare și ce s-a stricat pe drum | Laura Andreea' : 'Journey Builder — case study: decisions, simulation model and what broke along the way | Laura Andreea';
+  $$('a[href="./"]').forEach(a => a.href = lang === 'en' ? './?lang=en' : './');
+  $('#facts').innerHTML = t('facts').map(f => `<div class="fact"><b>${f[0]}</b><span>${f[1]}</span></div>`).join('');
+  $('#problem').innerHTML = t('problem').map(p => `<p>${p}</p>`).join('');
+  $('#decisions').innerHTML = t('decisions').map(d => `<article class="card"><h3>${d[0]}</h3><p><span class="k">${t('why')}</span>${d[1]}</p><p class="cost"><span class="k">${t('cost')}</span>${d[2]}</p></article>`).join('');
+  const e = $('#mE').value || '1'; $('#mE').innerHTML = [t('eNone'), t('eOpen'), t('eClick')].map((x, i) => `<option value="${i}">${x}</option>`).join(''); $('#mE').value = e;
+  $('#formula').textContent = t('formula');
+  $('#chBtns').innerHTML = t('ch').map((c, i) => `<button class="btn" data-ch="${i}" aria-pressed="${i === chI}">${i + 1} · ${c}</button>`).join(''); $$('[data-ch]').forEach(b => b.onclick = () => { chI = +b.dataset.ch; ls.set('jbcs.ch', chI); plot(); });
+  $('#bugs').innerHTML = t('bugs').map(b => `<li><b>${b[0]}</b><span>${b[1]}</span></li>`).join('');
+  $('#verify').innerHTML = `<div class="card"><h3>✓ ${t('vYes')}</h3><ul>${t('yes').map(x => `<li>${x}</li>`).join('')}</ul></div><div class="card"><h3>? ${t('vNo')}</h3><ul>${t('no').map(x => `<li>${x}</li>`).join('')}</ul></div>`;
+  $('#next').innerHTML = t('next').map(p => `<p>${p}</p>`).join('');
+  model(); plot();
+}
+['mN', 'mD', 'mE'].forEach(id => $('#' + id).addEventListener('input', model));
+$('#theme').onclick = () => { const th = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = th; ls.set('jb.theme', th); };
+$('#lang').onclick = () => { lang = lang === 'ro' ? 'en' : 'ro'; ls.set('jb.lang', lang); render(); };
+document.documentElement.dataset.theme = ls.get('jb.theme', 'dark');
+if (!(chI >= 0 && chI < 3)) chI = 0;
+render();
+window.CS = { FLOWS, CH, pass };
+})();
+</script>
+</body>
+</html>
