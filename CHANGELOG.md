@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-16 — Tei UI v1.0.0 · Finalizat / Completed
+
+- RO: Proiect nou: design system cu 11 componente Web Components într-un singur fișier (`tei-ui/tei-ui.js`), cu pagină de documentație, editor de temă și playground.
+- EN: New project: a design system with 11 Web Components in a single file (`tei-ui/tei-ui.js`), with a documentation page, theme editor and playground.
+- Added to `projects.json`, the Romanian Finalizat recent lists and November history, the English completed list and the sitemap. History: [tei-ui/CHANGELOG.md](tei-ui/CHANGELOG.md).
+
 ## 2026-11-16 — Experiment Lab v1.0.0 · Finalizat / Completed
 
 - RO: Aplicație nouă: patru experimente interactive despre A/B testing și atribuire (privitul pe furiș, putere, modele de atribuire, joc), cu simulări în browser.
