@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Dashboard CRM browser-only care suspendă actualizările când fila nu este vizibilă.">
 <meta name="color-scheme" content="dark light">
-<title>Visibility Sync Dashboard — Practice Lab 13I</title>
+<title>Visibility Sync Dashboard — Practice Lab 13J</title>
 <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/dashboard-visibility-sync.html">
 <style>
 :root{color-scheme:dark;--bg:#07111f;--panel:#0d1c31;--panel2:#142842;--text:#f4f7ff;--muted:#b8c8df;--line:#355274;--accent:#82b2ff;--good:#6ee7ad;--warn:#ffd166;--danger:#ff92a0;--shadow:0 22px 64px rgba(0,0,0,.34)}
@@ -30,7 +30,7 @@
 </div>
 </header>
 <main>
-<span class="eyebrow">Practice Lab III · 13I · Page Visibility API</span>
+<span class="eyebrow">Practice Lab III · 13J · Page Visibility API</span>
 <h1 data-i18n="title">Dashboard-ul lucrează doar când este privit.</h1>
 <p class="lede" data-i18n="intro">Un widget CRM suspendă actualizările când fila este ascunsă, apoi continuă fără temporizatoare duplicate.</p>
 <div class="grid">
@@ -123,6 +123,12 @@ let savedSummary=readSavedSummary(),summaryMessage="";
 function renderSavedSummary(){const list=$("savedSummaryFields");list.replaceChildren();$("clearSavedSummary").disabled=!savedSummary;if(savedSummary){const fields=[["reportDate",new Intl.DateTimeFormat(state.language,{dateStyle:"medium",timeStyle:"short"}).format(new Date(savedSummary.checkedAt))],["reportVerdict",t(savedSummary.verdict)],["fpTitle",savedSummary.hash||t("reportNoHash")]];fields.forEach(([key,value])=>{const dt=document.createElement("dt"),dd=document.createElement("dd");dt.textContent=t(key);dd.textContent=value;dd.className="report-fingerprint";list.append(dt,dd)});if(Date.now()-Date.parse(savedSummary.checkedAt)>7*86400000){const dd=document.createElement("dd");dd.textContent=t("summaryHistoric");list.append(dd)}}else{const dd=document.createElement("dd");dd.textContent=t("summaryEmpty");list.append(dd)}$("summaryStorageStatus").textContent=summaryMessage?t(summaryMessage):""}
 function saveReportSummary(report){const summary={version:1,checkedAt:report.checkedAt,verdict:report.verdict,hash:report.hash||null};try{localStorage.setItem(SUMMARY_KEY,JSON.stringify(summary));savedSummary=summary;summaryMessage=""}catch{summaryMessage="summarySaveError"}renderSavedSummary()}
 $("clearSavedSummary").addEventListener("click",()=>{try{localStorage.removeItem(SUMMARY_KEY);savedSummary=null;summaryMessage="summaryCleared"}catch{summaryMessage="summaryClearError"}renderSavedSummary()});
+Object.assign(translations.ro,{summaryOtherUpdated:"Rezumat actualizat în altă filă.",summaryOtherCleared:"Rezumat șters în altă filă.",summaryOtherInvalid:"Rezumatul din altă filă conține date invalide și nu a fost afișat."});
+Object.assign(translations.en,{summaryOtherUpdated:"Summary updated in another tab.",summaryOtherCleared:"Summary cleared in another tab.",summaryOtherInvalid:"The summary from another tab contains invalid data and was not displayed."});
+function handleSummaryStorage(event){let storage;try{storage=window.localStorage}catch{return}if(event.storageArea!==storage||(event.key!==SUMMARY_KEY&&event.key!==null))return;
+if(event.key===null||event.newValue===null){savedSummary=null;summaryMessage="summaryOtherCleared"}else{let parsed=null;try{parsed=validateSavedSummary(JSON.parse(event.newValue))}catch{}savedSummary=parsed;summaryMessage=parsed?"summaryOtherUpdated":"summaryOtherInvalid"}
+renderSavedSummary()}
+window.addEventListener("storage",handleSummaryStorage);
 let evidenceReport=null;
 function renderReport(){const article=$("evidenceReport");article.hidden=!evidenceReport;$("printReport").disabled=!evidenceReport;$("reportFields").replaceChildren();$("reportChecks").replaceChildren();if(!evidenceReport)return;const report=evidenceReport;const fields=[["reportDate",new Intl.DateTimeFormat(state.language,{dateStyle:"medium",timeStyle:"short"}).format(new Date(report.checkedAt))],["reportFile",report.fileName],["reportVerdict",t(report.verdict)],["fpTitle",report.hash||t("reportNoHash")]];fields.forEach(([key,value])=>{const group=document.createElement("div"),dt=document.createElement("dt"),dd=document.createElement("dd");dt.textContent=t(key);dd.textContent=value;if(key==="fpTitle")dd.className="report-fingerprint";group.append(dt,dd);$("reportFields").append(group)});report.checks.forEach(check=>{const li=document.createElement("li");li.textContent=`${check.pass?"✓":"✕"} ${t(check.key)}`;$("reportChecks").append(li)})}
 $("printReport").addEventListener("click",()=>{if(evidenceReport)window.print()});
