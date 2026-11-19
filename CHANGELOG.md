@@ -2,8 +2,8 @@
 
 ## 2026-11-19 — GAMBIT ARCANA v1.1.0 · Finalizat / Completed
 
-- RO: Joc nou: șah complet FIDE cu AI pe 6 niveluri într-un Web Worker, cinci variante (Clasic, Arcana, Ceață de război, Regele dealului, Trei șahuri), campanie de 8 adversari, 20 de puzzle-uri, analiză post-partidă și designul „Obsidian Tarot”.
-- EN: New game: complete FIDE chess with a 6-level AI in a Web Worker, five variants (Classic, Arcana, Fog of war, King of the Hill, Three-check), an 8-opponent campaign, 20 puzzles, post-game analysis and the "Obsidian Tarot" design.
+- RO: Joc nou: șah complet FIDE cu AI pe 6 niveluri într-un Web Worker, cinci variante (Clasic, Arcana, Ceață de război, Regele dealului, Trei șahuri), campanie de 8 adversari, 20 de puzzle-uri, analiză post-partidă, design luminos și minimalist navy/cyan, cu mod întunecat.
+- EN: New game: complete FIDE chess with a 6-level AI in a Web Worker, five variants (Classic, Arcana, Fog of war, King of the Hill, Three-check), an 8-opponent campaign, 20 puzzles, post-game analysis and a light, minimal navy/cyan design with a dark mode.
 - Added to `projects.json`, the English completed list, the search catalogue and the sitemap. Not listed in `portfolio.html`, which is at its 150 KB HTML budget. History: [gambit-arcana/CHANGELOG.md](gambit-arcana/CHANGELOG.md).
 
 ## 2026-11-16 — Etapele 2–8 · Finalizat în portofoliu

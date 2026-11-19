@@ -1,9 +1,10 @@
 # Changelog
 
 ## 1.1.0 — 2026-11-19
-- Design nou „Obsidian Tarot”: obsidian și ametist cu accente aurii, fonturi Cinzel și Cormorant Garamond, modurile de joc ca niște cărți de tarot cu numerale romane, tablă fildeș/ametist într-o ramă aurie, piese fildeș și obsidian cu contur auriu.
-- Harta de control folosește auriu pentru albe și violet pentru negre; energia Arcana apare ca romburi aurii.
-- Pe mobil, cărțile Arcana stau imediat sub tablă, iar bara de sus încape pe un rând.
+- Design nou „Clar”: luminos și minimalist, cu text navy și accente cyan. Mod întunecat navy/cyan disponibil din butonul ☾ din bara de sus; implicit urmează setarea sistemului.
+- Piese redesenate pentru contrast: albe pure cu contur navy gros, negre navy închis cu contur aproape negru și detalii cyan, umbră mai clară.
+- Tabla implicită „Oțel & Cyan” (#eaf1f8 / #7fa3cc); harta de control în cyan pentru albe și portocaliu pentru negre, lizibilă pe fundal deschis.
+- Pe mobil, tabla din pagina de start apare prima, cărțile Arcana stau imediat sub tabla de joc, iar bara de sus încape pe un rând.
 
 ## 1.0.0 — 2026-11-18
 - Prima versiune: șah complet FIDE, AI pe 6 niveluri în Web Worker, 5 variante (Clasic, Arcana, Ceață de război, Regele dealului, Trei șahuri).

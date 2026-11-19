@@ -2,7 +2,7 @@
 
 ## RO
 
-Joc de șah premium în browser, cu designul „Obsidian Tarot” (obsidian, ametist și auriu), într-un singur fișier, fără dependențe (doar fonturile Google). Reguli FIDE complete, AI local într-un Web Worker și mecanici noi de strategie.
+Joc de șah premium în browser, cu un design luminos și minimalist (navy/cyan, plus mod întunecat), într-un singur fișier, fără dependențe (doar fonturile Google). Reguli FIDE complete, AI local într-un Web Worker și mecanici noi de strategie.
 
 **Variante**
 - **Clasic**: rocadă, en passant, promovare la alegere, pat, repetiție de trei ori, regula celor 50 de mutări, material insuficient.
@@ -21,7 +21,7 @@ Joc de șah premium în browser, cu designul „Obsidian Tarot” (obsidian, ame
 
 **Progres local**: rating Elo, statistici pe variante, 19 realizări, copie de siguranță JSON, reluarea partidei întrerupte.
 
-**Accesibilitate**: RO/EN (și `?lang=`), tabla navigabilă din tastatură (săgeți, Enter, Esc), etichete pentru cititorul de ecran pe fiecare pătrat, mutări anunțate, introducere în notație (e4, Nf3, O-O, e7e8q), contrast ridicat, mișcare redusă, promovare automată, sunet comutabil, vibrații opționale.
+**Accesibilitate**: mod luminos/întunecat, RO/EN (și `?lang=`), tabla navigabilă din tastatură (săgeți, Enter, Esc), etichete pentru cititorul de ecran pe fiecare pătrat, mutări anunțate, introducere în notație (e4, Nf3, O-O, e7e8q), contrast ridicat, mișcare redusă, promovare automată, sunet comutabil, vibrații opționale.
 
 **Motorul**: tablă 0x88, generare de mutări legale validată cu perft (poziția inițială, Kiwipete și alte trei poziții de referință), alpha-beta cu adâncire iterativă, căutare de liniștire, mutări killer, tabele de poziție cu rege tapered, evaluare specifică pentru fiecare variantă și o mică bibliotecă de deschideri.
 
