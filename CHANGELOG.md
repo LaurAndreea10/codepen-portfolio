@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-19 — GAMBIT ARCANA · Finalizat în portofoliu
+
+- RO: Adăugat GAMBIT ARCANA v1.1.0 la „Finalizat recent” (lista scurtă și panoul Now) și în istoricul lunii noiembrie din `portfolio.html`.
+- EN: Added GAMBIT ARCANA v1.1.0 to “Recently completed” (the short list and the Now panel) and to the November history in `portfolio.html`.
+
 ## 2026-11-19 — GAMBIT ARCANA v1.1.0 · Finalizat / Completed
 
 - RO: Joc nou: șah complet FIDE cu AI pe 6 niveluri într-un Web Worker, cinci variante (Clasic, Arcana, Ceață de război, Regele dealului, Trei șahuri), campanie de 8 adversari, 20 de puzzle-uri, analiză post-partidă, design luminos și minimalist navy/cyan, cu mod întunecat.
