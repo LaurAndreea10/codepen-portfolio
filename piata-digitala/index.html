@@ -213,11 +213,16 @@ function lineChart(el, sets, unitMax) {
   for (let v = 0; v <= yMax; v += 25) g += `<line class="grid-l" x1="${M.l}" x2="${W - M.r}" y1="${Y(v)}" y2="${Y(v)}"/><text class="ax" x="${M.l - 6}" y="${Y(v) + 4}" text-anchor="end">${v}%</text>`;
   const step = Math.ceil((x1 - x0 + 1) / 7);
   for (let v = x0; v <= x1; v += step) g += `<text class="ax" x="${X(v)}" y="${H - 8}" text-anchor="middle">${v}</text>`;
+  const used = [];
   sets.forEach(s => {
     const d = s.pts.map((p, i) => `${i ? 'L' : 'M'}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join('');
     g += `<path d="${d}" fill="none" stroke="var(${s.c})" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"${s.dash ? ' stroke-dasharray="5 4"' : ''}/>`;
     const last = s.pts[s.pts.length - 1];
-    if (last) g += `<circle cx="${X(last[0])}" cy="${Y(last[1])}" r="4" fill="var(${s.c})" stroke="var(--panel)" stroke-width="2"/><text class="ax" x="${X(last[0]) + 8}" y="${Y(last[1]) + 4}" style="fill:var(--text)">${num(last[1])}%</text>`;
+    if (last) {
+      // keep end labels apart when two series finish close together
+      let ly = Y(last[1]) + 4; used.forEach(u => { if (Math.abs(u - ly) < 13) ly = u + (ly <= u ? -13 : 13); }); used.push(ly);
+      g += `<circle cx="${X(last[0])}" cy="${Y(last[1])}" r="4" fill="var(${s.c})" stroke="var(--panel)" stroke-width="2"/><text class="ax" x="${X(last[0]) + 8}" y="${ly}" style="fill:var(--text)">${num(last[1])}%</text>`;
+    }
   });
   g += `<line id="${el.id}-x" class="grid-l" y1="${M.t}" y2="${H - M.b}" style="stroke:var(--muted);opacity:0"/><rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}" fill="transparent" data-hit="1"/>`;
   el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(sets.map(s => s.name + ': ' + s.pts.map(p => p[0] + ' ' + num(p[1]) + '%').join(', ')).join('. '))}">${g}</svg>`;
