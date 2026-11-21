@@ -23,7 +23,7 @@
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-laurandreea10.github.io-4f8cff?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/portfolio.html)
 [![GitHub Pages](https://img.shields.io/badge/Hosted_on-GitHub_Pages-8b5cf6?style=for-the-badge&logo=github&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/portfolio.html)
-[![Projects](https://img.shields.io/badge/Projects-89_live-22c55e?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/portfolio.html#projects)
+[![Projects](https://img.shields.io/badge/Projects-96_live-22c55e?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/portfolio.html#projects)
 [![Language](https://img.shields.io/badge/Lang-RO_%7C_EN-facc15?style=for-the-badge&labelColor=071226)](https://laurandreea10.github.io/codepen-portfolio/portfolio.html)
 
 </div>
@@ -35,7 +35,7 @@
 
 <br>
 
-> **Portofoliu front-end interactiv** cu 89 de proiecte live, preview instant, filtrare, căutare, mod întunecat/luminos și suport bilingv RO/EN.
+> **Portofoliu front-end interactiv** cu 96 de proiecte live, preview instant, filtrare, căutare, mod întunecat/luminos și suport bilingv RO/EN.
 > Construit din pasiune pentru front-end, cu o gândire formată în 5+ ani de CRM și Marketing.
 
 ### ✨ Features
@@ -150,7 +150,7 @@ Lasă un ⭐ pe repo și deschide portofoliul live — fiecare proiect are un pr
 
 <br>
 
-> **Interactive front-end portfolio** with 89 live projects, instant preview, filtering, search, dark/light mode and bilingual RO/EN support.
+> **Interactive front-end portfolio** with 96 live projects, instant preview, filtering, search, dark/light mode and bilingual RO/EN support.
 > Built from a passion for front-end development, shaped by 5+ years of experience in CRM and Marketing.
 
 ### ✨ Features
