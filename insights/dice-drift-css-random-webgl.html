@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS random() ca generator de numere pentru WebGL — Laura Andreea</title>
+  <meta name="description" content="Cum folosește DICE DRIFT 3D funcția CSS random() ca sursă de numere aleatorii pentru o lume WebGL: @property, getComputedStyle, fallback onest și seed zilnic." />
+  <meta name="author" content="Laura Andreea" />
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/insights/dice-drift-css-random-webgl.html" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <meta property="og:title" content="CSS random() ca generator de numere pentru WebGL — Laura Andreea" />
+  <meta property="og:description" content="Cum folosește DICE DRIFT 3D funcția CSS random() ca sursă de numere aleatorii pentru o lume WebGL: @property, getComputedStyle, fallback onest și seed zilnic." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/insights/dice-drift-css-random-webgl.html" />
+  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"CSS random() ca generator de numere pentru WebGL","author":{"@type":"Person","name":"Laura Andreea"},"datePublished":"2026-11-21","inLanguage":["ro","en"],"url":"https://laurandreea10.github.io/codepen-portfolio/insights/dice-drift-css-random-webgl.html"}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="../style.css" />
+  <style>.insight-hero{padding:3rem 0 2rem}.insight-back{display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;color:#8089a0;text-decoration:none;margin-bottom:2rem;transition:color .15s}.insight-back:hover{color:#6aa6ff}.insight-tag{display:inline-block;font-size:.72rem;padding:.2rem .6rem;border-radius:4px;background:rgba(106,166,255,.12);color:#6aa6ff;border:1px solid rgba(106,166,255,.25);margin-bottom:1rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600}.insight-title{font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.15;margin:0 0 1rem;color:#f1f4fa}.insight-meta{font-size:.82rem;color:#8089a0;margin-bottom:2.5rem;display:flex;gap:1rem;flex-wrap:wrap}.insight-meta span{display:flex;align-items:center;gap:.3rem}.insight-body{max-width:720px}.insight-body h2{font-size:1.15rem;color:#f1f4fa;margin:2rem 0 .6rem}.insight-body p,.insight-body ul{color:#c4cbd9;line-height:1.7;margin:0 0 1rem;font-size:.97rem}.insight-body ul{padding-left:1.2rem}.insight-body li{margin-bottom:.4rem}.insight-body strong{color:#f1f4fa}.insight-callout{background:rgba(106,166,255,.07);border-left:3px solid #6aa6ff;padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.5rem 0}.insight-callout p{margin:0;color:#9cc2ff}.insight-footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:1rem;flex-wrap:wrap;align-items:center}.insight-footer p{font-size:.82rem;color:#8089a0;margin:0}.insight-body code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.86em;background:rgba(106,166,255,.1);padding:.1em .35em;border-radius:4px;color:#cfe0ff}.insight-body pre{background:#0b1426;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1rem;overflow-x:auto;margin:0 0 1.2rem}.insight-body pre code{background:none;padding:0;font-size:.82rem;line-height:1.55;color:#cfe0ff}.insight-en{margin-top:2.5rem;padding:1.2rem;border:1px solid rgba(255,255,255,.08);border-radius:8px}.insight-en h2{margin-top:0}.insight-series{font-size:.85rem;color:#8089a0;margin:2rem 0 0}.insight-series a{color:#6aa6ff}</style>
+</head>
+<body>
+  <div class="topbar"><div class="container"><nav class="nav glass" aria-label="Navigare"><a class="brand" href="../portfolio.html" aria-label="Înapoi la portofoliu"><span class="badge" aria-hidden="true">CP</span><span>Portofoliu</span></a><div class="nav-links"><a class="pill" href="../portfolio.html#insights">← Toate insights</a><a class="pill" href="../dice-drift-3d/">Deschide proiectul</a></div></nav></div></div>
+  <main><article class="insight-hero"><div class="container"><a class="insight-back" href="../portfolio.html#insights">← Înapoi la insights</a><span class="insight-tag">CSS · WebGL</span><h1 class="insight-title">CSS random() ca generator de numere pentru WebGL</h1><div class="insight-meta"><span>✍️ Laura Andreea</span><span>📅 Noiembrie 2026</span><span>⏱ 5 min lectură</span><span>🇷🇴 RO · 🇬🇧 EN summary</span></div><div class="insight-body">
+
+    <p>Challenge-ul CodePen din noiembrie a fost despre funcția CSS <code>random()</code>. Majoritatea intrărilor o folosesc pentru ce e făcută: culori și poziții aleatorii în pagină. În DICE DRIFT 3D am încercat altceva: <strong>CSS aruncă zarurile, iar WebGL construiește lumea din ele</strong>.</p>
+    <h2>Pasul 1: o proprietate care ține un număr</h2>
+    <p>O variabilă CSS obișnuită ține text. Dacă scriu <code>--r0: random(0, 1)</code>, nu primesc înapoi un număr calculat. De aceea înregistrez proprietățile cu <code>@property</code> și sintaxa <code>&lt;number&gt;</code>: browserul e obligat să calculeze valoarea, iar <code>getComputedStyle</code> îmi dă rezultatul.</p>
+<pre><code>@property --r0 { syntax: '&lt;number&gt;'; inherits: false; initial-value: 0.5; }
+@supports (opacity: random(0, 1)) {
+  .rng-cell { --r0: random(0, 1); /* … --r5 */ }
+}</code></pre>
+    <h2>Pasul 2: un laborator ascuns</h2>
+    <p>Într-un element invizibil creez opt celule <code>.rng-cell</code>, citesc din fiecare câte șase valori și apoi le șterg. Fiecare celulă primește valori proprii, deci obțin 48 de numere dintr-o singură „recoltă”, pe care le pun într-un tampon. Când tamponul se golește, mai recoltez o dată.</p>
+    <p>Toată aleatoriul lumii trece printr-o singură funcție, <code>rnd()</code>: valurile de cristale, porțile, paleta, mutatorii zarului și evenimentele Oracolului. WebGL nu știe de unde vin numerele.</p>
+    <h2>Pasul 3: să nu mă mint singură</h2>
+    <p>Dacă browserul nu înțelege <code>random()</code>, proprietățile rămân la valoarea inițială, 0,5. Așa că verific: dacă toate valorile citite sunt identice, consider că CSS-ul nu a funcționat și trec pe <code>Math.random()</code>. Jocul arată deschis ce sursă folosește, într-o insignă: „CSS random() · N valori” sau „fallback JS”.</p>
+    <div class="insight-callout"><p><strong>Ce am învățat:</strong> când o funcție nouă are suport limitat, cel mai onest e ca interfața să spună ce cale rulează, nu doar să se degradeze în tăcere.</p></div>
+    <h2>Pasul 4: aceeași lume pentru toată lumea</h2>
+    <p><code>random()</code> e, prin definiție, imprevizibil, așa că nu poate da o „provocare a zilei” comună. Pentru modul Oracolul zilei, <code>rnd()</code> e înlocuit cu un generator determinist (mulberry32) inițializat dintr-un hash al datei. Restul jocului rămâne neschimbat, pentru că totul trece prin aceeași funcție.</p>
+    <h2>Ce n-am verificat</h2>
+    <ul><li>Testele automate au rulat în Chromium, deci pe calea de fallback JS, la 1280 și 390 px. Calea nativă <code>random()</code> (Safari 26 și mai nou) nu a fost verificată automat.</li><li>Telefonul fizic și cititorul de ecran rămân de confirmat.</li></ul>
+
+    <section class="insight-en" lang="en"><h2>In English: CSS random() as a random-number source for WebGL</h2><p>DICE DRIFT 3D uses CSS <code>random()</code> as a random-number source for a WebGL world. Custom properties registered with <code>@property</code> and <code>&lt;number&gt;</code> syntax force the browser to compute the value, which <code>getComputedStyle</code> reads back from eight hidden cells (48 numbers per harvest, buffered). If every value equals the initial 0.5, the game falls back to <code>Math.random()</code> and says so in a badge. The Daily Oracle swaps the same <code>rnd()</code> function for a seeded mulberry32 generator, so everyone gets the same world that day. Automated tests ran in Chromium, on the JS fallback path; the native path (Safari 26+) is unverified.</p></section>
+    <p class="insight-series">Seria „Cum am construit jocurile”: <a href="gambit-arcana-motor-web-worker.html">Un motor de șah într-un Web Worker, din același fișier</a> · <a href="kygo-stare-2d-randare-3d.html">Starea în 2D, imaginea în 3D: 12 jocuri pe un singur motor</a></p>
+  </div><div class="insight-footer"><p>Ai întrebări sau vrei să discuți despre asta?</p><a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Re: CSS random() ca generator de numere pentru WebGL">Scrie-mi</a><a class="btn btn-secondary" href="../dice-drift-3d/">Deschide proiectul</a><a class="btn btn-secondary" href="../portfolio.html#insights">← Toate insights</a></div></div></article></main>
+  <footer class="footer"><div class="container"><p class="footer-copy">© 2026 Laura Andreea · laurandreea10.github.io</p></div></footer>
+</body>
+</html>

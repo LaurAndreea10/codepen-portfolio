@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Un motor de șah într-un Web Worker, din același fișier — Laura Andreea</title>
+  <meta name="description" content="Cum rulează AI-ul din GAMBIT ARCANA pe un fir separat fără un fișier separat: Worker din Blob, cereri cu id, fallback local și perft ca test de corectitudine." />
+  <meta name="author" content="Laura Andreea" />
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/insights/gambit-arcana-motor-web-worker.html" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <meta property="og:title" content="Un motor de șah într-un Web Worker, din același fișier — Laura Andreea" />
+  <meta property="og:description" content="Cum rulează AI-ul din GAMBIT ARCANA pe un fir separat fără un fișier separat: Worker din Blob, cereri cu id, fallback local și perft ca test de corectitudine." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/insights/gambit-arcana-motor-web-worker.html" />
+  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Un motor de șah într-un Web Worker, din același fișier","author":{"@type":"Person","name":"Laura Andreea"},"datePublished":"2026-11-21","inLanguage":["ro","en"],"url":"https://laurandreea10.github.io/codepen-portfolio/insights/gambit-arcana-motor-web-worker.html"}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="../style.css" />
+  <style>.insight-hero{padding:3rem 0 2rem}.insight-back{display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;color:#8089a0;text-decoration:none;margin-bottom:2rem;transition:color .15s}.insight-back:hover{color:#6aa6ff}.insight-tag{display:inline-block;font-size:.72rem;padding:.2rem .6rem;border-radius:4px;background:rgba(106,166,255,.12);color:#6aa6ff;border:1px solid rgba(106,166,255,.25);margin-bottom:1rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600}.insight-title{font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.15;margin:0 0 1rem;color:#f1f4fa}.insight-meta{font-size:.82rem;color:#8089a0;margin-bottom:2.5rem;display:flex;gap:1rem;flex-wrap:wrap}.insight-meta span{display:flex;align-items:center;gap:.3rem}.insight-body{max-width:720px}.insight-body h2{font-size:1.15rem;color:#f1f4fa;margin:2rem 0 .6rem}.insight-body p,.insight-body ul{color:#c4cbd9;line-height:1.7;margin:0 0 1rem;font-size:.97rem}.insight-body ul{padding-left:1.2rem}.insight-body li{margin-bottom:.4rem}.insight-body strong{color:#f1f4fa}.insight-callout{background:rgba(106,166,255,.07);border-left:3px solid #6aa6ff;padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.5rem 0}.insight-callout p{margin:0;color:#9cc2ff}.insight-footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:1rem;flex-wrap:wrap;align-items:center}.insight-footer p{font-size:.82rem;color:#8089a0;margin:0}.insight-body code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.86em;background:rgba(106,166,255,.1);padding:.1em .35em;border-radius:4px;color:#cfe0ff}.insight-body pre{background:#0b1426;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1rem;overflow-x:auto;margin:0 0 1.2rem}.insight-body pre code{background:none;padding:0;font-size:.82rem;line-height:1.55;color:#cfe0ff}.insight-en{margin-top:2.5rem;padding:1.2rem;border:1px solid rgba(255,255,255,.08);border-radius:8px}.insight-en h2{margin-top:0}.insight-series{font-size:.85rem;color:#8089a0;margin:2rem 0 0}.insight-series a{color:#6aa6ff}</style>
+</head>
+<body>
+  <div class="topbar"><div class="container"><nav class="nav glass" aria-label="Navigare"><a class="brand" href="../portfolio.html" aria-label="Înapoi la portofoliu"><span class="badge" aria-hidden="true">CP</span><span>Portofoliu</span></a><div class="nav-links"><a class="pill" href="../portfolio.html#insights">← Toate insights</a><a class="pill" href="../gambit-arcana/">Deschide proiectul</a></div></nav></div></div>
+  <main><article class="insight-hero"><div class="container"><a class="insight-back" href="../portfolio.html#insights">← Înapoi la insights</a><span class="insight-tag">Engine · Web Worker</span><h1 class="insight-title">Un motor de șah într-un Web Worker, din același fișier</h1><div class="insight-meta"><span>✍️ Laura Andreea</span><span>📅 Noiembrie 2026</span><span>⏱ 6 min lectură</span><span>🇷🇴 RO · 🇬🇧 EN summary</span></div><div class="insight-body">
+
+    <p>GAMBIT ARCANA e un joc de șah complet într-un singur fișier HTML, fără dependențe. Cea mai grea parte n-a fost generarea mutărilor, ci felul în care AI-ul gândește fără să înghețe pagina.</p>
+    <h2>Problema: căutarea blochează interfața</h2>
+    <p>Un motor de șah caută în arbore: la nivelul cel mai greu, până la nouă semimutări în adâncime, cu un buget de 3,2 secunde. Dacă rulează pe firul principal, în secunda aceea nimic nu răspunde: nici ceasul, nici animațiile, nici butonul de renunțare. Pe un telefon, pauza se simte și mai tare.</p>
+    <p>Soluția clasică e un <strong>Web Worker</strong>, un fir separat. Dar un Worker are nevoie, de obicei, de un fișier JavaScript separat, iar eu voiam un singur fișier, care să meargă și pe CodePen.</p>
+    <h2>Workerul construit din propriul cod</h2>
+    <p>Tot motorul stă într-o singură funcție, <code>GambitCore</code>, care nu atinge DOM-ul. Asta face posibil trucul: îi iau textul cu <code>toString()</code>, adaug un mic handler de mesaje și construiesc din el un Blob.</p>
+<pre><code>const src = GambitCore.toString() + handler +
+  'onmessage = e =&gt; { … postMessage(out) }';
+worker = new Worker(URL.createObjectURL(
+  new Blob([src], { type: 'text/javascript' })));</code></pre>
+    <p>Aceeași funcție rulează și în pagină (pentru reguli, mutări legale, notație) și în worker (pentru căutare). Nu există două copii ale regulilor care să se poată desincroniza.</p>
+    <div class="insight-callout"><p><strong>Regula care a făcut posibil asta:</strong> motorul nu are voie să știe că există o pagină. Primește un FEN și opțiuni, întoarce o mutare și un scor.</p></div>
+    <h2>Un protocol mic: cereri cu id</h2>
+    <p>Pagina poate cere în același timp o mutare pentru AI și o evaluare pentru bară. Fiecare cerere primește un id crescător, iar promisiunea ei stă într-un <code>Map</code> până vine răspunsul cu același id. Așa, un răspuns întârziat nu ajunge niciodată la întrebarea greșită.</p>
+    <p>Dacă browserul nu poate crea workerul (unele medii blochează URL-urile <code>blob:</code>), jocul nu se strică: aceeași cerere rulează local, amânată cu 20 ms ca interfața să apuce să se redeseneze. E mai lent, dar funcționează.</p>
+    <h2>Nivelurile nu sunt șase motoare</h2>
+    <p>Căutarea folosește adâncire iterativă: caută la adâncimea 1, apoi 2, apoi 3, până când se termină timpul sau atinge limita. Un nivel de dificultate e doar o combinație de trei numere: adâncimea maximă, timpul și cât „zgomot” adaug la alegerea finală, ca adversarii slabi să greșească omenește. Primul nivel caută o semimutare în 300 ms, cu mult zgomot; ultimul, nouă semimutări în 3,2 secunde, fără zgomot. Ratingurile afișate (de la circa 600 la circa 2050) sunt estimări, nu măsurători.</p>
+    <h2>Cum știu că regulile sunt corecte: perft</h2>
+    <p>La șah, un bug de reguli (o rocadă prin șah, un en passant greșit) nu se vede până nu apare exact poziția aceea. Pentru asta există <strong>perft</strong>: numeri toate pozițiile posibile până la o anumită adâncime și compari cu valorile publicate de comunitatea de programare a șahului. Am verificat poziția inițială, Kiwipete și alte trei poziții de referință. Dacă un singur număr diferă, generatorul de mutări are o problemă.</p>
+    <h2>Ce n-am verificat încă</h2>
+    <ul><li>Testele automate rulează în Chromium (1280, 1366 și 390 px). Firefox, Safari, telefoanele fizice și cititoarele de ecran rămân de confirmat.</li><li>Ratingul AI-ului nu e calibrat contra unor jucători reali.</li></ul>
+
+    <section class="insight-en" lang="en"><h2>In English: a chess engine in a Web Worker, from the same file</h2><p>GAMBIT ARCANA runs a full chess engine in a Web Worker without a separate file: the engine is one DOM-free function, <code>GambitCore</code>, whose source is turned into a Blob URL. Requests carry an id and resolve from a <code>Map</code>; if workers are blocked, the same request runs on the main thread after a 20 ms delay. Difficulty levels are just depth, time and noise settings over one iterative-deepening search, and move generation is validated with perft on the starting position, Kiwipete and three other reference positions. Firefox, Safari, physical phones and screen readers remain unverified.</p></section>
+    <p class="insight-series">Seria „Cum am construit jocurile”: <a href="kygo-stare-2d-randare-3d.html">Starea în 2D, imaginea în 3D: 12 jocuri pe un singur motor</a> · <a href="dice-drift-css-random-webgl.html">CSS random() ca generator de numere pentru WebGL</a></p>
+  </div><div class="insight-footer"><p>Ai întrebări sau vrei să discuți despre asta?</p><a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Re: Un motor de șah într-un Web Worker, din același fișier">Scrie-mi</a><a class="btn btn-secondary" href="../gambit-arcana/">Deschide proiectul</a><a class="btn btn-secondary" href="../portfolio.html#insights">← Toate insights</a></div></div></article></main>
+  <footer class="footer"><div class="container"><p class="footer-copy">© 2026 Laura Andreea · laurandreea10.github.io</p></div></footer>
+</body>
+</html>

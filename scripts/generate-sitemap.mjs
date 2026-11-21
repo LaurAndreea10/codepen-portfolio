@@ -2,6 +2,14 @@ import { existsSync, writeFileSync } from "node:fs";
 
 const origin = "https://laurandreea10.github.io/codepen-portfolio";
 const pages = [
+  ["challenges/", "monthly", "0.8", "2026-11-21"],
+  ["skill-map/", "monthly", "0.8", "2026-11-21"],
+  ["test-status/", "monthly", "0.7", "2026-11-21"],
+  ["piata-digitala/", "monthly", "0.8", "2026-11-21"],
+  ["webgpu-lab/", "monthly", "0.8", "2026-11-21"],
+  ["insights/gambit-arcana-motor-web-worker.html", "monthly", "0.6", "2026-11-21"],
+  ["insights/kygo-stare-2d-randare-3d.html", "monthly", "0.6", "2026-11-21"],
+  ["insights/dice-drift-css-random-webgl.html", "monthly", "0.6", "2026-11-21"],
   ["crm-inbox-undo.html", "monthly", "0.75", "2026-11-20"],
   ["gambit-arcana/", "monthly", "0.8", "2026-11-19"],
   ["sibling-symphony/", "monthly", "0.7", "2026-11-16"],

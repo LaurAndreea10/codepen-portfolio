@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodePen Challenges — toate intrările, pe luni | Laura Andreea</title>
+<meta name="g-title" data-ro="CodePen Challenges — toate intrările, pe luni | Laura Andreea" data-en="CodePen Challenges — every entry, by month | Laura Andreea">
+<meta name="description" content="Toate intrările mele la CodePen Challenge, grupate pe luni: regula oficială, ce am construit pe deasupra, teste și istoric.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/challenges/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CodePen Challenges — Laura Andreea">
+<meta property="og:description" content="Toate intrările la CodePen Challenge, pe luni, cu regula, testele și istoricul fiecăreia.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/challenges/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg">
+<meta name="theme-color" content="#0a1220">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/growth/base.css">
+<style>
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 20px}
+.month{margin-top:34px}
+.month-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:14px}
+.month-head h2{margin:0}
+.month-head span{color:var(--muted);font:500 13px var(--mono)}
+.entry{display:flex;flex-direction:column;gap:8px}
+.entry .theme{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--amber)}
+.entry p{margin:0;color:var(--muted);font-size:14px}
+.entry .rule{color:var(--text);font-size:13.5px;background:var(--panel2);border-radius:8px;padding:7px 10px}
+.entry .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;font-size:13.5px}
+.timeline{display:flex;gap:6px;align-items:flex-end;height:90px;margin:8px 0 4px}
+.timeline div{flex:1;background:var(--cyan);opacity:.85;border-radius:5px 5px 0 0;min-height:4px;position:relative}
+.timeline-labels{display:flex;gap:6px;font:400 11px var(--mono);color:var(--muted)}
+.timeline-labels span{flex:1;text-align:center}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="ro">Sari la conținut</span><span lang="en">Skip to content</span></a>
+<header class="top">
+  <a class="brand" href="../portfolio.html">Laura <em>Andreea</em></a>
+  <nav aria-label="Pagini de creștere / Growth pages">
+    <a href="../portfolio.html"><span lang="ro">Portofoliu</span><span lang="en">Portfolio</span></a>
+    <a href="./" aria-current="page">Challenges</a>
+    <a href="../skill-map/"><span lang="ro">Abilități</span><span lang="en">Skills</span></a>
+    <a href="../test-status/"><span lang="ro">Teste</span><span lang="en">Tests</span></a>
+  </nav>
+  <button class="btn icon" id="g-theme" type="button">☾</button>
+  <button class="btn icon" id="g-lang" type="button">EN</button>
+</header>
+<main id="main" class="wrap">
+  <section class="hero">
+    <span class="eyebrow">CodePen Challenge · 2026</span>
+    <h1><span lang="ro">Toate challenge-urile, pe luni</span><span lang="en">Every challenge, month by month</span></h1>
+    <p class="lede"><span lang="ro">Regula mea pentru fiecare challenge: regula oficială stă în centru și, unde se poate, e dovedită cu teste. Restul (jocuri, povești, efecte) vine pe deasupra și nu o ascunde.</span><span lang="en">My rule for every challenge: the official rule sits at the centre and, where possible, is proven with tests. Everything else (games, stories, effects) goes on top and never hides it.</span></p>
+    <div class="kpis" id="kpis"></div>
+    <div aria-hidden="true"><div class="timeline" id="timeline"></div><div class="timeline-labels" id="timeline-labels"></div></div>
+    <p class="sr" id="timeline-sr"></p>
+    <div class="filters" role="group" aria-label="Filtru / Filter" id="filters"></div>
+  </section>
+  <div id="months"></div>
+  <p class="note"><span lang="ro">Primele intrări (aprilie 2026) sunt pen-uri pe CodePen fără dată exactă în catalogul meu, așa că le-am pus la final, fără lună. Săptămâna e trecută doar unde e confirmată în documentația proiectului.</span><span lang="en">The earliest entries (April 2026) are CodePen pens without an exact date in my catalogue, so they sit at the end without a month. The week is shown only where the project's documentation confirms it.</span></p>
+</main>
+<footer class="foot"><div class="wrap"><span lang="ro">Construit de Laura Andreea · </span><span lang="en">Built by Laura Andreea · </span><a href="CHANGELOG.md"><span lang="ro">Istoric</span><span lang="en">History</span></a> · <a href="../portfolio.html#challenge-seasons"><span lang="ro">Sezoane în portofoliu</span><span lang="en">Seasons in the portfolio</span></a></div></footer>
+<script src="../assets/growth/base.js"></script>
+<script>
+// Curated from each project's README / CHANGELOG. "week" only where documented.
+const DATA = [
+  { m:'2026-11', week:3, theme:['sibling-count() și sibling-index()','sibling-count() and sibling-index()'], title:'SIBLING SYMPHONY', v:'1.1.0', date:'2026-11-16', tags:['CSS','3D','Web Audio'],
+    rule:['Fiecare element își știe poziția între frați și câți frați are, direct în CSS.','Each element knows its position among siblings and how many siblings it has, straight in CSS.'],
+    desc:['Playground cu opt layout-uri, scenă 3D, animație staggered, inspector și fallback nth-child().','Playground with eight layouts, a 3D scene, staggered animation, an inspector and an nth-child() fallback.'],
+    links:[['Deschide','Open','../sibling-symphony/']] },
+  { m:'2026-11', week:2, theme:['animation-timeline','animation-timeline'], title:'CHRONOSCROLL × Baseline Voyage', v:'4.0.0', date:'2026-11-09', tags:['CSS','Scroll','Game'],
+    rule:['Animații conduse de scroll, fără JavaScript pentru timeline.','Scroll-driven animations, no JavaScript for the timeline.'],
+    desc:['Călătorie 2023 → 2026 condusă de scroll, laborator CSS, 7 palete și jocul CHRONO PILOT, unde bara de scroll e joystickul.','A scroll-driven journey 2023 → 2026, a CSS lab, 7 palettes and the CHRONO PILOT game, where the scrollbar is the joystick.'],
+    links:[['Deschide','Open','../baseline-voyage/'],['Studiu de caz','Case study','../baseline-voyage/case-study.html'],['Istoric','History','../baseline-voyage/CHANGELOG.md']] },
+  { m:'2026-11', theme:['CSS random()','CSS random()'], title:'ORACLE DRIFT', v:'1.0.0', date:'2026-11-06', tags:['CSS random()','Game','Fusion'],
+    rule:['Toate proiectele mele CSS random() din noiembrie, unite într-un singur joc.','All my November CSS random() projects merged into one game.'],
+    desc:['Combină observatorul, shooterul și zborul 3D într-o singură experiență.','Combines the observatory, the shooter and the 3D flight in one experience.'],
+    links:[['Joacă','Play','../oracle-drift/'],['Istoric','History','../oracle-drift/CHANGELOG.md']] },
+  { m:'2026-11', theme:['CSS random()','CSS random()'], title:'DICE DRIFT 3D', v:'1.0.0', date:'2026-11-03', tags:['CSS random()','WebGL','Three.js'],
+    rule:['CSS aruncă valorile random() în proprietăți @property; JavaScript le citește cu getComputedStyle.','CSS rolls random() values into @property custom properties; JavaScript reads them with getComputedStyle.'],
+    desc:['Joc 3D de zbor: cristale, porți, 8 mutatori, Oracolul zilei, grafică ÎNALTĂ/ECO.','3D flight game: crystals, gates, 8 mutators, the daily Oracle, HIGH/ECO graphics.'],
+    links:[['Joacă','Play','../dice-drift-3d/'],['Articol','Article','../insights/dice-drift-css-random-webgl.html'],['Istoric','History','../dice-drift-3d/CHANGELOG.md']] },
+  { m:'2026-11', theme:['CSS random()','CSS random()'], title:'VOID HUNTER · ediția random()', v:'1.0.0', date:'2026-11-03', tags:['CSS random()','Shooter'],
+    rule:['random() decide valurile și bonusurile.','random() decides waves and bonuses.'],
+    desc:['Shooterul VOID HUNTER, refăcut în jurul lui CSS random().','The VOID HUNTER shooter rebuilt around CSS random().'],
+    links:[['Joacă','Play','../void-hunter-random/'],['Istoric','History','../void-hunter-random/CHANGELOG.md']] },
+  { m:'2026-11', theme:['CSS random()','CSS random()'], title:'VOID ORACLE', v:'1.1.0', date:'2026-11-02', tags:['CSS random()','Shooter'],
+    rule:['Un oracol random() în CSS alege modificatorul valului, zarurile bonus și culoarea navei.','A CSS random() oracle picks each wave modifier, bonus dice and ship colour.'],
+    desc:['Shooter spațial inspirat din VOID HUNTER.','Space shooter inspired by VOID HUNTER.'],
+    links:[['Joacă','Play','../void-oracle/'],['Istoric','History','../void-oracle/CHANGELOG.md']] },
+  { m:'2026-11', theme:['CSS random()','CSS random()'], title:'Random Constellation', v:'1.1.2', date:'2026-11-02', tags:['CSS random()','UI'],
+    rule:['Constelații generate cu random(), cu fallback pentru browserele fără suport.','Constellations generated with random(), with a fallback for browsers without support.'],
+    desc:['Observator cosmic; varianta Night Oracle e intrarea propriu-zisă.','A cosmic observatory; the Night Oracle variant is the actual entry.'],
+    links:[['Deschide','Open','../random-constellation/'],['Istoric','History','../random-constellation/CHANGELOG.md']] },
+  { m:'2026-10', week:4, theme:['Halloween · Jest','Halloween · Jest'], title:'Candy Route', v:'4.0.0', date:'2026-10-26', tags:['Jest','Algorithm','Game'],
+    rule:['Traseu optim de colindat fără două case vecine.','Optimal trick-or-treat route with no two neighbouring houses.'],
+    desc:['30 de niveluri, tutorial, pașii algoritmului vizibili, backup JSON.','30 levels, a tutorial, visible algorithm steps, JSON backup.'],
+    links:[['Joacă','Play','../candy-route/'],['Teste','Tests','../candy-route/test-results.html'],['Istoric','History','../candy-route/CHANGELOG.md']] },
+  { m:'2026-10', week:3, theme:['Halloween · cpc-weigh-pumpkin','Halloween · cpc-weigh-pumpkin'], title:'Pumpkin Weigh-In', v:'', date:'2026-10-21', tags:['Jest','Logic'],
+    rule:['weighPumpkin(pounds) întoarce categoria dovleacului, de la Tiny Gourd la Legendary.','weighPumpkin(pounds) returns the pumpkin category, from Tiny Gourd to Legendary.'],
+    desc:['Cântar animat, cu teste Jest pentru fiecare prag.','An animated scale, with Jest tests for every threshold.'],
+    links:[['Joacă','Play','../pumpkin-weigh-in/'],['Cod','Code','../pumpkin-weigh-in/README.md']] },
+  { m:'2026-10', theme:['Halloween · limbaj de fantome','Halloween · ghost language'], title:'Ghost Talk', v:'4.1.0', date:'2026-10-13', tags:['Jest','Strings'],
+    rule:['owl → owl-boo, candy → andy-coo: regula explicată pas cu pas.','owl → owl-boo, candy → andy-coo: the rule explained step by step.'],
+    desc:['Dialecte, jocuri și poveste pe deasupra; teste pentru exemplele oficiale și cazurile-limită.','Dialects, games and a story on top; tests for the official examples and edge cases.'],
+    links:[['Joacă','Play','../ghost-talk/'],['Teste','Tests','../ghost-talk/test-results.html'],['Ghid','Guide','../ghost-talk/README.md']] },
+  { m:'2026-10', theme:['Halloween · FizzBuzz','Halloween · FizzBuzz'], title:'Halloween BooScary', v:'4.1.0', date:'2026-10-06', tags:['Logic','Tests'],
+    rule:['Multiplu de 3 → Boo, de 5 → Scary, de amândouă → BooScary.','Multiple of 3 → Boo, of 5 → Scary, of both → BooScary.'],
+    desc:['Numărătoarea e poarta spre fiecare activitate; 314 teste.','The count is the gate to every activity; 314 tests.'],
+    links:[['Joacă','Play','../booscary/'],['Studiu de caz','Case study','../booscary/case-study.html'],['Istoric','History','../booscary/README.md']] },
+  { m:'2026-05', theme:['Layouts','Layouts'], title:'Frontend Newsroom', v:'', date:'2026-05', tags:['CSS Grid','Layout'],
+    rule:['Layout editorial de știri, construit pe CSS Grid.','An editorial news layout built on CSS Grid.'],
+    desc:['Flux de știri premium pentru challenge-ul de layout din mai.','A premium news feed for the May layout challenge.'],
+    links:[['Deschide','Open','../frontend-newsroom.html'],['Cod','Code','../may-2026-codepen-challenge-layouts-frontend-newsroom/']] },
+  { m:'', theme:['Contrarii','Opposites'], title:'Front-End Opposites 1 & 2', tags:['CSS','UI'],
+    rule:['Perechi de concepte opuse, arătate vizual.','Pairs of opposite concepts, shown visually.'], desc:['',''],
+    links:[['Pen 1','Pen 1','https://codepen.io/Laura-Andreea-the-typescripter/pen/GgjpBJP'],['Pen 2','Pen 2','https://codepen.io/Laura-Andreea-the-typescripter/pen/yyaYEdY']] },
+  { m:'', theme:['Contrarii','Opposites'], title:'Opposite Directions', tags:['CSS'], rule:['',''], desc:['',''],
+    links:[['Pen','Pen','https://codepen.io/Laura-Andreea-the-typescripter/pen/EagbjvB']] },
+  { m:'', theme:['Logică booleană','Boolean logic'], title:'BOOLEAN ORACLE', tags:['Logic'], rule:['',''], desc:['',''],
+    links:[['Pen','Pen','https://codepen.io/Laura-Andreea-the-typescripter/pen/zxKzdyg']] },
+  { m:'', theme:['clamp()','clamp()'], title:'Min. Preferred. Max.', tags:['CSS'], rule:['Valoare minimă, preferată și maximă, ca în clamp().','Minimum, preferred and maximum value, as in clamp().'], desc:['',''],
+    links:[['Pen','Pen','https://codepen.io/Laura-Andreea-the-typescripter/pen/bNwwQzQ']] },
+  { m:'', theme:['Strings','Strings'], title:'Code Words · Strings', tags:['JavaScript','Strings'], rule:['',''], desc:['',''],
+    links:[] }
+];
+const MONTHS_RO = ['ianuarie','februarie','martie','aprilie','mai','iunie','iulie','august','septembrie','octombrie','noiembrie','decembrie'];
+const MONTHS_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const { t, esc } = Growth;
+let filter = 'all';
+const L = a => Array.isArray(a) ? t(a[0], a[1]) : a;
+const monthName = m => { if (!m) return t('Fără lună în catalog', 'No month in the catalogue'); const [y, mm] = m.split('-'); return (Growth.lang === 'ro' ? MONTHS_RO : MONTHS_EN)[+mm - 1] + ' ' + y; };
+const allTags = [...new Set(DATA.flatMap(d => d.tags))].sort();
+
+function render() {
+  const groups = {};
+  DATA.forEach(d => { (groups[d.m] = groups[d.m] || []).push(d); });
+  const keys = Object.keys(groups).sort((a, b) => (b || '0').localeCompare(a || '0'));
+  // KPIs
+  const tested = DATA.filter(d => d.tags.some(x => /Jest|Tests/.test(x))).length;
+  document.getElementById('kpis').innerHTML = [
+    [t('Intrări','Entries'), DATA.length], [t('Luni cu challenge','Months with a challenge'), keys.filter(Boolean).length],
+    [t('Cu teste automate','With automated tests'), tested], [t('Noiembrie 2026','November 2026'), (groups['2026-11'] || []).length]
+  ].map(([k, v]) => `<div class="kpi"><small>${k}</small><b>${v}</b></div>`).join('');
+  // timeline (dated months, oldest → newest)
+  const dated = keys.filter(Boolean).reverse(), max = Math.max(...dated.map(k => groups[k].length));
+  document.getElementById('timeline').innerHTML = dated.map(k => `<div style="height:${groups[k].length / max * 100}%"></div>`).join('');
+  document.getElementById('timeline-labels').innerHTML = dated.map(k => `<span>${monthName(k).split(' ')[0].slice(0, 3)} · ${groups[k].length}</span>`).join('');
+  document.getElementById('timeline-sr').textContent = t('Intrări pe lună: ', 'Entries per month: ') + dated.map(k => monthName(k) + ' ' + groups[k].length).join(', ');
+  // filters
+  document.getElementById('filters').innerHTML = ['all', ...allTags].map(x => `<button class="btn" type="button" data-f="${esc(x)}" aria-pressed="${filter === x}">${x === 'all' ? t('Toate', 'All') : esc(x)}</button>`).join('');
+  // months
+  document.getElementById('months').innerHTML = keys.map(k => {
+    const items = groups[k].filter(d => filter === 'all' || d.tags.includes(filter));
+    if (!items.length) return '';
+    return `<section class="month" aria-labelledby="m-${k || 'none'}"><div class="month-head"><h2 id="m-${k || 'none'}">${esc(monthName(k))}</h2><span>${items.length} ${t(items.length === 1 ? 'intrare' : 'intrări', items.length === 1 ? 'entry' : 'entries')}</span></div><div class="cards">${items.map(card).join('')}</div></section>`;
+  }).join('') || `<p class="note">${t('Nicio intrare cu acest filtru.', 'No entry matches this filter.')}</p>`;
+}
+function card(d) {
+  const rule = L(d.rule), desc = L(d.desc);
+  return `<article class="card entry"><span class="theme">${esc(L(d.theme))}${d.week ? ' · ' + t('săptămâna ', 'week ') + d.week : ''}</span><h3>${esc(d.title)}${d.v ? ' <small style="color:var(--muted);font:500 12px var(--mono)">v' + d.v + '</small>' : ''}</h3>${rule ? `<div class="rule"><strong>${t('Regula', 'Rule')}:</strong> ${esc(rule)}</div>` : ''}${desc ? `<p>${esc(desc)}</p>` : ''}<div class="chips">${d.tags.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div><div class="links">${d.links.map(l => `<a href="${l[2]}"${/^https?:/.test(l[2]) ? ' target="_blank" rel="noopener noreferrer"' : ''}>${esc(t(l[0], l[1]))} →</a>`).join('')}</div></article>`;
+}
+document.getElementById('filters').addEventListener('click', e => { const b = e.target.closest('[data-f]'); if (!b) return; filter = b.dataset.f; render(); document.querySelector(`[data-f="${CSS.escape(filter)}"]`).focus(); });
+Growth.init({ onLang: render });
+</script>
+</body>
+</html>

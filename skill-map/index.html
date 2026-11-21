@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hartă de abilități — proiectele, după ce demonstrează | Laura Andreea</title>
+<meta name="g-title" data-ro="Hartă de abilități — proiectele, după ce demonstrează | Laura Andreea" data-en="Skill map — projects by what they prove | Laura Andreea">
+<meta name="description" content="Toate proiectele din portofoliu, filtrate după abilitatea pe care o demonstrează: 3D și WebGL, accesibilitate, testare, PWA, date și CRM, CSS modern, AI.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/skill-map/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hartă de abilități — Laura Andreea">
+<meta property="og:description" content="Proiectele, filtrate după abilitatea pe care o demonstrează.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/skill-map/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg">
+<meta name="theme-color" content="#0a1220">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/growth/base.css">
+<style>
+.skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin:12px 0 6px}
+.skill{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--panel);cursor:pointer;min-height:64px}
+.skill:hover{border-color:var(--cyan)}
+.skill[aria-pressed=true]{border-color:var(--cyan);box-shadow:inset 0 0 0 1px var(--cyan)}
+.skill b{font:600 14px var(--sans)}
+.skill .meter{width:100%;height:5px;border-radius:4px;background:var(--panel2);overflow:hidden}
+.skill .meter i{display:block;height:100%;background:var(--cyan)}
+.skill small{font:500 11px var(--mono);color:var(--muted)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0}
+.toolbar .count{color:var(--muted);font:500 13px var(--mono);margin-left:auto}
+.proj h3 a{color:var(--text);text-decoration:none}.proj h3 a:hover{color:var(--cyan)}
+.proj p{margin:.2em 0 .6em;color:var(--muted);font-size:13.5px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.proj .cat{font:600 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--amber)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="ro">Sari la conținut</span><span lang="en">Skip to content</span></a>
+<header class="top">
+  <a class="brand" href="../portfolio.html">Laura <em>Andreea</em></a>
+  <nav aria-label="Pagini de creștere / Growth pages">
+    <a href="../portfolio.html"><span lang="ro">Portofoliu</span><span lang="en">Portfolio</span></a>
+    <a href="../challenges/">Challenges</a>
+    <a href="./" aria-current="page"><span lang="ro">Abilități</span><span lang="en">Skills</span></a>
+    <a href="../test-status/"><span lang="ro">Teste</span><span lang="en">Tests</span></a>
+  </nav>
+  <button class="btn icon" id="g-theme" type="button">☾</button>
+  <button class="btn icon" id="g-lang" type="button">EN</button>
+</header>
+<main id="main" class="wrap">
+  <section class="hero">
+    <span class="eyebrow"><span lang="ro">Hartă de abilități</span><span lang="en">Skill map</span></span>
+    <h1><span lang="ro">Proiectele, după ce demonstrează</span><span lang="en">Projects, by what they prove</span></h1>
+    <p class="lede"><span lang="ro">Tag-urile din catalog spun ce e un proiect („joc”, „CRM”). Aici le citesc invers: ce abilitate dovedește fiecare. Alege una sau mai multe; cu mai multe, rămân doar proiectele care le au pe toate.</span><span lang="en">Catalogue tags say what a project is ("game", "CRM"). Here I read them the other way round: which skill each one proves. Pick one or more; with several, only projects that have all of them remain.</span></p>
+  </section>
+  <div class="skills" id="skills" role="group" aria-label="Abilități / Skills"></div>
+  <div class="toolbar">
+    <label class="sr" for="q" data-ro="Caută în proiecte" data-en="Search projects"></label>
+    <input type="search" id="q" data-attr="placeholder" data-ro="Caută un proiect…" data-en="Search a project…">
+    <button class="btn" type="button" id="clear"><span lang="ro">Resetează</span><span lang="en">Reset</span></button>
+    <span class="count" id="count" aria-live="polite"></span>
+  </div>
+  <div class="cards" id="list"></div>
+  <p class="note"><span lang="ro">Potrivirea e automată: caut cuvinte-cheie în tag-urile și descrierea fiecărui proiect din <code>projects.json</code>, iar „Testare automată” vine din lista de suite de la pagina <a href="../test-status/">Teste</a>. Poate rata un proiect descris prea scurt.</span><span lang="en">Matching is automatic: I look for keywords in each project's tags and description in <code>projects.json</code>, and "Automated testing" comes from the suite list on the <a href="../test-status/">Tests</a> page. It can miss a project with a very short description.</span></p>
+</main>
+<footer class="foot"><div class="wrap"><span lang="ro">Construit de Laura Andreea · </span><span lang="en">Built by Laura Andreea · </span><a href="CHANGELOG.md"><span lang="ro">Istoric</span><span lang="en">History</span></a></div></footer>
+<script src="../assets/growth/base.js"></script>
+<script>
+const { t, esc } = Growth;
+// Each skill: label + regex tested on tags and RO/EN descriptions.
+const SKILLS = [
+  { id: '3d', ro: '3D și WebGL', en: '3D & WebGL', re: /three\.js|webgl|\b3d\b|webgpu/i },
+  { id: 'canvas', ro: 'Canvas și fizică de joc', en: 'Canvas & game physics', re: /canvas|physics|fizic|arcade/i },
+  { id: 'a11y', ro: 'Accesibilitate', en: 'Accessibility', re: /accessib|accesibil|cititor de ecran|screen.reader|contrast ridicat|high contrast|mișcare redusă|reduced motion|un singur buton|one.switch/i },
+  { id: 'tests', ro: 'Testare automată', en: 'Automated testing', re: /\bjest\b|vitest|playwright|perft|teste automate|automated tests?|node:test/i },
+  { id: 'pwa', ro: 'PWA și offline', en: 'PWA & offline', re: /\bpwa\b|offline|service worker/i },
+  { id: 'data', ro: 'Date, CRM și dashboard', en: 'Data, CRM & dashboards', re: /\bcrm\b|dashboard|kpi|analytics|saas|pipeline|sql/i },
+  { id: 'marketing', ro: 'Marketing-tech', en: 'Marketing tech', re: /marketing|\butm\b|a\/b|\broi\b|roas|funnel|email|newsletter|\bleads?\b/i },
+  { id: 'css', ro: 'CSS modern', en: 'Modern CSS', re: /css random|random\(\)|animation-timeline|sibling-|@property|container quer|css grid|clamp\(/i },
+  { id: 'ai', ro: 'AI (adversari și asistenți)', en: 'AI (opponents and assistants)', re: /\bAI\b|LLM|Claude|[Cc]oach/ },
+  { id: 'i18n', ro: 'Bilingv RO/EN', en: 'Bilingual RO/EN', re: /ro\/en|bilingv|bilingual/i },
+  { id: 'state', ro: 'Stare și persistență', en: 'State & persistence', re: /localstorage|backup|progres local|local progress|indexeddb|local-first|undo/i },
+  { id: 'perf', ro: 'Performanță', en: 'Performance', re: /web worker|lighthouse|performan|fallback/i }
+];
+const CAT = { game: ['Joc', 'Game'], utility: ['Aplicație', 'App'], challenge: ['Challenge', 'Challenge'], ui: ['UI', 'UI'], tools: ['Unealtă', 'Tool'] };
+let P = [], sel = new Set(), q = '';
+{ const s = new URLSearchParams(location.search).get('skill'); if (s) s.split(',').forEach(x => SKILLS.some(k => k.id === x) && sel.add(x)); }
+
+function prep(projects, suites) {
+  const tested = new Set(suites.map(s => s.href.replace(/^\.\.\//, '').replace(/\/$/, '').split('/')[0]));
+  return projects.map(p => {
+    const hay = [...(p.tags || []), p.title.ro, p.title.en, p.description.ro, p.description.en].join(' ');
+    const skills = new Set(SKILLS.filter(s => s.re.test(hay)).map(s => s.id));
+    const folder = (p.url || '').match(/codepen-portfolio\/([^/?#]+)/);
+    if ((p.slug && tested.has(p.slug)) || (folder && tested.has(folder[1]))) skills.add('tests');
+    const local = folder ? '../' + folder[1] + (folder[1].includes('.') ? '' : '/') : p.url;
+    return { ...p, skills, href: local, hay: hay.toLowerCase() };
+  });
+}
+function render() {
+  const counts = Object.fromEntries(SKILLS.map(s => [s.id, P.filter(p => p.skills.has(s.id)).length]));
+  const max = Math.max(1, ...Object.values(counts));
+  document.getElementById('skills').innerHTML = SKILLS.map(s => `<button type="button" class="skill" data-s="${s.id}" aria-pressed="${sel.has(s.id)}"><b>${esc(t(s.ro, s.en))}</b><span class="meter" aria-hidden="true"><i style="width:${counts[s.id] / max * 100}%"></i></span><small>${counts[s.id]} ${t('proiecte', 'projects')}</small></button>`).join('');
+  const list = P.filter(p => [...sel].every(s => p.skills.has(s)) && (!q || p.hay.includes(q)))
+    .sort((a, b) => b.skills.size - a.skills.size || (b.id - a.id));
+  document.getElementById('count').textContent = `${list.length} / ${P.length} ${t('proiecte', 'projects')}`;
+  document.getElementById('list').innerHTML = list.map(p => `<article class="card proj"><span class="cat">${esc(t(...(CAT[p.category] || [p.category, p.category])))}</span><h3><a href="${esc(p.href)}"${/^https?:/.test(p.href) ? ' target="_blank" rel="noopener noreferrer"' : ''}>${esc(t(p.title.ro, p.title.en))}</a></h3><p>${esc(t(p.description.ro, p.description.en))}</p><div class="chips">${SKILLS.filter(s => p.skills.has(s.id)).map(s => `<span class="chip${sel.has(s.id) ? ' on' : ''}">${esc(t(s.ro, s.en))}</span>`).join('')}</div></article>`).join('')
+    || `<p class="note">${t('Niciun proiect nu are toate abilitățile alese.', 'No project has all the selected skills.')}</p>`;
+  const u = new URL(location.href); sel.size ? u.searchParams.set('skill', [...sel].join(',')) : u.searchParams.delete('skill'); history.replaceState(null, '', u);
+}
+document.getElementById('skills').addEventListener('click', e => { const b = e.target.closest('[data-s]'); if (!b) return; const s = b.dataset.s; sel.has(s) ? sel.delete(s) : sel.add(s); render(); document.querySelector(`[data-s="${s}"]`).focus(); });
+document.getElementById('q').addEventListener('input', e => { q = e.target.value.trim().toLowerCase(); render(); });
+document.getElementById('clear').addEventListener('click', () => { sel.clear(); q = ''; document.getElementById('q').value = ''; render(); });
+Promise.all([fetch('../projects.json').then(r => r.json()), fetch('../test-status/suites.json').then(r => r.json()).then(m => m.suites).catch(() => [])])
+  .then(([p, s]) => { P = prep(p, s); render(); })
+  .catch(() => { document.getElementById('list').innerHTML = `<p class="note warn">${t('Nu am putut încărca projects.json.', 'Could not load projects.json.')}</p>`; });
+Growth.init({ onLang: () => P.length && render() });
+</script>
+</body>
+</html>

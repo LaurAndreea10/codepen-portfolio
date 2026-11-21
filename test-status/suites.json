@@ -1,0 +1,23 @@
+{
+  "about": "Logic test suites run together by .github/workflows/all-tests.yml and scripts/run-test-suites.mjs. Browser suites stay in their own workflows (listed under browserWorkflows).",
+  "suites": [
+    { "id": "pumpkin-weigh-in", "project": "Pumpkin Weigh-In", "href": "../pumpkin-weigh-in/", "framework": "Jest", "cwd": "pumpkin-weigh-in", "setup": "npm install --no-audit --no-fund", "cmd": "npx jest", "workflow": "pumpkin-weigh-in-tests.yml" },
+    { "id": "ghost-talk", "project": "Ghost Talk", "href": "../ghost-talk/", "framework": "Jest", "cwd": "ghost-talk", "setup": "npm install --no-audit --no-fund", "cmd": "npx jest", "workflow": "ghost-talk-tests.yml" },
+    { "id": "ts-crm", "project": "Marketing Lab · TS CRM", "href": "../marketing-lab/", "framework": "Vitest + tsc", "cwd": "marketing-lab/ts-crm", "setup": "npm ci", "cmd": "npx vitest run && npx tsc --noEmit", "workflow": null },
+    { "id": "candy-route", "project": "Candy Route", "href": "../candy-route/", "framework": "node:test", "cwd": "candy-route", "setup": "npm install --no-audit --no-fund && npm run build", "cmd": "npm test", "workflow": "candy-route.yml" },
+    { "id": "carpati-enduro", "project": "Carpați Enduro", "href": "../carpati-enduro/", "framework": "node:test", "cwd": ".", "setup": "", "cmd": "node --test carpati-enduro/tests/*.test.cjs carpati-enduro/tests/server.test.mjs", "workflow": "carpati-enduro-tests.yml" },
+    { "id": "kygo-park", "project": "Kygo World · Kygo Universe", "href": "../kygo-world/", "framework": "node:test", "cwd": ".", "setup": "", "cmd": "node --test kygo-world/joaca/tests/*.test.cjs kygo-universe/tests/core.test.cjs", "workflow": "kygo-park.yml" },
+    { "id": "slidestorm-arena", "project": "SlideStorm Arena", "href": "../slidestorm-arena/", "framework": "Node scripts", "cwd": "slidestorm-arena", "setup": "", "cmd": "npm test", "workflow": null },
+    { "id": "growth-quest", "project": "LaurAI Growth Quest", "href": "../growth-quest/", "framework": "Node scripts", "cwd": ".", "setup": "", "cmd": "node growth-quest/tests/verify-local.cjs && node growth-quest/tests/verify-offline.cjs && node growth-quest/tests/verify-demo.cjs && node growth-quest/tests/verify-portfolio.cjs", "workflow": "growth-quest.yml" }
+  ],
+  "browserWorkflows": [
+    { "project": "Candy Route · UI", "href": "../candy-route/", "framework": "Playwright + axe", "workflow": "candy-route.yml" },
+    { "project": "PentArena", "href": "../pentarena/", "framework": "Playwright", "workflow": "pentarena.yml" },
+    { "project": "Serpent Prism", "href": "../serpent-prism/", "framework": "Playwright", "workflow": "serpent-prism.yml" },
+    { "project": "Grădina Curioasă", "href": "../curious-garden/", "framework": "Python + Playwright", "workflow": "curious-garden-tests.yml" },
+    { "project": "Portofoliu · mobil și a11y", "href": "../portfolio.html", "framework": "Playwright", "workflow": "mobile-a11y.yml" },
+    { "project": "Portofoliu · Lighthouse", "href": "../portfolio.html", "framework": "Lighthouse CI", "workflow": "lighthouse-ci.yml" },
+    { "project": "Portofoliu · calitate", "href": "../portfolio.html", "framework": "Node", "workflow": "portfolio-quality.yml" },
+    { "project": "Linkuri", "href": "../portfolio.html", "framework": "Node", "workflow": "link-health.yml" }
+  ]
+}
