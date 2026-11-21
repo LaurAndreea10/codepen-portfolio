@@ -1,0 +1,48 @@
+name: All tests
+
+# Every logic test suite in the repo, in one place. The list lives in test-status/suites.json;
+# browser suites (Playwright, Lighthouse) stay in their own workflows.
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  schedule:
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: all-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discover:
+    runs-on: ubuntu-24.04
+    outputs:
+      suites: ${{ steps.list.outputs.suites }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        run: echo "suites=$(node scripts/run-test-suites.mjs --list)" >> "$GITHUB_OUTPUT"
+
+  suite:
+    needs: discover
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: ${{ fromJSON(needs.discover.outputs.suites) }}
+    name: ${{ matrix.suite }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run ${{ matrix.suite }}
+        run: |
+          echo "| | Suite | Tests |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          node scripts/run-test-suites.mjs --only "${{ matrix.suite }}" --no-write

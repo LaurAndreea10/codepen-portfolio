@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Starea în 2D, imaginea în 3D: 12 jocuri pe un singur motor — Laura Andreea</title>
+  <meta name="description" content="Cum am pus douăsprezece jocuri într-unul singur în Kygo: Arhipelagul: logica în 2D, Three.js doar pentru imagine, fallback 2D gratuit și joc cu un singur buton." />
+  <meta name="author" content="Laura Andreea" />
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/insights/kygo-stare-2d-randare-3d.html" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <meta property="og:title" content="Starea în 2D, imaginea în 3D: 12 jocuri pe un singur motor — Laura Andreea" />
+  <meta property="og:description" content="Cum am pus douăsprezece jocuri într-unul singur în Kygo: Arhipelagul: logica în 2D, Three.js doar pentru imagine, fallback 2D gratuit și joc cu un singur buton." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/insights/kygo-stare-2d-randare-3d.html" />
+  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Starea în 2D, imaginea în 3D: 12 jocuri pe un singur motor","author":{"@type":"Person","name":"Laura Andreea"},"datePublished":"2026-11-21","inLanguage":["ro","en"],"url":"https://laurandreea10.github.io/codepen-portfolio/insights/kygo-stare-2d-randare-3d.html"}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="../style.css" />
+  <style>.insight-hero{padding:3rem 0 2rem}.insight-back{display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;color:#8089a0;text-decoration:none;margin-bottom:2rem;transition:color .15s}.insight-back:hover{color:#6aa6ff}.insight-tag{display:inline-block;font-size:.72rem;padding:.2rem .6rem;border-radius:4px;background:rgba(106,166,255,.12);color:#6aa6ff;border:1px solid rgba(106,166,255,.25);margin-bottom:1rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600}.insight-title{font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.15;margin:0 0 1rem;color:#f1f4fa}.insight-meta{font-size:.82rem;color:#8089a0;margin-bottom:2.5rem;display:flex;gap:1rem;flex-wrap:wrap}.insight-meta span{display:flex;align-items:center;gap:.3rem}.insight-body{max-width:720px}.insight-body h2{font-size:1.15rem;color:#f1f4fa;margin:2rem 0 .6rem}.insight-body p,.insight-body ul{color:#c4cbd9;line-height:1.7;margin:0 0 1rem;font-size:.97rem}.insight-body ul{padding-left:1.2rem}.insight-body li{margin-bottom:.4rem}.insight-body strong{color:#f1f4fa}.insight-callout{background:rgba(106,166,255,.07);border-left:3px solid #6aa6ff;padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.5rem 0}.insight-callout p{margin:0;color:#9cc2ff}.insight-footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:1rem;flex-wrap:wrap;align-items:center}.insight-footer p{font-size:.82rem;color:#8089a0;margin:0}.insight-body code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.86em;background:rgba(106,166,255,.1);padding:.1em .35em;border-radius:4px;color:#cfe0ff}.insight-body pre{background:#0b1426;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1rem;overflow-x:auto;margin:0 0 1.2rem}.insight-body pre code{background:none;padding:0;font-size:.82rem;line-height:1.55;color:#cfe0ff}.insight-en{margin-top:2.5rem;padding:1.2rem;border:1px solid rgba(255,255,255,.08);border-radius:8px}.insight-en h2{margin-top:0}.insight-series{font-size:.85rem;color:#8089a0;margin:2rem 0 0}.insight-series a{color:#6aa6ff}</style>
+</head>
+<body>
+  <div class="topbar"><div class="container"><nav class="nav glass" aria-label="Navigare"><a class="brand" href="../portfolio.html" aria-label="Înapoi la portofoliu"><span class="badge" aria-hidden="true">CP</span><span>Portofoliu</span></a><div class="nav-links"><a class="pill" href="../portfolio.html#insights">← Toate insights</a><a class="pill" href="../kygo-arhipelagul/">Deschide proiectul</a></div></nav></div></div>
+  <main><article class="insight-hero"><div class="container"><a class="insight-back" href="../portfolio.html#insights">← Înapoi la insights</a><span class="insight-tag">Architecture · Three.js</span><h1 class="insight-title">Starea în 2D, imaginea în 3D: 12 jocuri pe un singur motor</h1><div class="insight-meta"><span>✍️ Laura Andreea</span><span>📅 Noiembrie 2026</span><span>⏱ 5 min lectură</span><span>🇷🇴 RO · 🇬🇧 EN summary</span></div><div class="insight-body">
+
+    <p>Kygo: Arhipelagul pune douăsprezece jocuri de-ale mele într-unul singur, cu Kygo, pudelul meu, ca erou. Fiecare insulă e o mecanică diferită: surf, shooter, șarpe, air hockey, labirint, enduro și altele. Ca să încapă toate într-un fișier, am avut nevoie de o singură regulă: <strong>jocul gândește în 2D, iar 3D-ul doar desenează</strong>.</p>
+    <h2>De ce nu 3D peste tot</h2>
+    <p>Dacă fiecare joc ar fi avut fizică 3D proprie, aș fi scris de douăsprezece ori coliziuni în spațiu, camere și cazuri-limită. În schimb, starea fiecărui joc rămâne în plan, ca în versiunile originale pe canvas: poziții, mișcare, coliziuni și scor. Logica e cea pe care o aveam deja.</p>
+    <p>Three.js (r128) primește starea la fiecare cadru și o transformă în scenă: obiecte cu volum, umbre moi, particule și o cameră care reacționează la lovituri și goluri. Dacă WebGL lipsește sau utilizatorul oprește „Grafică 3D”, aceeași stare se desenează pe un canvas 2D. Jocul e identic, doar imaginea diferă.</p>
+    <div class="insight-callout"><p><strong>Câștigul real:</strong> fallback-ul 2D nu e o versiune separată de întreținut. E aceeași logică, cu alt desenator.</p></div>
+    <h2>Un singur obiect de intrare</h2>
+    <p>Tastatura și gamepadul scriu în același obiect de intrare (<code>In</code>): ce direcții sunt ținute apăsate și ce s-a apăsat în cadrul acesta. Atingerea scrie în același obiect poziția degetului. Jocurile citesc doar obiectul acela și nu știu de unde vine comanda.</p>
+    <p>Decizia asta a făcut aproape gratuită una dintre cele mai importante opțiuni de accesibilitate: <strong>jocul cu un singur buton</strong>.</p>
+    <h2>Jocul cu un singur buton, fără să schimb vreun joc</h2>
+    <p>Unii jucători folosesc un singur comutator (un buton mare, un senzor). Pentru ei, direcțiile ←, ↑, →, ↓ și lătratul se aprind pe rând, câte una la fiecare trei sferturi de secundă. Când apeși, se trimite comanda aprinsă, exact ca și cum ar fi venit de la tastatură.</p>
+<pre><code>function scanHit() {
+  const k = SCAN[scanI];
+  if (k === 'bark') return doBark();
+  In.pressed[k] = true; In.keys[k] = true;
+  setTimeout(() =&gt; { In.keys[k] = false }, 420);
+}</code></pre>
+    <p>Niciunul dintre cele douăsprezece jocuri nu a trebuit modificat pentru asta. Lângă el stau modul fără eșec, viteza de 100, 85 sau 70%, contrastul ridicat și mișcarea redusă.</p>
+    <h2>Ce a costat</h2>
+    <ul><li>Unele mecanici arată mai bine în 2D decât în 3D, pentru că au fost gândite plat. Camera trebuie aleasă cu grijă pe fiecare insulă.</li><li>Fișierul a ajuns la peste 150 KB. Pentru un singur fișier pe CodePen e încă rezonabil, dar e aproape de limita pe care mi-o impun.</li><li>Dificultatea nu e calibrată prin joc real, iar testele automate au rulat în Chromium la 390 px. Telefonul fizic, Safari, gamepadul și cititorul de ecran rămân de verificat.</li></ul>
+    <p>Mai multe despre ce am refolosit din fiecare joc sunt în <a href="../kygo-arhipelagul/case-study.html">studiul de caz</a>.</p>
+
+    <section class="insight-en" lang="en"><h2>In English: 2D state, 3D picture</h2><p>Kygo: The Archipelago fits twelve of my games into one file with one rule: the game state stays 2D (positions, movement, collisions and score, as in the original canvas games) and Three.js only renders it. Without WebGL, the same state is drawn on a 2D canvas, so the fallback is not a second version to maintain. Keyboard and gamepad write into one input object (touch writes its pointer position there too), which made one-switch play almost free: directions and the bark light up in turn every 0.75 s and a single switch injects the lit command, with no change to any of the twelve games. Difficulty is not calibrated through real play, and physical phones, Safari, gamepads and screen readers remain unverified.</p></section>
+    <p class="insight-series">Seria „Cum am construit jocurile”: <a href="gambit-arcana-motor-web-worker.html">Un motor de șah într-un Web Worker, din același fișier</a> · <a href="dice-drift-css-random-webgl.html">CSS random() ca generator de numere pentru WebGL</a></p>
+  </div><div class="insight-footer"><p>Ai întrebări sau vrei să discuți despre asta?</p><a class="btn btn-primary" href="mailto:andreealaurap@gmail.com?subject=Re: Starea în 2D, imaginea în 3D: 12 jocuri pe un singur motor">Scrie-mi</a><a class="btn btn-secondary" href="../kygo-arhipelagul/">Deschide proiectul</a><a class="btn btn-secondary" href="../portfolio.html#insights">← Toate insights</a></div></div></article></main>
+  <footer class="footer"><div class="container"><p class="footer-copy">© 2026 Laura Andreea · laurandreea10.github.io</p></div></footer>
+</body>
+</html>

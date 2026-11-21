@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Piața digitală — cumpărători online în România și UE, date Eurostat | Laura Andreea</title>
+<meta name="g-title" data-ro="Piața digitală — cumpărători online în România și UE, date Eurostat | Laura Andreea" data-en="Digital Market — online shoppers in Romania and the EU, Eurostat data | Laura Andreea">
+<meta name="description" content="Dashboard pe date publice reale de la Eurostat: câți utilizatori de internet cumpără online în România față de media UE, pe ani, pe țări și pe vârste. Date live, cu copie de rezervă.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/piata-digitala/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Piața digitală — date Eurostat, live">
+<meta property="og:description" content="Cumpărători online în România și UE: pe ani, pe țări și pe vârste.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/piata-digitala/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg">
+<meta name="theme-color" content="#0a1220">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://ec.europa.eu" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/growth/base.css">
+<style>
+/* Series colours validated with the dataviz palette checks (dark surface #111f36, light #fff). */
+:root{--s1:#1a9fb5;--s2:#c47d12;--bar:#3a4f72}
+[data-theme=light]{--s1:#0891b2;--s2:#b45309;--bar:#c3cfe2}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:4px 0 6px}
+.controls label{font-size:13px;color:var(--muted)}
+.src{font:500 12px var(--mono);color:var(--muted)}
+.src b{color:var(--text)}
+.src .live{color:var(--green)}.src .snap{color:var(--amber)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:14px}
+.chart{position:relative}
+.chart h3{margin-bottom:2px}
+.chart .sub{color:var(--muted);font-size:13px;margin:0 0 8px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin:0 0 6px}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.legend i.dash{background:repeating-linear-gradient(90deg,var(--s2) 0 4px,transparent 4px 7px)!important}
+.grid-l{stroke:var(--line);stroke-width:1}
+.tip{position:absolute;pointer-events:none;background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:12.5px;box-shadow:var(--shadow);white-space:nowrap;z-index:5}
+.tip b{font-family:var(--mono)}
+.tip .sw{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+details{margin-top:8px}
+details summary{cursor:pointer;color:var(--muted);font-size:13px}
+details table{margin-top:6px;font-size:13px}
+.state{padding:40px 16px;text-align:center;color:var(--muted)}
+.insight{font-size:15px;line-height:1.6}
+.insight strong{color:var(--text)}
+.skeleton{height:240px;border-radius:10px;background:linear-gradient(90deg,var(--panel2),var(--panel),var(--panel2));background-size:200% 100%;animation:sk 1.4s infinite}
+@keyframes sk{to{background-position:-200% 0}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="ro">Sari la conținut</span><span lang="en">Skip to content</span></a>
+<header class="top">
+  <a class="brand" href="../portfolio.html">Laura <em>Andreea</em></a>
+  <nav aria-label="Pagini de creștere / Growth pages">
+    <a href="../portfolio.html"><span lang="ro">Portofoliu</span><span lang="en">Portfolio</span></a>
+    <a href="./" aria-current="page"><span lang="ro">Piața digitală</span><span lang="en">Digital market</span></a>
+    <a href="../webgpu-lab/">WebGPU</a>
+    <a href="../skill-map/"><span lang="ro">Abilități</span><span lang="en">Skills</span></a>
+  </nav>
+  <button class="btn icon" id="g-theme" type="button">☾</button>
+  <button class="btn icon" id="g-lang" type="button">EN</button>
+</header>
+<main id="main" class="wrap">
+  <section class="hero">
+    <span class="eyebrow"><span lang="ro">Date publice reale · Eurostat</span><span lang="en">Real public data · Eurostat</span></span>
+    <h1><span lang="ro">Câți dintre cei care folosesc internetul și cumpără online?</span><span lang="en">How many internet users also shop online?</span></h1>
+    <p class="lede"><span lang="ro">Primul meu dashboard pe date care nu sunt simulate. Cifrele vin direct de la API-ul public Eurostat (sondajul UE despre folosirea TIC în gospodării), la fiecare deschidere a paginii. Dacă API-ul nu răspunde, pagina folosește ultima copie salvată și spune asta.</span><span lang="en">My first dashboard on data that is not simulated. The figures come straight from Eurostat's public API (the EU survey on ICT usage in households) every time the page opens. If the API does not answer, the page uses the last saved copy and says so.</span></p>
+    <div class="controls">
+      <label for="geo"><span lang="ro">Țara</span><span lang="en">Country</span></label>
+      <select id="geo"></select>
+      <span lang="ro" class="src">comparată cu media UE-27</span><span lang="en" class="src">compared with the EU-27 average</span>
+      <button class="btn" type="button" id="reload"><span lang="ro">Reîncarcă datele</span><span lang="en">Reload data</span></button>
+    </div>
+    <p class="src" id="src" aria-live="polite"></p>
+  </section>
+
+  <div id="state" class="state"><div class="skeleton" aria-hidden="true"></div><p><span lang="ro">Se încarcă datele de la Eurostat…</span><span lang="en">Loading data from Eurostat…</span></p></div>
+
+  <div id="dash" hidden>
+    <div class="kpis" id="kpis"></div>
+    <p class="note insight" id="insight"></p>
+    <div class="grid2">
+      <section class="card chart" aria-labelledby="c1t">
+        <h3 id="c1t"><span lang="ro">Cumpărători online, pe ani</span><span lang="en">Online shoppers, by year</span></h3>
+        <p class="sub"><span lang="ro">% dintre utilizatorii de internet care au cumpărat online în ultimele 12 luni</span><span lang="en">% of internet users who bought online in the last 12 months</span></p>
+        <div class="legend" id="lg1"></div>
+        <div id="c1"></div>
+        <details><summary><span lang="ro">Vezi tabelul</span><span lang="en">Show table</span></summary><div class="table-wrap" id="t1"></div></details>
+      </section>
+      <section class="card chart" aria-labelledby="c2t">
+        <h3 id="c2t"><span lang="ro">Pe vârste, ultimul an</span><span lang="en">By age, latest year</span></h3>
+        <p class="sub"><span lang="ro">% dintre utilizatorii de internet din fiecare grupă de vârstă</span><span lang="en">% of internet users in each age group</span></p>
+        <div class="legend" id="lg2"></div>
+        <div id="c2"></div>
+        <details><summary><span lang="ro">Vezi tabelul</span><span lang="en">Show table</span></summary><div class="table-wrap" id="t2"></div></details>
+      </section>
+    </div>
+    <section class="card chart" aria-labelledby="c3t" style="margin-top:14px">
+      <h3 id="c3t"><span lang="ro">Toate țările UE, ultimul an</span><span lang="en">Every EU country, latest year</span></h3>
+      <p class="sub"><span lang="ro">Țara aleasă e evidențiată; linia punctată e media UE-27. Apasă pe o bară ca s-o alegi.</span><span lang="en">The selected country is highlighted; the dotted line is the EU-27 average. Click a bar to select it.</span></p>
+      <div id="c3"></div>
+      <details><summary><span lang="ro">Vezi tabelul</span><span lang="en">Show table</span></summary><div class="table-wrap" id="t3"></div></details>
+    </section>
+    <section class="card chart" aria-labelledby="c4t" style="margin-top:14px">
+      <h3 id="c4t"><span lang="ro">Folosirea internetului, pe ani</span><span lang="en">Internet use, by year</span></h3>
+      <p class="sub"><span lang="ro">% din toți locuitorii de 16–74 de ani care au folosit internetul în ultimele 12 luni</span><span lang="en">% of all people aged 16–74 who used the internet in the last 12 months</span></p>
+      <div class="legend" id="lg4"></div>
+      <div id="c4"></div>
+      <details><summary><span lang="ro">Vezi tabelul</span><span lang="en">Show table</span></summary><div class="table-wrap" id="t4"></div></details>
+    </section>
+    <p class="note"><span lang="ro">Seturi de date: <code>isoc_ec_ibuy</code> (până în 2019), <code>isoc_ec_ib20</code> (din 2020) și <code>isoc_ci_ifp_iu</code>. Eurostat a schimbat metodologia în 2020, așa că linia are o mică ruptură de serie între 2019 și 2020. Cifrele sunt procente din sondaj, nu numărători exacte.</span><span lang="en">Datasets: <code>isoc_ec_ibuy</code> (until 2019), <code>isoc_ec_ib20</code> (from 2020) and <code>isoc_ci_ifp_iu</code>. Eurostat changed the methodology in 2020, so the line has a small series break between 2019 and 2020. Figures are survey percentages, not exact counts.</span></p>
+  </div>
+</main>
+<footer class="foot"><div class="wrap"><span lang="ro">Construit de Laura Andreea · Sursa datelor: </span><span lang="en">Built by Laura Andreea · Data source: </span><a href="https://ec.europa.eu/eurostat/web/digital-economy-and-society/database" target="_blank" rel="noopener noreferrer">Eurostat</a> · <a href="CHANGELOG.md"><span lang="ro">Istoric</span><span lang="en">History</span></a></div></footer>
+<script src="../assets/growth/base.js"></script>
+<script>
+const { t, esc, num } = Growth;
+const EU = 'EU27_2020';
+const MEMBERS = ['AT','BE','BG','CY','CZ','DE','DK','EE','EL','ES','FI','FR','HR','HU','IE','IT','LT','LU','LV','MT','NL','PL','PT','RO','SE','SI','SK'];
+let geo = Growth.ls.get('pd.geo', 'RO'); if (!MEMBERS.includes(geo)) geo = 'RO';
+let D = null, source = null, fetchedAt = null;
+
+const iso = c => c === 'EL' ? 'GR' : c;
+function countryName(c) {
+  if (c === EU) return t('Media UE-27', 'EU-27 average');
+  try { return new Intl.DisplayNames([Growth.lang], { type: 'region' }).of(iso(c)); } catch (e) { return c; }
+}
+
+/* ---------- JSON-stat 2.0 reader ---------- */
+function reader(ds) {
+  const ids = ds.id, size = ds.size, strides = [];
+  let s = 1; for (let i = ids.length - 1; i >= 0; i--) { strides[i] = s; s *= size[i]; }
+  const idx = ids.map(d => ds.dimension[d].category.index);
+  const isArr = Array.isArray(ds.value);
+  return {
+    cats: d => Object.keys(ds.dimension[d].category.index).sort((a, b) => idx[ids.indexOf(d)][a] - idx[ids.indexOf(d)][b]),
+    get(sel) { // sel: {geo:'RO', time:'2024', ...}; dimensions with one category can be omitted
+      let k = 0;
+      for (let i = 0; i < ids.length; i++) {
+        const code = sel[ids[i]] != null ? sel[ids[i]] : (size[i] === 1 ? Object.keys(idx[i])[0] : null);
+        const p = idx[i][code]; if (p == null) return null; k += p * strides[i];
+      }
+      const v = isArr ? ds.value[k] : ds.value[k];
+      return v == null ? null : +v;
+    }
+  };
+}
+
+/* ---------- loading: live first, then snapshot ---------- */
+function buildUrl(base, q) {
+  const u = new URL(base + q.dataset); u.searchParams.set('format', 'JSON'); u.searchParams.set('lang', 'EN');
+  for (const [k, v] of Object.entries(q.params)) [].concat(v).forEach(x => u.searchParams.append(k, x));
+  return u.toString();
+}
+async function fetchJSON(url, ms) {
+  const c = new AbortController(), timer = setTimeout(() => c.abort(), ms);
+  try { const r = await fetch(url, { signal: c.signal }); const j = await r.json(); if (!r.ok || j.error) throw new Error('api'); return j; }
+  finally { clearTimeout(timer); }
+}
+async function load() {
+  showState('loading');
+  const cfg = await fetch('queries.json').then(r => r.json());
+  try {
+    const entries = await Promise.all(Object.entries(cfg.queries).map(async ([k, q]) => [k, await fetchJSON(buildUrl(cfg.base, q), 12000)]));
+    D = Object.fromEntries(entries); source = 'live'; fetchedAt = new Date();
+  } catch (e) {
+    try {
+      const snap = await fetch('data/snapshot.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw 0; return r.json(); });
+      D = snap.data; source = 'snapshot'; fetchedAt = new Date(snap.fetched);
+    } catch (e2) { D = null; showState('error'); return; }
+  }
+  try { prepare(); render(); } catch (e) { console.error(e); showState('error'); }
+}
+function showState(s) {
+  const el = document.getElementById('state');
+  document.getElementById('dash').hidden = s !== 'ok'; el.hidden = s === 'ok';
+  if (s === 'loading') el.innerHTML = `<div class="skeleton" aria-hidden="true"></div><p>${t('Se încarcă datele de la Eurostat…', 'Loading data from Eurostat…')}</p>`;
+  if (s === 'error') el.innerHTML = `<p>${t('Nu am putut încărca datele: nici API-ul Eurostat, nici copia salvată nu au răspuns.', 'Could not load the data: neither the Eurostat API nor the saved copy answered.')}</p><p><button class="btn primary" type="button" onclick="load()">${t('Încearcă din nou', 'Try again')}</button> <a class="btn" href="https://ec.europa.eu/eurostat/databrowser/view/isoc_ec_ib20/default/table" target="_blank" rel="noopener noreferrer">${t('Deschide pe Eurostat', 'Open on Eurostat')}</a></p>`;
+}
+
+/* ---------- shaping ---------- */
+let S = {};
+function prepare() {
+  const nb = reader(D.buyers), ob = D.buyersOld ? reader(D.buyersOld) : null, ag = reader(D.age), inet = reader(D.internet);
+  const yearsNew = nb.cats('time'), yearsOld = ob ? ob.cats('time').filter(y => +y < +yearsNew[0]) : [];
+  const series = g => [...yearsOld.map(y => [+y, ob.get({ geo: g, time: y })]), ...yearsNew.map(y => [+y, nb.get({ geo: g, time: y })])].filter(p => p[1] != null);
+  // latest year that has a value for most members
+  const latest = [...yearsNew].reverse().find(y => MEMBERS.filter(m => nb.get({ geo: m, time: y }) != null).length >= 20) || yearsNew[yearsNew.length - 1];
+  const ageYear = [...ag.cats('time')].reverse().find(y => ag.get({ geo: EU, time: y, ind_type: 'Y16_24' }) != null);
+  const inetYears = inet.cats('time');
+  S = {
+    latest, ageYear, series,
+    rank: MEMBERS.map(m => [m, nb.get({ geo: m, time: latest })]).filter(p => p[1] != null).sort((a, b) => b[1] - a[1]),
+    euLatest: nb.get({ geo: EU, time: latest }),
+    age: g => ['Y16_24', 'Y25_54', 'Y55_74'].map(a => [a, ag.get({ geo: g, time: ageYear, ind_type: a })]),
+    inet: g => inetYears.map(y => [+y, inet.get({ geo: g, time: y })]).filter(p => p[1] != null),
+    updated: D.buyers.updated
+  };
+}
+
+/* ---------- charts (hand-written SVG) ---------- */
+const H = 260, M = { l: 38, r: 54, t: 12, b: 28 };
+// viewBox width follows the card, so full-width charts keep the same text size as half-width ones
+const chartW = el => Math.max(360, Math.round((el.clientWidth || 560) * 0.62 / 10) * 10 + 200);
+function lineChart(el, sets, unitMax) {
+  const W = chartW(el);
+  const all = sets.flatMap(s => s.pts), xs = all.map(p => p[0]);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), yMax = unitMax || 100;
+  const X = v => M.l + (v - x0) / Math.max(1, x1 - x0) * (W - M.l - M.r), Y = v => H - M.b - v / yMax * (H - M.t - M.b);
+  let g = '';
+  for (let v = 0; v <= yMax; v += 25) g += `<line class="grid-l" x1="${M.l}" x2="${W - M.r}" y1="${Y(v)}" y2="${Y(v)}"/><text class="ax" x="${M.l - 6}" y="${Y(v) + 4}" text-anchor="end">${v}%</text>`;
+  const step = Math.ceil((x1 - x0 + 1) / 7);
+  for (let v = x0; v <= x1; v += step) g += `<text class="ax" x="${X(v)}" y="${H - 8}" text-anchor="middle">${v}</text>`;
+  sets.forEach(s => {
+    const d = s.pts.map((p, i) => `${i ? 'L' : 'M'}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join('');
+    g += `<path d="${d}" fill="none" stroke="var(${s.c})" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"${s.dash ? ' stroke-dasharray="5 4"' : ''}/>`;
+    const last = s.pts[s.pts.length - 1];
+    if (last) g += `<circle cx="${X(last[0])}" cy="${Y(last[1])}" r="4" fill="var(${s.c})" stroke="var(--panel)" stroke-width="2"/><text class="ax" x="${X(last[0]) + 8}" y="${Y(last[1]) + 4}" style="fill:var(--text)">${num(last[1])}%</text>`;
+  });
+  g += `<line id="${el.id}-x" class="grid-l" y1="${M.t}" y2="${H - M.b}" style="stroke:var(--muted);opacity:0"/><rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}" fill="transparent" data-hit="1"/>`;
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(sets.map(s => s.name + ': ' + s.pts.map(p => p[0] + ' ' + num(p[1]) + '%').join(', ')).join('. '))}">${g}</svg>`;
+  hoverLine(el, sets, X, x0, x1, W);
+}
+function hoverLine(el, sets, X, x0, x1, W) {
+  const svg = el.querySelector('svg'), cross = el.querySelector(`#${el.id}-x`);
+  let tip = el.querySelector('.tip'); if (!tip) { tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; el.appendChild(tip); }
+  const move = e => {
+    const r = svg.getBoundingClientRect(), sx = (e.clientX - r.left) / r.width * W;
+    const yr = Math.round(x0 + (sx - M.l) / (W - M.l - M.r) * (x1 - x0)); if (yr < x0 || yr > x1) return hide();
+    const rows = sets.map(s => [s, (s.pts.find(p => p[0] === yr) || [])[1]]).filter(x => x[1] != null);
+    if (!rows.length) return hide();
+    cross.setAttribute('x1', X(yr)); cross.setAttribute('x2', X(yr)); cross.style.opacity = .6;
+    tip.innerHTML = `<b>${yr}</b>` + rows.map(([s, v]) => `<div><span class="sw" style="background:var(${s.c})"></span>${esc(s.name)}: <b>${num(v)}%</b></div>`).join('');
+    tip.hidden = false;
+    const px = X(yr) / W * r.width; tip.style.left = Math.min(px + 12, r.width - tip.offsetWidth - 4) + 'px'; tip.style.top = '40px';
+  };
+  const hide = () => { tip.hidden = true; cross.style.opacity = 0; };
+  svg.onpointermove = move; svg.onpointerleave = hide;
+}
+function groupedBars(el, groups, sets) {
+  const W = chartW(el);
+  const h = 220, bw = 26, gap = 2, gw = (W - M.l - 20) / groups.length;
+  const Y = v => h - M.b - v / 100 * (h - M.t - M.b);
+  let g = '';
+  for (let v = 0; v <= 100; v += 25) g += `<line class="grid-l" x1="${M.l}" x2="${W - 10}" y1="${Y(v)}" y2="${Y(v)}"/><text class="ax" x="${M.l - 6}" y="${Y(v) + 4}" text-anchor="end">${v}%</text>`;
+  groups.forEach((gr, i) => {
+    const cx = M.l + gw * i + gw / 2, start = cx - (sets.length * bw + (sets.length - 1) * gap) / 2;
+    sets.forEach((s, j) => {
+      const v = s.vals[i]; if (v == null) return;
+      const x = start + j * (bw + gap), y = Y(v), hh = Y(0) - y;
+      g += `<path d="M${x},${Y(0)}V${y + 4}q0,-4 4,-4h${bw - 8}q4,0 4,4V${Y(0)}Z" fill="var(${s.c})" data-tip="${esc(gr + ' · ' + s.name + ': ' + num(v) + '%')}"/><text class="ax" x="${x + bw / 2}" y="${y - 5}" text-anchor="middle" style="fill:var(--text)">${num(v)}</text>`;
+    });
+    g += `<text class="ax" x="${cx}" y="${h - 8}" text-anchor="middle">${esc(gr)}</text>`;
+  });
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${h}" role="img" aria-label="${esc(groups.map((gr, i) => gr + ': ' + sets.map(s => s.name + ' ' + (s.vals[i] == null ? '—' : num(s.vals[i]) + '%')).join(', ')).join('. '))}">${g}</svg>`;
+  hoverMarks(el);
+}
+function rankBars(el, rank, eu, sel) {
+  const W = chartW(el);
+  const n = rank.length, h = 250, bw = (W - M.l - 10) / n;
+  const Y = v => h - 46 - v / 100 * (h - 46 - M.t);
+  let g = '';
+  for (let v = 0; v <= 100; v += 25) g += `<line class="grid-l" x1="${M.l}" x2="${W - 10}" y1="${Y(v)}" y2="${Y(v)}"/><text class="ax" x="${M.l - 6}" y="${Y(v) + 4}" text-anchor="end">${v}%</text>`;
+  rank.forEach(([c, v], i) => {
+    const x = M.l + i * bw + 1, w = bw - 2, y = Y(v), on = c === sel;
+    g += `<g data-geo="${c}" data-tip="${esc((i + 1) + '. ' + countryName(c) + ': ' + num(v) + '%')}" style="cursor:pointer"><rect x="${x - 1}" y="${M.t}" width="${bw}" height="${Y(0) - M.t + 30}" fill="transparent"/><path d="M${x},${Y(0)}V${y + 3}q0,-3 3,-3h${Math.max(0, w - 6)}q3,0 3,3V${Y(0)}Z" fill="${on ? 'var(--s1)' : 'var(--bar)'}"/>${bw < 20 ? `<text class="ax" transform="translate(${x + w / 2 + 4},${Y(0) + 6}) rotate(-90)" text-anchor="end" style="${on ? 'fill:var(--text);font-weight:600' : ''}">${c}</text>` : `<text class="ax" x="${x + w / 2}" y="${Y(0) + 13}" text-anchor="middle" style="${on ? 'fill:var(--text);font-weight:600' : ''}">${c}</text>`}${on ? `<text class="ax" x="${x + w / 2}" y="${y - 5}" text-anchor="middle" style="fill:var(--text);font-weight:600">${num(v)}</text>` : ''}</g>`;
+  });
+  if (eu != null) g += `<line x1="${M.l}" x2="${W - 10}" y1="${Y(eu)}" y2="${Y(eu)}" stroke="var(--s2)" stroke-width="2" stroke-dasharray="4 3"/><text class="ax" x="${W - 12}" y="${Y(eu) - 5}" text-anchor="end" style="fill:var(--text)">${t('UE-27', 'EU-27')} ${num(eu)}%</text>`;
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${h}" role="img" aria-label="${esc(rank.map(([c, v], i) => (i + 1) + '. ' + countryName(c) + ' ' + num(v) + '%').join(', '))}">${g}</svg>`;
+  hoverMarks(el);
+  el.querySelectorAll('[data-geo]').forEach(b => b.addEventListener('click', () => setGeo(b.dataset.geo)));
+}
+function hoverMarks(el) {
+  let tip = el.querySelector('.tip'); if (!tip) { tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; el.appendChild(tip); }
+  el.querySelector('svg').addEventListener('pointermove', e => {
+    const m = e.target.closest('[data-tip]'); if (!m) { tip.hidden = true; return; }
+    tip.textContent = m.dataset.tip; tip.hidden = false;
+    const r = el.getBoundingClientRect();
+    tip.style.left = Math.min(e.clientX - r.left + 12, r.width - tip.offsetWidth - 4) + 'px'; tip.style.top = Math.max(0, e.clientY - r.top - 40) + 'px';
+  });
+  el.querySelector('svg').addEventListener('pointerleave', () => { tip.hidden = true; });
+}
+function table(el, head, rows) {
+  el.innerHTML = `<table><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => `<td>${c == null ? '—' : esc(typeof c === 'number' ? num(c) + '%' : c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+const legend = (id, items) => { document.getElementById(id).innerHTML = items.map(([n, c, dash]) => `<span><i class="${dash ? 'dash' : ''}" style="background:var(${c})"></i>${esc(n)}</span>`).join(''); };
+
+/* ---------- render ---------- */
+function render() {
+  if (!D) return;
+  showState('ok');
+  const sel = document.getElementById('geo');
+  sel.innerHTML = MEMBERS.map(m => [m, countryName(m)]).sort((a, b) => a[1].localeCompare(b[1], Growth.lang)).map(([m, n]) => `<option value="${m}"${m === geo ? ' selected' : ''}>${esc(n)}</option>`).join('');
+  const cName = countryName(geo), eName = countryName(EU);
+  const cS = S.series(geo), eS = S.series(EU), cL = (cS.find(p => p[0] === +S.latest) || [])[1], first = cS[0];
+  const rankPos = S.rank.findIndex(r => r[0] === geo) + 1;
+  const iC = S.inet(geo), iLast = iC[iC.length - 1];
+  document.getElementById('src').innerHTML = `${source === 'live' ? `<span class="live">● ${t('live de la Eurostat', 'live from Eurostat')}</span>` : `<span class="snap">● ${t('copie salvată', 'saved copy')}</span>`} · ${t('încărcat', 'loaded')} <b>${fetchedAt.toLocaleString(Growth.lang === 'ro' ? 'ro-RO' : 'en-GB')}</b>${S.updated ? ` · ${t('actualizat de Eurostat', 'updated by Eurostat')} <b>${new Date(S.updated).toLocaleDateString(Growth.lang === 'ro' ? 'ro-RO' : 'en-GB')}</b>` : ''}`;
+  document.getElementById('kpis').innerHTML = [
+    [`${cName} · ${S.latest}`, cL != null ? num(cL) + '%' : '—', t('dintre utilizatorii de internet au cumpărat online', 'of internet users bought online')],
+    [`${eName} · ${S.latest}`, S.euLatest != null ? num(S.euLatest) + '%' : '—', t('aceeași măsură, media UE', 'same measure, EU average')],
+    [t('Diferența față de UE', 'Gap to the EU'), cL != null && S.euLatest != null ? (cL - S.euLatest > 0 ? '+' : '') + num(cL - S.euLatest) + ' pp' : '—', t('puncte procentuale', 'percentage points')],
+    [t('Locul în UE', 'Rank in the EU'), rankPos ? `${rankPos} / ${S.rank.length}` : '—', t('din cele 27 de state', 'out of the 27 states')]
+  ].map(([k, v, s]) => `<div class="kpi"><small>${esc(k)}</small><b>${v}</b><div style="font-size:12px;color:var(--muted)">${esc(s)}</div></div>`).join('');
+  // a one-paragraph reading of the numbers, built only from the data
+  const nonBuyers = cL != null ? 100 - cL : null;
+  document.getElementById('insight').innerHTML = cL == null ? '' : t(
+    `În ${S.latest}, <strong>${num(nonBuyers)}%</strong> dintre utilizatorii de internet din ${esc(cName)} nu au cumpărat nimic online în ultimele 12 luni${first ? `; în ${first[0]} erau ${num(100 - first[1])}%` : ''}. ${iLast ? `Internetul îl folosesc ${num(iLast[1])}% dintre locuitorii de 16–74 de ani (${iLast[0]}). ` : ''}Pentru marketing, diferența dintre cine e online și cine cumpără online e publicul de convins.`,
+    `In ${S.latest}, <strong>${num(nonBuyers)}%</strong> of internet users in ${esc(cName)} bought nothing online in the last 12 months${first ? `; in ${first[0]} it was ${num(100 - first[1])}%` : ''}. ${iLast ? `${num(iLast[1])}% of people aged 16–74 use the internet (${iLast[0]}). ` : ''}For marketing, the gap between who is online and who buys online is the audience still to win.`);
+  legend('lg1', [[cName, '--s1'], [eName, '--s2', true]]);
+  lineChart(document.getElementById('c1'), [{ name: cName, c: '--s1', pts: cS }, { name: eName, c: '--s2', pts: eS, dash: true }]);
+  const years = [...new Set([...cS, ...eS].map(p => p[0]))].sort();
+  table(document.getElementById('t1'), [t('An', 'Year'), cName, eName], years.map(y => [String(y), (cS.find(p => p[0] === y) || [])[1], (eS.find(p => p[0] === y) || [])[1]]));
+  const ages = ['16–24', '25–54', '55–74'], aC = S.age(geo).map(a => a[1]), aE = S.age(EU).map(a => a[1]);
+  legend('lg2', [[cName, '--s1'], [eName, '--s2']]);
+  groupedBars(document.getElementById('c2'), ages.map(a => a + t(' ani', '')), [{ name: cName, c: '--s1', vals: aC }, { name: eName, c: '--s2', vals: aE }]);
+  table(document.getElementById('t2'), [t('Vârstă', 'Age') + ' · ' + S.ageYear, cName, eName], ages.map((a, i) => [a, aC[i], aE[i]]));
+  rankBars(document.getElementById('c3'), S.rank, S.euLatest, geo);
+  table(document.getElementById('t3'), ['#', t('Țara', 'Country'), String(S.latest)], S.rank.map(([c, v], i) => [String(i + 1), countryName(c), v]));
+  const iE = S.inet(EU);
+  legend('lg4', [[cName, '--s1'], [eName, '--s2', true]]);
+  lineChart(document.getElementById('c4'), [{ name: cName, c: '--s1', pts: iC }, { name: eName, c: '--s2', pts: iE, dash: true }]);
+  const iy = [...new Set([...iC, ...iE].map(p => p[0]))].sort();
+  table(document.getElementById('t4'), [t('An', 'Year'), cName, eName], iy.map(y => [String(y), (iC.find(p => p[0] === y) || [])[1], (iE.find(p => p[0] === y) || [])[1]]));
+}
+function setGeo(g) { geo = g; Growth.ls.set('pd.geo', g); render(); }
+document.getElementById('geo').addEventListener('change', e => setGeo(e.target.value));
+document.getElementById('reload').addEventListener('click', load);
+Growth.init({ onLang: () => { if (D && S.series) render(); } });
+load();
+</script>
+</body>
+</html>

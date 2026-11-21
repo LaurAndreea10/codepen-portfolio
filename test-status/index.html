@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test Status — toate testele din portofoliu | Laura Andreea</title>
+<meta name="g-title" data-ro="Test Status — toate testele din portofoliu | Laura Andreea" data-en="Test Status — every test in the portfolio | Laura Andreea">
+<meta name="description" content="Starea tuturor suitelor de teste din portofoliu: Jest, Vitest, node:test și Playwright, rulate împreună de un singur workflow GitHub Actions.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/test-status/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Test Status — Laura Andreea">
+<meta property="og:description" content="Toate suitele de teste din portofoliu, într-un singur loc.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/test-status/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg">
+<meta name="theme-color" content="#0a1220">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/growth/base.css">
+<style>
+.ok{color:var(--green);font-weight:600}.bad{color:var(--red);font-weight:600}
+td.n{font-family:var(--mono);white-space:nowrap}
+.bar{height:6px;background:var(--panel2);border-radius:4px;overflow:hidden;min-width:80px;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--green)}
+.badge img{height:20px;vertical-align:middle}
+pre{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;overflow-x:auto;font:13px/1.5 var(--mono)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="ro">Sari la conținut</span><span lang="en">Skip to content</span></a>
+<header class="top">
+  <a class="brand" href="../portfolio.html">Laura <em>Andreea</em></a>
+  <nav aria-label="Pagini de creștere / Growth pages">
+    <a href="../portfolio.html"><span lang="ro">Portofoliu</span><span lang="en">Portfolio</span></a>
+    <a href="../challenges/">Challenges</a>
+    <a href="../skill-map/"><span lang="ro">Abilități</span><span lang="en">Skills</span></a>
+    <a href="./" aria-current="page"><span lang="ro">Teste</span><span lang="en">Tests</span></a>
+  </nav>
+  <button class="btn icon" id="g-theme" type="button">☾</button>
+  <button class="btn icon" id="g-lang" type="button">EN</button>
+</header>
+<main id="main" class="wrap">
+  <section class="hero">
+    <span class="eyebrow">CI · GitHub Actions</span>
+    <h1><span lang="ro">Toate testele, într-un singur loc</span><span lang="en">Every test, in one place</span></h1>
+    <p class="lede"><span lang="ro">Testele erau împrăștiate în workflow-uri separate, câte unul pe proiect. Acum un singur workflow, <code>all-tests.yml</code>, rulează toate suitele de logică în paralel la fiecare push, la fiecare PR și o dată pe săptămână. Testele de browser rămân în workflow-urile lor, listate mai jos.</span><span lang="en">Tests used to be scattered across one workflow per project. Now a single workflow, <code>all-tests.yml</code>, runs every logic suite in parallel on each push, each PR and once a week. Browser tests stay in their own workflows, listed below.</span></p>
+    <p class="badge"><a href="https://github.com/LaurAndreea10/codepen-portfolio/actions/workflows/all-tests.yml"><img src="https://github.com/LaurAndreea10/codepen-portfolio/actions/workflows/all-tests.yml/badge.svg" alt="All tests — starea workflow-ului / workflow status"></a></p>
+    <div class="kpis" id="kpis"></div>
+    <p class="note" id="snapshot"></p>
+  </section>
+
+  <h2><span lang="ro">Suite de logică</span><span lang="en">Logic suites</span></h2>
+  <div class="table-wrap"><table>
+    <caption class="sr" data-ro="Suite de logică și rezultatele lor" data-en="Logic suites and their results"></caption>
+    <thead><tr><th><span lang="ro">Proiect</span><span lang="en">Project</span></th><th>Framework</th><th><span lang="ro">Teste</span><span lang="en">Tests</span></th><th><span lang="ro">Timp</span><span lang="en">Time</span></th><th><span lang="ro">Comandă</span><span lang="en">Command</span></th></tr></thead>
+    <tbody id="suites"></tbody>
+  </table></div>
+
+  <h2><span lang="ro">Teste de browser și audituri</span><span lang="en">Browser tests and audits</span></h2>
+  <p class="lede"><span lang="ro">Rulează în Chromium real pe GitHub Actions. Insigna arată ultima rulare a fiecărui workflow.</span><span lang="en">They run in real Chromium on GitHub Actions. The badge shows each workflow's latest run.</span></p>
+  <div class="table-wrap"><table>
+    <caption class="sr" data-ro="Workflow-uri de browser" data-en="Browser workflows"></caption>
+    <thead><tr><th><span lang="ro">Proiect</span><span lang="en">Project</span></th><th>Framework</th><th><span lang="ro">Ultima rulare</span><span lang="en">Latest run</span></th></tr></thead>
+    <tbody id="browser"></tbody>
+  </table></div>
+
+  <h2><span lang="ro">Rulează local</span><span lang="en">Run locally</span></h2>
+  <pre>node scripts/run-test-suites.mjs            # <span lang="ro">toate suitele, scrie test-status/status.json</span><span lang="en">every suite, writes test-status/status.json</span>
+node scripts/run-test-suites.mjs --only ghost-talk --no-write</pre>
+  <p class="note warn"><span lang="ro">Ce nu acoperă: telefoane fizice, Safari, Firefox și cititoare de ecran reale. Acolo verificarea rămâne manuală și e trecută ca „de confirmat” în fiecare proiect.</span><span lang="en">Not covered: physical phones, Safari, Firefox and real screen readers. Those checks stay manual and are marked "to be confirmed" in each project.</span></p>
+</main>
+<footer class="foot"><div class="wrap"><span lang="ro">Construit de Laura Andreea · </span><span lang="en">Built by Laura Andreea · </span><a href="CHANGELOG.md"><span lang="ro">Istoric</span><span lang="en">History</span></a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/blob/main/.github/workflows/all-tests.yml">all-tests.yml</a></div></footer>
+<script src="../assets/growth/base.js"></script>
+<script>
+const { t, esc, num } = Growth;
+const GH = 'https://github.com/LaurAndreea10/codepen-portfolio/actions/workflows/';
+let M = null, S = null;
+function render() {
+  if (!M) return;
+  const byId = Object.fromEntries((S ? S.results : []).map(r => [r.id, r]));
+  const total = S ? S.results.reduce((s, r) => s + (r.total || 0), 0) : 0;
+  const okCount = S ? S.results.filter(r => r.ok).length : 0;
+  document.getElementById('kpis').innerHTML = [
+    [t('Suite de logică', 'Logic suites'), M.suites.length],
+    [t('Teste numărate', 'Counted tests'), num(total)],
+    [t('Suite care trec', 'Passing suites'), S ? `${okCount}/${S.results.length}` : '—'],
+    [t('Workflow-uri de browser', 'Browser workflows'), M.browserWorkflows.length]
+  ].map(([k, v]) => `<div class="kpi"><small>${k}</small><b>${v}</b></div>`).join('');
+  document.getElementById('snapshot').textContent = S
+    ? t(`Cifrele din tabel sunt din rularea din ${new Date(S.generated).toLocaleString('ro-RO')} (${S.where === 'local' ? 'local' : 'GitHub Actions'}, Node ${S.node}). Insigna de sus arată starea de acum.`,
+        `The figures in the table come from the run on ${new Date(S.generated).toLocaleString('en-GB')} (${S.where}, Node ${S.node}). The badge above shows the current state.`)
+    : t('Nu am putut încărca status.json; insigna de sus arată starea de acum.', 'Could not load status.json; the badge above shows the current state.');
+  document.getElementById('suites').innerHTML = M.suites.map(s => {
+    const r = byId[s.id];
+    const res = !r ? '—' : r.total ? `<span class="${r.ok ? 'ok' : 'bad'}">${r.ok ? '✓' : '✗'} ${r.passed}/${r.total}</span><div class="bar" aria-hidden="true"><i style="width:${r.passed / r.total * 100}%"></i></div>` : `<span class="${r.ok ? 'ok' : 'bad'}">${r.ok ? '✓ ' + t('trece', 'passes') : '✗ ' + t('pică', 'fails')}</span>`;
+    return `<tr><td><a href="${esc(s.href)}">${esc(s.project)}</a>${s.workflow ? ` · <a href="${GH + s.workflow}" title="${esc(s.workflow)}">${t('workflow propriu', 'own workflow')}</a>` : ''}</td><td>${esc(s.framework)}</td><td class="n">${res}</td><td class="n">${r ? (r.ms / 1000).toFixed(1) + ' s' : '—'}</td><td><code style="font-size:12px">${esc((s.cwd !== '.' ? 'cd ' + s.cwd + ' && ' : '') + s.cmd)}</code></td></tr>`;
+  }).join('');
+  document.getElementById('browser').innerHTML = M.browserWorkflows.map(b => `<tr><td><a href="${esc(b.href)}">${esc(b.project)}</a></td><td>${esc(b.framework)}</td><td class="badge"><a href="${GH + b.workflow}"><img loading="lazy" src="${GH + b.workflow}/badge.svg" alt="${esc(b.workflow)} — ${t('starea ultimei rulări', 'latest run status')}"></a></td></tr>`).join('');
+}
+Promise.all([fetch('suites.json').then(r => r.json()), fetch('status.json').then(r => r.ok ? r.json() : null).catch(() => null)])
+  .then(([m, s]) => { M = m; S = s; render(); })
+  .catch(() => { document.getElementById('suites').innerHTML = `<tr><td colspan="5">${t('Nu am putut încărca lista de suite.', 'Could not load the suite list.')}</td></tr>`; });
+Growth.init({ onLang: render });
+</script>
+</body>
+</html>
