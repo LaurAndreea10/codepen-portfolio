@@ -1,5 +1,10 @@
 # Changelog — Piața digitală / Digital Market
 
+## 1.0.1 — 2026-11-21
+
+- RO: Prima copie de rezervă reală, salvată de workflow-ul `piata-digitala-data.yml`: toate cele patru interogări Eurostat au răspuns (2014–2025). Etichetele de la capătul liniilor nu se mai suprapun când două serii se termină aproape una de alta.
+- EN: First real fallback snapshot saved by the workflow: all four Eurostat queries answered (2014–2025). Line end labels no longer overlap when two series finish close together.
+
 ## 1.0.0 — 2026-11-21 · Finalizat / Completed
 
 - RO: Primul dashboard pe date publice reale: API-ul Eurostat (JSON-stat 2.0, CORS), citit live la fiecare deschidere. Cumpărători online (% din utilizatorii de internet) pentru orice stat UE comparat cu media UE-27, pe ani din 2014, pe vârste și în clasamentul celor 27 de state; folosirea internetului pe ani. KPI-uri, o frază de interpretare construită doar din date, tooltip-uri, tabele pentru fiecare grafic, RO/EN, dark/light.
