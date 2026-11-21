@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-21 — Portofoliu · GSAP + Lenis + React Bits
+
+- RO: Strat nou de animație pentru `portfolio.html`: smooth scroll Lenis (cu ancore, focus și pauză în dialoguri), GSAP ScrollTrigger pentru bara de progres, capitole și carduri, SplitText pe titlurile capitolelor, butoane magnetice, plus insule React Bits: Particles în hero, CountUp pe cifre, ShinyText pe kicker-e, bandă ScrollVelocity și ClickSpark. Respectă reduced motion, contrastul ridicat și print-ul.
+- EN: New motion layer for `portfolio.html`: Lenis smooth scroll (anchors, focus, paused in dialogs), GSAP ScrollTrigger for the progress bar, chapters and cards, SplitText on chapter titles, magnetic buttons, and React Bits islands: hero Particles, CountUp numbers, ShinyText kickers, a ScrollVelocity band and ClickSpark. Honours reduced motion, high contrast and print.
+- Source in [motion-src/](motion-src/README.md), built to `assets/motion/` (no CDN). The projects tile now shows the canonical count from `portfolio-config.js` (91, the static HTML still said 90).
+
 ## 2026-11-19 — GAMBIT ARCANA v1.1.0 · Finalizat / Completed
 
 - RO: Joc nou: șah complet FIDE cu AI pe 6 niveluri într-un Web Worker, cinci variante (Clasic, Arcana, Ceață de război, Regele dealului, Trei șahuri), campanie de 8 adversari, 20 de puzzle-uri, analiză post-partidă, design luminos și minimalist navy/cyan, cu mod întunecat.

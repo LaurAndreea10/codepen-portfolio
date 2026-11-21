@@ -1,0 +1,75 @@
+/* Portfolio motion layer — GSAP + Lenis + React Bits */
+@import './reactbits/Particles.css';
+@import './reactbits/ScrollVelocity.css';
+@import './reactbits/ShinyText.css';
+
+/* Lenis owns smoothing; the native smooth behaviour from style.css would fight it. */
+html.lenis,
+html.lenis body {
+  scroll-behavior: auto !important;
+}
+
+/* Scroll progress (GSAP ScrollTrigger) */
+.motion-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 2px;
+  z-index: 60;
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, #5ee7ff, #7aa2ff 55%, #f5b544);
+  box-shadow: 0 0 12px rgba(94, 231, 255, 0.45);
+  pointer-events: none;
+}
+body.light .motion-progress { background: linear-gradient(90deg, #0e7490, #1d4ed8 55%, #b45309); box-shadow: none; }
+body.high-contrast .motion-progress { background: #fff; box-shadow: none; }
+
+/* SplitText line masks for chapter titles */
+.chapter-title .motion-line { padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.chapter-title .motion-word { will-change: transform; }
+
+/* React Bits · Particles behind the hero */
+header.hero.has-motion-bg { position: relative; isolation: isolate; }
+header.hero.has-motion-bg > .container { position: relative; z-index: 1; }
+.motion-hero-bg {
+  position: absolute;
+  inset: -40px 0 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  animation: motion-fade-in 1.2s 0.2s ease forwards;
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 40%, #000 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 40%, #000 35%, transparent 100%);
+}
+@keyframes motion-fade-in { to { opacity: 1; } }
+
+/* React Bits · ScrollVelocity band */
+.motion-band {
+  overflow: hidden;
+  padding: clamp(10px, 2vw, 22px) 0;
+  margin: clamp(4px, 1vw, 12px) 0;
+  border-block: 1px solid rgba(157, 176, 212, 0.12);
+  user-select: none;
+}
+.motion-band .rb-scroller.motion-band-row {
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(1.6rem, 4.4vw, 3.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  filter: none;
+}
+body.light .motion-band { border-color: rgba(16, 24, 40, 0.1); }
+body.high-contrast .motion-band { border-color: #fff; }
+
+/* React Bits · ShinyText inherits the kicker typography */
+.chapter-kicker .shiny-text { font: inherit; letter-spacing: inherit; }
+
+/* React Bits · CountUp keeps tile alignment */
+.cred-item > strong[data-react-bits] { display: inline-block; font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-hero-bg, .motion-progress { display: none; }
+}
+@media print {
+  .motion-progress, .motion-hero-bg, .motion-band, .motion-spark-layer { display: none !important; }
+}
