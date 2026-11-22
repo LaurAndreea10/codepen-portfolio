@@ -1,5 +1,11 @@
 # Kygo: Arhipelagul — Version History
 
+## 2026-11-22 — v2.0.1 · performanță și contrast
+
+- RO: Three.js r128 e găzduit local (`assets/vendor/three/`) și se încarcă abia la prima interacțiune sau la pornirea unui joc. Până atunci harta e în 2D, iar dacă pornești un joc înainte să sosească, jocul trece în 3D imediat ce e gata. Pagina nu mai așteaptă 600 KB înainte de prima afișare, iar vizitatorul nu mai trimite IP-ul către cdnjs (Cloudflare).
+- RO: Tema luminoasă: cyan `#0a7489` și amber `#a35800` (contrast ≥ 4,9:1).
+- EN: Three.js r128 is self-hosted and loaded on the first interaction or game start (2D until then, upgrading mid-run); no more request to cdnjs. Light theme accents darkened for WCAG AA.
+
 ## 2026-11-11 — v2.0.0
 
 - RO: Șase insule noi: Creasta (Carpați Enduro), Turnul (BlockForge), Zarurile (DICE DRIFT), Coșul (Basket vs AI), Circuitul (VELOCITY X) și Pârtia (GENOBOARD). Acum sunt 12 insule, 5 niveluri pe insulă și 180 de stele.

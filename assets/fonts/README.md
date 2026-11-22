@@ -6,6 +6,8 @@ Toate fonturile site-ului se servesc de aici, de pe GitHub Pages, nu de la Googl
 - `files/`: fișierele `.woff2`, în versiune variabilă acolo unde există.
 - `licenses/`: licențele SIL Open Font License 1.1 ale fiecărei familii.
 
+Subseturi românești: `scripts/build-ro-font-subsets.py` (rulat după generator) creează pentru fiecare față latin-ext un fișier `*-ro-*.woff2` doar cu Ă ă Ș ș Ț ț Ş ş Ţ ţ și scoate aceste litere din intervalul latin-ext, ca paginile în română să nu mai descarce fișierele latin-ext întregi.
+
 Sursa fonturilor sunt pachetele npm `@fontsource-variable/*` și `@fontsource/*`, cu aceleași fonturi ca pe Google Fonts. Fișierul se regenerează cu `scripts/build-local-fonts.py`.
 
 O pagină nouă folosește fonturile așa:

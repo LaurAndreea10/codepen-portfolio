@@ -2,11 +2,12 @@
 'use strict';
 const CACHE=self.KYGO_CACHE;
 const SHELL=self.KYGO_SHELL;
-const CDN='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+// Three.js r128 is self-hosted (assets/vendor/three/); the SWs live in kygo-*/ folders one or two levels below the site root.
+const CDN=new URL(self.location.pathname.replace(/kygo-[^/]+\/.*$/,'')+'assets/vendor/three/three-r128.min.js',self.location.origin).href;
 self.addEventListener('install',event=>event.waitUntil((async()=>{
   const cache=await caches.open(CACHE);
   await cache.addAll(SHELL);
-  try{await cache.add(new Request(CDN,{mode:'no-cors'}));}catch{}
+  try{await cache.add(CDN);}catch{}
   await self.skipWaiting();
 })()));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{
