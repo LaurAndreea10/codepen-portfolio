@@ -70,7 +70,8 @@ with sync_playwright() as p:
         pg.close()
     pg=br.new_page(); pg.route(re.compile(r'.*/approved-feedback\.json.*'),lambda r:r.fulfill(status=200,content_type='application/json',body='{"items":[]}'))
     pg.goto(ROOT+'portfolio.html'); pg.wait_for_timeout(500)
-    check(pg.locator('#curious-garden-opinions [data-feedback-empty]').is_visible() and pg.locator('#curious-garden-opinions figure').count()==0,'with no approved opinions the honest empty message is shown')
+    # portfolio.html marks the section data-hide-when-empty: with nothing approved it stays hidden instead of showing an empty box
+    check(pg.locator('#curious-garden-opinions').is_hidden() and pg.locator('#curious-garden-opinions figure').count()==0,'with no approved opinions the section stays hidden on the portfolio')
     pg.close()
     check(not errs,f'no page errors {errs[:3]}')
     br.close()
