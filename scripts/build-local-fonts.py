@@ -60,7 +60,7 @@ for fam, pkg, files in spec:
             ur = re.search(r'unicode-range:\s*([^;]+);', body)
             out.append(f"/* {name} */\n@font-face {{\n  font-family: '{fam}';\n  font-style: {style};\n  font-weight: {weight};\n" +
                        (f"  font-stretch: {stretch.group(1)};\n" if stretch else '') +
-                       f"  font-display: swap;\n  src: url(./files/{fn}) format('woff2');\n" +
+                       f"  font-display: optional;\n  src: url(./files/{fn}) format('woff2');\n" +
                        (f"  unicode-range: {ur.group(1)};\n" if ur else '') + '}\n')
 open(f'{OUT}/fonts.css', 'w').write('\n'.join(out))
 print('faces', len(out) - 4, 'bytes', total, 'files', len(os.listdir(f'{OUT}/files')))
