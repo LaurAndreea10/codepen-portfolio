@@ -1,5 +1,11 @@
 # Serpent Prism — Changelog
 
+## 2.0.1 — 2026-11-22
+
+**RO.** Butonul „Instalează jocul” apare după prima interacțiune, nu în timpul încărcării: apariția lui făcea bara de sus să treacă pe două rânduri și pagina să sară (CLS 0,15 în Lighthouse). Cache-ul offline trece la `r5`.
+
+**EN.** The “Install game” button appears after the first interaction instead of during load, where it made the toolbar wrap and the page jump. Offline cache bumped to `r5`.
+
 ## 2.0.0 — 2026-10-03
 
 **RO.** Interfață „Prism Glass”: fundal de pagină care preia culorile decorului curent, panouri de sticlă mată, logo-prismă animat, titluri Fraunces și cifre JetBrains Mono, scor care „sare” la fiecare punct, selector de moduri segmentat, butonul Lansează cu puls, bile de sticlă și în panoul de muniție (următoarea lovitură evidențiată), atelier cu mostre de culoare, bară de progres curcubeu, ecran de rezultat animat cu stele, dialoguri și ghid restilizate. Tema luminoasă, contrastul ridicat și mișcarea redusă au variante proprii; pe telefon, rezultatul apare centrat pe ecran.
