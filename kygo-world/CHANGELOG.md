@@ -1,5 +1,10 @@
 # Kygo World — istoric al versiunilor / Version history
 
+## 2026-11-22 · performanță / performance
+- Three.js r128 găzduit local și încărcat la prima interacțiune (înainte se descărca de pe cdnjs imediat la deschidere); până atunci jocul rulează pe canvasul 2D.
+- Etichetele de deasupra jocului au textul inițial în HTML, ca zona de joc să nu mai coboare la încărcare; ilustrația din panoul lateral se încarcă leneș (`loading="lazy"`).
+- Self-hosted Three.js loaded on first interaction; pre-filled HUD labels (no layout shift); lazy side illustration.
+
 ## 2026-11-12 · Parcul lui Kygo v2026.11.12.3 · Opt extinderi / Eight extensions
 - Plimbare liberă, patru decoruri, competiție cu toate cele patru probe și medalii, animații dedicate și accesorii desenate pe Kygo.
 - Comenzi mai mari, grupare pentru mâna stângă/dreaptă, ritm reglabil și reluarea rundei salvate, inclusiv etapa competiției.

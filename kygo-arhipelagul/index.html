@@ -145,12 +145,21 @@ canvas#gl{display:block;border-radius:0 0 14px 14px}
   <nav id="nav" aria-label="Meniu"></nav>
 </div>
 <div id="say" class="sr" aria-live="polite"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 'use strict';
 /* ============ Kygo: Arhipelagul v2 — de Laura Andreea ============ */
 const $=s=>document.querySelector(s);
 const TAU=Math.PI*2,clamp=(v,a,b)=>v<a?a:v>b?b:v,lerp=(a,b,t)=>a+(b-a)*t;
+/* Three.js r128 is self-hosted and loaded on demand (first interaction or game start), so the map paints
+   without waiting for ~600 KB of 3D code; until it arrives everything runs in the 2D canvas. */
+let threeP=null;
+function loadThree(){
+ if(window.THREE)return Promise.resolve(window.THREE);
+ if(!threeP)threeP=new Promise((ok,no)=>{const s=document.createElement('script');s.src='../assets/vendor/three/three-r128.min.js';s.async=true;s.onload=()=>window.THREE?ok(window.THREE):no(new Error('THREE missing'));s.onerror=()=>no(new Error('three.js failed to load'));document.head.appendChild(s)}).catch(e=>{T.failed=true;throw e});
+ return threeP;
+}
+function wantThree(){return S.set.g3d&&!window.THREE&&!T.failed}
+['pointerdown','keydown','touchstart'].forEach(ev=>addEventListener(ev,function warm(){if(wantThree())loadThree().then(()=>{if(screen==='map'&&typeof HUB!=='undefined')HUB.mount()}).catch(()=>{});removeEventListener(ev,warm,true)},{capture:true,passive:true}));
 const LS='kygo-arhipelagul-v1',SITE='https://laurandreea10.github.io/codepen-portfolio/',LV=5,MAXST=180;
 
 /* ---------- i18n ---------- */
@@ -537,7 +546,7 @@ function startGame(){
   barkMax:(14-2.5*S.up.bark)*(run.mod.bark||1),barkCd:0,maxCh:1+S.up.bark2,charges:1+S.up.bark2,barks:0,trace:[],paused:false,over:false,
   spd:(run.mod.speed||1)*(1+.06*S.pr)*(run.used.slow?.85:1)*(1+.05*run.stage),gkey:run.mode==='level'?q.id+level:''};R.barkCd=R.barkMax;
  G=GAMES[q.id];fx=[];ftx=[];shake=0;ring=0;In.keys={};In.pressed={};In.gp={};In.tap=In.tapUp=In.swipe=null;In.down=false;hudC={};
- G.init();T.start();$('#ov').hidden=true;cv.focus({preventScroll:true});last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(frame);
+ G.init();T.start();if(wantThree()){const runR=R;loadThree().then(()=>{if(R===runR&&!R.over)T.start()}).catch(()=>{})}$('#ov').hidden=true;cv.focus({preventScroll:true});last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(frame);
  if(run.mode==='endless'&&run.stage)ftx.push({x:W/2,y:H*.4,s:t('stage',run.stage+1),l:1.6,c:'#ffb547'});
 }
 function stopGame(){cancelAnimationFrame(raf);R=null}

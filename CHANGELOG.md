@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-22 — Jocurile 3D Kygo: Three.js local și la cerere; subseturi românești pentru fonturi
+
+- RO: Three.js r128 e acum găzduit local în `assets/vendor/three/` (MIT, neschimbat, SHA-256 în README) pentru Kygo: Arhipelagul, Kygo World, Kygo: Pe Urme și cache-ul offline (`kygo-universe/offline.js`). Nicio pagină Kygo nu mai cere fișiere de la cdnjs (Cloudflare). Arhipelagul și World încarcă 3D-ul abia la prima interacțiune sau la pornirea unui joc; până atunci rulează varianta 2D. Versiunile de cache ale celor 5 service workeri au fost incrementate.
+- RO: `scripts/build-ro-font-subsets.py`: pentru fiecare font cu subset latin-ext generează un fișier mic doar cu Ă ă Ș ș Ț ț (și Ş ş Ţ ţ), 3–6 KB, și scoate aceste litere din intervalul latin-ext. O pagină în română nu mai descarcă fișierele latin-ext întregi (35–85 KB fiecare): pe portofoliu, Kygo: Arhipelagul și Challenges nu se mai descarcă niciunul.
+- EN: Self-hosted Three.js r128, loaded on demand in the Kygo 3D games (no cdnjs requests); Romanian diacritic font subsets so Romanian pages no longer download full latin-ext files.
+- Local, cu compresie ca pe GitHub Pages / locally, gzip like GitHub Pages: Kygo: Arhipelagul 0,51 → 0,85, Kygo World 0,69 → 0,82 (Lighthouse mobil). Scorul din CI poate diferi.
+
 ## 2026-11-22 — Layout shift și contrast · reparații CI
 
 - RO: `assets/fonts/fonts.css` (și generatorul `scripts/build-local-fonts.py`) trec de la `font-display: swap` la `optional`: dacă un font nu e gata la prima afișare, pagina rămâne pe fontul de rezervă în loc să sară când sosește. Local, CLS: Kygo World 0,107 → 0,016, Baseline Voyage 0,003 → 0.
