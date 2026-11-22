@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-22 — Verificări manuale + spațiu în portofoliu · Finalizat / Completed
+
+- RO: Intrările mai vechi din „Finalizat recent” (6) și din „Istoric” (lunile octombrie–mai) s-au mutat din `portfolio.html` în `data/now-log.json`; `assets/now-log.js` le adaugă când pagina e liberă sau când deschizi tab-ul. Cele mai noi rămân în HTML, iar la finalul Istoricului e un link spre CHANGELOG. `portfolio.html` scade de la ~149 KB la ~112 KB.
+- RO: Cele 3 articole despre jocuri apar în secțiunea Insights (titlul devine „Decizii și lecții: CRM SaaS și jocuri”).
+- RO: Pagină nouă, [`test-status/manual.html`](test-status/CHANGELOG.md): verificările pe care testele automate nu le pot face (iPhone, Android, Safari, Firefox, doar tastatura, cititor de ecran, zoom 200%), pe 12 proiecte, cu ce încerci la fiecare. Bifele se salvează local, iar raportul se copiază în Markdown pentru CHANGELOG-ul proiectului.
+- EN: Older Recently completed and History entries moved to `data/now-log.json` and loaded by `assets/now-log.js` (portfolio.html ~149 KB → ~112 KB); the 3 game articles now appear in Insights; new manual checklist page for what automated tests cannot cover, with a Markdown report.
+
 ## 2026-11-22 — Fonturi găzduite local (GDPR) / Self-hosted fonts (GDPR) · Finalizat / Completed
 
 - RO: Toate fonturile se servesc acum din [`assets/fonts/`](assets/fonts/README.md), nu de la Google Fonts. Avem 25 de familii, cu subseturile latin și latin-ext și licențe OFL incluse. Linkurile `fonts.googleapis.com`, `@import`-urile și `preconnect`-urile spre `fonts.gstatic.com` au fost înlocuite sau scoase din 103 fișiere, așa că vizitatorii nu mai trimit IP-ul către Google. Panourile CodePen (`*.pen.html`) folosesc URL-ul absolut al aceluiași fișier. Fișierul se regenerează cu `scripts/build-local-fonts.py`.

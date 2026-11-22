@@ -5,6 +5,7 @@ const pages = [
   ["challenges/", "monthly", "0.8", "2026-11-21"],
   ["skill-map/", "monthly", "0.8", "2026-11-21"],
   ["test-status/", "monthly", "0.7", "2026-11-21"],
+  ["test-status/manual.html", "monthly", "0.5", "2026-11-22"],
   ["piata-digitala/", "monthly", "0.8", "2026-11-21"],
   ["webgpu-lab/", "monthly", "0.8", "2026-11-21"],
   ["insights/gambit-arcana-motor-web-worker.html", "monthly", "0.6", "2026-11-21"],

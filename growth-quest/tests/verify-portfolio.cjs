@@ -3,6 +3,9 @@ const root=path.join(__dirname,'..','..');
 const html=fs.readFileSync(path.join(root,'portfolio.html'),'utf8');
 const done=html.split('id="now-panel-done"')[1].split('</ul>')[0].split('<ul class="now-checklist">')[1];
 const history=html.split('id="now-panel-history"')[1].split('id="now-panel')[0];
+// older History months are loaded from data/now-log.json by assets/now-log.js
+const nowLog=JSON.parse(fs.readFileSync(path.join(root,'data','now-log.json'),'utf8'));
+const historyAll=history+nowLog.history.join('');
 const dateTag=html.match(/<time[^>]*id="now-datetime"[^>]*>/)[0];
 const currentDate=dateTag.match(/datetime="([^"]+)"/)[1];
 const nodes={
@@ -20,7 +23,8 @@ vm.runInContext(src,ctx);ctx.window.testNow.captureStaticNowRo();
 nodes['#now-panel-done .now-checklist'].innerHTML='Legacy overwrite';nodes['#now-panel-history .now-history'].innerHTML='Legacy overwrite';
 ctx.window.testNow.restoreNow();
 assert.equal(nodes['#now-panel-done .now-checklist'].innerHTML,done);
-assert(nodes['#now-panel-history .now-history'].innerHTML.includes('data-growth-quest="2.0.1"'));
+assert(historyAll.includes('data-growth-quest="2.0.1"'));
+assert(nodes['#now-panel-history .now-history'].innerHTML===history);
 assert.equal(nodes['now-datetime'].dateTime,currentDate);
 assert(fs.readFileSync(path.join(root,'en/index.html'),'utf8').includes('data-growth-quest="2.0.1"'));
 const catalog=JSON.parse(fs.readFileSync(path.join(root,'projects.json'),'utf8'));
