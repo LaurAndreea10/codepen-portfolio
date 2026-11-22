@@ -22,7 +22,7 @@ npm run build      # sau: npm run watch
 | **React Bits · ScrollVelocity** | bandă între hero și Capitolul 01 | viteza reacționează la scroll; `aria-hidden` (decorativ). |
 | **React Bits · ClickSpark** | butoane, pile, tab-uri | scântei la click, inclusiv la activare din tastatură. |
 
-Insulele React se încarcă separat, în timpul liber al browserului (`requestIdleCallback`), ca să nu întârzie primul ecran.
+Insulele React se încarcă separat: pe dispozitive cu mouse, în timpul liber al browserului (`requestIdleCallback`); pe telefoane și tablete (doar touch), la prima atingere, derulare sau tastă, ca un telefon lent să nu plătească ~300 ms de procesor cât încă se încarcă pagina.
 
 ## Accesibilitate
 

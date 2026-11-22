@@ -280,8 +280,18 @@ window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
 const idle = (cb) =>
   'requestIdleCallback' in window ? requestIdleCallback(cb, { timeout: 2500 }) : setTimeout(cb, 600);
 
-idle(() => {
+const loadIslands = () =>
   import('./islands.jsx')
     .then((m) => m.mountIslands({ reduced: reduced(), saveData }))
     .catch((err) => console.warn('[motion] React Bits islands skipped:', err));
-});
+
+// Touch-only devices (phones, tablets) wait for the first touch, scroll or key press: React,
+// the WebGL particles and the band cost ~300 ms of main-thread time that a slow phone would
+// otherwise pay while the page is still loading. Mouse devices keep the idle-time load.
+if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+  const events = ['pointerdown', 'touchstart', 'keydown', 'scroll', 'wheel'];
+  const go = () => { events.forEach((e) => window.removeEventListener(e, go, true)); loadIslands(); };
+  events.forEach((e) => window.addEventListener(e, go, { capture: true, passive: true }));
+} else {
+  idle(loadIslands);
+}

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-22 — Motion layer: insulele React Bits pe telefon, la prima interacțiune
+
+- RO: Pe dispozitivele doar cu touch, React Bits (particulele WebGL, banda, scânteile, CountUp) se încarcă la prima atingere, derulare sau tastă, nu în timpul liber de la încărcare. Pe desktop nu se schimbă nimic. Lighthouse mobil dădea 0,89 pe portofoliu din cauza celor ~380 ms de blocare.
+- EN: On touch-only devices the React Bits islands load on the first touch, scroll or key press instead of at idle time during load; desktop unchanged.
+
 ## 2026-11-22 — Ultimele layout shift-uri din Lighthouse
 
 - RO: Grădina Curioasă: bara de profil e în HTML, cu înălțime rezervată (CLS 0,16 → 0 local). Serpent Prism 2.0.1: butonul de instalare apare după prima interacțiune, nu în timpul încărcării (făcea bara de sus să treacă pe două rânduri).
