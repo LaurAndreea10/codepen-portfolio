@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-22 — Ultimele layout shift-uri din Lighthouse
+
+- RO: Grădina Curioasă: bara de profil e în HTML, cu înălțime rezervată (CLS 0,16 → 0 local). Serpent Prism 2.0.1: butonul de instalare apare după prima interacțiune, nu în timpul încărcării (făcea bara de sus să treacă pe două rânduri).
+- EN: Curious Garden profile bar reserved in HTML; Serpent Prism install button shown after the first interaction.
+
 ## 2026-11-22 — Jocurile 3D Kygo: Three.js local și la cerere; subseturi românești pentru fonturi
 
 - RO: Three.js r128 e acum găzduit local în `assets/vendor/three/` (MIT, neschimbat, SHA-256 în README) pentru Kygo: Arhipelagul, Kygo World, Kygo: Pe Urme și cache-ul offline (`kygo-universe/offline.js`). Nicio pagină Kygo nu mai cere fișiere de la cdnjs (Cloudflare). Arhipelagul și World încarcă 3D-ul abia la prima interacțiune sau la pornirea unui joc; până atunci rulează varianta 2D. Versiunile de cache ale celor 5 service workeri au fost incrementate.

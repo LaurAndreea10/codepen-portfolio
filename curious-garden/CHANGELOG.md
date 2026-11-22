@@ -4,6 +4,11 @@ Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub c
 
 This file summarises the major milestones; each link opens the GitHub commit with the exact code of that version.
 
+## 2026-11-22 — fără salt la încărcare / no layout shift
+
+- RO: Bara de profil din cardul de început există direct în HTML, cu înălțimea rezervată, așa că titlul „Să descoperim împreună!” nu mai coboară când o completează scriptul (CLS 0,16 → 0 local).
+- EN: The setup card's profile bar is now in the HTML with a reserved height, so the heading no longer jumps when the script fills it in.
+
 ## 2026-10-07 · v1.14 · Insigne în loc de diplome / Badges instead of certificates
 - Diploma A4 a fost înlocuită cu o insignă rotundă cu panglică, de tipărit și decupat pe linia punctată (`insigna.html`), în 4 limbi. Linkurile vechi spre `diploma.html` duc automat la insignă. / The A4 certificate is now a round, cut-out ribbon badge; old diploma links redirect to it.
 
