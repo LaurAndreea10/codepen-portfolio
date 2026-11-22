@@ -1,5 +1,10 @@
 # CHRONOSCROLL × Baseline Voyage — Version History
 
+## 4.0.1 — 2026-11-22
+
+- RO: Cardurile din caruselul orizontal coboară până la opacitate .75 (în loc de .4) când nu sunt în centru, ca textul și codul din ele să rămână peste contrastul 4,5:1. Lighthouse Accessibility trece de la 96 la țintă.
+- EN: Off-centre carousel cards now dim to .75 opacity (was .4) so their text and code stay above 4.5:1 contrast.
+
 ## 2026-11-09 — v4.0.0 · Finalizat / Completed
 
 - RO: **CHRONO PILOT**, joc integrat (capitolul 10): bara de scroll e joystickul. Nava e mutată de `animation-timeline: --pilot` (scrollerul arenei → `timeline-scope` → `@property --py`); bucla jocului doar citește progresul pentru coliziuni. Moduri Poveste (75 s, 2023 → 2026, orbite de lansare Chrome 115 / Safari 26 / Firefox 159, bonus Baseline ×2), Ziua (același traseu pentru toți) și Infinit; clasament local top 5, copiere scor, viteză redusă, pauză automată, insigna „Pilot temporal”.
