@@ -1,5 +1,10 @@
 # Changelog — Test Status
 
+## 1.1.0 — 2026-11-22
+
+- RO: Pagină nouă, `manual.html`, cu verificările manuale pe 12 proiecte (iPhone, Android, Safari, Firefox, doar tastatura, cititor de ecran, zoom 200%), lista în `manual-checks.json`. Bifele rămân în browser; „Copiază raportul” dă un Markdown gata de pus în CHANGELOG.
+- EN: New `manual.html` with manual checks for 12 projects; ticks stay in the browser; "Copy the report" gives Markdown for the project CHANGELOG.
+
 ## 1.0.0 — 2026-11-21 · Finalizat / Completed
 
 - RO: Workflow nou, `.github/workflows/all-tests.yml`, care rulează în paralel toate cele 8 suite de logică (Jest, Vitest + tsc, node:test, scripturi Node) la fiecare push pe `main`, la fiecare PR, săptămânal și la cerere. Lista suitelor stă în `test-status/suites.json`, iar `scripts/run-test-suites.mjs` le rulează local sau în CI.

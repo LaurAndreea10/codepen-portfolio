@@ -2,10 +2,14 @@ import { existsSync, readFileSync } from "node:fs";
 
 const evidence = JSON.parse(readFileSync("data/portfolio-evidence.json", "utf8"));
 const configSource = readFileSync("portfolio-config.js", "utf8");
-const ro = readFileSync("portfolio.html", "utf8");
+const roHtml = readFileSync("portfolio.html", "utf8");
+// Older "Finalizat recent" / "Istoric" entries live in data/now-log.json and are added to the page by assets/now-log.js.
+const nowLog = JSON.parse(readFileSync("data/now-log.json", "utf8"));
+const ro = roHtml + [...nowLog.done, ...nowLog.history].join("");
 const en = readFileSync("en/index.html", "utf8");
 const sitemap = readFileSync("sitemap.xml", "utf8");
 const failures = [];
+if (!roHtml.includes("assets/now-log.js")) failures.push("portfolio.html: assets/now-log.js is not loaded, so data/now-log.json entries would be missing");
 
 const countMatch = configSource.match(/projectCount:\s*(\d+)/);
 if (!countMatch) failures.push("portfolio-config.js: missing projectCount");

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verificări manuale — ce nu pot testa automat | Laura Andreea</title>
+<meta name="g-title" data-ro="Verificări manuale — ce nu pot testa automat | Laura Andreea" data-en="Manual checks — what automated tests can't do | Laura Andreea">
+<meta name="description" content="Lista de verificări manuale pentru fiecare proiect: iPhone, Android, Safari, Firefox, doar tastatura, cititor de ecran și zoom 200%.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/test-status/manual.html">
+<meta name="theme-color" content="#0a1220">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<link rel="stylesheet" href="../assets/growth/base.css">
+<style>
+.howto{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:10px 0 24px}
+.howto .card h3{font-size:14.5px}.howto .card p{margin:0;color:var(--muted);font-size:13px}
+.matrix th.p{min-width:180px}
+.matrix td{text-align:center}
+.matrix td:first-child{text-align:left}
+.matrix input{width:22px;height:22px;accent-color:var(--green);cursor:pointer}
+.extra{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.bar{height:8px;background:var(--panel2);border-radius:5px;overflow:hidden;margin:6px 0 2px}
+.bar i{display:block;height:100%;background:var(--green)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+textarea{width:100%;min-height:160px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--text);font:12.5px/1.5 var(--mono);padding:10px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="ro">Sari la conținut</span><span lang="en">Skip to content</span></a>
+<header class="top">
+  <a class="brand" href="../portfolio.html">Laura <em>Andreea</em></a>
+  <nav aria-label="Pagini de creștere / Growth pages">
+    <a href="../portfolio.html"><span lang="ro">Portofoliu</span><span lang="en">Portfolio</span></a>
+    <a href="./"><span lang="ro">Teste</span><span lang="en">Tests</span></a>
+    <a href="manual.html" aria-current="page"><span lang="ro">Verificări manuale</span><span lang="en">Manual checks</span></a>
+  </nav>
+  <button class="btn icon" id="g-theme" type="button">☾</button>
+  <button class="btn icon" id="g-lang" type="button">EN</button>
+</header>
+<main id="main" class="wrap">
+  <section class="hero">
+    <span class="eyebrow"><span lang="ro">Ce rămâne „de confirmat”</span><span lang="en">What stays "to be confirmed"</span></span>
+    <h1><span lang="ro">Verificări manuale</span><span lang="en">Manual checks</span></h1>
+    <p class="lede"><span lang="ro">Testele automate rulează în Chromium. Telefoanele reale, Safari, Firefox și cititoarele de ecran le verific de mână. Bifele se salvează doar în acest browser; când termini, copiezi raportul și îl pui în CHANGELOG-ul proiectului.</span><span lang="en">Automated tests run in Chromium. Real phones, Safari, Firefox and screen readers I check by hand. Ticks are saved only in this browser; when done, copy the report into the project's CHANGELOG.</span></p>
+    <div class="kpis" id="kpis"></div>
+    <div class="bar" aria-hidden="true"><i id="bar" style="width:0"></i></div>
+  </section>
+  <h2><span lang="ro">Ce încerci la fiecare verificare</span><span lang="en">What to try in each check</span></h2>
+  <div class="howto" id="howto"></div>
+  <h2><span lang="ro">Pe proiecte</span><span lang="en">By project</span></h2>
+  <div class="table-wrap"><table class="matrix"><caption class="sr" data-ro="Verificări manuale pe proiecte" data-en="Manual checks by project"></caption><thead id="head"></thead><tbody id="body"></tbody></table></div>
+  <div class="actions">
+    <button class="btn primary" type="button" id="copy"><span lang="ro">Copiază raportul (Markdown)</span><span lang="en">Copy the report (Markdown)</span></button>
+    <button class="btn" type="button" id="clear"><span lang="ro">Golește bifele</span><span lang="en">Clear ticks</span></button>
+    <span class="src" id="msg" aria-live="polite" style="align-self:center;color:var(--muted);font-size:13px"></span>
+  </div>
+  <label class="sr" for="report" data-ro="Raport" data-en="Report"></label>
+  <textarea id="report" readonly></textarea>
+</main>
+<footer class="foot"><div class="wrap"><span lang="ro">Construit de Laura Andreea · </span><span lang="en">Built by Laura Andreea · </span><a href="CHANGELOG.md"><span lang="ro">Istoric</span><span lang="en">History</span></a></div></footer>
+<script src="../assets/growth/base.js"></script>
+<script>
+const { t, esc, ls } = Growth;
+const KEY = 'lg.manual';
+let M = null, ticks = {};
+try { ticks = JSON.parse(ls.get(KEY, '{}')) || {}; } catch (e) { ticks = {}; }
+const save = () => ls.set(KEY, JSON.stringify(ticks));
+function report() {
+  const day = new Date().toISOString().slice(0, 10);
+  return M.projects.map(p => {
+    const ok = M.checks.filter(c => ticks[p.id + ':' + c.id]).map(c => t(c.ro, c.en));
+    if (!ok.length) return '';
+    const left = M.checks.filter(c => !ticks[p.id + ':' + c.id]).map(c => t(c.ro, c.en));
+    return `### ${p.name}\n- ${t('Verificat manual', 'Checked by hand')} (${day}): ${ok.join(', ')}\n` + (left.length ? `- ${t('Rămâne de confirmat', 'Still to confirm')}: ${left.join(', ')}\n` : '');
+  }).filter(Boolean).join('\n') || t('Nicio verificare bifată încă.', 'No check ticked yet.');
+}
+function render() {
+  if (!M) return;
+  const total = M.projects.length * M.checks.length, done = Object.values(ticks).filter(Boolean).length;
+  document.getElementById('kpis').innerHTML = [[t('Proiecte', 'Projects'), M.projects.length], [t('Verificări', 'Checks'), total], [t('Bifate', 'Ticked'), done], [t('Rămase', 'Left'), total - done]].map(([k, v]) => `<div class="kpi"><small>${k}</small><b>${v}</b></div>`).join('');
+  document.getElementById('bar').style.width = (done / total * 100) + '%';
+  document.getElementById('howto').innerHTML = M.checks.map(c => `<div class="card"><h3>${esc(t(c.ro, c.en))}</h3><p>${esc(t(c.howRo, c.howEn))}</p></div>`).join('');
+  document.getElementById('head').innerHTML = `<tr><th class="p">${t('Proiect', 'Project')}</th>${M.checks.map(c => `<th scope="col">${esc(t(c.ro, c.en))}</th>`).join('')}</tr>`;
+  document.getElementById('body').innerHTML = M.projects.map(p => `<tr><th scope="row" style="text-align:left;text-transform:none;letter-spacing:0;font:500 14px var(--sans);color:var(--text)"><a href="${esc(p.href)}">${esc(p.name)}</a>${p.extraRo ? `<span class="extra">${esc(t(p.extraRo, p.extraEn))}</span>` : ''}</th>${M.checks.map(c => { const k = p.id + ':' + c.id; return `<td><input type="checkbox" data-k="${k}" ${ticks[k] ? 'checked' : ''} aria-label="${esc(p.name + ' — ' + t(c.ro, c.en))}"></td>`; }).join('')}</tr>`).join('');
+  document.getElementById('report').value = report();
+}
+document.getElementById('body').addEventListener('change', e => { const k = e.target.dataset.k; if (!k) return; ticks[k] = e.target.checked; if (!ticks[k]) delete ticks[k]; save(); const f = k; render(); document.querySelector(`[data-k="${f}"]`).focus(); });
+document.getElementById('copy').addEventListener('click', async () => {
+  const txt = report(), msg = document.getElementById('msg');
+  try { await navigator.clipboard.writeText(txt); msg.textContent = t('Copiat.', 'Copied.'); }
+  catch (e) { const ta = document.getElementById('report'); ta.focus(); ta.select(); msg.textContent = t('Selectat; apasă Ctrl/Cmd+C.', 'Selected; press Ctrl/Cmd+C.'); }
+});
+document.getElementById('clear').addEventListener('click', () => { if (!Object.keys(ticks).length) return; ticks = {}; save(); render(); document.getElementById('msg').textContent = t('Bifele au fost golite.', 'Ticks cleared.'); });
+fetch('manual-checks.json').then(r => r.json()).then(m => { M = m; render(); }).catch(() => { document.getElementById('body').innerHTML = `<tr><td>${t('Nu am putut încărca lista.', 'Could not load the list.')}</td></tr>`; });
+Growth.init({ onLang: render });
+</script>
+</body>
+</html>
