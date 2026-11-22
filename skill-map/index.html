@@ -92,7 +92,7 @@ function prep(projects, suites) {
     const skills = new Set(SKILLS.filter(s => s.re.test(hay)).map(s => s.id));
     const folder = (p.url || '').match(/codepen-portfolio\/([^/?#]+)/);
     if ((p.slug && tested.has(p.slug)) || (folder && tested.has(folder[1]))) skills.add('tests');
-    const local = folder ? '../' + folder[1] + (folder[1].includes('.') ? '' : '/') : p.url;
+    const local = folder ? '../' + p.url.slice('https://laurandreea10.github.io/codepen-portfolio/'.length) : p.url;
     return { ...p, skills, href: local, hay: hay.toLowerCase() };
   });
 }
@@ -103,7 +103,7 @@ function render() {
   const list = P.filter(p => [...sel].every(s => p.skills.has(s)) && (!q || p.hay.includes(q)))
     .sort((a, b) => b.skills.size - a.skills.size || (b.id - a.id));
   document.getElementById('count').textContent = `${list.length} / ${P.length} ${t('proiecte', 'projects')}`;
-  document.getElementById('list').innerHTML = list.map(p => `<article class="card proj"><span class="cat">${esc(t(...(CAT[p.category] || [p.category, p.category])))}</span><h3><a href="${esc(p.href)}"${/^https?:/.test(p.href) ? ' target="_blank" rel="noopener noreferrer"' : ''}>${esc(t(p.title.ro, p.title.en))}</a></h3><p>${esc(t(p.description.ro, p.description.en))}</p><div class="chips">${SKILLS.filter(s => p.skills.has(s.id)).map(s => `<span class="chip${sel.has(s.id) ? ' on' : ''}">${esc(t(s.ro, s.en))}</span>`).join('')}</div></article>`).join('')
+  document.getElementById('list').innerHTML = list.map(p => `<article class="card proj"><span class="cat">${esc(t(...(CAT[p.category] || [p.category, p.category])))}</span><h3><a href="${esc(p.href)}"${/^https?:/.test(p.href) ? ' target="_blank" rel="noopener noreferrer"' : ''}>${esc(t(p.title.ro, p.title.en))}${p.status === 'archived' ? esc(t(' · Arhivat', ' · Archived')) : ''}</a></h3><p>${esc(t(p.description.ro, p.description.en))}</p><div class="chips">${SKILLS.filter(s => p.skills.has(s.id)).map(s => `<span class="chip${sel.has(s.id) ? ' on' : ''}">${esc(t(s.ro, s.en))}</span>`).join('')}</div></article>`).join('')
     || `<p class="note">${t('Niciun proiect nu are toate abilitățile alese.', 'No project has all the selected skills.')}</p>`;
   const u = new URL(location.href); sel.size ? u.searchParams.set('skill', [...sel].join(',')) : u.searchParams.delete('skill'); history.replaceState(null, '', u);
 }

@@ -9,11 +9,56 @@ const files = [
   'growth-suite.html', 'en/growth-suite.html', 'case-study-story.html',
   'guided-tour.html', 'recruiter-kit.html', 'ecosystem-map.html',
   'proof-dashboard.html', 'what-i-learned.html', 'before-after.html',
-  'demo-scenarios.html', 'accessibility-lab.html', 'build-in-public.html'
+  'demo-scenarios.html', 'accessibility-lab.html', 'build-in-public.html',
+  'legacy-projects.html', 'basket-vs-ai.html',
+  'projects/basket-vs-ai.html',
+  'projects/basket-vs-ai-pro.html',
+  'projects/void-hunter.html',
+  'projects/pvai-new-game-plus.html',
+  'projects/home-air-hockey.html',
+  'projects/bomberman-neo.html',
+  'projects/breakout.html',
+  'projects/flappy-ball.html',
+  'projects/bounce-ball.html',
+  'projects/labirint.html',
+  'projects/arcade-fusion-mobile.html',
+  'projects/arcade-fusion.html',
+  'projects/arcade-fusion-3.html',
+  'projects/particle-memory.html'
 ];
 const failures = [];
 const warnings = [];
 const remote = new Set();
+
+for (const project of JSON.parse(readFileSync('projects.json', 'utf8'))) {
+  const label = 'projects.json #' + project.id;
+  let url;
+  try { url = new URL(project.url); }
+  catch { failures.push(label + ': invalid URL'); continue; }
+  if (url.protocol !== 'https:') {
+    failures.push(label + ': insecure destination → ' + project.url);
+    continue;
+  }
+  if (/(^|\.)codepen\.dev$/i.test(url.hostname) &&
+      (project.category === 'game' || project.tags?.some(tag => /^game$/i.test(tag)))) {
+    failures.push(label + ': unstable game preview → ' + project.url);
+    continue;
+  }
+  const prefix = '/codepen-portfolio/';
+  if (url.hostname === 'laurandreea10.github.io' && url.pathname.startsWith(prefix)) {
+    const path = decodeURIComponent(url.pathname.slice(prefix.length));
+    const target = !path || path.endsWith('/') ? path + 'index.html' : path;
+    if (!existsSync(target)) failures.push(label + ': missing local destination → ' + project.url);
+    else if (project.status === 'archived' && (target !== 'legacy-projects.html' ||
+      url.hash !== '#project-' + project.id ||
+      !readFileSync(target, 'utf8').includes('id="project-' + project.id + '"'))) {
+      failures.push(label + ': missing archive entry → ' + project.url);
+    }
+  } else {
+    url.hash = '';
+    remote.add(url.href);
+  }
+}
 
 for (const file of files) {
   const html = readFileSync(file, 'utf8');
