@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-22 — Toate bibliotecile găzduite local · fără CDN-uri terțe
+
+- RO: Three.js 0.170.0 (cu cele 10 fișiere de postprocessing de care are nevoie DICE DRIFT 3D) și 0.160.0, Chart.js 4.4.1, React și ReactDOM 18.3.1 și Babel standalone 7.29.0 sunt copiate neschimbat din npm în `assets/vendor/` (vezi README-ul de acolo). DICE DRIFT 3D, Carpați Enduro, GENOBOARD, Marketing OS și cele 10 prototipuri React le folosesc de acolo. SQL Playground nu mai are rezerva de pe jsDelivr (sql.js e oricum local). Nicio pagină nu mai cere scripturi sau stiluri de la cdnjs, jsDelivr sau unpkg.
+- RO: Service worker-ul Carpați Enduro (v2.1.1) păstrează Three.js din `assets/vendor/` pentru joc offline și nu mai acceptă hosturi externe.
+- EN: All third-party libraries are now self-hosted in `assets/vendor/` (unchanged npm copies, SRI kept where present); no page requests cdnjs, jsDelivr or unpkg any more. Carpați Enduro's service worker caches the vendored Three.js for offline play.
+
 ## 2026-11-22 — Motion layer: insulele React Bits pe telefon, la prima interacțiune
 
 - RO: Pe dispozitivele doar cu touch, React Bits (particulele WebGL, banda, scânteile, CountUp) se încarcă la prima atingere, derulare sau tastă, nu în timpul liber de la încărcare. Pe desktop nu se schimbă nimic. Lighthouse mobil dădea 0,89 pe portofoliu din cauza celor ~380 ms de blocare.
