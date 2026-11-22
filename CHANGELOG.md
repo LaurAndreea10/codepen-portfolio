@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-11-22 — Layout shift și contrast · reparații CI
+
+- RO: `assets/fonts/fonts.css` (și generatorul `scripts/build-local-fonts.py`) trec de la `font-display: swap` la `optional`: dacă un font nu e gata la prima afișare, pagina rămâne pe fontul de rezervă în loc să sară când sosește. Local, CLS: Kygo World 0,107 → 0,016, Baseline Voyage 0,003 → 0.
+- RO: `portfolio.html`: fețele Inter, Fraunces și JetBrains Mono (normal, latin + latin-ext) sunt declarate direct în pagină, iar cele două fișiere Inter au preload, ca fontul să fie gata la prima afișare chiar dacă `fonts.css` se încarcă asincron. În raportul Lighthouse din CI, saltul de 0,25 venea din schimbarea fontului în navigare și în titlul hero.
+- RO: Kygo World: etichetele de deasupra jocului (mod, nivel, scor, recompense, misiune) au în HTML textul inițial, ca zona de joc să nu mai coboare când le completează scriptul.
+- RO: Kygo: Arhipelagul, tema luminoasă: cyan `#0b7f96` → `#0a7489` și amber `#b05f00` → `#a35800` (contrast 4,3 → 5,0 și 4,9 pe fundalul `#f3f6fb`), pentru gate-ul „mobile accessibility”.
+- EN: `font-display: optional` site-wide to stop font-swap layout shifts; critical faces inlined and Inter preloaded on portfolio.html; Kygo World HUD pre-filled; Kygo: Arhipelagul light-theme accents darkened to pass WCAG AA.
+
 ## 2026-11-22 — Verificări manuale + spațiu în portofoliu · Finalizat / Completed
 
 - RO: Intrările mai vechi din „Finalizat recent” (6) și din „Istoric” (lunile octombrie–mai) s-au mutat din `portfolio.html` în `data/now-log.json`; `assets/now-log.js` le adaugă când pagina e liberă sau când deschizi tab-ul. Cele mai noi rămân în HTML, iar la finalul Istoricului e un link spre CHANGELOG. `portfolio.html` scade de la ~149 KB la ~112 KB.

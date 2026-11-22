@@ -17,4 +17,6 @@ O pagină nouă folosește fonturile așa:
 
 Panourile pentru CodePen (`*.pen.html`) folosesc URL-ul absolut `https://laurandreea10.github.io/codepen-portfolio/assets/fonts/fonts.css`.
 
+Regulile folosesc `font-display: optional`: dacă un font nu e gata la prima afișare, pagina rămâne pe fontul de rezervă în loc să sară când sosește (fără layout shift); la vizitele următoare fontul vine din cache. Pentru o pagină importantă, declară direct în pagină fețele de care are nevoie și pune `preload` pe fișierele principale, ca în `portfolio.html`.
+
 Fraunces folosește axele `opsz` și `wght`. Axele decorative SOFT și WONK nu sunt incluse, ca fișierul să rămână mic.
