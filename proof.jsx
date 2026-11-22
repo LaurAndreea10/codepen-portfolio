@@ -225,7 +225,7 @@ export default function Proof() {
 }
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;500;600&display=swap');
+@import url('assets/fonts/fonts.css');
 .pf-root{--bg:#06070f;--panel:rgba(16,18,32,0.72);--line:rgba(141,141,255,0.18);--txt:#e8e9f5;--mut:#888aa8;--bl:#8d8dff;--bl2:#6c7aff;position:relative;min-height:100vh;background:var(--bg);color:var(--txt);font-family:'Outfit',sans-serif;overflow-x:hidden;padding-bottom:80px;}
 .pf-root *{box-sizing:border-box;}
 .pf-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(141,141,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(141,141,255,.03) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000,transparent);pointer-events:none;}

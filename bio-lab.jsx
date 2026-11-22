@@ -229,7 +229,7 @@ export default function BioLab() {
 }
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;500;600&display=swap');
+@import url('assets/fonts/fonts.css');
 .bl-root{--bg:#04100f;--panel:rgba(12,28,26,0.72);--line:rgba(54,241,205,0.16);--txt:#e6f5f1;--mut:#7da89e;--tl:#36f1cd;--tl2:#2bd6c0;position:relative;min-height:100vh;background:var(--bg);color:var(--txt);font-family:'Outfit',sans-serif;overflow-x:hidden;padding-bottom:80px;}
 .bl-root *{box-sizing:border-box;}
 .bl-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(54,241,205,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(54,241,205,.03) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000,transparent);pointer-events:none;}

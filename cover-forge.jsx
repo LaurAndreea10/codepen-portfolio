@@ -421,7 +421,7 @@ export default function CoverForge() {
 }
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;500;600&display=swap');
+@import url('assets/fonts/fonts.css');
 .cf-root{--bg:#0a0805;--panel:rgba(28,22,14,0.72);--line:rgba(255,209,102,0.16);--txt:#f5efe6;--mut:#a89a82;--am:#ffd166;--am2:#ff9e3d;position:relative;min-height:100vh;background:var(--bg);color:var(--txt);font-family:'Outfit',sans-serif;overflow-x:hidden;padding-bottom:80px;}
 .cf-root *{box-sizing:border-box;}
 .cf-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(255,209,102,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,209,102,.03) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000,transparent);pointer-events:none;}

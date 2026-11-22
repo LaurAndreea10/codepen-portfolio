@@ -1325,7 +1325,7 @@ export default function CVScout() {
 // ---- styles -------------------------------------------------
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;500;600&display=swap');
+@import url('assets/fonts/fonts.css');
 
 .cvs-root{--bg:#070a0f;--panel:rgba(18,24,33,0.72);--line:rgba(122,240,255,0.14);--txt:#e8eef5;--mut:#8b97a8;--neon:#7af0ff;--mint:#36f1cd;position:relative;min-height:100vh;background:var(--bg);color:var(--txt);font-family:'Outfit',sans-serif;overflow-x:hidden;padding-bottom:80px;}
 .cvs-root *{box-sizing:border-box;}

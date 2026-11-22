@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-22 — Fonturi găzduite local (GDPR) / Self-hosted fonts (GDPR) · Finalizat / Completed
+
+- RO: Toate fonturile se servesc acum din [`assets/fonts/`](assets/fonts/README.md), nu de la Google Fonts. Avem 25 de familii, cu subseturile latin și latin-ext și licențe OFL incluse. Linkurile `fonts.googleapis.com`, `@import`-urile și `preconnect`-urile spre `fonts.gstatic.com` au fost înlocuite sau scoase din 103 fișiere, așa că vizitatorii nu mai trimit IP-ul către Google. Panourile CodePen (`*.pen.html`) folosesc URL-ul absolut al aceluiași fișier. Fișierul se regenerează cu `scripts/build-local-fonts.py`.
+- EN: All fonts are now served from `assets/fonts/` instead of Google Fonts (25 families, latin + latin-ext, OFL licences included). Google Fonts links, imports and preconnects were replaced or removed across 103 files, so visitors' IP addresses are no longer sent to Google.
+
 ## 2026-11-21 — Creștere · 5 direcții / Growth · five directions · Finalizat / Completed
 
 - RO: Pagini noi: [`challenges/`](challenges/CHANGELOG.md) (toate intrările CodePen Challenge, pe luni), [`skill-map/`](skill-map/CHANGELOG.md) (proiectele după abilitatea pe care o dovedesc), [`test-status/`](test-status/CHANGELOG.md), [`piata-digitala/`](piata-digitala/CHANGELOG.md) (date Eurostat live) și [`webgpu-lab/`](webgpu-lab/CHANGELOG.md). Trei articole noi în [`insights/`](insights/CHANGELOG.md), primele despre jocuri.
