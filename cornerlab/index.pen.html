@@ -14,7 +14,8 @@
   <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/cornerlab/">
   <meta property="og:locale" content="ro_RO">
   <meta property="og:locale:alternate" content="en_US">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/cornerlab/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M0 18Q18 18 18 0H46Q46 18 64 18V46Q46 46 46 64H18Q18 46 0 46Z' fill='%23d4ff61'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -142,7 +143,8 @@
     .demo-card > .shape-art { position: absolute; }
     .shape-art { --r: var(--art-radius, 27px); --cs: var(--shape); right: 22px; top: 59px; display: grid; width: 86px; aspect-ratio: 1; place-items: center; border: 1px solid #ffffff59; border-radius: var(--art-radius, 27px); background: #d4ff6118; color: var(--lime); font-size: 32px; }
     .feature .shape-art { --r: var(--art-radius, 38px); right: 26px; top: 68px; width: 108px; border-color: #a18aff88; border-radius: var(--art-radius, 38px); background: #a18aff23; color: #c4b7ff; font-size: 41px; }
-    .card-copy { max-width: 74%; }
+    .card-copy { max-width: min(74%, calc(100% - 96px)); }
+    .feature .card-copy { max-width: min(74%, calc(100% - 122px)); }
     .card-copy h2 { margin: 0 0 5px; font-size: 18px; letter-spacing: -.045em; }
     .feature .card-copy h2 { font-size: 23px; }
     .card-copy p { margin: 0; color: var(--card-text); font-size: 12px; }
@@ -554,7 +556,7 @@ counter-increment: item;</pre></article>
       <article class="info-panel"><h2 id="whatTitle" data-i18n="whatTitle">Ce experimentez?</h2><p data-i18n="whatText">Proprietatea CSS experimentală <code>corner-shape</code> schimbă profilul colțurilor unui element cu <code>border-radius</code>. Bordura, umbra și fundalul urmează forma nouă. În funcție de browser, poate fi necesară o versiune experimentală sau activarea unei funcții din setări.</p><pre class="code-line"><span class="prop">corner-shape</span>: <span class="value" id="codeShape">scoop</span>;</pre></article>
       <article class="info-panel"><h2 data-i18n="fallbackTitle">Fallback inclus</h2><p data-i18n="fallbackText">Forma de bază rămâne definită prin <code>border-radius</code>, iar regula nouă e izolată în <code>@supports</code>. Unde lipsește suportul nativ, un script mic calculează aceeași curbă superellipse și o aplică prin <code>clip-path: path()</code>, cu un contur SVG în locul bordurii.</p><pre class="code-line"><span class="prop">@supports</span> (<span class="prop">corner-shape</span>: <span class="value">scoop</span>) { … }</pre></article>
     </section>
-    <footer class="footnote"><span data-i18n="footer">Creat de Laura Andreea, pentru joacă, testare și CSS curios. 🔬</span><span>CodePen tags: <a href="https://codepen.io/tag/cpc-experimental-css" target="_blank" rel="noopener noreferrer">cpc-experimental-css</a> · <a href="https://codepen.io/tag/codepenchallenge" target="_blank" rel="noopener noreferrer">codepenchallenge</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/cornerlab" target="_blank" rel="noopener noreferrer">GitHub</a></span></footer>
+    <footer class="footnote"><span data-i18n="footer">Creat de Laura Andreea, pentru joacă, testare și CSS curios. 🔬</span><span>CodePen tags: <a href="https://codepen.io/tag/cpc-experimental-css" target="_blank" rel="noopener noreferrer">cpc-experimental-css</a> · <a href="https://codepen.io/tag/codepenchallenge" target="_blank" rel="noopener noreferrer">codepenchallenge</a> · <a href="case-study.html" data-i18n="caseStudy">Studiu de caz</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/cornerlab" target="_blank" rel="noopener noreferrer">GitHub</a></span></footer>
   </main>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script>
@@ -617,7 +619,7 @@ counter-increment: item;</pre></article>
           available:'DISPONIBIL', fallback:'FALLBACK', sample:'MOSTRĂ',
           whatTitle:'Ce experimentez?', whatText:'Proprietatea CSS experimentală <code>corner-shape</code> schimbă profilul colțurilor unui element cu <code>border-radius</code>. Bordura, umbra și fundalul urmează forma nouă. În funcție de browser, poate fi necesară o versiune experimentală sau activarea unei funcții din setări.',
           fallbackTitle:'Fallback inclus', fallbackText:'Forma de bază rămâne definită prin <code>border-radius</code>, iar regula nouă e izolată în <code>@supports</code>. Unde lipsește suportul nativ, un script mic calculează aceeași curbă superellipse și o aplică prin <code>clip-path: path()</code>, cu un contur SVG în locul bordurii.',
-          footer:'Creat de Laura Andreea, pentru joacă, testare și CSS curios. 🔬', theme:'Schimbă tema', language:'Switch to English', toast:'Formă selectată: ', surpriseToast:'Am ales o formă nouă: '
+          footer:'Creat de Laura Andreea, pentru joacă, testare și CSS curios. 🔬', caseStudy:'Studiu de caz', theme:'Schimbă tema', language:'Switch to English', toast:'Formă selectată: ', surpriseToast:'Am ales o formă nouă: '
         },
         en: {
           docTitle:'Corner Lab — Experimental CSS · corner-shape playground', back:'Portfolio',
@@ -644,7 +646,7 @@ counter-increment: item;</pre></article>
           available:'AVAILABLE', fallback:'FALLBACK', sample:'SAMPLE',
           whatTitle:'What am I exploring?', whatText:'The experimental CSS <code>corner-shape</code> property changes the corner profile of an element with <code>border-radius</code>. Border, shadow and background all follow the new shape. Depending on your browser, you may need an experimental build or to enable a feature in settings.',
           fallbackTitle:'Fallback included', fallbackText:'The base shape is defined with <code>border-radius</code> and the new rule is isolated in <code>@supports</code>. Where native support is missing, a small script computes the same superellipse curve and applies it with <code>clip-path: path()</code>, with an SVG outline standing in for the border.',
-          footer:'Made by Laura Andreea, for play, testing, and curious CSS. 🔬', theme:'Toggle theme', language:'Schimbă în română', toast:'Shape selected: ', surpriseToast:'New shape picked: '
+          footer:'Made by Laura Andreea, for play, testing, and curious CSS. 🔬', caseStudy:'Case study', theme:'Toggle theme', language:'Schimbă în română', toast:'Shape selected: ', surpriseToast:'New shape picked: '
         }
       };
 
