@@ -1,0 +1,1114 @@
+<!doctype html>
+<html lang="ro" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101218">
+  <title>Corner Lab — Experimental CSS · corner-shape playground</title>
+  <meta name="description" content="Corner Lab — playground interactiv pentru proprietatea CSS experimentală corner-shape: scoop, bevel, notch, squircle și superellipse(), cu simulare pentru orice browser, joc și muzeu CSS experimental.">
+  <meta name="author" content="Laura Andreea">
+  <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/cornerlab/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Corner Lab — corner-shape playground">
+  <meta property="og:description" content="Scoop, bevel, notch, squircle și superellipse(): toate formele noi de colțuri din CSS, vizibile în orice browser.">
+  <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/cornerlab/">
+  <meta property="og:locale" content="ro_RO">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M0 18Q18 18 18 0H46Q46 18 64 18V46Q46 46 46 64H18Q18 46 0 46Z' fill='%23d4ff61'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap">
+  <script>
+    (() => {
+      try {
+        const t = localStorage.getItem('cornerlab-theme');
+        const theme = t || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.theme = theme;
+        const l = localStorage.getItem('cornerlab-lang');
+        if (l === 'en' || l === 'ro') document.documentElement.lang = l;
+      } catch (e) {}
+    })();
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"CreativeWork","name":"Corner Lab — Experimental CSS","url":"https://laurandreea10.github.io/codepen-portfolio/cornerlab/","author":{"@type":"Person","name":"Laura Andreea","url":"https://laurandreea10.github.io/codepen-portfolio/"},"inLanguage":["ro","en"],"keywords":"CSS, corner-shape, superellipse, squircle, experimental CSS, CodePen Challenge","version":"1.1.0"}
+  </script>
+  <style>
+    @property --r { syntax: '<length>'; inherits: false; initial-value: 0px; }
+
+    :root {
+      color-scheme: dark;
+      --bg: #101218;
+      --surface: #191c25;
+      --surface-2: #202430;
+      --text: #f4f3ef;
+      --muted: #a6a9b5;
+      --line: #ffffff1a;
+      --lime: #d4ff61;
+      --on-lime: #14170b;
+      --violet: #a18aff;
+      --pink: #ff7caa;
+      --cyan: #6de6df;
+      --card-text: #b2b5c1;
+      --shadow: 0 22px 60px #0005;
+      --font: "Manrope", system-ui, sans-serif;
+      --mono: "DM Mono", ui-monospace, monospace;
+      --global-shape: scoop;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-width: 320px;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 8% 0%, #5f45a51f, transparent 34rem),
+        radial-gradient(ellipse at 98% 36%, #33c7ae13, transparent 32rem),
+        var(--bg);
+      font: 16px/1.55 var(--font);
+    }
+    button, a, input, select { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; }
+    code { font-family: var(--mono); font-size: .92em; }
+    kbd { padding: 1px 5px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; font: 10px var(--mono); }
+    :focus-visible { outline: 3px solid var(--lime); outline-offset: 4px; }
+    .skip-link { position: absolute; left: 1rem; top: -5rem; z-index: 9; padding: .7rem 1rem; background: var(--lime); color: var(--on-lime); border-radius: .7rem; }
+    .skip-link:focus { top: 1rem; }
+    .shell { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 24px 0; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; letter-spacing: -.04em; text-decoration: none; }
+    .brand-mark { display: grid; width: 34px; aspect-ratio: 1; place-items: center; color: var(--on-lime); background: var(--lime); border-radius: 10px; font-size: 18px; }
+    .brand-accent { color: var(--lime); }
+    .top-actions { display: flex; align-items: center; gap: 9px; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); font-size: 12px; text-decoration: none; transition: color .18s ease, border-color .18s ease; }
+    .back-link:hover { color: var(--text); border-color: #ffffff55; }
+    .icon-btn, .lang-btn, .shape-btn, .add-btn, .seg-btn, .opt-btn, .tile {
+      border: 1px solid var(--line); background: #ffffff08; cursor: pointer;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease, color .18s ease;
+    }
+    .icon-btn:hover, .lang-btn:hover, .shape-btn:hover, .add-btn:hover, .seg-btn:hover:not(:disabled), .opt-btn:hover:not(:disabled), .tile:hover { transform: translateY(-2px); border-color: #ffffff55; }
+    .lang-btn, .icon-btn { min-height: 40px; padding: 0 13px; border-radius: 12px; }
+    .lang-btn { font: 500 12px var(--mono); letter-spacing: .06em; }
+    .icon-btn { display: grid; width: 42px; padding: 0; place-items: center; font-size: 17px; }
+    main { padding: 64px 0 46px; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) 280px; align-items: end; gap: 40px; margin-bottom: 35px; }
+    .eyebrow { display: flex; align-items: center; gap: 9px; margin: 0 0 15px; color: var(--lime); font: 500 11px var(--mono); letter-spacing: .13em; text-transform: uppercase; }
+    .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 14px var(--lime); animation: pulse 2.4s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: .35; } }
+    h1 { max-width: 700px; margin: 0; font-size: clamp(2.8rem, 7vw, 5.8rem); font-weight: 700; line-height: .99; letter-spacing: -.075em; }
+    h1 .accent { color: var(--lime); }
+    .intro { max-width: 610px; margin: 20px 0 0; color: var(--muted); font-size: clamp(.98rem, 1.8vw, 1.08rem); }
+    .intro code { color: var(--text); }
+    .feature-box { align-self: end; padding: 18px; border: 1px solid var(--line); border-radius: 17px; background: #ffffff07; }
+    .feature-box .label { color: var(--muted); font: 11px var(--mono); text-transform: uppercase; letter-spacing: .12em; }
+    .feature-status { display: flex; align-items: center; gap: 9px; margin-top: 9px; font-size: 14px; font-weight: 700; }
+    .status-dot { width: 9px; height: 9px; border-radius: 50%; background: #f3b94f; box-shadow: 0 0 12px #f3b94f88; }
+    .status-dot.on { background: var(--lime); box-shadow: 0 0 12px #d4ff6188; }
+    .status-dot.off { background: var(--pink); box-shadow: 0 0 12px #ff7caa88; }
+    .feature-box small { display: block; margin-top: 6px; color: var(--muted); font-size: 11px; }
+    .engine-line { display: flex; justify-content: space-between; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); color: var(--muted); font: 10px var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+    .engine-line strong { color: var(--lime); font-weight: 500; }
+
+    .lab { overflow: hidden; border: 1px solid var(--line); border-radius: 25px; background: linear-gradient(145deg, #1c202b, #151821 65%); box-shadow: var(--shadow); }
+    .lab-head { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 19px 23px; border-bottom: 1px solid var(--line); }
+    .lab-title { display: flex; align-items: center; gap: 11px; font-weight: 700; }
+    .lab-title .flask { display: grid; width: 34px; aspect-ratio: 1; place-items: center; border-radius: 11px; background: #d4ff611a; }
+    .lab-title small { display: block; color: var(--muted); font: 10px var(--mono); letter-spacing: .04em; }
+    .lab-head .mono { color: var(--muted); font: 11px var(--mono); }
+    .lab-body { padding: clamp(18px, 4vw, 34px); }
+    .toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .toolbar-label { color: var(--muted); font-size: 12px; }
+    .shape-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .shape-btn { display: inline-flex; align-items: center; gap: 7px; min-height: 37px; padding: 0 13px; border-radius: 11px; color: var(--muted); font: 11px var(--mono); }
+    .shape-btn .key { opacity: .55; font-size: 9px; }
+    .shape-btn[aria-pressed="true"] { border-color: var(--lime); background: #d4ff6118; color: var(--lime); }
+    .engine-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 14px; background: #ffffff05; }
+    .engine-row > span { color: var(--muted); font-size: 12px; }
+    .segmented { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 3px; border: 1px solid var(--line); border-radius: 11px; background: #0003; }
+    .seg-btn { min-height: 32px; padding: 0 11px; border-color: transparent; border-radius: 8px; background: transparent; color: var(--muted); font: 11px var(--mono); }
+    .seg-btn[aria-pressed="true"] { background: #d4ff611c; border-color: #d4ff6166; color: var(--lime); }
+    .seg-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .engine-note { flex-basis: 100%; margin: 0; color: var(--muted); font-size: 11px; }
+
+    .demo-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 14px; }
+    .demo-card { --shape: round; --radius: 30px; --r: var(--radius); --cs: var(--shape); position: relative; display: flex; min-height: 255px; flex-direction: column; justify-content: space-between; overflow: hidden; padding: 22px var(--pad, 22px); border: 1px solid #ffffff25; border-radius: var(--radius); transition: padding .2s ease; background: linear-gradient(145deg, #252b3b, #191c26 72%); }
+    .demo-card::before { position: absolute; inset: 0; z-index: 0; background: radial-gradient(circle at 90% 5%, var(--glow, #d4ff612a), transparent 55%); content: ""; pointer-events: none; }
+    .demo-card > * { position: relative; z-index: 1; }
+    .demo-card.feature { min-height: 300px; --radius: 42px; --glow: #a18aff4d; background: linear-gradient(145deg, #34304a, #1a1d28 72%); }
+    .card-top { display: flex; justify-content: space-between; align-items: center; color: #ffffffae; font: 10px var(--mono); text-transform: uppercase; letter-spacing: .09em; }
+    .number { display: grid; width: 30px; aspect-ratio: 1; place-items: center; border: 1px solid #ffffff2a; border-radius: 50%; color: var(--text); }
+    .demo-card > .shape-art { position: absolute; }
+    .shape-art { --r: var(--art-radius, 27px); --cs: var(--shape); right: 22px; top: 59px; display: grid; width: 86px; aspect-ratio: 1; place-items: center; border: 1px solid #ffffff59; border-radius: var(--art-radius, 27px); background: #d4ff6118; color: var(--lime); font-size: 32px; }
+    .feature .shape-art { --r: var(--art-radius, 38px); right: 26px; top: 68px; width: 108px; border-color: #a18aff88; border-radius: var(--art-radius, 38px); background: #a18aff23; color: #c4b7ff; font-size: 41px; }
+    .card-copy { max-width: 74%; }
+    .card-copy h2 { margin: 0 0 5px; font-size: 18px; letter-spacing: -.045em; }
+    .feature .card-copy h2 { font-size: 23px; }
+    .card-copy p { margin: 0; color: var(--card-text); font-size: 12px; }
+    .card-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 22px; color: #aeb1bd; font: 10px var(--mono); }
+    .tag { padding: 5px 8px; border: 1px solid #ffffff25; border-radius: 7px; background: #ffffff08; }
+    .shape-result { color: var(--lime); text-align: right; overflow-wrap: anywhere; }
+    .add-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; margin-top: 16px; padding: 14px 16px; border: 1px dashed #ffffff35; border-radius: 14px; color: var(--muted); font-size: 12px; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .add-btn { padding: 9px 13px; border-radius: 10px; background: #d4ff6112; color: var(--lime); font-size: 12px; font-weight: 700; }
+    .add-btn[aria-pressed="true"] { border-color: var(--lime); background: #d4ff6126; }
+    .below { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 52px; }
+    .info-panel { padding: 19px 21px; border: 1px solid var(--line); border-radius: 17px; background: #ffffff06; }
+    .info-panel h2 { margin: 0 0 9px; font-size: 14px; }
+    .info-panel p { margin: 0; color: var(--muted); font-size: 12px; }
+    .info-panel p code { color: var(--text); }
+    .code-line { overflow-x: auto; margin: 14px 0 0; padding: 12px 14px; border: 1px solid #ffffff14; border-radius: 10px; background: #0b0d12; color: #d6f89c; font: 11px/1.6 var(--mono); white-space: pre; }
+    .code-line .prop { color: #c1aaff; }
+    .code-line .value { color: #ffd38d; }
+    .code-line .sel { color: #6de6df; }
+    .code-line .cmt { color: #6f7486; }
+    .code-wrap { position: relative; }
+    .code-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .code-tools .add-btn { padding: 7px 11px; font-size: 11px; }
+    .shortcut-hint { margin: 10px 0 0; color: var(--muted); font-size: 11px; }
+    .footnote { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 20px; margin-top: 24px; color: #858997; font-size: 11px; }
+    .footnote a { text-decoration-color: #ffffff50; text-underline-offset: 3px; }
+    .toast { position: fixed; left: 50%; bottom: 22px; z-index: 5; max-width: calc(100% - 32px); padding: 11px 15px; transform: translate(-50%, 20px); border: 1px solid #ffffff30; border-radius: 12px; background: #222633; color: #f4f3ef; box-shadow: var(--shadow); opacity: 0; pointer-events: none; transition: .25s ease; font-size: 12px; }
+    .toast.show { transform: translate(-50%, 0); opacity: 1; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .section-kicker { margin: 0 0 7px; color: var(--lime); font: 10px var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+    .section-title { margin: 0 0 7px; font-size: clamp(1.5rem, 3vw, 2.1rem); letter-spacing: -.055em; }
+    .section-intro { max-width: 680px; margin: 0; color: var(--muted); font-size: 13px; }
+    .section-intro code { color: var(--text); }
+    .showcase-section { margin-top: 52px; scroll-margin-top: 20px; }
+    .controls-panel { margin-top: 18px; padding: 18px; border: 1px solid var(--line); border-radius: 17px; background: #ffffff06; }
+    .controls-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+    .control label { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; color: var(--muted); font-size: 11px; }
+    .control output { color: var(--lime); font: 11px var(--mono); }
+    .control input[type="range"], .spectrum-controls input[type="range"] { width: 100%; accent-color: var(--lime); }
+    .corner-selects { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; margin-top: 14px; }
+    .corner-selects[hidden] { display: none; }
+    .corner-selects label { display: grid; gap: 5px; color: var(--muted); font: 9px var(--mono); text-transform: uppercase; }
+    .corner-selects select, .mini-select { width: 100%; min-width: 0; padding: 9px 7px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); color: var(--text); font: 10px var(--mono); }
+
+    /* Spectrum */
+    .spectrum { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 22px; align-items: center; margin-top: 18px; padding: 22px; border: 1px solid var(--line); border-radius: 20px; background: #ffffff06; }
+    .spectrum-preview { position: relative; display: grid; place-items: center; aspect-ratio: 1; border: 1px dashed #ffffff22; border-radius: 16px; background: repeating-linear-gradient(0deg, transparent 0 19px, #ffffff08 19px 20px), repeating-linear-gradient(90deg, transparent 0 19px, #ffffff08 19px 20px); }
+    .spectrum-preview svg { width: 82%; height: auto; overflow: visible; }
+    .spectrum-preview .ghost { fill: none; stroke: #ffffff3a; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .spectrum-preview .live { fill: url(#specGrad); stroke: var(--lime); stroke-width: 2; transition: d .2s ease; }
+    .spectrum-k { position: absolute; left: 10px; bottom: 9px; color: var(--muted); font: 10px var(--mono); }
+    .spectrum-controls { min-width: 0; }
+    .spectrum-readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 12px; }
+    .spectrum-readout strong { font: 500 clamp(1.1rem, 2.6vw, 1.5rem) var(--mono); letter-spacing: -.03em; }
+    .spectrum-readout span { color: var(--muted); font-size: 12px; }
+    .spectrum-scale { display: flex; justify-content: space-between; margin-top: 4px; color: var(--muted); font: 9px var(--mono); }
+    .tile-row { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+    .tile { display: grid; justify-items: center; gap: 4px; min-width: 0; padding: 10px 4px 8px; border-radius: 12px; color: var(--muted); font: 9px var(--mono); }
+    .tile svg { width: 100%; max-width: 46px; height: auto; }
+    .tile path { fill: #d4ff6122; stroke: var(--lime); stroke-width: 3; }
+    .tile b { color: var(--text); font-weight: 500; font-size: 10px; }
+    .tile[aria-pressed="true"] { border-color: var(--lime); background: #d4ff6114; }
+
+    .component-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 14px; }
+    .component-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 13px; margin-top: 17px; }
+    .component-card { --r: 24px; --cs: var(--component-shape, scoop); position: relative; min-height: 170px; padding: 16px; border: 1px solid var(--line); border-radius: 24px; background: linear-gradient(145deg,#252a37,#181b23); }
+    .component-card h3 { margin: 0 0 12px; font-size: 13px; }
+    .component-card p { margin: 9px 0 0; color: var(--card-text); font-size: 10px; }
+    .component-art { --r: 21px; --cs: var(--component-shape, scoop); position: relative; display: grid; min-height: 63px; place-items: center; border: 1px solid #ffffff27; border-radius: 21px; background: #a18aff20; color: #cabfff; font-size: 26px; }
+    .component-card:nth-child(2) { --component-shape: squircle; }
+    .component-card:nth-child(3) { --component-shape: bevel; }
+    .component-card:nth-child(4) { --component-shape: notch; }
+    .component-grid.sync .component-card { --component-shape: var(--global-shape); }
+    .component-card .badge-art { --r: 20px; width: 56px; height: 56px; min-height: unset; margin-inline: auto; border-radius: 20px; background: linear-gradient(145deg,var(--lime),#68d0be); color: #17200c; }
+    .settings-demo { display: flex; justify-content: center; gap: 8px; }
+    .settings-demo button { --r: 12px; --cs: var(--component-shape, scoop); position: relative; min-width: 36px; padding: 8px 10px; border: 1px solid #ffffff30; border-radius: 12px; background: #ffffff10; color: var(--text); font-size: 10px; cursor: pointer; }
+    .settings-demo button:hover { background: #ffffff1c; }
+    .frame-demo { --r: 17px; --cs: var(--component-shape, squircle); position: relative; width: 76px; height: 57px; margin-inline: auto; border: 5px solid #bcaeff; border-radius: 17px; background: linear-gradient(145deg,#ffdc9c,#ff88ad 52%,#9279ff); box-shadow: 0 8px 24px #a18aff55; }
+    .poster-panel { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 20px; margin-top: 14px; padding: 22px; overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: radial-gradient(circle at 80% 40%,#a18aff35,transparent 25%),linear-gradient(115deg,#1c202b,#24203a); }
+    .poster-panel strong { display: block; font-size: clamp(1.4rem,4vw,2.7rem); line-height: 1; letter-spacing: -.07em; }
+    .poster-panel p { margin: 9px 0 0; color: var(--muted); font-size: 11px; }
+    .poster-glyph { --r: 37px; --cs: superellipse(.65); position: relative; display: grid; width: 100px; aspect-ratio: 1; place-items: center; border: 1px solid #bcaeff70; border-radius: 37px; background: #a18aff1e; color: #c9bdff; font-size: 48px; }
+    .challenge-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 13px; }
+    .challenge-tags span { padding: 6px 9px; border: 1px solid #ffffff21; border-radius: 99px; color: var(--muted); font: 9px var(--mono); }
+
+    /* Native corner-shape, only when supported and the native engine is chosen */
+    @supports (corner-shape: round) {
+      .cs { corner-shape: var(--cs); }
+    }
+    .mode-sim .cs, .mode-fallback .cs { corner-shape: round !important; }
+    .cs-sim { border-radius: 0 !important; }
+    svg.cs-outline { position: absolute !important; z-index: 3 !important; overflow: visible; pointer-events: none; }
+
+    /* Game */
+    .game { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 22px; align-items: center; margin-top: 18px; padding: 22px; border: 1px solid var(--line); border-radius: 20px; background: #ffffff06; }
+    .game-stage { position: relative; display: grid; place-items: center; aspect-ratio: 1; border-radius: 16px; background: radial-gradient(circle at 50% 40%, #a18aff26, transparent 65%), #0b0d1288; }
+    .game-stage svg { width: 76%; height: auto; }
+    .game-stage path { fill: url(#gameGrad); stroke: #ffffff70; stroke-width: 1.5; transition: d .25s ease; }
+    .game-stage.idle path { opacity: .35; }
+    .game-stage .q { position: absolute; color: #ffffffcc; font: 700 34px var(--font); pointer-events: none; }
+    .game-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .stat { padding: 6px 10px; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); font: 10px var(--mono); }
+    .stat b { color: var(--text); font-weight: 500; }
+    .game-prompt { margin: 0 0 12px; font-weight: 700; }
+    .game-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .opt-btn { min-height: 44px; padding: 8px 10px; border-radius: 11px; color: var(--text); font: 12px var(--mono); text-align: left; }
+    .opt-btn .n { margin-right: 6px; color: var(--muted); font-size: 10px; }
+    .opt-btn.correct { border-color: var(--lime); background: #d4ff6122; color: var(--lime); }
+    .opt-btn.wrong { border-color: var(--pink); background: #ff7caa1f; color: var(--pink); }
+    .opt-btn:disabled { cursor: default; }
+    .game-feedback { min-height: 1.5em; margin: 12px 0 0; color: var(--muted); font-size: 12px; }
+    .game-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 13px; margin-top: 17px; }
+    .feature-card { min-width: 0; padding: 17px; border: 1px solid var(--line); border-radius: 16px; background: #ffffff07; }
+    .feature-card h3 { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 0 0 8px; font-size: 13px; }
+    .feature-card p { min-height: 44px; margin: 0; color: var(--muted); font-size: 10px; }
+    .feature-state { flex: none; padding: 4px 7px; border: 1px solid #ffffff20; border-radius: 99px; color: #f3b94f; font: 8px var(--mono); }
+    .feature-state.on { color: var(--lime); border-color: #d4ff6140; }
+    .feature-demo { display: block; margin-top: 12px; padding: 10px; overflow: hidden; border-radius: 10px; background: #0b0d12; color: #cdeba1; font: 9px/1.6 var(--mono); }
+    .if-demo { --demo-tone: warm; padding: 11px; border-radius: 10px; background-color: #9279ff; color: #fff; }
+    @supports (color: if(style(--demo-tone: warm): #fff; else: #111)) {
+      .if-demo { background-color: if(style(--demo-tone: warm): #d49351; else: #5b83d8); color: if(style(--demo-tone: warm): #17120a; else: #fff); }
+    }
+    @function --lab-space(--factor <number>) returns <length> { result: calc(var(--factor) * 8px); }
+    .function-demo { min-height: 42px; padding: 8px; padding: --lab-space(1); border: 1px solid #ffffff28; border-radius: 8px; border-radius: --lab-space(1); }
+    .text-overflow-demo { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    @supports (text-overflow: '…mai') { .text-overflow-demo { text-overflow: '…mai'; } }
+    .counter-demo { counter-reset: reversed(step); padding-left: 0; list-style: none; }
+    .counter-demo li { counter-increment: step; margin: 3px 0; }
+    .counter-demo li::before { content: counter(step) '  /  '; color: var(--lime); }
+    .mix-demo { height: 36px; border-radius: 9px; background: #a18aff; }
+    @supports (color: color-mix(in srgb, red 30%, blue 30%, green 40%)) { .mix-demo { background: color-mix(in srgb, #d4ff61 35%, #a18aff 35%, #6de6df 30%); } }
+    .lane-mosaic { display: grid; grid-template-columns: repeat(3,1fr); grid-auto-rows: 13px; gap: 5px; }
+    .lane-mosaic i { display: block; border-radius: 5px; background: linear-gradient(125deg,#d4ff61,#a18aff); }
+    .lane-mosaic i:nth-child(3n) { grid-row: span 3; }
+    .lane-mosaic i:nth-child(4n) { grid-row: span 2; }
+    @supports (display: grid-lanes) { .lane-mosaic { display: grid-lanes; grid-template-columns: repeat(3,1fr); grid-template-rows: none; grid-auto-rows: auto; } }
+    .heading-demo h4 { margin: 0 0 4px; font-size: 11px; }
+    .heading-demo p { min-height: 0; margin: 0; color: inherit; font-size: 9px; }
+    .heading-demo :heading { color: #d4ff61; text-decoration: underline wavy #a18aff; text-underline-offset: 4px; }
+    .field-demo { display: grid; gap: 6px; }
+    .field-demo input { width: 100%; padding: 8px; border: 1px solid #ffffff30; border-radius: 8px; background: #ffffff0c; color: #f4f3ef; }
+    @supports selector(input::field-content) { .field-demo input::field-content { color: #d4ff61; font: 700 12px var(--mono); } }
+
+    .component-card, .poster-glyph { transform-style: preserve-3d; transition: transform .3s ease; }
+    .component-card:hover { transform: perspective(700px) rotateX(4deg) rotateY(-4deg) translateY(-3px); }
+    .poster-glyph { transform: perspective(500px) rotateY(-13deg) rotateX(7deg); }
+    .poster-panel:hover .poster-glyph { transform: perspective(500px) rotateY(13deg) rotateX(-5deg) scale(1.04); }
+
+    /* Light theme */
+    html[data-theme="light"] { color-scheme: light; --bg: #f2f3ed; --surface: #fff; --surface-2: #e7e9e2; --text: #202228; --muted: #5d616c; --line: #24293624; --lime: #4a6c00; --on-lime: #fff; --card-text: #555b67; --shadow: 0 22px 60px #27301918; }
+    html[data-theme="light"] body { background: radial-gradient(ellipse at 8% 0%, #aa98ee25, transparent 34rem), radial-gradient(ellipse at 98% 36%, #61d9cc2b, transparent 32rem), var(--bg); }
+    html[data-theme="light"] .lab { background: linear-gradient(145deg, #fff, #f8f9f4); }
+    html[data-theme="light"] .demo-card { border-color: #282d3b2e; background: linear-gradient(145deg, #f4f0ff, #e8ebf0 80%); }
+    html[data-theme="light"] .demo-card.feature { background: linear-gradient(145deg, #eae3ff, #edf0f5 80%); }
+    html[data-theme="light"] .shape-art { border-color: #4a6c0055; background: #4a6c0012; }
+    html[data-theme="light"] .feature .shape-art { border-color: #6a55d688; background: #a18aff22; color: #5a44c8; }
+    html[data-theme="light"] .card-top, html[data-theme="light"] .card-foot { color: #626775; }
+    html[data-theme="light"] .number, html[data-theme="light"] .tag { border-color: #24293630; }
+    html[data-theme="light"] .code-line { background: #20232c; color: #d6f89c; }
+    html[data-theme="light"] .component-card { border-color: #2429362a; background: linear-gradient(145deg, #fff, #eceef4); }
+    html[data-theme="light"] .component-art { border-color: #6a55d655; background: #a18aff1f; color: #5a44c8; }
+    html[data-theme="light"] .settings-demo button { border-color: #24293633; background: #24293608; }
+    html[data-theme="light"] .poster-panel { background: radial-gradient(circle at 80% 40%,#a18aff40,transparent 25%),linear-gradient(115deg,#fff,#efeafd); }
+    html[data-theme="light"] .poster-glyph { border-color: #6a55d670; color: #5a44c8; }
+    html[data-theme="light"] .toast { border-color: #24293630; background: #fff; color: #202228; }
+    html[data-theme="light"] .segmented { background: #24293608; }
+    html[data-theme="light"] .tile path { fill: #4a6c0018; }
+    html[data-theme="light"] .spectrum-preview { border-color: #24293630; background: repeating-linear-gradient(0deg, transparent 0 19px, #2429360d 19px 20px), repeating-linear-gradient(90deg, transparent 0 19px, #2429360d 19px 20px); }
+    html[data-theme="light"] .spectrum-preview .ghost { stroke: #2429364d; }
+    html[data-theme="light"] .game-stage { background: radial-gradient(circle at 50% 40%, #a18aff33, transparent 65%), #24293610; }
+    html[data-theme="light"] .game-stage path { stroke: #24293655; }
+    html[data-theme="light"] .game-stage .q { color: #202228cc; }
+    html[data-theme="light"] .opt-btn.wrong { color: #b0245a; border-color: #b0245a; }
+    html[data-theme="light"] .footnote { color: #6b6f7a; }
+    html[data-theme="light"] .icon-btn:hover, html[data-theme="light"] .lang-btn:hover, html[data-theme="light"] .shape-btn:hover, html[data-theme="light"] .add-btn:hover, html[data-theme="light"] .tile:hover, html[data-theme="light"] .opt-btn:hover:not(:disabled) { border-color: #24293666; }
+
+    @media (max-width: 860px) {
+      .spectrum, .game { grid-template-columns: 1fr; }
+      .spectrum-preview, .game-stage { width: min(100%, 240px); justify-self: center; }
+    }
+    @media (max-width: 760px) {
+      main { padding-top: 42px; }
+      .hero { grid-template-columns: 1fr; gap: 23px; }
+      .feature-box { max-width: 380px; }
+      .demo-grid { grid-template-columns: 1fr 1fr; }
+      .demo-card.feature { grid-column: 1 / -1; min-height: 245px; }
+      .below { grid-template-columns: 1fr; }
+      .component-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .feature-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .tile-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .back-link .label { display: none; }
+    }
+    @media (max-width: 480px) {
+      .shell { width: min(100% - 24px, 1120px); }
+      .topbar { padding: 16px 0; }
+      main { padding-top: 35px; }
+      .hero { margin-bottom: 23px; }
+      .lab { border-radius: 19px; }
+      .lab-head { padding: 15px; }
+      .lab-head .mono { display: none; }
+      .lab-body { padding: 14px; }
+      .demo-grid { grid-template-columns: 1fr; }
+      .demo-card, .demo-card.feature { grid-column: auto; min-height: 220px; }
+      .shape-options { gap: 6px; }
+      .shape-btn { min-height: 34px; padding-inline: 10px; }
+      .shape-btn .key { display: none; }
+      .controls-grid, .feature-grid { grid-template-columns: 1fr; }
+      .corner-selects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .component-grid { gap: 8px; }
+      .component-card { padding: 12px; }
+      .poster-panel { padding: 17px; }
+      .poster-glyph { width: 70px; }
+      .game-options { grid-template-columns: 1fr; }
+      .spectrum, .game { padding: 16px; }
+    }
+    @media (hover: none) { .shortcut-hint { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .component-card:hover, .poster-panel:hover .poster-glyph { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">Sari la conținut</a>
+  <header class="shell topbar">
+    <a class="brand" href="#main" aria-label="Corner Lab"><span class="brand-mark" aria-hidden="true">⌁</span><span>corner<span class="brand-accent">lab</span></span></a>
+    <div class="top-actions">
+      <a class="back-link" href="../portfolio.html"><span aria-hidden="true">←</span><span class="label" data-i18n="back">Portofoliu</span></a>
+      <button class="lang-btn" id="langToggle" type="button" aria-label="Switch to English">EN</button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Schimbă tema" aria-pressed="false" title="Schimbă tema">☼</button>
+    </div>
+  </header>
+
+  <main class="shell" id="main">
+    <section class="hero" aria-labelledby="pageTitle">
+      <div>
+        <p class="eyebrow"><span class="pulse" aria-hidden="true"></span><span data-i18n="eyebrow">CodePen Challenge · Noiembrie · Săptămâna 4</span></p>
+        <h1 id="pageTitle"><span class="accent" data-i18n="titleA">Colțuri</span><br><span class="accent" data-i18n="titleB">în laborator.</span></h1>
+        <p class="intro" data-i18n="intro">Ce se întâmplă când CSS primește forme noi pentru colțuri? Alege o geometrie și privește proprietatea experimentală <code>corner-shape</code> în acțiune — chiar și în browserele care nu o cunosc încă.</p>
+      </div>
+      <aside class="feature-box" aria-live="polite">
+        <span class="label" data-i18n="supportLabel">Suportul browserului</span>
+        <div class="feature-status"><span class="status-dot" id="supportDot" aria-hidden="true"></span><span id="supportText">Se verifică…</span></div>
+        <small id="supportHint">Degradare grațioasă activă</small>
+        <div class="engine-line"><span data-i18n="engineLabel">Motor</span><strong id="engineBadge">—</strong></div>
+      </aside>
+    </section>
+
+    <section class="lab" aria-labelledby="labTitle">
+      <div class="lab-head">
+        <div class="lab-title"><span class="flask" aria-hidden="true">🧪</span><span><span id="labTitle" data-i18n="labTitle">Corner shape lab</span><small data-i18n="labSub">Alege o formă · compară rezultatele</small></span></div>
+        <span class="mono">EXPERIMENT 04 / CSS</span>
+      </div>
+      <div class="lab-body">
+        <div class="toolbar">
+          <span class="toolbar-label" id="chooseLabel" data-i18n="choose">Formă selectată</span>
+          <div class="shape-options" role="group" aria-labelledby="chooseLabel">
+            <button class="shape-btn" type="button" data-shape="round" aria-pressed="false"><span class="key" aria-hidden="true">1</span>round</button>
+            <button class="shape-btn" type="button" data-shape="scoop" aria-pressed="true"><span class="key" aria-hidden="true">2</span>scoop</button>
+            <button class="shape-btn" type="button" data-shape="bevel" aria-pressed="false"><span class="key" aria-hidden="true">3</span>bevel</button>
+            <button class="shape-btn" type="button" data-shape="squircle" aria-pressed="false"><span class="key" aria-hidden="true">4</span>squircle</button>
+            <button class="shape-btn" type="button" data-shape="notch" aria-pressed="false"><span class="key" aria-hidden="true">5</span>notch</button>
+            <button class="shape-btn" type="button" data-shape="square" aria-pressed="false"><span class="key" aria-hidden="true">6</span>square</button>
+            <button class="shape-btn" type="button" data-shape="superellipse" aria-pressed="false"><span class="key" aria-hidden="true">7</span>superellipse()</button>
+          </div>
+        </div>
+
+        <div class="engine-row">
+          <span id="engineLabel" data-i18n="engineChoose">Cum se desenează colțurile</span>
+          <div class="segmented" role="group" aria-labelledby="engineLabel">
+            <button class="seg-btn" type="button" data-mode="native" aria-pressed="false" data-i18n="modeNative">Nativ</button>
+            <button class="seg-btn" type="button" data-mode="sim" aria-pressed="false" data-i18n="modeSim">Simulare JS</button>
+            <button class="seg-btn" type="button" data-mode="fallback" aria-pressed="false" data-i18n="modeFallback">Fallback</button>
+          </div>
+          <p class="engine-note" id="engineNote"></p>
+        </div>
+
+        <div class="demo-grid" id="demoGrid">
+          <article class="demo-card feature cs" data-card data-shape="scoop" style="--glow:#a18aff4d">
+            <div class="card-top"><span data-i18n="specimen">specimen · 01</span><span class="number">01</span></div>
+            <div class="shape-art cs" aria-hidden="true">✳</div>
+            <div><div class="card-copy"><h2 data-i18n="featureName">Forma în focus</h2><p data-i18n="featureDesc">Schimbă geometria din butoanele de mai sus.</p></div><div class="card-foot"><span class="tag">corner-shape</span><span class="shape-result" data-current-shape="feature">scoop</span></div></div>
+          </article>
+          <article class="demo-card cs" data-card data-shape="scoop" style="--glow:#d4ff612c">
+            <div class="card-top"><span data-i18n="specimen2">specimen · 02</span><span class="number">02</span></div>
+            <div class="shape-art cs" aria-hidden="true">✦</div>
+            <div><div class="card-copy"><h2 data-i18n="softEdge">Margine moale</h2><p data-i18n="softDesc">Același colț, într-un obiect mai mic.</p></div><div class="card-foot"><span class="tag">border-radius</span><span class="shape-result" data-current-shape>scoop</span></div></div>
+          </article>
+          <article class="demo-card cs" data-card data-shape="scoop" style="--glow:#6de6df2b">
+            <div class="card-top"><span data-i18n="specimen3">specimen · 03</span><span class="number">03</span></div>
+            <div class="shape-art cs" aria-hidden="true">⌘</div>
+            <div><div class="card-copy"><h2 data-i18n="newRules">Reguli noi</h2><p data-i18n="newDesc">O proprietate, o mulțime de siluete.</p></div><div class="card-foot"><span class="tag">CSS lab</span><span class="shape-result" data-current-shape>scoop</span></div></div>
+          </article>
+        </div>
+        <div class="add-row"><span data-i18n="tip">Fără suport nativ, colțurile sunt desenate cu o simulare <code>clip-path</code>; fallback-ul arată ce vede un browser vechi.</span><div class="btn-row"><button class="add-btn" id="cycleBtn" type="button" data-i18n="surprise">Surprinde-mă ↗</button></div></div>
+        <div class="controls-panel" role="group" aria-labelledby="controlsTitle">
+          <h2 class="visually-hidden" id="controlsTitle" data-i18n="controlsTitle">Controale pentru forme</h2>
+          <div class="controls-grid">
+            <div class="control"><label for="radiusRange"><span data-i18n="radiusLabel">Raza colțului</span><output id="radiusOutput" for="radiusRange">42px</output></label><input id="radiusRange" type="range" min="8" max="80" value="42"></div>
+            <div class="control"><label for="exponentRange"><span data-i18n="exponentLabel">Parametrul K din superellipse()</span><output id="exponentOutput" for="exponentRange">0.55</output></label><input id="exponentRange" type="range" min="-500" max="500" step="5" value="55"></div>
+            <div class="control"><label for="cornerMode"><span data-i18n="cornerModeLabel">Colțuri individuale</span></label><select class="mini-select" id="cornerMode"><option value="linked" data-i18n="linked">Aceeași formă</option><option value="custom" data-i18n="custom">Formă per colț</option></select></div>
+          </div>
+          <div class="corner-selects" id="cornerSelects" hidden>
+            <label><span data-i18n="cTL">Stânga-sus</span><select data-corner><option>scoop</option><option>round</option><option>bevel</option><option>notch</option><option>squircle</option><option>square</option></select></label>
+            <label><span data-i18n="cTR">Dreapta-sus</span><select data-corner><option>bevel</option><option>round</option><option>scoop</option><option>notch</option><option>squircle</option><option>square</option></select></label>
+            <label><span data-i18n="cBR">Dreapta-jos</span><select data-corner><option>notch</option><option>round</option><option>scoop</option><option>bevel</option><option>squircle</option><option>square</option></select></label>
+            <label><span data-i18n="cBL">Stânga-jos</span><select data-corner><option>squircle</option><option>round</option><option>scoop</option><option>bevel</option><option>notch</option><option>square</option></select></label>
+          </div>
+          <pre class="code-line" id="codeBlock" aria-label="CSS generat"></pre>
+          <div class="code-tools">
+            <button class="add-btn" id="copyCss" type="button" data-i18n="copyCss">Copiază CSS ⧉</button>
+            <button class="add-btn" id="copyLink" type="button" data-i18n="copyLink">Copiază linkul acestei forme 🔗</button>
+          </div>
+          <p class="shortcut-hint" data-i18n="shortcuts">Scurtături: <kbd>1</kbd>–<kbd>7</kbd> alegi forma · <kbd>S</kbd> surpriză · <kbd>←</kbd> <kbd>→</kbd> pe slider schimbă valoarea</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase-section" id="spectrum" aria-labelledby="spectrumTitle">
+      <p class="section-kicker" data-i18n="spectrumKicker">01 · Spectrul superellipse</p>
+      <h2 class="section-title" id="spectrumTitle" data-i18n="spectrumTitle">Toate formele sunt aceeași curbă</h2>
+      <p class="section-intro" data-i18n="spectrumIntro">Fiecare cuvânt-cheie e un punct pe aceeași scală: <code>superellipse(K)</code>. Mută sliderul de la −∞ (notch) la +∞ (square) și urmărește cum se transformă colțul. Previzualizarea e SVG, deci arată corect în orice browser.</p>
+      <div class="spectrum">
+        <div class="spectrum-preview">
+          <svg viewBox="-10 -10 220 220" aria-hidden="true">
+            <defs><linearGradient id="specGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d4ff61" stop-opacity=".32"/><stop offset="1" stop-color="#a18aff" stop-opacity=".28"/></linearGradient></defs>
+            <path class="ghost" id="specGhost"></path>
+            <path class="live" id="specLive"></path>
+          </svg>
+          <span class="spectrum-k" id="specCorner" aria-hidden="true"></span>
+        </div>
+        <div class="spectrum-controls">
+          <div class="spectrum-readout" aria-live="polite"><strong id="specValue">superellipse(0.55)</strong><span id="specNear"></span></div>
+          <label class="visually-hidden" for="specRange" data-i18n="specRangeLabel">Parametrul K</label>
+          <input id="specRange" type="range" min="-500" max="500" step="5" value="55">
+          <div class="spectrum-scale" aria-hidden="true"><span>−∞ notch</span><span>−1 scoop</span><span>0 bevel</span><span>1 round</span><span>2 squircle</span><span>+∞ square</span></div>
+          <div class="tile-row" id="tileRow" role="group" aria-label="Keyword"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase-section" aria-labelledby="componentTitle">
+      <div class="component-head">
+        <div>
+          <p class="section-kicker" data-i18n="componentKicker">02 · Joacă-te cu componentele</p>
+          <h2 class="section-title" id="componentTitle" data-i18n="componentTitle">Aceeași proprietate, multe obiecte</h2>
+          <p class="section-intro" data-i18n="componentIntro">Aplică formele în componente reale: rame, ambalaje, insigne și controale.</p>
+        </div>
+        <button class="add-btn" id="syncBtn" type="button" aria-pressed="false" data-i18n="syncBtn">Folosește forma din laborator ⇄</button>
+      </div>
+      <div class="component-grid" id="componentGrid">
+        <article class="component-card cs"><h3 data-i18n="packaging">Ambalaj</h3><div class="component-art cs" aria-hidden="true">▣</div><p data-i18n="packagingDesc">Cutie cu muchii sculptate.</p></article>
+        <article class="component-card cs"><h3 data-i18n="photoFrame">Ramă foto</h3><div class="frame-demo cs" aria-hidden="true"></div><p data-i18n="frameDesc">Rama și fotografia au profiluri potrivite.</p></article>
+        <article class="component-card cs"><h3 data-i18n="badge">Insignă</h3><div class="component-art badge-art cs" aria-hidden="true">✦</div><p data-i18n="badgeDesc">O formă pentru recompense.</p></article>
+        <article class="component-card cs"><h3 data-i18n="settings">Setări</h3><div class="settings-demo"><button class="cs" type="button" id="miniTheme" aria-label="Schimbă tema">◐</button><button class="cs" type="button" id="miniLang" aria-label="Switch language">Aa</button><button class="cs" type="button" id="miniSurprise" aria-label="Surprinde-mă">↗</button></div><p data-i18n="settingsDesc">Butoane cu margini experimentale — chiar funcționează.</p></article>
+      </div>
+      <div class="poster-panel"><div><strong data-i18n="posterTitle">SHAPE<br>THE UNSEEN</strong><p data-i18n="posterDesc">Poster generativ construit din colțuri experimentale.</p></div><div class="poster-glyph cs" aria-hidden="true">✳</div></div>
+      <div class="challenge-tags" aria-label="Variații aplicate"><span>cards</span><span>packaging</span><span>frames</span><span>badges</span><span>settings</span><span>poster</span><span>spectrum</span><span>mini-game</span></div>
+    </section>
+
+    <section class="showcase-section" id="game" aria-labelledby="gameTitle">
+      <p class="section-kicker" data-i18n="gameKicker">03 · Mini-joc</p>
+      <h2 class="section-title" id="gameTitle" data-i18n="gameTitle">Detectivul de colțuri</h2>
+      <p class="section-intro" data-i18n="gameIntro">Zece siluete, câte patru variante. Recunoaște forma colțurilor — seria de răspunsuri corecte aduce puncte bonus. Tastele <kbd>1</kbd>–<kbd>4</kbd> aleg varianta.</p>
+      <div class="game">
+        <div class="game-stage idle" id="gameStage">
+          <svg viewBox="-10 -10 220 220" aria-hidden="true">
+            <defs><linearGradient id="gameGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a18aff"/><stop offset=".55" stop-color="#ff7caa"/><stop offset="1" stop-color="#ffdc9c"/></linearGradient></defs>
+            <path id="gamePath"></path>
+          </svg>
+          <span class="q" id="gameQ" aria-hidden="true">?</span>
+        </div>
+        <div>
+          <div class="game-stats">
+            <span class="stat"><span data-i18n="statRound">Runda</span> <b id="gRound">0/10</b></span>
+            <span class="stat"><span data-i18n="statScore">Scor</span> <b id="gScore">0</b></span>
+            <span class="stat"><span data-i18n="statStreak">Serie</span> <b id="gStreak">0</b></span>
+            <span class="stat"><span data-i18n="statBest">Record</span> <b id="gBest">0</b></span>
+          </div>
+          <p class="game-prompt" id="gamePrompt" data-i18n="gameReady">Pregătită? Apasă Start.</p>
+          <div class="game-options" id="gameOptions" role="group" aria-labelledby="gamePrompt"></div>
+          <p class="game-feedback" id="gameFeedback" role="status" aria-live="polite"></p>
+          <div class="game-actions"><button class="add-btn" id="gameStart" type="button" data-i18n="gameStart">Start ▶</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase-section" aria-labelledby="featureTitle">
+      <p class="section-kicker" data-i18n="featureKicker">04 · Muzeul CSS experimental</p>
+      <h2 class="section-title" id="featureTitle" data-i18n="featureTitle">Alte experimente CSS</h2>
+      <p class="section-intro" data-i18n="featureIntro">Fiecare mostră încearcă o funcție sau un selector experimental. Indicatorul se actualizează după capabilitățile browserului.</p>
+      <div class="feature-grid">
+        <article class="feature-card" data-feature="if"><h3><span>CSS <code>if()</code></span><span class="feature-state">—</span></h3><p data-i18n="ifDesc">Valoarea stilului răspunde unei condiții style query.</p><div class="feature-demo if-demo">if(style(…)) → color</div></article>
+        <article class="feature-card" data-feature="function"><h3><span>CSS <code>@function</code></span><span class="feature-state">—</span></h3><p data-i18n="functionDesc">Funcție reutilizabilă pentru tokenuri de design.</p><pre class="feature-demo function-demo">--lab-space(1)</pre></article>
+        <article class="feature-card" data-feature="overflow"><h3><code>text-overflow</code><span class="feature-state">—</span></h3><p data-i18n="overflowDesc">Text personalizat la marginea unui titlu tăiat.</p><div class="feature-demo text-overflow-demo">Sibylline synthesis of experimental corner geometries…</div></article>
+        <article class="feature-card" data-feature="reversed"><h3><code>reversed()</code><span class="feature-state">—</span></h3><p data-i18n="reversedDesc">Contor CSS invers pentru pași numărați în jos.</p><ol class="counter-demo feature-demo"><li data-i18n="stepOne">Testează</li><li data-i18n="stepTwo">Ajustează</li><li data-i18n="stepThree">Publică</li></ol></article>
+        <article class="feature-card" data-feature="counter"><h3>Counter scope<span class="feature-state">—</span></h3><p data-i18n="counterDesc">Demonstrație de resetare locală a contorului.</p><pre class="feature-demo">counter-reset: item 0;
+counter-increment: item;</pre></article>
+        <article class="feature-card" data-feature="mix"><h3><span><code>color-mix()</code> × 3</span><span class="feature-state">—</span></h3><p data-i18n="mixDesc">Amestecă trei culori pentru o mostră de paletă.</p><div class="feature-demo mix-demo" role="img" aria-label="color-mix swatch"></div></article>
+        <article class="feature-card" data-feature="lanes"><h3>CSS Grid Lanes<span class="feature-state">—</span></h3><p data-i18n="lanesDesc">Mosaic cu fallback grid și layout experimental pe coloane.</p><div class="feature-demo lane-mosaic" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+        <article class="feature-card" data-feature="heading"><h3><code>:heading</code><span class="feature-state">—</span></h3><p data-i18n="headingDesc">Stilizează titlul găsit de pseudo-clasa.</p><div class="feature-demo heading-demo"><h4 data-i18n="headingSample">Titlu detectat</h4><p data-i18n="plainSample">Text obișnuit</p></div></article>
+        <article class="feature-card" data-feature="field"><h3><code>::field-content</code><span class="feature-state">—</span></h3><p data-i18n="fieldDesc">Stilizează conținutul unui input cu pseudo-elementul.</p><label class="feature-demo field-demo"><span data-i18n="fieldSample">Numele formei</span><input value="scoop"></label></article>
+      </div>
+    </section>
+
+    <section class="below" aria-labelledby="whatTitle">
+      <article class="info-panel"><h2 id="whatTitle" data-i18n="whatTitle">Ce experimentez?</h2><p data-i18n="whatText">Proprietatea CSS experimentală <code>corner-shape</code> schimbă profilul colțurilor unui element cu <code>border-radius</code>. Bordura, umbra și fundalul urmează forma nouă. În funcție de browser, poate fi necesară o versiune experimentală sau activarea unei funcții din setări.</p><pre class="code-line"><span class="prop">corner-shape</span>: <span class="value" id="codeShape">scoop</span>;</pre></article>
+      <article class="info-panel"><h2 data-i18n="fallbackTitle">Fallback inclus</h2><p data-i18n="fallbackText">Forma de bază rămâne definită prin <code>border-radius</code>, iar regula nouă e izolată în <code>@supports</code>. Unde lipsește suportul nativ, un script mic calculează aceeași curbă superellipse și o aplică prin <code>clip-path: path()</code>, cu un contur SVG în locul bordurii.</p><pre class="code-line"><span class="prop">@supports</span> (<span class="prop">corner-shape</span>: <span class="value">scoop</span>) { … }</pre></article>
+    </section>
+    <footer class="footnote"><span data-i18n="footer">Creat de Laura Andreea, pentru joacă, testare și CSS curios. 🔬</span><span>CodePen tags: <a href="https://codepen.io/tag/cpc-experimental-css" target="_blank" rel="noopener noreferrer">cpc-experimental-css</a> · <a href="https://codepen.io/tag/codepenchallenge" target="_blank" rel="noopener noreferrer">codepenchallenge</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/cornerlab" target="_blank" rel="noopener noreferrer">GitHub</a></span></footer>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const $ = s => document.querySelector(s);
+      const $$ = s => [...document.querySelectorAll(s)];
+      const store = {
+        get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+        set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} }
+      };
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const nativeSupport = CSS.supports('corner-shape: scoop');
+
+      const shapeButtons = $$('.shape-btn');
+      const cards = $$('[data-card]');
+      const featureCard = cards[0];
+      const toast = $('#toast');
+      const radiusRange = $('#radiusRange');
+      const exponentRange = $('#exponentRange');
+      const specRange = $('#specRange');
+      const cornerMode = $('#cornerMode');
+      const cornerSelects = $$('[data-corner]');
+
+      const featureChecks = {
+        if: () => CSS.supports('background-color: if(style(--demo-tone: warm): red; else: blue)'),
+        function: () => 'CSSFunctionRule' in window,
+        overflow: () => CSS.supports('text-overflow: "…more"'),
+        reversed: () => CSS.supports('counter-reset: reversed(step) 3'),
+        counter: () => false,
+        mix: () => CSS.supports('color: color-mix(in srgb, red 30%, blue 30%, green 40%)'),
+        lanes: () => CSS.supports('display: grid-lanes'),
+        heading: () => CSS.supports('selector(:heading)'),
+        field: () => CSS.supports('selector(input::field-content)')
+      };
+
+      const words = {
+        ro: {
+          docTitle:'Corner Lab — CSS experimental · corner-shape playground', back:'Portofoliu',
+          skip:'Sari la conținut', eyebrow:'CodePen Challenge · Noiembrie · Săptămâna 4', titleA:'Colțuri', titleB:'în laborator.',
+          intro:'Ce se întâmplă când CSS primește forme noi pentru colțuri? Alege o geometrie și privește proprietatea experimentală <code>corner-shape</code> în acțiune — chiar și în browserele care nu o cunosc încă.',
+          supportLabel:'Suportul browserului', checking:'Se verifică…', supported:'Suport nativ', unsupported:'Fără suport nativ', supportedHint:'corner-shape este recunoscut de acest browser.', unsupportedHint:'Formele sunt desenate prin simulare clip-path.',
+          engineLabel:'Motor', engineChoose:'Cum se desenează colțurile', modeNative:'Nativ', modeSim:'Simulare JS', modeFallback:'Fallback',
+          noteNative:'Browserul desenează singur colțurile, cu <code>corner-shape</code>.', noteSim:'Un script calculează curba superellipse și o aplică prin <code>clip-path: path()</code>.', noteFallback:'Doar <code>border-radius</code>: așa arată pagina într-un browser fără niciun ajutor.', nativeUnavailable:'Browserul acesta nu are încă suport nativ pentru corner-shape.',
+          engineNative:'nativ', engineSim:'simulare', engineFallback:'fallback',
+          labTitle:'Corner shape lab', labSub:'Alege o formă · compară rezultatele', choose:'Formă selectată', specimen:'specimen · 01', specimen2:'specimen · 02', specimen3:'specimen · 03',
+          featureName:'Forma în focus', featureDesc:'Schimbă geometria din butoanele de mai sus.', softEdge:'Margine moale', softDesc:'Același colț, într-un obiect mai mic.', newRules:'Reguli noi', newDesc:'O proprietate, o mulțime de siluete.',
+          tip:'Fără suport nativ, colțurile sunt desenate cu o simulare <code>clip-path</code>; fallback-ul arată ce vede un browser vechi.', surprise:'Surprinde-mă ↗',
+          controlsTitle:'Controale pentru forme', radiusLabel:'Raza colțului', exponentLabel:'Parametrul K din superellipse()', cornerModeLabel:'Colțuri individuale', linked:'Aceeași formă', custom:'Formă per colț', cTL:'Stânga-sus', cTR:'Dreapta-sus', cBR:'Dreapta-jos', cBL:'Stânga-jos',
+          copyCss:'Copiază CSS ⧉', copyLink:'Copiază linkul acestei forme 🔗', copiedCss:'CSS copiat în clipboard', copiedLink:'Link copiat — cine îl deschide vede aceeași formă', copyFail:'Nu am putut copia. Selectează textul manual.', codeComment:'/* fallback: browserele vechi păstrează border-radius */',
+          shortcuts:'Scurtături: <kbd>1</kbd>–<kbd>7</kbd> alegi forma · <kbd>S</kbd> surpriză · <kbd>←</kbd> <kbd>→</kbd> pe slider schimbă valoarea',
+          spectrumKicker:'01 · Spectrul superellipse', spectrumTitle:'Toate formele sunt aceeași curbă', spectrumIntro:'Fiecare cuvânt-cheie e un punct pe aceeași scală: <code>superellipse(K)</code>. Mută sliderul de la −∞ (notch) la +∞ (square) și urmărește cum se transformă colțul. Previzualizarea e SVG, deci arată corect în orice browser.', specRangeLabel:'Parametrul K', near:'echivalent cu', between:'între', and:'și', concave:'concav — colțul intră în formă', convex:'convex — colțul iese în afară', flat:'linie dreaptă', keywordGroup:'Cuvinte-cheie',
+          componentKicker:'02 · Joacă-te cu componentele', componentTitle:'Aceeași proprietate, multe obiecte', componentIntro:'Aplică formele în componente reale: rame, ambalaje, insigne și controale.', syncBtn:'Folosește forma din laborator ⇄', syncOn:'Componentele folosesc acum forma din laborator', syncOff:'Componentele au revenit la formele lor',
+          packaging:'Ambalaj', packagingDesc:'Cutie cu muchii sculptate.', photoFrame:'Ramă foto', frameDesc:'Rama și fotografia au profiluri potrivite.', badge:'Insignă', badgeDesc:'O formă pentru recompense.', settings:'Setări', settingsDesc:'Butoane cu margini experimentale — chiar funcționează.', posterTitle:'SHAPE<br>THE UNSEEN', posterDesc:'Poster generativ construit din colțuri experimentale.',
+          gameKicker:'03 · Mini-joc', gameTitle:'Detectivul de colțuri', gameIntro:'Zece siluete, câte patru variante. Recunoaște forma colțurilor — seria de răspunsuri corecte aduce puncte bonus. Tastele <kbd>1</kbd>–<kbd>4</kbd> aleg varianta.',
+          statRound:'Runda', statScore:'Scor', statStreak:'Serie', statBest:'Record', gameReady:'Pregătită? Apasă Start.', gameStart:'Start ▶', gameRestart:'Joacă din nou ↻', gameAsk:'Ce formă au colțurile?',
+          gameRight:'Corect! +', gameWrong:'Nu chiar — era ', gameOver:'Gata! Scor final: ', gameNewBest:' — record nou! 🏆', gameRank:[ 'Mai încearcă: formele concave sunt cele mai înșelătoare.', 'Bun început — ai ochi pentru colțuri.', 'Foarte bine! Ești aproape expertă.', 'Perfect. Detectivă de colțuri certificată. 🔍' ],
+          featureKicker:'04 · Muzeul CSS experimental', featureTitle:'Alte experimente CSS', featureIntro:'Fiecare mostră încearcă o funcție sau un selector experimental. Indicatorul se actualizează după capabilitățile browserului.',
+          ifDesc:'Valoarea stilului răspunde unei condiții style query.', functionDesc:'Funcție reutilizabilă pentru tokenuri de design.', overflowDesc:'Text personalizat la marginea unui titlu tăiat.', reversedDesc:'Contor CSS invers pentru pași numărați în jos.', counterDesc:'Demonstrație de resetare locală a contorului.', mixDesc:'Amestecă trei culori pentru o mostră de paletă.', lanesDesc:'Mosaic cu fallback grid și layout experimental pe coloane.', headingDesc:'Stilizează titlul găsit de pseudo-clasa.', fieldDesc:'Stilizează conținutul unui input cu pseudo-elementul.', stepOne:'Testează', stepTwo:'Ajustează', stepThree:'Publică', headingSample:'Titlu detectat', plainSample:'Text obișnuit', fieldSample:'Numele formei',
+          available:'DISPONIBIL', fallback:'FALLBACK', sample:'MOSTRĂ',
+          whatTitle:'Ce experimentez?', whatText:'Proprietatea CSS experimentală <code>corner-shape</code> schimbă profilul colțurilor unui element cu <code>border-radius</code>. Bordura, umbra și fundalul urmează forma nouă. În funcție de browser, poate fi necesară o versiune experimentală sau activarea unei funcții din setări.',
+          fallbackTitle:'Fallback inclus', fallbackText:'Forma de bază rămâne definită prin <code>border-radius</code>, iar regula nouă e izolată în <code>@supports</code>. Unde lipsește suportul nativ, un script mic calculează aceeași curbă superellipse și o aplică prin <code>clip-path: path()</code>, cu un contur SVG în locul bordurii.',
+          footer:'Creat de Laura Andreea, pentru joacă, testare și CSS curios. 🔬', theme:'Schimbă tema', language:'Switch to English', toast:'Formă selectată: ', surpriseToast:'Am ales o formă nouă: '
+        },
+        en: {
+          docTitle:'Corner Lab — Experimental CSS · corner-shape playground', back:'Portfolio',
+          skip:'Skip to content', eyebrow:'CodePen Challenge · November · Week 4', titleA:'Corners', titleB:'under the microscope.',
+          intro:'What happens when CSS gets new corner shapes? Choose a geometry and watch the experimental <code>corner-shape</code> property in action — even in browsers that don’t know it yet.',
+          supportLabel:'Browser support', checking:'Checking…', supported:'Native support', unsupported:'No native support', supportedHint:'corner-shape is recognized by this browser.', unsupportedHint:'Shapes are drawn with a clip-path simulation.',
+          engineLabel:'Engine', engineChoose:'How the corners are drawn', modeNative:'Native', modeSim:'JS simulation', modeFallback:'Fallback',
+          noteNative:'The browser draws the corners itself, with <code>corner-shape</code>.', noteSim:'A script computes the superellipse curve and applies it with <code>clip-path: path()</code>.', noteFallback:'Only <code>border-radius</code>: what the page looks like in a browser with no help at all.', nativeUnavailable:'This browser has no native corner-shape support yet.',
+          engineNative:'native', engineSim:'simulated', engineFallback:'fallback',
+          labTitle:'Corner shape lab', labSub:'Choose a shape · compare the results', choose:'Selected shape', specimen:'specimen · 01', specimen2:'specimen · 02', specimen3:'specimen · 03',
+          featureName:'Shape in focus', featureDesc:'Change the geometry using the buttons above.', softEdge:'Soft edge', softDesc:'The same corner on a smaller object.', newRules:'New rules', newDesc:'One property, a whole set of silhouettes.',
+          tip:'Without native support, corners are drawn with a <code>clip-path</code> simulation; the fallback shows what an older browser sees.', surprise:'Surprise me ↗',
+          controlsTitle:'Shape controls', radiusLabel:'Corner radius', exponentLabel:'superellipse() K parameter', cornerModeLabel:'Individual corners', linked:'Link all corners', custom:'Set each corner', cTL:'Top-left', cTR:'Top-right', cBR:'Bottom-right', cBL:'Bottom-left',
+          copyCss:'Copy CSS ⧉', copyLink:'Copy a link to this shape 🔗', copiedCss:'CSS copied to clipboard', copiedLink:'Link copied — whoever opens it sees the same shape', copyFail:'Copy failed. Select the text manually.', codeComment:'/* fallback: older browsers keep border-radius */',
+          shortcuts:'Shortcuts: <kbd>1</kbd>–<kbd>7</kbd> pick a shape · <kbd>S</kbd> surprise · <kbd>←</kbd> <kbd>→</kbd> on a slider change its value',
+          spectrumKicker:'01 · The superellipse spectrum', spectrumTitle:'Every shape is the same curve', spectrumIntro:'Each keyword is a point on one scale: <code>superellipse(K)</code>. Move the slider from −∞ (notch) to +∞ (square) and watch the corner morph. The preview is SVG, so it renders correctly in any browser.', specRangeLabel:'K parameter', near:'same as', between:'between', and:'and', concave:'concave — the corner cuts inward', convex:'convex — the corner bulges outward', flat:'a straight line', keywordGroup:'Keywords',
+          componentKicker:'02 · Component playground', componentTitle:'One property, many objects', componentIntro:'Try the shapes on real components: frames, packaging, badges, and controls.', syncBtn:'Use the lab shape ⇄', syncOn:'Components now use the lab shape', syncOff:'Components are back to their own shapes',
+          packaging:'Packaging', packagingDesc:'A box with sculpted edges.', photoFrame:'Photo frame', frameDesc:'The frame and photo share a matching profile.', badge:'Badge', badgeDesc:'A shape for achievements.', settings:'Settings', settingsDesc:'Controls with experimental edges — they actually work.', posterTitle:'SHAPE<br>THE UNSEEN', posterDesc:'A generative poster built from experimental corners.',
+          gameKicker:'03 · Mini-game', gameTitle:'Corner detective', gameIntro:'Ten silhouettes, four choices each. Identify the corner shape — a streak of right answers earns bonus points. Keys <kbd>1</kbd>–<kbd>4</kbd> pick an answer.',
+          statRound:'Round', statScore:'Score', statStreak:'Streak', statBest:'Best', gameReady:'Ready? Press Start.', gameStart:'Start ▶', gameRestart:'Play again ↻', gameAsk:'Which corner shape is this?',
+          gameRight:'Correct! +', gameWrong:'Not quite — it was ', gameOver:'Done! Final score: ', gameNewBest:' — new best! 🏆', gameRank:[ 'Try again: the concave shapes are the trickiest.', 'Good start — you have an eye for corners.', 'Very good! Almost an expert.', 'Perfect. Certified corner detective. 🔍' ],
+          featureKicker:'04 · Experimental CSS museum', featureTitle:'More CSS experiments', featureIntro:'Each sample tries an experimental function or selector. Support indicators update for this browser.',
+          ifDesc:'A style value responds to a style-query condition.', functionDesc:'A reusable function for design tokens.', overflowDesc:'Custom text at the edge of a clipped heading.', reversedDesc:'A reversed CSS counter for countdown steps.', counterDesc:'A small example of a local counter reset.', mixDesc:'Mix three colors into a palette swatch.', lanesDesc:'A mosaic with grid fallback and experimental lane layout.', headingDesc:'Style the heading selected by this pseudo-class.', fieldDesc:'Style an input value with this pseudo-element.', stepOne:'Experiment', stepTwo:'Adjust', stepThree:'Publish', headingSample:'Detected heading', plainSample:'Regular text', fieldSample:'Shape name',
+          available:'AVAILABLE', fallback:'FALLBACK', sample:'SAMPLE',
+          whatTitle:'What am I exploring?', whatText:'The experimental CSS <code>corner-shape</code> property changes the corner profile of an element with <code>border-radius</code>. Border, shadow and background all follow the new shape. Depending on your browser, you may need an experimental build or to enable a feature in settings.',
+          fallbackTitle:'Fallback included', fallbackText:'The base shape is defined with <code>border-radius</code> and the new rule is isolated in <code>@supports</code>. Where native support is missing, a small script computes the same superellipse curve and applies it with <code>clip-path: path()</code>, with an SVG outline standing in for the border.',
+          footer:'Made by Laura Andreea, for play, testing, and curious CSS. 🔬', theme:'Toggle theme', language:'Schimbă în română', toast:'Shape selected: ', surpriseToast:'New shape picked: '
+        }
+      };
+
+      /* ---------- Superellipse geometry (shared by simulation, spectrum and game) ---------- */
+      const KEYWORDS = { notch: -Infinity, scoop: -1, bevel: 0, round: 1, squircle: 2, square: Infinity };
+      const KW_ORDER = ['notch', 'scoop', 'bevel', 'round', 'squircle', 'square'];
+      const SHAPES = ['round', 'scoop', 'bevel', 'squircle', 'notch', 'square', 'superellipse'];
+      const kFromSlider = v => { const k = Number(v) / 100; return k <= -5 ? -Infinity : k >= 5 ? Infinity : k; };
+      const fmtK = k => k === Infinity ? 'infinity' : k === -Infinity ? '-infinity' : String(Number(k.toFixed(2)));
+      const tokenK = tok => {
+        const m = tok.match(/^superellipse\(\s*([^)]+)\)$/);
+        if (m) {
+          const v = m[1].trim();
+          if (v === 'infinity') return Infinity;
+          if (v === '-infinity') return -Infinity;
+          const n = parseFloat(v);
+          return Number.isFinite(n) ? n : 1;
+        }
+        return tok in KEYWORDS ? KEYWORDS[tok] : 1;
+      };
+      const parseShape = str => {
+        const toks = (String(str || 'round').toLowerCase().match(/superellipse\([^)]*\)|[a-z-]+/g) || ['round']).slice(0, 4).map(tokenK);
+        const [a, b = a, c = a, d = b] = toks;
+        return [a, b, c, d];
+      };
+      const fpow = (u, e) => {
+        if (u >= 1) return 1;
+        if (u <= 0) return e === 0 ? 1 : 0;
+        return Math.pow(u, e);
+      };
+      // Path for a w×h box; corner order TL, TR, BR, BL (same as CSS); K per corner.
+      const shapePath = (w, h, radii, ks, steps = 24) => {
+        let [r0, r1, r2, r3] = radii.map(r => Math.max(0, r));
+        const f = Math.min(1, w / (r0 + r1 || 1), w / (r3 + r2 || 1), h / (r0 + r3 || 1), h / (r1 + r2 || 1));
+        [r0, r1, r2, r3] = [r0 * f, r1 * f, r2 * f, r3 * f];
+        const pts = [];
+        const corner = (cx, cy, r, k, map) => {
+          if (r <= 0) { pts.push(map(cx, cy, 0, 0, 0)); return; }
+          const e = Math.pow(2, 1 - k);
+          for (let i = 0; i <= steps; i++) {
+            const t = (i / steps) * Math.PI / 2;
+            pts.push(map(cx, cy, r, fpow(Math.cos(t), e), fpow(Math.sin(t), e)));
+          }
+        };
+        corner(r0, r0, r0, ks[0], (cx, cy, r, a, b) => [cx - r * a, cy - r * b]);
+        corner(w - r1, r1, r1, ks[1], (cx, cy, r, a, b) => [cx + r * b, cy - r * a]);
+        corner(w - r2, h - r2, r2, ks[2], (cx, cy, r, a, b) => [cx + r * a, cy + r * b]);
+        corner(r3, h - r3, r3, ks[3], (cx, cy, r, a, b) => [cx - r * b, cy + r * a]);
+        return 'M' + pts.map(([x, y]) => `${+x.toFixed(2)} ${+y.toFixed(2)}`).join('L') + 'Z';
+      };
+
+      /* ---------- State ---------- */
+      const state = {
+        lang: root.lang === 'en' ? 'en' : 'ro',
+        shape: 'scoop',
+        mode: nativeSupport ? 'native' : 'sim',
+        sync: false
+      };
+      const t = key => words[state.lang][key] ?? words.ro[key] ?? key;
+      let toastTimer;
+      const showToast = message => {
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+      };
+
+      /* ---------- Simulation engine (clip-path + SVG outline) ---------- */
+      const SVGNS = 'http://www.w3.org/2000/svg';
+      const clearSim = el => {
+        el.classList.remove('cs-sim');
+        el.style.clipPath = '';
+        el.querySelector(':scope > svg.cs-outline')?.remove();
+      };
+      const applySim = el => {
+        const w = el.offsetWidth, h = el.offsetHeight;
+        if (!w || !h) return;
+        const cs = getComputedStyle(el);
+        const ks = parseShape(cs.getPropertyValue('--cs'));
+        const r = parseFloat(cs.getPropertyValue('--r')) || 0;
+        const d = shapePath(w, h, [r, r, r, r], ks);
+        el.classList.add('cs-sim');
+        el.style.clipPath = `path('${d}')`;
+        if (cs.position === 'static') el.style.position = 'relative';
+        const bw = parseFloat(cs.borderTopWidth) || 0;
+        let svg = el.querySelector(':scope > svg.cs-outline');
+        if (bw > 0) {
+          if (!svg) {
+            svg = document.createElementNS(SVGNS, 'svg');
+            svg.setAttribute('class', 'cs-outline');
+            svg.setAttribute('aria-hidden', 'true');
+            svg.appendChild(document.createElementNS(SVGNS, 'path'));
+            el.appendChild(svg);
+          }
+          Object.assign(svg.style, { left: `${-bw}px`, top: `${-bw}px`, width: `${w}px`, height: `${h}px` });
+          svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+          const p = svg.firstChild;
+          p.setAttribute('d', d);
+          p.setAttribute('fill', 'none');
+          p.setAttribute('stroke', cs.borderTopColor);
+          p.setAttribute('stroke-width', String(bw * 2));
+        } else if (svg) svg.remove();
+      };
+      let renderQueued = false;
+      const renderEngine = () => {
+        if (renderQueued) return;
+        renderQueued = true;
+        requestAnimationFrame(() => {
+          renderQueued = false;
+          const els = $$('.cs');
+          if (state.mode === 'sim') {
+            els.forEach(el => el.classList.remove('cs-sim'));
+            els.forEach(applySim);
+          } else els.forEach(clearSim);
+        });
+      };
+      if ('ResizeObserver' in window) {
+        const ro = new ResizeObserver(() => { if (state.mode === 'sim') renderEngine(); });
+        $$('.cs').forEach(el => ro.observe(el));
+      } else addEventListener('resize', renderEngine);
+
+      const setMode = (mode, announce = false) => {
+        if (mode === 'native' && !nativeSupport) mode = 'sim';
+        state.mode = mode;
+        root.classList.remove('mode-native', 'mode-sim', 'mode-fallback');
+        root.classList.add(`mode-${mode}`);
+        $$('.seg-btn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+        $('#engineNote').innerHTML = t(mode === 'native' ? 'noteNative' : mode === 'sim' ? 'noteSim' : 'noteFallback');
+        $('#engineBadge').textContent = t(mode === 'native' ? 'engineNative' : mode === 'sim' ? 'engineSim' : 'engineFallback');
+        renderEngine();
+        if (announce) showToast(`${t('engineLabel')}: ${$('#engineBadge').textContent}`);
+      };
+
+      /* ---------- Lab ---------- */
+      const currentK = () => kFromSlider(exponentRange.value);
+      const getShapeCss = shape => shape === 'superellipse' ? `superellipse(${fmtK(currentK())})` : shape;
+      const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+      let cssText = '';
+      const renderCode = (shapeValue, radius) => {
+        cssText = `.card {\n  border-radius: ${radius}px; ${t('codeComment')}\n  corner-shape: ${shapeValue};\n}`;
+        $('#codeBlock').innerHTML =
+          `<span class="sel">.card</span> {\n  <span class="prop">border-radius</span>: <span class="value">${radius}px</span>; <span class="cmt">${esc(t('codeComment'))}</span>\n  <span class="prop">corner-shape</span>: <span class="value">${esc(shapeValue)}</span>;\n}`;
+      };
+      let hashTimer;
+      let hashReady = false;
+      const writeHash = () => {
+        if (!hashReady) return;
+        clearTimeout(hashTimer);
+        hashTimer = setTimeout(() => {
+          const p = new URLSearchParams({ shape: state.shape, r: radiusRange.value, k: (Number(exponentRange.value) / 100).toFixed(2) });
+          history.replaceState(null, '', `#${p}`);
+        }, 250);
+      };
+      const updateShape = (shape, announce = true) => {
+        state.shape = shape;
+        const shapeCss = getShapeCss(shape);
+        const custom = cornerMode.value === 'custom';
+        const customValue = cornerSelects.map(s => s.value).join(' ');
+        const radius = Number(radiusRange.value);
+        cards.forEach(card => {
+          card.dataset.shape = shape;
+          const isFeatureCustom = custom && card === featureCard;
+          card.style.setProperty('--shape', isFeatureCustom ? customValue : shapeCss);
+          card.style.setProperty('--radius', `${radius}px`);
+          card.style.setProperty('--art-radius', `${Math.max(10, Math.round(radius * .72))}px`);
+          // Concave corners eat into the card: keep text out of the cut-away area.
+          const minK = Math.min(...parseShape(isFeatureCustom ? customValue : shapeCss));
+          const depth = minK <= -5 ? 1 : minK < 0 ? .78 : minK < 1 ? .5 : 0;
+          card.style.setProperty('--pad', `${Math.max(22, Math.round(radius * depth))}px`);
+        });
+        root.style.setProperty('--global-shape', shapeCss);
+        $$('[data-current-shape]').forEach(node => { node.textContent = shapeCss; });
+        if (custom) featureCard.querySelector('[data-current-shape]').textContent = customValue;
+        $('#codeShape').textContent = custom ? customValue : shapeCss;
+        renderCode(custom ? customValue : shapeCss, radius);
+        shapeButtons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.shape === shape)));
+        renderSpectrum();
+        renderEngine();
+        writeHash();
+        if (announce) showToast(t('toast') + shapeCss);
+      };
+      const randomOther = (list, current) => {
+        const others = list.filter(x => x !== current);
+        return others[Math.floor(Math.random() * others.length)];
+      };
+      const surprise = () => {
+        const next = randomOther(SHAPES, state.shape);
+        if (next === 'superellipse') setK(Math.round((Math.random() * 6 - 2) * 20) * 5);
+        updateShape(next, false);
+        showToast(t('surpriseToast') + getShapeCss(next));
+      };
+
+      /* ---------- Spectrum ---------- */
+      const tileRow = $('#tileRow');
+      KW_ORDER.forEach(name => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'tile';
+        b.dataset.kw = name;
+        b.setAttribute('aria-pressed', 'false');
+        const k = KEYWORDS[name];
+        b.innerHTML = `<svg viewBox="-4 -4 108 108" aria-hidden="true"><path d="${shapePath(100, 100, [38, 38, 38, 38], [k, k, k, k], 18)}"/></svg><b>${name}</b><span>K = ${k === Infinity ? '+∞' : k === -Infinity ? '−∞' : k}</span>`;
+        b.addEventListener('click', () => {
+          setK(k === Infinity ? 500 : k === -Infinity ? -500 : k * 100);
+          updateShape(name);
+        });
+        tileRow.appendChild(b);
+      });
+      const setK = sliderValue => {
+        exponentRange.value = sliderValue;
+        specRange.value = sliderValue;
+        const k = kFromSlider(sliderValue);
+        $('#exponentOutput').value = fmtK(k);
+      };
+      const spectrumK = () => {
+        return state.shape === 'superellipse' ? currentK() : KEYWORDS[state.shape];
+      };
+      const renderSpectrum = () => {
+        const k = spectrumK();
+        if (state.shape !== 'superellipse') specRange.value = k === Infinity ? 500 : k === -Infinity ? -500 : k * 100;
+        else specRange.value = exponentRange.value;
+        const r = Math.min(100, Number(radiusRange.value) * 1.25 + 20);
+        $('#specLive').setAttribute('d', shapePath(200, 200, [r, r, r, r], [k, k, k, k], 40));
+        $('#specGhost').setAttribute('d', shapePath(200, 200, [r, r, r, r], [1, 1, 1, 1], 40));
+        $('#specValue').textContent = state.shape === 'superellipse' ? `superellipse(${fmtK(k)})` : `${state.shape} = superellipse(${fmtK(k)})`;
+        let note;
+        const exact = KW_ORDER.find(n => KEYWORDS[n] === k || (Number.isFinite(k) && Math.abs(KEYWORDS[n] - k) < 0.001));
+        if (exact) note = `${t('near')} ${exact}`;
+        else {
+          const lower = [...KW_ORDER].reverse().find(n => KEYWORDS[n] < k);
+          const upper = KW_ORDER.find(n => KEYWORDS[n] > k);
+          note = `${t('between')} ${lower} ${t('and')} ${upper}`;
+        }
+        note += ' · ' + (k < 0 ? t('concave') : k === 0 ? t('flat') : t('convex'));
+        $('#specNear').textContent = note;
+        $('#specCorner').textContent = `r = ${radiusRange.value}px`;
+        $$('.tile').forEach(b => b.setAttribute('aria-pressed', String(KEYWORDS[b.dataset.kw] === k && (state.shape === b.dataset.kw || state.shape === 'superellipse'))));
+      };
+
+      /* ---------- Game ---------- */
+      const GAME_POOL = [...KW_ORDER, 'superellipse(0.5)', 'superellipse(-2.5)', 'superellipse(3.5)'];
+      const game = { round: 0, total: 10, score: 0, streak: 0, best: Number(store.get('cornerlab-best')) || 0, target: null, options: [], locked: true, running: false };
+      const gEls = { stage: $('#gameStage'), path: $('#gamePath'), q: $('#gameQ'), options: $('#gameOptions'), feedback: $('#gameFeedback'), prompt: $('#gamePrompt'), start: $('#gameStart') };
+      const shuffle = arr => { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+      const renderStats = () => {
+        $('#gRound').textContent = `${game.round}/${game.total}`;
+        $('#gScore').textContent = game.score;
+        $('#gStreak').textContent = game.streak;
+        $('#gBest').textContent = game.best;
+      };
+      const drawGameShape = name => {
+        const k = tokenK(name);
+        const r = 58 + Math.round(Math.random() * 22);
+        gEls.path.setAttribute('d', shapePath(200, 200, [r, r, r, r], [k, k, k, k], 40));
+      };
+      const nextRound = () => {
+        if (game.round >= game.total) return endGame();
+        game.round++;
+        let target;
+        do { target = GAME_POOL[Math.floor(Math.random() * GAME_POOL.length)]; } while (target === game.target);
+        game.target = target;
+        game.options = shuffle([target, ...shuffle(GAME_POOL.filter(x => x !== target)).slice(0, 3)]);
+        drawGameShape(target);
+        gEls.stage.classList.remove('idle');
+        gEls.q.hidden = true;
+        gEls.prompt.textContent = t('gameAsk');
+        gEls.feedback.textContent = '';
+        gEls.options.innerHTML = '';
+        game.options.forEach((opt, i) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'opt-btn';
+          b.dataset.value = opt;
+          b.innerHTML = `<span class="n" aria-hidden="true">${i + 1}</span>${opt}`;
+          b.addEventListener('click', () => answer(opt));
+          gEls.options.appendChild(b);
+        });
+        game.locked = false;
+        renderStats();
+        if (game.round === 1) gEls.options.firstChild.focus({ preventScroll: true });
+      };
+      const answer = opt => {
+        if (game.locked) return;
+        game.locked = true;
+        const right = opt === game.target;
+        const btns = [...gEls.options.children];
+        btns.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.value === game.target) b.classList.add('correct');
+          else if (b.dataset.value === opt) b.classList.add('wrong');
+        });
+        if (right) {
+          const pts = 10 + game.streak * 2;
+          game.score += pts;
+          game.streak++;
+          gEls.feedback.textContent = t('gameRight') + pts;
+        } else {
+          game.streak = 0;
+          gEls.feedback.textContent = t('gameWrong') + game.target;
+        }
+        renderStats();
+        const hadFocus = gEls.options.contains(document.activeElement);
+        setTimeout(() => {
+          nextRound();
+          const first = gEls.options.querySelector('.opt-btn');
+          if (hadFocus && first) first.focus({ preventScroll: true });
+        }, right ? 850 : 1500);
+      };
+      const endGame = () => {
+        game.running = false;
+        game.locked = true;
+        const newBest = game.score > game.best;
+        if (newBest) { game.best = game.score; store.set('cornerlab-best', String(game.best)); }
+        const max = game.total * 10 + 2 * (game.total * (game.total - 1) / 2);
+        const ratio = game.score / max;
+        const rank = t('gameRank')[ratio >= .99 ? 3 : ratio >= .6 ? 2 : ratio >= .3 ? 1 : 0];
+        gEls.prompt.textContent = t('gameOver') + game.score + (newBest ? t('gameNewBest') : '');
+        gEls.feedback.textContent = rank;
+        gEls.options.innerHTML = '';
+        gEls.stage.classList.add('idle');
+        gEls.q.hidden = false;
+        gEls.start.hidden = false;
+        gEls.start.textContent = t('gameRestart');
+        gEls.start.focus({ preventScroll: true });
+        renderStats();
+      };
+      const startGame = () => {
+        Object.assign(game, { round: 0, score: 0, streak: 0, target: null, running: true });
+        gEls.start.hidden = true;
+        nextRound();
+      };
+      gEls.start.addEventListener('click', startGame);
+      drawGameShape('squircle');
+
+      /* ---------- Language & theme ---------- */
+      const applyLanguage = () => {
+        root.lang = state.lang;
+        document.title = t('docTitle');
+        $$('[data-i18n]').forEach(node => {
+          const key = node.dataset.i18n;
+          const val = words[state.lang][key];
+          if (typeof val === 'string') node.innerHTML = val;
+        });
+        const langBtn = $('#langToggle');
+        langBtn.textContent = state.lang === 'ro' ? 'EN' : 'RO';
+        langBtn.setAttribute('aria-label', t('language'));
+        $('#miniLang').setAttribute('aria-label', t('language'));
+        $('#themeToggle').setAttribute('aria-label', t('theme'));
+        $('#themeToggle').title = t('theme');
+        $('#miniTheme').setAttribute('aria-label', t('theme'));
+        $('#miniSurprise').setAttribute('aria-label', t('surprise').replace(/\s*\S$/, ''));
+        tileRow.setAttribute('aria-label', t('keywordGroup'));
+        const supported = nativeSupport;
+        $('#supportDot').classList.toggle('on', supported);
+        $('#supportDot').classList.toggle('off', !supported);
+        $('#supportText').textContent = t(supported ? 'supported' : 'unsupported');
+        $('#supportHint').textContent = t(supported ? 'supportedHint' : 'unsupportedHint');
+        const nativeBtn = $('.seg-btn[data-mode="native"]');
+        nativeBtn.disabled = !nativeSupport;
+        nativeBtn.title = nativeSupport ? '' : t('nativeUnavailable');
+        $$('[data-feature]').forEach(card => {
+          const feature = card.dataset.feature;
+          const el = card.querySelector('.feature-state');
+          const ok = featureChecks[feature]?.() ?? false;
+          el.textContent = t(ok ? 'available' : (feature === 'counter' ? 'sample' : 'fallback'));
+          el.classList.toggle('on', ok);
+        });
+        if (game.running) gEls.prompt.textContent = t('gameAsk');
+        else if (game.round === 0) gEls.prompt.textContent = t('gameReady');
+        if (!game.running && game.round > 0) gEls.start.textContent = t('gameRestart');
+        setMode(state.mode);
+        updateShape(state.shape, false);
+      };
+      const toggleLang = () => {
+        state.lang = state.lang === 'ro' ? 'en' : 'ro';
+        store.set('cornerlab-lang', state.lang);
+        applyLanguage();
+      };
+      const applyTheme = () => {
+        const light = root.dataset.theme === 'light';
+        const btn = $('#themeToggle');
+        btn.textContent = light ? '☾' : '☼';
+        btn.setAttribute('aria-pressed', String(light));
+        document.querySelector('meta[name="theme-color"]').content = light ? '#f2f3ed' : '#101218';
+        renderEngine();
+      };
+      const toggleTheme = () => {
+        root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
+        store.set('cornerlab-theme', root.dataset.theme);
+        applyTheme();
+      };
+
+      /* ---------- Events ---------- */
+      shapeButtons.forEach(b => b.addEventListener('click', () => updateShape(b.dataset.shape)));
+      $$('.seg-btn').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode, true)));
+      radiusRange.addEventListener('input', () => {
+        $('#radiusOutput').value = `${radiusRange.value}px`;
+        updateShape(state.shape, false);
+      });
+      const onK = v => {
+        setK(v);
+        if (state.shape !== 'superellipse' && cornerMode.value !== 'custom') updateShape('superellipse', false);
+        else updateShape(state.shape, false);
+      };
+      exponentRange.addEventListener('input', () => onK(exponentRange.value));
+      specRange.addEventListener('input', () => onK(specRange.value));
+      cornerMode.addEventListener('change', () => {
+        $('#cornerSelects').hidden = cornerMode.value !== 'custom';
+        updateShape(state.shape, false);
+      });
+      cornerSelects.forEach(s => s.addEventListener('change', () => updateShape(state.shape, false)));
+      $('#cycleBtn').addEventListener('click', surprise);
+      $('#miniSurprise').addEventListener('click', surprise);
+      $('#themeToggle').addEventListener('click', toggleTheme);
+      $('#miniTheme').addEventListener('click', toggleTheme);
+      $('#langToggle').addEventListener('click', toggleLang);
+      $('#miniLang').addEventListener('click', toggleLang);
+      $('#syncBtn').addEventListener('click', e => {
+        state.sync = !state.sync;
+        $('#componentGrid').classList.toggle('sync', state.sync);
+        e.currentTarget.setAttribute('aria-pressed', String(state.sync));
+        showToast(t(state.sync ? 'syncOn' : 'syncOff'));
+        renderEngine();
+      });
+      const copy = async (text, okKey) => {
+        try { await navigator.clipboard.writeText(text); showToast(t(okKey)); }
+        catch (e) { showToast(t('copyFail')); }
+      };
+      $('#copyCss').addEventListener('click', () => copy(cssText, 'copiedCss'));
+      $('#copyLink').addEventListener('click', () => {
+        const p = new URLSearchParams({ shape: state.shape, r: radiusRange.value, k: (Number(exponentRange.value) / 100).toFixed(2) });
+        copy(`${location.origin}${location.pathname}#${p}`, 'copiedLink');
+      });
+      document.addEventListener('keydown', e => {
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+        const tag = e.target.tagName;
+        if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || e.target.isContentEditable) return;
+        if (game.running && /^[1-7]$/.test(e.key)) {
+          const btn = !game.locked && gEls.options.children[Number(e.key) - 1];
+          if (btn) { e.preventDefault(); btn.click(); }
+          return;
+        }
+        if (/^[1-7]$/.test(e.key)) { e.preventDefault(); updateShape(SHAPES[Number(e.key) - 1]); }
+        else if (e.key === 's' || e.key === 'S') { e.preventDefault(); surprise(); }
+      });
+
+      /* ---------- Init ---------- */
+      const readHash = () => {
+        const p = new URLSearchParams(location.hash.slice(1));
+        const shape = p.get('shape');
+        const r = Number(p.get('r'));
+        const k = Number(p.get('k'));
+        if (r >= 8 && r <= 80) { radiusRange.value = r; $('#radiusOutput').value = `${r}px`; }
+        if (p.has('k') && Number.isFinite(k)) setK(Math.max(-500, Math.min(500, Math.round(k * 100))));
+        if (SHAPES.includes(shape)) state.shape = shape;
+      };
+      setK(exponentRange.value);
+      readHash();
+      applyTheme();
+      applyLanguage();
+      renderStats();
+      hashReady = true;
+      if (document.fonts?.ready) document.fonts.ready.then(renderEngine);
+    })();
+  </script>
+</body>
+</html>
