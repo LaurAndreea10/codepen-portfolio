@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-11-23 — Corner Lab v1.1.0 · formele se văd în orice browser
+
+- RO: Unde browserul nu are `corner-shape` (Firefox, Safari), un script calculează aceeași curbă superellipse și o aplică prin `clip-path: path()`, cu contur SVG în locul bordurii. Comutator Nativ / Simulare JS / Fallback pentru comparație.
+- RO: Secțiune nouă „Spectrul superellipse” (slider de la −∞ la +∞, previzualizare SVG, cele 6 cuvinte-cheie ca plăci). Mini-jocul e acum un joc real, „Detectivul de colțuri”: 10 runde, serie, record salvat local, tastele 1–4.
+- RO: CSS generat copiabil, link partajabil al formei, scurtături 1–7 și S, componente sincronizabile cu forma din laborator, butoanele „Setări” funcționale, padding adaptat la colțurile concave.
+- RO: Reparat: schimbarea RO/EN ștergea `<code>` din texte; selectoarele per colț erau mereu vizibile; textul din tema light avea contrast slab (toast, verde); linkurile CodePen din footer. Tema și limba se păstrează, plus SEO (canonical, Open Graph, JSON-LD) și `index.pen.html`.
+- EN: Corner Lab 1.1.0 renders corner shapes in every browser via a clip-path simulation, adds a superellipse spectrum, a real "Corner detective" game, copyable CSS and shareable links, and fixes i18n, contrast and footer-link bugs.
+
 ## 2026-11-22 — Toate bibliotecile găzduite local · fără CDN-uri terțe
 
 - RO: Three.js 0.170.0 (cu cele 10 fișiere de postprocessing de care are nevoie DICE DRIFT 3D) și 0.160.0, Chart.js 4.4.1, React și ReactDOM 18.3.1 și Babel standalone 7.29.0 sunt copiate neschimbat din npm în `assets/vendor/` (vezi README-ul de acolo). DICE DRIFT 3D, Carpați Enduro, GENOBOARD, Marketing OS și cele 10 prototipuri React le folosesc de acolo. SQL Playground nu mai are rezerva de pe jsDelivr (sql.js e oricum local). Nicio pagină nu mai cere scripturi sau stiluri de la cdnjs, jsDelivr sau unpkg.
