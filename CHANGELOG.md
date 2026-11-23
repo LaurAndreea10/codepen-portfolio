@@ -6,7 +6,8 @@
 - RO: Secțiune nouă „Spectrul superellipse” (slider de la −∞ la +∞, previzualizare SVG, cele 6 cuvinte-cheie ca plăci). Mini-jocul e acum un joc real, „Detectivul de colțuri”: 10 runde, serie, record salvat local, tastele 1–4.
 - RO: CSS generat copiabil, link partajabil al formei, scurtături 1–7 și S, componente sincronizabile cu forma din laborator, butoanele „Setări” funcționale, padding adaptat la colțurile concave.
 - RO: Reparat: schimbarea RO/EN ștergea `<code>` din texte; selectoarele per colț erau mereu vizibile; textul din tema light avea contrast slab (toast, verde); linkurile CodePen din footer. Tema și limba se păstrează, plus SEO (canonical, Open Graph, JSON-LD) și `index.pen.html`.
-- EN: Corner Lab 1.1.0 renders corner shapes in every browser via a clip-path simulation, adds a superellipse spectrum, a real "Corner detective" game, copyable CSS and shareable links, and fixes i18n, contrast and footer-link bugs.
+- RO: Studiu de caz nou, `cornerlab/case-study.html` (RO/EN): cum funcționează simularea superellipse, cu figuri SVG calculate cu aceeași formulă. Imagine de previzualizare `og-image.png`. Corner Lab apare în lista de verificări manuale; teste în Chromium cu emulare iPhone 13 / Pixel 7 și cu `corner-shape` ascuns de `CSS.supports()`. Firefox și Safari reale rămân de verificat.
+- EN: Corner Lab 1.1.0 renders corner shapes in every browser via a clip-path simulation, adds a superellipse spectrum, a real "Corner detective" game, copyable CSS and shareable links, and fixes i18n, contrast and footer-link bugs. New RO/EN case study and OG image; added to the manual checks list.
 
 ## 2026-11-22 — Toate bibliotecile găzduite local · fără CDN-uri terțe
 

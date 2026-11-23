@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Studiu de caz · Corner Lab · Laura Andreea</title>
+<meta name="description" content="Studiu de caz RO/EN: cum am făcut proprietatea experimentală CSS corner-shape vizibilă în orice browser, cu o simulare superellipse prin clip-path. / Case study: making corner-shape visible in every browser.">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/cornerlab/case-study.html">
+<meta name="author" content="Laura Andreea">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Case study · Corner Lab — corner-shape în orice browser">
+<meta property="og:description" content="Superellipse, clip-path și un contur SVG: cum arată scoop, notch și squircle și acolo unde CSS-ul nu le cunoaște încă.">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/cornerlab/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#101218">
+<link href="../assets/fonts/fonts.css" rel="stylesheet">
+<style>
+  :root { --bg:#101218; --panel:#191c25; --line:rgb(255 255 255/.12); --text:#f1f2ee; --muted:#a6a9b5; --accent:#d4ff61; --accent2:#a18aff; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: radial-gradient(120% 60% at 10% 0%, #2a2346, var(--bg) 55%) fixed, var(--bg); color: var(--text); font: 400 1.05rem/1.7 Inter, system-ui, sans-serif; }
+  html[lang="en"] [data-lang="ro"], html[lang="ro"] [data-lang="en"] { display: none !important; }
+  a { color: var(--accent); }
+  code { font-family: "JetBrains Mono", monospace; font-size: .88em; color: var(--accent); }
+  :focus-visible { outline: 3px solid var(--accent2); outline-offset: 3px; }
+  .skip { position: absolute; left: 1rem; top: -4rem; padding: .6rem 1rem; border-radius: 10px; background: var(--accent); color: #14170b; }
+  .skip:focus { top: 1rem; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .top a { font: 500 .85rem "JetBrains Mono", monospace; text-decoration: none; }
+  button { min-height: 44px; min-width: 44px; padding: 0 .9rem; font: 600 .85rem "JetBrains Mono", monospace; color: var(--text); background: transparent; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; }
+  .eyebrow { font: 500 .78rem "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin: 3rem 0 .5rem; }
+  h1 { font: 700 clamp(2.2rem, 6vw, 3.8rem)/1.05 Fraunces, Georgia, serif; margin: 0 0 1rem; }
+  h2 { font: 600 1.7rem/1.2 Fraunces, Georgia, serif; margin: 3rem 0 .8rem; }
+  h3 { font: 600 1.1rem/1.3 Inter, system-ui, sans-serif; margin: 1.8rem 0 .5rem; }
+  .lead { font-size: 1.2rem; color: var(--muted); }
+  img { width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--line); margin: 2rem 0 1rem; }
+  .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: .8rem; margin: 1.5rem 0; padding: 0; list-style: none; }
+  .meta li { padding: .9rem 1rem; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+  .meta b { display: block; font: 500 .72rem "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  .tags { display: flex; flex-wrap: wrap; gap: .4rem; padding: 0; list-style: none; }
+  .tags li { font: 500 .78rem "JetBrains Mono", monospace; padding: .3rem .7rem; border-radius: 999px; border: 1px solid var(--line); color: var(--accent); }
+  ul.list li { margin-bottom: .5rem; }
+  pre { overflow-x: auto; margin: 1rem 0; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: 12px; background: #0b0d12; color: #d6f89c; font: .85rem/1.65 "JetBrains Mono", monospace; }
+  pre code { color: inherit; font-size: inherit; }
+  .c { color: #6f7486; } .p { color: #c1aaff; } .v { color: #ffd38d; }
+  figure { margin: 1.6rem 0; }
+  figcaption { color: var(--muted); font-size: .88rem; }
+  .tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .6rem; margin: 1.4rem 0 .4rem; }
+  .tile { display: grid; justify-items: center; gap: .3rem; margin: 0; padding: .8rem .3rem .6rem; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); text-align: center; }
+  .tile svg { width: 100%; max-width: 64px; height: auto; }
+  .tile path { fill: rgb(212 255 97/.14); stroke: var(--accent); stroke-width: 3; }
+  .tile figcaption { display: grid; font: .72rem "JetBrains Mono", monospace; }
+  .tile b { color: var(--text); font-weight: 500; }
+  .zoom { display: grid; grid-template-columns: 220px 1fr; gap: 1.2rem; align-items: center; padding: 1rem; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+  .zoom svg { width: 100%; height: auto; }
+  .zoom path { fill: none; stroke-width: 2.5; }
+  .zoom .frame { stroke: rgb(255 255 255/.2); stroke-dasharray: 4 4; stroke-width: 1.2; }
+  .legend { margin: 0; padding: 0; list-style: none; font: .82rem "JetBrains Mono", monospace; color: var(--muted); }
+  .legend li { display: flex; align-items: center; gap: .5rem; margin: .25rem 0; }
+  .legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; }
+  .note { padding: .9rem 1.1rem; border-left: 3px solid var(--accent2); border-radius: 0 12px 12px 0; background: rgb(161 138 255/.08); }
+  .cta { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 2rem; }
+  .cta a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 1.1rem; border-radius: 999px; border: 1px solid var(--line); text-decoration: none; font-weight: 600; }
+  .cta a:first-child { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+  @media (max-width: 640px) {
+    .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .zoom { grid-template-columns: 1fr; }
+    .zoom svg { max-width: 240px; justify-self: center; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#content"><span data-lang="ro">Sari la conținut</span><span data-lang="en">Skip to content</span></a>
+<div class="wrap">
+  <div class="top">
+    <a href="../portfolio.html">← <span data-lang="ro">Portofoliu</span><span data-lang="en">Portfolio</span></a>
+    <button type="button" id="lang" aria-label="Schimbă limba / Switch language"><span data-lang="ro">EN</span><span data-lang="en">RO</span></button>
+  </div>
+
+  <main id="content">
+  <p class="eyebrow"><span data-lang="ro">Studiu de caz · CodePen Challenge · noiembrie 2026</span><span data-lang="en">Case study · CodePen Challenge · November 2026</span></p>
+  <h1>Corner Lab</h1>
+  <p class="lead"><span data-lang="ro">Cum am făcut o proprietate CSS pe care o înțelege doar Chrome să arate la fel în orice browser: o curbă superellipse calculată în JavaScript, tăiată cu <code>clip-path</code> și conturată cu SVG.</span><span data-lang="en">How I made a CSS property only Chrome understands look the same in every browser: a superellipse curve computed in JavaScript, cut with <code>clip-path</code> and outlined with SVG.</span></p>
+
+  <img src="og-image.png" alt="Corner Lab: trei carduri cu colțuri scoop concave și butoanele pentru cele șapte forme, pe fundal închis" width="1200" height="630">
+
+  <ul class="meta">
+    <li><b><span data-lang="ro">Rol</span><span data-lang="en">Role</span></b><span data-lang="ro">Design și dezvoltare front-end</span><span data-lang="en">Design &amp; front-end development</span></li>
+    <li><b><span data-lang="ro">Context</span><span data-lang="en">Context</span></b>CodePen Challenge · week 4</li>
+    <li><b><span data-lang="ro">Versiune</span><span data-lang="en">Version</span></b>1.1.0</li>
+    <li><b><span data-lang="ro">Creat</span><span data-lang="en">Created</span></b><span data-lang="ro">23 noiembrie 2026</span><span data-lang="en">23 November 2026</span></li>
+    <li><b><span data-lang="ro">Dependențe</span><span data-lang="en">Dependencies</span></b><span data-lang="ro">Zero · un singur fișier</span><span data-lang="en">None · a single file</span></li>
+  </ul>
+
+  <h2><span data-lang="ro">Provocarea</span><span data-lang="en">The challenge</span></h2>
+  <p><span data-lang="ro">Tema ultimei săptămâni din noiembrie a fost CSS experimental. Am ales <code>corner-shape</code>: alături de <code>border-radius</code>, schimbă profilul colțului din arc de cerc în scoop (concav), bevel (teșit), notch (crestătură), squircle sau orice <code>superellipse()</code>.</span><span data-lang="en">The last November week's theme was experimental CSS. I picked <code>corner-shape</code>: together with <code>border-radius</code>, it changes a corner's profile from a circular arc to scoop (concave), bevel, notch, squircle or any <code>superellipse()</code>.</span></p>
+  <p><span data-lang="ro">Problema s-a văzut abia după prima versiune. Proprietatea există doar în Chrome, așa că în Firefox și Safari toate cele șapte butoane produceau același colț rotunjit. Un playground despre forme care nu arată forme celor mai mulți vizitatori nu-și face treaba. Mai era și un mini-joc care nu verifica niciun răspuns.</span><span data-lang="en">The problem only showed after the first version. The property exists only in Chrome, so in Firefox and Safari all seven buttons produced the same rounded corner. A shape playground that shows no shapes to most visitors isn't doing its job. There was also a mini-game that never checked an answer.</span></p>
+
+  <h2><span data-lang="ro">Ideea-cheie: o singură curbă</span><span data-lang="en">The key idea: one curve</span></h2>
+  <p><span data-lang="ro">Toate cuvintele-cheie sunt de fapt aceeași funcție, <code>superellipse(K)</code>, cu valori diferite pentru K. Colțul e un sfert din curba <code>|x|ⁿ + |y|ⁿ = 1</code>, unde <code>n = 2<sup>K</sup></code>:</span><span data-lang="en">Every keyword is really the same function, <code>superellipse(K)</code>, with different values of K. The corner is a quarter of the curve <code>|x|ⁿ + |y|ⁿ = 1</code>, where <code>n = 2<sup>K</sup></code>:</span></p>
+
+  <div class="tiles"><figure class="tile"><svg viewBox="-4 -4 108 108" aria-hidden="true"><path d="M0 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 38L38 0L62 0L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L62 38L100 38L100 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 62L62 100L38 100L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L38 62L0 62Z"/></svg><figcaption><b>notch</b><span>K = −∞</span></figcaption></figure><figure class="tile"><svg viewBox="-4 -4 108 108" aria-hidden="true"><path d="M0 38L0.3 38L1.3 38L2.8 37.9L4.9 37.8L7.4 37.6L10.3 37.2L13.4 36.5L16.6 35.6L19.8 34.4L22.9 32.8L25.9 30.8L28.5 28.5L30.8 25.9L32.8 22.9L34.4 19.8L35.6 16.6L36.5 13.4L37.2 10.3L37.6 7.4L37.8 4.9L37.9 2.8L38 1.3L38 0.3L38 0L62 0L62 0.3L62 1.3L62.1 2.8L62.2 4.9L62.4 7.4L62.8 10.3L63.5 13.4L64.4 16.6L65.6 19.8L67.2 22.9L69.2 25.9L71.5 28.5L74.1 30.8L77.1 32.8L80.2 34.4L83.4 35.6L86.6 36.5L89.7 37.2L92.6 37.6L95.1 37.8L97.2 37.9L98.7 38L99.7 38L100 38L100 62L99.7 62L98.7 62L97.2 62.1L95.1 62.2L92.6 62.4L89.7 62.8L86.6 63.5L83.4 64.4L80.2 65.6L77.1 67.2L74.1 69.2L71.5 71.5L69.2 74.1L67.2 77.1L65.6 80.2L64.4 83.4L63.5 86.6L62.8 89.7L62.4 92.6L62.2 95.1L62.1 97.2L62 98.7L62 99.7L62 100L38 100L38 99.7L38 98.7L37.9 97.2L37.8 95.1L37.6 92.6L37.2 89.7L36.5 86.6L35.6 83.4L34.4 80.2L32.8 77.1L30.8 74.1L28.5 71.5L25.9 69.2L22.9 67.2L19.8 65.6L16.6 64.4L13.4 63.5L10.3 62.8L7.4 62.4L4.9 62.2L2.8 62.1L1.3 62L0.3 62L0 62Z"/></svg><figcaption><b>scoop</b><span>K = −1</span></figcaption></figure><figure class="tile"><svg viewBox="-4 -4 108 108" aria-hidden="true"><path d="M0 38L0.2 37.8L0.6 37.4L1.4 36.6L2.5 35.5L3.9 34.1L5.6 32.4L7.4 30.6L9.5 28.5L11.7 26.3L14.1 23.9L16.5 21.5L19 19L21.5 16.5L23.9 14.1L26.3 11.7L28.5 9.5L30.6 7.4L32.4 5.6L34.1 3.9L35.5 2.5L36.6 1.4L37.4 0.6L37.8 0.2L38 0L62 0L62.2 0.2L62.6 0.6L63.4 1.4L64.5 2.5L65.9 3.9L67.6 5.6L69.4 7.4L71.5 9.5L73.7 11.7L76.1 14.1L78.5 16.5L81 19L83.5 21.5L85.9 23.9L88.3 26.3L90.5 28.5L92.6 30.6L94.4 32.4L96.1 34.1L97.5 35.5L98.6 36.6L99.4 37.4L99.8 37.8L100 38L100 62L99.8 62.2L99.4 62.6L98.6 63.4L97.5 64.5L96.1 65.9L94.4 67.6L92.6 69.4L90.5 71.5L88.3 73.7L85.9 76.1L83.5 78.5L81 81L78.5 83.5L76.1 85.9L73.7 88.3L71.5 90.5L69.4 92.6L67.6 94.4L65.9 96.1L64.5 97.5L63.4 98.6L62.6 99.4L62.2 99.8L62 100L38 100L37.8 99.8L37.4 99.4L36.6 98.6L35.5 97.5L34.1 96.1L32.4 94.4L30.6 92.6L28.5 90.5L26.3 88.3L23.9 85.9L21.5 83.5L19 81L16.5 78.5L14.1 76.1L11.7 73.7L9.5 71.5L7.4 69.4L5.6 67.6L3.9 65.9L2.5 64.5L1.4 63.4L0.6 62.6L0.2 62.2L0 62Z"/></svg><figcaption><b>bevel</b><span>K = 0</span></figcaption></figure><figure class="tile"><svg viewBox="-4 -4 108 108" aria-hidden="true"><path d="M0 38L0.1 35.5L0.3 33L0.7 30.6L1.3 28.2L2 25.8L2.9 23.5L3.9 21.2L5.1 19L6.4 16.9L7.9 14.9L9.4 12.9L11.1 11.1L12.9 9.4L14.9 7.9L16.9 6.4L19 5.1L21.2 3.9L23.5 2.9L25.8 2L28.2 1.3L30.6 0.7L33 0.3L35.5 0.1L38 0L62 0L64.5 0.1L67 0.3L69.4 0.7L71.8 1.3L74.2 2L76.5 2.9L78.8 3.9L81 5.1L83.1 6.4L85.1 7.9L87.1 9.4L88.9 11.1L90.6 12.9L92.1 14.9L93.6 16.9L94.9 19L96.1 21.2L97.1 23.5L98 25.8L98.7 28.2L99.3 30.6L99.7 33L99.9 35.5L100 38L100 62L99.9 64.5L99.7 67L99.3 69.4L98.7 71.8L98 74.2L97.1 76.5L96.1 78.8L94.9 81L93.6 83.1L92.1 85.1L90.6 87.1L88.9 88.9L87.1 90.6L85.1 92.1L83.1 93.6L81 94.9L78.8 96.1L76.5 97.1L74.2 98L71.8 98.7L69.4 99.3L67 99.7L64.5 99.9L62 100L38 100L35.5 99.9L33 99.7L30.6 99.3L28.2 98.7L25.8 98L23.5 97.1L21.2 96.1L19 94.9L16.9 93.6L14.9 92.1L12.9 90.6L11.1 88.9L9.4 87.1L7.9 85.1L6.4 83.1L5.1 81L3.9 78.8L2.9 76.5L2 74.2L1.3 71.8L0.7 69.4L0.3 67L0.1 64.5L0 62Z"/></svg><figcaption><b>round</b><span>K = 1</span></figcaption></figure><figure class="tile"><svg viewBox="-4 -4 108 108" aria-hidden="true"><path d="M0 38L0 28.3L0.2 24.3L0.4 21.2L0.7 18.7L1 16.5L1.5 14.5L2 12.7L2.6 11.1L3.3 9.7L4.2 8.4L5.1 7.1L6 6L7.1 5.1L8.4 4.2L9.7 3.3L11.1 2.6L12.7 2L14.5 1.5L16.5 1L18.7 0.7L21.2 0.4L24.3 0.2L28.3 0L38 0L62 0L71.7 0L75.7 0.2L78.8 0.4L81.3 0.7L83.5 1L85.5 1.5L87.3 2L88.9 2.6L90.3 3.3L91.6 4.2L92.9 5.1L94 6L94.9 7.1L95.8 8.4L96.7 9.7L97.4 11.1L98 12.7L98.5 14.5L99 16.5L99.3 18.7L99.6 21.2L99.8 24.3L100 28.3L100 38L100 62L100 71.7L99.8 75.7L99.6 78.8L99.3 81.3L99 83.5L98.5 85.5L98 87.3L97.4 88.9L96.7 90.3L95.8 91.6L94.9 92.9L94 94L92.9 94.9L91.6 95.8L90.3 96.7L88.9 97.4L87.3 98L85.5 98.5L83.5 99L81.3 99.3L78.8 99.6L75.7 99.8L71.7 100L62 100L38 100L28.3 100L24.3 99.8L21.2 99.6L18.7 99.3L16.5 99L14.5 98.5L12.7 98L11.1 97.4L9.7 96.7L8.4 95.8L7.1 94.9L6 94L5.1 92.9L4.2 91.6L3.3 90.3L2.6 88.9L2 87.3L1.5 85.5L1 83.5L0.7 81.3L0.4 78.8L0.2 75.7L0 71.7L0 62Z"/></svg><figcaption><b>squircle</b><span>K = 2</span></figcaption></figure><figure class="tile"><svg viewBox="-4 -4 108 108" aria-hidden="true"><path d="M0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L0 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 0L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L100 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100L0 100Z"/></svg><figcaption><b>square</b><span>K = +∞</span></figcaption></figure></div>
+  <p class="note"><span data-lang="ro">K negativ înseamnă un colț concav, care intră în formă. K = 0 e o linie dreaptă, iar K pozitiv înseamnă convex. La −∞ curba se strânge într-un unghi drept spre interior (notch), la +∞ devine colțul pătrat.</span><span data-lang="en">Negative K means a concave corner that cuts inward. K = 0 is a straight line, and positive K is convex. At −∞ the curve collapses into an inward right angle (notch), at +∞ it becomes the square corner.</span></p>
+
+  <figure class="zoom">
+    <svg viewBox="0 0 200 200" aria-hidden="true"><path class="frame" d="M20 180V20H180"/><path class="frame" d="M20 180H180V20"/><path d="M20 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 180L180 20" stroke="#ff7caa"/><path d="M20 180L20.2 180L20.9 180L22 180L23.5 180L25.4 180L27.7 179.9L30.5 179.8L33.5 179.7L37 179.5L40.7 179.3L44.8 179L49.1 178.5L53.7 178L58.5 177.4L63.4 176.6L68.6 175.6L73.8 174.5L79.2 173.2L84.6 171.7L90 170L95.4 168.1L100.8 165.9L106.2 163.5L111.5 160.9L116.6 158L121.6 154.9L126.5 151.5L131.2 147.9L135.7 144.1L140 140L144.1 135.7L147.9 131.2L151.5 126.5L154.9 121.6L158 116.6L160.9 111.5L163.5 106.2L165.9 100.8L168.1 95.4L170 90L171.7 84.6L173.2 79.2L174.5 73.8L175.6 68.6L176.6 63.4L177.4 58.5L178 53.7L178.5 49.1L179 44.8L179.3 40.7L179.5 37L179.7 33.5L179.8 30.5L179.9 27.7L180 25.4L180 23.5L180 22L180 20.9L180 20.2L180 20" stroke="#ff7caa"/><path d="M20 180L20.1 179.9L20.4 179.6L21 179L21.7 178.3L22.7 177.3L23.9 176.1L25.3 174.7L26.9 173.1L28.7 171.3L30.7 169.3L32.9 167.1L35.3 164.7L37.8 162.2L40.5 159.5L43.4 156.6L46.5 153.5L49.7 150.3L53 147L56.4 143.6L60 140L63.7 136.3L67.5 132.5L71.3 128.7L75.3 124.7L79.3 120.7L83.4 116.6L87.5 112.5L91.6 108.4L95.8 104.2L100 100L104.2 95.8L108.4 91.6L112.5 87.5L116.6 83.4L120.7 79.3L124.7 75.3L128.7 71.3L132.5 67.5L136.3 63.7L140 60L143.6 56.4L147 53L150.3 49.7L153.5 46.5L156.6 43.4L159.5 40.5L162.2 37.8L164.7 35.3L167.1 32.9L169.3 30.7L171.3 28.7L173.1 26.9L174.7 25.3L176.1 23.9L177.3 22.7L178.3 21.7L179 21L179.6 20.4L179.9 20.1L180 20" stroke="#f3b94f"/><path d="M20 180L20.1 175.8L20.2 171.6L20.5 167.4L20.9 163.3L21.4 159.1L22 155L22.7 150.8L23.5 146.7L24.4 142.6L25.5 138.6L26.6 134.6L27.8 130.6L29.2 126.6L30.6 122.7L32.2 118.8L33.8 114.9L35.6 111.1L37.4 107.4L39.4 103.7L41.4 100L43.6 96.4L45.8 92.9L48.1 89.4L50.6 86L53.1 82.6L55.7 79.3L58.3 76.1L61.1 72.9L63.9 69.9L66.9 66.9L69.9 63.9L72.9 61.1L76.1 58.3L79.3 55.7L82.6 53.1L86 50.6L89.4 48.1L92.9 45.8L96.4 43.6L100 41.4L103.7 39.4L107.4 37.4L111.1 35.6L114.9 33.8L118.8 32.2L122.7 30.6L126.6 29.2L130.6 27.8L134.6 26.6L138.6 25.5L142.6 24.4L146.7 23.5L150.8 22.7L155 22L159.1 21.4L163.3 20.9L167.4 20.5L171.6 20.2L175.8 20.1L180 20" stroke="#d4ff61"/><path d="M20 180L20 154.1L20.1 143.4L20.2 135.2L20.4 128.3L20.7 122.2L21 116.7L21.3 111.7L21.8 107L22.2 102.7L22.7 98.6L23.3 94.7L24 91.1L24.7 87.6L25.4 84.2L26.2 81L27.1 78L28 75L29 72.2L30 69.5L31.1 66.9L32.3 64.3L33.5 61.9L34.7 59.6L36.1 57.3L37.5 55.2L39 53.1L40.5 51.1L42.1 49.1L43.7 47.3L45.5 45.5L47.3 43.7L49.1 42.1L51.1 40.5L53.1 39L55.2 37.5L57.3 36.1L59.6 34.7L61.9 33.5L64.3 32.3L66.9 31.1L69.5 30L72.2 29L75 28L78 27.1L81 26.2L84.2 25.4L87.6 24.7L91.1 24L94.7 23.3L98.6 22.7L102.7 22.2L107 21.8L111.7 21.3L116.7 21L122.2 20.7L128.3 20.4L135.2 20.2L143.4 20.1L154.1 20L180 20" stroke="#6de6df"/><path d="M20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20L20 20" stroke="#6de6df"/></svg>
+    <figcaption>
+      <span data-lang="ro">Același colț, mărit, pentru șase valori ale lui K; colțul cutiei e în stânga-sus. Toate pornesc din aceleași două puncte de pe margini, deci raza rămâne aceeași, doar profilul se schimbă.</span><span data-lang="en">The same corner, zoomed in, for six values of K; the box corner is top-left. They all start from the same two edge points, so the radius stays the same and only the profile changes.</span>
+      <ul class="legend">
+        <li><i style="background:#ff7caa"></i>notch · scoop (K &lt; 0)</li>
+        <li><i style="background:#f3b94f"></i>bevel (K = 0)</li>
+        <li><i style="background:#d4ff61"></i>round (K = 1)</li>
+        <li><i style="background:#6de6df"></i>squircle · square (K &gt; 1)</li>
+      </ul>
+    </figcaption>
+  </figure>
+
+  <h2><span data-lang="ro">Simularea, pas cu pas</span><span data-lang="en">The simulation, step by step</span></h2>
+  <h3><span data-lang="ro">1. Punctele colțului</span><span data-lang="en">1. The corner points</span></h3>
+  <p><span data-lang="ro">Forma parametrică a curbei e simplă: pentru <code>t</code> de la 0 la 90°, un punct este <code>(cos t)<sup>e</sup>, (sin t)<sup>e</sup></code>, cu <code>e = 2 / n = 2<sup>1−K</sup></code>. Calculez 24 de puncte pe colț, cele patru colțuri în sensul acelor de ceasornic, și le leg într-un singur drum SVG.</span><span data-lang="en">The parametric form is simple: for <code>t</code> from 0 to 90°, a point is <code>(cos t)<sup>e</sup>, (sin t)<sup>e</sup></code>, with <code>e = 2 / n = 2<sup>1−K</sup></code>. I compute 24 points per corner, the four corners clockwise, and join them into one SVG path.</span></p>
+<pre><code><span class="c">// e = 2^(1−K): K = 1 → e = 1 (cerc), K = 0 → e = 2 (linie), K → −∞ → e → ∞</span>
+const e = Math.pow(2, 1 - k);
+for (let i = 0; i &lt;= steps; i++) {
+  const t = (i / steps) * Math.PI / 2;
+  const a = fpow(Math.cos(t), e), b = fpow(Math.sin(t), e);
+  pts.push([cx - r * a, cy - r * b]);   <span class="c">// colțul stânga-sus</span>
+}</code></pre>
+  <p><span data-lang="ro">Capcana a fost la infinit: în JavaScript, <code>1 ** Infinity</code> dă <code>NaN</code>, iar <code>cos(0)</code> e exact 1. De aceea <code>fpow</code> tratează separat capetele intervalului (u ≥ 1 → 1, u ≤ 0 → 0, iar 0⁰ → 1 pentru square), ca notch și square să iasă din aceeași formulă, fără cazuri speciale.</span><span data-lang="en">The trap was infinity: in JavaScript, <code>1 ** Infinity</code> is <code>NaN</code>, and <code>cos(0)</code> is exactly 1. So <code>fpow</code> handles the ends of the range separately (u ≥ 1 → 1, u ≤ 0 → 0, and 0⁰ → 1 for square), letting notch and square come out of the same formula with no special cases.</span></p>
+
+  <h3><span data-lang="ro">2. Tăierea cu clip-path</span><span data-lang="en">2. Cutting with clip-path</span></h3>
+  <p><span data-lang="ro">Drumul calculat devine <code>clip-path: path('…')</code>, suportat în Firefox și Safari de ani buni. Un detaliu contează aici: elementul trebuie să piardă <code>border-radius</code> cât timp e tăiat. Altfel, un squircle (care iese în afara arcului de cerc) ar avea goluri exact acolo unde fundalul rotunjit nu ajunge.</span><span data-lang="en">The computed path becomes <code>clip-path: path('…')</code>, which Firefox and Safari have supported for years. One detail matters: the element has to drop its <code>border-radius</code> while it's clipped. Otherwise a squircle (which reaches outside the circular arc) would have gaps exactly where the rounded background doesn't reach.</span></p>
+<pre><code><span class="p">.cs-sim</span> { <span class="p">border-radius</span>: <span class="v">0 !important</span>; }
+<span class="p">@supports</span> (<span class="p">corner-shape</span>: <span class="v">round</span>) { <span class="p">.cs</span> { <span class="p">corner-shape</span>: <span class="v">var(--cs)</span>; } }</code></pre>
+
+  <h3><span data-lang="ro">3. Bordura care lipsește</span><span data-lang="en">3. The missing border</span></h3>
+  <p><span data-lang="ro"><code>clip-path</code> taie și bordura, așa că pe curbe dispare. Am pus în fiecare element un SVG cu același drum, culoarea și grosimea citite din stilul calculat. Linia SVG e centrată pe margine, iar jumătatea exterioară e tăiată de același <code>clip-path</code>, deci grosimea trebuie dublată ca să rămână vizibilă exact cât bordura originală.</span><span data-lang="en"><code>clip-path</code> also cuts the border, so it vanishes along the curves. I added an SVG with the same path inside each element, with color and width read from the computed style. The SVG stroke is centered on the edge and its outer half is cut by the same <code>clip-path</code>, so the width has to be doubled to stay exactly as visible as the original border.</span></p>
+
+  <h3><span data-lang="ro">4. Mărime și forme în CSS</span><span data-lang="en">4. Size and shapes in CSS</span></h3>
+  <p><span data-lang="ro">Fiecare element declară forma în variabila <code>--cs</code> și raza în <code>--r</code>, înregistrată cu <code>@property</code> ca lungime, ca scriptul să citească mereu pixeli. Așa simularea rămâne generică: aceeași funcție desenează cardurile, iconițele, rama foto și butoanele. Un <code>ResizeObserver</code> recalculează drumul când se schimbă mărimea.</span><span data-lang="en">Each element declares its shape in a <code>--cs</code> variable and its radius in <code>--r</code>, registered with <code>@property</code> as a length so the script always reads pixels. That keeps the simulation generic: the same function draws the cards, icons, photo frame and buttons. A <code>ResizeObserver</code> recomputes the path when the size changes.</span></p>
+
+  <h3><span data-lang="ro">5. Verificarea</span><span data-lang="en">5. Checking it</span></h3>
+  <p><span data-lang="ro">Fiindcă Chrome are și varianta nativă, am putut compara direct: aceeași formă, desenată o dată de browser și o dată de simulare, captură lângă captură. Pentru scoop, squircle și notch rezultatele se suprapun practic perfect. Comparația a rămas în pagină ca un comutator Nativ / Simulare JS / Fallback, ca să o poată face oricine.</span><span data-lang="en">Since Chrome also has the native version, I could compare directly: the same shape, drawn once by the browser and once by the simulation, screenshot next to screenshot. For scoop, squircle and notch they overlap almost perfectly. The comparison stayed in the page as a Native / JS simulation / Fallback switch, so anyone can run it.</span></p>
+
+  <h2><span data-lang="ro">Ce mai conține pagina</span><span data-lang="en">What else is on the page</span></h2>
+  <ul class="list">
+    <li><span data-lang="ro"><strong>Spectrul superellipse</strong>: un slider de la −∞ la +∞ cu previzualizare SVG, care spune la fiecare pas de ce cuvânt-cheie e mai aproape forma și dacă e concavă sau convexă.</span><span data-lang="en"><strong>Superellipse spectrum</strong>: a −∞ to +∞ slider with an SVG preview that tells you at every step which keyword the shape is closest to and whether it's concave or convex.</span></li>
+    <li><span data-lang="ro"><strong>Detectivul de colțuri</strong>: zece siluete, câte patru variante, puncte bonus pentru serie și record păstrat în browser. Siluetele sunt SVG, deci jocul merge la fel peste tot.</span><span data-lang="en"><strong>Corner detective</strong>: ten silhouettes, four choices each, streak bonuses and a best score kept in the browser. The silhouettes are SVG, so the game works the same everywhere.</span></li>
+    <li><span data-lang="ro"><strong>Unelte</strong>: colțuri setate individual, CSS generat cu fallback-ul inclus și buton de copiere, un link care redeschide pagina cu aceeași formă, scurtături 1–7 și S.</span><span data-lang="en"><strong>Tools</strong>: per-corner shapes, generated CSS with the fallback included and a copy button, a link that reopens the page with the same shape, shortcuts 1–7 and S.</span></li>
+    <li><span data-lang="ro"><strong>Muzeul CSS experimental</strong>: <code>if()</code>, <code>@function</code>, <code>color-mix()</code> cu trei culori, Grid Lanes, <code>:heading</code>, <code>::field-content</code>, fiecare cu indicator de suport live.</span><span data-lang="en"><strong>Experimental CSS museum</strong>: <code>if()</code>, <code>@function</code>, three-color <code>color-mix()</code>, Grid Lanes, <code>:heading</code>, <code>::field-content</code>, each with a live support indicator.</span></li>
+  </ul>
+
+  <h2><span data-lang="ro">Decizii de accesibilitate</span><span data-lang="en">Accessibility decisions</span></h2>
+  <ul class="list">
+    <li><span data-lang="ro">Toate controalele sunt butoane reale, cu <code>aria-pressed</code> pentru starea selectată. Contururile SVG sunt <code>aria-hidden</code>, fiind pur decorative.</span><span data-lang="en">Every control is a real button with <code>aria-pressed</code> for its selected state. The SVG outlines are <code>aria-hidden</code>, being purely decorative.</span></li>
+    <li><span data-lang="ro">Schimbările importante (forma aleasă, răspunsul din joc) se anunță printr-o zonă <code>role="status"</code>, nu prin reanunțarea întregii grile de carduri.</span><span data-lang="en">Important changes (the chosen shape, the game answer) are announced through a <code>role="status"</code> region rather than re-reading the whole card grid.</span></li>
+    <li><span data-lang="ro">La colțurile concave, padding-ul cardurilor crește odată cu adâncimea tăieturii, ca textul să nu ajungă niciodată în zona decupată.</span><span data-lang="en">With concave corners, the cards' padding grows with the depth of the cut, so text never lands in the cut-away area.</span></li>
+    <li><span data-lang="ro">Tema deschisă are culori proprii de accent, verificate pentru contrast pe text mic. RO/EN, temă și limbă păstrate, <code>prefers-reduced-motion</code> respectat.</span><span data-lang="en">The light theme has its own accent colors, checked for contrast on small text. RO/EN, theme and language remembered, <code>prefers-reduced-motion</code> respected.</span></li>
+  </ul>
+
+  <h2><span data-lang="ro">Compatibilitate și verificare</span><span data-lang="en">Compatibility &amp; testing</span></h2>
+  <ul class="list">
+    <li><span data-lang="ro">Teste automate în Chromium la 1366 și 390 px, cu emulare iPhone 13 și Pixel 7: fără erori JavaScript, fără derulare laterală, jocul jucat cap-coadă cu tastatura și prin atingere.</span><span data-lang="en">Automated tests in Chromium at 1366 and 390 px, with iPhone 13 and Pixel 7 emulation: no JavaScript errors, no sideways scrolling, the game played start to finish by keyboard and by touch.</span></li>
+    <li><span data-lang="ro">Un browser fără suport l-am imitat ascunzând <code>corner-shape</code> de <code>CSS.supports()</code>: pagina pornește în modul simulare și desenează toate cele 17 elemente cu forme.</span><span data-lang="en">I imitated an unsupported browser by hiding <code>corner-shape</code> from <code>CSS.supports()</code>: the page starts in simulation mode and draws all 17 shaped elements.</span></li>
+    <li><span data-lang="ro"><strong>Rămân de verificat:</strong> Firefox și Safari reale, telefon fizic și cititor de ecran. Sunt pe <a href="../test-status/manual.html">lista de verificări manuale</a>.</span><span data-lang="en"><strong>Still to check:</strong> real Firefox and Safari, a physical phone and a screen reader. They're on the <a href="../test-status/manual.html">manual checks list</a>.</span></li>
+  </ul>
+
+  <h2><span data-lang="ro">Istoric</span><span data-lang="en">History</span></h2>
+  <ul class="list">
+    <li><span data-lang="ro"><strong>1.0.0</strong> — playground <code>corner-shape</code> cu reglaje, componente, poster și muzeul CSS experimental.</span><span data-lang="en"><strong>1.0.0</strong> — <code>corner-shape</code> playground with controls, components, a poster and the experimental CSS museum.</span></li>
+    <li><span data-lang="ro"><strong>1.1.0</strong> — simularea pentru orice browser, spectrul superellipse, jocul real, CSS copiabil și link partajabil; reparate textele RO/EN, selectoarele per colț, contrastul în tema deschisă și linkurile din footer.</span><span data-lang="en"><strong>1.1.0</strong> — the any-browser simulation, the superellipse spectrum, a real game, copyable CSS and shareable links; fixed RO/EN text, per-corner selects, light-theme contrast and footer links.</span></li>
+  </ul>
+
+  <h2><span data-lang="ro">Tehnologii</span><span data-lang="en">Tech</span></h2>
+  <ul class="tags">
+    <li>HTML</li><li>CSS corner-shape</li><li>superellipse()</li><li>clip-path: path()</li><li>@property</li><li>@supports</li><li>SVG</li><li>ResizeObserver</li><li>Vanilla JS</li><li>Clipboard API</li><li>GitHub Pages</li>
+  </ul>
+
+  <h2><span data-lang="ro">Ce am învățat</span><span data-lang="en">What I learned</span></h2>
+  <p><span data-lang="ro">Un fallback nu trebuie să fie neapărat o versiune mai săracă. Când am înțeles că toate formele sunt aceeași curbă, simularea a încăput în câteva zeci de rânduri. Și: un browser care are deja funcția nativă e cel mai bun etalon pentru a testa o imitație a ei.</span><span data-lang="en">A fallback doesn't have to be a poorer version. Once I understood that every shape is the same curve, the simulation fit in a few dozen lines. And a browser that already has the native feature is the best yardstick for testing an imitation of it.</span></p>
+
+  <div class="cta">
+    <a href="./"><span data-lang="ro">Deschide proiectul</span><span data-lang="en">Open the project</span></a>
+    <a href="./#game"><span data-lang="ro">Joacă Detectivul de colțuri</span><span data-lang="en">Play Corner detective</span></a>
+    <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/cornerlab" target="_blank" rel="noopener noreferrer"><span data-lang="ro">Codul pe GitHub</span><span data-lang="en">Code on GitHub</span></a>
+    <a href="https://codepen.io/tag/cpc-experimental-css" target="_blank" rel="noopener noreferrer">#cpc-experimental-css</a>
+  </div>
+  </main>
+
+  <footer>
+    <p><span data-lang="ro">Realizat de</span><span data-lang="en">Built by</span> Laura Andreea · <span data-lang="ro">Specificația:</span><span data-lang="en">Spec:</span> <a href="https://drafts.csswg.org/css-borders-4/">CSS Borders and Box Decorations Level 4</a></p>
+  </footer>
+</div>
+<script>
+  (() => {
+    const root = document.documentElement;
+    let lang = "ro";
+    try { lang = localStorage.getItem("cornerlab-lang") || "ro"; } catch (e) {}
+    root.lang = lang === "en" ? "en" : "ro";
+    document.getElementById("lang").addEventListener("click", () => {
+      root.lang = root.lang === "ro" ? "en" : "ro";
+      try { localStorage.setItem("cornerlab-lang", root.lang); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>
