@@ -4,6 +4,11 @@ Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub c
 
 This file summarises the major milestones; each link opens the GitHub commit with the exact code of that version.
 
+## 2026-11-24 · v1.16 — doar CSS-ul necesar la pornire / only the CSS the first screen needs
+
+- RO: `scripts/build-curious-garden-css.py` pune inline doar regulile folosite pe primul ecran (lista în `critical-selectors.txt`, regenerată cu `--extract`). Restul stilurilor (`bundle.css`) se încarcă la prima atingere, tastă sau scroll, ori imediat dacă revii pe alt ecran decât Acasă; funcționează și offline. Aspectul e identic, toate testele trec.
+- EN: Only first-screen CSS is inlined; the full bundle loads on first interaction (or immediately when resuming another screen) and is cached offline.
+
 ## 2026-11-24 · v1.15 — prima afișare sub o secundă / first paint under a second
 
 - RO: Cele 7 foi de stil sunt concatenate și puse inline de `scripts/build-curious-garden-css.py`; sursele `*.css` rămân cele de editat. Scripturile jocului (inclusiv `i18n.js`) se cer după primul paint, în aceeași ordine, iar maghiara și ucraineana se aplică imediat ce sosește `i18n.js`. Mențiunea „Datele rămân pe acest dispozitiv” e direct în HTML. Lighthouse local 0,83 → 1,0; toate cele 11 suite de teste trec.
