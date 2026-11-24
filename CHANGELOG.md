@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-24 — Grădina Curioasă fără CSS nefolosit · link Corner Lab stabil
+
+- RO: Grădina Curioasă pune inline doar regulile folosite pe primul ecran (~12 KB din 61 KB, extrase automat cu Playwright pe profil nou și pe Acasă, în temă întunecată, luminoasă și cu contrast ridicat, pe telefon și pe desktop). `bundle.css` complet se încarcă la prima interacțiune sau imediat dacă sesiunea revine pe alt ecran, și e în cache-ul offline. Lighthouse: „unused CSS” 0,5 → 1; capturile de ecran sunt identice; cele 11 suite de teste trec.
+- RO: Linkul CodePen al Corner Lab era o adresă temporară de previzualizare (`…codepen.dev`) și pica verificarea linkurilor; până la adresa stabilă a pen-ului, duce la profilul CodePen.
+- EN: Curious Garden inlines only first-screen CSS and loads the full bundle on first interaction (unused-CSS warning fixed). Corner Lab's temporary CodePen preview link now points to the CodePen profile until the stable pen URL is known.
+
 ## 2026-11-24 — Ultimele avertismente Lighthouse: TBT, LCP, resurse care blochează randarea
 
 - RO: `portfolio.html`: capitolele din afara ecranului au `content-visibility: auto` (nu se randează până nu se apropie de viewport). Stratul de animație pregătește titlurile de capitol în bucăți scurte, iar cardurile apar printr-un IntersectionObserver în locul `ScrollTrigger.batch`, care măsura fiecare card la pornire (local, TBT median 700 → 420 ms). Cardurile tăiate lateral într-un rând orizontal apar odată cu rândul lor.
