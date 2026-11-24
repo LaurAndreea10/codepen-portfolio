@@ -173,3 +173,7 @@ body.high-contrast .chapter-bento{--b-ground:#000;--b-line:#fff;--b-ink:#fff;--b
 body.high-contrast .bento-card.feat .project-desc{color:#fff}
 @media (forced-colors:active){.bento-card{border:1px solid CanvasText}}
 @media (prefers-reduced-motion:reduce){.bento-card{transition:none}}
+
+/* Capitolele din afara ecranului nu se randează până nu se apropie de viewport (mai puțin layout la încărcare → TBT mai mic). */
+.chapter{content-visibility:auto;contain-intrinsic-size:auto 900px}
+@media print{.chapter{content-visibility:visible}}

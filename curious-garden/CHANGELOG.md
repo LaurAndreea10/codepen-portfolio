@@ -4,6 +4,11 @@ Acest fișier rezumă etapele importante. Fiecare link duce la commitul GitHub c
 
 This file summarises the major milestones; each link opens the GitHub commit with the exact code of that version.
 
+## 2026-11-24 · v1.15 — prima afișare sub o secundă / first paint under a second
+
+- RO: Cele 7 foi de stil sunt concatenate și puse inline de `scripts/build-curious-garden-css.py`; sursele `*.css` rămân cele de editat. Scripturile jocului (inclusiv `i18n.js`) se cer după primul paint, în aceeași ordine, iar maghiara și ucraineana se aplică imediat ce sosește `i18n.js`. Mențiunea „Datele rămân pe acest dispozitiv” e direct în HTML. Lighthouse local 0,83 → 1,0; toate cele 11 suite de teste trec.
+- EN: Inline concatenated CSS, game scripts requested after first paint (order preserved), privacy note pre-rendered; local Lighthouse 0.83 → 1.0.
+
 ## 2026-11-22 — fără salt la încărcare / no layout shift
 
 - RO: Bara de profil din cardul de început există direct în HTML, cu înălțimea rezervată, așa că titlul „Să descoperim împreună!” nu mai coboară când o completează scriptul (CLS 0,16 → 0 local).

@@ -24,10 +24,10 @@ function openDetails(){dlg.replaceChildren();const h=E('h2',L(T.title));h.id='pr
 const erase=E('button',L(T.erase),'privacy-erase');erase.type='button';erase.onclick=()=>{dlg.close();const go=()=>{if(!confirm(L(T.confirm)))return;Object.keys(localStorage).filter(k=>k.startsWith('garden_')).forEach(k=>localStorage.removeItem(k));try{sessionStorage.removeItem('garden_view')}catch{}location.reload()};window.gardenGate?gardenGate(go):go()};
 const close=E('button',L(T.close),'primary');close.type='button';close.onclick=()=>dlg.close();const row=E('div','','privacy-actions');row.append(fbLink('btn privacy-fb'),erase,close);dlg.append(h,ul,row);if(!dlg.open)dlg.showModal();close.focus()}
 // Pe ecranul de configurare: un chenar vizibil, înaintea datei nașterii
-const setup=$('setup'),note=E('div','','privacy-note');note.setAttribute('role','note');setup.insertBefore(note,setup.querySelector('[data-i=setupText]')?.nextSibling||setup.firstChild);
+const setup=$('setup');let note=setup.querySelector('.privacy-note');if(!note){note=E('div','','privacy-note');note.setAttribute('role','note');setup.insertBefore(note,setup.querySelector('[data-i=setupText]')?.nextSibling||setup.firstChild)}
 // În joc: o bară subțire, pe toate ecranele
 const bar=E('div','','privacy-bar');const app=$('app');app.insertBefore(bar,app.firstChild);
-function draw(){note.replaceChildren(E('strong',L(T.title)),E('p',L(T.short)));const more=E('button',L(T.more),'privacy-more');more.type='button';more.onclick=openDetails;note.append(more,fbLink('privacy-fb-inline'));
+function draw(){let st=note.querySelector(':scope>strong'),pp=note.querySelector(':scope>p');if(!st||!pp){st=E('strong');pp=E('p');note.replaceChildren(st,pp)}else[...note.children].forEach(c=>{if(c!==st&&c!==pp)c.remove()});if(st.textContent!==L(T.title))st.textContent=L(T.title);if(pp.textContent!==L(T.short))pp.textContent=L(T.short);const more=E('button',L(T.more),'privacy-more');more.type='button';more.onclick=openDetails;note.append(more,fbLink('privacy-fb-inline'));
 bar.replaceChildren();const b=E('button','🔒 '+L(T.bar),'privacy-chip');b.type='button';b.setAttribute('aria-haspopup','dialog');b.onclick=openDetails;bar.append(b,fbLink('privacy-chip privacy-fb-chip'));if(dlg.open)openDetails()}
 window.gardenPrivacy={open:openDetails};
 gardenOn(draw);document.getElementById('lang')?.addEventListener('change',()=>setTimeout(draw));draw();

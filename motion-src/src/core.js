@@ -151,7 +151,6 @@ function revealAll() {
 }
 
 const measurable = (el) => el.getClientRects().length > 0 && !el.closest('[hidden], details:not([open])');
-const belowFold = (el) => el.getBoundingClientRect().top > window.innerHeight * 0.92;
 
 if (!reduced()) {
   // Hero copy: gentle stagger in. The h1 stays untouched so LCP is not delayed.
@@ -169,7 +168,9 @@ if (!reduced()) {
   }
 
   // Chapter heads: outlined number slides in + parallax, title words rise through a line mask.
-  gsap.utils.toArray('.chapter-head').forEach((head) => {
+  // SplitText + ScrollTrigger measure layout, so the heads are set up in short chunks that yield
+  // to the main thread (no single long task while the page is still loading → lower TBT).
+  const setupHead = (head) => {
     if (!measurable(head)) return;
     const num = head.querySelector('.chapter-num');
     const title = head.querySelector('.chapter-title');
@@ -203,9 +204,20 @@ if (!reduced()) {
     if (lede) {
       tl.from(lede, { y: 14, autoAlpha: 0, duration: 0.7, ease: 'power2.out', clearProps: 'transform,opacity,visibility' }, 0.28);
     }
-  });
+  };
+  const heads = gsap.utils.toArray('.chapter-head');
+  let headIndex = 0;
+  const setupHeadsChunk = () => {
+    const t0 = performance.now();
+    while (headIndex < heads.length && performance.now() - t0 < 8) setupHead(heads[headIndex++]);
+    if (headIndex < heads.length) setTimeout(setupHeadsChunk, 0);
+    else ScrollTrigger.refresh();
+  };
+  setTimeout(setupHeadsChunk, 0);
 
-  // Cards: batched fade-up. Only measurable, below-the-fold cards are pre-hidden, so hidden tabs never get stuck.
+  // Cards: batched fade-up. Positions come from IntersectionObserver (asynchronous, no forced
+  // layout at startup). Its first report per card decides: below the fold → pre-hidden and
+  // revealed on entry; visible, above, or in a hidden tab (zero size) → left untouched.
   const CARD_SEL = [
     '.cred-item',
     '.project-card',
@@ -213,15 +225,34 @@ if (!reduced()) {
     '.plus-card',
     '.grid > .card'
   ].join(',');
-  const cards = gsap.utils.toArray(CARD_SEL).filter((el) => measurable(el) && belowFold(el));
-  if (cards.length) {
-    cards.forEach((el) => hidden.add(el));
-    gsap.set(cards, { autoAlpha: 0, y: 28 });
-    ScrollTrigger.batch(cards, {
-      start: 'top 92%',
-      once: true,
-      onEnter: (batch) => {
-        batch.forEach((el) => hidden.delete(el));
+  const seenCards = new WeakSet();
+  const io = new IntersectionObserver(
+    (entries) => {
+      const batch = [];
+      for (const entry of entries) {
+        const el = entry.target;
+        if (!seenCards.has(el)) {
+          seenCards.add(el);
+          const r = entry.boundingClientRect;
+          if (entry.isIntersecting || r.height === 0 || r.top < window.innerHeight) {
+            io.unobserve(el);
+          } else {
+            hidden.add(el);
+            gsap.set(el, { autoAlpha: 0, y: 28 });
+          }
+          continue;
+        }
+        if (entry.isIntersecting) {
+          // Cards clipped sideways in a horizontal row never intersect: reveal the row together.
+          const row = el.parentElement ? [...el.parentElement.children].filter((c) => hidden.has(c)) : [];
+          for (const c of new Set([el, ...row])) {
+            io.unobserve(c);
+            hidden.delete(c);
+            batch.push(c);
+          }
+        }
+      }
+      if (batch.length) {
         gsap.to(batch, {
           autoAlpha: 1,
           y: 0,
@@ -232,8 +263,10 @@ if (!reduced()) {
           clearProps: 'transform,opacity,visibility'
         });
       }
-    });
-  }
+    },
+    { rootMargin: '0px 0px -8% 0px' }
+  );
+  document.querySelectorAll(CARD_SEL).forEach((el) => io.observe(el));
 
   // Keyboard users never land on an invisible element.
   document.addEventListener('focusin', (event) => {
