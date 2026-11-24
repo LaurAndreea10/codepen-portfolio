@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-24 — Ultimele avertismente Lighthouse: TBT, LCP, resurse care blochează randarea
+
+- RO: `portfolio.html`: capitolele din afara ecranului au `content-visibility: auto` (nu se randează până nu se apropie de viewport). Stratul de animație pregătește titlurile de capitol în bucăți scurte, iar cardurile apar printr-un IntersectionObserver în locul `ScrollTrigger.batch`, care măsura fiecare card la pornire (local, TBT median 700 → 420 ms). Cardurile tăiate lateral într-un rând orizontal apar odată cu rândul lor.
+- RO: Contrast: linkurile din itemii „Finalizat” ai panoului Now (opacity .75) aveau 3,3:1; acum au o nuanță mai deschisă în ambele teme.
+- RO: Grădina Curioasă: cele 7 foi de stil sunt concatenate inline (`scripts/build-curious-garden-css.py`), iar cele 21 de scripturi se cer după primul paint, în aceeași ordine. Mențiunea de confidențialitate e direct în HTML. Lighthouse local 0,83 → 1,0 (LCP 4,7 → 0,9 s, render-blocking 0 → 1).
+- RO: Kygo: Arhipelagul: fonturile sunt inline (fără `fonts.css` dublat), universul Kygo se încarcă după primul paint, iar fundalul cu insule abia după `load`. Local, LCP 3,8 → 3,2 s.
+- RO: Revenue Landscape (repo separat): fonturi găzduite local în locul `@import` Google Fonts; local Lighthouse 0,88 → 1,0.
+- EN: Fixes the last Lighthouse warnings: portfolio TBT (content-visibility on offscreen chapters, chunked motion setup, IntersectionObserver card reveals), Curious Garden render-blocking CSS/JS and LCP, Kygo Archipelago LCP, a contrast bug on completed Now items, and self-hosted fonts on Revenue Landscape.
+
 ## 2026-11-23 — Corner Lab v1.1.0 · formele se văd în orice browser
 
 - RO: Unde browserul nu are `corner-shape` (Firefox, Safari), un script calculează aceeași curbă superellipse și o aplică prin `clip-path: path()`, cu contur SVG în locul bordurii. Comutator Nativ / Simulare JS / Fallback pentru comparație.

@@ -1,5 +1,10 @@
 # Kygo: Arhipelagul — Version History
 
+## 2026-11-24 — v2.0.2 · prima afișare mai rapidă
+
+- RO: Fonturile (Nunito, Fraunces, JetBrains Mono, Inter) sunt declarate inline, iar `fonts.css`, care era inclus de două ori, nu mai blochează randarea. Scripturile universului Kygo se cer după primul paint, în aceeași ordine, iar fundalul cu insule se încarcă după `load`. Local, LCP 3,8 → 3,2 s, CLS 0.
+- EN: Inline font faces (duplicate fonts.css removed), Kygo Universe scripts requested after first paint, island backdrop after load; LCP 3.8 → 3.2 s locally.
+
 ## 2026-11-22 — v2.0.1 · performanță și contrast
 
 - RO: Three.js r128 e găzduit local (`assets/vendor/three/`) și se încarcă abia la prima interacțiune sau la pornirea unui joc. Până atunci harta e în 2D, iar dacă pornești un joc înainte să sosească, jocul trece în 3D imediat ce e gata. Pagina nu mai așteaptă 600 KB înainte de prima afișare, iar vizitatorul nu mai trimite IP-ul către cdnjs (Cloudflare).
