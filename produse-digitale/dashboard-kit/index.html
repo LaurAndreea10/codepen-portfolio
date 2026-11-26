@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0b1220">
 <title>CRM Dashboard UI Kit — Produse digitale</title>
-<meta name="description" content="CRM Dashboard UI Kit: 7 Web Components fără dependențe — KPI, sparkline, grafic cu bare, donut, pipeline, tabel sortabil și flux de activitate — cu teme prin variabile CSS și date demo.">
+<meta name="description" content="CRM Dashboard UI Kit: Web Components fără dependențe — KPI, sparkline, grafic cu bare, donut, pipeline, tabel sortabil și flux de activitate — cu teme prin variabile CSS și date demo.">
 <meta name="author" content="Laura Andreea">
 <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/dashboard-kit/">
 <meta property="og:title" content="CRM Dashboard UI Kit">
-<meta property="og:description" content="7 Web Components pentru dashboard-uri CRM, fără dependențe.">
+<meta property="og:description" content="Web Components pentru dashboard-uri CRM, fără dependențe.">
 <meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/dashboard-kit/">
 <meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg">
 <link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
@@ -39,10 +39,10 @@
 
 <main id="main" class="wrap">
   <section class="hero">
-    <span class="eyebrow">03 · CRM × Design system</span>
+    <span class="eyebrow">CRM × Design system</span>
     <h1>CRM Dashboard UI Kit</h1>
-    <p class="lead" data-en="Seven Web Components for CRM dashboards, born from my CRM projects and design system. One script tag, data as JSON, themes through CSS variables. They work in plain HTML, React, Vue or a CMS.">Șapte Web Components pentru dashboard-uri CRM, născute din proiectele mele CRM și din design system. Un singur tag script, date ca JSON, teme prin variabile CSS. Merg în HTML simplu, React, Vue sau într-un CMS.</p>
-    <div class="row"><button class="btn btn-primary" type="button" id="dlKit" data-en="⬇ Download kit (ZIP)">⬇ Descarcă kitul (ZIP)</button><a class="btn" href="lw-dashboard.js" download>lw-dashboard.js</a><span class="tag">7 <span data-en="components">componente</span></span><span class="tag">3 <span data-en="skins">teme</span></span></div>
+    <p class="lead" data-en="Web Components for CRM dashboards, born from my CRM projects and design system. One script tag, data as JSON, themes through CSS variables. They work in plain HTML, React, Vue or a CMS.">Web Components pentru dashboard-uri CRM, născute din proiectele mele CRM și din design system. Un singur tag script, date ca JSON, teme prin variabile CSS. Merg în HTML simplu, React, Vue sau într-un CMS.</p>
+    <div class="row"><button class="btn btn-primary" type="button" id="dlKit" data-en="⬇ Download kit (ZIP)">⬇ Descarcă kitul (ZIP)</button><a class="btn" href="lw-dashboard.js" download>lw-dashboard.js</a><span class="tag" data-en="themes via CSS variables">teme prin variabile CSS</span></div>
   </section>
 
   <section aria-labelledby="demoTitle">
@@ -162,7 +162,7 @@
     let js;
     try { js = await (await fetch("lw-dashboard.js")).text(); } catch (e) { download("lw-dashboard.js", "/* " + t("Descarcă fișierul de pe site", "Download from the site") + " */"); return; }
     const example = `<!doctype html>\n<html lang="ro">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>CRM Dashboard — exemplu</title>\n<style>\n  body{margin:0;padding:24px;background:#0b1220;font-family:system-ui,sans-serif}\n  .dash{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}\n</style>\n</head>\n<body>\n<div class="dash">\n  <lwd-kpi label="Venituri" value="€48.2k" delta="12" trend="20,32,28,44,51,49,60"></lwd-kpi>\n  <lwd-kpi label="Churn" value="2.1%" delta="-8" inverse trend="9,8,8,7,6,6,5"></lwd-kpi>\n  <lwd-donut title="Surse" data='${JSON.stringify(demo.donut)}'></lwd-donut>\n  <lwd-pipeline title="Pipeline" data='${JSON.stringify(demo.pipe)}'></lwd-pipeline>\n</div>\n<lwd-table id="t" title="Clienți" columns="name:Nume,company:Companie,value:Valoare,status:Status" style="margin-top:14px"></lwd-table>\n<script src="lw-dashboard.js"><\/script>\n<script>\n  document.getElementById("t").data = ${JSON.stringify(demo.table.slice(0, 8))};\n<\/script>\n</body>\n</html>\n`;
-    const readme = `# CRM Dashboard UI Kit v1.0.0\n\nLaura Andreea · MIT\n\n7 Web Components fără dependențe: lwd-kpi, lwd-sparkline, lwd-bars, lwd-donut, lwd-pipeline, lwd-table, lwd-activity.\n\n## Folosire\n\n1. Copiază \`lw-dashboard.js\` în proiect.\n2. \`<script src="lw-dashboard.js"><\/script>\`\n3. Date prin atributul \`data\` (JSON) sau proprietatea \`.data\`.\n4. Temă prin variabile CSS \`--lwd-*\` (vezi \`exemplu.html\`).\n\nDemo: https://laurandreea10.github.io/codepen-portfolio/produse-digitale/dashboard-kit/\n`;
+    const readme = `# CRM Dashboard UI Kit v1.0.0\n\nLaura Andreea · MIT\n\nWeb Components fără dependențe: lwd-kpi, lwd-sparkline, lwd-bars, lwd-donut, lwd-pipeline, lwd-table, lwd-activity.\n\n## Folosire\n\n1. Copiază \`lw-dashboard.js\` în proiect.\n2. \`<script src="lw-dashboard.js"><\/script>\`\n3. Date prin atributul \`data\` (JSON) sau proprietatea \`.data\`.\n4. Temă prin variabile CSS \`--lwd-*\` (vezi \`exemplu.html\`).\n\nDemo: https://laurandreea10.github.io/codepen-portfolio/produse-digitale/dashboard-kit/\n`;
     download("crm-dashboard-kit.zip", zip([{ name: "crm-dashboard-kit/lw-dashboard.js", data: js }, { name: "crm-dashboard-kit/exemplu.html", data: example }, { name: "crm-dashboard-kit/README.md", data: readme }]));
     toast(t("Kit descărcat", "Kit downloaded"));
   }

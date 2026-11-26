@@ -42,7 +42,7 @@
 
 <main id="main" class="wrap">
   <section class="hero">
-    <span class="eyebrow">04 · Marketing Lab × Canva × Email Studio</span>
+    <span class="eyebrow">Marketing Lab × Canva × Email Studio</span>
     <h1>Marketing Starter Kit</h1>
     <p class="lead" data-en="Fill in your brand and campaign once. The browser builds a ZIP with everything a launch needs: tagged UTM links, a responsive email template, a social pack, a campaign tracker and a small UTM builder you can keep using. Nothing is uploaded anywhere.">Completezi o singură dată brandul și campania. Browserul construiește un ZIP cu tot ce îți trebuie la o lansare: linkuri UTM etichetate, template de email responsive, pachet social, tracker de campanie și un mic UTM builder pe care îl folosești în continuare. Nimic nu e trimis nicăieri.</p>
   </section>
@@ -215,8 +215,8 @@
     const tr = tracker(d);
     $("csvView").innerHTML = `<table class="csv"><thead><tr>${tr.head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${tr.rows.map(r => `<tr>${r.map((c, i) => `<td>${i === 2 ? `<span title="${esc(c)}">${esc(c.slice(0, 32))}…</span>` : esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
     const fl = files();
-    $("contents").innerHTML = fl.map(f => `<li>📄 ${esc(f.name)} <span class="muted">· ${(new TextEncoder().encode(f.data).length / 1024).toFixed(1)} KB</span></li>`).join("");
-    $("zipInfo").textContent = `${fl.length} ${t("fișiere", "files")} · ${(fl.reduce((s, f) => s + new TextEncoder().encode(f.data).length, 0) / 1024).toFixed(0)} KB`;
+    $("contents").innerHTML = fl.map(f => `<li>📄 ${esc(f.name)}</li>`).join("");
+    $("zipInfo").textContent = t("Totul e generat în browser, nimic nu e trimis.", "Everything is generated in the browser, nothing is sent.");
   }
 
   let tm; $("f").addEventListener("input", () => { clearTimeout(tm); tm = setTimeout(render, 200); });
