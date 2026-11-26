@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-26 — Produse digitale · Studio cu șase produse gratuite
+
+- RO: Pagină nouă `produse-digitale/` (RO/EN, dark/light, contrast ridicat) cu șase produse care combină Canva, front-end, marketing, jocuri și educație: Template Hub (șabloane Canva ca HTML/CSS, export HTML și PNG), Gamified Marketing Widgets (roată, răzuit, quiz, memory ca Web Components), CRM Dashboard UI Kit (7 Web Components, 3 teme), Marketing Starter Kit (ZIP cu 8 fișiere generat în browser), Fișe printabile (7 tipuri A4, PDF) și Game Jam Kit (`gamekit.js`, joc demo, ZIP de pornire). Fără backend și fără dependențe; ZIP writer propriu (STORE + CRC-32). Versiune într-un singur fișier: `produse-digitale/index.pen.html`.
+- RO: Portofoliu: secțiune nouă „Produse digitale” în capitolul Colecții, link în „Mai mult”, intrări în „Finalizat recent”, „Istoric” și „30s · Rezumat”; numărul canonic de proiecte trece la 97. Sitemap (+7 URL-uri) și lista de verificări manuale actualizate.
+- RO: Teste automate în Chromium la 1366 și 390 px (consolă, derulare laterală, descărcări, ZIP-uri valide, PDF, joc). Safari, Firefox, telefonul fizic și cititorul de ecran rămân de verificat.
+- EN: New `produse-digitale/` studio page with six free products (Template Hub, gamified marketing widgets, CRM dashboard UI kit, marketing starter kit, printable sheets, game jam kit), all browser-only. Portfolio section, Now/History/30s entries, canonical count 97, sitemap and manual checks updated.
+
 ## 2026-11-24 — Grădina Curioasă fără CSS nefolosit · link Corner Lab stabil
 
 - RO: Grădina Curioasă pune inline doar regulile folosite pe primul ecran (~12 KB din 61 KB, extrase automat cu Playwright pe profil nou și pe Acasă, în temă întunecată, luminoasă și cu contrast ridicat, pe telefon și pe desktop). `bundle.css` complet se încarcă la prima interacțiune sau imediat dacă sesiunea revine pe alt ecran, și e în cache-ul offline. Lighthouse: „unused CSS” 0,5 → 1; capturile de ecran sunt identice; cele 11 suite de teste trec.

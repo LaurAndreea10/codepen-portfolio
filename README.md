@@ -35,7 +35,7 @@
 
 <br>
 
-> **Portofoliu front-end interactiv** cu 96 de proiecte live, preview instant, filtrare, căutare, mod întunecat/luminos și suport bilingv RO/EN.
+> **Portofoliu front-end interactiv** cu 97 de proiecte live, preview instant, filtrare, căutare, mod întunecat/luminos și suport bilingv RO/EN.
 > Construit din pasiune pentru front-end, cu o gândire formată în 5+ ani de CRM și Marketing.
 
 ### ✨ Features
@@ -150,7 +150,7 @@ Lasă un ⭐ pe repo și deschide portofoliul live — fiecare proiect are un pr
 
 <br>
 
-> **Interactive front-end portfolio** with 96 live projects, instant preview, filtering, search, dark/light mode and bilingual RO/EN support.
+> **Interactive front-end portfolio** with 97 live projects, instant preview, filtering, search, dark/light mode and bilingual RO/EN support.
 > Built from a passion for front-end development, shaped by 5+ years of experience in CRM and Marketing.
 
 ### ✨ Features

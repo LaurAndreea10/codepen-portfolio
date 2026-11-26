@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<title>CRM Dashboard UI Kit — Produse digitale</title>
+<meta name="description" content="CRM Dashboard UI Kit: 7 Web Components fără dependențe — KPI, sparkline, grafic cu bare, donut, pipeline, tabel sortabil și flux de activitate — cu teme prin variabile CSS și date demo.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/dashboard-kit/">
+<meta property="og:title" content="CRM Dashboard UI Kit">
+<meta property="og:description" content="7 Web Components pentru dashboard-uri CRM, fără dependențe.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/dashboard-kit/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../assets/pd.css">
+<style>
+  .dash { --lwd-bg: var(--bg); --lwd-surface: var(--surface); --lwd-text: var(--text); --lwd-muted: var(--muted); --lwd-line: var(--line); --lwd-c1: var(--cyan); --lwd-c2: var(--amber); --lwd-c3: var(--pink); --lwd-c4: var(--green);
+    display: grid; gap: 14px; grid-template-columns: repeat(12, 1fr); padding: 16px; border-radius: 22px; background: var(--lwd-bg); border: 1px solid var(--line); }
+  .dash[data-skin="forest"] { --lwd-bg: #0d1712; --lwd-surface: #142219; --lwd-text: #eaf6ee; --lwd-muted: #9cb8a6; --lwd-line: #ffffff1a; --lwd-c1: #5ee0a0; --lwd-c2: #facc15; --lwd-c3: #fb7185; --lwd-c4: #38bdf8; }
+  .dash[data-skin="paper"] { --lwd-bg: #f6f4ef; --lwd-surface: #ffffff; --lwd-text: #1d1b16; --lwd-muted: #5e5a50; --lwd-line: #1d1b161f; --lwd-c1: #2563eb; --lwd-c2: #d97706; --lwd-c3: #db2777; --lwd-c4: #059669; --lwd-good: #047857; --lwd-bad: #b91c1c; }
+  .c3 { grid-column: span 3; } .c4 { grid-column: span 4; } .c5 { grid-column: span 5; } .c7 { grid-column: span 7; } .c8 { grid-column: span 8; } .c12 { grid-column: span 12; }
+  @media (max-width: 980px) { .c3 { grid-column: span 6; } .c4, .c5, .c7, .c8 { grid-column: span 12; } }
+  @media (max-width: 520px) { .c3 { grid-column: span 12; } .dash { padding: 10px; } }
+  .doc > * { min-width: 0; }
+  .doc { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+  @media (max-width: 800px) { .doc { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body data-title-en="CRM Dashboard UI Kit — Digital products">
+<a class="skip" href="#main">Sari la conținut</a>
+<header class="pd-head"><div class="wrap">
+  <a class="pd-brand" href="../">◆ <span data-en="Digital <b>products</b>">Produse <b>digitale</b></span></a>
+  <nav class="pd-crumbs" aria-label="Breadcrumb"><a href="../../portfolio.html" data-en="Portfolio">Portofoliu</a>/<a href="../" data-en="Digital products">Produse digitale</a>/<span>Dashboard Kit</span></nav>
+  <div class="pd-tools"><button id="contrastBtn" class="btn btn-sm" type="button" aria-label="Contrast ridicat" data-en-label="High contrast">◐</button><button id="langBtn" class="btn btn-sm" type="button">EN</button><button id="themeBtn" class="btn btn-sm" type="button">☀</button></div>
+</div></header>
+
+<main id="main" class="wrap">
+  <section class="hero">
+    <span class="eyebrow">03 · CRM × Design system</span>
+    <h1>CRM Dashboard UI Kit</h1>
+    <p class="lead" data-en="Seven Web Components for CRM dashboards, born from my CRM projects and design system. One script tag, data as JSON, themes through CSS variables. They work in plain HTML, React, Vue or a CMS.">Șapte Web Components pentru dashboard-uri CRM, născute din proiectele mele CRM și din design system. Un singur tag script, date ca JSON, teme prin variabile CSS. Merg în HTML simplu, React, Vue sau într-un CMS.</p>
+    <div class="row"><button class="btn btn-primary" type="button" id="dlKit" data-en="⬇ Download kit (ZIP)">⬇ Descarcă kitul (ZIP)</button><a class="btn" href="lw-dashboard.js" download>lw-dashboard.js</a><span class="tag">7 <span data-en="components">componente</span></span><span class="tag">3 <span data-en="skins">teme</span></span></div>
+  </section>
+
+  <section aria-labelledby="demoTitle">
+    <div class="row" style="justify-content:space-between;margin-bottom:12px">
+      <h2 id="demoTitle" style="margin:0" data-en="Live demo">Demo live</h2>
+      <div class="row">
+        <label for="period" class="sr-only" data-en="Period">Perioadă</label>
+        <select id="period" style="width:auto"><option value="7" data-en="Last 7 days">Ultimele 7 zile</option><option value="30" selected data-en="Last 30 days">Ultimele 30 de zile</option><option value="90" data-en="Last 90 days">Ultimele 90 de zile</option></select>
+        <div class="tabs" role="group" aria-label="Temă dashboard" data-en-label="Dashboard skin" style="margin:0">
+          <button class="chip-btn btn-sm" type="button" data-skin="" aria-pressed="true" data-en="Site">Site</button>
+          <button class="chip-btn btn-sm" type="button" data-skin="forest" aria-pressed="false">Forest</button>
+          <button class="chip-btn btn-sm" type="button" data-skin="paper" aria-pressed="false">Paper</button>
+        </div>
+        <button class="btn btn-sm" type="button" id="regen" data-en="↻ New data">↻ Date noi</button>
+      </div>
+    </div>
+    <div class="dash" id="dash">
+      <lwd-kpi class="c3" id="k1"></lwd-kpi>
+      <lwd-kpi class="c3" id="k2"></lwd-kpi>
+      <lwd-kpi class="c3" id="k3" inverse></lwd-kpi>
+      <lwd-kpi class="c3" id="k4"></lwd-kpi>
+      <lwd-bars class="c8" id="bars"></lwd-bars>
+      <lwd-donut class="c4" id="donut"></lwd-donut>
+      <lwd-pipeline class="c5" id="pipe"></lwd-pipeline>
+      <lwd-activity class="c7" id="act"></lwd-activity>
+      <lwd-table class="c12" id="tbl" page-size="6"></lwd-table>
+    </div>
+    <p class="muted" style="font-size:.88rem" data-en="All figures are randomly generated demo data.">Toate cifrele sunt date demo generate aleatoriu.</p>
+  </section>
+
+  <section aria-labelledby="docsTitle">
+    <h2 id="docsTitle" data-en="Components">Componente</h2>
+    <div class="doc" id="docs"></div>
+  </section>
+
+  <section>
+    <h2 data-en="Theming">Teme</h2>
+    <pre class="code">my-dashboard {
+  --lwd-bg: #0b1220;     --lwd-surface: #13203a;
+  --lwd-text: #eef3fb;   --lwd-muted: #9fb0c9;   --lwd-line: #ffffff1c;
+  --lwd-c1: #4fd1e8;     --lwd-c2: #ffb547;      --lwd-c3: #ff7aa8;
+  --lwd-c4: #5ee0a0;     --lwd-c5: #a78bfa;
+  --lwd-good: #5ee0a0;   --lwd-bad: #ff6b6b;     --lwd-radius: 16px;
+}</pre>
+  </section>
+</main>
+
+<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · MIT</span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
+
+<script src="../assets/pd.js"></script>
+<script src="lw-dashboard.js"></script>
+<script>
+(() => {
+  "use strict";
+  const { t, esc, download, zip, toast } = window.PD;
+  const $ = id => document.getElementById(id);
+  const rnd = (a, b) => Math.round(a + Math.random() * (b - a));
+  const NAMES = ["Ana Pop", "Mihai Ionescu", "Ioana Rusu", "Radu Matei", "Elena Stan", "Andrei Dobre", "Maria Ene", "Vlad Tudor", "Cristina Lazăr", "Dan Moldovan", "Sorina Iacob", "Paul Nistor", "Teodora Avram", "George Pavel"];
+  const CO = ["Nordica SRL", "Atelier Verde", "Pixel Forge", "Brio Market", "Delta Logistic", "Lumen Studio", "Casa Fagului", "Orbit Tech", "Miere de Iași", "Vector Health", "Rivo Shop", "Aria Events", "Bluebird Labs", "Terra Foods"];
+  let demo;
+
+  function gen() {
+    const days = +$("period").value, en = PD.lang === "en";
+    const k = days / 30;
+    const st = en ? ["New", "Qualified", "Proposal", "Negotiation", "Won"] : ["Nou", "Calificat", "Ofertă", "Negociere", "Câștigat"];
+    let c = rnd(380, 520) * k;
+    const pipe = st.map((s, i) => { const r = { stage: s, count: Math.round(c) }; c *= .55 + Math.random() * .2; return r; });
+    const bucket = days === 7 ? 7 : 6;
+    const lbl = days === 7 ? (en ? "Mon Tue Wed Thu Fri Sat Sun" : "Lu Ma Mi Jo Vi Sâ Du").split(" ") : days === 30 ? ["S1", "S2", "S3", "S4", "S5", "S6"].map(x => en ? x.replace("S", "W") : x) : (en ? "Jun Jul Aug Sep Oct Nov" : "Iun Iul Aug Sep Oct Noi").split(" ");
+    const statusW = en ? ["Active", "Lead", "At risk", "Won"] : ["Activ", "Lead", "La risc", "Câștigat"];
+    demo = {
+      kpi: [
+        { label: en ? "Revenue" : "Venituri", value: "€" + (rnd(38, 64) * k).toFixed(1) + "k", delta: rnd(-4, 18), trend: Array.from({ length: 10 }, () => rnd(20, 60)) },
+        { label: en ? "New leads" : "Leaduri noi", value: String(pipe[0].count), delta: rnd(2, 22), trend: Array.from({ length: 10 }, () => rnd(10, 50)) },
+        { label: en ? "Churn" : "Churn", value: (Math.random() * 3 + 1).toFixed(1) + "%", delta: rnd(-12, 6), trend: Array.from({ length: 10 }, () => rnd(5, 20)) },
+        { label: en ? "Win rate" : "Rată câștig", value: Math.round(pipe[4].count / pipe[0].count * 100) + "%", delta: rnd(-3, 9), trend: Array.from({ length: 10 }, () => rnd(10, 30)) }
+      ],
+      bars: lbl.slice(0, bucket).map(l => ({ label: l, value: rnd(40, 160) * Math.ceil(k) })),
+      donut: [{ label: "Organic", value: rnd(20, 40) }, { label: "Email", value: rnd(15, 30) }, { label: "Ads", value: rnd(10, 30) }, { label: en ? "Referral" : "Recomandări", value: rnd(5, 15) }],
+      pipe,
+      act: [
+        { who: NAMES[rnd(0, 13)], what: en ? "moved Orbit Tech to Proposal" : "a mutat Orbit Tech în Ofertă", when: en ? "5 min ago" : "acum 5 min", type: "deal" },
+        { who: NAMES[rnd(0, 13)], what: en ? "sent the November newsletter" : "a trimis newsletterul din noiembrie", when: en ? "1 h ago" : "acum 1 h", type: "email" },
+        { who: NAMES[rnd(0, 13)], what: en ? "closed Casa Fagului — €4,200" : "a închis Casa Fagului — 4.200 €", when: en ? "3 h ago" : "acum 3 h", type: "win" },
+        { who: NAMES[rnd(0, 13)], what: en ? "called Nordica SRL" : "a sunat Nordica SRL", when: en ? "yesterday" : "ieri", type: "call" }
+      ],
+      table: NAMES.map((n, i) => ({ name: n, company: CO[i], value: rnd(800, 12000), status: statusW[rnd(0, 3)], last: rnd(1, 40) }))
+    };
+    paint();
+  }
+  function paint() {
+    const en = PD.lang === "en";
+    demo.kpi.forEach((x, i) => { const el = $("k" + (i + 1)); ["label", "value", "delta"].forEach(a => el.setAttribute(a, x[a])); el.setAttribute("trend", x.trend.join(",")); });
+    $("bars").setAttribute("title", en ? "Closed deals" : "Oferte închise"); $("bars").data = demo.bars;
+    $("donut").setAttribute("title", en ? "Lead sources" : "Surse leaduri"); $("donut").data = demo.donut;
+    $("pipe").setAttribute("title", "Pipeline"); $("pipe").data = demo.pipe;
+    $("act").setAttribute("title", en ? "Activity" : "Activitate"); $("act").data = demo.act;
+    $("tbl").setAttribute("title", en ? "Customers" : "Clienți");
+    $("tbl").setAttribute("columns", en ? "name:Name,company:Company,value:Value €,status:Status,last:Days since contact" : "name:Nume,company:Companie,value:Valoare €,status:Status,last:Zile de la contact");
+    $("tbl").data = demo.table;
+  }
+
+  const DOCS = [
+    ["lwd-kpi", ["Card KPI cu delta colorată și sparkline. <code>inverse</code> = scăderea e bună (churn).", "KPI card with a coloured delta and sparkline. <code>inverse</code> = a drop is good (churn)."], `<lwd-kpi label="Venituri" value="€48.2k"\n  delta="12" trend="20,32,28,44,51"></lwd-kpi>`],
+    ["lwd-bars", ["Grafic cu bare din <code>[{label, value}]</code>; ultima bară e evidențiată.", "Bar chart from <code>[{label, value}]</code>; the last bar is highlighted."], `<lwd-bars title="Oferte"\n  data='[{"label":"S1","value":40},{"label":"S2","value":62}]'></lwd-bars>`],
+    ["lwd-donut", ["Donut cu legendă și procente calculate.", "Donut with a legend and computed percentages."], `<lwd-donut title="Surse"\n  data='[{"label":"Email","value":30},{"label":"Ads","value":20}]'></lwd-donut>`],
+    ["lwd-pipeline", ["Etape de vânzare cu rata de conversie între ele.", "Sales stages with the conversion rate between them."], `<lwd-pipeline data='[{"stage":"Nou","count":420},\n  {"stage":"Ofertă","count":160}]'></lwd-pipeline>`],
+    ["lwd-table", ["Tabel cu căutare, sortare pe coloane, paginare și <code>aria-sort</code>.", "Table with search, column sorting, pagination and <code>aria-sort</code>."], `const t = document.querySelector("lwd-table");\nt.setAttribute("columns", "name:Nume,value:Valoare");\nt.data = clienti; // array de obiecte`],
+    ["lwd-activity", ["Flux de activitate: deal, email, call, note, win.", "Activity feed: deal, email, call, note, win."], `<lwd-activity data='[{"who":"Ana","what":"a închis un deal",\n  "when":"acum 5 min","type":"win"}]'></lwd-activity>`],
+    ["lwd-sparkline", ["Linie mică de trend, folosită și în KPI.", "Small trend line, also used inside KPI."], `<lwd-sparkline trend="3,5,4,8,7,10"\n  style="width:120px;height:32px"></lwd-sparkline>`]
+  ];
+  function docs() {
+    $("docs").innerHTML = DOCS.map(d => `<div class="card"><h3 class="mono" style="font-size:1rem">&lt;${d[0]}&gt;</h3><p class="muted">${d[1][PD.lang === "en" ? 1 : 0]}</p><pre class="code">${esc(d[2])}</pre></div>`).join("");
+  }
+
+  async function kit() {
+    let js;
+    try { js = await (await fetch("lw-dashboard.js")).text(); } catch (e) { download("lw-dashboard.js", "/* " + t("Descarcă fișierul de pe site", "Download from the site") + " */"); return; }
+    const example = `<!doctype html>\n<html lang="ro">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>CRM Dashboard — exemplu</title>\n<style>\n  body{margin:0;padding:24px;background:#0b1220;font-family:system-ui,sans-serif}\n  .dash{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}\n</style>\n</head>\n<body>\n<div class="dash">\n  <lwd-kpi label="Venituri" value="€48.2k" delta="12" trend="20,32,28,44,51,49,60"></lwd-kpi>\n  <lwd-kpi label="Churn" value="2.1%" delta="-8" inverse trend="9,8,8,7,6,6,5"></lwd-kpi>\n  <lwd-donut title="Surse" data='${JSON.stringify(demo.donut)}'></lwd-donut>\n  <lwd-pipeline title="Pipeline" data='${JSON.stringify(demo.pipe)}'></lwd-pipeline>\n</div>\n<lwd-table id="t" title="Clienți" columns="name:Nume,company:Companie,value:Valoare,status:Status" style="margin-top:14px"></lwd-table>\n<script src="lw-dashboard.js"><\/script>\n<script>\n  document.getElementById("t").data = ${JSON.stringify(demo.table.slice(0, 8))};\n<\/script>\n</body>\n</html>\n`;
+    const readme = `# CRM Dashboard UI Kit v1.0.0\n\nLaura Andreea · MIT\n\n7 Web Components fără dependențe: lwd-kpi, lwd-sparkline, lwd-bars, lwd-donut, lwd-pipeline, lwd-table, lwd-activity.\n\n## Folosire\n\n1. Copiază \`lw-dashboard.js\` în proiect.\n2. \`<script src="lw-dashboard.js"><\/script>\`\n3. Date prin atributul \`data\` (JSON) sau proprietatea \`.data\`.\n4. Temă prin variabile CSS \`--lwd-*\` (vezi \`exemplu.html\`).\n\nDemo: https://laurandreea10.github.io/codepen-portfolio/produse-digitale/dashboard-kit/\n`;
+    download("crm-dashboard-kit.zip", zip([{ name: "crm-dashboard-kit/lw-dashboard.js", data: js }, { name: "crm-dashboard-kit/exemplu.html", data: example }, { name: "crm-dashboard-kit/README.md", data: readme }]));
+    toast(t("Kit descărcat", "Kit downloaded"));
+  }
+
+  $("period").onchange = gen; $("regen").onclick = gen; $("dlKit").onclick = kit;
+  document.querySelectorAll("button[data-skin]").forEach(b => b.onclick = () => {
+    $("dash").dataset.skin = b.dataset.skin;
+    document.querySelectorAll("button[data-skin]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  });
+  document.addEventListener("pd:lang", () => { gen(); docs(); });
+  gen(); docs();
+})();
+</script>
+</body>
+</html>

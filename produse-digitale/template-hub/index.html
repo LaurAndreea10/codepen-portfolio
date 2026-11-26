@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<title>Template Hub — Canva + HTML · Produse digitale</title>
+<meta name="description" content="Template Hub: aceleași șabloane în două formate — design Canva și cod HTML/CSS editabil live. Social media, prezentări SaaS și rapoarte de marketing, export HTML și PNG.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/template-hub/">
+<meta property="og:title" content="Template Hub — Canva + HTML">
+<meta property="og:description" content="Același design, în două formate: Canva și HTML/CSS editabil.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/template-hub/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../assets/pd.css">
+<style>
+  .th-layout { display: grid; grid-template-columns: 320px 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .th-layout { grid-template-columns: 1fr; } }
+  .th-list { display: grid; gap: 8px; }
+  .th-item { text-align: left; width: 100%; justify-content: space-between; }
+  .th-item[aria-current="true"] { border-color: var(--cyan); background: var(--surface-2); }
+  .stage { background: repeating-conic-gradient(var(--bg-2) 0 25%, var(--surface) 0 50%) 0 0/24px 24px; border-radius: var(--radius); border: 1px solid var(--line); padding: 18px; display: grid; place-items: center; overflow: hidden; min-height: 420px; }
+  .frame-box { position: relative; }
+  .frame-box > .tpl-root { position: absolute; top: 0; left: 0; transform-origin: 0 0; box-shadow: 0 20px 60px #0008; }
+  .swatches { display: flex; gap: 6px; flex-wrap: wrap; }
+  .swatch { width: 34px; height: 34px; border-radius: 10px; border: 2px solid var(--line); cursor: pointer; padding: 0; }
+  .swatch[aria-pressed="true"] { border-color: var(--text); }
+  .dual { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .slides-nav { margin-top: 10px; justify-content: center; }
+</style>
+</head>
+<body data-title-en="Template Hub — Canva + HTML · Digital products">
+<a class="skip" href="#main">Sari la conținut</a>
+<header class="pd-head"><div class="wrap">
+  <a class="pd-brand" href="../">◆ <span data-en="Digital <b>products</b>">Produse <b>digitale</b></span></a>
+  <nav class="pd-crumbs" aria-label="Breadcrumb"><a href="../../portfolio.html" data-en="Portfolio">Portofoliu</a>/<a href="../" data-en="Digital products">Produse digitale</a>/<span>Template Hub</span></nav>
+  <div class="pd-tools"><button id="contrastBtn" class="btn btn-sm" type="button" aria-label="Contrast ridicat" data-en-label="High contrast">◐</button><button id="langBtn" class="btn btn-sm" type="button">EN</button><button id="themeBtn" class="btn btn-sm" type="button">☀</button></div>
+</div></header>
+
+<main id="main" class="wrap">
+  <section class="hero">
+    <span class="eyebrow">01 · Canva × HTML</span>
+    <h1>Template Hub</h1>
+    <p class="lead" data-en="Same design, two formats. Every template from my Canva collection also exists as editable HTML/CSS: change the text and colours here, see the result live, then export it as an HTML file or a PNG image.">Același design, în două formate. Fiecare șablon din colecția mea Canva există și ca HTML/CSS editabil: schimbi textul și culorile aici, vezi rezultatul live, apoi îl exporți ca fișier HTML sau imagine PNG.</p>
+    <div class="row"><a class="btn" href="../../canva-collection.html" data-en="See the Canva collection ↗">Vezi colecția Canva ↗</a><span class="tag">6 <span data-en="templates">șabloane</span></span><span class="tag">3 <span data-en="niches">nișe</span></span><span class="tag">HTML · PNG</span></div>
+  </section>
+
+  <section class="th-layout" aria-label="Editor șabloane" data-en-label="Template editor">
+    <aside class="card">
+      <div class="tabs" role="group" aria-label="Filtru nișă" data-en-label="Niche filter">
+        <button class="chip-btn btn-sm" type="button" data-niche="all" aria-pressed="true" data-en="All">Toate</button>
+        <button class="chip-btn btn-sm" type="button" data-niche="social" aria-pressed="false">Social</button>
+        <button class="chip-btn btn-sm" type="button" data-niche="saas" aria-pressed="false">SaaS</button>
+        <button class="chip-btn btn-sm" type="button" data-niche="report" aria-pressed="false" data-en="Reports">Rapoarte</button>
+      </div>
+      <div class="th-list" id="tplList"></div>
+      <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+      <form id="tplForm" onsubmit="return false">
+        <label for="fTitle" data-en="Headline">Titlu</label>
+        <input id="fTitle" maxlength="70">
+        <label for="fSub" data-en="Subtitle">Subtitlu</label>
+        <textarea id="fSub" maxlength="180" rows="3"></textarea>
+        <label for="fCta">CTA</label>
+        <input id="fCta" maxlength="30">
+        <label for="fBrand" data-en="Brand / handle">Brand / handle</label>
+        <input id="fBrand" maxlength="30">
+        <label data-en="Palette">Paletă</label>
+        <div class="swatches" id="swatches"></div>
+        <div class="dual">
+          <div><label for="fC1" data-en="Primary">Principală</label><input type="color" id="fC1"></div>
+          <div><label for="fC2" data-en="Accent">Accent</label><input type="color" id="fC2"></div>
+        </div>
+        <label><input type="checkbox" id="fLight"> <span data-en="Light background">Fundal luminos</span></label>
+      </form>
+    </aside>
+
+    <div>
+      <div class="stage" id="stage"><div class="frame-box" id="frameBox"></div></div>
+      <div class="row slides-nav" id="slidesNav" hidden>
+        <button class="btn btn-sm" type="button" id="prevSlide" aria-label="Slide-ul anterior" data-en-label="Previous slide">←</button>
+        <span class="mono" id="slideNum" aria-live="polite">1 / 3</span>
+        <button class="btn btn-sm" type="button" id="nextSlide" aria-label="Slide-ul următor" data-en-label="Next slide">→</button>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn btn-primary" type="button" id="dlHtml" data-en="⬇ Download HTML">⬇ Descarcă HTML</button>
+        <button class="btn btn-amber" type="button" id="dlPng" data-en="⬇ Download PNG">⬇ Descarcă PNG</button>
+        <button class="btn" type="button" id="cpCode" data-en="Copy code">Copiază codul</button>
+        <button class="btn btn-ghost" type="button" id="reset" data-en="Reset">Resetează</button>
+        <span class="muted mono" id="sizeInfo"></span>
+      </div>
+      <p class="muted" style="font-size:.88rem;margin-top:10px" data-en="The PNG is drawn in the browser at the template's real size. If your browser blocks it (some Safari versions), download the HTML and take a screenshot.">PNG-ul e desenat în browser la dimensiunea reală a șablonului. Dacă browserul îl blochează (unele versiuni Safari), descarcă HTML-ul și fă o captură de ecran.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-en="Why two formats">De ce două formate</h2>
+    <div class="grid g3">
+      <div class="card"><h3>Canva</h3><p class="muted" data-en="For marketers who edit visually: drag, drop, brand kit, export for social networks.">Pentru marketeri care editează vizual: drag & drop, brand kit, export pentru rețele sociale.</p></div>
+      <div class="card"><h3>HTML/CSS</h3><p class="muted" data-en="For developers: the same layout as clean code, easy to put in a site, a newsletter or an app.">Pentru developeri: același layout, ca cod curat, ușor de pus într-un site, newsletter sau aplicație.</p></div>
+      <div class="card"><h3 data-en="One system">Un singur sistem</h3><p class="muted" data-en="Same grid, same type scale, same colour tokens — the design does not drift between tools.">Aceeași grilă, aceeași scară tipografică, aceleași culori — designul nu se schimbă de la un instrument la altul.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · <span data-en="Free to use, MIT">Gratuit, licență MIT</span></span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
+
+<script src="../assets/pd.js"></script>
+<script>
+(() => {
+  "use strict";
+  const { t, esc, download, copy, toast } = window.PD;
+  const PALETTES = [
+    ["#4fd1e8", "#ffb547"], ["#7c5cff", "#ff7aa8"], ["#10b981", "#facc15"],
+    ["#ef4444", "#111827"], ["#0ea5e9", "#f97316"], ["#e11d48", "#fde68a"]
+  ];
+  const FONT = "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif";
+  const SERIF = "Fraunces, Georgia, 'Times New Roman', serif";
+
+  const shell = (w, h, d, inner) => {
+    const bg = d.light ? "#f7f8fb" : "#0b1220", fg = d.light ? "#0d1a2d" : "#f2f6fc";
+    return `<div class="tpl-root" style="width:${w}px;height:${h}px;background:${bg};color:${fg};font-family:${FONT};overflow:hidden;position:relative;box-sizing:border-box">${inner(fg, bg)}</div>`;
+  };
+  const blob = (c, x, y, s, o = .35) => `<div style="position:absolute;left:${x}px;top:${y}px;width:${s}px;height:${s}px;border-radius:50%;background:${c};opacity:${o};filter:blur(${Math.round(s / 5)}px)"></div>`;
+
+  const TEMPLATES = [
+    { id: "post", niche: "social", name: ["Post pătrat", "Square post"], w: 1080, h: 1080,
+      def: { title: ["Lansăm noul dashboard CRM", "Our new CRM dashboard is live"], sub: ["Toate datele clienților tăi, într-un singur ecran clar.", "All your customer data on one clear screen."], cta: ["Încearcă gratuit", "Try it free"] },
+      render: d => shell(1080, 1080, d, fg => `${blob(d.c1, 640, -120, 600)}${blob(d.c2, -160, 700, 520, .3)}
+        <div style="position:absolute;inset:90px;display:flex;flex-direction:column;justify-content:space-between">
+          <div style="font:600 30px ${FONT};letter-spacing:.14em;text-transform:uppercase;color:${d.c1}">${esc(d.brand)}</div>
+          <div><h2 style="font:700 108px/1.02 ${SERIF};margin:0 0 34px;letter-spacing:-2px">${esc(d.title)}</h2>
+          <p style="font:400 40px/1.4 ${FONT};margin:0;opacity:.8;max-width:820px">${esc(d.sub)}</p></div>
+          <div style="display:inline-flex;align-self:flex-start;background:${d.c2};color:#111;font:700 38px ${FONT};padding:26px 48px;border-radius:999px">${esc(d.cta)} →</div>
+        </div>`) },
+    { id: "story", niche: "social", name: ["Story social media", "Social story"], w: 1080, h: 1920,
+      def: { title: ["5 metrici CRM pe care să le urmărești", "5 CRM metrics to track"], sub: ["Rata de conversie, valoarea pe viață, churn, timp de răspuns, pipeline.", "Conversion rate, lifetime value, churn, response time, pipeline."], cta: ["Glisează în sus", "Swipe up"] },
+      render: d => shell(1080, 1920, d, fg => `${blob(d.c1, 400, -200, 900)}${blob(d.c2, -300, 1300, 800, .3)}
+        <div style="position:absolute;inset:120px 90px;display:flex;flex-direction:column;gap:60px">
+          <div style="font:600 32px ${FONT};letter-spacing:.14em;text-transform:uppercase;color:${d.c1}">${esc(d.brand)}</div>
+          <h2 style="font:700 124px/1.02 ${SERIF};margin:200px 0 0;letter-spacing:-2px">${esc(d.title)}</h2>
+          <div style="display:grid;gap:22px">${esc(d.sub).split(/,\s*/).slice(0, 5).map((x, i) => `<div style="display:flex;gap:26px;align-items:center;font:600 46px ${FONT}"><span style="width:86px;height:86px;border-radius:24px;background:${i % 2 ? d.c2 : d.c1};color:#111;display:grid;place-items:center;font-weight:800">${i + 1}</span>${x.replace(/\.$/, "")}</div>`).join("")}</div>
+          <div style="margin-top:auto;text-align:center;font:700 40px ${FONT};color:${d.c2}">↑<br>${esc(d.cta)}</div>
+        </div>`) },
+    { id: "carousel", niche: "social", name: ["Carusel social media", "Social carousel"], w: 1080, h: 1350, slides: 3,
+      def: { title: ["Cum alegi un CRM", "How to choose a CRM"], sub: ["Pornește de la proces, nu de la funcții|Testează cu date reale|Măsoară adopția echipei", "Start from the process, not the features|Test with real data|Measure team adoption"], cta: ["Salvează postarea", "Save this post"] },
+      render: (d, s = 0) => shell(1080, 1350, d, fg => {
+        const tips = d.sub.split("|");
+        const head = `<div style="position:absolute;top:80px;left:90px;right:90px;display:flex;justify-content:space-between;font:600 28px ${FONT};color:${d.c1}"><span>${esc(d.brand)}</span><span>${s + 1}/3</span></div>`;
+        const bar = `<div style="position:absolute;bottom:80px;left:90px;right:90px;height:10px;border-radius:9px;background:${fg}22"><div style="width:${(s + 1) * 33.33}%;height:100%;border-radius:9px;background:${d.c1}"></div></div>`;
+        if (s === 0) return `${blob(d.c1, 560, 600, 700)}${head}<h2 style="position:absolute;left:90px;right:90px;top:360px;font:700 130px/1 ${SERIF};margin:0;letter-spacing:-3px">${esc(d.title)}</h2><div style="position:absolute;left:90px;bottom:160px;font:600 40px ${FONT};opacity:.75">${t("Glisează", "Swipe")} →</div>${bar}`;
+        if (s === 1) return `${blob(d.c2, -200, 300, 700, .3)}${head}<div style="position:absolute;left:90px;right:90px;top:260px;display:grid;gap:40px">${tips.map((x, i) => `<div style="background:${fg}0f;border:2px solid ${fg}22;border-radius:36px;padding:44px;font:600 48px/1.25 ${FONT}"><span style="color:${i % 2 ? d.c2 : d.c1};font:700 70px ${SERIF};display:block;margin-bottom:10px">0${i + 1}</span>${esc(x)}</div>`).join("")}</div>${bar}`;
+        return `${blob(d.c1, 200, 200, 800)}${head}<div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:90px"><div><div style="font:700 110px/1.05 ${SERIF};margin-bottom:50px">${esc(d.cta)}</div><div style="display:inline-block;background:${d.c2};color:#111;font:700 40px ${FONT};padding:24px 50px;border-radius:999px">@${esc(d.brand.replace(/^@/, ""))}</div></div></div>${bar}`;
+      }) },
+    { id: "linkedin", niche: "social", name: ["Cover LinkedIn", "LinkedIn cover"], w: 1584, h: 396,
+      def: { title: ["Front-end pentru CRM & dashboard-uri", "Front-end for CRM & dashboards"], sub: ["React · TypeScript · Accesibilitate · Date", "React · TypeScript · Accessibility · Data"], cta: ["Portofoliu ↗", "Portfolio ↗"] },
+      render: d => shell(1584, 396, d, fg => `${blob(d.c1, 1100, -200, 600)}${blob(d.c2, 1350, 150, 400, .3)}
+        <div style="position:absolute;left:520px;right:80px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;gap:16px">
+          <h2 style="font:700 56px/1.05 ${SERIF};margin:0;letter-spacing:-1px">${esc(d.title)}</h2>
+          <div style="font:600 24px ${FONT};opacity:.8">${esc(d.sub)}</div>
+          <div style="display:flex;gap:14px;align-items:center"><span style="background:${d.c2};color:#111;font:700 20px ${FONT};padding:10px 22px;border-radius:999px">${esc(d.cta)}</span><span style="font:600 20px ${FONT};color:${d.c1}">${esc(d.brand)}</span></div>
+        </div>`) },
+    { id: "saas", niche: "saas", name: ["Prezentare SaaS", "SaaS presentation"], w: 1920, h: 1080, slides: 3,
+      def: { title: ["Pipeline-ul tău, automatizat", "Your pipeline, automated"], sub: ["Mai puțină muncă manuală, mai multe oferte închise.", "Less manual work, more deals closed."], cta: ["Programează un demo", "Book a demo"] },
+      render: (d, s = 0) => shell(1920, 1080, d, fg => {
+        const foot = `<div style="position:absolute;left:120px;right:120px;bottom:60px;display:flex;justify-content:space-between;font:600 24px ${FONT};opacity:.6"><span>${esc(d.brand)}</span><span>${s + 1} / 3</span></div>`;
+        if (s === 0) return `${blob(d.c1, 1200, -200, 900)}${blob(d.c2, 1500, 600, 500, .3)}<div style="position:absolute;left:120px;top:260px;width:1050px"><div style="font:700 28px ${FONT};letter-spacing:.16em;text-transform:uppercase;color:${d.c1};margin-bottom:30px">${esc(d.brand)}</div><h2 style="font:700 120px/1 ${SERIF};margin:0 0 36px;letter-spacing:-3px">${esc(d.title)}</h2><p style="font:400 40px/1.4 ${FONT};opacity:.8;margin:0">${esc(d.sub)}</p></div>${foot}`;
+        if (s === 1) {
+          const feats = [[t("Fluxuri automate", "Automated flows"), "−42%"], [t("Răspuns mai rapid", "Faster replies"), "3×"], [t("Rată de conversie", "Conversion rate"), "+18%"]];
+          return `<div style="position:absolute;left:120px;top:110px;font:700 72px ${SERIF}">${t("Ce câștigi", "What you get")}</div><div style="position:absolute;left:120px;right:120px;top:300px;display:grid;grid-template-columns:repeat(3,1fr);gap:40px">${feats.map((f, i) => `<div style="background:${fg}0d;border:2px solid ${fg}1f;border-radius:36px;padding:56px 48px;height:480px;display:flex;flex-direction:column;justify-content:space-between"><div style="width:90px;height:90px;border-radius:26px;background:${i === 1 ? d.c2 : d.c1}"></div><div><div style="font:700 110px ${SERIF};color:${i === 1 ? d.c2 : d.c1}">${f[1]}</div><div style="font:600 38px ${FONT}">${f[0]}</div></div></div>`).join("")}</div><div style="position:absolute;left:120px;bottom:110px;font:400 22px ${FONT};opacity:.55">${t("Cifre ilustrative pentru șablon.", "Illustrative figures for the template.")}</div>${foot}`;
+        }
+        return `${blob(d.c1, 500, 100, 900)}<div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center"><div><h2 style="font:700 110px/1.05 ${SERIF};margin:0 0 50px">${esc(d.cta)}</h2><span style="display:inline-block;background:${d.c2};color:#111;font:700 40px ${FONT};padding:28px 64px;border-radius:999px">${esc(d.brand)} →</span></div></div>${foot}`;
+      }) },
+    { id: "report", niche: "report", name: ["Raport lunar de marketing", "Monthly marketing report"], w: 1240, h: 1754,
+      def: { title: ["Raport de marketing · Noiembrie", "Marketing report · November"], sub: ["Sesiunile au crescut, costul pe lead a scăzut, emailul rămâne canalul cel mai profitabil.", "Sessions grew, cost per lead fell, email is still the most profitable channel."], cta: ["Următorii pași", "Next steps"] },
+      render: d => shell(1240, 1754, d, fg => {
+        const kpis = [[t("Sesiuni", "Sessions"), "48,2k", "+12%"], ["Leaduri", "1 904", "+9%"], ["CPL", "€6,40", "−14%"], ["ROAS", "4,1×", "+0,6"]];
+        const bars = [42, 58, 51, 66, 72, 88];
+        const months = t("iun iul aug sep oct nov", "jun jul aug sep oct nov").split(" ");
+        return `<div style="height:16px;background:linear-gradient(90deg,${d.c1},${d.c2})"></div>
+        <div style="padding:90px 100px">
+          <div style="display:flex;justify-content:space-between;font:600 22px ${FONT};opacity:.7"><span>${esc(d.brand)}</span><span>${t("Confidențial · demo", "Confidential · demo")}</span></div>
+          <h2 style="font:700 78px/1.05 ${SERIF};margin:70px 0 24px;letter-spacing:-1px">${esc(d.title)}</h2>
+          <p style="font:400 30px/1.5 ${FONT};opacity:.8;margin:0 0 70px">${esc(d.sub)}</p>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:70px">${kpis.map(k => `<div style="border:2px solid ${fg}1f;border-radius:24px;padding:28px"><div style="font:600 20px ${FONT};opacity:.65">${k[0]}</div><div style="font:700 50px ${SERIF};margin:8px 0">${k[1]}</div><div style="font:700 20px ${FONT};color:${d.c1}">${k[2]}</div></div>`).join("")}</div>
+          <div style="font:700 30px ${FONT};margin-bottom:24px">${t("Leaduri pe lună", "Leads per month")}</div>
+          <div style="display:flex;align-items:flex-end;gap:30px;height:420px;border-bottom:2px solid ${fg}33;padding:0 10px">${bars.map((b, i) => `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:12px;height:100%;justify-content:flex-end"><span style="font:700 20px ${FONT}">${b * 25}</span><div style="width:100%;height:${b}%;border-radius:16px 16px 0 0;background:${i === bars.length - 1 ? d.c2 : d.c1}"></div></div>`).join("")}</div>
+          <div style="display:flex;gap:30px;padding:12px 10px 0">${months.map(m => `<span style="flex:1;text-align:center;font:600 20px ${FONT};opacity:.6">${m}</span>`).join("")}</div>
+          <div style="margin-top:70px;background:${fg}0d;border-left:10px solid ${d.c2};border-radius:16px;padding:36px 40px"><div style="font:700 30px ${FONT};margin-bottom:12px">${esc(d.cta)}</div><div style="font:400 26px/1.5 ${FONT};opacity:.8">${t("1. Mută 15% din buget pe email · 2. Testează A/B pagina de preț · 3. Reactivează lista inactivă.", "1. Move 15% of budget to email · 2. A/B test the pricing page · 3. Re-engage the inactive list.")}</div></div>
+        </div>`;
+      }) }
+  ];
+
+  const $ = id => document.getElementById(id);
+  let current = TEMPLATES[0], slide = 0, niche = "all";
+  const state = {};
+  const defaults = tpl => ({ title: tpl.def.title[PD.lang === "en" ? 1 : 0], sub: tpl.def.sub[PD.lang === "en" ? 1 : 0], cta: tpl.def.cta[PD.lang === "en" ? 1 : 0], brand: "@laura.andreea", c1: PALETTES[0][0], c2: PALETTES[0][1], light: false });
+  const data = () => state[current.id] || (state[current.id] = defaults(current));
+
+  function renderList() {
+    $("tplList").innerHTML = TEMPLATES.filter(x => niche === "all" || x.niche === niche).map(x =>
+      `<button class="btn th-item" type="button" data-id="${x.id}" aria-current="${x === current}"><span>${esc(x.name[PD.lang === "en" ? 1 : 0])}</span><span class="tag">${x.w}×${x.h}${x.slides ? " · " + x.slides : ""}</span></button>`).join("");
+  }
+  function fillForm() {
+    const d = data();
+    $("fTitle").value = d.title; $("fSub").value = d.sub; $("fCta").value = d.cta; $("fBrand").value = d.brand;
+    $("fC1").value = d.c1; $("fC2").value = d.c2; $("fLight").checked = d.light;
+    $("fSub").previousElementSibling.textContent = current.id === "carousel" ? t("Sfaturi (separate prin |)", "Tips (separated by |)") : current.id === "story" ? t("Elemente (separate prin virgulă)", "Items (comma-separated)") : t("Subtitlu", "Subtitle");
+    $("swatches").innerHTML = PALETTES.map((p, i) => `<button type="button" class="swatch" data-i="${i}" aria-pressed="${p[0] === d.c1 && p[1] === d.c2}" aria-label="${t("Paleta", "Palette")} ${i + 1}" style="background:linear-gradient(135deg,${p[0]} 50%,${p[1]} 50%)"></button>`).join("");
+  }
+  function html() { return current.render(data(), slide); }
+  function renderPreview() {
+    const box = $("frameBox"), stage = $("stage");
+    const maxW = stage.clientWidth - 36, maxH = Math.min(window.innerHeight * .7, 720);
+    const scale = Math.min(maxW / current.w, maxH / current.h, 1);
+    box.style.width = current.w * scale + "px"; box.style.height = current.h * scale + "px";
+    box.innerHTML = html();
+    const root = box.firstElementChild;
+    root.style.transform = `scale(${scale})`;
+    root.setAttribute("role", "img");
+    root.setAttribute("aria-label", `${current.name[PD.lang === "en" ? 1 : 0]}: ${data().title}`);
+    $("slidesNav").hidden = !current.slides;
+    $("slideNum").textContent = `${slide + 1} / ${current.slides || 1}`;
+    $("sizeInfo").textContent = `${current.w}×${current.h}px`;
+  }
+  function select(id) { current = TEMPLATES.find(x => x.id === id); slide = 0; renderList(); fillForm(); renderPreview(); }
+
+  function standalone() {
+    const slides = current.slides ? Array.from({ length: current.slides }, (_, i) => current.render(data(), i)) : [html()];
+    return `<!doctype html>\n<html lang="${PD.lang}">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>${esc(data().title)}</title>\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Inter:wght@400;600;700&display=swap">\n<style>body{margin:0;background:#222;display:grid;gap:40px;justify-content:center;padding:40px}</style>\n</head>\n<body>\n<!-- ${current.name[1]} · Template Hub · Laura Andreea · MIT -->\n${slides.join("\n")}\n</body>\n</html>\n`;
+  }
+
+  async function png() {
+    const d = data();
+    const markup = html().replace('class="tpl-root"', 'xmlns="http://www.w3.org/1999/xhtml" class="tpl-root"');
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${current.w}" height="${current.h}"><foreignObject width="100%" height="100%">${markup}</foreignObject></svg>`;
+    const img = new Image();
+    img.decoding = "async";
+    const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+    try {
+      await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
+      const c = document.createElement("canvas"); c.width = current.w; c.height = current.h;
+      c.getContext("2d").drawImage(img, 0, 0);
+      const blobOut = await new Promise(r => c.toBlob(r, "image/png"));
+      if (!blobOut) throw new Error("blocked");
+      download(`${current.id}${current.slides ? "-" + (slide + 1) : ""}.png`, blobOut);
+      toast(t("PNG descărcat", "PNG downloaded"));
+    } catch (e) {
+      toast(t("Browserul a blocat PNG-ul — descarcă HTML", "Browser blocked the PNG — download the HTML"));
+    }
+  }
+
+  document.addEventListener("click", e => {
+    const item = e.target.closest(".th-item"); if (item) return select(item.dataset.id);
+    const sw = e.target.closest(".swatch");
+    if (sw) { const p = PALETTES[+sw.dataset.i]; Object.assign(data(), { c1: p[0], c2: p[1] }); fillForm(); renderPreview(); }
+    const nb = e.target.closest("[data-niche]");
+    if (nb) { niche = nb.dataset.niche; document.querySelectorAll("[data-niche]").forEach(b => b.setAttribute("aria-pressed", String(b === nb))); renderList(); }
+  });
+  $("tplForm").addEventListener("input", () => {
+    Object.assign(data(), { title: $("fTitle").value, sub: $("fSub").value, cta: $("fCta").value, brand: $("fBrand").value, c1: $("fC1").value, c2: $("fC2").value, light: $("fLight").checked });
+    renderPreview();
+  });
+  $("prevSlide").onclick = () => { slide = (slide + current.slides - 1) % current.slides; renderPreview(); };
+  $("nextSlide").onclick = () => { slide = (slide + 1) % current.slides; renderPreview(); };
+  $("dlHtml").onclick = () => { download(`${current.id}.html`, standalone(), "text/html;charset=utf-8"); toast(t("HTML descărcat", "HTML downloaded")); };
+  $("dlPng").onclick = png;
+  $("cpCode").onclick = () => copy(standalone());
+  $("reset").onclick = () => { delete state[current.id]; fillForm(); renderPreview(); };
+  document.addEventListener("pd:lang", () => { Object.keys(state).forEach(k => delete state[k]); renderList(); fillForm(); renderPreview(); });
+  let rT; addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(renderPreview, 120); });
+  const start = new URLSearchParams(location.search).get("t");
+  select(TEMPLATES.some(x => x.id === start) ? start : "post");
+})();
+</script>
+</body>
+</html>

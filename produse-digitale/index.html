@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<title>Produse digitale — Laura Andreea</title>
+<meta name="description" content="Șase produse digitale gratuite care combină design Canva, front-end, marketing și jocuri: Template Hub, Gamified Marketing Widgets, CRM Dashboard UI Kit, Marketing Starter Kit, fișe printabile și Game Jam Kit.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Produse digitale — Laura Andreea">
+<meta property="og:description" content="Canva × cod × marketing × jocuri: șase produse digitale gratuite, cu demo live și descărcare.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/">
+<meta property="og:locale" content="ro_RO"><meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="assets/pd.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Produse digitale","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/","author":{"@type":"Person","name":"Laura Andreea","url":"https://laurandreea10.github.io/codepen-portfolio/"},"inLanguage":["ro","en"],"hasPart":[
+{"@type":"CreativeWork","name":"Template Hub","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/template-hub/","isAccessibleForFree":true},
+{"@type":"SoftwareSourceCode","name":"Gamified Marketing Widgets","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/widgets/","programmingLanguage":"JavaScript","license":"https://opensource.org/licenses/MIT"},
+{"@type":"SoftwareSourceCode","name":"CRM Dashboard UI Kit","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/dashboard-kit/","programmingLanguage":"JavaScript","license":"https://opensource.org/licenses/MIT"},
+{"@type":"CreativeWork","name":"Marketing Starter Kit","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/starter-kit/","isAccessibleForFree":true},
+{"@type":"LearningResource","name":"Fișe printabile educaționale","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/printables/","isAccessibleForFree":true},
+{"@type":"SoftwareSourceCode","name":"Game Jam Kit","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/game-jam-kit/","programmingLanguage":"JavaScript","license":"https://opensource.org/licenses/MIT"}]}
+</script>
+<style>
+  .hero h1 em { font-style: italic; color: var(--amber); }
+  .venn { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 6px; }
+  .venn span { font: 600 .82rem var(--mono); padding: 6px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 26px; }
+  @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+  .stat b { display: block; font: 700 1.9rem/1 var(--serif); color: var(--cyan); }
+  .stat span { font-size: .85rem; color: var(--muted); }
+
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+  .p-card { grid-column: span 2; display: flex; flex-direction: column; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 22px; position: relative; overflow: hidden; transition: border-color .2s, transform .2s; }
+  .p-card:hover { border-color: color-mix(in srgb, var(--cyan) 60%, transparent); transform: translateY(-2px); }
+  .p-card.wide { grid-column: span 3; }
+  .p-card.feat { grid-column: span 4; }
+  .p-card[hidden] { display: none; }
+  @media (max-width: 1000px) { .p-card, .p-card.wide, .p-card.feat { grid-column: span 3; } }
+  @media (max-width: 680px) { .p-card, .p-card.wide, .p-card.feat { grid-column: span 6; } }
+  .p-num { font: 700 .8rem var(--mono); color: var(--amber); }
+  .p-card h3 { font-size: 1.45rem; margin: 0; }
+  .p-mix { font: 600 .78rem var(--mono); color: var(--cyan); }
+  .p-card p { margin: 0; color: var(--muted); }
+  .p-card ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: .9rem; }
+  .p-actions { margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap; padding-top: 6px; }
+  .p-live { border-radius: 16px; background: var(--bg-2); border: 1px solid var(--line); padding: 12px; }
+  .p-live lw-spin-wheel { --lw-bg: transparent; --lw-text: var(--text); --lw-wheel-size: 190px; }
+  .w-icons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .w-icons a { display: grid; place-items: center; gap: 2px; padding: 14px 6px; border-radius: 14px; background: var(--bg-2); border: 1px solid var(--line); text-decoration: none; color: var(--text); font: 600 .8rem var(--sans); }
+  .w-icons a span { font-size: 1.8rem; }
+  .mini-tpl { display: grid; grid-template-columns: 1fr 1fr 1fr 1.6fr; grid-template-rows: 1fr 1fr; gap: 8px; height: 170px; }
+  .mini-tpl div { aspect-ratio: auto !important; grid-row: auto !important; grid-column: auto !important; }
+  .mini-tpl div { grid-row: span 2 !important; }
+  .mini-tpl div { border-radius: 10px; aspect-ratio: 1; background: linear-gradient(135deg, var(--cyan), var(--amber)); position: relative; }
+  .mini-tpl div:nth-child(2) { aspect-ratio: 9/16; background: linear-gradient(160deg, #7c5cff, #ff7aa8); grid-row: span 2; }
+  .mini-tpl div:nth-child(3) { background: linear-gradient(135deg, #10b981, #facc15); }
+  .mini-tpl div:nth-child(4) { grid-column: span 2; aspect-ratio: 16/9; background: linear-gradient(135deg, #0ea5e9, #f97316); }
+  .mini-tpl div::after { content: ""; position: absolute; left: 12%; right: 30%; bottom: 16%; height: 10%; border-radius: 6px; background: #fff8; }
+  .dash-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; --lwd-surface: var(--surface); --lwd-text: var(--text); --lwd-muted: var(--muted); --lwd-line: var(--line); --lwd-c1: var(--cyan); --lwd-c2: var(--amber); }
+  .faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; margin-bottom: 10px; }
+  .faq summary { cursor: pointer; font-weight: 700; }
+  .faq p { color: var(--muted); margin: 10px 0 0; }
+  .how { counter-reset: s; }
+  .how .card::before { counter-increment: s; content: "0" counter(s); font: 700 .8rem var(--mono); color: var(--amber); display: block; margin-bottom: 6px; }
+</style>
+</head>
+<body data-title-en="Digital products — Laura Andreea">
+<a class="skip" href="#main">Sari la conținut</a>
+<header class="pd-head"><div class="wrap">
+  <a class="pd-brand" href="./">◆ <span data-en="Digital <b>products</b>">Produse <b>digitale</b></span></a>
+  <nav class="pd-crumbs" aria-label="Breadcrumb"><a href="../portfolio.html" data-en="← Portfolio">← Portofoliu</a><a href="../canva-collection.html" data-en="Canva collection">Colecția Canva</a></nav>
+  <div class="pd-tools"><button id="contrastBtn" class="btn btn-sm" type="button" aria-label="Contrast ridicat" data-en-label="High contrast">◐</button><button id="langBtn" class="btn btn-sm" type="button">EN</button><button id="themeBtn" class="btn btn-sm" type="button">☀</button></div>
+</div></header>
+
+<main id="main" class="wrap">
+  <section class="hero">
+    <span class="eyebrow" data-en="Studio · 6 free products">Studio · 6 produse gratuite</span>
+    <h1 data-en="Design, code, marketing &amp; games — <em>combined</em>">Design, cod, marketing și jocuri — <em>combinate</em></h1>
+    <p class="lead" data-en="Each product joins at least two things I already build: Canva templates, front-end, CRM and marketing tools, and browser games. Everything has a live demo, everything downloads for free and everything runs in the browser, with no account and no backend.">Fiecare produs leagă cel puțin două lucruri pe care le construiesc deja: șabloane Canva, front-end, instrumente CRM și de marketing și jocuri de browser. Toate au demo live, toate se descarcă gratuit și toate rulează în browser, fără cont și fără backend.</p>
+    <div class="venn" aria-label="Ingrediente" data-en-label="Ingredients"><span>🎨 Canva</span><span data-en="💻 Front-end">💻 Front-end</span><span>📈 Marketing &amp; CRM</span><span data-en="🎮 Games">🎮 Jocuri</span><span data-en="📚 Education">📚 Educație</span></div>
+    <div class="stats">
+      <div class="stat"><b>6</b><span data-en="products">produse</span></div>
+      <div class="stat"><b>11</b><span data-en="Web Components">Web Components</span></div>
+      <div class="stat"><b>3</b><span data-en="ZIPs built in the browser">ZIP-uri generate în browser</span></div>
+      <div class="stat"><b>0</b><span data-en="dependencies · €0 hosting">dependențe · 0 € hosting</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="catT">
+    <h2 id="catT" class="sr-only" data-en="Catalogue">Catalog</h2>
+    <div class="filters" role="group" aria-label="Filtrează produsele" data-en-label="Filter products">
+      <button class="chip-btn btn-sm" type="button" data-f="all" aria-pressed="true" data-en="All">Toate</button>
+      <button class="chip-btn btn-sm" type="button" data-f="design" aria-pressed="false">Design</button>
+      <button class="chip-btn btn-sm" type="button" data-f="code" aria-pressed="false" data-en="Code">Cod</button>
+      <button class="chip-btn btn-sm" type="button" data-f="marketing" aria-pressed="false">Marketing</button>
+      <button class="chip-btn btn-sm" type="button" data-f="games" aria-pressed="false" data-en="Games">Jocuri</button>
+      <button class="chip-btn btn-sm" type="button" data-f="edu" aria-pressed="false" data-en="Education">Educație</button>
+    </div>
+    <p class="sr-only" id="fCount" aria-live="polite"></p>
+
+    <div class="bento" id="bento">
+      <article class="p-card feat" data-tags="design code" aria-labelledby="p1">
+        <span class="p-num">01</span>
+        <h3 id="p1">Template Hub</h3>
+        <span class="p-mix">Canva × HTML/CSS</span>
+        <p data-en="Same design, two formats: every template from my Canva collection also exists as editable code. Change text and colours, then export HTML or PNG.">Același design, în două formate: fiecare șablon din colecția mea Canva există și ca cod editabil. Schimbi textul și culorile, apoi exporți HTML sau PNG.</p>
+        <div class="p-live mini-tpl" aria-hidden="true"><div></div><div></div><div></div><div></div></div>
+        <ul><li data-en="Square post, story, carousel, LinkedIn cover">Post pătrat, story, carusel, cover LinkedIn</li><li data-en="3-slide SaaS presentation, monthly marketing report">Prezentare SaaS în 3 slide-uri, raport lunar de marketing</li></ul>
+        <div class="p-actions"><a class="btn btn-primary" href="template-hub/" data-en="Open the editor →">Deschide editorul →</a><a class="btn" href="../canva-collection.html" data-en="Canva version">Versiunea Canva</a></div>
+      </article>
+
+      <article class="p-card" data-tags="games marketing code" aria-labelledby="p2">
+        <span class="p-num">02</span>
+        <h3 id="p2">Gamified Marketing Widgets</h3>
+        <span class="p-mix" data-en="Games × marketing">Jocuri × marketing</span>
+        <p data-en="Spin the wheel, scratch card, product quiz and memory — with a discount code and an analytics event.">Roata norocului, card de răzuit, quiz de produs și memory — cu cod de reducere și eveniment pentru analytics.</p>
+        <div class="w-icons"><a href="widgets/?w=lw-spin-wheel"><span aria-hidden="true">🎡</span><b data-en="Wheel">Roată</b></a><a href="widgets/?w=lw-scratch-card"><span aria-hidden="true">🪙</span><b data-en="Scratch">Răzuit</b></a><a href="widgets/?w=lw-quiz"><span aria-hidden="true">❓</span><b>Quiz</b></a><a href="widgets/?w=lw-memory"><span aria-hidden="true">🃏</span><b>Memory</b></a></div>
+        <div class="p-actions"><a class="btn btn-primary" href="widgets/" data-en="Configure →">Configurează →</a><a class="btn" href="widgets/lw-widgets.js" download data-en="Download JS">Descarcă JS</a></div>
+      </article>
+
+      <article class="p-card wide" data-tags="code marketing" aria-labelledby="p3">
+        <span class="p-num">03</span>
+        <h3 id="p3">CRM Dashboard UI Kit</h3>
+        <span class="p-mix">CRM × design system</span>
+        <p data-en="Seven Web Components: KPI, sparkline, bars, donut, pipeline, sortable table and activity feed, themed with CSS variables.">Șapte Web Components: KPI, sparkline, bare, donut, pipeline, tabel sortabil și flux de activitate, cu teme prin variabile CSS.</p>
+        <div class="dash-mini" id="dashMini"><lwd-kpi id="mk1" label="Venituri" value="€48.2k" delta="12" trend="20,32,28,44,51,49,60"></lwd-kpi><lwd-kpi id="mk2" label="Churn" value="2.1%" delta="-8" inverse trend="9,8,8,7,6,6,5"></lwd-kpi></div>
+        <div class="p-actions"><a class="btn btn-primary" href="dashboard-kit/" data-en="See the live dashboard →">Vezi dashboard-ul live →</a><a class="btn" href="dashboard-kit/lw-dashboard.js" download data-en="Download JS">Descarcă JS</a></div>
+      </article>
+
+      <article class="p-card wide" data-tags="marketing design" aria-labelledby="p4">
+        <span class="p-num">04</span>
+        <h3 id="p4">Marketing Starter Kit</h3>
+        <span class="p-mix">Marketing Lab × Canva × Email</span>
+        <p data-en="Fill in brand and campaign once; get a ZIP with UTM links, a responsive email, a social pack, a campaign tracker and a UTM builder.">Completezi o dată brandul și campania; primești un ZIP cu linkuri UTM, email responsive, pachet social, tracker de campanie și UTM builder.</p>
+        <ul><li data-en="8 files, generated in your browser">8 fișiere, generate în browserul tău</li><li data-en="CSV with formulas for Sheets / Excel">CSV cu formule pentru Sheets / Excel</li></ul>
+        <div class="p-actions"><a class="btn btn-amber" href="starter-kit/" data-en="Build my kit →">Construiește-mi kitul →</a></div>
+      </article>
+
+      <article class="p-card" data-tags="edu design" aria-labelledby="p5">
+        <span class="p-num">05</span>
+        <h3 id="p5" data-en="Printable sheets">Fișe printabile</h3>
+        <span class="p-mix">Gimnaziu Space × Grădina Curioasă</span>
+        <p data-en="A4 sheets: math and physics formulas for grades 5–8, a grammar memo and kids' worksheets with answer keys. Saved as PDF.">Fișe A4: formule de matematică și fizică pentru V–VIII, memorator de gramatică și fișe pentru copii, cu răspunsuri. Salvate ca PDF.</p>
+        <div class="p-actions"><a class="btn btn-primary" href="printables/" data-en="Generate a sheet →">Generează o fișă →</a></div>
+      </article>
+
+      <article class="p-card" data-tags="games code" aria-labelledby="p6">
+        <span class="p-num">06</span>
+        <h3 id="p6">Game Jam Kit</h3>
+        <span class="p-mix">CodePen Challenges × open source</span>
+        <p data-en="GameKit.js: loop, input, RO/EN, saves, sound and accessibility in ~8 KB, plus a playable demo and a starter ZIP.">GameKit.js: loop, input, RO/EN, salvări, sunet și accesibilitate în ~8 KB, plus demo jucabil și ZIP de pornire.</p>
+        <div class="p-actions"><a class="btn btn-primary" href="game-jam-kit/" data-en="Play the demo →">Joacă demo-ul →</a><a class="btn" href="game-jam-kit/gamekit.js" download>gamekit.js</a></div>
+      </article>
+
+      <article class="p-card" data-tags="games marketing" aria-labelledby="pLive">
+        <span class="p-num" data-en="LIVE">LIVE</span>
+        <h3 id="pLive" data-en="Try one right here">Încearcă unul chiar aici</h3>
+        <p data-en="This is the real &lt;lw-spin-wheel&gt; from product 02, running inside this page.">Acesta e chiar &lt;lw-spin-wheel&gt; din produsul 02, rulând în pagina asta.</p>
+        <div class="p-live"><lw-spin-wheel id="liveWheel" code="STUDIO" primary="#4fd1e8" accent="#ffb547"></lw-spin-wheel></div>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="howT">
+    <h2 id="howT" data-en="How they are built">Cum sunt construite</h2>
+    <div class="grid g3 how">
+      <div class="card"><h3 data-en="No backend">Fără backend</h3><p class="muted" data-en="Everything runs on GitHub Pages. ZIP files are assembled in the browser by a short writer with no libraries (CRC-32 + STORE), PDFs come from the print dialog, PNGs from canvas.">Totul rulează pe GitHub Pages. ZIP-urile sunt asamblate în browser de un writer scurt, fără biblioteci (CRC-32 + STORE), PDF-urile vin din fereastra de printare, PNG-urile din canvas.</p></div>
+      <div class="card"><h3 data-en="Web Components">Web Components</h3><p class="muted" data-en="The widgets and the dashboard kit are custom elements with Shadow DOM, so they can be pasted into any site without CSS conflicts.">Widgeturile și kitul de dashboard sunt custom elements cu Shadow DOM, deci pot fi lipite pe orice site fără conflicte de CSS.</p></div>
+      <div class="card"><h3 data-en="Accessible by default">Accesibile din start</h3><p class="muted" data-en="RO/EN, dark/light, high contrast, keyboard use, live regions for results and respect for reduced motion — on every page.">RO/EN, dark/light, contrast ridicat, folosire din tastatură, regiuni live pentru rezultate și respect pentru mișcarea redusă — pe fiecare pagină.</p></div>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="faqT">
+    <h2 id="faqT" data-en="Questions">Întrebări</h2>
+    <details><summary data-en="Are they really free?">Sunt chiar gratuite?</summary><p data-en="Yes. The code is MIT-licensed; templates and sheets are free for personal, classroom and commercial use. A credit is appreciated, not required.">Da. Codul are licență MIT; șabloanele și fișele sunt gratuite pentru uz personal, la clasă și comercial. O mențiune e apreciată, nu obligatorie.</p></details>
+    <details><summary data-en="Is anything I type sent somewhere?">Ce scriu e trimis undeva?</summary><p data-en="No. The pages have no server and no tracking; files are built on your device. Only the theme and language choice are remembered in your browser.">Nu. Paginile nu au server și nici tracking; fișierele sunt construite pe dispozitivul tău. Doar alegerea temei și a limbii e ținută minte în browser.</p></details>
+    <details><summary data-en="Why build products, not just projects?">De ce produse, nu doar proiecte?</summary><p data-en="Because a product has to be usable by someone else: clear setup, a download, documentation and edge cases. It is the best practice I know for growing as a developer.">Pentru că un produs trebuie să poată fi folosit de altcineva: instalare clară, descărcare, documentație și cazuri-limită. E cel mai bun exercițiu pe care îl știu ca să cresc ca developer.</p></details>
+  </section>
+</main>
+
+<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · <span data-en="Built in my free time">Construit în timpul liber</span></span><span><a href="../portfolio.html" data-en="← Back to the portfolio">← Înapoi la portofoliu</a> · <a href="CHANGELOG.md" data-en="History">Istoric</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/produse-digitale" target="_blank" rel="noopener noreferrer">GitHub</a></span></div></footer>
+
+<script src="assets/pd.js"></script>
+<script src="widgets/lw-widgets.js" defer></script>
+<script src="dashboard-kit/lw-dashboard.js" defer></script>
+<script>
+(() => {
+  "use strict";
+  const { t } = window.PD;
+  const cards = [...document.querySelectorAll(".p-card")];
+  document.querySelectorAll("[data-f]").forEach(b => b.addEventListener("click", () => {
+    const f = b.dataset.f;
+    document.querySelectorAll("[data-f]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    let n = 0;
+    cards.forEach(c => { const show = f === "all" || c.dataset.tags.split(" ").includes(f); c.hidden = !show; if (show) n++; });
+    document.getElementById("fCount").textContent = t(`${n} produse afișate`, `${n} products shown`);
+  }));
+  const sync = lang => {
+    const w = document.getElementById("liveWheel"); if (w) w.setAttribute("lang", lang);
+    const k1 = document.getElementById("mk1"); if (k1) k1.setAttribute("label", lang === "en" ? "Revenue" : "Venituri");
+  };
+  document.addEventListener("pd:lang", e => sync(e.detail));
+  sync(PD.lang);
+})();
+</script>
+</body>
+</html>

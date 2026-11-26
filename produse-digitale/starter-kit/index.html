@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<title>Marketing Starter Kit — Produse digitale</title>
+<meta name="description" content="Marketing Starter Kit: completezi brandul și campania, iar browserul generează un ZIP cu linkuri UTM, template de email responsive, pachet social SVG, tracker de campanie CSV și un mini UTM builder. Fără backend.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/starter-kit/">
+<meta property="og:title" content="Marketing Starter Kit">
+<meta property="og:description" content="UTM, email, pachet social și tracker de campanie — un ZIP generat în browser.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/starter-kit/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../assets/pd.css">
+<style>
+  .sk { display: grid; grid-template-columns: 360px 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .sk { grid-template-columns: 1fr; } }
+  .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+  .checks label { font-weight: 500; margin: 4px 0; display: flex; gap: 8px; align-items: center; }
+  .dual { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  iframe { width: 100%; height: 560px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+  .svgs { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; align-items: start; }
+  .svgs figure { margin: 0; } .svgs svg { width: 100%; height: auto; border-radius: 10px; box-shadow: var(--shadow); }
+  .svgs figcaption { font: 500 .78rem var(--mono); color: var(--muted); margin-top: 6px; }
+  table.csv { width: 100%; border-collapse: collapse; font-size: .84rem; }
+  table.csv th, table.csv td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; white-space: nowrap; }
+  .csvwrap { overflow: auto; }
+  .contents li { margin: 4px 0; }
+</style>
+</head>
+<body data-title-en="Marketing Starter Kit — Digital products">
+<a class="skip" href="#main">Sari la conținut</a>
+<header class="pd-head"><div class="wrap">
+  <a class="pd-brand" href="../">◆ <span data-en="Digital <b>products</b>">Produse <b>digitale</b></span></a>
+  <nav class="pd-crumbs" aria-label="Breadcrumb"><a href="../../portfolio.html" data-en="Portfolio">Portofoliu</a>/<a href="../" data-en="Digital products">Produse digitale</a>/<span>Starter Kit</span></nav>
+  <div class="pd-tools"><button id="contrastBtn" class="btn btn-sm" type="button" aria-label="Contrast ridicat" data-en-label="High contrast">◐</button><button id="langBtn" class="btn btn-sm" type="button">EN</button><button id="themeBtn" class="btn btn-sm" type="button">☀</button></div>
+</div></header>
+
+<main id="main" class="wrap">
+  <section class="hero">
+    <span class="eyebrow">04 · Marketing Lab × Canva × Email Studio</span>
+    <h1>Marketing Starter Kit</h1>
+    <p class="lead" data-en="Fill in your brand and campaign once. The browser builds a ZIP with everything a launch needs: tagged UTM links, a responsive email template, a social pack, a campaign tracker and a small UTM builder you can keep using. Nothing is uploaded anywhere.">Completezi o singură dată brandul și campania. Browserul construiește un ZIP cu tot ce îți trebuie la o lansare: linkuri UTM etichetate, template de email responsive, pachet social, tracker de campanie și un mic UTM builder pe care îl folosești în continuare. Nimic nu e trimis nicăieri.</p>
+  </section>
+
+  <section class="sk">
+    <aside class="card">
+      <form id="f" onsubmit="return false">
+        <label for="brand">Brand</label><input id="brand" value="Livada" maxlength="40">
+        <label for="site" data-en="Website (https://…)">Site (https://…)</label><input id="site" type="url" value="https://exemplu.ro/oferta">
+        <label for="camp" data-en="Campaign name">Numele campaniei</label><input id="camp" value="lansare-iarna-2026" maxlength="60">
+        <label for="head" data-en="Main message">Mesajul principal</label><input id="head" value="Sucul de iarnă e aici" maxlength="60">
+        <label for="offer" data-en="Offer">Oferta</label><input id="offer" value="−20% în prima săptămână" maxlength="60">
+        <label for="date" data-en="Launch date">Data lansării</label><input id="date" type="date">
+        <div class="dual">
+          <div><label for="c1" data-en="Primary">Principală</label><input id="c1" type="color" value="#e4572e"></div>
+          <div><label for="c2" data-en="Accent">Accent</label><input id="c2" type="color" value="#ffc857"></div>
+        </div>
+        <label data-en="Channels">Canale</label>
+        <div class="checks" id="channels"></div>
+      </form>
+      <button class="btn btn-amber" type="button" id="dl" style="width:100%;margin-top:16px;justify-content:center" data-en="⬇ Download the kit (ZIP)">⬇ Descarcă kitul (ZIP)</button>
+      <p class="muted" style="font-size:.85rem;margin:10px 0 0" id="zipInfo"></p>
+    </aside>
+
+    <div class="card">
+      <div class="tabs" role="tablist" aria-label="Previzualizare" data-en-label="Preview">
+        <button class="chip-btn btn-sm" role="tab" type="button" data-tab="utm" aria-pressed="true" aria-selected="true">UTM</button>
+        <button class="chip-btn btn-sm" role="tab" type="button" data-tab="email" aria-pressed="false" aria-selected="false">Email</button>
+        <button class="chip-btn btn-sm" role="tab" type="button" data-tab="social" aria-pressed="false" aria-selected="false" data-en="Social pack">Pachet social</button>
+        <button class="chip-btn btn-sm" role="tab" type="button" data-tab="tracker" aria-pressed="false" aria-selected="false">Tracker</button>
+        <button class="chip-btn btn-sm" role="tab" type="button" data-tab="list" aria-pressed="false" aria-selected="false" data-en="What's inside">Ce conține</button>
+      </div>
+      <div class="panel" data-panel="utm" role="tabpanel"><div class="row" style="justify-content:space-between"><p class="muted" style="margin:0" data-en="One tagged link per channel, lowercase and URL-safe.">Un link etichetat pe canal, cu litere mici și caractere sigure.</p><button class="btn btn-sm" type="button" id="cpUtm" data-en="Copy all">Copiază tot</button></div><pre class="code" id="utmOut" style="margin-top:10px" tabindex="0"></pre></div>
+      <div class="panel" data-panel="email" role="tabpanel" hidden><iframe id="emailFrame" title="Previzualizare email" sandbox=""></iframe></div>
+      <div class="panel" data-panel="social" role="tabpanel" hidden><div class="svgs" id="svgs"></div></div>
+      <div class="panel" data-panel="tracker" role="tabpanel" hidden><p class="muted" data-en="CSV that opens in Google Sheets or Excel. CTR, CPC, CPA and ROAS are formulas.">CSV care se deschide în Google Sheets sau Excel. CTR, CPC, CPA și ROAS sunt formule.</p><div class="csvwrap" id="csvView"></div></div>
+      <div class="panel" data-panel="list" role="tabpanel" hidden><ul class="contents mono" id="contents"></ul></div>
+    </div>
+  </section>
+</main>
+
+<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · MIT</span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
+
+<script src="../assets/pd.js"></script>
+<script>
+(() => {
+  "use strict";
+  const { t, esc, download, zip, copy, toast } = window.PD;
+  const $ = id => document.getElementById(id);
+  const CH = [
+    ["newsletter", "email", "newsletter"], ["facebook", "paid-social", "Facebook"], ["instagram", "social", "Instagram"],
+    ["linkedin", "social", "LinkedIn"], ["google", "cpc", "Google Ads"], ["tiktok", "paid-social", "TikTok"]
+  ];
+  $("channels").innerHTML = CH.map((c, i) => `<label><input type="checkbox" value="${c[0]}" ${i < 4 ? "checked" : ""}> ${c[2]}</label>`).join("");
+  const d0 = new Date(); d0.setDate(d0.getDate() + 7); $("date").value = d0.toISOString().slice(0, 10);
+
+  const slug = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const v = () => ({ brand: $("brand").value.trim() || "Brand", site: $("site").value.trim() || "https://exemplu.ro", camp: slug($("camp").value) || "campanie", head: $("head").value.trim(), offer: $("offer").value.trim(), date: $("date").value, c1: $("c1").value, c2: $("c2").value, ch: [...document.querySelectorAll("#channels input:checked")].map(i => CH.find(c => c[0] === i.value)) });
+  const fg = hex => { const n = parseInt(hex.slice(1), 16); return ((n >> 16 & 255) * 299 + (n >> 8 & 255) * 587 + (n & 255) * 114) / 1000 > 150 ? "#111111" : "#ffffff"; };
+
+  function utm(d) {
+    return d.ch.map(c => {
+      let u; try { u = new URL(d.site); } catch (e) { u = new URL("https://exemplu.ro"); }
+      u.searchParams.set("utm_source", c[0]); u.searchParams.set("utm_medium", c[1]); u.searchParams.set("utm_campaign", d.camp);
+      u.searchParams.set("utm_content", c[0] === "newsletter" ? "buton-principal" : "post-lansare");
+      return { ch: c[2], url: u.toString() };
+    });
+  }
+  function emailHTML(d) {
+    const link = (utm(d).find(x => x.ch === "newsletter") || { url: d.site }).url;
+    const date = d.date ? new Date(d.date + "T12:00").toLocaleDateString(PD.lang === "en" ? "en-GB" : "ro-RO", { day: "numeric", month: "long", year: "numeric" }) : "";
+    return `<!doctype html>
+<html lang="${PD.lang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<title>${esc(d.head)}</title>
+<!-- Template responsive pe tabele, compatibil Gmail / Outlook / Apple Mail. Starter Kit · Laura Andreea · MIT -->
+<style>
+  @media (max-width:620px){ .w{width:100%!important} .p{padding:24px!important} .h{font-size:28px!important} }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#f2f2f2">
+<div style="display:none;max-height:0;overflow:hidden">${esc(d.offer)} — ${esc(d.brand)}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f2f2f2"><tr><td align="center" style="padding:24px 12px">
+<table role="presentation" class="w" width="600" cellpadding="0" cellspacing="0" style="width:600px;background:#ffffff;border-radius:16px;overflow:hidden;font-family:Arial,Helvetica,sans-serif;color:#1d1d1f">
+  <tr><td style="background:${d.c1};padding:22px 40px;color:${fg(d.c1)};font-weight:bold;font-size:18px;letter-spacing:1px">${esc(d.brand.toUpperCase())}</td></tr>
+  <tr><td class="p" style="padding:44px 40px 12px">
+    <p style="margin:0 0 10px;font-size:13px;color:#6b6b6b;text-transform:uppercase;letter-spacing:1px">${esc(date)}</p>
+    <h1 class="h" style="margin:0 0 16px;font-size:34px;line-height:1.15;font-family:Georgia,serif">${esc(d.head)}</h1>
+    <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#3a3a3c">${PD.lang === "en" ? "Something new is here, and you are among the first to find out." : "Avem ceva nou și ești printre primii care află."}</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="background:${d.c2};border-radius:12px;width:100%"><tr><td style="padding:20px 24px;font-size:20px;font-weight:bold;color:${fg(d.c2)};text-align:center">${esc(d.offer)}</td></tr></table>
+  </td></tr>
+  <tr><td align="center" style="padding:24px 40px 40px">
+    <table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="border-radius:999px;background:${d.c1}"><a href="${esc(link)}" style="display:inline-block;padding:16px 34px;font-size:16px;font-weight:bold;color:${fg(d.c1)};text-decoration:none;border-radius:999px">${PD.lang === "en" ? "See the offer →" : "Vezi oferta →"}</a></td></tr></table>
+  </td></tr>
+  <tr><td style="padding:20px 40px;background:#fafafa;font-size:12px;color:#8a8a8e;line-height:1.6;text-align:center">${esc(d.brand)} · ${PD.lang === "en" ? "You receive this email because you subscribed." : "Primești acest email pentru că te-ai abonat."}<br><a href="#" style="color:#8a8a8e">${PD.lang === "en" ? "Unsubscribe" : "Dezabonare"}</a></td></tr>
+</table>
+</td></tr></table>
+</body>
+</html>
+`;
+  }
+  function svg(d, w, h, kind) {
+    const f = fg(d.c1), big = kind === "linkedin" ? 64 : kind === "story" ? 120 : 96;
+    const words = d.head.split(" "), lines = [];
+    let cur = "";
+    const max = kind === "linkedin" ? 30 : kind === "story" ? 14 : 16;
+    words.forEach(w0 => { if ((cur + " " + w0).trim().length > max) { lines.push(cur.trim()); cur = w0; } else cur += " " + w0; });
+    if (cur.trim()) lines.push(cur.trim());
+    const y0 = kind === "story" ? h * .38 : kind === "linkedin" ? h * .42 : h * .4;
+    const x = kind === "linkedin" ? w * .3 : w * .08;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(d.head)}">
+  <rect width="${w}" height="${h}" fill="${d.c1}"/>
+  <circle cx="${w * .9}" cy="${h * .12}" r="${Math.min(w, h) * .42}" fill="${d.c2}" opacity=".35"/>
+  <circle cx="${w * .05}" cy="${h * .95}" r="${Math.min(w, h) * .3}" fill="#ffffff" opacity=".12"/>
+  <text x="${x}" y="${kind === "linkedin" ? h * .22 : h * .1}" font-family="Arial, sans-serif" font-weight="700" font-size="${big * .32}" letter-spacing="4" fill="${f}">${esc(d.brand.toUpperCase())}</text>
+  ${lines.slice(0, 4).map((l, i) => `<text x="${x}" y="${y0 + i * big * 1.08}" font-family="Georgia, serif" font-weight="700" font-size="${big}" fill="${f}">${esc(l)}</text>`).join("\n  ")}
+  <rect x="${x}" y="${y0 + Math.min(lines.length, 4) * big * 1.08 + big * .2}" rx="${big * .4}" width="${Math.min(w * .84, esc(d.offer).length * big * .3 + big * .9)}" height="${big * .8}" fill="${d.c2}"/>
+  <text x="${x + big * .45}" y="${y0 + Math.min(lines.length, 4) * big * 1.08 + big * .73}" font-family="Arial, sans-serif" font-weight="700" font-size="${big * .36}" fill="${fg(d.c2)}">${esc(d.offer)}</text>
+</svg>
+`;
+  }
+  const SOC = [["post-1080x1080.svg", 1080, 1080, "post"], ["story-1080x1920.svg", 1080, 1920, "story"], ["linkedin-1200x627.svg", 1200, 627, "linkedin"]];
+
+  function tracker(d) {
+    const en = PD.lang === "en";
+    const head = en ? ["Date", "Channel", "Link", "Spend (€)", "Impressions", "Clicks", "Conversions", "Revenue (€)", "CTR", "CPC", "CPA", "ROAS", "Notes"] : ["Data", "Canal", "Link", "Cost (€)", "Afișări", "Clicuri", "Conversii", "Venit (€)", "CTR", "CPC", "CPA", "ROAS", "Note"];
+    const rows = utm(d).map((u, i) => { const r = i + 2; return [d.date, u.ch, u.url, "", "", "", "", "", `=F${r}/E${r}`, `=D${r}/F${r}`, `=D${r}/G${r}`, `=H${r}/D${r}`, ""]; });
+    const q = c => /[",;\n]/.test(c) ? `"${String(c).replace(/"/g, '""')}"` : c;
+    return { head, rows, csv: "﻿" + [head, ...rows].map(r => r.map(q).join(";")).join("\r\n") + "\r\n" };
+  }
+  function builder() {
+    return `<!doctype html>
+<html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>UTM Builder</title>
+<style>body{font-family:system-ui,sans-serif;max-width:640px;margin:40px auto;padding:0 16px;color:#111}label{display:block;font-weight:600;margin:12px 0 4px}input{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font:inherit;box-sizing:border-box}output{display:block;margin-top:18px;padding:14px;background:#f4f4f4;border-radius:8px;word-break:break-all;font-family:monospace}button{margin-top:10px;padding:10px 16px;border:0;border-radius:8px;background:#111;color:#fff;font:inherit;cursor:pointer}</style></head>
+<body><h1>UTM Builder</h1><p>Marketing Starter Kit · Laura Andreea · MIT</p>
+<label for="u">URL</label><input id="u" value="${esc(d0site())}">
+<label for="s">utm_source</label><input id="s" value="newsletter"><label for="m">utm_medium</label><input id="m" value="email">
+<label for="c">utm_campaign</label><input id="c" value="${esc(v().camp)}"><label for="t">utm_content</label><input id="t">
+<output id="o" aria-live="polite"></output><button id="b" type="button">Copiază</button>
+<script>const $=id=>document.getElementById(id);const slug=s=>s.toLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");function go(){try{const u=new URL($("u").value);[["utm_source","s"],["utm_medium","m"],["utm_campaign","c"],["utm_content","t"]].forEach(([k,i])=>{const x=slug($(i).value);x?u.searchParams.set(k,x):u.searchParams.delete(k)});$("o").textContent=u}catch(e){$("o").textContent="URL invalid"}}document.querySelectorAll("input").forEach(i=>i.oninput=go);$("b").onclick=()=>navigator.clipboard.writeText($("o").textContent);go();<\/script>
+</body></html>
+`;
+  }
+  const d0site = () => v().site;
+
+  function files() {
+    const d = v(), tr = tracker(d), u = utm(d);
+    const readme = PD.lang === "en"
+      ? `# ${d.brand} — Marketing Starter Kit\n\nCampaign: ${d.camp} · launch ${d.date}\n\n- utm-links.csv — one tagged link per channel\n- email/newsletter.html — responsive, table-based email (Gmail, Outlook, Apple Mail)\n- social/*.svg — post, story and LinkedIn image (open in a browser, Canva or Figma; export to PNG)\n- campaign-tracker.csv — open in Google Sheets / Excel; CTR, CPC, CPA, ROAS are formulas\n- utm-builder.html — a small offline tool for new links\n\nGenerated in the browser at laurandreea10.github.io/codepen-portfolio/produse-digitale/starter-kit/ · MIT\n`
+      : `# ${d.brand} — Marketing Starter Kit\n\nCampanie: ${d.camp} · lansare ${d.date}\n\n- utm-links.csv — un link etichetat pe canal\n- email/newsletter.html — email responsive pe tabele (Gmail, Outlook, Apple Mail)\n- social/*.svg — imagine pentru post, story și LinkedIn (se deschid în browser, Canva sau Figma; export PNG)\n- campaign-tracker.csv — se deschide în Google Sheets / Excel; CTR, CPC, CPA, ROAS sunt formule\n- utm-builder.html — un mic instrument offline pentru linkuri noi\n\nGenerat în browser pe laurandreea10.github.io/codepen-portfolio/produse-digitale/starter-kit/ · MIT\n`;
+    const dir = slug(d.brand) + "-starter-kit/";
+    return [
+      { name: dir + "README.md", data: readme },
+      { name: dir + "utm-links.csv", data: "﻿" + "canal;link\r\n" + u.map(x => `${x.ch};${x.url}`).join("\r\n") + "\r\n" },
+      { name: dir + "email/newsletter.html", data: emailHTML(d) },
+      ...SOC.map(s => ({ name: dir + "social/" + s[0], data: svg(d, s[1], s[2], s[3]) })),
+      { name: dir + "campaign-tracker.csv", data: tr.csv },
+      { name: dir + "utm-builder.html", data: builder() }
+    ];
+  }
+
+  function render() {
+    const d = v();
+    $("utmOut").textContent = utm(d).map(x => `# ${x.ch}\n${x.url}`).join("\n\n") || t("Alege cel puțin un canal.", "Pick at least one channel.");
+    $("emailFrame").srcdoc = emailHTML(d);
+    $("svgs").innerHTML = SOC.map(s => `<figure>${svg(d, s[1], s[2], s[3])}<figcaption>${s[0]}</figcaption></figure>`).join("");
+    const tr = tracker(d);
+    $("csvView").innerHTML = `<table class="csv"><thead><tr>${tr.head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${tr.rows.map(r => `<tr>${r.map((c, i) => `<td>${i === 2 ? `<span title="${esc(c)}">${esc(c.slice(0, 32))}…</span>` : esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+    const fl = files();
+    $("contents").innerHTML = fl.map(f => `<li>📄 ${esc(f.name)} <span class="muted">· ${(new TextEncoder().encode(f.data).length / 1024).toFixed(1)} KB</span></li>`).join("");
+    $("zipInfo").textContent = `${fl.length} ${t("fișiere", "files")} · ${(fl.reduce((s, f) => s + new TextEncoder().encode(f.data).length, 0) / 1024).toFixed(0)} KB`;
+  }
+
+  let tm; $("f").addEventListener("input", () => { clearTimeout(tm); tm = setTimeout(render, 200); });
+  $("dl").onclick = () => { const d = v(); if (!d.ch.length) return toast(t("Alege cel puțin un canal", "Pick at least one channel")); download(slug(d.brand) + "-starter-kit.zip", zip(files())); toast(t("Kit descărcat ✓", "Kit downloaded ✓")); };
+  $("cpUtm").onclick = () => copy(utm(v()).map(x => x.url).join("\n"));
+  document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => {
+    document.querySelectorAll("[data-tab]").forEach(x => { const on = x === b; x.setAttribute("aria-pressed", String(on)); x.setAttribute("aria-selected", String(on)); });
+    document.querySelectorAll("[data-panel]").forEach(p => p.hidden = p.dataset.panel !== b.dataset.tab);
+  });
+  document.addEventListener("pd:lang", e => {
+    if (e.detail === "en" && $("head").value === "Sucul de iarnă e aici") { $("head").value = "Winter juice is here"; $("offer").value = "−20% in the first week"; $("site").value = "https://example.com/offer"; }
+    if (e.detail === "ro" && $("head").value === "Winter juice is here") { $("head").value = "Sucul de iarnă e aici"; $("offer").value = "−20% în prima săptămână"; $("site").value = "https://exemplu.ro/oferta"; }
+    render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>

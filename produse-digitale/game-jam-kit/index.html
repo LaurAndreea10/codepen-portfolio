@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<title>Game Jam Kit — GameKit.js · Produse digitale</title>
+<meta name="description" content="Game Jam Kit: starter open-source pentru jocuri de browser, extras din jocurile mele — loop cu pas fix, input tastatură/touch, RO/EN, salvare locală, sunet generat și accesibilitate. Joc demo și ZIP de pornire.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/game-jam-kit/">
+<meta property="og:title" content="Game Jam Kit — GameKit.js">
+<meta property="og:description" content="Starter pentru jocuri de browser: loop, input, RO/EN, save, audio, a11y.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/game-jam-kit/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../assets/pd.css">
+<style>
+  .game { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .game { grid-template-columns: 1fr; } }
+  .screen { position: relative; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); }
+  #gk-canvas { display: block; width: 100%; aspect-ratio: 3 / 2; touch-action: none; }
+  .overlay { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; background: #0b1220cc; color: #fff; padding: 20px; }
+  .overlay[hidden] { display: none; }
+  .hudbar { display: flex; gap: 14px; flex-wrap: wrap; font: 600 .9rem var(--mono); margin-top: 10px; }
+  .pad { display: flex; gap: 10px; margin-top: 10px; }
+  .pad button { flex: 1; font-size: 1.4rem; min-height: 56px; }
+  .api dt { font: 600 .9rem var(--mono); color: var(--cyan); margin-top: 10px; }
+  .api dd { margin: 2px 0 0; color: var(--muted); }
+</style>
+</head>
+<body data-title-en="Game Jam Kit — GameKit.js · Digital products">
+<a class="skip" href="#main">Sari la conținut</a>
+<header class="pd-head"><div class="wrap">
+  <a class="pd-brand" href="../">◆ <span data-en="Digital <b>products</b>">Produse <b>digitale</b></span></a>
+  <nav class="pd-crumbs" aria-label="Breadcrumb"><a href="../../portfolio.html" data-en="Portfolio">Portofoliu</a>/<a href="../" data-en="Digital products">Produse digitale</a>/<span>Game Jam Kit</span></nav>
+  <div class="pd-tools"><button id="contrastBtn" class="btn btn-sm" type="button" aria-label="Contrast ridicat" data-en-label="High contrast">◐</button><button id="langBtn" class="btn btn-sm" type="button">EN</button><button id="themeBtn" class="btn btn-sm" type="button">☀</button></div>
+</div></header>
+
+<main id="main" class="wrap">
+  <section class="hero">
+    <span class="eyebrow">06 · CodePen Challenges × open source</span>
+    <h1>Game Jam Kit</h1>
+    <p class="lead" data-en="The parts I rewrite in every browser game, pulled into one 8 KB file: a fixed-step loop that pauses with the tab, keyboard/touch/pointer input, RO/EN, versioned saves, generated sounds and accessibility helpers. Below is a small game built only with the kit.">Părțile pe care le rescriu în fiecare joc de browser, adunate într-un singur fișier de ~8 KB: loop cu pas fix care se oprește odată cu tabul, input din tastatură/touch/pointer, RO/EN, salvări versionate, sunete generate și ajutoare de accesibilitate. Mai jos e un mic joc construit doar cu kitul.</p>
+    <div class="row"><button class="btn btn-primary" type="button" id="dlStarter" data-en="⬇ Starter project (ZIP)">⬇ Proiect de pornire (ZIP)</button><a class="btn" href="gamekit.js" download>gamekit.js</a><span class="tag">0 <span data-en="dependencies">dependențe</span></span><span class="tag">MIT</span></div>
+  </section>
+
+  <section class="game" aria-labelledby="demoT">
+    <div>
+      <h2 id="demoT" class="sr-only">Star Catch</h2>
+      <div class="screen">
+        <canvas id="gk-canvas" tabindex="0" aria-label="Star Catch: prinde stelele, ferește-te de fulgere. Săgeți stânga/dreapta, P pauză." data-en-label="Star Catch: catch the stars, avoid the lightning. Left/right arrows, P to pause."></canvas>
+        <div class="overlay" id="gk-overlay"><div><h3 style="font-size:1.8rem;color:#fff">⭐ Star Catch</h3><p id="gk-msg" data-en="Catch the stars, dodge the lightning. 45 seconds, 3 lives.">Prinde stelele, ferește-te de fulgere. 45 de secunde, 3 vieți.</p><button class="btn btn-amber" type="button" id="gk-start">Start</button></div></div>
+      </div>
+      <div class="hudbar" aria-live="off">
+        <span><span data-i18n="score">Scor</span>: <b id="gk-score">0</b></span>
+        <span><span data-i18n="lives">Vieți</span>: <b id="gk-lives">❤❤❤</b></span>
+        <span><span data-i18n="time">Timp</span>: <b id="gk-time">45s</b></span>
+        <span><span data-i18n="record">Record</span>: <b id="gk-best">0</b></span>
+        <button class="btn btn-sm" type="button" id="gk-mute" aria-pressed="true" aria-label="Sunet" data-i18n-label="mute">🔊</button>
+      </div>
+      <div class="pad" id="gk-pad">
+        <button class="btn" type="button" data-gk-action="left" aria-label="Stânga" data-i18n-label="left">◀</button>
+        <button class="btn" type="button" data-gk-action="pause" aria-label="Pauză" data-i18n-label="pause">⏸</button>
+        <button class="btn" type="button" data-gk-action="right" aria-label="Dreapta" data-i18n-label="right">▶</button>
+      </div>
+    </div>
+    <aside class="card">
+      <h3 data-en="Controls">Control</h3>
+      <p class="muted" data-en="← → or A/D · drag on the canvas · on-screen buttons · P / Esc to pause. The game pauses when you switch tabs; the record stays in your browser.">← → sau A/D · tragi pe canvas · butoanele de sub joc · P / Esc pentru pauză. Jocul se oprește când schimbi tabul; recordul rămâne în browser.</p>
+      <h3 data-en="Starter ZIP">ZIP-ul de pornire</h3>
+      <ul class="muted mono" style="padding-left:18px;font-size:.85rem">
+        <li>index.html</li><li>gamekit.js</li><li>game.js</li><li>README.md</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <h2>API</h2>
+    <div class="grid g2">
+      <div class="card"><dl class="api">
+        <dt>createLoop({ update, render, fps })</dt><dd data-en="Fixed step (60/s by default), capped catch-up, stops when the tab is hidden.">Pas fix (60/s implicit), recuperare limitată, se oprește când tabul e ascuns.</dd>
+        <dt>createInput(map)</dt><dd data-en="Actions mapped to keys; isDown, wasPressed, bindPointer(canvas), bindButtons().">Acțiuni mapate pe taste; isDown, wasPressed, bindPointer(canvas), bindButtons().</dd>
+        <dt>createI18n(dict, key)</dt><dd data-en="t('key', {vars}), apply() on data-i18n and data-i18n-label, set('en').">t('cheie', {vars}), apply() pe data-i18n și data-i18n-label, set('en').</dd>
+        <dt>createSave(name, version, defaults)</dt><dd data-en="Versioned localStorage: changing the version resets old saves safely.">localStorage versionat: o versiune nouă resetează în siguranță salvările vechi.</dd>
+      </dl></div>
+      <div class="card"><dl class="api">
+        <dt>createAudio()</dt><dd data-en="Web Audio sounds without files: tone(), coin(), hit(), win(), muted.">Sunete Web Audio fără fișiere: tone(), coin(), hit(), win(), muted.</dd>
+        <dt>a11y.reducedMotion · a11y.announce(msg)</dt><dd data-en="Respect prefers-reduced-motion; announce score and events to screen readers.">Respectă prefers-reduced-motion; anunță scorul și evenimentele cititoarelor de ecran.</dd>
+        <dt>createHud({ score: '#score' })</dt><dd data-en="Updates the DOM only when the value changes.">Actualizează DOM-ul doar când se schimbă valoarea.</dd>
+        <dt>util.fitCanvas · clamp · rand · hit</dt><dd data-en="Sharp canvas on retina screens, circle collisions, helpers.">Canvas clar pe ecrane retina, coliziuni între cercuri, utilitare.</dd>
+      </dl></div>
+    </div>
+    <pre class="code" style="margin-top:16px">const loop = GameKit.createLoop({
+  update(dt) { player.x += input.isDown("right") ? 200 * dt : 0; input.endFrame(); },
+  render() { ctx.clearRect(0, 0, W, H); drawPlayer(); }
+});
+loop.start();</pre>
+  </section>
+</main>
+
+<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · MIT</span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
+
+<script src="../assets/pd.js"></script>
+<script src="gamekit.js"></script>
+<script src="demo-game.js"></script>
+<script>
+(() => {
+  const { t, download, zip, toast } = window.PD;
+  document.getElementById("dlStarter").onclick = async () => {
+    let kit, game;
+    try { [kit, game] = await Promise.all(["gamekit.js", "demo-game.js"].map(f => fetch(f).then(r => { if (!r.ok) throw 0; return r.text(); }))); }
+    catch (e) { return toast(t("Deschide pagina de pe site pentru ZIP", "Open the page from the site to get the ZIP")); }
+    const html = `<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Star Catch — GameKit starter</title>
+<style>
+  body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0b1220;color:#eef3fb;font-family:system-ui,sans-serif}
+  main{width:min(720px,100% - 24px)}
+  .screen{position:relative;border-radius:16px;overflow:hidden}
+  #gk-canvas{display:block;width:100%;aspect-ratio:3/2;touch-action:none}
+  #gk-overlay{position:absolute;inset:0;display:grid;place-items:center;text-align:center;background:#0b1220cc}
+  #gk-overlay[hidden]{display:none}
+  button{font:inherit;font-weight:700;padding:10px 18px;border-radius:12px;border:0;cursor:pointer}
+  .hud,.pad{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}.pad button{flex:1;font-size:1.3rem}
+  :focus-visible{outline:3px solid #ffb547;outline-offset:3px}
+</style>
+</head>
+<body>
+<main>
+  <div class="screen">
+    <canvas id="gk-canvas" tabindex="0" aria-label="Star Catch"></canvas>
+    <div id="gk-overlay"><div><h1>⭐ Star Catch</h1><p id="gk-msg"></p><button id="gk-start" type="button" data-i18n="start">Start</button></div></div>
+  </div>
+  <div class="hud"><span><span data-i18n="score"></span>: <b id="gk-score">0</b></span><span><span data-i18n="lives"></span>: <b id="gk-lives"></b></span><span><span data-i18n="time"></span>: <b id="gk-time"></b></span><span><span data-i18n="record"></span>: <b id="gk-best">0</b></span><button id="gk-mute" type="button" aria-pressed="true">🔊</button></div>
+  <div class="pad" id="gk-pad"><button type="button" data-gk-action="left" data-i18n-label="left">◀</button><button type="button" data-gk-action="pause" data-i18n-label="pause">⏸</button><button type="button" data-gk-action="right" data-i18n-label="right">▶</button></div>
+</main>
+<script src="gamekit.js"><\/script>
+<script src="game.js"><\/script>
+</body>
+</html>
+`;
+    const readme = `# GameKit starter — Star Catch\n\nLaura Andreea · MIT\n\nDeschide \`index.html\` în browser (sau rulează \`npx serve .\`). Schimbă \`game.js\`: obiectele, regulile, grafica.\n\n## Ce oferă gamekit.js\n\n- createLoop — pas fix, pauză când tabul e ascuns\n- createInput — tastatură, pointer, butoane tactile (\`data-gk-action\`)\n- createI18n — RO/EN pe \`data-i18n\`\n- createSave — localStorage versionat\n- createAudio — sunete generate, fără fișiere\n- a11y — mișcare redusă și anunțuri pentru cititoare de ecran\n\nDemo: https://laurandreea10.github.io/codepen-portfolio/produse-digitale/game-jam-kit/\n`;
+    download("gamekit-starter.zip", zip([{ name: "gamekit-starter/index.html", data: html }, { name: "gamekit-starter/gamekit.js", data: kit }, { name: "gamekit-starter/game.js", data: game }, { name: "gamekit-starter/README.md", data: readme }]));
+    toast(t("ZIP descărcat ✓", "ZIP downloaded ✓"));
+  };
+})();
+</script>
+</body>
+</html>
