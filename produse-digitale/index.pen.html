@@ -1,0 +1,984 @@
+<!doctype html>
+<!-- CodePen / single-file version of produse-digitale/index.html · Laura Andreea · MIT -->
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<title>Produse digitale — Laura Andreea</title>
+<meta name="description" content="Șase produse digitale gratuite care combină design Canva, front-end, marketing și jocuri: Template Hub, Gamified Marketing Widgets, CRM Dashboard UI Kit, Marketing Starter Kit, fișe printabile și Game Jam Kit.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Produse digitale — Laura Andreea">
+<meta property="og:description" content="Canva × cod × marketing × jocuri: șase produse digitale gratuite, cu demo live și descărcare.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/">
+<meta property="og:locale" content="ro_RO"><meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Produse digitale — stiluri comune · Laura Andreea */
+:root {
+  color-scheme: dark;
+  --bg: #0b1220;
+  --bg-2: #0f1a2e;
+  --surface: #13203a;
+  --surface-2: #192a4a;
+  --text: #eef3fb;
+  --muted: #9fb0c9;
+  --line: #ffffff1c;
+  --cyan: #4fd1e8;
+  --on-cyan: #04202a;
+  --amber: #ffb547;
+  --on-amber: #2a1800;
+  --pink: #ff7aa8;
+  --green: #5ee0a0;
+  --danger: #ff6b6b;
+  --radius: 18px;
+  --shadow: 0 20px 50px #0007;
+  --serif: "Fraunces", Georgia, serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f5f7fb;
+  --bg-2: #eaf0f8;
+  --surface: #ffffff;
+  --surface-2: #eef3fa;
+  --text: #0d1a2d;
+  --muted: #4a5b73;
+  --line: #0d1a2d1f;
+  --cyan: #0a7d93;
+  --on-cyan: #ffffff;
+  --amber: #a55a00;
+  --on-amber: #ffffff;
+  --pink: #b8306a;
+  --green: #137a4a;
+  --danger: #b42318;
+  --shadow: 0 16px 40px #0d1a2d1a;
+}
+[data-contrast="high"] { --muted: var(--text); --line: currentColor; }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+body {
+  margin: 0;
+  font: 16px/1.6 var(--sans);
+  color: var(--text);
+  background:
+    radial-gradient(1100px 500px at 85% -10%, #4fd1e81f, transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, #ffb5471a, transparent 60%),
+    var(--bg);
+  min-height: 100vh;
+}
+a { color: var(--cyan); }
+a:hover { text-decoration-thickness: 2px; }
+img, svg, canvas { max-width: 100%; }
+:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; border-radius: 6px; }
+.skip { position: absolute; left: -999px; top: 8px; background: var(--amber); color: var(--on-amber); padding: 8px 14px; border-radius: 10px; z-index: 99; }
+.skip:focus { left: 8px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.wrap { width: min(1180px, 100% - 32px); margin-inline: auto; }
+
+/* header */
+.pd-head { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--bg) 82%, transparent); border-bottom: 1px solid var(--line); }
+.pd-head .wrap { display: flex; align-items: center; gap: 12px; min-height: 60px; flex-wrap: wrap; }
+.pd-brand { font-family: var(--serif); font-weight: 700; font-size: 1.1rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.pd-brand b { color: var(--amber); }
+.pd-crumbs { font: 500 .8rem var(--mono); color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap; }
+.pd-crumbs a { color: var(--muted); }
+.pd-tools { margin-left: auto; display: flex; gap: 6px; }
+.btn, .chip-btn {
+  font: 600 .9rem var(--sans); border: 1px solid var(--line); background: var(--surface); color: var(--text);
+  padding: 9px 14px; border-radius: 12px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; min-height: 40px;
+  transition: transform .15s, background .15s, border-color .15s;
+}
+.btn:hover, .chip-btn:hover { border-color: var(--cyan); transform: translateY(-1px); }
+.btn-primary { background: var(--cyan); color: var(--on-cyan); border-color: transparent; }
+.btn-amber { background: var(--amber); color: var(--on-amber); border-color: transparent; }
+.btn-ghost { background: transparent; }
+.btn-sm { padding: 6px 10px; min-height: 34px; font-size: .82rem; }
+.chip-btn[aria-pressed="true"] { background: var(--cyan); color: var(--on-cyan); border-color: transparent; }
+button:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+/* hero */
+.hero { padding: clamp(40px, 7vw, 90px) 0 30px; }
+.eyebrow { font: 600 .78rem var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--amber); }
+h1, h2, h3 { font-family: var(--serif); line-height: 1.15; margin: 0 0 .4em; }
+h1 { font-size: clamp(2.1rem, 5.5vw, 3.8rem); letter-spacing: -.02em; }
+h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); }
+h3 { font-size: 1.2rem; }
+.lead { font-size: clamp(1.02rem, 1.6vw, 1.2rem); color: var(--muted); max-width: 68ch; }
+.muted { color: var(--muted); }
+.mono { font-family: var(--mono); }
+
+section { padding: 34px 0; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.grid { display: grid; gap: 16px; }
+.grid > *, .th-layout > *, .w-layout > *, .sk > *, .pr > *, .game > * { min-width: 0; }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.g3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.tag { font: 600 .72rem var(--mono); padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.tag-hi { color: var(--on-amber); background: var(--amber); border-color: transparent; }
+
+label { font-weight: 600; font-size: .88rem; display: block; margin: 10px 0 4px; }
+input, select, textarea {
+  width: 100%; font: 15px var(--sans); color: var(--text); background: var(--bg-2); border: 1px solid var(--line);
+  border-radius: 10px; padding: 9px 11px; min-height: 40px;
+}
+input[type="color"] { padding: 2px; height: 40px; }
+input[type="range"] { padding: 0; }
+input[type="checkbox"] { width: auto; min-height: 0; }
+textarea { min-height: 90px; resize: vertical; }
+
+pre.code { font: 13px/1.55 var(--mono); background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; padding: 14px; overflow: auto; max-height: 320px; white-space: pre; margin: 0; }
+
+.toast { position: fixed; bottom: 20px; left: 50%; translate: -50% 0; background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 12px; font-weight: 600; z-index: 100; opacity: 0; pointer-events: none; transition: opacity .2s; }
+.toast.show { opacity: 1; }
+
+.pd-foot { border-top: 1px solid var(--line); margin-top: 50px; padding: 28px 0 40px; color: var(--muted); font-size: .9rem; }
+.pd-foot .wrap { display: flex; gap: 14px; flex-wrap: wrap; justify-content: space-between; }
+
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.panel[hidden] { display: none; }
+
+@media print {
+  .pd-head, .pd-foot, .no-print, .toast { display: none !important; }
+  body { background: #fff; color: #000; }
+}
+
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Produse digitale","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/","author":{"@type":"Person","name":"Laura Andreea","url":"https://laurandreea10.github.io/codepen-portfolio/"},"inLanguage":["ro","en"],"hasPart":[
+{"@type":"CreativeWork","name":"Template Hub","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/template-hub/","isAccessibleForFree":true},
+{"@type":"SoftwareSourceCode","name":"Gamified Marketing Widgets","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/widgets/","programmingLanguage":"JavaScript","license":"https://opensource.org/licenses/MIT"},
+{"@type":"SoftwareSourceCode","name":"CRM Dashboard UI Kit","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/dashboard-kit/","programmingLanguage":"JavaScript","license":"https://opensource.org/licenses/MIT"},
+{"@type":"CreativeWork","name":"Marketing Starter Kit","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/starter-kit/","isAccessibleForFree":true},
+{"@type":"LearningResource","name":"Fișe printabile educaționale","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/printables/","isAccessibleForFree":true},
+{"@type":"SoftwareSourceCode","name":"Game Jam Kit","url":"https://laurandreea10.github.io/codepen-portfolio/produse-digitale/game-jam-kit/","programmingLanguage":"JavaScript","license":"https://opensource.org/licenses/MIT"}]}
+</script>
+<style>
+  .hero h1 em { font-style: italic; color: var(--amber); }
+  .venn { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 6px; }
+  .venn span { font: 600 .82rem var(--mono); padding: 6px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 26px; }
+  @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+  .stat b { display: block; font: 700 1.9rem/1 var(--serif); color: var(--cyan); }
+  .stat span { font-size: .85rem; color: var(--muted); }
+
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+  .p-card { grid-column: span 2; display: flex; flex-direction: column; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 22px; position: relative; overflow: hidden; transition: border-color .2s, transform .2s; }
+  .p-card:hover { border-color: color-mix(in srgb, var(--cyan) 60%, transparent); transform: translateY(-2px); }
+  .p-card.wide { grid-column: span 3; }
+  .p-card.feat { grid-column: span 4; }
+  .p-card[hidden] { display: none; }
+  @media (max-width: 1000px) { .p-card, .p-card.wide, .p-card.feat { grid-column: span 3; } }
+  @media (max-width: 680px) { .p-card, .p-card.wide, .p-card.feat { grid-column: span 6; } }
+  .p-num { font: 700 .8rem var(--mono); color: var(--amber); }
+  .p-card h3 { font-size: 1.45rem; margin: 0; }
+  .p-mix { font: 600 .78rem var(--mono); color: var(--cyan); }
+  .p-card p { margin: 0; color: var(--muted); }
+  .p-card ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: .9rem; }
+  .p-actions { margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap; padding-top: 6px; }
+  .p-live { border-radius: 16px; background: var(--bg-2); border: 1px solid var(--line); padding: 12px; }
+  .p-live lw-spin-wheel { --lw-bg: transparent; --lw-text: var(--text); --lw-wheel-size: 190px; }
+  .w-icons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .w-icons a { display: grid; place-items: center; gap: 2px; padding: 14px 6px; border-radius: 14px; background: var(--bg-2); border: 1px solid var(--line); text-decoration: none; color: var(--text); font: 600 .8rem var(--sans); }
+  .w-icons a span { font-size: 1.8rem; }
+  .mini-tpl { display: grid; grid-template-columns: 1fr 1fr 1fr 1.6fr; grid-template-rows: 1fr 1fr; gap: 8px; height: 170px; }
+  .mini-tpl div { aspect-ratio: auto !important; grid-row: auto !important; grid-column: auto !important; }
+  .mini-tpl div { grid-row: span 2 !important; }
+  .mini-tpl div { border-radius: 10px; aspect-ratio: 1; background: linear-gradient(135deg, var(--cyan), var(--amber)); position: relative; }
+  .mini-tpl div:nth-child(2) { aspect-ratio: 9/16; background: linear-gradient(160deg, #7c5cff, #ff7aa8); grid-row: span 2; }
+  .mini-tpl div:nth-child(3) { background: linear-gradient(135deg, #10b981, #facc15); }
+  .mini-tpl div:nth-child(4) { grid-column: span 2; aspect-ratio: 16/9; background: linear-gradient(135deg, #0ea5e9, #f97316); }
+  .mini-tpl div::after { content: ""; position: absolute; left: 12%; right: 30%; bottom: 16%; height: 10%; border-radius: 6px; background: #fff8; }
+  .dash-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; --lwd-surface: var(--surface); --lwd-text: var(--text); --lwd-muted: var(--muted); --lwd-line: var(--line); --lwd-c1: var(--cyan); --lwd-c2: var(--amber); }
+  .faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; margin-bottom: 10px; }
+  .faq summary { cursor: pointer; font-weight: 700; }
+  .faq p { color: var(--muted); margin: 10px 0 0; }
+  .how { counter-reset: s; }
+  .how .card::before { counter-increment: s; content: "0" counter(s); font: 700 .8rem var(--mono); color: var(--amber); display: block; margin-bottom: 6px; }
+</style>
+</head>
+<body data-title-en="Digital products — Laura Andreea">
+<a class="skip" href="#main">Sari la conținut</a>
+<header class="pd-head"><div class="wrap">
+  <a class="pd-brand" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/./">◆ <span data-en="Digital <b>products</b>">Produse <b>digitale</b></span></a>
+  <nav class="pd-crumbs" aria-label="Breadcrumb"><a href="https://laurandreea10.github.io/codepen-portfolio/portfolio.html" data-en="← Portfolio">← Portofoliu</a><a href="https://laurandreea10.github.io/codepen-portfolio/canva-collection.html" data-en="Canva collection">Colecția Canva</a></nav>
+  <div class="pd-tools"><button id="contrastBtn" class="btn btn-sm" type="button" aria-label="Contrast ridicat" data-en-label="High contrast">◐</button><button id="langBtn" class="btn btn-sm" type="button">EN</button><button id="themeBtn" class="btn btn-sm" type="button">☀</button></div>
+</div></header>
+
+<main id="main" class="wrap">
+  <section class="hero">
+    <span class="eyebrow" data-en="Studio · 6 free products">Studio · 6 produse gratuite</span>
+    <h1 data-en="Design, code, marketing &amp; games — <em>combined</em>">Design, cod, marketing și jocuri — <em>combinate</em></h1>
+    <p class="lead" data-en="Each product joins at least two things I already build: Canva templates, front-end, CRM and marketing tools, and browser games. Everything has a live demo, everything downloads for free and everything runs in the browser, with no account and no backend.">Fiecare produs leagă cel puțin două lucruri pe care le construiesc deja: șabloane Canva, front-end, instrumente CRM și de marketing și jocuri de browser. Toate au demo live, toate se descarcă gratuit și toate rulează în browser, fără cont și fără backend.</p>
+    <div class="venn" aria-label="Ingrediente" data-en-label="Ingredients"><span>🎨 Canva</span><span data-en="💻 Front-end">💻 Front-end</span><span>📈 Marketing &amp; CRM</span><span data-en="🎮 Games">🎮 Jocuri</span><span data-en="📚 Education">📚 Educație</span></div>
+    <div class="stats">
+      <div class="stat"><b>6</b><span data-en="products">produse</span></div>
+      <div class="stat"><b>11</b><span data-en="Web Components">Web Components</span></div>
+      <div class="stat"><b>3</b><span data-en="ZIPs built in the browser">ZIP-uri generate în browser</span></div>
+      <div class="stat"><b>0</b><span data-en="dependencies · €0 hosting">dependențe · 0 € hosting</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="catT">
+    <h2 id="catT" class="sr-only" data-en="Catalogue">Catalog</h2>
+    <div class="filters" role="group" aria-label="Filtrează produsele" data-en-label="Filter products">
+      <button class="chip-btn btn-sm" type="button" data-f="all" aria-pressed="true" data-en="All">Toate</button>
+      <button class="chip-btn btn-sm" type="button" data-f="design" aria-pressed="false">Design</button>
+      <button class="chip-btn btn-sm" type="button" data-f="code" aria-pressed="false" data-en="Code">Cod</button>
+      <button class="chip-btn btn-sm" type="button" data-f="marketing" aria-pressed="false">Marketing</button>
+      <button class="chip-btn btn-sm" type="button" data-f="games" aria-pressed="false" data-en="Games">Jocuri</button>
+      <button class="chip-btn btn-sm" type="button" data-f="edu" aria-pressed="false" data-en="Education">Educație</button>
+    </div>
+    <p class="sr-only" id="fCount" aria-live="polite"></p>
+
+    <div class="bento" id="bento">
+      <article class="p-card feat" data-tags="design code" aria-labelledby="p1">
+        <span class="p-num">01</span>
+        <h3 id="p1">Template Hub</h3>
+        <span class="p-mix">Canva × HTML/CSS</span>
+        <p data-en="Same design, two formats: every template from my Canva collection also exists as editable code. Change text and colours, then export HTML or PNG.">Același design, în două formate: fiecare șablon din colecția mea Canva există și ca cod editabil. Schimbi textul și culorile, apoi exporți HTML sau PNG.</p>
+        <div class="p-live mini-tpl" aria-hidden="true"><div></div><div></div><div></div><div></div></div>
+        <ul><li data-en="Square post, story, carousel, LinkedIn cover">Post pătrat, story, carusel, cover LinkedIn</li><li data-en="3-slide SaaS presentation, monthly marketing report">Prezentare SaaS în 3 slide-uri, raport lunar de marketing</li></ul>
+        <div class="p-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/template-hub/" data-en="Open the editor →">Deschide editorul →</a><a class="btn" href="https://laurandreea10.github.io/codepen-portfolio/canva-collection.html" data-en="Canva version">Versiunea Canva</a></div>
+      </article>
+
+      <article class="p-card" data-tags="games marketing code" aria-labelledby="p2">
+        <span class="p-num">02</span>
+        <h3 id="p2">Gamified Marketing Widgets</h3>
+        <span class="p-mix" data-en="Games × marketing">Jocuri × marketing</span>
+        <p data-en="Spin the wheel, scratch card, product quiz and memory — with a discount code and an analytics event.">Roata norocului, card de răzuit, quiz de produs și memory — cu cod de reducere și eveniment pentru analytics.</p>
+        <div class="w-icons"><a href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/widgets/?w=lw-spin-wheel"><span aria-hidden="true">🎡</span><b data-en="Wheel">Roată</b></a><a href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/widgets/?w=lw-scratch-card"><span aria-hidden="true">🪙</span><b data-en="Scratch">Răzuit</b></a><a href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/widgets/?w=lw-quiz"><span aria-hidden="true">❓</span><b>Quiz</b></a><a href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/widgets/?w=lw-memory"><span aria-hidden="true">🃏</span><b>Memory</b></a></div>
+        <div class="p-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/widgets/" data-en="Configure →">Configurează →</a><a class="btn" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/widgets/lw-widgets.js" download data-en="Download JS">Descarcă JS</a></div>
+      </article>
+
+      <article class="p-card wide" data-tags="code marketing" aria-labelledby="p3">
+        <span class="p-num">03</span>
+        <h3 id="p3">CRM Dashboard UI Kit</h3>
+        <span class="p-mix">CRM × design system</span>
+        <p data-en="Seven Web Components: KPI, sparkline, bars, donut, pipeline, sortable table and activity feed, themed with CSS variables.">Șapte Web Components: KPI, sparkline, bare, donut, pipeline, tabel sortabil și flux de activitate, cu teme prin variabile CSS.</p>
+        <div class="dash-mini" id="dashMini"><lwd-kpi id="mk1" label="Venituri" value="€48.2k" delta="12" trend="20,32,28,44,51,49,60"></lwd-kpi><lwd-kpi id="mk2" label="Churn" value="2.1%" delta="-8" inverse trend="9,8,8,7,6,6,5"></lwd-kpi></div>
+        <div class="p-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/dashboard-kit/" data-en="See the live dashboard →">Vezi dashboard-ul live →</a><a class="btn" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/dashboard-kit/lw-dashboard.js" download data-en="Download JS">Descarcă JS</a></div>
+      </article>
+
+      <article class="p-card wide" data-tags="marketing design" aria-labelledby="p4">
+        <span class="p-num">04</span>
+        <h3 id="p4">Marketing Starter Kit</h3>
+        <span class="p-mix">Marketing Lab × Canva × Email</span>
+        <p data-en="Fill in brand and campaign once; get a ZIP with UTM links, a responsive email, a social pack, a campaign tracker and a UTM builder.">Completezi o dată brandul și campania; primești un ZIP cu linkuri UTM, email responsive, pachet social, tracker de campanie și UTM builder.</p>
+        <ul><li data-en="8 files, generated in your browser">8 fișiere, generate în browserul tău</li><li data-en="CSV with formulas for Sheets / Excel">CSV cu formule pentru Sheets / Excel</li></ul>
+        <div class="p-actions"><a class="btn btn-amber" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/starter-kit/" data-en="Build my kit →">Construiește-mi kitul →</a></div>
+      </article>
+
+      <article class="p-card" data-tags="edu design" aria-labelledby="p5">
+        <span class="p-num">05</span>
+        <h3 id="p5" data-en="Printable sheets">Fișe printabile</h3>
+        <span class="p-mix">Gimnaziu Space × Grădina Curioasă</span>
+        <p data-en="A4 sheets: math and physics formulas for grades 5–8, a grammar memo and kids' worksheets with answer keys. Saved as PDF.">Fișe A4: formule de matematică și fizică pentru V–VIII, memorator de gramatică și fișe pentru copii, cu răspunsuri. Salvate ca PDF.</p>
+        <div class="p-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/printables/" data-en="Generate a sheet →">Generează o fișă →</a></div>
+      </article>
+
+      <article class="p-card" data-tags="games code" aria-labelledby="p6">
+        <span class="p-num">06</span>
+        <h3 id="p6">Game Jam Kit</h3>
+        <span class="p-mix">CodePen Challenges × open source</span>
+        <p data-en="GameKit.js: loop, input, RO/EN, saves, sound and accessibility in ~8 KB, plus a playable demo and a starter ZIP.">GameKit.js: loop, input, RO/EN, salvări, sunet și accesibilitate în ~8 KB, plus demo jucabil și ZIP de pornire.</p>
+        <div class="p-actions"><a class="btn btn-primary" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/game-jam-kit/" data-en="Play the demo →">Joacă demo-ul →</a><a class="btn" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/game-jam-kit/gamekit.js" download>gamekit.js</a></div>
+      </article>
+
+      <article class="p-card" data-tags="games marketing" aria-labelledby="pLive">
+        <span class="p-num" data-en="LIVE">LIVE</span>
+        <h3 id="pLive" data-en="Try one right here">Încearcă unul chiar aici</h3>
+        <p data-en="This is the real &lt;lw-spin-wheel&gt; from product 02, running inside this page.">Acesta e chiar &lt;lw-spin-wheel&gt; din produsul 02, rulând în pagina asta.</p>
+        <div class="p-live"><lw-spin-wheel id="liveWheel" code="STUDIO" primary="#4fd1e8" accent="#ffb547"></lw-spin-wheel></div>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="howT">
+    <h2 id="howT" data-en="How they are built">Cum sunt construite</h2>
+    <div class="grid g3 how">
+      <div class="card"><h3 data-en="No backend">Fără backend</h3><p class="muted" data-en="Everything runs on GitHub Pages. ZIP files are assembled in the browser by a short writer with no libraries (CRC-32 + STORE), PDFs come from the print dialog, PNGs from canvas.">Totul rulează pe GitHub Pages. ZIP-urile sunt asamblate în browser de un writer scurt, fără biblioteci (CRC-32 + STORE), PDF-urile vin din fereastra de printare, PNG-urile din canvas.</p></div>
+      <div class="card"><h3 data-en="Web Components">Web Components</h3><p class="muted" data-en="The widgets and the dashboard kit are custom elements with Shadow DOM, so they can be pasted into any site without CSS conflicts.">Widgeturile și kitul de dashboard sunt custom elements cu Shadow DOM, deci pot fi lipite pe orice site fără conflicte de CSS.</p></div>
+      <div class="card"><h3 data-en="Accessible by default">Accesibile din start</h3><p class="muted" data-en="RO/EN, dark/light, high contrast, keyboard use, live regions for results and respect for reduced motion — on every page.">RO/EN, dark/light, contrast ridicat, folosire din tastatură, regiuni live pentru rezultate și respect pentru mișcarea redusă — pe fiecare pagină.</p></div>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="faqT">
+    <h2 id="faqT" data-en="Questions">Întrebări</h2>
+    <details><summary data-en="Are they really free?">Sunt chiar gratuite?</summary><p data-en="Yes. The code is MIT-licensed; templates and sheets are free for personal, classroom and commercial use. A credit is appreciated, not required.">Da. Codul are licență MIT; șabloanele și fișele sunt gratuite pentru uz personal, la clasă și comercial. O mențiune e apreciată, nu obligatorie.</p></details>
+    <details><summary data-en="Is anything I type sent somewhere?">Ce scriu e trimis undeva?</summary><p data-en="No. The pages have no server and no tracking; files are built on your device. Only the theme and language choice are remembered in your browser.">Nu. Paginile nu au server și nici tracking; fișierele sunt construite pe dispozitivul tău. Doar alegerea temei și a limbii e ținută minte în browser.</p></details>
+    <details><summary data-en="Why build products, not just projects?">De ce produse, nu doar proiecte?</summary><p data-en="Because a product has to be usable by someone else: clear setup, a download, documentation and edge cases. It is the best practice I know for growing as a developer.">Pentru că un produs trebuie să poată fi folosit de altcineva: instalare clară, descărcare, documentație și cazuri-limită. E cel mai bun exercițiu pe care îl știu ca să cresc ca developer.</p></details>
+  </section>
+</main>
+
+<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · <span data-en="Built in my free time">Construit în timpul liber</span></span><span><a href="https://laurandreea10.github.io/codepen-portfolio/portfolio.html" data-en="← Back to the portfolio">← Înapoi la portofoliu</a> · <a href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/CHANGELOG.md" data-en="History">Istoric</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/produse-digitale" target="_blank" rel="noopener noreferrer">GitHub</a></span></div></footer>
+
+<script>
+/* Produse digitale — utilitare comune: temă, RO/EN, contrast, toast, copiere, descărcare, ZIP fără dependențe.
+   Laura Andreea · MIT */
+(() => {
+  "use strict";
+  const root = document.documentElement;
+  const store = {
+    get(k) { try { return localStorage.getItem("pd-" + k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem("pd-" + k, v); } catch (e) {} }
+  };
+
+  /* ---------- temă / contrast ---------- */
+  const theme = store.get("theme") || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+  root.dataset.theme = theme;
+  if (store.get("contrast") === "high") root.dataset.contrast = "high";
+
+  /* ---------- limbă ---------- */
+  let lang = store.get("lang") === "en" ? "en" : "ro";
+  const t = (ro, en) => (lang === "en" ? en : ro);
+
+  function applyLang() {
+    root.lang = lang;
+    document.querySelectorAll("[data-en]").forEach(el => {
+      if (el.dataset.ro === undefined) el.dataset.ro = el.innerHTML;
+      el.innerHTML = lang === "en" ? el.dataset.en : el.dataset.ro;
+    });
+    document.querySelectorAll("[data-en-placeholder]").forEach(el => {
+      if (el.dataset.roPlaceholder === undefined) el.dataset.roPlaceholder = el.placeholder;
+      el.placeholder = lang === "en" ? el.dataset.enPlaceholder : el.dataset.roPlaceholder;
+    });
+    document.querySelectorAll("[data-en-label]").forEach(el => {
+      if (el.dataset.roLabel === undefined) el.dataset.roLabel = el.getAttribute("aria-label") || "";
+      el.setAttribute("aria-label", lang === "en" ? el.dataset.enLabel : el.dataset.roLabel);
+    });
+    if (document.body?.dataset.titleEn) {
+      if (!document.body.dataset.titleRo) document.body.dataset.titleRo = document.title;
+      document.title = lang === "en" ? document.body.dataset.titleEn : document.body.dataset.titleRo;
+    }
+    const lb = document.getElementById("langBtn");
+    if (lb) { lb.textContent = lang === "en" ? "RO" : "EN"; lb.setAttribute("aria-label", lang === "en" ? "Schimbă în română" : "Switch to English"); }
+    document.dispatchEvent(new CustomEvent("pd:lang", { detail: lang }));
+  }
+
+  function syncThemeBtn() {
+    const b = document.getElementById("themeBtn");
+    if (!b) return;
+    const dark = root.dataset.theme === "dark";
+    b.textContent = dark ? "☀" : "☾";
+    b.setAttribute("aria-label", t(dark ? "Temă luminoasă" : "Temă întunecată", dark ? "Light theme" : "Dark theme"));
+  }
+
+  /* ---------- toast ---------- */
+  let toastEl, toastTimer;
+  function toast(msg) {
+    if (!toastEl) {
+      toastEl = document.createElement("div");
+      toastEl.className = "toast";
+      toastEl.setAttribute("role", "status");
+      toastEl.setAttribute("aria-live", "polite");
+      document.body.appendChild(toastEl);
+    }
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2200);
+  }
+
+  async function copy(text) {
+    try { await navigator.clipboard.writeText(text); }
+    catch (e) {
+      const ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch (er) {}
+      ta.remove();
+    }
+    toast(t("Copiat ✓", "Copied ✓"));
+  }
+
+  function download(name, data, type = "text/plain;charset=utf-8") {
+    const blob = data instanceof Blob ? data : new Blob([data], { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  /* ---------- ZIP (metoda STORE, fără compresie, fără dependențe) ---------- */
+  const CRC_TABLE = (() => {
+    const tbl = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) {
+      let c = n;
+      for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+      tbl[n] = c >>> 0;
+    }
+    return tbl;
+  })();
+  function crc32(bytes) {
+    let c = 0xffffffff;
+    for (let i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xff] ^ (c >>> 8);
+    return (c ^ 0xffffffff) >>> 0;
+  }
+  /** files: [{ name: "folder/file.txt", data: string | Uint8Array }] → Blob */
+  function zip(files) {
+    const enc = new TextEncoder();
+    const parts = [], central = [];
+    let offset = 0;
+    const now = new Date();
+    const dosTime = (now.getHours() << 11) | (now.getMinutes() << 5) | (now.getSeconds() >> 1);
+    const dosDate = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
+    for (const f of files) {
+      const nameBytes = enc.encode(f.name);
+      const data = typeof f.data === "string" ? enc.encode(f.data) : f.data;
+      const crc = crc32(data);
+      const local = new DataView(new ArrayBuffer(30));
+      local.setUint32(0, 0x04034b50, true);
+      local.setUint16(4, 20, true);
+      local.setUint16(6, 0x0800, true); // nume UTF-8
+      local.setUint16(8, 0, true);
+      local.setUint16(10, dosTime, true);
+      local.setUint16(12, dosDate, true);
+      local.setUint32(14, crc, true);
+      local.setUint32(18, data.length, true);
+      local.setUint32(22, data.length, true);
+      local.setUint16(26, nameBytes.length, true);
+      local.setUint16(28, 0, true);
+      parts.push(new Uint8Array(local.buffer), nameBytes, data);
+
+      const cd = new DataView(new ArrayBuffer(46));
+      cd.setUint32(0, 0x02014b50, true);
+      cd.setUint16(4, 20, true);
+      cd.setUint16(6, 20, true);
+      cd.setUint16(8, 0x0800, true);
+      cd.setUint16(10, 0, true);
+      cd.setUint16(12, dosTime, true);
+      cd.setUint16(14, dosDate, true);
+      cd.setUint32(16, crc, true);
+      cd.setUint32(20, data.length, true);
+      cd.setUint32(24, data.length, true);
+      cd.setUint16(28, nameBytes.length, true);
+      cd.setUint32(42, offset, true);
+      central.push(new Uint8Array(cd.buffer), nameBytes);
+      offset += 30 + nameBytes.length + data.length;
+    }
+    const cdSize = central.reduce((s, p) => s + p.length, 0);
+    const end = new DataView(new ArrayBuffer(22));
+    end.setUint32(0, 0x06054b50, true);
+    end.setUint16(8, files.length, true);
+    end.setUint16(10, files.length, true);
+    end.setUint32(12, cdSize, true);
+    end.setUint32(16, offset, true);
+    return new Blob([...parts, ...central, new Uint8Array(end.buffer)], { type: "application/zip" });
+  }
+
+  /* ---------- pornire ---------- */
+  function init() {
+    document.getElementById("themeBtn")?.addEventListener("click", () => {
+      root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+      store.set("theme", root.dataset.theme);
+      syncThemeBtn();
+      document.dispatchEvent(new CustomEvent("pd:theme", { detail: root.dataset.theme }));
+    });
+    document.getElementById("langBtn")?.addEventListener("click", () => {
+      lang = lang === "en" ? "ro" : "en";
+      store.set("lang", lang);
+      applyLang(); syncThemeBtn();
+    });
+    const cb = document.getElementById("contrastBtn");
+    if (cb) {
+      cb.setAttribute("aria-pressed", String(root.dataset.contrast === "high"));
+      cb.addEventListener("click", () => {
+        const on = root.dataset.contrast !== "high";
+        if (on) root.dataset.contrast = "high"; else delete root.dataset.contrast;
+        cb.setAttribute("aria-pressed", String(on));
+        store.set("contrast", on ? "high" : "normal");
+      });
+    }
+    document.querySelectorAll("[data-copy-target]").forEach(b => b.addEventListener("click", () => {
+      const el = document.querySelector(b.dataset.copyTarget);
+      if (el) copy(el.value ?? el.textContent);
+    }));
+    document.querySelectorAll(".pd-year").forEach(el => { el.textContent = new Date().getFullYear(); });
+    applyLang(); syncThemeBtn();
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
+
+  window.PD = { t, get lang() { return lang; }, toast, copy, download, zip, crc32, esc, store };
+})();
+
+</script>
+<script>
+/*! Gamified Marketing Widgets v1.0.0 · Laura Andreea · MIT
+ *  Web Components fără dependențe: <lw-spin-wheel>, <lw-scratch-card>, <lw-quiz>, <lw-memory>.
+ *  Fiecare widget emite evenimentul `lw-win` cu { widget, prize, code } — îl poți lega de analytics.
+ *  Atribute comune: lang="ro|en", primary, accent, code, once (o singură încercare per vizitator).
+ */
+(() => {
+  "use strict";
+  if (window.customElements?.get("lw-spin-wheel")) return;
+
+  const TXT = {
+    ro: { spin: "Învârte roata", spinning: "Se învârte…", won: "Ai câștigat", code: "Codul tău", copy: "Copiază codul", copied: "Copiat ✓", again: "Mai încearcă", used: "Ai folosit deja încercarea.", reveal: "Dezvăluie", scratch: "Răzuiește cu degetul sau mouse-ul", next: "Următoarea", result: "Recomandarea noastră", restart: "Reia", moves: "Mutări", pairs: "Perechi", memWin: "Bravo! Ai găsit toate perechile.", memLose: "Aproape! Încearcă din nou în mai puține mutări.", noPrize: "Nu de data asta" },
+    en: { spin: "Spin the wheel", spinning: "Spinning…", won: "You won", code: "Your code", copy: "Copy code", copied: "Copied ✓", again: "Try again", used: "You have already used your try.", reveal: "Reveal", scratch: "Scratch with your finger or mouse", next: "Next", result: "Our recommendation", restart: "Restart", moves: "Moves", pairs: "Pairs", memWin: "Well done! You found every pair.", memLose: "So close! Try again in fewer moves.", noPrize: "Not this time" }
+  };
+  const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const contrastText = hex => {
+    const h = hex.replace("#", "");
+    const n = parseInt(h.length === 3 ? h.split("").map(x => x + x).join("") : h, 16);
+    const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(v => { v /= 255; return v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; });
+    return .2126 * r + .7152 * g + .0722 * b > .4 ? "#111111" : "#ffffff";
+  };
+
+  const BASE_CSS = `
+    :host{display:block;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--lw-text,#0d1a2d);--p:var(--lw-primary,#4fd1e8);--a:var(--lw-accent,#ffb547)}
+    .box{background:var(--lw-bg,#ffffff);border-radius:20px;padding:22px;box-shadow:0 14px 40px #0d1a2d22;text-align:center;max-width:420px;margin:0 auto;box-sizing:border-box}
+    h3{font:700 1.3rem/1.2 Fraunces,Georgia,serif;margin:0 0 6px}
+    p{margin:0 0 12px;opacity:.8}
+    button{font:700 1rem Inter,system-ui,sans-serif;border:0;border-radius:999px;padding:12px 22px;cursor:pointer;background:var(--p);color:var(--on-p,#111);min-height:44px}
+    button:focus-visible{outline:3px solid var(--a);outline-offset:3px}
+    button:disabled{opacity:.55;cursor:not-allowed}
+    .ghost{background:transparent;color:inherit;border:2px solid currentColor}
+    .result{margin-top:14px;min-height:1.5em;font-weight:600}
+    .code{display:inline-flex;gap:8px;align-items:center;margin-top:8px;padding:8px 8px 8px 16px;border:2px dashed var(--a);border-radius:12px;font:700 1.05rem "JetBrains Mono",ui-monospace,monospace}
+    .code button{padding:6px 12px;min-height:34px;font-size:.85rem;background:var(--a);color:var(--on-a,#111)}
+    @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+  `;
+
+  class LwBase extends HTMLElement {
+    constructor() { super(); this.root = this.attachShadow({ mode: "open" }); }
+    get L() { return TXT[(this.getAttribute("lang") || document.documentElement.lang || "ro").startsWith("en") ? "en" : "ro"]; }
+    attr(n, d) { return this.getAttribute(n) ?? d; }
+    connectedCallback() { this.paint(); }
+    attributeChangedCallback() { if (this.isConnected) this.paint(); }
+    paint() {
+      const p = this.attr("primary", "#4fd1e8"), a = this.attr("accent", "#ffb547");
+      this.style.setProperty("--lw-primary", p); this.style.setProperty("--lw-accent", a);
+      this.style.setProperty("--on-p", contrastText(p)); this.style.setProperty("--on-a", contrastText(a));
+      this.render();
+    }
+    get storeKey() { return "lw-" + this.localName + "-" + (this.id || this.attr("code", "x")); }
+    used() { try { return this.hasAttribute("once") && localStorage.getItem(this.storeKey) === "1"; } catch (e) { return false; } }
+    markUsed() { try { if (this.hasAttribute("once")) localStorage.setItem(this.storeKey, "1"); } catch (e) {} }
+    codeHTML(code) { return `<div class="code"><span>${esc(code)}</span><button type="button" data-copy="${esc(code)}">${this.L.copy}</button></div>`; }
+    bindCopy() {
+      this.root.querySelectorAll("[data-copy]").forEach(b => b.onclick = async () => {
+        try { await navigator.clipboard.writeText(b.dataset.copy); } catch (e) {}
+        b.textContent = this.L.copied;
+      });
+    }
+    win(prize, code) {
+      this.markUsed();
+      this.dispatchEvent(new CustomEvent("lw-win", { bubbles: true, composed: true, detail: { widget: this.localName, prize, code } }));
+    }
+  }
+
+  /* ---------------- Roata norocului ---------------- */
+  class LwSpinWheel extends LwBase {
+    static get observedAttributes() { return ["prizes", "primary", "accent", "title", "lang", "code"]; }
+    render() {
+      const L = this.L;
+      const prizes = this.attr("prizes", L === TXT.en ? "10% off|Free shipping|Try again|15% off|Gift|5% off" : "10% reducere|Transport gratuit|Mai încearcă|15% reducere|Cadou|5% reducere").split("|").map(s => s.trim()).filter(Boolean).slice(0, 12);
+      this.prizes = prizes;
+      const n = prizes.length, seg = 360 / n;
+      const p = this.attr("primary", "#4fd1e8"), a = this.attr("accent", "#ffb547");
+      const stops = prizes.map((_, i) => `${i % 2 ? a : p} ${i * seg}deg ${(i + 1) * seg}deg`).join(",");
+      const labels = `<svg viewBox="0 0 200 200" style="position:absolute;inset:0;width:100%;height:100%" aria-hidden="true">${prizes.map((x, i) => { const mid = i * seg + seg / 2; const txt = x.length > 13 ? x.slice(0, 12) + "…" : x; return `<text transform="rotate(${mid - 90} 100 100)" x="186" y="100" text-anchor="end" dominant-baseline="middle" font-family="Inter,system-ui,sans-serif" font-weight="700" font-size="${n > 8 ? 7 : 8}" fill="${contrastText(i % 2 ? a : p)}">${esc(txt)}</text>`; }).join("")}</svg>`;
+      this.root.innerHTML = `<style>${BASE_CSS}
+        .wheel-wrap{position:relative;width:var(--lw-wheel-size,min(300px,78vw));aspect-ratio:1;margin:12px auto 16px}
+        .wheel{position:absolute;inset:0;border-radius:50%;background:conic-gradient(${stops});border:6px solid #fff;box-shadow:0 0 0 4px var(--p),0 10px 30px #0003;transition:transform 4.2s cubic-bezier(.12,.75,.1,1)}
+        .hub{position:absolute;inset:38%;border-radius:50%;background:#fff;box-shadow:0 2px 10px #0003;display:grid;place-items:center;font-size:1.4rem}
+        .pin{position:absolute;left:50%;top:-14px;translate:-50% 0;width:0;height:0;border:14px solid transparent;border-top:26px solid #e11d48;filter:drop-shadow(0 2px 2px #0004);z-index:2}
+      </style>
+      <div class="box" part="box"><h3>${esc(this.attr("title", L.spin))}</h3>
+        <div class="wheel-wrap"><div class="pin"></div><div class="wheel" role="img" aria-label="${esc(prizes.join(", "))}">${labels}</div><div class="hub" aria-hidden="true">🎁</div></div>
+        <button type="button" class="go">${L.spin}</button>
+        <div class="result" role="status" aria-live="polite"></div></div>`;
+      this.rot = 0;
+      const go = this.root.querySelector(".go");
+      if (this.used()) { go.disabled = true; this.root.querySelector(".result").textContent = L.used; }
+      go.onclick = () => this.spin();
+    }
+    spin() {
+      const L = this.L, go = this.root.querySelector(".go"), wheel = this.root.querySelector(".wheel"), out = this.root.querySelector(".result");
+      const n = this.prizes.length, seg = 360 / n;
+      const idx = crypto.getRandomValues(new Uint32Array(1))[0] % n;
+      go.disabled = true; go.textContent = L.spinning; out.textContent = "";
+      // segmentul idx trebuie să ajungă sub indicatorul de sus (0deg)
+      const target = 360 - (idx * seg + seg / 2) + (Math.random() - .5) * seg * .6;
+      this.rot += 360 * (reduced() ? 1 : 6) + ((target - (this.rot % 360)) + 360) % 360;
+      wheel.style.transform = `rotate(${this.rot}deg)`;
+      const done = () => {
+        const prize = this.prizes[idx];
+        const lose = /încearcă|try again|nimic|nothing/i.test(prize);
+        if (lose) { out.textContent = L.noPrize + " — " + prize; go.disabled = this.hasAttribute("once"); go.textContent = L.again; if (this.hasAttribute("once")) this.markUsed(); return; }
+        const code = this.attr("code", "SPIN") + "-" + (idx + 1) + Math.random().toString(36).slice(2, 5).toUpperCase();
+        out.innerHTML = `${L.won}: <strong>${esc(prize)}</strong><br>${this.codeHTML(code)}`;
+        this.bindCopy(); go.textContent = L.spin; go.disabled = this.hasAttribute("once");
+        this.win(prize, code);
+      };
+      setTimeout(done, reduced() ? 300 : 4300);
+    }
+  }
+
+  /* ---------------- Card de răzuit ---------------- */
+  class LwScratchCard extends LwBase {
+    static get observedAttributes() { return ["prize", "primary", "accent", "title", "lang", "code"]; }
+    render() {
+      const L = this.L;
+      const prize = this.attr("prize", L === TXT.en ? "20% off your first order" : "20% reducere la prima comandă");
+      const code = this.attr("code", "SCRATCH20");
+      this.root.innerHTML = `<style>${BASE_CSS}
+        .card{position:relative;width:min(320px,80vw);aspect-ratio:16/10;margin:12px auto;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,var(--p),var(--a));display:grid;place-items:center;color:var(--on-p,#111);touch-action:none}
+        .prize{font:700 1.35rem/1.2 Fraunces,Georgia,serif;padding:16px}
+        canvas{position:absolute;inset:0;width:100%;height:100%;cursor:grab}
+      </style>
+      <div class="box"><h3>${esc(this.attr("title", L === TXT.en ? "Scratch & win" : "Răzuiește și câștigă"))}</h3><p>${L.scratch}</p>
+        <div class="card"><div class="prize">${esc(prize)}</div><canvas aria-hidden="true"></canvas></div>
+        <button type="button" class="ghost rv">${L.reveal}</button>
+        <div class="result" role="status" aria-live="polite"></div></div>`;
+      const canvas = this.root.querySelector("canvas"), card = this.root.querySelector(".card");
+      const out = this.root.querySelector(".result"), rv = this.root.querySelector(".rv");
+      let done = false;
+      const finish = () => {
+        if (done) return; done = true;
+        canvas.style.transition = "opacity .4s"; canvas.style.opacity = "0";
+        setTimeout(() => canvas.remove(), 420);
+        rv.hidden = true;
+        out.innerHTML = `${L.won}: <strong>${esc(prize)}</strong><br>${this.codeHTML(code)}`;
+        this.bindCopy(); this.win(prize, code);
+      };
+      if (this.used()) { canvas.remove(); rv.hidden = true; out.textContent = L.used; return; }
+      requestAnimationFrame(() => {
+        const r = card.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+        canvas.width = Math.max(1, r.width * dpr); canvas.height = Math.max(1, r.height * dpr);
+        const ctx = canvas.getContext("2d");
+        ctx.scale(dpr, dpr);
+        const g = ctx.createLinearGradient(0, 0, r.width, r.height);
+        g.addColorStop(0, "#c9ced8"); g.addColorStop(.5, "#eef1f5"); g.addColorStop(1, "#b7bdc8");
+        ctx.fillStyle = g; ctx.fillRect(0, 0, r.width, r.height);
+        ctx.fillStyle = "#6b7280"; ctx.font = "700 18px Inter, sans-serif"; ctx.textAlign = "center";
+        ctx.fillText("✦ " + (L === TXT.en ? "SCRATCH HERE" : "RĂZUIEȘTE AICI") + " ✦", r.width / 2, r.height / 2 + 6);
+        ctx.globalCompositeOperation = "destination-out";
+        let drawing = false, last = null, moves = 0;
+        const pos = e => { const b = canvas.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
+        const cleared = () => {
+          const d = ctx.getImageData(0, 0, canvas.width, canvas.height).data; let c = 0, tot = 0;
+          for (let i = 3; i < d.length; i += 64) { tot++; if (d[i] === 0) c++; }
+          return c / tot;
+        };
+        canvas.addEventListener("pointerdown", e => { drawing = true; last = pos(e); canvas.setPointerCapture(e.pointerId); });
+        canvas.addEventListener("pointermove", e => {
+          if (!drawing) return; const p = pos(e);
+          ctx.lineWidth = 34; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(...last); ctx.lineTo(...p); ctx.stroke(); last = p;
+          if (++moves % 12 === 0 && cleared() > .5) finish();
+        });
+        const up = () => { drawing = false; if (!done && cleared() > .5) finish(); };
+        canvas.addEventListener("pointerup", up); canvas.addEventListener("pointercancel", up);
+      });
+      rv.onclick = finish;
+    }
+  }
+
+  /* ---------------- Quiz de produs ---------------- */
+  const QUIZ_DEFAULT = {
+    ro: { title: "Ce plan ți se potrivește?", questions: [
+      { q: "Câți oameni sunt în echipa ta?", a: [["Doar eu", 0], ["2–10", 1], ["Peste 10", 2]] },
+      { q: "Ce vrei să rezolvi mai întâi?", a: [["Să țin evidența clienților", 0], ["Să automatizez emailuri", 1], ["Rapoarte pentru management", 2]] },
+      { q: "Cât de des trimiți campanii?", a: [["Rar", 0], ["Lunar", 1], ["Săptămânal", 2]] }
+    ], results: [["Starter", "Simplu și gratuit pentru început."], ["Growth", "Automatizări și segmente pentru echipe mici."], ["Scale", "Rapoarte avansate și roluri pentru echipe mari."]] },
+    en: { title: "Which plan fits you?", questions: [
+      { q: "How many people are on your team?", a: [["Just me", 0], ["2–10", 1], ["More than 10", 2]] },
+      { q: "What do you want to solve first?", a: [["Keep track of customers", 0], ["Automate emails", 1], ["Reports for management", 2]] },
+      { q: "How often do you send campaigns?", a: [["Rarely", 0], ["Monthly", 1], ["Weekly", 2]] }
+    ], results: [["Starter", "Simple and free to start."], ["Growth", "Automations and segments for small teams."], ["Scale", "Advanced reports and roles for large teams."]] }
+  };
+  class LwQuiz extends LwBase {
+    static get observedAttributes() { return ["primary", "accent", "lang", "code"]; }
+    get config() {
+      const s = this.querySelector('script[type="application/json"]');
+      if (s) { try { return JSON.parse(s.textContent); } catch (e) {} }
+      return QUIZ_DEFAULT[this.L === TXT.en ? "en" : "ro"];
+    }
+    render() { this.step = 0; this.scores = []; this.draw(); }
+    draw() {
+      const L = this.L, c = this.config, qs = c.questions;
+      const prog = `<div style="height:6px;border-radius:6px;background:#0d1a2d14;margin:10px 0 18px"><div style="height:100%;width:${(this.step / qs.length) * 100}%;background:var(--p);border-radius:6px;transition:width .3s"></div></div>`;
+      let body;
+      if (this.step < qs.length) {
+        const q = qs[this.step];
+        body = `<p style="font-weight:700;opacity:1">${esc(q.q)}</p><div class="opts" role="group" aria-label="${esc(q.q)}">${q.a.map((o, i) => `<button type="button" class="ghost opt" data-i="${i}">${esc(o[0])}</button>`).join("")}</div>`;
+      } else {
+        const tally = {}; this.scores.forEach(s => tally[s] = (tally[s] || 0) + 1);
+        const best = +Object.keys(tally).sort((x, y) => tally[y] - tally[x] || y - x)[0];
+        const r = c.results[best] || c.results[0];
+        const code = this.attr("code", "QUIZ") + "-" + r[0].toUpperCase().replace(/\W/g, "").slice(0, 6);
+        body = `<p style="opacity:.7">${L.result}</p><div style="font:700 2rem Fraunces,Georgia,serif;color:var(--p)">${esc(r[0])}</div><p>${esc(r[1])}</p>${this.codeHTML(code)}<div style="margin-top:14px"><button type="button" class="ghost rs">${L.restart}</button></div>`;
+        queueMicrotask(() => this.win(r[0], code));
+      }
+      this.root.innerHTML = `<style>${BASE_CSS}.opts{display:grid;gap:10px}.opt{border-radius:14px;text-align:left}.opt:hover{background:var(--p);color:var(--on-p);border-color:transparent}</style>
+        <div class="box"><h3>${esc(c.title)}</h3>${prog}<div class="q" role="status" aria-live="polite">${body}</div></div>`;
+      this.root.querySelectorAll(".opt").forEach(b => b.onclick = () => { this.scores.push(qs[this.step].a[+b.dataset.i][1]); this.step++; this.draw(); this.root.querySelector(".opt, .rs")?.focus(); });
+      const rs = this.root.querySelector(".rs"); if (rs) rs.onclick = () => this.render();
+      this.bindCopy();
+    }
+  }
+
+  /* ---------------- Memory ---------------- */
+  class LwMemory extends LwBase {
+    static get observedAttributes() { return ["icons", "primary", "accent", "lang", "code", "max-moves"]; }
+    render() {
+      const L = this.L;
+      const icons = [...(this.attr("icons", "🍓🍋🥝🫐🍑🍇"))].filter(ch => ch.trim()).slice(0, 8);
+      const icons2 = Array.from(this.attr("icons", "🍓🍋🥝🫐🍑🍇").matchAll(/\p{Extended_Pictographic}(️|‍\p{Extended_Pictographic})*/gu), m => m[0]).slice(0, 8);
+      const set = icons2.length >= 2 ? icons2 : icons;
+      const deck = [...set, ...set].map((v, i) => ({ v, k: i })).sort(() => Math.random() - .5);
+      const max = +this.attr("max-moves", set.length * 2 + 4);
+      let open = [], found = 0, moves = 0, lock = false;
+      const cols = deck.length > 12 ? 4 : deck.length > 8 ? 4 : 3;
+      this.root.innerHTML = `<style>${BASE_CSS}
+        .grid{display:grid;grid-template-columns:repeat(${cols},1fr);gap:8px;margin:14px 0}
+        .c{aspect-ratio:1;border-radius:14px;font-size:clamp(1.4rem,6vw,2rem);padding:0;background:var(--p);color:transparent;transition:transform .25s,background .25s}
+        .c[aria-pressed="true"],.c.ok{background:#fff;color:inherit;box-shadow:inset 0 0 0 3px var(--p);transform:rotateY(180deg)}
+        .c.ok{box-shadow:inset 0 0 0 3px var(--a)}
+        .stats{display:flex;justify-content:center;gap:18px;font:600 .9rem "JetBrains Mono",monospace;opacity:.8}
+      </style>
+      <div class="box"><h3>${esc(this.attr("title", L === TXT.en ? "Match the pairs" : "Găsește perechile"))}</h3>
+        <div class="stats"><span>${L.moves}: <b class="mv">0</b>/${max}</span><span>${L.pairs}: <b class="pr">0</b>/${set.length}</span></div>
+        <div class="grid">${deck.map((c, i) => `<button type="button" class="c" data-i="${i}" aria-pressed="false" aria-label="${L === TXT.en ? "Card" : "Carte"} ${i + 1}"><span>${c.v}</span></button>`).join("")}</div>
+        <div class="result" role="status" aria-live="polite"></div></div>`;
+      const out = this.root.querySelector(".result");
+      if (this.used()) { this.root.querySelectorAll(".c").forEach(b => b.disabled = true); out.textContent = L.used; return; }
+      this.root.querySelectorAll(".c").forEach(b => b.onclick = () => {
+        if (lock || b.classList.contains("ok") || b.getAttribute("aria-pressed") === "true") return;
+        b.setAttribute("aria-pressed", "true"); b.setAttribute("aria-label", deck[+b.dataset.i].v);
+        open.push(b);
+        if (open.length < 2) return;
+        moves++; this.root.querySelector(".mv").textContent = moves;
+        const [x, y] = open; open = [];
+        if (deck[+x.dataset.i].v === deck[+y.dataset.i].v) {
+          x.classList.add("ok"); y.classList.add("ok"); found++;
+          this.root.querySelector(".pr").textContent = found;
+          if (found === set.length) {
+            if (moves <= max) {
+              const code = this.attr("code", "MEMORY10");
+              out.innerHTML = `${L.memWin}<br>${this.codeHTML(code)}`; this.bindCopy(); this.win("memory", code);
+            } else {
+              out.innerHTML = `${L.memLose} <button type="button" class="ghost rs">${L.restart}</button>`;
+              this.root.querySelector(".rs").onclick = () => this.render();
+            }
+          }
+        } else {
+          lock = true;
+          setTimeout(() => { [x, y].forEach(c => { c.setAttribute("aria-pressed", "false"); c.setAttribute("aria-label", (L === TXT.en ? "Card " : "Carte ") + (+c.dataset.i + 1)); }); lock = false; }, reduced() ? 500 : 800);
+        }
+      });
+    }
+  }
+
+  customElements.define("lw-spin-wheel", LwSpinWheel);
+  customElements.define("lw-scratch-card", LwScratchCard);
+  customElements.define("lw-quiz", LwQuiz);
+  customElements.define("lw-memory", LwMemory);
+})();
+
+</script>
+<script>
+/*! CRM Dashboard UI Kit v1.0.0 · Laura Andreea · MIT
+ *  Web Components fără dependențe pentru dashboard-uri CRM:
+ *  <lwd-kpi>, <lwd-sparkline>, <lwd-bars>, <lwd-donut>, <lwd-pipeline>, <lwd-table>, <lwd-activity>
+ *  Temă: variabile CSS --lwd-bg, --lwd-surface, --lwd-text, --lwd-muted, --lwd-line, --lwd-c1…--lwd-c5
+ *  Date: atributul `data` (JSON) sau proprietatea .data = […]
+ */
+(() => {
+  "use strict";
+  if (customElements.get("lwd-kpi")) return;
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const PAL = ["var(--lwd-c1,#4fd1e8)", "var(--lwd-c2,#ffb547)", "var(--lwd-c3,#ff7aa8)", "var(--lwd-c4,#5ee0a0)", "var(--lwd-c5,#a78bfa)"];
+  const CSS = `:host{display:block;font-family:var(--lwd-font,Inter,system-ui,sans-serif);color:var(--lwd-text,#eef3fb)}
+    .s{background:var(--lwd-surface,#13203a);border:1px solid var(--lwd-line,#ffffff1c);border-radius:var(--lwd-radius,16px);padding:18px;height:100%;box-sizing:border-box}
+    .t{font:600 .78rem var(--lwd-mono,"JetBrains Mono",monospace);letter-spacing:.08em;text-transform:uppercase;color:var(--lwd-muted,#9fb0c9);margin:0 0 10px}
+    .m{color:var(--lwd-muted,#9fb0c9)}
+    svg{display:block;overflow:visible}`;
+  const nf = (v, lang) => typeof v === "number" ? new Intl.NumberFormat(lang || document.documentElement.lang || "ro").format(v) : v;
+
+  class Base extends HTMLElement {
+    constructor() { super(); this.root = this.attachShadow({ mode: "open" }); }
+    static get observedAttributes() { return ["data", "label", "value", "delta", "unit", "trend", "title", "columns", "page-size"]; }
+    get data() {
+      if (this._data) return this._data;
+      try { return JSON.parse(this.getAttribute("data") || "[]"); } catch (e) { return []; }
+    }
+    set data(v) { this._data = v; this.render(); }
+    connectedCallback() { this.render(); }
+    attributeChangedCallback() { if (this.isConnected) this.render(); }
+    head() { const t = this.getAttribute("title"); return t ? `<p class="t">${esc(t)}</p>` : ""; }
+  }
+
+  /* KPI card */
+  class Kpi extends Base {
+    render() {
+      const delta = parseFloat(this.getAttribute("delta") || "0");
+      const good = this.hasAttribute("inverse") ? delta <= 0 : delta >= 0;
+      const trend = (this.getAttribute("trend") || "").split(",").map(Number).filter(n => !isNaN(n));
+      const unit = this.getAttribute("unit") || "";
+      this.root.innerHTML = `<style>${CSS}.v{font:700 2rem/1.1 var(--lwd-serif,Fraunces,Georgia,serif);margin:2px 0 6px}.d{font:700 .85rem var(--lwd-mono,monospace);color:${good ? "var(--lwd-good,#5ee0a0)" : "var(--lwd-bad,#ff6b6b)"}}</style>
+        <div class="s" role="group" aria-label="${esc(this.getAttribute("label"))}"><p class="t">${esc(this.getAttribute("label"))}</p>
+        <div class="v">${esc(this.getAttribute("value"))}${unit ? `<small style="font-size:.5em" class="m"> ${esc(unit)}</small>` : ""}</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px"><span class="d">${delta >= 0 ? "▲" : "▼"} ${Math.abs(delta)}%</span>${trend.length > 1 ? `<lwd-sparkline trend="${trend.join(",")}" style="width:96px;height:30px"></lwd-sparkline>` : ""}</div></div>`;
+    }
+  }
+
+  /* Sparkline */
+  class Spark extends Base {
+    render() {
+      const v = (this.getAttribute("trend") || "").split(",").map(Number).filter(n => !isNaN(n));
+      if (v.length < 2) { this.root.innerHTML = ""; return; }
+      const w = 100, h = 30, mn = Math.min(...v), mx = Math.max(...v), r = mx - mn || 1;
+      const pts = v.map((y, i) => [(i / (v.length - 1)) * w, h - ((y - mn) / r) * (h - 4) - 2]);
+      const d = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+      const col = this.getAttribute("color") || PAL[0];
+      this.root.innerHTML = `<style>:host{display:inline-block}</style><svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" preserveAspectRatio="none" role="img" aria-label="Trend: ${v.join(", ")}"><path d="${d} L${w} ${h} L0 ${h}Z" fill="${col}" opacity=".15"/><path d="${d}" fill="none" stroke="${col}" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>`;
+    }
+  }
+
+  /* Bar chart: data = [{label, value}] */
+  class Bars extends Base {
+    render() {
+      const d = this.data, mx = Math.max(1, ...d.map(x => x.value));
+      this.root.innerHTML = `<style>${CSS}
+        .wrap{display:flex;align-items:flex-end;gap:8px;height:var(--lwd-chart-h,180px);border-bottom:1px solid var(--lwd-line,#ffffff1c);padding-top:18px}
+        .b{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:4px;position:relative}
+        .bar{width:100%;border-radius:8px 8px 3px 3px;background:var(--lwd-c1,#4fd1e8);transition:height .5s cubic-bezier(.2,.8,.2,1)}
+        .b:last-child .bar{background:var(--lwd-c2,#ffb547)}
+        .val{font:600 .72rem var(--lwd-mono,monospace)}
+        .labels{display:flex;gap:8px;margin-top:6px}.labels span{flex:1;text-align:center;font-size:.72rem}
+        @media (prefers-reduced-motion:reduce){.bar{transition:none}}</style>
+        <div class="s">${this.head()}<div class="wrap" role="img" aria-label="${esc(d.map(x => x.label + ": " + x.value).join(", "))}">${d.map(x => `<div class="b"><span class="val">${nf(x.value)}</span><div class="bar" style="height:${(x.value / mx) * 88}%"></div></div>`).join("")}</div>
+        <div class="labels m">${d.map(x => `<span>${esc(x.label)}</span>`).join("")}</div></div>`;
+    }
+  }
+
+  /* Donut: data = [{label, value}] */
+  class Donut extends Base {
+    render() {
+      const d = this.data, tot = d.reduce((s, x) => s + x.value, 0) || 1;
+      let acc = 0;
+      const R = 40, C = 2 * Math.PI * R;
+      const arcs = d.map((x, i) => {
+        const len = (x.value / tot) * C, off = -acc; acc += len;
+        return `<circle r="${R}" cx="50" cy="50" fill="none" stroke="${PAL[i % 5]}" stroke-width="16" stroke-dasharray="${len.toFixed(2)} ${(C - len).toFixed(2)}" stroke-dashoffset="${off.toFixed(2)}" transform="rotate(-90 50 50)"/>`;
+      }).join("");
+      this.root.innerHTML = `<style>${CSS}.row{display:flex;gap:18px;align-items:center;flex-wrap:wrap}ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.88rem;flex:1;min-width:130px}li{display:flex;align-items:center;gap:8px}i{width:10px;height:10px;border-radius:3px;display:inline-block}b{margin-left:auto;font-family:var(--lwd-mono,monospace)}</style>
+        <div class="s">${this.head()}<div class="row"><svg viewBox="0 0 100 100" width="130" height="130" role="img" aria-label="${esc(d.map(x => `${x.label} ${Math.round(x.value / tot * 100)}%`).join(", "))}">${arcs}<text x="50" y="54" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">${nf(tot)}</text></svg>
+        <ul>${d.map((x, i) => `<li><i style="background:${PAL[i % 5]}"></i>${esc(x.label)}<b>${Math.round(x.value / tot * 100)}%</b></li>`).join("")}</ul></div></div>`;
+    }
+  }
+
+  /* Pipeline: data = [{stage, count, value}] */
+  class Pipeline extends Base {
+    render() {
+      const d = this.data, mx = Math.max(1, ...d.map(x => x.count));
+      this.root.innerHTML = `<style>${CSS}.st{display:grid;grid-template-columns:110px 1fr auto;gap:10px;align-items:center;margin:8px 0;font-size:.88rem}.tr{height:22px;border-radius:7px;background:var(--lwd-line,#ffffff1c);overflow:hidden}.fl{height:100%;border-radius:7px;transition:width .5s}.cv{font:600 .72rem var(--lwd-mono,monospace)}@media(max-width:420px){.st{grid-template-columns:80px 1fr auto}}</style>
+        <div class="s">${this.head()}${d.map((x, i) => {
+          const conv = i ? Math.round((x.count / (d[i - 1].count || 1)) * 100) : 100;
+          return `<div class="st"><span>${esc(x.stage)}</span><div class="tr" role="progressbar" aria-label="${esc(x.stage)}" aria-valuenow="${x.count}" aria-valuemin="0" aria-valuemax="${mx}"><div class="fl" style="width:${(x.count / mx) * 100}%;background:${PAL[i % 5]}"></div></div><span class="cv">${nf(x.count)}${i ? ` · ${conv}%` : ""}</span></div>`;
+        }).join("")}</div>`;
+    }
+  }
+
+  /* Table: data = [{…}], columns = "key:Label,key2:Label2" — sortare + căutare + paginare */
+  class Table extends Base {
+    render() {
+      const cols = (this.getAttribute("columns") || "").split(",").filter(Boolean).map(c => { const [k, l] = c.split(":"); return { k, l: l || k }; });
+      const keys = cols.length ? cols : Object.keys(this.data[0] || {}).map(k => ({ k, l: k }));
+      this.st = this.st || { sort: null, dir: 1, q: "", page: 0 };
+      const size = +(this.getAttribute("page-size") || 6);
+      const q = this.st.q.toLowerCase();
+      let rows = this.data.filter(r => !q || keys.some(c => String(r[c.k]).toLowerCase().includes(q)));
+      if (this.st.sort) rows = rows.slice().sort((a, b) => { const x = a[this.st.sort], y = b[this.st.sort]; return (typeof x === "number" ? x - y : String(x).localeCompare(String(y))) * this.st.dir; });
+      const pages = Math.max(1, Math.ceil(rows.length / size));
+      this.st.page = Math.min(this.st.page, pages - 1);
+      const view = rows.slice(this.st.page * size, this.st.page * size + size);
+      const en = (document.documentElement.lang || "ro").startsWith("en");
+      const hadFocus = this.root.activeElement?.classList.contains("q");
+      this.root.innerHTML = `<style>${CSS}
+        .tb{display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+        input{font:inherit;color:inherit;background:var(--lwd-bg,#0b1220);border:1px solid var(--lwd-line,#ffffff1c);border-radius:10px;padding:8px 10px;min-width:0;flex:1;max-width:240px}
+        .sc{overflow:auto}table{width:100%;border-collapse:collapse;font-size:.88rem}
+        th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--lwd-line,#ffffff1c);white-space:nowrap}
+        th button{all:unset;cursor:pointer;font-weight:700}th button:focus-visible,.pg button:focus-visible,input:focus-visible{outline:2px solid var(--lwd-c2,#ffb547);outline-offset:2px}
+        .pill{padding:2px 9px;border-radius:999px;font-size:.75rem;font-weight:700;background:var(--lwd-line,#ffffff1c)}
+        .pg{display:flex;gap:6px;align-items:center;justify-content:flex-end;margin-top:10px;font-size:.82rem}
+        .pg button{font:inherit;color:inherit;background:transparent;border:1px solid var(--lwd-line,#ffffff1c);border-radius:8px;padding:4px 10px;cursor:pointer}
+        .pg button:disabled{opacity:.4;cursor:default}</style>
+        <div class="s"><div class="tb">${this.head() ? `<div>${this.head()}</div>` : "<span></span>"}<input class="q" type="search" value="${esc(this.st.q)}" placeholder="${en ? "Search…" : "Caută…"}" aria-label="${en ? "Search table" : "Caută în tabel"}"></div>
+        <div class="sc"><table><thead><tr>${keys.map(c => `<th scope="col" aria-sort="${this.st.sort === c.k ? (this.st.dir > 0 ? "ascending" : "descending") : "none"}"><button type="button" data-k="${esc(c.k)}">${esc(c.l)} ${this.st.sort === c.k ? (this.st.dir > 0 ? "↑" : "↓") : ""}</button></th>`).join("")}</tr></thead>
+        <tbody>${view.map(r => `<tr>${keys.map(c => `<td>${c.k === "status" ? `<span class="pill">${esc(r[c.k])}</span>` : esc(nf(r[c.k]))}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${keys.length}" class="m">${en ? "No results" : "Niciun rezultat"}</td></tr>`}</tbody></table></div>
+        <div class="pg"><span class="m">${rows.length} ${en ? "rows" : "rânduri"}</span><button type="button" class="pv" ${this.st.page ? "" : "disabled"} aria-label="${en ? "Previous page" : "Pagina anterioară"}">←</button><span>${this.st.page + 1}/${pages}</span><button type="button" class="nx" ${this.st.page < pages - 1 ? "" : "disabled"} aria-label="${en ? "Next page" : "Pagina următoare"}">→</button></div></div>`;
+      const inp = this.root.querySelector(".q");
+      inp.oninput = () => { this.st.q = inp.value; this.st.page = 0; this.render(); };
+      if (hadFocus) { const i = this.root.querySelector(".q"); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
+      this.root.querySelectorAll("th button").forEach(b => b.onclick = () => { this.st.dir = this.st.sort === b.dataset.k ? -this.st.dir : 1; this.st.sort = b.dataset.k; this.render(); this.root.querySelector(`th button[data-k="${b.dataset.k}"]`)?.focus(); });
+      this.root.querySelector(".pv").onclick = () => { this.st.page--; this.render(); };
+      this.root.querySelector(".nx").onclick = () => { this.st.page++; this.render(); };
+    }
+  }
+
+  /* Activity feed: data = [{who, what, when, type}] */
+  class Activity extends Base {
+    render() {
+      const icon = { deal: "💼", email: "✉️", call: "📞", note: "📝", win: "🏆" };
+      this.root.innerHTML = `<style>${CSS}ol{list-style:none;margin:0;padding:0;display:grid;gap:12px}li{display:grid;grid-template-columns:34px 1fr;gap:10px;font-size:.88rem}.ic{width:34px;height:34px;border-radius:10px;background:var(--lwd-line,#ffffff1c);display:grid;place-items:center}</style>
+        <div class="s">${this.head()}<ol>${this.data.map(a => `<li><span class="ic" aria-hidden="true">${icon[a.type] || "•"}</span><span><strong>${esc(a.who)}</strong> ${esc(a.what)}<br><small class="m">${esc(a.when)}</small></span></li>`).join("")}</ol></div>`;
+    }
+  }
+
+  customElements.define("lwd-kpi", Kpi);
+  customElements.define("lwd-sparkline", Spark);
+  customElements.define("lwd-bars", Bars);
+  customElements.define("lwd-donut", Donut);
+  customElements.define("lwd-pipeline", Pipeline);
+  customElements.define("lwd-table", Table);
+  customElements.define("lwd-activity", Activity);
+})();
+
+</script>
+<script>
+(() => {
+  "use strict";
+  const { t } = window.PD;
+  const cards = [...document.querySelectorAll(".p-card")];
+  document.querySelectorAll("[data-f]").forEach(b => b.addEventListener("click", () => {
+    const f = b.dataset.f;
+    document.querySelectorAll("[data-f]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    let n = 0;
+    cards.forEach(c => { const show = f === "all" || c.dataset.tags.split(" ").includes(f); c.hidden = !show; if (show) n++; });
+    document.getElementById("fCount").textContent = t(`${n} produse afișate`, `${n} products shown`);
+  }));
+  const sync = lang => {
+    const w = document.getElementById("liveWheel"); if (w) w.setAttribute("lang", lang);
+    const k1 = document.getElementById("mk1"); if (k1) k1.setAttribute("label", lang === "en" ? "Revenue" : "Venituri");
+  };
+  document.addEventListener("pd:lang", e => sync(e.detail));
+  sync(PD.lang);
+})();
+</script>
+</body>
+</html>

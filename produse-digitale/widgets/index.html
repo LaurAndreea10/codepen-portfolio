@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<title>Gamified Marketing Widgets — Produse digitale</title>
+<meta name="description" content="Mini-jocuri pentru marketing ca Web Components: roata norocului, card de răzuit, quiz de produs și memory cu cod de reducere. Configurezi, copiezi snippetul, îl pui pe orice site.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/widgets/">
+<meta property="og:title" content="Gamified Marketing Widgets">
+<meta property="og:description" content="Roata norocului, card de răzuit, quiz și memory — Web Components fără dependențe.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/widgets/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../assets/pd.css">
+<style>
+  .w-layout { display: grid; grid-template-columns: 340px 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .w-layout { grid-template-columns: 1fr; } }
+  .preview { background: radial-gradient(circle at 30% 20%, var(--surface-2), var(--bg-2)); border-radius: var(--radius); border: 1px solid var(--line); padding: 28px 16px; min-height: 460px; display: grid; place-items: center; }
+  .log { font: 12.5px/1.5 var(--mono); background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px; max-height: 140px; overflow: auto; margin: 0; }
+  .dual { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .field[hidden] { display: none; }
+</style>
+</head>
+<body data-title-en="Gamified Marketing Widgets — Digital products">
+<a class="skip" href="#main">Sari la conținut</a>
+<header class="pd-head"><div class="wrap">
+  <a class="pd-brand" href="../">◆ <span data-en="Digital <b>products</b>">Produse <b>digitale</b></span></a>
+  <nav class="pd-crumbs" aria-label="Breadcrumb"><a href="../../portfolio.html" data-en="Portfolio">Portofoliu</a>/<a href="../" data-en="Digital products">Produse digitale</a>/<span>Widgets</span></nav>
+  <div class="pd-tools"><button id="contrastBtn" class="btn btn-sm" type="button" aria-label="Contrast ridicat" data-en-label="High contrast">◐</button><button id="langBtn" class="btn btn-sm" type="button">EN</button><button id="themeBtn" class="btn btn-sm" type="button">☀</button></div>
+</div></header>
+
+<main id="main" class="wrap">
+  <section class="hero">
+    <span class="eyebrow" data-en="02 · Games × marketing">02 · Jocuri × marketing</span>
+    <h1>Gamified Marketing Widgets</h1>
+    <p class="lead" data-en="The mechanics from my browser games, reused as marketing tools. Four Web Components with no dependencies: configure one, copy the snippet and paste it into any site — WordPress, Shopify, a landing page or plain HTML.">Mecanicile din jocurile mele de browser, refolosite ca instrumente de marketing. Patru Web Components fără dependențe: configurezi unul, copiezi snippetul și îl lipești pe orice site — WordPress, Shopify, landing page sau HTML simplu.</p>
+    <div class="row"><a class="btn btn-primary" href="lw-widgets.js" download data-en="⬇ lw-widgets.js (≈20 KB)">⬇ lw-widgets.js (≈20 KB)</a><span class="tag">Web Components</span><span class="tag">0 <span data-en="dependencies">dependențe</span></span><span class="tag" data-en="event: lw-win">eveniment: lw-win</span></div>
+  </section>
+
+  <section class="w-layout">
+    <aside class="card">
+      <div class="tabs" role="tablist" aria-label="Widget">
+        <button class="chip-btn btn-sm" role="tab" type="button" data-w="lw-spin-wheel" aria-pressed="true" aria-selected="true" data-en="🎡 Wheel">🎡 Roată</button>
+        <button class="chip-btn btn-sm" role="tab" type="button" data-w="lw-scratch-card" aria-pressed="false" aria-selected="false" data-en="🪙 Scratch">🪙 Răzuit</button>
+        <button class="chip-btn btn-sm" role="tab" type="button" data-w="lw-quiz" aria-pressed="false" aria-selected="false">❓ Quiz</button>
+        <button class="chip-btn btn-sm" role="tab" type="button" data-w="lw-memory" aria-pressed="false" aria-selected="false">🃏 Memory</button>
+      </div>
+      <form id="cfg" onsubmit="return false">
+        <div class="field" data-for="lw-spin-wheel lw-scratch-card lw-memory"><label for="cTitle" data-en="Title">Titlu</label><input id="cTitle" maxlength="50" placeholder="(implicit)" data-en-placeholder="(default)"></div>
+        <div class="field" data-for="lw-spin-wheel"><label for="cPrizes" data-en="Prizes (separated by |)">Premii (separate prin |)</label><textarea id="cPrizes" rows="3" placeholder="10% reducere|Transport gratuit|Mai încearcă" data-en-placeholder="10% off|Free shipping|Try again"></textarea></div>
+        <div class="field" data-for="lw-scratch-card"><label for="cPrize" data-en="Hidden prize">Premiul ascuns</label><input id="cPrize" maxlength="60" placeholder="20% reducere la prima comandă" data-en-placeholder="20% off your first order"></div>
+        <div class="field" data-for="lw-memory"><label for="cIcons" data-en="Icons (2–8 emoji)">Iconițe (2–8 emoji)</label><input id="cIcons" value="🍓🍋🥝🫐🍑🍇"></div>
+        <div class="field" data-for="lw-memory"><label for="cMax" data-en="Maximum moves to win">Mutări maxime pentru premiu</label><input id="cMax" type="number" min="4" max="40" value="16"></div>
+        <div class="field" data-for="lw-quiz"><p class="muted" style="font-size:.88rem;margin:8px 0" data-en="The quiz uses a JSON config placed inside the element. The snippet includes an example you can edit: questions, answers and the result each answer points to.">Quizul folosește o configurație JSON pusă în interiorul elementului. Snippetul include un exemplu pe care îl editezi: întrebări, răspunsuri și rezultatul spre care duce fiecare răspuns.</p></div>
+        <label for="cCode" data-en="Discount code / prefix">Cod / prefix de reducere</label><input id="cCode" maxlength="20" value="BINE10" style="text-transform:uppercase">
+        <div class="dual">
+          <div><label for="cP" data-en="Primary">Principală</label><input type="color" id="cP" value="#4fd1e8"></div>
+          <div><label for="cA" data-en="Accent">Accent</label><input type="color" id="cA" value="#ffb547"></div>
+        </div>
+        <label for="cLang" data-en="Widget language">Limba widgetului</label>
+        <select id="cLang"><option value="ro">Română</option><option value="en">English</option></select>
+        <label><input type="checkbox" id="cOnce"> <span data-en="One try per visitor">O singură încercare per vizitator</span></label>
+      </form>
+    </aside>
+    <div class="grid">
+      <div class="preview" id="preview" aria-live="off"></div>
+      <div class="card">
+        <div class="row" style="justify-content:space-between"><h3 style="margin:0" data-en="Embed snippet">Snippet de inserat</h3><button class="btn btn-sm btn-primary" type="button" data-copy-target="#snippet" data-en="Copy">Copiază</button></div>
+        <pre class="code" id="snippet" tabindex="0" style="margin-top:10px"></pre>
+      </div>
+      <div class="card">
+        <h3 data-en="Event log (lw-win)">Jurnal evenimente (lw-win)</h3>
+        <pre class="log" id="log" aria-live="polite">—</pre>
+        <p class="muted" style="font-size:.88rem;margin:10px 0 0" data-en="Listen for it with <code>document.addEventListener('lw-win', e =&gt; …)</code> and send it to GA4, Meta Pixel or your CRM.">Îl asculți cu <code>document.addEventListener('lw-win', e =&gt; …)</code> și îl trimiți în GA4, Meta Pixel sau CRM-ul tău.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-en="Built in">Ce au toate</h2>
+    <div class="grid g3">
+      <div class="card"><h3 data-en="Accessible">Accesibile</h3><p class="muted" data-en="Real buttons, keyboard play, results announced to screen readers, a Reveal button instead of scratching, reduced motion respected.">Butoane reale, joc din tastatură, rezultatul anunțat cititoarelor de ecran, buton Dezvăluie în locul răzuitului, mișcare redusă respectată.</p></div>
+      <div class="card"><h3 data-en="Isolated">Izolate</h3><p class="muted" data-en="Shadow DOM: the site's CSS cannot break the widget and the widget does not touch the site.">Shadow DOM: CSS-ul site-ului nu strică widgetul, iar widgetul nu atinge site-ul.</p></div>
+      <div class="card"><h3 data-en="Measurable">Măsurabile</h3><p class="muted" data-en="Each win emits <code>lw-win</code> with the widget, prize and code.">Fiecare câștig emite <code>lw-win</code> cu widgetul, premiul și codul.</p></div>
+    </div>
+    <p class="muted" style="margin-top:14px;font-size:.9rem" data-en="The codes are generated in the browser for demonstration. On a real shop, validate them on the server or use single-use codes from your platform.">Codurile sunt generate în browser, pentru demonstrație. Într-un magazin real, le validezi pe server sau folosești coduri unice din platforma ta.</p>
+  </section>
+</main>
+
+<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · MIT</span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
+
+<script src="../assets/pd.js"></script>
+<script src="lw-widgets.js"></script>
+<script>
+(() => {
+  "use strict";
+  const { esc } = window.PD;
+  const $ = id => document.getElementById(id);
+  let w = new URLSearchParams(location.search).get("w") || "lw-spin-wheel";
+  if (!/^lw-(spin-wheel|scratch-card|quiz|memory)$/.test(w)) w = "lw-spin-wheel";
+  const SRC = "https://laurandreea10.github.io/codepen-portfolio/produse-digitale/widgets/lw-widgets.js";
+  const QUIZ_JSON = {
+    ro: { title: "Ce plan ți se potrivește?", questions: [{ q: "Câți oameni sunt în echipă?", a: [["Doar eu", 0], ["2–10", 1], ["Peste 10", 2]] }, { q: "Ce vrei să rezolvi mai întâi?", a: [["Evidența clienților", 0], ["Emailuri automate", 1], ["Rapoarte", 2]] }], results: [["Starter", "Simplu și gratuit."], ["Growth", "Automatizări pentru echipe mici."], ["Scale", "Rapoarte și roluri pentru echipe mari."]] },
+    en: { title: "Which plan fits you?", questions: [{ q: "How big is your team?", a: [["Just me", 0], ["2–10", 1], ["More than 10", 2]] }, { q: "What do you want to solve first?", a: [["Customer records", 0], ["Automated emails", 1], ["Reports", 2]] }], results: [["Starter", "Simple and free."], ["Growth", "Automations for small teams."], ["Scale", "Reports and roles for large teams."]] }
+  };
+
+  function attrs() {
+    const a = { lang: $("cLang").value, primary: $("cP").value, accent: $("cA").value, code: $("cCode").value.trim().toUpperCase() || "BINE10" };
+    if ($("cTitle").value.trim() && w !== "lw-quiz") a.title = $("cTitle").value.trim();
+    if (w === "lw-spin-wheel" && $("cPrizes").value.trim()) a.prizes = $("cPrizes").value.trim();
+    if (w === "lw-scratch-card" && $("cPrize").value.trim()) a.prize = $("cPrize").value.trim();
+    if (w === "lw-memory") { a.icons = $("cIcons").value.trim() || "🍓🍋🥝🫐🍑🍇"; a["max-moves"] = $("cMax").value || 16; }
+    return a;
+  }
+  function update() {
+    document.querySelectorAll(".field").forEach(f => f.hidden = !f.dataset.for.split(" ").includes(w));
+    const a = attrs(), once = $("cOnce").checked;
+    const attrStr = Object.entries(a).map(([k, v]) => `${k}="${esc(v)}"`).join(" ") + (once ? " once" : "");
+    const json = w === "lw-quiz" ? `\n  <script type="application/json">${JSON.stringify(QUIZ_JSON[a.lang], null, 2).replace(/\n/g, "\n  ")}<\/script>\n` : "";
+    $("snippet").textContent = `<script src="${SRC}" defer><\/script>\n\n<${w} id="promo-1" ${attrStr}>${json}</${w}>\n\n<script>\n  document.addEventListener("lw-win", e => {\n    console.log(e.detail); // { widget, prize, code }\n    // gtag("event", "promo_win", e.detail);\n  });\n<\/script>`;
+    const p = $("preview");
+    p.innerHTML = "";
+    const el = document.createElement(w);
+    el.id = "demo-" + w;
+    Object.entries(a).forEach(([k, v]) => el.setAttribute(k, v));
+    if (once) el.setAttribute("once", "");
+    if (w === "lw-quiz") { const s = document.createElement("script"); s.type = "application/json"; s.textContent = JSON.stringify(QUIZ_JSON[a.lang]); el.appendChild(s); }
+    p.appendChild(el);
+    document.querySelectorAll("[data-w]").forEach(b => { const on = b.dataset.w === w; b.setAttribute("aria-pressed", String(on)); b.setAttribute("aria-selected", String(on)); });
+  }
+  document.querySelectorAll("[data-w]").forEach(b => b.addEventListener("click", () => { w = b.dataset.w; update(); }));
+  let tmr; $("cfg").addEventListener("input", () => { clearTimeout(tmr); tmr = setTimeout(update, 250); });
+  $("cfg").addEventListener("change", update);
+  const log = [];
+  document.addEventListener("lw-win", e => {
+    log.unshift(`${new Date().toLocaleTimeString()}  ${JSON.stringify(e.detail)}`);
+    $("log").textContent = log.slice(0, 20).join("\n");
+  });
+  document.addEventListener("pd:lang", e => { $("cLang").value = e.detail; update(); });
+  update();
+})();
+</script>
+</body>
+</html>

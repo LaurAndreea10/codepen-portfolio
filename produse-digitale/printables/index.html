@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<title>Fișe printabile educaționale — Produse digitale</title>
+<meta name="description" content="Generator de fișe printabile A4: formule de matematică și fizică pentru clasele V–VIII, memorator de gramatică și fișe pentru copii (adunări, numărat, scris litere), cu răspunsuri. Salvezi ca PDF din browser.">
+<meta name="author" content="Laura Andreea">
+<link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/printables/">
+<meta property="og:title" content="Fișe printabile educaționale">
+<meta property="og:description" content="Formule, memoratoare și fișe pentru copii, generate în browser și salvate ca PDF.">
+<meta property="og:url" content="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/printables/">
+<meta property="og:image" content="https://laurandreea10.github.io/codepen-portfolio/og-cover.jpg">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../assets/pd.css">
+<style>
+  .pr { display: grid; grid-template-columns: 320px 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .pr { grid-template-columns: 1fr; } }
+  .sheets { display: grid; gap: 18px; justify-items: center; }
+  .sheet { width: 210mm; min-height: 297mm; background: #fff; color: #111; padding: 16mm 15mm; box-shadow: var(--shadow); font: 11.5pt/1.45 Inter, Arial, sans-serif; box-sizing: border-box; position: relative; }
+  .sheet h2 { font: 700 20pt/1.15 Fraunces, Georgia, serif; margin: 0 0 2mm; color: #111; }
+  .sheet .meta { display: flex; justify-content: space-between; border-bottom: 1.5pt solid var(--sheet-c, #0a7d93); padding-bottom: 3mm; margin-bottom: 6mm; font-size: 9.5pt; color: #444; }
+  .sheet .foot { position: absolute; bottom: 9mm; left: 15mm; right: 15mm; font-size: 8pt; color: #888; display: flex; justify-content: space-between; }
+  .fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+  .fbox { border: 1pt solid #d5dbe3; border-radius: 3mm; padding: 3mm 4mm; break-inside: avoid; }
+  .fbox h3 { font: 700 11pt Inter, sans-serif; margin: 0 0 2mm; color: var(--sheet-c, #0a7d93); }
+  .fbox dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 1.2mm 4mm; font-size: 10.5pt; }
+  .fbox dt { font-weight: 600; } .fbox dd { margin: 0; font-family: "JetBrains Mono", Consolas, monospace; font-size: 10pt; }
+  .drill { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm 6mm; font: 15pt "JetBrains Mono", Consolas, monospace; }
+  .drill span b { display: inline-block; width: 16mm; border-bottom: 1pt solid #999; height: 1em; vertical-align: bottom; }
+  .count { display: grid; gap: 4mm; }
+  .count .r { display: grid; grid-template-columns: 1fr 16mm; align-items: center; gap: 4mm; border: 1pt dashed #ccd; border-radius: 3mm; padding: 2.5mm 4mm; font-size: 18pt; letter-spacing: 2pt; }
+  .count .r i { display: block; height: 13mm; border: 1.5pt solid #111; border-radius: 2mm; }
+  .trace svg { display: block; width: 100%; height: auto; margin-bottom: 3mm; }
+  .key { font-size: 10pt; columns: 4; }
+  .sheet-wrap { width: 100%; overflow: hidden; display: grid; justify-items: center; }
+  @media print {
+    @page { size: A4; margin: 0; }
+    body { background: #fff; }
+    main > :not(.pr), .pr > aside, .pd-head, .pd-foot { display: none !important; }
+    .pr { display: block; } .sheets { gap: 0; display: block; }
+    .sheet-wrap { zoom: 1 !important; overflow: visible; display: block; }
+    .sheet { box-shadow: none; break-after: page; margin: 0; }
+  }
+</style>
+</head>
+<body data-title-en="Printable learning sheets — Digital products">
+<a class="skip" href="#main">Sari la conținut</a>
+<header class="pd-head"><div class="wrap">
+  <a class="pd-brand" href="../">◆ <span data-en="Digital <b>products</b>">Produse <b>digitale</b></span></a>
+  <nav class="pd-crumbs" aria-label="Breadcrumb"><a href="../../portfolio.html" data-en="Portfolio">Portofoliu</a>/<a href="../" data-en="Digital products">Produse digitale</a>/<span data-en="Printables">Fișe</span></nav>
+  <div class="pd-tools"><button id="contrastBtn" class="btn btn-sm" type="button" aria-label="Contrast ridicat" data-en-label="High contrast">◐</button><button id="langBtn" class="btn btn-sm" type="button">EN</button><button id="themeBtn" class="btn btn-sm" type="button">☀</button></div>
+</div></header>
+
+<main id="main" class="wrap">
+  <section class="hero">
+    <span class="eyebrow">05 · Gimnaziu Space × Grădina Curioasă</span>
+    <h1 data-en="Printable learning sheets">Fișe printabile educaționale</h1>
+    <p class="lead" data-en="The content from my learning apps, turned into A4 sheets. Choose a type, generate as many variants as you need and save them as PDF straight from the browser — with an answer key where it makes sense.">Conținutul din aplicațiile mele educaționale, transformat în fișe A4. Alegi tipul, generezi câte variante vrei și le salvezi ca PDF direct din browser — cu răspunsuri acolo unde au sens.</p>
+    <div class="row"><a class="btn" href="../../gimnaziu-space/">Gimnaziu Space ↗</a><a class="btn" href="../../curious-garden/" data-en="Curious Garden ↗">Grădina Curioasă ↗</a><span class="tag">A4 · PDF</span><span class="tag">7 <span data-en="sheet types">tipuri de fișe</span></span></div>
+  </section>
+
+  <section class="pr">
+    <aside class="card">
+      <form id="f" onsubmit="return false">
+        <label for="type" data-en="Sheet type">Tipul fișei</label>
+        <select id="type">
+          <optgroup label="Gimnaziu (V–VIII)" id="ogG">
+            <option value="math56" data-en="Math formulas · grades 5–6">Formule matematică · V–VI</option>
+            <option value="math78" data-en="Math formulas · grades 7–8">Formule matematică · VII–VIII</option>
+            <option value="phys" data-en="Physics formulas · grades 6–8">Formule fizică · VI–VIII</option>
+            <option value="gram" data-en="Romanian grammar memo">Memorator gramatică</option>
+          </optgroup>
+          <optgroup label="Copii (5–9 ani)" id="ogK">
+            <option value="drill" data-en="Addition & subtraction">Adunări și scăderi</option>
+            <option value="count" data-en="Count and write">Numără și scrie</option>
+            <option value="trace" data-en="Trace the letters">Scrie literele</option>
+          </optgroup>
+        </select>
+        <div id="kidOpts">
+          <label for="lvl" data-en="Level">Nivel</label>
+          <select id="lvl"><option value="10" data-en="Up to 10">Până la 10</option><option value="20" selected data-en="Up to 20">Până la 20</option><option value="100" data-en="Up to 100">Până la 100</option></select>
+          <label for="word" data-en="Word to trace">Cuvânt de scris</label>
+          <input id="word" value="KYGO" maxlength="10" style="text-transform:uppercase">
+        </div>
+        <label for="name" data-en="Name line / class">Rând nume / clasă</label>
+        <input id="name" placeholder="Nume: __________   Clasa: ____" data-en-placeholder="Name: __________   Class: ____">
+        <label for="col" data-en="Accent colour">Culoare accent</label><input id="col" type="color" value="#0a7d93">
+        <label><input type="checkbox" id="key" checked> <span data-en="Add answer key page">Adaugă pagină cu răspunsuri</span></label>
+      </form>
+      <div class="grid" style="margin-top:16px">
+        <button class="btn btn-primary" type="button" id="print" data-en="🖨 Print / Save as PDF">🖨 Printează / Salvează PDF</button>
+        <button class="btn" type="button" id="regen" data-en="↻ New variant">↻ Variantă nouă</button>
+      </div>
+      <p class="muted" style="font-size:.85rem;margin:10px 0 0" data-en="In the print dialog choose “Save as PDF”, A4, no margins.">În fereastra de printare alege „Salvează ca PDF”, A4, fără margini.</p>
+    </aside>
+    <div class="sheets" id="sheets" aria-live="polite"></div>
+  </section>
+</main>
+
+<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · <span data-en="Free for classroom and home use">Gratuit pentru clasă și acasă</span></span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
+
+<script src="../assets/pd.js"></script>
+<script>
+(() => {
+  "use strict";
+  const { t, esc } = window.PD;
+  const $ = id => document.getElementById(id);
+  const FORM = {
+    math56: { ro: "Formule de matematică · clasele V–VI", en: "Math formulas · grades 5–6", boxes: [
+      [["Pătrat", "Square"], [["Perimetru", "Perimeter", "P = 4·l"], ["Arie", "Area", "A = l²"]]],
+      [["Dreptunghi", "Rectangle"], [["Perimetru", "Perimeter", "P = 2·(L + l)"], ["Arie", "Area", "A = L·l"]]],
+      [["Triunghi", "Triangle"], [["Perimetru", "Perimeter", "P = a + b + c"], ["Arie", "Area", "A = b·h / 2"]]],
+      [["Puteri", "Powers"], [["Produs", "Product", "aᵐ·aⁿ = aᵐ⁺ⁿ"], ["Cât", "Quotient", "aᵐ : aⁿ = aᵐ⁻ⁿ"], ["Putere", "Power", "(aᵐ)ⁿ = aᵐ·ⁿ"], ["", "", "a⁰ = 1, a ≠ 0"]]],
+      [["Procente", "Percentages"], [["p% din a", "p% of a", "p·a / 100"], ["Raport", "Ratio", "a/b = c/d ⇔ a·d = b·c"]]],
+      [["Medii", "Means"], [["Aritmetică", "Arithmetic", "(a + b) / 2"], ["Ponderată", "Weighted", "(a·p + b·q)/(p + q)"]]],
+      [["Cub", "Cube"], [["Volum", "Volume", "V = l³"], ["Arie totală", "Total area", "Aₜ = 6·l²"]]],
+      [["Paralelipiped", "Cuboid"], [["Volum", "Volume", "V = L·l·h"], ["Arie totală", "Total area", "2(Ll + Lh + lh)"]]]
+    ] },
+    math78: { ro: "Formule de matematică · clasele VII–VIII", en: "Math formulas · grades 7–8", boxes: [
+      [["Teorema lui Pitagora", "Pythagorean theorem"], [["Ipotenuza c", "Hypotenuse c", "a² + b² = c²"]]],
+      [["Calcul prescurtat", "Special products"], [["", "", "(a + b)² = a² + 2ab + b²"], ["", "", "(a − b)² = a² − 2ab + b²"], ["", "", "(a − b)(a + b) = a² − b²"]]],
+      [["Cerc", "Circle"], [["Lungime", "Circumference", "L = 2πr"], ["Arie", "Area", "A = πr²"]]],
+      [["Patrulatere", "Quadrilaterals"], [["Trapez", "Trapezoid", "A = (B + b)·h / 2"], ["Romb", "Rhombus", "A = d₁·d₂ / 2"], ["Paralelogram", "Parallelogram", "A = b·h"]]],
+      [["Triunghi echilateral", "Equilateral triangle"], [["Înălțime", "Height", "h = l√3 / 2"], ["Arie", "Area", "A = l²√3 / 4"]]],
+      [["Cilindru", "Cylinder"], [["Volum", "Volume", "V = πr²h"], ["Arie laterală", "Lateral area", "Aₗ = 2πrh"]]],
+      [["Con · Sferă", "Cone · Sphere"], [["Volum con", "Cone volume", "V = πr²h / 3"], ["Volum sferă", "Sphere volume", "V = 4πr³ / 3"], ["Arie sferă", "Sphere area", "A = 4πr²"]]],
+      [["Piramidă", "Pyramid"], [["Volum", "Volume", "V = A_b·h / 3"]]]
+    ] },
+    phys: { ro: "Formule de fizică · clasele VI–VIII", en: "Physics formulas · grades 6–8", boxes: [
+      [["Mișcare", "Motion"], [["Viteză medie", "Average speed", "v = d / t"], ["Unitate", "Unit", "1 m/s = 3,6 km/h"]]],
+      [["Masă și densitate", "Mass and density"], [["Densitate", "Density", "ρ = m / V"], ["Greutate", "Weight", "G = m·g, g ≈ 9,8 N/kg"]]],
+      [["Forțe", "Forces"], [["Elastică", "Elastic", "Fₑ = k·Δl"], ["Presiune", "Pressure", "p = F / S"]]],
+      [["Lucru mecanic", "Work"], [["Lucru", "Work", "L = F·d"], ["Putere", "Power", "P = L / t"], ["Randament", "Efficiency", "η = Lᵤ / L_c"]]],
+      [["Energie", "Energy"], [["Cinetică", "Kinetic", "E_c = m·v² / 2"], ["Potențială", "Potential", "E_p = m·g·h"]]],
+      [["Căldură", "Heat"], [["Căldură", "Heat", "Q = m·c·Δt"]]],
+      [["Electricitate", "Electricity"], [["Legea lui Ohm", "Ohm's law", "I = U / R"], ["Putere", "Power", "P = U·I"]]],
+      [["Rezistori", "Resistors"], [["Serie", "Series", "R = R₁ + R₂"], ["Paralel", "Parallel", "1/R = 1/R₁ + 1/R₂"]]]
+    ] },
+    gram: { ro: "Memorator de gramatică · limba română", en: "Romanian grammar memo", boxes: [
+      [["Părți de vorbire flexibile", "Inflected parts of speech"], [["", "", "substantiv, articol, adjectiv"], ["", "", "pronume, numeral, verb"]]],
+      [["Părți de vorbire neflexibile", "Uninflected parts of speech"], [["", "", "adverb, prepoziție"], ["", "", "conjuncție, interjecție"]]],
+      [["Părți de propoziție", "Parts of the sentence"], [["Principale", "Main", "subiect, predicat"], ["Secundare", "Secondary", "atribut, complement"]]],
+      [["Cazurile substantivului", "Noun cases"], [["N.", "Nom.", "cine? ce?"], ["Ac.", "Acc.", "pe cine? ce?"], ["G.", "Gen.", "al cui? a cui?"], ["D.", "Dat.", "cui?"], ["V.", "Voc.", "adresare"]]],
+      [["Moduri personale", "Finite moods"], [["", "", "indicativ, conjunctiv"], ["", "", "condițional-optativ, imperativ"]]],
+      [["Moduri nepersonale", "Non-finite moods"], [["", "", "infinitiv, gerunziu"], ["", "", "participiu, supin"]]],
+      [["Timpurile indicativului", "Indicative tenses"], [["", "", "prezent, imperfect"], ["", "", "perfect compus, perfect simplu"], ["", "", "mai-mult-ca-perfect, viitor"]]],
+      [["Scriere corectă", "Spelling"], [["", "", "s-a (pron. + verb) / sa (al ei)"], ["", "", "i-a (pron. + verb) / ia (a lua)"], ["", "", "ne-a / nea · v-a / va"]]]
+    ] }
+  };
+  const OBJ = ["🍎", "⭐", "🐟", "🌼", "🎈", "🐞", "🍓", "🚗", "🦋", "🍪"];
+  let seed = Date.now() % 100000 + 1;
+  const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  const ri = (a, b) => a + Math.floor(rnd() * (b - a + 1));
+
+  function page(title, body, extra = "") {
+    const name = $("name").value || t("Nume: ____________________   Clasa: ______   Data: __________", "Name: ____________________   Class: ______   Date: __________");
+    return `<div class="sheet-wrap"><article class="sheet" style="--sheet-c:${$("col").value}" aria-label="${esc(title)}"><h2>${esc(title)}</h2><div class="meta"><span>${esc(name)}</span><span>${extra}</span></div>${body}<div class="foot"><span>laurandreea10.github.io/codepen-portfolio</span><span>Laura Andreea · ${t("Fișe printabile", "Printables")}</span></div></article></div>`;
+  }
+  function formulas(k) {
+    const F = FORM[k], en = PD.lang === "en", i = en ? 1 : 0;
+    const body = `<div class="fgrid">${F.boxes.map(b => `<div class="fbox"><h3>${esc(b[0][i])}</h3><dl>${b[1].map(r => `<dt>${esc(r[i])}</dt><dd>${esc(r[2])}</dd>`).join("")}</dl></div>`).join("")}</div>`;
+    return page(en ? F.en : F.ro, body, k === "gram" ? "" : t("Verifică manualul pentru notații", "Check your textbook for notation"));
+  }
+  function drill() {
+    const max = +$("lvl").value, items = [];
+    for (let n = 0; n < 30; n++) {
+      const add = rnd() < .5;
+      let a = ri(0, max), b = ri(0, max);
+      if (add) { if (a + b > max) b = max - a; items.push([a, "+", b, a + b]); }
+      else { if (b > a) [a, b] = [b, a]; items.push([a, "−", b, a - b]); }
+    }
+    const pages = [page(t("Adunări și scăderi", "Addition & subtraction"), `<div class="drill">${items.map((x, i) => `<span><small style="font-size:9pt;color:#888">${i + 1}.</small> ${x[0]} ${x[1]} ${x[2]} = <b></b></span>`).join("")}</div>`, t(`Până la ${max}`, `Up to ${max}`))];
+    if ($("key").checked) pages.push(page(t("Răspunsuri", "Answer key"), `<ol class="key">${items.map(x => `<li>${x[3]}</li>`).join("")}</ol>`));
+    return pages.join("");
+  }
+  function count() {
+    const rows = Array.from({ length: 10 }, () => { const o = OBJ[ri(0, OBJ.length - 1)], n = ri(1, +$("lvl").value >= 20 ? 12 : 10); return [o, n]; });
+    const pages = [page(t("Numără și scrie", "Count and write"), `<div class="count">${rows.map(r => `<div class="r"><span aria-label="${r[1]}">${r[0].repeat(r[1])}</span><i aria-hidden="true"></i></div>`).join("")}</div>`, t("Scrie numărul în căsuță", "Write the number in the box"))];
+    if ($("key").checked) pages.push(page(t("Răspunsuri", "Answer key"), `<ol class="key">${rows.map(r => `<li>${r[1]}</li>`).join("")}</ol>`));
+    return pages.join("");
+  }
+  function trace() {
+    const w = ($("word").value || "KYGO").toUpperCase().replace(/[^A-ZĂÂÎȘȚ ]/g, "").slice(0, 10) || "KYGO";
+    const line = (txt, solid) => `<svg viewBox="0 0 700 120" role="img" aria-label="${esc(txt)}"><line x1="0" y1="100" x2="700" y2="100" stroke="#bbb" stroke-width="1.5"/><line x1="0" y1="20" x2="700" y2="20" stroke="#ddd" stroke-width="1"/><line x1="0" y1="60" x2="700" y2="60" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="6 6"/><text x="10" y="98" font-family="Arial, sans-serif" font-size="100" letter-spacing="14" fill="${solid ? "#111" : "none"}" stroke="${solid ? "none" : "#888"}" stroke-width="2" stroke-dasharray="${solid ? "0" : "5 5"}">${esc(txt)}</text></svg>`;
+    const body = `<div class="trace">${line(w, true)}${Array.from({ length: 5 }, () => line(w, false)).join("")}${line("", false)}${line("", false)}</div>`;
+    return page(t("Scrie literele", "Trace the letters"), body, t("Urmărește linia punctată", "Follow the dotted line"));
+  }
+  function zoomSheets() {
+    const avail = $("sheets").clientWidth, px = 210 * 96 / 25.4;
+    document.querySelectorAll(".sheet-wrap").forEach(w => { w.style.zoom = Math.min(1, avail / px).toFixed(3); });
+  }
+  function render() {
+    const k = $("type").value, kid = ["drill", "count", "trace"].includes(k);
+    $("kidOpts").hidden = !kid;
+    $("lvl").parentElement && ($("lvl").previousElementSibling.hidden = $("lvl").hidden = k === "trace");
+    $("word").hidden = $("word").previousElementSibling.hidden = k !== "trace";
+    $("key").parentElement.hidden = !(k === "drill" || k === "count");
+    $("sheets").innerHTML = FORM[k] ? formulas(k) : k === "drill" ? drill() : k === "count" ? count() : trace();
+    zoomSheets();
+  }
+  $("f").addEventListener("input", render);
+  $("regen").onclick = () => { seed = (Date.now() + Math.floor(Math.random() * 1e5)) % 2147483646 + 1; render(); };
+  $("print").onclick = () => print();
+  addEventListener("beforeprint", () => document.querySelectorAll(".sheet-wrap").forEach(w => w.style.zoom = 1));
+  addEventListener("afterprint", zoomSheets);
+  addEventListener("resize", zoomSheets);
+  document.addEventListener("pd:lang", e => { $("ogG").label = e.detail === "en" ? "Middle school (5–8)" : "Gimnaziu (V–VIII)"; $("ogK").label = e.detail === "en" ? "Kids (5–9)" : "Copii (5–9 ani)"; render(); });
+  const q = new URLSearchParams(location.search).get("type"); if (q && [...$("type").options].some(o => o.value === q)) $("type").value = q;
+  render();
+})();
+</script>
+</body>
+</html>
