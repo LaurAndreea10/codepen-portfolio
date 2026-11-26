@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0b1220">
 <title>Fișe printabile educaționale — Produse digitale</title>
-<meta name="description" content="Generator de fișe printabile A4: formule de matematică și fizică pentru clasele V–VIII, memorator de gramatică și fișe pentru copii (adunări, numărat, scris litere), cu răspunsuri. Salvezi ca PDF din browser.">
+<meta name="description" content="Generator de fișe printabile A4: formule de matematică și fizică pentru gimnaziu, memorator de gramatică și fișe pentru copii (adunări, numărat, scris litere), cu răspunsuri. Salvezi ca PDF din browser.">
 <meta name="author" content="Laura Andreea">
 <link rel="canonical" href="https://laurandreea10.github.io/codepen-portfolio/produse-digitale/printables/">
 <meta property="og:title" content="Fișe printabile educaționale">
@@ -57,10 +57,10 @@
 
 <main id="main" class="wrap">
   <section class="hero">
-    <span class="eyebrow">05 · Gimnaziu Space × Grădina Curioasă</span>
+    <span class="eyebrow">Gimnaziu Space × Grădina Curioasă</span>
     <h1 data-en="Printable learning sheets">Fișe printabile educaționale</h1>
     <p class="lead" data-en="The content from my learning apps, turned into A4 sheets. Choose a type, generate as many variants as you need and save them as PDF straight from the browser — with an answer key where it makes sense.">Conținutul din aplicațiile mele educaționale, transformat în fișe A4. Alegi tipul, generezi câte variante vrei și le salvezi ca PDF direct din browser — cu răspunsuri acolo unde au sens.</p>
-    <div class="row"><a class="btn" href="../../gimnaziu-space/">Gimnaziu Space ↗</a><a class="btn" href="../../curious-garden/" data-en="Curious Garden ↗">Grădina Curioasă ↗</a><span class="tag">A4 · PDF</span><span class="tag">7 <span data-en="sheet types">tipuri de fișe</span></span></div>
+    <div class="row"><a class="btn" href="../../gimnaziu-space/">Gimnaziu Space ↗</a><a class="btn" href="../../curious-garden/" data-en="Curious Garden ↗">Grădina Curioasă ↗</a><span class="tag">A4 · PDF</span><span class="tag" data-en="with answer keys">cu răspunsuri</span></div>
   </section>
 
   <section class="pr">
@@ -74,7 +74,7 @@
             <option value="phys" data-en="Physics formulas · grades 6–8">Formule fizică · VI–VIII</option>
             <option value="gram" data-en="Romanian grammar memo">Memorator gramatică</option>
           </optgroup>
-          <optgroup label="Copii (5–9 ani)" id="ogK">
+          <optgroup label="Copii" id="ogK">
             <option value="drill" data-en="Addition & subtraction">Adunări și scăderi</option>
             <option value="count" data-en="Count and write">Numără și scrie</option>
             <option value="trace" data-en="Trace the letters">Scrie literele</option>
@@ -208,7 +208,7 @@
   addEventListener("beforeprint", () => document.querySelectorAll(".sheet-wrap").forEach(w => w.style.zoom = 1));
   addEventListener("afterprint", zoomSheets);
   addEventListener("resize", zoomSheets);
-  document.addEventListener("pd:lang", e => { $("ogG").label = e.detail === "en" ? "Middle school (5–8)" : "Gimnaziu (V–VIII)"; $("ogK").label = e.detail === "en" ? "Kids (5–9)" : "Copii (5–9 ani)"; render(); });
+  document.addEventListener("pd:lang", e => { $("ogG").label = e.detail === "en" ? "Middle school (V–VIII)" : "Gimnaziu (V–VIII)"; $("ogK").label = e.detail === "en" ? "Kids" : "Copii"; render(); });
   const q = new URLSearchParams(location.search).get("type"); if (q && [...$("type").options].some(o => o.value === q)) $("type").value = q;
   render();
 })();

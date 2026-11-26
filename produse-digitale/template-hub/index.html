@@ -42,10 +42,10 @@
 
 <main id="main" class="wrap">
   <section class="hero">
-    <span class="eyebrow">01 · Canva × HTML</span>
+    <span class="eyebrow">Canva × HTML</span>
     <h1>Template Hub</h1>
     <p class="lead" data-en="Same design, two formats. Every template from my Canva collection also exists as editable HTML/CSS: change the text and colours here, see the result live, then export it as an HTML file or a PNG image.">Același design, în două formate. Fiecare șablon din colecția mea Canva există și ca HTML/CSS editabil: schimbi textul și culorile aici, vezi rezultatul live, apoi îl exporți ca fișier HTML sau imagine PNG.</p>
-    <div class="row"><a class="btn" href="../../canva-collection.html" data-en="See the Canva collection ↗">Vezi colecția Canva ↗</a><span class="tag">6 <span data-en="templates">șabloane</span></span><span class="tag">3 <span data-en="niches">nișe</span></span><span class="tag">HTML · PNG</span></div>
+    <div class="row"><a class="btn" href="../../canva-collection.html" data-en="See the Canva collection ↗">Vezi colecția Canva ↗</a><span class="tag">Social · SaaS · <span data-en="Reports">Rapoarte</span></span><span class="tag">HTML · PNG</span></div>
   </section>
 
   <section class="th-layout" aria-label="Editor șabloane" data-en-label="Template editor">
@@ -201,7 +201,7 @@
 
   function renderList() {
     $("tplList").innerHTML = TEMPLATES.filter(x => niche === "all" || x.niche === niche).map(x =>
-      `<button class="btn th-item" type="button" data-id="${x.id}" aria-current="${x === current}"><span>${esc(x.name[PD.lang === "en" ? 1 : 0])}</span><span class="tag">${x.w}×${x.h}${x.slides ? " · " + x.slides : ""}</span></button>`).join("");
+      `<button class="btn th-item" type="button" data-id="${x.id}" aria-current="${x === current}"><span>${esc(x.name[PD.lang === "en" ? 1 : 0])}</span><span class="tag">${x.slides ? t("carusel", "carousel") : x.w === x.h ? t("pătrat", "square") : x.w > x.h ? t("orizontal", "landscape") : t("vertical", "portrait")}</span></button>`).join("");
   }
   function fillForm() {
     const d = data();
@@ -223,7 +223,7 @@
     root.setAttribute("aria-label", `${current.name[PD.lang === "en" ? 1 : 0]}: ${data().title}`);
     $("slidesNav").hidden = !current.slides;
     $("slideNum").textContent = `${slide + 1} / ${current.slides || 1}`;
-    $("sizeInfo").textContent = `${current.w}×${current.h}px`;
+    $("sizeInfo").textContent = "";
   }
   function select(id) { current = TEMPLATES.find(x => x.id === id); slide = 0; renderList(); fillForm(); renderPreview(); }
 
