@@ -9,15 +9,19 @@
   const ctx = util.fitCanvas(canvas, W, H);
 
   const i18n = createI18n({
-    ro: { title: "Star Catch", start: "Start", again: "Încă o dată", paused: "Pauză — apasă P", over: "Gata! Scor: {s}", best: "Record nou! {s}", caught: "Stea prinsă", hurt: "Fulger! Mai ai {n} vieți", score: "Scor", lives: "Vieți", time: "Timp", record: "Record", left: "Stânga", right: "Dreapta", pause: "Pauză", mute: "Sunet" },
-    en: { title: "Star Catch", start: "Start", again: "Play again", paused: "Paused — press P", over: "Done! Score: {s}", best: "New record! {s}", caught: "Star caught", hurt: "Lightning! {n} lives left", score: "Score", lives: "Lives", time: "Time", record: "Best", left: "Left", right: "Right", pause: "Pause", mute: "Sound" }
+    ro: { title: "Star Catch", start: "Start", again: "Încă o dată", paused: "Pauză — apasă P", over: "Gata! Stele prinse: {s}", best: "Record nou! {s}", caught: "Stea prinsă", hurt: "Fulger! Îți rămân: {n}", score: "Scor", lives: "Vieți", time: "Timp", record: "Record", left: "Stânga", right: "Dreapta", pause: "Pauză", mute: "Sunet" },
+    en: { title: "Star Catch", start: "Start", again: "Play again", paused: "Paused — press P", over: "Done! Stars caught: {s}", best: "New record! {s}", caught: "Star caught", hurt: "Lightning! You have left: {n}", score: "Score", lives: "Lives", time: "Time", record: "Best", left: "Left", right: "Right", pause: "Pause", mute: "Sound" }
   }, "pd-lang");
   const input = createInput();
   input.bindPointer(canvas);
   input.bindButtons(document.getElementById("gk-pad") || document);
-  const save = createSave("star-catch", 1, { best: 0, plays: 0 });
+  const save = createSave("star-catch", 2, { best: 0, plays: 0 });
+  // scor afișat fără cifre: 🌟 = cinci stele, ⭐ = o stea
+  const tally = n => n > 0 ? "🌟".repeat(Math.floor(n / 5)) + "⭐".repeat(n % 5) : "—";
+  const hearts = n => "❤".repeat(Math.max(0, n)) || "—";
+  const timeBar = document.getElementById("gk-time-bar");
   const audio = createAudio();
-  const hud = createHud({ score: "#gk-score", lives: "#gk-lives", time: "#gk-time", best: "#gk-best" });
+  const hud = createHud({ score: "#gk-score", lives: "#gk-lives", best: "#gk-best" });
   const overlay = document.getElementById("gk-overlay"), startBtn = document.getElementById("gk-start"), msg = document.getElementById("gk-msg");
 
   let s;
@@ -44,8 +48,8 @@
       it.y += it.v * dt; it.rot += dt * 3;
       if (!it.dead && util.hit(it, player)) {
         it.dead = true;
-        if (it.bad) { s.lives--; s.shake = a11y.reducedMotion ? 0 : .3; audio.hit(); a11y.announce(i18n.t("hurt", { n: s.lives })); }
-        else { s.score += 10; audio.coin(); }
+        if (it.bad) { s.lives--; s.shake = a11y.reducedMotion ? 0 : .3; audio.hit(); a11y.announce(i18n.t("hurt", { n: hearts(s.lives) })); }
+        else { s.score += 1; audio.coin(); }
       }
     });
     s.items = s.items.filter(it => !it.dead && it.y < H + 20);
@@ -72,7 +76,8 @@
     ctx.font = "36px serif"; ctx.fillText("🐩", s.x, H - 36);
     if (s.paused) { ctx.fillStyle = "#000a"; ctx.fillRect(0, 0, W, H); ctx.fillStyle = "#fff"; ctx.font = "700 22px Inter, sans-serif"; ctx.fillText(i18n.t("paused"), W / 2, H / 2); }
     ctx.restore();
-    hud.set("score", s.score); hud.set("lives", "❤".repeat(Math.max(0, s.lives)) || "—"); hud.set("time", Math.ceil(Math.max(0, s.time)) + "s"); hud.set("best", save.data.best);
+    hud.set("score", tally(s.score)); hud.set("lives", hearts(s.lives)); hud.set("best", tally(save.data.best));
+    if (timeBar) timeBar.style.width = (Math.max(0, s.time) / 45 * 100) + "%";
   }
 
   const loop = createLoop({ update, render });
@@ -85,7 +90,7 @@
     s.over = true; loop.stop(); render();
     const rec = s.score > save.data.best;
     if (rec) { save.data.best = s.score; save.save(); audio.win(); }
-    msg.textContent = i18n.t(rec ? "best" : "over", { s: s.score });
+    msg.textContent = i18n.t(rec ? "best" : "over", { s: tally(s.score) });
     startBtn.textContent = i18n.t("again");
     overlay.hidden = false; startBtn.focus(); a11y.announce(msg.textContent);
   }

@@ -69,9 +69,9 @@
         <label for="type" data-en="Sheet type">Tipul fișei</label>
         <select id="type">
           <optgroup label="Gimnaziu (V–VIII)" id="ogG">
-            <option value="math56" data-en="Math formulas · grades 5–6">Formule matematică · V–VI</option>
-            <option value="math78" data-en="Math formulas · grades 7–8">Formule matematică · VII–VIII</option>
-            <option value="phys" data-en="Physics formulas · grades 6–8">Formule fizică · VI–VIII</option>
+            <option value="math56" data-en="Math formulas · grades V–VI">Formule matematică · V–VI</option>
+            <option value="math78" data-en="Math formulas · grades VII–VIII">Formule matematică · VII–VIII</option>
+            <option value="phys" data-en="Physics formulas · grades VI–VIII">Formule fizică · VI–VIII</option>
             <option value="gram" data-en="Romanian grammar memo">Memorator gramatică</option>
           </optgroup>
           <optgroup label="Copii" id="ogK">
@@ -82,7 +82,7 @@
         </select>
         <div id="kidOpts">
           <label for="lvl" data-en="Level">Nivel</label>
-          <select id="lvl"><option value="10" data-en="Up to 10">Până la 10</option><option value="20" selected data-en="Up to 20">Până la 20</option><option value="100" data-en="Up to 100">Până la 100</option></select>
+          <select id="lvl"><option value="10" data-en="Easy">Ușor</option><option value="20" selected data-en="Medium">Mediu</option><option value="100" data-en="Advanced">Avansat</option></select>
           <label for="word" data-en="Word to trace">Cuvânt de scris</label>
           <input id="word" value="KYGO" maxlength="10" style="text-transform:uppercase">
         </div>
@@ -101,7 +101,7 @@
   </section>
 </main>
 
-<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · <span data-en="Free for classroom and home use">Gratuit pentru clasă și acasă</span></span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
+<footer class="pd-foot"><div class="wrap"><span>© Laura Andreea · <span data-en="Free for classroom and home use">Gratuit pentru clasă și acasă</span></span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
 
 <script src="../assets/pd.js"></script>
 <script>
@@ -110,7 +110,7 @@
   const { t, esc } = window.PD;
   const $ = id => document.getElementById(id);
   const FORM = {
-    math56: { ro: "Formule de matematică · clasele V–VI", en: "Math formulas · grades 5–6", boxes: [
+    math56: { ro: "Formule de matematică · clasele V–VI", en: "Math formulas · grades V–VI", boxes: [
       [["Pătrat", "Square"], [["Perimetru", "Perimeter", "P = 4·l"], ["Arie", "Area", "A = l²"]]],
       [["Dreptunghi", "Rectangle"], [["Perimetru", "Perimeter", "P = 2·(L + l)"], ["Arie", "Area", "A = L·l"]]],
       [["Triunghi", "Triangle"], [["Perimetru", "Perimeter", "P = a + b + c"], ["Arie", "Area", "A = b·h / 2"]]],
@@ -120,7 +120,7 @@
       [["Cub", "Cube"], [["Volum", "Volume", "V = l³"], ["Arie totală", "Total area", "Aₜ = 6·l²"]]],
       [["Paralelipiped", "Cuboid"], [["Volum", "Volume", "V = L·l·h"], ["Arie totală", "Total area", "2(Ll + Lh + lh)"]]]
     ] },
-    math78: { ro: "Formule de matematică · clasele VII–VIII", en: "Math formulas · grades 7–8", boxes: [
+    math78: { ro: "Formule de matematică · clasele VII–VIII", en: "Math formulas · grades VII–VIII", boxes: [
       [["Teorema lui Pitagora", "Pythagorean theorem"], [["Ipotenuza c", "Hypotenuse c", "a² + b² = c²"]]],
       [["Calcul prescurtat", "Special products"], [["", "", "(a + b)² = a² + 2ab + b²"], ["", "", "(a − b)² = a² − 2ab + b²"], ["", "", "(a − b)(a + b) = a² − b²"]]],
       [["Cerc", "Circle"], [["Lungime", "Circumference", "L = 2πr"], ["Arie", "Area", "A = πr²"]]],
@@ -130,7 +130,7 @@
       [["Con · Sferă", "Cone · Sphere"], [["Volum con", "Cone volume", "V = πr²h / 3"], ["Volum sferă", "Sphere volume", "V = 4πr³ / 3"], ["Arie sferă", "Sphere area", "A = 4πr²"]]],
       [["Piramidă", "Pyramid"], [["Volum", "Volume", "V = A_b·h / 3"]]]
     ] },
-    phys: { ro: "Formule de fizică · clasele VI–VIII", en: "Physics formulas · grades 6–8", boxes: [
+    phys: { ro: "Formule de fizică · clasele VI–VIII", en: "Physics formulas · grades VI–VIII", boxes: [
       [["Mișcare", "Motion"], [["Viteză medie", "Average speed", "v = d / t"], ["Unitate", "Unit", "1 m/s = 3,6 km/h"]]],
       [["Masă și densitate", "Mass and density"], [["Densitate", "Density", "ρ = m / V"], ["Greutate", "Weight", "G = m·g, g ≈ 9,8 N/kg"]]],
       [["Forțe", "Forces"], [["Elastică", "Elastic", "Fₑ = k·Δl"], ["Presiune", "Pressure", "p = F / S"]]],
@@ -173,7 +173,7 @@
       if (add) { if (a + b > max) b = max - a; items.push([a, "+", b, a + b]); }
       else { if (b > a) [a, b] = [b, a]; items.push([a, "−", b, a - b]); }
     }
-    const pages = [page(t("Adunări și scăderi", "Addition & subtraction"), `<div class="drill">${items.map((x, i) => `<span><small style="font-size:9pt;color:#888">${i + 1}.</small> ${x[0]} ${x[1]} ${x[2]} = <b></b></span>`).join("")}</div>`, t(`Până la ${max}`, `Up to ${max}`))];
+    const pages = [page(t("Adunări și scăderi", "Addition & subtraction"), `<div class="drill">${items.map((x, i) => `<span><small style="font-size:9pt;color:#888">${i + 1}.</small> ${x[0]} ${x[1]} ${x[2]} = <b></b></span>`).join("")}</div>`, t("Nivel: " + { 10: "ușor", 20: "mediu", 100: "avansat" }[max], "Level: " + { 10: "easy", 20: "medium", 100: "advanced" }[max]))];
     if ($("key").checked) pages.push(page(t("Răspunsuri", "Answer key"), `<ol class="key">${items.map(x => `<li>${x[3]}</li>`).join("")}</ol>`));
     return pages.join("");
   }

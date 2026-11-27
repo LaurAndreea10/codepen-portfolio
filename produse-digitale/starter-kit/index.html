@@ -52,10 +52,10 @@
       <form id="f" onsubmit="return false">
         <label for="brand">Brand</label><input id="brand" value="Livada" maxlength="40">
         <label for="site" data-en="Website (https://…)">Site (https://…)</label><input id="site" type="url" value="https://exemplu.ro/oferta">
-        <label for="camp" data-en="Campaign name">Numele campaniei</label><input id="camp" value="lansare-iarna-2026" maxlength="60">
+        <label for="camp" data-en="Campaign name">Numele campaniei</label><input id="camp" value="lansare-iarna" maxlength="60">
         <label for="head" data-en="Main message">Mesajul principal</label><input id="head" value="Sucul de iarnă e aici" maxlength="60">
-        <label for="offer" data-en="Offer">Oferta</label><input id="offer" value="−20% în prima săptămână" maxlength="60">
-        <label for="date" data-en="Launch date">Data lansării</label><input id="date" type="date">
+        <label for="offer" data-en="Offer">Oferta</label><input id="offer" value="Reducere în prima săptămână" maxlength="60">
+        <label for="date" data-en="Launch">Lansare</label><select id="date"><option value="now" data-en="Now">Acum</option><option value="week" selected data-en="Next week">Săptămâna viitoare</option><option value="month" data-en="Next month">Luna viitoare</option></select>
         <div class="dual">
           <div><label for="c1" data-en="Primary">Principală</label><input id="c1" type="color" value="#e4572e"></div>
           <div><label for="c2" data-en="Accent">Accent</label><input id="c2" type="color" value="#ffc857"></div>
@@ -78,13 +78,13 @@
       <div class="panel" data-panel="utm" role="tabpanel"><div class="row" style="justify-content:space-between"><p class="muted" style="margin:0" data-en="One tagged link per channel, lowercase and URL-safe.">Un link etichetat pe canal, cu litere mici și caractere sigure.</p><button class="btn btn-sm" type="button" id="cpUtm" data-en="Copy all">Copiază tot</button></div><pre class="code" id="utmOut" style="margin-top:10px" tabindex="0"></pre></div>
       <div class="panel" data-panel="email" role="tabpanel" hidden><iframe id="emailFrame" title="Previzualizare email" sandbox=""></iframe></div>
       <div class="panel" data-panel="social" role="tabpanel" hidden><div class="svgs" id="svgs"></div></div>
-      <div class="panel" data-panel="tracker" role="tabpanel" hidden><p class="muted" data-en="CSV that opens in Google Sheets or Excel. CTR, CPC, CPA and ROAS are formulas.">CSV care se deschide în Google Sheets sau Excel. CTR, CPC, CPA și ROAS sunt formule.</p><div class="csvwrap" id="csvView"></div></div>
+      <div class="panel" data-panel="tracker" role="tabpanel" hidden><p class="muted" data-en="CSV that opens in Google Sheets or Excel. CTR, CPC, CPA and ROAS fill in by themselves through formulas.">CSV care se deschide în Google Sheets sau Excel. CTR, CPC, CPA și ROAS sunt formule.</p><div class="csvwrap" id="csvView"></div></div>
       <div class="panel" data-panel="list" role="tabpanel" hidden><ul class="contents mono" id="contents"></ul></div>
     </div>
   </section>
 </main>
 
-<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · MIT</span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
+<footer class="pd-foot"><div class="wrap"><span>© Laura Andreea · MIT</span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
 
 <script src="../assets/pd.js"></script>
 <script>
@@ -97,7 +97,8 @@
     ["linkedin", "social", "LinkedIn"], ["google", "cpc", "Google Ads"], ["tiktok", "paid-social", "TikTok"]
   ];
   $("channels").innerHTML = CH.map((c, i) => `<label><input type="checkbox" value="${c[0]}" ${i < 4 ? "checked" : ""}> ${c[2]}</label>`).join("");
-  const d0 = new Date(); d0.setDate(d0.getDate() + 7); $("date").value = d0.toISOString().slice(0, 10);
+  const WHEN = { now: ["Acum", "Now"], week: ["Săptămâna viitoare", "Next week"], month: ["Luna viitoare", "Next month"] };
+  const when = k => (WHEN[k] || WHEN.week)[PD.lang === "en" ? 1 : 0];
 
   const slug = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   const v = () => ({ brand: $("brand").value.trim() || "Brand", site: $("site").value.trim() || "https://exemplu.ro", camp: slug($("camp").value) || "campanie", head: $("head").value.trim(), offer: $("offer").value.trim(), date: $("date").value, c1: $("c1").value, c2: $("c2").value, ch: [...document.querySelectorAll("#channels input:checked")].map(i => CH.find(c => c[0] === i.value)) });
@@ -113,7 +114,7 @@
   }
   function emailHTML(d) {
     const link = (utm(d).find(x => x.ch === "newsletter") || { url: d.site }).url;
-    const date = d.date ? new Date(d.date + "T12:00").toLocaleDateString(PD.lang === "en" ? "en-GB" : "ro-RO", { day: "numeric", month: "long", year: "numeric" }) : "";
+    const date = when(d.date);
     return `<!doctype html>
 <html lang="${PD.lang}">
 <head>
@@ -171,8 +172,8 @@
 
   function tracker(d) {
     const en = PD.lang === "en";
-    const head = en ? ["Date", "Channel", "Link", "Spend (€)", "Impressions", "Clicks", "Conversions", "Revenue (€)", "CTR", "CPC", "CPA", "ROAS", "Notes"] : ["Data", "Canal", "Link", "Cost (€)", "Afișări", "Clicuri", "Conversii", "Venit (€)", "CTR", "CPC", "CPA", "ROAS", "Note"];
-    const rows = utm(d).map((u, i) => { const r = i + 2; return [d.date, u.ch, u.url, "", "", "", "", "", `=F${r}/E${r}`, `=D${r}/F${r}`, `=D${r}/G${r}`, `=H${r}/D${r}`, ""]; });
+    const head = en ? ["Launch", "Channel", "Link", "Spend (€)", "Impressions", "Clicks", "Conversions", "Revenue (€)", "CTR", "CPC", "CPA", "ROAS", "Notes"] : ["Lansare", "Canal", "Link", "Cost (€)", "Afișări", "Clicuri", "Conversii", "Venit (€)", "CTR", "CPC", "CPA", "ROAS", "Note"];
+    const rows = utm(d).map((u, i) => { const r = i + 2; return [when(d.date), u.ch, u.url, "", "", "", "", "", `=F${r}/E${r}`, `=D${r}/F${r}`, `=D${r}/G${r}`, `=H${r}/D${r}`, ""]; });
     const q = c => /[",;\n]/.test(c) ? `"${String(c).replace(/"/g, '""')}"` : c;
     return { head, rows, csv: "﻿" + [head, ...rows].map(r => r.map(q).join(";")).join("\r\n") + "\r\n" };
   }
@@ -194,8 +195,8 @@
   function files() {
     const d = v(), tr = tracker(d), u = utm(d);
     const readme = PD.lang === "en"
-      ? `# ${d.brand} — Marketing Starter Kit\n\nCampaign: ${d.camp} · launch ${d.date}\n\n- utm-links.csv — one tagged link per channel\n- email/newsletter.html — responsive, table-based email (Gmail, Outlook, Apple Mail)\n- social/*.svg — post, story and LinkedIn image (open in a browser, Canva or Figma; export to PNG)\n- campaign-tracker.csv — open in Google Sheets / Excel; CTR, CPC, CPA, ROAS are formulas\n- utm-builder.html — a small offline tool for new links\n\nGenerated in the browser at laurandreea10.github.io/codepen-portfolio/produse-digitale/starter-kit/ · MIT\n`
-      : `# ${d.brand} — Marketing Starter Kit\n\nCampanie: ${d.camp} · lansare ${d.date}\n\n- utm-links.csv — un link etichetat pe canal\n- email/newsletter.html — email responsive pe tabele (Gmail, Outlook, Apple Mail)\n- social/*.svg — imagine pentru post, story și LinkedIn (se deschid în browser, Canva sau Figma; export PNG)\n- campaign-tracker.csv — se deschide în Google Sheets / Excel; CTR, CPC, CPA, ROAS sunt formule\n- utm-builder.html — un mic instrument offline pentru linkuri noi\n\nGenerat în browser pe laurandreea10.github.io/codepen-portfolio/produse-digitale/starter-kit/ · MIT\n`;
+      ? `# ${d.brand} — Marketing Starter Kit\n\nCampaign: ${d.camp} · launch: ${when(d.date).toLowerCase()}\n\n- utm-links.csv — one tagged link per channel\n- email/newsletter.html — responsive, table-based email (Gmail, Outlook, Apple Mail)\n- social/*.svg — post, story and LinkedIn image (open in a browser, Canva or Figma; export to PNG)\n- campaign-tracker.csv — open in Google Sheets / Excel; CTR, CPC, CPA, ROAS are formulas\n- utm-builder.html — a small offline tool for new links\n\nGenerated in the browser at laurandreea10.github.io/codepen-portfolio/produse-digitale/starter-kit/ · MIT\n`
+      : `# ${d.brand} — Marketing Starter Kit\n\nCampanie: ${d.camp} · lansare: ${when(d.date).toLowerCase()}\n\n- utm-links.csv — un link etichetat pe canal\n- email/newsletter.html — email responsive pe tabele (Gmail, Outlook, Apple Mail)\n- social/*.svg — imagine pentru post, story și LinkedIn (se deschid în browser, Canva sau Figma; export PNG)\n- campaign-tracker.csv — se deschide în Google Sheets / Excel; CTR, CPC, CPA, ROAS sunt formule\n- utm-builder.html — un mic instrument offline pentru linkuri noi\n\nGenerat în browser pe laurandreea10.github.io/codepen-portfolio/produse-digitale/starter-kit/ · MIT\n`;
     const dir = slug(d.brand) + "-starter-kit/";
     return [
       { name: dir + "README.md", data: readme },
@@ -213,7 +214,7 @@
     $("emailFrame").srcdoc = emailHTML(d);
     $("svgs").innerHTML = SOC.map(s => `<figure>${svg(d, s[1], s[2], s[3])}<figcaption>${s[0]}</figcaption></figure>`).join("");
     const tr = tracker(d);
-    $("csvView").innerHTML = `<table class="csv"><thead><tr>${tr.head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${tr.rows.map(r => `<tr>${r.map((c, i) => `<td>${i === 2 ? `<span title="${esc(c)}">${esc(c.slice(0, 32))}…</span>` : esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+    $("csvView").innerHTML = `<table class="csv"><thead><tr>${tr.head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${tr.rows.map(r => `<tr>${r.map((c, i) => `<td>${i === 2 ? `<span title="${esc(c)}">${esc(c.slice(0, 32))}…</span>` : String(c).startsWith("=") ? `<span class="muted" title="${t("formulă", "formula")}">ƒ ${t("formulă", "formula")}</span>` : esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
     const fl = files();
     $("contents").innerHTML = fl.map(f => `<li>📄 ${esc(f.name)}</li>`).join("");
     $("zipInfo").textContent = t("Totul e generat în browser, nimic nu e trimis.", "Everything is generated in the browser, nothing is sent.");
@@ -227,8 +228,8 @@
     document.querySelectorAll("[data-panel]").forEach(p => p.hidden = p.dataset.panel !== b.dataset.tab);
   });
   document.addEventListener("pd:lang", e => {
-    if (e.detail === "en" && $("head").value === "Sucul de iarnă e aici") { $("head").value = "Winter juice is here"; $("offer").value = "−20% in the first week"; $("site").value = "https://example.com/offer"; }
-    if (e.detail === "ro" && $("head").value === "Winter juice is here") { $("head").value = "Sucul de iarnă e aici"; $("offer").value = "−20% în prima săptămână"; $("site").value = "https://exemplu.ro/oferta"; }
+    if (e.detail === "en" && $("head").value === "Sucul de iarnă e aici") { $("head").value = "Winter juice is here"; $("offer").value = "Discount in the first week"; $("site").value = "https://example.com/offer"; }
+    if (e.detail === "ro" && $("head").value === "Winter juice is here") { $("head").value = "Sucul de iarnă e aici"; $("offer").value = "Reducere în prima săptămână"; $("site").value = "https://exemplu.ro/oferta"; }
     render();
   });
   render();

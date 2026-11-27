@@ -24,6 +24,9 @@
   .overlay { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; background: #0b1220cc; color: #fff; padding: 20px; }
   .overlay[hidden] { display: none; }
   .hudbar { display: flex; gap: 14px; flex-wrap: wrap; font: 600 .9rem var(--mono); margin-top: 10px; }
+  .tbar { display: inline-flex; align-items: center; gap: 6px; }
+  .tbar i { display: inline-block; width: 90px; height: 10px; border-radius: 6px; background: var(--line); overflow: hidden; }
+  .tbar i b { display: block; height: 100%; width: 100%; background: var(--amber); border-radius: 6px; }
   .pad { display: flex; gap: 10px; margin-top: 10px; }
   .pad button { flex: 1; font-size: 1.4rem; min-height: 56px; }
   .api dt { font: 600 .9rem var(--mono); color: var(--cyan); margin-top: 10px; }
@@ -54,10 +57,10 @@
         <div class="overlay" id="gk-overlay"><div><h3 style="font-size:1.8rem;color:#fff">⭐ Star Catch</h3><p id="gk-msg" data-en="Catch the stars, dodge the lightning, beat your record.">Prinde stelele, ferește-te de fulgere, bate-ți recordul.</p><button class="btn btn-amber" type="button" id="gk-start">Start</button></div></div>
       </div>
       <div class="hudbar" aria-live="off">
-        <span><span data-i18n="score">Scor</span>: <b id="gk-score">0</b></span>
+        <span><span data-i18n="score">Scor</span>: <b id="gk-score">—</b></span>
         <span><span data-i18n="lives">Vieți</span>: <b id="gk-lives">❤❤❤</b></span>
-        <span><span data-i18n="time">Timp</span>: <b id="gk-time">45s</b></span>
-        <span><span data-i18n="record">Record</span>: <b id="gk-best">0</b></span>
+        <span class="tbar"><span data-i18n="time">Timp</span>: <i aria-hidden="true"><b id="gk-time-bar"></b></i></span>
+        <span><span data-i18n="record">Record</span>: <b id="gk-best">—</b></span>
         <button class="btn btn-sm" type="button" id="gk-mute" aria-pressed="true" aria-label="Sunet" data-i18n-label="mute">🔊</button>
       </div>
       <div class="pad" id="gk-pad">
@@ -93,14 +96,14 @@
       </dl></div>
     </div>
     <pre class="code" style="margin-top:16px">const loop = GameKit.createLoop({
-  update(dt) { player.x += input.isDown("right") ? 200 * dt : 0; input.endFrame(); },
+  update(dt) { player.x += input.isDown("right") ? speed * dt : 0; input.endFrame(); },
   render() { ctx.clearRect(0, 0, W, H); drawPlayer(); }
 });
 loop.start();</pre>
   </section>
 </main>
 
-<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · MIT</span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
+<footer class="pd-foot"><div class="wrap"><span>© Laura Andreea · MIT</span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
 
 <script src="../assets/pd.js"></script>
 <script src="gamekit.js"></script>
@@ -136,7 +139,7 @@ loop.start();</pre>
     <canvas id="gk-canvas" tabindex="0" aria-label="Star Catch"></canvas>
     <div id="gk-overlay"><div><h1>⭐ Star Catch</h1><p id="gk-msg"></p><button id="gk-start" type="button" data-i18n="start">Start</button></div></div>
   </div>
-  <div class="hud"><span><span data-i18n="score"></span>: <b id="gk-score">0</b></span><span><span data-i18n="lives"></span>: <b id="gk-lives"></b></span><span><span data-i18n="time"></span>: <b id="gk-time"></b></span><span><span data-i18n="record"></span>: <b id="gk-best">0</b></span><button id="gk-mute" type="button" aria-pressed="true">🔊</button></div>
+  <div class="hud"><span><span data-i18n="score"></span>: <b id="gk-score">—</b></span><span><span data-i18n="lives"></span>: <b id="gk-lives"></b></span><span><span data-i18n="time"></span>: <i style="display:inline-block;width:90px;height:10px;border-radius:6px;background:#ffffff22;overflow:hidden;vertical-align:middle"><b id="gk-time-bar" style="display:block;height:100%;width:100%;background:#ffb547"></b></i></span><span><span data-i18n="record"></span>: <b id="gk-best">—</b></span><button id="gk-mute" type="button" aria-pressed="true">🔊</button></div>
   <div class="pad" id="gk-pad"><button type="button" data-gk-action="left" data-i18n-label="left">◀</button><button type="button" data-gk-action="pause" data-i18n-label="pause">⏸</button><button type="button" data-gk-action="right" data-i18n-label="right">▶</button></div>
 </main>
 <script src="gamekit.js"><\/script>
