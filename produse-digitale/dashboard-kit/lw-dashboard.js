@@ -3,6 +3,7 @@
  *  <lwd-kpi>, <lwd-sparkline>, <lwd-bars>, <lwd-donut>, <lwd-pipeline>, <lwd-table>, <lwd-activity>
  *  Temă: variabile CSS --lwd-bg, --lwd-surface, --lwd-text, --lwd-muted, --lwd-line, --lwd-c1…--lwd-c5
  *  Date: atributul `data` (JSON) sau proprietatea .data = […]
+ *  Fără cifre pe ecran: `note` + `direction` pe <lwd-kpi>, `hide-values` pe bars/donut/pipeline, `hide-counts` pe <lwd-table>
  */
 (() => {
   "use strict";
@@ -18,7 +19,7 @@
 
   class Base extends HTMLElement {
     constructor() { super(); this.root = this.attachShadow({ mode: "open" }); }
-    static get observedAttributes() { return ["data", "label", "value", "delta", "unit", "trend", "title", "columns", "page-size"]; }
+    static get observedAttributes() { return ["data", "label", "value", "delta", "unit", "trend", "title", "columns", "page-size", "note", "direction", "hide-values", "hide-counts"]; }
     get data() {
       if (this._data) return this._data;
       try { return JSON.parse(this.getAttribute("data") || "[]"); } catch (e) { return []; }
@@ -33,13 +34,15 @@
   class Kpi extends Base {
     render() {
       const delta = parseFloat(this.getAttribute("delta") || "0");
-      const good = this.hasAttribute("inverse") ? delta <= 0 : delta >= 0;
+      const note = this.getAttribute("note");
+      const up = this.hasAttribute("direction") ? this.getAttribute("direction") !== "down" : delta >= 0;
+      const good = this.hasAttribute("inverse") ? !up : up;
       const trend = (this.getAttribute("trend") || "").split(",").map(Number).filter(n => !isNaN(n));
       const unit = this.getAttribute("unit") || "";
       this.root.innerHTML = `<style>${CSS}.v{font:700 2rem/1.1 var(--lwd-serif,Fraunces,Georgia,serif);margin:2px 0 6px}.d{font:700 .85rem var(--lwd-mono,monospace);color:${good ? "var(--lwd-good,#5ee0a0)" : "var(--lwd-bad,#ff6b6b)"}}</style>
         <div class="s" role="group" aria-label="${esc(this.getAttribute("label"))}"><p class="t">${esc(this.getAttribute("label"))}</p>
         <div class="v">${esc(this.getAttribute("value"))}${unit ? `<small style="font-size:.5em" class="m"> ${esc(unit)}</small>` : ""}</div>
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px"><span class="d">${delta >= 0 ? "▲" : "▼"} ${Math.abs(delta)}%</span>${trend.length > 1 ? `<lwd-sparkline trend="${trend.join(",")}" style="width:96px;height:30px"></lwd-sparkline>` : ""}</div></div>`;
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px"><span class="d">${up ? "▲" : "▼"} ${note ? esc(note) : Math.abs(delta) + "%"}</span>${trend.length > 1 ? `<lwd-sparkline trend="${trend.join(",")}" style="width:96px;height:30px"></lwd-sparkline>` : ""}</div></div>`;
     }
   }
 
@@ -68,7 +71,7 @@
         .val{font:600 .72rem var(--lwd-mono,monospace)}
         .labels{display:flex;gap:8px;margin-top:6px}.labels span{flex:1;text-align:center;font-size:.72rem}
         @media (prefers-reduced-motion:reduce){.bar{transition:none}}</style>
-        <div class="s">${this.head()}<div class="wrap" role="img" aria-label="${esc(d.map(x => x.label + ": " + x.value).join(", "))}">${d.map(x => `<div class="b"><span class="val">${nf(x.value)}</span><div class="bar" style="height:${(x.value / mx) * 88}%"></div></div>`).join("")}</div>
+        <div class="s">${this.head()}<div class="wrap" role="img" aria-label="${esc(this.hasAttribute("hide-values") ? d.map(x => x.label).join(", ") : d.map(x => x.label + ": " + x.value).join(", "))}">${d.map(x => `<div class="b">${this.hasAttribute("hide-values") ? "" : `<span class="val">${nf(x.value)}</span>`}<div class="bar" style="height:${(x.value / mx) * 88}%"></div></div>`).join("")}</div>
         <div class="labels m">${d.map(x => `<span>${esc(x.label)}</span>`).join("")}</div></div>`;
     }
   }
@@ -84,8 +87,8 @@
         return `<circle r="${R}" cx="50" cy="50" fill="none" stroke="${PAL[i % 5]}" stroke-width="16" stroke-dasharray="${len.toFixed(2)} ${(C - len).toFixed(2)}" stroke-dashoffset="${off.toFixed(2)}" transform="rotate(-90 50 50)"/>`;
       }).join("");
       this.root.innerHTML = `<style>${CSS}.row{display:flex;gap:18px;align-items:center;flex-wrap:wrap}ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.88rem;flex:1;min-width:130px}li{display:flex;align-items:center;gap:8px}i{width:10px;height:10px;border-radius:3px;display:inline-block}b{margin-left:auto;font-family:var(--lwd-mono,monospace)}</style>
-        <div class="s">${this.head()}<div class="row"><svg viewBox="0 0 100 100" width="130" height="130" role="img" aria-label="${esc(d.map(x => `${x.label} ${Math.round(x.value / tot * 100)}%`).join(", "))}">${arcs}<text x="50" y="54" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">${nf(tot)}</text></svg>
-        <ul>${d.map((x, i) => `<li><i style="background:${PAL[i % 5]}"></i>${esc(x.label)}<b>${Math.round(x.value / tot * 100)}%</b></li>`).join("")}</ul></div></div>`;
+        <div class="s">${this.head()}<div class="row"><svg viewBox="0 0 100 100" width="130" height="130" role="img" aria-label="${esc(this.hasAttribute("hide-values") ? d.map(x => x.label).join(", ") : d.map(x => `${x.label} ${Math.round(x.value / tot * 100)}%`).join(", "))}">${arcs}${this.hasAttribute("hide-values") ? "" : `<text x="50" y="54" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">${nf(tot)}</text>`}</svg>
+        <ul>${d.map((x, i) => `<li><i style="background:${PAL[i % 5]}"></i>${esc(x.label)}${this.hasAttribute("hide-values") ? "" : `<b>${Math.round(x.value / tot * 100)}%</b>`}</li>`).join("")}</ul></div></div>`;
     }
   }
 
@@ -96,7 +99,7 @@
       this.root.innerHTML = `<style>${CSS}.st{display:grid;grid-template-columns:110px 1fr auto;gap:10px;align-items:center;margin:8px 0;font-size:.88rem}.tr{height:22px;border-radius:7px;background:var(--lwd-line,#ffffff1c);overflow:hidden}.fl{height:100%;border-radius:7px;transition:width .5s}.cv{font:600 .72rem var(--lwd-mono,monospace)}@media(max-width:420px){.st{grid-template-columns:80px 1fr auto}}</style>
         <div class="s">${this.head()}${d.map((x, i) => {
           const conv = i ? Math.round((x.count / (d[i - 1].count || 1)) * 100) : 100;
-          return `<div class="st"><span>${esc(x.stage)}</span><div class="tr" role="progressbar" aria-label="${esc(x.stage)}" aria-valuenow="${x.count}" aria-valuemin="0" aria-valuemax="${mx}"><div class="fl" style="width:${(x.count / mx) * 100}%;background:${PAL[i % 5]}"></div></div><span class="cv">${nf(x.count)}${i ? ` · ${conv}%` : ""}</span></div>`;
+          return `<div class="st"><span>${esc(x.stage)}</span><div class="tr" role="img" aria-label="${esc(x.stage)}"><div class="fl" style="width:${(x.count / mx) * 100}%;background:${PAL[i % 5]}"></div></div><span class="cv">${this.hasAttribute("hide-values") ? "" : nf(x.count) + (i ? ` · ${conv}%` : "")}</span></div>`;
         }).join("")}</div>`;
     }
   }
@@ -129,7 +132,7 @@
         <div class="s"><div class="tb">${this.head() ? `<div>${this.head()}</div>` : "<span></span>"}<input class="q" type="search" value="${esc(this.st.q)}" placeholder="${en ? "Search…" : "Caută…"}" aria-label="${en ? "Search table" : "Caută în tabel"}"></div>
         <div class="sc"><table><thead><tr>${keys.map(c => `<th scope="col" aria-sort="${this.st.sort === c.k ? (this.st.dir > 0 ? "ascending" : "descending") : "none"}"><button type="button" data-k="${esc(c.k)}">${esc(c.l)} ${this.st.sort === c.k ? (this.st.dir > 0 ? "↑" : "↓") : ""}</button></th>`).join("")}</tr></thead>
         <tbody>${view.map(r => `<tr>${keys.map(c => `<td>${c.k === "status" ? `<span class="pill">${esc(r[c.k])}</span>` : esc(nf(r[c.k]))}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${keys.length}" class="m">${en ? "No results" : "Niciun rezultat"}</td></tr>`}</tbody></table></div>
-        <div class="pg"><span class="m">${rows.length} ${en ? "rows" : "rânduri"}</span><button type="button" class="pv" ${this.st.page ? "" : "disabled"} aria-label="${en ? "Previous page" : "Pagina anterioară"}">←</button><span>${this.st.page + 1}/${pages}</span><button type="button" class="nx" ${this.st.page < pages - 1 ? "" : "disabled"} aria-label="${en ? "Next page" : "Pagina următoare"}">→</button></div></div>`;
+        <div class="pg">${this.hasAttribute("hide-counts") ? "" : `<span class="m">${rows.length} ${en ? "rows" : "rânduri"}</span>`}<button type="button" class="pv" ${this.st.page ? "" : "disabled"} aria-label="${en ? "Previous page" : "Pagina anterioară"}">←</button>${this.hasAttribute("hide-counts") ? "" : `<span>${this.st.page + 1}/${pages}</span>`}<button type="button" class="nx" ${this.st.page < pages - 1 ? "" : "disabled"} aria-label="${en ? "Next page" : "Pagina următoare"}">→</button></div></div>`;
       const inp = this.root.querySelector(".q");
       inp.oninput = () => { this.st.q = inp.value; this.st.page = 0; this.render(); };
       if (hadFocus) { const i = this.root.querySelector(".q"); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }

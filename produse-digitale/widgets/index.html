@@ -51,12 +51,12 @@
       </div>
       <form id="cfg" onsubmit="return false">
         <div class="field" data-for="lw-spin-wheel lw-scratch-card lw-memory"><label for="cTitle" data-en="Title">Titlu</label><input id="cTitle" maxlength="50" placeholder="(implicit)" data-en-placeholder="(default)"></div>
-        <div class="field" data-for="lw-spin-wheel"><label for="cPrizes" data-en="Prizes (separated by |)">Premii (separate prin |)</label><textarea id="cPrizes" rows="3" placeholder="10% reducere|Transport gratuit|Mai încearcă" data-en-placeholder="10% off|Free shipping|Try again"></textarea></div>
-        <div class="field" data-for="lw-scratch-card"><label for="cPrize" data-en="Hidden prize">Premiul ascuns</label><input id="cPrize" maxlength="60" placeholder="20% reducere la prima comandă" data-en-placeholder="20% off your first order"></div>
+        <div class="field" data-for="lw-spin-wheel"><label for="cPrizes" data-en="Prizes (separated by |)">Premii (separate prin |)</label><textarea id="cPrizes" rows="3" placeholder="Reducere|Transport gratuit|Mai încearcă" data-en-placeholder="Discount|Free shipping|Try again"></textarea></div>
+        <div class="field" data-for="lw-scratch-card"><label for="cPrize" data-en="Hidden prize">Premiul ascuns</label><input id="cPrize" maxlength="60" placeholder="Reducere la prima comandă" data-en-placeholder="Discount on your first order"></div>
         <div class="field" data-for="lw-memory"><label for="cIcons" data-en="Icons (emoji)">Iconițe (emoji)</label><input id="cIcons" value="🍓🍋🥝🫐🍑🍇"></div>
-        <div class="field" data-for="lw-memory"><label for="cMax" data-en="Maximum moves to win">Mutări maxime pentru premiu</label><input id="cMax" type="number" min="4" max="40" value="16"></div>
+        <div class="field" data-for="lw-memory"><label for="cMax" data-en="Difficulty">Dificultate</label><select id="cMax"><option value="easy" data-en="Easy">Ușor</option><option value="medium" selected data-en="Medium">Mediu</option><option value="hard" data-en="Hard">Greu</option></select></div>
         <div class="field" data-for="lw-quiz"><p class="muted" style="font-size:.88rem;margin:8px 0" data-en="The quiz uses a JSON config placed inside the element. The snippet includes an example you can edit: questions, answers and the result each answer points to.">Quizul folosește o configurație JSON pusă în interiorul elementului. Snippetul include un exemplu pe care îl editezi: întrebări, răspunsuri și rezultatul spre care duce fiecare răspuns.</p></div>
-        <label for="cCode" data-en="Discount code / prefix">Cod / prefix de reducere</label><input id="cCode" maxlength="20" value="BINE10" style="text-transform:uppercase">
+        <label for="cCode" data-en="Discount code / prefix">Cod / prefix de reducere</label><input id="cCode" maxlength="20" value="BINE" style="text-transform:uppercase">
         <div class="dual">
           <div><label for="cP" data-en="Primary">Principală</label><input type="color" id="cP" value="#4fd1e8"></div>
           <div><label for="cA" data-en="Accent">Accent</label><input type="color" id="cA" value="#ffb547"></div>
@@ -91,7 +91,7 @@
   </section>
 </main>
 
-<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · MIT</span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
+<footer class="pd-foot"><div class="wrap"><span>© Laura Andreea · MIT</span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
 
 <script src="../assets/pd.js"></script>
 <script src="lw-widgets.js"></script>
@@ -109,11 +109,11 @@
   };
 
   function attrs() {
-    const a = { lang: $("cLang").value, primary: $("cP").value, accent: $("cA").value, code: $("cCode").value.trim().toUpperCase() || "BINE10" };
+    const a = { lang: $("cLang").value, primary: $("cP").value, accent: $("cA").value, code: $("cCode").value.trim().toUpperCase() || "BINE" };
     if ($("cTitle").value.trim() && w !== "lw-quiz") a.title = $("cTitle").value.trim();
     if (w === "lw-spin-wheel" && $("cPrizes").value.trim()) a.prizes = $("cPrizes").value.trim();
     if (w === "lw-scratch-card" && $("cPrize").value.trim()) a.prize = $("cPrize").value.trim();
-    if (w === "lw-memory") { a.icons = $("cIcons").value.trim() || "🍓🍋🥝🫐🍑🍇"; a["max-moves"] = $("cMax").value || 16; }
+    if (w === "lw-memory") { a.icons = $("cIcons").value.trim() || "🍓🍋🥝🫐🍑🍇"; a.difficulty = $("cMax").value || "medium"; }
     return a;
   }
   function update() {

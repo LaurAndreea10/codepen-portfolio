@@ -68,7 +68,7 @@
     static get observedAttributes() { return ["prizes", "primary", "accent", "title", "lang", "code"]; }
     render() {
       const L = this.L;
-      const prizes = this.attr("prizes", L === TXT.en ? "10% off|Free shipping|Try again|15% off|Gift|5% off" : "10% reducere|Transport gratuit|Mai încearcă|15% reducere|Cadou|5% reducere").split("|").map(s => s.trim()).filter(Boolean).slice(0, 12);
+      const prizes = this.attr("prizes", L === TXT.en ? "Discount|Free shipping|Try again|Surprise gift|Double discount|Free sample" : "Reducere|Transport gratuit|Mai încearcă|Cadou surpriză|Reducere dublă|Mostră gratuită").split("|").map(s => s.trim()).filter(Boolean).slice(0, 12);
       this.prizes = prizes;
       const n = prizes.length, seg = 360 / n;
       const p = this.attr("primary", "#4fd1e8"), a = this.attr("accent", "#ffb547");
@@ -102,7 +102,7 @@
         const prize = this.prizes[idx];
         const lose = /încearcă|try again|nimic|nothing/i.test(prize);
         if (lose) { out.textContent = L.noPrize + " — " + prize; go.disabled = this.hasAttribute("once"); go.textContent = L.again; if (this.hasAttribute("once")) this.markUsed(); return; }
-        const code = this.attr("code", "SPIN") + "-" + (idx + 1) + Math.random().toString(36).slice(2, 5).toUpperCase();
+        const code = this.attr("code", "ROATA") + "-" + Array.from(crypto.getRandomValues(new Uint8Array(4)), v => "ABCDEFGHJKLMNPQRSTUVWXYZ"[v % 24]).join("");
         out.innerHTML = `${L.won}: <strong>${esc(prize)}</strong><br>${this.codeHTML(code)}`;
         this.bindCopy(); go.textContent = L.spin; go.disabled = this.hasAttribute("once");
         this.win(prize, code);
@@ -116,8 +116,8 @@
     static get observedAttributes() { return ["prize", "primary", "accent", "title", "lang", "code"]; }
     render() {
       const L = this.L;
-      const prize = this.attr("prize", L === TXT.en ? "20% off your first order" : "20% reducere la prima comandă");
-      const code = this.attr("code", "SCRATCH20");
+      const prize = this.attr("prize", L === TXT.en ? "Discount on your first order" : "Reducere la prima comandă");
+      const code = this.attr("code", "RAZUIESTE");
       this.root.innerHTML = `<style>${BASE_CSS}
         .card{position:relative;width:min(320px,80vw);aspect-ratio:16/10;margin:12px auto;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,var(--p),var(--a));display:grid;place-items:center;color:var(--on-p,#111);touch-action:none}
         .prize{font:700 1.35rem/1.2 Fraunces,Georgia,serif;padding:16px}
@@ -216,14 +216,15 @@
 
   /* ---------------- Memory ---------------- */
   class LwMemory extends LwBase {
-    static get observedAttributes() { return ["icons", "primary", "accent", "lang", "code", "max-moves"]; }
+    static get observedAttributes() { return ["icons", "primary", "accent", "lang", "code", "max-moves", "difficulty"]; }
     render() {
       const L = this.L;
       const icons = [...(this.attr("icons", "🍓🍋🥝🫐🍑🍇"))].filter(ch => ch.trim()).slice(0, 8);
       const icons2 = Array.from(this.attr("icons", "🍓🍋🥝🫐🍑🍇").matchAll(/\p{Extended_Pictographic}(️|‍\p{Extended_Pictographic})*/gu), m => m[0]).slice(0, 8);
       const set = icons2.length >= 2 ? icons2 : icons;
       const deck = [...set, ...set].map((v, i) => ({ v, k: i })).sort(() => Math.random() - .5);
-      const max = +this.attr("max-moves", set.length * 2 + 4);
+      const extra = { easy: set.length * 2, medium: set.length + 2, hard: 2 }[this.attr("difficulty", "medium")] ?? set.length + 2;
+      const max = +this.attr("max-moves", set.length + extra);
       let open = [], found = 0, moves = 0, lock = false;
       const cols = deck.length > 12 ? 4 : deck.length > 8 ? 4 : 3;
       this.root.innerHTML = `<style>${BASE_CSS}
@@ -231,11 +232,11 @@
         .c{aspect-ratio:1;border-radius:14px;font-size:clamp(1.4rem,6vw,2rem);padding:0;background:var(--p);color:transparent;transition:transform .25s,background .25s}
         .c[aria-pressed="true"],.c.ok{background:#fff;color:inherit;box-shadow:inset 0 0 0 3px var(--p);transform:rotateY(180deg)}
         .c.ok{box-shadow:inset 0 0 0 3px var(--a)}
-        .stats{display:flex;justify-content:center;gap:18px;font:600 .9rem "JetBrains Mono",monospace;opacity:.8}
+        .stats{display:flex;justify-content:center;gap:18px;font:600 .9rem "JetBrains Mono",monospace;opacity:.85;align-items:center;flex-wrap:wrap}.bar{display:inline-block;width:80px;height:9px;border-radius:6px;background:#0d1a2d1f;overflow:hidden;vertical-align:middle}.bar b{display:block;height:100%;width:100%;background:var(--a);border-radius:6px;transition:width .2s}
       </style>
       <div class="box"><h3>${esc(this.attr("title", L === TXT.en ? "Match the pairs" : "Găsește perechile"))}</h3>
-        <div class="stats"><span>${L.moves}: <b class="mv">0</b>/${max}</span><span>${L.pairs}: <b class="pr">0</b>/${set.length}</span></div>
-        <div class="grid">${deck.map((c, i) => `<button type="button" class="c" data-i="${i}" aria-pressed="false" aria-label="${L === TXT.en ? "Card" : "Carte"} ${i + 1}"><span>${c.v}</span></button>`).join("")}</div>
+        <div class="stats"><span>${L.moves}: <i class="bar" aria-hidden="true"><b class="mv"></b></i></span><span>${L.pairs}: <b class="pr" aria-hidden="true">${"○".repeat(set.length)}</b></span></div>
+        <div class="grid">${deck.map((c, i) => `<button type="button" class="c" data-i="${i}" aria-pressed="false" aria-label="${L === TXT.en ? "Hidden card" : "Carte ascunsă"}"><span>${c.v}</span></button>`).join("")}</div>
         <div class="result" role="status" aria-live="polite"></div></div>`;
       const out = this.root.querySelector(".result");
       if (this.used()) { this.root.querySelectorAll(".c").forEach(b => b.disabled = true); out.textContent = L.used; return; }
@@ -244,14 +245,14 @@
         b.setAttribute("aria-pressed", "true"); b.setAttribute("aria-label", deck[+b.dataset.i].v);
         open.push(b);
         if (open.length < 2) return;
-        moves++; this.root.querySelector(".mv").textContent = moves;
+        moves++; this.root.querySelector(".mv").style.width = Math.max(0, (max - moves) / max * 100) + "%";
         const [x, y] = open; open = [];
         if (deck[+x.dataset.i].v === deck[+y.dataset.i].v) {
           x.classList.add("ok"); y.classList.add("ok"); found++;
-          this.root.querySelector(".pr").textContent = found;
+          this.root.querySelector(".pr").textContent = "●".repeat(found) + "○".repeat(set.length - found);
           if (found === set.length) {
             if (moves <= max) {
-              const code = this.attr("code", "MEMORY10");
+              const code = this.attr("code", "MEMORIE");
               out.innerHTML = `${L.memWin}<br>${this.codeHTML(code)}`; this.bindCopy(); this.win("memory", code);
             } else {
               out.innerHTML = `${L.memLose} <button type="button" class="ghost rs">${L.restart}</button>`;
@@ -260,7 +261,7 @@
           }
         } else {
           lock = true;
-          setTimeout(() => { [x, y].forEach(c => { c.setAttribute("aria-pressed", "false"); c.setAttribute("aria-label", (L === TXT.en ? "Card " : "Carte ") + (+c.dataset.i + 1)); }); lock = false; }, reduced() ? 500 : 800);
+          setTimeout(() => { [x, y].forEach(c => { c.setAttribute("aria-pressed", "false"); c.setAttribute("aria-label", L === TXT.en ? "Hidden card" : "Carte ascunsă"); }); lock = false; }, reduced() ? 500 : 800);
         }
       });
     }

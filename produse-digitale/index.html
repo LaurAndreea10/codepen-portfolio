@@ -130,7 +130,7 @@
         <h3 id="p3">CRM Dashboard UI Kit</h3>
         <span class="p-mix">CRM × design system</span>
         <p data-en="Web Components for KPI, sparkline, bars, donut, pipeline, sortable table and activity feed, themed with CSS variables.">Web Components pentru KPI, sparkline, bare, donut, pipeline, tabel sortabil și flux de activitate, cu teme prin variabile CSS.</p>
-        <div class="dash-mini" id="dashMini"><lwd-kpi id="mk1" label="Venituri" value="€48.2k" delta="12" trend="20,32,28,44,51,49,60"></lwd-kpi><lwd-kpi id="mk2" label="Churn" value="2.1%" delta="-8" inverse trend="9,8,8,7,6,6,5"></lwd-kpi></div>
+        <div class="dash-mini" id="dashMini"><lwd-kpi id="mk1" label="Venituri" value="În creștere" direction="up" note="peste luna trecută" trend="20,32,28,44,51,49,60"></lwd-kpi><lwd-kpi id="mk2" label="Churn" value="Scăzut" direction="down" note="în scădere" inverse trend="9,8,8,7,6,6,5"></lwd-kpi></div>
         <div class="p-actions"><a class="btn btn-primary" href="dashboard-kit/" data-en="See the live dashboard →">Vezi dashboard-ul live →</a><a class="btn" href="dashboard-kit/lw-dashboard.js" download data-en="Download JS">Descarcă JS</a></div>
       </article>
 
@@ -182,7 +182,7 @@
   </section>
 </main>
 
-<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · <span data-en="Built in my free time">Construit în timpul liber</span></span><span><a href="../portfolio.html" data-en="← Back to the portfolio">← Înapoi la portofoliu</a> · <a href="CHANGELOG.md" data-en="History">Istoric</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/produse-digitale" target="_blank" rel="noopener noreferrer">GitHub</a></span></div></footer>
+<footer class="pd-foot"><div class="wrap"><span>© Laura Andreea · <span data-en="Built in my free time">Construit în timpul liber</span></span><span><a href="../portfolio.html" data-en="← Back to the portfolio">← Înapoi la portofoliu</a> · <a href="CHANGELOG.md" data-en="History">Istoric</a> · <a href="https://github.com/LaurAndreea10/codepen-portfolio/tree/main/produse-digitale" target="_blank" rel="noopener noreferrer">GitHub</a></span></div></footer>
 
 <script src="assets/pd.js"></script>
 <script src="widgets/lw-widgets.js" defer></script>
@@ -201,7 +201,9 @@
   }));
   const sync = lang => {
     const w = document.getElementById("liveWheel"); if (w) w.setAttribute("lang", lang);
-    const k1 = document.getElementById("mk1"); if (k1) k1.setAttribute("label", lang === "en" ? "Revenue" : "Venituri");
+    const en = lang === "en", k1 = document.getElementById("mk1"), k2 = document.getElementById("mk2");
+    if (k1) { k1.setAttribute("label", en ? "Revenue" : "Venituri"); k1.setAttribute("value", en ? "Growing" : "În creștere"); k1.setAttribute("note", en ? "above last month" : "peste luna trecută"); }
+    if (k2) { k2.setAttribute("value", en ? "Low" : "Scăzut"); k2.setAttribute("note", en ? "going down" : "în scădere"); }
   };
   document.addEventListener("pd:lang", e => sync(e.detail));
   sync(PD.lang);

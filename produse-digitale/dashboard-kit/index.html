@@ -50,7 +50,7 @@
       <h2 id="demoTitle" style="margin:0" data-en="Live demo">Demo live</h2>
       <div class="row">
         <label for="period" class="sr-only" data-en="Period">Perioadă</label>
-        <select id="period" style="width:auto"><option value="7" data-en="Last 7 days">Ultimele 7 zile</option><option value="30" selected data-en="Last 30 days">Ultimele 30 de zile</option><option value="90" data-en="Last 90 days">Ultimele 90 de zile</option></select>
+        <select id="period" style="width:auto"><option value="week" data-en="This week">Săptămâna aceasta</option><option value="month" selected data-en="This month">Luna aceasta</option><option value="quarter" data-en="This quarter">Trimestrul acesta</option></select>
         <div class="tabs" role="group" aria-label="Temă dashboard" data-en-label="Dashboard skin" style="margin:0">
           <button class="chip-btn btn-sm" type="button" data-skin="" aria-pressed="true" data-en="Site">Site</button>
           <button class="chip-btn btn-sm" type="button" data-skin="forest" aria-pressed="false">Forest</button>
@@ -64,13 +64,13 @@
       <lwd-kpi class="c3" id="k2"></lwd-kpi>
       <lwd-kpi class="c3" id="k3" inverse></lwd-kpi>
       <lwd-kpi class="c3" id="k4"></lwd-kpi>
-      <lwd-bars class="c8" id="bars"></lwd-bars>
-      <lwd-donut class="c4" id="donut"></lwd-donut>
-      <lwd-pipeline class="c5" id="pipe"></lwd-pipeline>
+      <lwd-bars class="c8" id="bars" hide-values></lwd-bars>
+      <lwd-donut class="c4" id="donut" hide-values></lwd-donut>
+      <lwd-pipeline class="c5" id="pipe" hide-values></lwd-pipeline>
       <lwd-activity class="c7" id="act"></lwd-activity>
-      <lwd-table class="c12" id="tbl" page-size="6"></lwd-table>
+      <lwd-table class="c12" id="tbl" page-size="6" hide-counts></lwd-table>
     </div>
-    <p class="muted" style="font-size:.88rem" data-en="All figures are randomly generated demo data.">Toate cifrele sunt date demo generate aleatoriu.</p>
+    <p class="muted" style="font-size:.88rem" data-en="Demo data, generated at random. The dashboard shows trends and words, not figures.">Date demo, generate aleatoriu. Dashboard-ul arată tendințe și cuvinte, nu cifre.</p>
   </section>
 
   <section aria-labelledby="docsTitle">
@@ -81,16 +81,16 @@
   <section>
     <h2 data-en="Theming">Teme</h2>
     <pre class="code">my-dashboard {
-  --lwd-bg: #0b1220;     --lwd-surface: #13203a;
-  --lwd-text: #eef3fb;   --lwd-muted: #9fb0c9;   --lwd-line: #ffffff1c;
-  --lwd-c1: #4fd1e8;     --lwd-c2: #ffb547;      --lwd-c3: #ff7aa8;
-  --lwd-c4: #5ee0a0;     --lwd-c5: #a78bfa;
-  --lwd-good: #5ee0a0;   --lwd-bad: #ff6b6b;     --lwd-radius: 16px;
+  --lwd-bg: var(--fundal);        --lwd-surface: var(--card);
+  --lwd-text: var(--text);        --lwd-muted: var(--text-secundar);
+  --lwd-line: var(--linie);       --lwd-radius: var(--colturi);
+  --lwd-c1: var(--brand);         --lwd-c2: var(--accent);
+  --lwd-good: var(--succes);      --lwd-bad: var(--eroare);
 }</pre>
   </section>
 </main>
 
-<footer class="pd-foot"><div class="wrap"><span>© <span class="pd-year"></span> Laura Andreea · MIT</span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
+<footer class="pd-foot"><div class="wrap"><span>© Laura Andreea · MIT</span><span><a href="../" data-en="← All digital products">← Toate produsele digitale</a></span></div></footer>
 
 <script src="../assets/pd.js"></script>
 <script src="lw-dashboard.js"></script>
@@ -105,54 +105,60 @@
   let demo;
 
   function gen() {
-    const days = +$("period").value, en = PD.lang === "en";
-    const k = days / 30;
+    const per = $("period").value, en = PD.lang === "en";
+    const pick = arr => arr[rnd(0, arr.length - 1)];
     const st = en ? ["New", "Qualified", "Proposal", "Negotiation", "Won"] : ["Nou", "Calificat", "Ofertă", "Negociere", "Câștigat"];
-    let c = rnd(380, 520) * k;
-    const pipe = st.map((s, i) => { const r = { stage: s, count: Math.round(c) }; c *= .55 + Math.random() * .2; return r; });
-    const bucket = days === 7 ? 7 : 6;
-    const lbl = days === 7 ? (en ? "Mon Tue Wed Thu Fri Sat Sun" : "Lu Ma Mi Jo Vi Sâ Du").split(" ") : days === 30 ? ["S1", "S2", "S3", "S4", "S5", "S6"].map(x => en ? x.replace("S", "W") : x) : (en ? "Jun Jul Aug Sep Oct Nov" : "Iun Iul Aug Sep Oct Noi").split(" ");
+    let c = rnd(380, 520);
+    const pipe = st.map(s => { const r = { stage: s, count: Math.round(c) }; c *= .55 + Math.random() * .2; return r; });
+    const lbl = per === "week" ? (en ? "Mon Tue Wed Thu Fri Sat Sun" : "Lu Ma Mi Jo Vi Sâ Du").split(" ")
+      : per === "month" ? (en ? "Wk I|Wk II|Wk III|Wk IV" : "Săpt. I|Săpt. II|Săpt. III|Săpt. IV").split("|")
+      : (en ? "Sep Oct Nov" : "Sep Oct Noi").split(" ");
     const statusW = en ? ["Active", "Lead", "At risk", "Won"] : ["Activ", "Lead", "La risc", "Câștigat"];
+    const seg = en ? ["Large", "Medium", "Small"] : ["Mare", "Mediu", "Mic"];
+    const last = en ? ["today", "yesterday", "last week", "last month"] : ["azi", "ieri", "săpt. trecută", "luna trecută"];
+    const series = () => Array.from({ length: 10 }, () => rnd(10, 60));
+    const up = () => Math.random() < .7;
+    const k1 = up(), k2 = up(), k3 = Math.random() < .4, k4 = up();
     demo = {
       kpi: [
-        { label: en ? "Revenue" : "Venituri", value: "€" + (rnd(38, 64) * k).toFixed(1) + "k", delta: rnd(-4, 18), trend: Array.from({ length: 10 }, () => rnd(20, 60)) },
-        { label: en ? "New leads" : "Leaduri noi", value: String(pipe[0].count), delta: rnd(2, 22), trend: Array.from({ length: 10 }, () => rnd(10, 50)) },
-        { label: en ? "Churn" : "Churn", value: (Math.random() * 3 + 1).toFixed(1) + "%", delta: rnd(-12, 6), trend: Array.from({ length: 10 }, () => rnd(5, 20)) },
-        { label: en ? "Win rate" : "Rată câștig", value: Math.round(pipe[4].count / pipe[0].count * 100) + "%", delta: rnd(-3, 9), trend: Array.from({ length: 10 }, () => rnd(10, 30)) }
+        { label: en ? "Revenue" : "Venituri", value: k1 ? pick(en ? ["Growing", "Strong"] : ["În creștere", "Puternice"]) : (en ? "Slower" : "Mai lente"), dir: k1 ? "up" : "down", note: k1 ? (en ? "above last period" : "peste perioada trecută") : (en ? "below last period" : "sub perioada trecută"), trend: series() },
+        { label: en ? "New leads" : "Leaduri noi", value: k2 ? (en ? "High" : "Ridicat") : (en ? "Steady" : "Constant"), dir: k2 ? "up" : "down", note: k2 ? (en ? "more than usual" : "mai multe ca de obicei") : (en ? "a little fewer" : "puțin mai puține"), trend: series() },
+        { label: "Churn", value: k3 ? (en ? "Rising" : "În creștere") : (en ? "Low" : "Scăzut"), dir: k3 ? "up" : "down", note: k3 ? (en ? "worth watching" : "de urmărit") : (en ? "going down" : "în scădere"), trend: series() },
+        { label: en ? "Win rate" : "Rată câștig", value: k4 ? (en ? "Healthy" : "Bună") : (en ? "Stable" : "Stabilă"), dir: k4 ? "up" : "down", note: k4 ? (en ? "improving" : "se îmbunătățește") : (en ? "flat" : "fără schimbări"), trend: series() }
       ],
-      bars: lbl.slice(0, bucket).map(l => ({ label: l, value: rnd(40, 160) * Math.ceil(k) })),
+      bars: lbl.map(l => ({ label: l, value: rnd(40, 160) })),
       donut: [{ label: "Organic", value: rnd(20, 40) }, { label: "Email", value: rnd(15, 30) }, { label: "Ads", value: rnd(10, 30) }, { label: en ? "Referral" : "Recomandări", value: rnd(5, 15) }],
       pipe,
       act: [
-        { who: NAMES[rnd(0, 13)], what: en ? "moved Orbit Tech to Proposal" : "a mutat Orbit Tech în Ofertă", when: en ? "5 min ago" : "acum 5 min", type: "deal" },
-        { who: NAMES[rnd(0, 13)], what: en ? "sent the November newsletter" : "a trimis newsletterul din noiembrie", when: en ? "1 h ago" : "acum 1 h", type: "email" },
-        { who: NAMES[rnd(0, 13)], what: en ? "closed Casa Fagului — €4,200" : "a închis Casa Fagului — 4.200 €", when: en ? "3 h ago" : "acum 3 h", type: "win" },
-        { who: NAMES[rnd(0, 13)], what: en ? "called Nordica SRL" : "a sunat Nordica SRL", when: en ? "yesterday" : "ieri", type: "call" }
+        { who: pick(NAMES), what: en ? "moved Orbit Tech to Proposal" : "a mutat Orbit Tech în Ofertă", when: en ? "just now" : "chiar acum", type: "deal" },
+        { who: pick(NAMES), what: en ? "sent the November newsletter" : "a trimis newsletterul din noiembrie", when: en ? "an hour ago" : "acum o oră", type: "email" },
+        { who: pick(NAMES), what: en ? "closed the Casa Fagului deal" : "a închis oferta Casa Fagului", when: en ? "this morning" : "azi-dimineață", type: "win" },
+        { who: pick(NAMES), what: en ? "called Nordica SRL" : "a sunat Nordica SRL", when: en ? "yesterday" : "ieri", type: "call" }
       ],
-      table: NAMES.map((n, i) => ({ name: n, company: CO[i], value: rnd(800, 12000), status: statusW[rnd(0, 3)], last: rnd(1, 40) }))
+      table: NAMES.map((n, i) => ({ name: n, company: CO[i], segment: pick(seg), status: pick(statusW), last: pick(last) }))
     };
     paint();
   }
   function paint() {
     const en = PD.lang === "en";
-    demo.kpi.forEach((x, i) => { const el = $("k" + (i + 1)); ["label", "value", "delta"].forEach(a => el.setAttribute(a, x[a])); el.setAttribute("trend", x.trend.join(",")); });
+    demo.kpi.forEach((x, i) => { const el = $("k" + (i + 1)); el.setAttribute("label", x.label); el.setAttribute("value", x.value); el.setAttribute("direction", x.dir); el.setAttribute("note", x.note); el.setAttribute("trend", x.trend.join(",")); });
     $("bars").setAttribute("title", en ? "Closed deals" : "Oferte închise"); $("bars").data = demo.bars;
     $("donut").setAttribute("title", en ? "Lead sources" : "Surse leaduri"); $("donut").data = demo.donut;
     $("pipe").setAttribute("title", "Pipeline"); $("pipe").data = demo.pipe;
     $("act").setAttribute("title", en ? "Activity" : "Activitate"); $("act").data = demo.act;
     $("tbl").setAttribute("title", en ? "Customers" : "Clienți");
-    $("tbl").setAttribute("columns", en ? "name:Name,company:Company,value:Value €,status:Status,last:Days since contact" : "name:Nume,company:Companie,value:Valoare €,status:Status,last:Zile de la contact");
+    $("tbl").setAttribute("columns", en ? "name:Name,company:Company,segment:Segment,status:Status,last:Last contact" : "name:Nume,company:Companie,segment:Segment,status:Status,last:Ultimul contact");
     $("tbl").data = demo.table;
   }
 
   const DOCS = [
-    ["lwd-kpi", ["Card KPI cu delta colorată și sparkline. <code>inverse</code> = scăderea e bună (churn).", "KPI card with a coloured delta and sparkline. <code>inverse</code> = a drop is good (churn)."], `<lwd-kpi label="Venituri" value="€48.2k"\n  delta="12" trend="20,32,28,44,51"></lwd-kpi>`],
-    ["lwd-bars", ["Grafic cu bare din <code>[{label, value}]</code>; ultima bară e evidențiată.", "Bar chart from <code>[{label, value}]</code>; the last bar is highlighted."], `<lwd-bars title="Oferte"\n  data='[{"label":"S1","value":40},{"label":"S2","value":62}]'></lwd-bars>`],
-    ["lwd-donut", ["Donut cu legendă și procente calculate.", "Donut with a legend and computed percentages."], `<lwd-donut title="Surse"\n  data='[{"label":"Email","value":30},{"label":"Ads","value":20}]'></lwd-donut>`],
-    ["lwd-pipeline", ["Etape de vânzare cu rata de conversie între ele.", "Sales stages with the conversion rate between them."], `<lwd-pipeline data='[{"stage":"Nou","count":420},\n  {"stage":"Ofertă","count":160}]'></lwd-pipeline>`],
-    ["lwd-table", ["Tabel cu căutare, sortare pe coloane, paginare și <code>aria-sort</code>.", "Table with search, column sorting, pagination and <code>aria-sort</code>."], `const t = document.querySelector("lwd-table");\nt.setAttribute("columns", "name:Nume,value:Valoare");\nt.data = clienti; // array de obiecte`],
-    ["lwd-activity", ["Flux de activitate: deal, email, call, note, win.", "Activity feed: deal, email, call, note, win."], `<lwd-activity data='[{"who":"Ana","what":"a închis un deal",\n  "when":"acum 5 min","type":"win"}]'></lwd-activity>`],
-    ["lwd-sparkline", ["Linie mică de trend, folosită și în KPI.", "Small trend line, also used inside KPI."], `<lwd-sparkline trend="3,5,4,8,7,10"\n  style="width:120px;height:32px"></lwd-sparkline>`]
+    ["lwd-kpi", ["Card KPI cu tendință colorată și sparkline. Fără cifre: <code>note</code> + <code>direction</code>. <code>inverse</code> = scăderea e bună (churn).", "KPI card with a coloured trend and sparkline. No figures: <code>note</code> + <code>direction</code>. <code>inverse</code> = a drop is good (churn)."], `<lwd-kpi label="Venituri" value="În creștere"\n  direction="up" note="peste luna trecută"></lwd-kpi>`],
+    ["lwd-bars", ["Grafic cu bare din <code>[{label, value}]</code>; <code>hide-values</code> ascunde valorile.", "Bar chart from <code>[{label, value}]</code>; <code>hide-values</code> hides the values."], `<lwd-bars title="Oferte" hide-values></lwd-bars>\n<script>bars.data = oferte;<\/script>`],
+    ["lwd-donut", ["Donut cu legendă; cu <code>hide-values</code> arată doar proporțiile.", "Donut with a legend; with <code>hide-values</code> it shows proportions only."], `<lwd-donut title="Surse" hide-values></lwd-donut>\n<script>donut.data = surse;<\/script>`],
+    ["lwd-pipeline", ["Etape de vânzare ca bare proporționale.", "Sales stages as proportional bars."], `<lwd-pipeline title="Pipeline" hide-values></lwd-pipeline>\n<script>pipeline.data = etape;<\/script>`],
+    ["lwd-table", ["Tabel cu căutare, sortare, paginare și <code>aria-sort</code>; <code>hide-counts</code> ascunde numărătoarea.", "Table with search, sorting, pagination and <code>aria-sort</code>; <code>hide-counts</code> hides the counters."], `<lwd-table title="Clienți" hide-counts\n  columns="name:Nume,status:Status"></lwd-table>\n<script>tabel.data = clienti;<\/script>`],
+    ["lwd-activity", ["Flux de activitate: deal, email, call, note, win.", "Activity feed: deal, email, call, note, win."], `<lwd-activity title="Activitate"></lwd-activity>\n<script>activitate.data = evenimente;<\/script>`],
+    ["lwd-sparkline", ["Linie mică de trend, folosită și în KPI.", "Small trend line, also used inside KPI."], `<lwd-sparkline trend="…"></lwd-sparkline>`]
   ];
   function docs() {
     $("docs").innerHTML = DOCS.map(d => `<div class="card"><h3 class="mono" style="font-size:1rem">&lt;${d[0]}&gt;</h3><p class="muted">${d[1][PD.lang === "en" ? 1 : 0]}</p><pre class="code">${esc(d[2])}</pre></div>`).join("");
@@ -161,7 +167,7 @@
   async function kit() {
     let js;
     try { js = await (await fetch("lw-dashboard.js")).text(); } catch (e) { download("lw-dashboard.js", "/* " + t("Descarcă fișierul de pe site", "Download from the site") + " */"); return; }
-    const example = `<!doctype html>\n<html lang="ro">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>CRM Dashboard — exemplu</title>\n<style>\n  body{margin:0;padding:24px;background:#0b1220;font-family:system-ui,sans-serif}\n  .dash{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}\n</style>\n</head>\n<body>\n<div class="dash">\n  <lwd-kpi label="Venituri" value="€48.2k" delta="12" trend="20,32,28,44,51,49,60"></lwd-kpi>\n  <lwd-kpi label="Churn" value="2.1%" delta="-8" inverse trend="9,8,8,7,6,6,5"></lwd-kpi>\n  <lwd-donut title="Surse" data='${JSON.stringify(demo.donut)}'></lwd-donut>\n  <lwd-pipeline title="Pipeline" data='${JSON.stringify(demo.pipe)}'></lwd-pipeline>\n</div>\n<lwd-table id="t" title="Clienți" columns="name:Nume,company:Companie,value:Valoare,status:Status" style="margin-top:14px"></lwd-table>\n<script src="lw-dashboard.js"><\/script>\n<script>\n  document.getElementById("t").data = ${JSON.stringify(demo.table.slice(0, 8))};\n<\/script>\n</body>\n</html>\n`;
+    const example = `<!doctype html>\n<html lang="ro">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>CRM Dashboard — exemplu</title>\n<style>\n  body{margin:0;padding:24px;background:#0b1220;font-family:system-ui,sans-serif}\n  .dash{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}\n</style>\n</head>\n<body>\n<div class="dash">\n  <lwd-kpi label="Venituri" value="În creștere" direction="up" note="peste luna trecută" trend="${demo.kpi[0].trend.join(",")}"></lwd-kpi>\n  <lwd-kpi label="Churn" value="Scăzut" direction="down" note="în scădere" inverse trend="${demo.kpi[2].trend.join(",")}"></lwd-kpi>\n  <lwd-donut title="Surse" hide-values data='${JSON.stringify(demo.donut)}'></lwd-donut>\n  <lwd-pipeline title="Pipeline" hide-values data='${JSON.stringify(demo.pipe)}'></lwd-pipeline>\n</div>\n<lwd-table id="t" title="Clienți" hide-counts columns="name:Nume,company:Companie,segment:Segment,status:Status,last:Ultimul contact" style="margin-top:14px"></lwd-table>\n<script src="lw-dashboard.js"><\/script>\n<script>\n  document.getElementById("t").data = ${JSON.stringify(demo.table.slice(0, 8))};\n<\/script>\n</body>\n</html>\n`;
     const readme = `# CRM Dashboard UI Kit v1.0.0\n\nLaura Andreea · MIT\n\nWeb Components fără dependențe: lwd-kpi, lwd-sparkline, lwd-bars, lwd-donut, lwd-pipeline, lwd-table, lwd-activity.\n\n## Folosire\n\n1. Copiază \`lw-dashboard.js\` în proiect.\n2. \`<script src="lw-dashboard.js"><\/script>\`\n3. Date prin atributul \`data\` (JSON) sau proprietatea \`.data\`.\n4. Temă prin variabile CSS \`--lwd-*\` (vezi \`exemplu.html\`).\n\nDemo: https://laurandreea10.github.io/codepen-portfolio/produse-digitale/dashboard-kit/\n`;
     download("crm-dashboard-kit.zip", zip([{ name: "crm-dashboard-kit/lw-dashboard.js", data: js }, { name: "crm-dashboard-kit/exemplu.html", data: example }, { name: "crm-dashboard-kit/README.md", data: readme }]));
     toast(t("Kit descărcat", "Kit downloaded"));
